@@ -1,0 +1,20 @@
+#!/usr/bin/env php
+
+<?php
+
+/* @var $application Application */
+
+use App\Console\ConsoleKernel;
+use Framework\Application;
+use Framework\Console\ConsoleKernel as Kernel;
+use Framework\Dispatcher\CliDispatcher;
+
+include 'boot.php';
+
+$application->bind(Kernel::class, ConsoleKernel::class);
+$dispatcher = $application->make(CliDispatcher::class);
+
+$application->run($dispatcher);
+
+
+?>

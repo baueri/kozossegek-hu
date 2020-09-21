@@ -1,0 +1,14 @@
+{
+    "age_group.tinedzser": "tinédzser",
+    "age_group.fiatal_felnott": "fiatal felnőtt",
+    "age_group.kozepkoru": "középkorú",
+    "age_group.nyugdijas": "nyugdíjas",
+    
+    "occasion_frequency.hetente": "hetente",
+    "occasion_frequency.havonta": "havonta",
+    "occasion_frequency.kethetente": "két hetente",
+    "occasion_frequency.hetente-tobbszor": "heti többször",
+    "occasion_frequency.egyeb": "egyéb",
+    
+    "denomination.katolikus": "katolikus"
+}

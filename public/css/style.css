@@ -1,0 +1,244 @@
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+#main-finder {
+    background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/images/main.jpg") no-repeat top center;
+    background-position: fixed;
+    background-size: cover;
+    padding: 12em 5em;
+    min-height: calc(100vh - 321px);
+}
+
+nav.navbar.compact .navbar-brand>div {
+    display: none;
+}
+
+nav.navbar .nav-link i {
+    font-size: 20px;
+    margin-right: 5px;
+}
+
+.nav-fbook {
+    margin-left: 20px;
+}
+
+.nav-fbook i {
+    font-size: 20px;
+}
+
+#main-finder input,
+#main-finder select,
+#main-finder button {
+    border-radius: 0;
+    /*   border: 2px solid #000;*/
+}
+
+nav.navbar {
+    padding: 0;
+    border-bottom: 1px solid #dadada;
+}
+
+.navbar-nav {}
+
+.navbar-brand {
+    color: #343a40;
+}
+
+.navbar-brand img {
+    width: 200px;
+    float: left;
+    transition: all ease-in .1s;
+}
+
+.navbar-brand span {
+    display: block;
+    float: left;
+}
+
+.navbar-brand div {
+    margin-top: 8px;
+    transition: width ease-in .1s;
+}
+
+.navbar-brand div span:first-child {
+    font-family: 'Oswald', sans-serif;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 28px;
+    position: relative;
+}
+
+.navbar-brand div span:last-child {
+    margin-top: -6px;
+    text-transform: uppercase;
+    font-size: 14px;
+}
+
+nav.navbar .nav-link {
+    color: var(--gray-dark);
+    text-transform: uppercase;
+    font-family: 'Oswald', sans-serif;
+    transition: color ease-in .2s;
+}
+
+nav.navbar .nav-link:hover {
+    color: var(--green);
+}
+
+#main-finder button {
+    padding: 12px 20px;
+    width: 100%;
+}
+
+.select2-selection, input[type=text] {
+    border-radius: 0 !important;
+    height: initial !important;
+    border: 1px solid #aaa !important;
+    box-sizing: border-box;
+    color: #555;
+    font-size: 14px;
+    width: 100%;
+    box-shadow: 0 0 0px 3px #e3e3e3 inset;
+    padding: 10px 15px !important;
+    position: relative;
+}
+
+.select2-selection__arrow {
+    display: none;
+}
+
+.select2-selection::after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100% !important;
+    width: 30px !important;
+    content: "\f0d7";
+    font-weight: 900;
+    color: #555;
+    font-family: "Font Awesome 5 Free";
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    text-align: center;
+    padding: 13px 0px;
+}
+
+.inner {
+    padding-top: 2em;
+    padding-bottom: 4em;
+}
+
+#footer {
+    background-color: #151414;
+}
+
+#footer-top {
+    padding-top: 2em;
+    padding-bottom: 2em;
+}
+
+#footer a {
+    color: #878787;
+    border-bottom: 1px solid #222;
+    font-size: 14px;
+}
+
+#footer-bottom {
+    padding: 1em;
+    color: #878787;
+    background-color: #0a0a0a;
+}
+
+.card-body p {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.kozi-box {
+    margin-bottom: 30px !important;
+    text-decoration: none !important;
+    color: var(--gray-dark);
+    transition: all ease-in .2s;
+    position: relative;
+    color: var(--gray-dark);
+}
+
+.kozi-box:hover {
+    box-shadow: 0 0 28px #000;
+    transform: scale(1.05);
+    z-index: 1;
+}
+
+.kozi-info>* {
+    display: block;
+    text-align: center;
+    width: 33.3333%;
+    float: left;
+}
+
+.kozi-info>*>* {
+    display: block;
+}
+
+.kozi-info a {
+    text-decoration: none !important;
+}
+
+.kozi-tulajdonsag {
+    margin-bottom: .5em;
+}
+
+.kozi-tulajdonsag label {
+    font-weight: bold;
+    margin-bottom: 0;
+}
+
+.kozi-kiskepek img {
+    filter: grayscale(1);
+    transition: filter ease-in .2s;
+}
+
+.kozi-kiskepek img:hover,
+.kozi-kiskepek img.active {
+    filter: grayscale(0);
+}
+
+.kozi-adatlap .title {
+    border-bottom: 1px solid;
+    margin-bottom: 1em;
+}
+
+.kozi-adatlap .title .primary-title {
+    margin-bottom: 0;
+}
+
+.kozi-adatlap .title .subtitle {
+    margin-top: 0;
+    font-weight: bold;
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+.req label::after {
+    content: "*";
+    color: var(--danger);
+    display: inline-block;
+    font-weight: bold;
+}
+
+.note-editable {
+    background-color: #fff;
+}
+
+.custom-file-label:after {
+    content: "Böngészés"
+}
