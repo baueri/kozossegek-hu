@@ -6,9 +6,31 @@
         Ami szinte azonnal dörnyezik: a kurumok a vigásokkal tárnyolnak, úgy horozják a hajoracsot.
     </p>
     <form method="get" id="finder">
-        
+        <div class="input-group">
+            <select name="varos" style="width:200px" class="form-control">
+                <option value="{{ $filter['varos'] }}">{{ $filter['varos'] ?: '-- város --' }}</option>
+            </select>
+            <input type="text" name="search" value="{{ $filter['search'] }}" class="form-control" placeholder="Keresés...">
+            <select class="form-control" id="korosztaly" name="korosztaly">
+                <option></option>
+                @foreach($age_groups as $age_group)
+                    <option value="{{ $age_group->name }}">{{ $age_group }}</option>
+                @endforeach
+            </select>
+            <select class="form-control" id="rendszeresseg" name="rendszeresseg">
+                <option></option>
+                @foreach($occasion_frequencies as $occasion_frequency)
+                    <option value="{{ $occasion_frequency->name }}">{{ $occasion_frequency }}</option>
+                @endforeach
+            </select>
+            <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+        </div>
+        <p class="mt-15 text-right">
+            <a href="/kozossegek">Szűrés törlése</a>
+        </p>
     </form>
-    <small>Összes találat: {{ $total }}</small>
+    <hr>
+    <p><small>Összes találat: {{ $total }}</small></p>
     <div class="row" style="padding-top:2em">
         @foreach($groups['rows'] as $groupid => $group)
             <div class="col-lg-4 col-md-6">
@@ -35,9 +57,23 @@
 </div>
 <script>
     $(() => {
-        $("[name=city], [name=age_group]").select2();
-        $("[name=occasion_frequency]").select2({
-            placeholder: "-- rendszeresség --"
+        $("[name=varos]").select2({
+            placeholder: "város",
+            allowClear: true,
+            ajax: {
+              url: '/api/v1/search-city',
+              dataType: 'json',
+              delay: 300
+              // Additional AJAX parameters go here; see the end of this chapter for the full code of this example
+            }
+        });
+        $("[name=korosztaly]").select2({
+            placeholder: "korosztály",
+            allowClear: true,
+        });
+        $("[name=rendszeresseg]").select2({
+            placeholder: "rendszeresség",
+            allowClear: true,
         });
     });
 </script>

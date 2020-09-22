@@ -6,7 +6,6 @@ use Framework\Application;
 use Framework\Http\HttpKernel;
 use Framework\Http\Request;
 use Framework\Http\Response;
-use Framework\Http\Route\Route;
 use Framework\Http\Route\RouteInterface;
 use Framework\Http\Route\RouteNotFoundException;
 use Framework\Http\Route\RouterInterface;
@@ -55,7 +54,7 @@ class HttpDispatcher implements Dispatcher
     public function dispatch(): void
     {
         $route = $this->getCurrentRoute();
-
+        
         if ($route->getController() && !class_exists($route->getController())) {
             throw new RouteNotFoundException($route->getController());
         }
@@ -72,12 +71,16 @@ class HttpDispatcher implements Dispatcher
         $response = $this->resolveRoute($route);
 
         if (is_array($response) || is_object($response)) {
-            echo json_encode(is_object($response) && method_exists($response, 'valuesToArray') ? $response->valuesToArray() : $response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+            if (is_object($response) && method_exists($response, '__toString')) {
+                echo $response;
+            } else {
+                echo json_encode(is_object($response) && method_exists($response, 'valuesToArray') ? $response->valuesToArray() : $response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+            }
         } else {
             echo $response;
         }
     }
-
+    
     private function resolveRoute(RouteInterface $route)
     {
         if ($route->getView()) {

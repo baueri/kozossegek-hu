@@ -1,4 +1,6 @@
 $(() => {
+    $.fn.select2.defaults.set( "theme", "bootstrap" );
+
     $('#main-finder select').select2();
 
 });

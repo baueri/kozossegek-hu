@@ -85,6 +85,8 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
                 $this->items[$key][] = $item;
             }
         }
+        
+        return $this;
 
     }
 
@@ -95,6 +97,8 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     public function set($key, $item)
     {
         $this->items[$key] = $item;
+        
+        return $this;
     }
 
     /**

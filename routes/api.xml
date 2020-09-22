@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<routes prefix="{lang}" as="api">
-    <route-group namespace="App\Modules\Portal\Controllers\">
-        <route-group middleware="Framework\Middleware\JsonApi" prefix="portal/api">
-            <route method="post" as="user.create_user" controller="UserController" uri="user/create" use="createUser"/>
-        </route-group>
-        <route-group prefix="portal/api">
-            <route method="post" uri="trip/create" as="trip.create" controller="TripController" use="create"/>
-            <route method="post" uri="trip/{trip}/update" as="trip.update" controller="TripController" use="update"/>
-            <route method="all" uri="trip/{trip}/balance" as="trip.balance" controller="TripController" use="balance"/>
+<routes as="api">
+    <route-group namespace="App\Portal\Controllers\Api">
+        <route-group middleware="Framework\Middleware\JsonApi" namespace="V1" prefix="api/v1">
+            <route method="all" controller="CitySearchController" uri="search-city" use="search"/>
         </route-group>
     </route-group>
+    
 </routes>

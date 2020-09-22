@@ -15,8 +15,9 @@ class GroupController extends \Framework\Http\Controller {
             OccasionFrequencyRepository $occasionFrequencyRepository, AgeGroupRepository $ageGroupRepository)
     {
         $page = $request['pg'] ?: 1;
+        $filter = collect($request->all());
         
-        $groups = $service->search(collect($request->all()), $page);
+        $groups = $service->search($filter, $page);
         
         $model = [
             'groups' => $groups,
@@ -24,10 +25,21 @@ class GroupController extends \Framework\Http\Controller {
             'age_groups' => $ageGroupRepository->all(),
             'page' => $page,
             'total' => $groups['total'],
-            'perpage' => $groups['perpage']
+            'perpage' => $groups['perpage'],
+            'filter' => $filter
         ];
         
         return $this->view('portal.kozossegek', $model);
+    }
+    
+    public function kozosseg(Request $request, \App\Repositories\GroupRepository $repo, \App\Repositories\InstituteRepository $instituteRepo)
+    {
+        $slug = $request->getUriValue('kozosseg');
+        
+        $group = $repo->findBySlug($slug);
+        $institute = $instituteRepo->find($group->institute_id);
+        
+        return $this->view('portal.kozosseg', compact('group', 'institute'));
     }
 
 }

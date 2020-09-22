@@ -245,10 +245,17 @@ class Builder
         return (bool) $this->first()['exists'];
     }
 
-    public function toSql()
+    public function toSql($withBindings = false)
     {
-        [$query] = $this->getBaseSelect();
+        [$query, $bindings] = $this->getBaseSelect();
+        
+        if (!$withBindings) {
+            return $query;        
+        }
+        
+        return str_replace(['?'], array_map(function($binding){
+            return "$binding";
+        }, $bindings), $query);
 
-        return $query;
     }
 }

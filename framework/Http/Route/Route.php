@@ -117,7 +117,7 @@ class Route implements RouteInterface
         foreach ($args as $key => $arg) {
             $uri = str_replace('{' . $key . '}', $arg, $uri);
         }
-        return '/' . trim(preg_replace('/({\?[a-zA-Z]+})/', '', $uri), '/');
+        return '/' . trim(preg_replace('/({\?[a-zA-Z\-\_]+})/', '', $uri), '/');
     }
 
     /**
@@ -136,12 +136,12 @@ class Route implements RouteInterface
     public function getUriForPregReplace()
     {
         return preg_replace([
-            '/({[a-zA-Z]+})/',
-            '/({\?[a-zA-Z]+})/',
+            '/({[a-zA-Z\-\_]+})/',
+            '/({\?[a-zA-Z\-\_]+})/',
             '/\//'
         ], [
-            '([a-zA-Z0-9]+)',
-            '([\?a-zA-Z0-9]+)',
+            '([a-zA-Z0-9\-\_]+)',
+            '([\?a-zA-Z0-9\-\_]+)',
             '\/'
         ], trim($this->uriMask, '/'));
     }

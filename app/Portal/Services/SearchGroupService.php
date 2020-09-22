@@ -3,6 +3,7 @@
 namespace App\Portal\Services;
 
 use Framework\Event\EventDisptatcher;
+use Framework\Support\Collection;
 
 class SearchGroupService
 {
@@ -23,24 +24,24 @@ class SearchGroupService
     
     /**
      * 
-     * @param type $filter
-     * @param type $page
-     * @return type
+     * @param Collection $filter
+     * @param int $page
+     * @param int $perPage
+     * @return array
      */
-    public function search(\Framework\Support\Collection $filter, $page = 1)
+    public function search(Collection $filter, $page = 1, $perPage = 21)
     { 
         $keyword = $filter['search'];
         
-        $groups = $this->groupRepo->search($keyword, $filter, $page);
+        $groups = $this->groupRepo->search($keyword, $filter, $page, $perPage);
         
-        $this->logEvent($data);
+        $this->logEvent($filter);
         
         return $groups;
     }
     
-    private function logEvent($data)
+    private function logEvent(Collection $filter)
     {
-        $data['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
-        EventDisptatcher::dispatch(new \App\Events\SearchTriggered('search', $data));
+        EventDisptatcher::dispatch(new \App\Events\SearchTriggered('search', $filter->set('user_agent', $_SERVER['HTTP_USER_AGENT'])->toArray()));
     }
 }

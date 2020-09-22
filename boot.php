@@ -31,7 +31,7 @@ $application->singleton(Database::class, function (Application $app) {
     $settings = $app->config('db');
     $databaseConfiguration = $app->make(DatabaseConfiguration::class,
         $settings['host'],
-        $settings['name'],
+        $settings['user'],
         $settings['password'],
         $settings['database'],
         $settings['charset']

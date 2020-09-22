@@ -7,10 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>kozossegek.hu</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/bootstrap-margins-paddings.css">
+    <link rel="stylesheet" href="/css/bootstrap-margins-paddings.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="/css/style.css">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css" rel="stylesheet" />
 
 
     <link href="https://fonts.googleapis.com/css2?family=Baloo+Da+2&family=Oswald:wght@400;700&display=swap" rel="stylesheet">
@@ -21,13 +22,13 @@
     
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-    <script src="js/scripts.js"></script>
+    <script src="/js/scripts.js"></script>
 </head>
 <body>
     <nav class="navbar navbar-expand-sm bg-light navbar-light sticky-top">
         <div class="container">
             <a href="/" class="navbar-brand">
-                <img src="images/logo_xs.png">
+                <img src="/images/logo_xs.png">
             </a>
             <ul class="navbar-nav">
                 <li class="nav-item">

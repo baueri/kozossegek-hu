@@ -55,7 +55,7 @@ class Group extends \Framework\Model\Model
         return lang('occasion_frequency.' . $this->occasion_frequency);
     }
     
-    public function excerpt($words = 20)
+    public function excerpt($words = 25)
     {
         return \Framework\Support\StringHelper::more($this->description, $words, '...');
     }
