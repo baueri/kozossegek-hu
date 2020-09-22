@@ -112,13 +112,6 @@ function redirect($route, $args = [])
 }
 
 /**
- * @return bool
- */
-function logged_in() {
-    return !is_null(Auth::user());
-}
-
-/**
  * @param $values
  * @return Collection
  */
@@ -126,7 +119,7 @@ function collect($values) {
     return Collection::create($values);
 }
 
-function env($key, $default = null)
+function _env($key, $default = null)
 {
     return \Arrilot\DotEnv\DotEnv::get($key, $default);
 }

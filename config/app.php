@@ -1,4 +1,4 @@
 <?php
 return [
-    'app_name' => 'hello'
+    'environment' => env('ENVIRONMENT', 'development')
 ];

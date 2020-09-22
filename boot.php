@@ -4,7 +4,6 @@ use Framework\Application;
 use Framework\Database\Database;
 use Framework\Database\DatabaseConfiguration;
 use Framework\Database\PDO\PDOMysqlDatabase;
-use Framework\Http\Auth\Auth;
 use Framework\Http\Route\Route;
 use Framework\Http\Route\RouteInterface;
 use Framework\Http\Route\RouterInterface;
@@ -21,10 +20,11 @@ define('LANG', 'hu');
 
 include 'vendor/autoload.php';
 
+\Arrilot\DotEnv\DotEnv::load(ROOT . '.env.php');
+
 $application = new Application();
 
 $application->bind(RouteInterface::class, Route::class);
-$application->singleton(Auth::class);
 $application->singleton(Config::class);
 $application->singleton(RouterInterface::class, XmlRouter::class);
 $application->singleton(Database::class, function (Application $app) {
