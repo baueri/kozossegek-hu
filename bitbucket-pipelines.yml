@@ -9,7 +9,7 @@ pipelines:
   default:
     - step:
         name: demo deploy
-        deployment: demo-deploy
+        deployment: demo
 #        caches:
 #          - composer
         script:
