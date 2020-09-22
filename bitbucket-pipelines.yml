@@ -17,7 +17,7 @@ pipelines:
 #          - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 #          - composer install
 #          - vendor/bin/phpunit
-           - pipe: atlassian/sftp-deploy:0.5.6
+           - pipe: atlassian/ftp-deploy:0.3.3
              variables:
                USER: 'kozossegek_hu'
                SERVER: 'f2.nethely.hu'
