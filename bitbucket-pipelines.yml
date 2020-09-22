@@ -8,6 +8,8 @@ image: php:7.1.29
 pipelines:
   default:
     - step:
+        name: 'demo deploy'
+        deployment: 'demo-deploy'
 #        caches:
 #          - composer
         script:
