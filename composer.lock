@@ -4,8 +4,51 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b60e5ed012e630d60565d73d468e818b",
+    "content-hash": "1f7fd9d74c0e9a9866ff1e90f149d58a",
     "packages": [
+        {
+            "name": "arrilot/dotenv-php",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/arrilot/dotenv-php.git",
+                "reference": "9ff3403b73231e99a7dd75b1976f57d32bc7fda1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/arrilot/dotenv-php/zipball/9ff3403b73231e99a7dd75b1976f57d32bc7fda1",
+                "reference": "9ff3403b73231e99a7dd75b1976f57d32bc7fda1",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Arrilot\\DotEnv\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nekrasov Ilya",
+                    "email": "nekrasov.ilya90@gmail.com"
+                }
+            ],
+            "homepage": "https://github.com/arrilot/dotenv-php",
+            "keywords": [
+                "dotenv",
+                "production"
+            ],
+            "time": "2017-06-25T10:50:19+00:00"
+        },
         {
             "name": "cakephp/collection",
             "version": "4.0.9",

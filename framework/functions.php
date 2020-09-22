@@ -125,3 +125,8 @@ function logged_in() {
 function collect($values) {
     return Collection::create($values);
 }
+
+function env($key, $default = null)
+{
+    return \Arrilot\DotEnv\DotEnv::get($key, $default);
+}
