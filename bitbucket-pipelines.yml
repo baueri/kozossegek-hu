@@ -20,7 +20,7 @@ pipelines:
                USER: 'kozossegek_hu'
                SERVER: 'f2.nethely.hu'
                REMOTE_PATH: '$ENVIRONMENT'
-               LOCAL_PATH: '<string>' # Optional.
+               # LOCAL_PATH: '<string>' # Optional.
                # SSH_KEY: '<string>' # Optional.
                PASSWORD: 'cheese90ny' # Optional.
                # EXTRA_ARGS: '<string>' # Optional.
