@@ -17,4 +17,9 @@ class HttpKernel
     {
         return $this->middleware;
     }
+
+    public function handleMaintenance()
+    {
+        echo '<h1>Website under maintenance</h1>';
+    }
 }

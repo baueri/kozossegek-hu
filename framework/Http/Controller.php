@@ -4,21 +4,20 @@
 namespace Framework\Http;
 
 
-use Framework\Http\View\Exception\ViewNotFoundException;
-use Framework\Http\View\View;
+use Framework\Http\View\ViewInterface;
 
 class Controller
 {
     /**
-     * @var View
+     * @var ViewInterface
      */
     protected $view;
 
     /**
      * Controller constructor.
-     * @param View $view
+     * @param ViewInterface $view
      */
-    public function __construct(View $view)
+    public function __construct(ViewInterface $view)
     {
         $this->view = $view;
     }
@@ -27,7 +26,6 @@ class Controller
      * @param $view
      * @param array $args
      * @return string
-     * @throws ViewNotFoundException
      */
     protected function view($view, $args = [])
     {

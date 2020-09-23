@@ -3,6 +3,7 @@
 
 namespace Framework;
 
+use Framework\Bootstrapper\CheckMaintenance;
 use Framework\Container\Container;
 use Framework\Dispatcher\Dispatcher;
 use Framework\Http\View\Bootstrappers\BootDirectives;
@@ -19,6 +20,7 @@ class Application extends Container
      * @var Bootstrapper[]
      */
     protected $bootstrappers = [
+        CheckMaintenance::class,
         BootDirectives::class
     ];
 
@@ -93,13 +95,17 @@ class Application extends Container
         $this->locale = $lang;
     }
 
-    public function up()
-    {
-        touch('');
-    }
-
     public function down()
     {
+        if (!file_exists(ROOT . '.maintenance')) {
+            touch(ROOT . '.maintenance');
+        }
+    }
 
+    public function up()
+    {
+        if (file_exists(ROOT . '.maintenance')) {
+            unlink(ROOT . '.maintenance');
+        }
     }
 }

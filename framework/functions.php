@@ -1,18 +1,21 @@
 <?php
 
+use Arrilot\DotEnv\DotEnv;
 use Framework\Application;
 use Framework\Database\Builder;
 use Framework\Database\Database;
 use Framework\Http\Auth\Auth;
 use Framework\Http\Response;
 use Framework\Http\Route\RouterInterface;
+use Framework\Http\View\ViewInterface;
 use Framework\Support\Collection;
 use Framework\Translator;
 
 /**
  * @return Application|null
  */
-function app() {
+function app()
+{
     return Application::getInstance();
 }
 
@@ -21,8 +24,9 @@ function is_cli()
     return PHP_SAPI == 'cli';
 }
 
-function d(...$data) {
-    if(!Response::contentTypeIsJson() && !is_cli()) {
+function d(...$data)
+{
+    if (!Response::contentTypeIsJson() && !is_cli()) {
         print "<pre style='white-space: pre-line'>";
     }
     foreach ($data as $toDump) {
@@ -32,12 +36,13 @@ function d(...$data) {
     $bt = debug_backtrace()[0];
     print("\ndumped at: " . $bt['file'] . ' on line ' . $bt['line']);
     print("\n----------------------------------------------------");
-    if(!Response::contentTypeIsJson() && !is_cli()) {
+    if (!Response::contentTypeIsJson() && !is_cli()) {
         print "</pre>";
     }
 }
 
-function dd(...$data) {
+function dd(...$data)
+{
     d(...$data);
     exit;
 }
@@ -115,11 +120,17 @@ function redirect($route, $args = [])
  * @param $values
  * @return Collection
  */
-function collect($values) {
+function collect($values)
+{
     return Collection::create($values);
 }
 
 function _env($key, $default = null)
 {
-    return \Arrilot\DotEnv\DotEnv::get($key, $default);
+    return DotEnv::get($key, $default);
+}
+
+function view($view, array $args = [])
+{
+    return app()->make(ViewInterface::class)->view($view, $args);
 }

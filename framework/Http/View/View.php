@@ -7,7 +7,7 @@ namespace Framework\Http\View;
 use Exception;
 use Framework\Http\View\Exception\ViewNotFoundException;
 
-class View
+class View implements ViewInterface
 {
 
     /**
@@ -44,7 +44,7 @@ class View
      * @throws ViewNotFoundException
      * @throws Exception
      */
-    public function view(string $view, array $args = [])
+    public function view($view, array $args = [])
     {
         $filePath = $this->getPath($view);
 
@@ -60,7 +60,7 @@ class View
      * @return string
      *
      */
-    public function getPath(string $view): string
+    protected function getPath(string $view): string
     {
         $viewPath = str_replace('.', DS, $view);
 
@@ -70,7 +70,7 @@ class View
 
         } else {
             $dirPath = app()->config('app.views_dir', RESOURCES . 'views' . DS);
-        };
+        }
 
         return $dirPath . $viewPath . '.php';
     }
@@ -102,16 +102,7 @@ class View
     }
 
     /**
-     * @param $name
-     * @param $value
-     */
-    public static function addGlobalVariable($name, $value)
-    {
-        static::$envVariables[$name] = $value;
-    }
-
-    /**
-     * @return Sectionv
+     * @return Section
      */
     public function getSection()
     {
