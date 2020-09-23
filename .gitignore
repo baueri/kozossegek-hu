@@ -1,5 +1,6 @@
 vendor/
 .env.php
+.maintenance
 cache/
 .idea/
 _env/

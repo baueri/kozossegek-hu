@@ -93,4 +93,13 @@ class Application extends Container
         $this->locale = $lang;
     }
 
+    public function up()
+    {
+        touch('');
+    }
+
+    public function down()
+    {
+
+    }
 }
