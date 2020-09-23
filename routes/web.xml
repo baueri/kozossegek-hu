@@ -5,4 +5,12 @@
         <route method="get" uri="kozossegek" as="kozossegek" controller="GroupController" use="kozossegek"/>
         <route method="get" uri="kozosseg/{kozosseg}" as="kozosseg" controller="GroupController" use="kozosseg"/>
     </route-group>
+    <route-group namespace="App\Admin\Controllers" prefix="admin" as="admin">
+        <route method="get" uri="" controller="DashboardController" use="dashboard" as="dashboard"/>
+        <route method="get" uri="pages" controller="PageController" use="list" as="pages"/>
+        <route method="get" uri="groups" controller="GroupController" use="list" as="groups"/>
+        <route method="get" uri="users" controller="UserController" use="list" as="users"/>
+        <route method="get" uri="settings" controller="SettingsController" use="list" as="settings"/>
+        <route method="get" uri="logout" controller="LoginController" use="logout" as="logout"/>
+    </route-group>
 </routes>
