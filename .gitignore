@@ -2,4 +2,4 @@ vendor/
 .env.php
 cache/
 .idea/
-
+_env/
