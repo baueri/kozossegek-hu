@@ -9,6 +9,13 @@
     "occasion_frequency.kethetente": "két hetente",
     "occasion_frequency.hetente-tobbszor": "heti többször",
     "occasion_frequency.egyeb": "egyéb",
-    
+
+    "group_status.active": "aktív",
+    "group_status.inactive": "inaktív",
+    "group_status.pending": "függőben",
+
+    "page_status.PUBLISHED": "közzétéve",
+    "page_status.DRAFT": "piszkozat",
+
     "denomination.katolikus": "katolikus"
 }

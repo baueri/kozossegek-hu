@@ -5,12 +5,25 @@
         <route method="get" uri="kozossegek" as="kozossegek" controller="GroupController" use="kozossegek"/>
         <route method="get" uri="kozosseg/{kozosseg}" as="kozosseg" controller="GroupController" use="kozosseg"/>
     </route-group>
+    <route-group namespace="App\Admin" prefix="admin" as="admin" middleware="App\Middleware\AdminMiddleware">
+        <route-group namespace="Page" prefix="page" as="page">
+            <route method="get" uri="list" controller="PageController" use="list" as="list"/>
+        </route-group>
+        <route-group namespace="Group" prefix="group" as="group">
+            <route method="get" uri="list" controller="GroupController" use="list" as="list"/>
+            <route method="get" uri="{id}/delete" controller="GroupController" use="delete" as="delete"/>
+            <route method="get" uri="create" controller="GroupController" use="create" as="create"/>
+        </route-group>
+        <route-group>
+            <route method="get" uri="users" namespace="User" controller="UserController" use="list" as="users"/>
+        </route-group>
+
+        <route method="get" uri="" controller="Controllers\DashboardController" use="dashboard" as="dashboard"/>
+        <route method="get" uri="settings" controller="Settings\SettingsController" use="settings" as="settings"/>
+    </route-group>
     <route-group namespace="App\Admin\Controllers" prefix="admin" as="admin">
-        <route method="get" uri="" controller="DashboardController" use="dashboard" as="dashboard"/>
-        <route method="get" uri="pages" controller="PageController" use="list" as="pages"/>
         <route method="get" uri="groups" controller="GroupController" use="list" as="groups"/>
-        <route method="get" uri="users" controller="UserController" use="list" as="users"/>
-        <route method="get" uri="settings" controller="SettingsController" use="list" as="settings"/>
         <route method="get" uri="logout" controller="LoginController" use="logout" as="logout"/>
     </route-group>
+    <route method="get" uri="{slug}" controller="App\Portal\Controllers\PageController" use="page" as="portal.page"/>
 </routes>

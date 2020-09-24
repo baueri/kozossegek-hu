@@ -72,7 +72,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
      * Places an item to the end of collection or to a specific position
      * @param mixed $item
      * @param mixed $key
-     * @return void
+     * @return Collection
      */
     public function push($item, $key = null)
     {
@@ -403,6 +403,9 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     public function pluck($key)
     {
         return $this->map(function ($item) use($key) {
+            if (is_object($item)) {
+                return $item->{$key};
+            }
             return $item[$key];
         });
     }
@@ -421,7 +424,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
             $result[] = $func($item, $key);
         }
 
-        return new static($result);
+        return new self($result);
     }
 
     /**

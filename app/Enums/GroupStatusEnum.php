@@ -8,12 +8,15 @@
 
 namespace App\Enums;
 
+use Framework\Support\Enum;
+
 /**
  * Description of GroupStatus
  *
  * @author ivan
  */
-class GroupStatusEnum extends \Framework\Support\Enum {
+class GroupStatusEnum extends Enum
+{
     const PENDING = 'pending';
     const ACTIVE = 'active';
     const INACTIVE = 'inactive';

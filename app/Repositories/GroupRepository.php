@@ -2,58 +2,79 @@
 
 namespace App\Repositories;
 
-class GroupRepository extends \Framework\Repository
+use App\Models\Group;
+use Framework\Database\PaginatedResultSet;
+use Framework\Model\Model;
+use Framework\Model\ModelCollection;
+use Framework\Model\PaginatedModelCollection;
+use Framework\Repository;
+use Framework\Support\Collection;
+
+class GroupRepository extends Repository
 {
-    
-    public function all($page = 1, $perPage = 30)
+
+    public static function getModelClass(): string
     {
-        $result = $this->getBuilder()->paginate($page ?: 1, $perPage);
-        
-        return [
-            'total' => $result['total'],
-            'rows' => $this->getInstances($result['rows'])
-        ];
+        return Group::class;
     }
-    
-    public function search($keyword, \Framework\Support\Collection $filter, $page = 1, $perPage = 30)
+
+    public static function getTable(): string
+    {
+        return 'groups';
+    }
+
+    /**
+     * @param int $perPage
+     * @return PaginatedModelCollection
+     */
+    public function all($perPage = 30)
+    {
+        $result = $this->getBuilder()->paginate($perPage);
+
+        return $this->getInstances($result);
+    }
+
+    /**
+     * @param Collection|array $filter
+     * @param int $perPage
+     * @return PaginatedResultSet|Model[]|ModelCollection|PaginatedModelCollection
+     */
+    public function search($filter = [], $perPage = 30)
     {
         $builder = $this->getBuilder();
-        
-        if ($keyword) {
+
+        if ($keyword = $filter['search']) {
             $builder->where('name', 'like', "%$keyword%");
         }
-        
+
         if ($varos = $filter['varos']) {
             $builder->where('city', $varos);
         }
-        
-        
-        $result = $builder->paginate($page ?: 1, $perPage);
-        
-        return [
-            'total' => $result['total'],
-            'rows' => $this->getInstances($result['rows']),
-            'perpage' => $perPage
-        ];
+
+        if ($korosztaly = $filter['korosztaly']) {
+            $builder->where('age_group', $korosztaly);
+        }
+
+        if ($rendszeresseg = $filter['rendszeresseg']) {
+            $builder->where('occasion_frequency', $rendszeresseg);
+        }
+
+        $builder->orderBy($filter['order_by'] ?: 'name', $filter['order'] ?: 'asc');
+
+        $result = $builder->paginate($perPage);
+
+        return $this->getInstances($result);
     }
-    
+
     /**
      * @param string $slug
-     * @return \App\Models\Group
+     * @return Group
      */
     public function findBySlug($slug)
     {
         $id = substr($slug, strrchr($slug, '-'));
-        
+
         return $this->find($id);
-    }
-
-    public static function getModelClass(): string {
-        return \App\Models\Group::class;
-    }
-
-    public static function getTable(): string {
-        return 'groups';
     }
 
 }

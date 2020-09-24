@@ -35,15 +35,4 @@ class AppMigrationTable extends \Phinx\Db\Table
         
         return $this;
     }
-    
-    /**
-     * 
-     * @param type $columnName
-     * @param type $type
-     * @param type $options
-     * @return static
-     */
-    public function addColumn($columnName, $type = null, $options = array()): AppMigrationTable {
-        return parent::addColumn($columnName, $type, $options);
-    }
 }

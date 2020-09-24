@@ -3,8 +3,11 @@
 
 namespace Framework;
 
-use Framework\Database\Repository\ModelCollection;
+use Framework\Database\PaginatedResultSet;
+use Framework\Database\PaginatedResultSetInterface;
+use Framework\Model\ModelCollection;
 use Framework\Model\Model;
+use Framework\Model\PaginatedModelCollection;
 use Framework\Traits\Makeable;
 
 abstract class Repository
@@ -77,17 +80,21 @@ abstract class Repository
      */
     public function all()
     {
-        $rows = $this->getInstances($this->getBuilder()->get());
-
-        return $rows;
+        return $this->getInstances($this->getBuilder()->paginate(30));
     }
 
     /**
-     * @param array $rows
-     * @return ModelCollection|Model[]|mixed[]
+     * @param array|PaginatedResultSetInterface $rows
+     * @return ModelCollection|Model[]|PaginatedResultSet
      */
-    public function getInstances(array $rows)
+    public function getInstances($rows)
     {
+        if ($rows instanceof PaginatedResultSetInterface) {
+            return new PaginatedModelCollection(array_map(function($row){
+                return $this->getInstance($row);
+            }, $rows->rows()), $rows->perpage(), $rows->page(), $rows->total());
+        }
+
         return new ModelCollection(array_map(function ($row) {
             return $this->getInstance($row);
         }, $rows));

@@ -2,6 +2,9 @@
 
 namespace App\Repositories;
 
+use App\Models\Institute;
+use Framework\Support\Collection;
+
 /**
  * Description of InstituteRepository
  *
@@ -12,11 +15,19 @@ class InstituteRepository extends \Framework\Repository
     
     //put your code here
     public static function getModelClass(): string {
-        return \App\Models\Institute::class;
+        return Institute::class;
     }
 
     public static function getTable(): string {
         return 'institutes';
+    }
+
+    public function getInstitutesByIds($instituteIds)
+    {
+        if (empty($instituteIds)) {
+            return $this->getInstances([]);
+        }
+        return $this->getInstances($this->getBuilder()->whereIn('id', $instituteIds)->get());
     }
 
 }

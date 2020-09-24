@@ -1,3 +1,17 @@
-#content {
-
+* {
+    transition: none !important;
 }
+
+#sidebar {
+    height: 100vh;
+    position: fixed;
+}
+
+#content {
+    margin-left: 250px;
+}
+
+#sidebar .submenu > li > a {
+    padding: 8px 30px;
+}
+

@@ -38,7 +38,7 @@ class PDOMysqlDatabase implements Database
 
     private function getDsn()
     {
-        return 'mysql:host=' . $this->configuration->host . ';dbname=' . $this->configuration->database . ';charset=' . $this->configuration->charset;
+        return 'mysql:host=' . $this->configuration->host . ';dbname=' . $this->configuration->database . ';charset=' . $this->configuration->charset . ';port=' . $this->configuration->port;
     }
 
     /**

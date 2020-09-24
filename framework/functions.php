@@ -4,8 +4,10 @@ use Arrilot\DotEnv\DotEnv;
 use Framework\Application;
 use Framework\Database\Builder;
 use Framework\Database\Database;
-use Framework\Http\Auth\Auth;
+use Framework\Dispatcher\HttpDispatcher;
+use Framework\Http\Request;
 use Framework\Http\Response;
+use Framework\Http\Route\RouteInterface;
 use Framework\Http\Route\RouterInterface;
 use Framework\Http\View\ViewInterface;
 use Framework\Support\Collection;
@@ -19,6 +21,9 @@ function app()
     return Application::getInstance();
 }
 
+/**
+ * @return bool
+ */
 function is_cli()
 {
     return PHP_SAPI == 'cli';
@@ -30,7 +35,11 @@ function d(...$data)
         print "<pre style='white-space: pre-line'>";
     }
     foreach ($data as $toDump) {
-        print_r(is_bool($toDump) ? ($toDump ? 'true' : 'false') : $toDump);
+        if (is_bool($toDump)) {
+            print_r($toDump ? 'true' : 'false');
+        } else {
+            print_r($toDump);
+        }
         print("\n");
     }
     $bt = debug_backtrace()[0];
@@ -48,8 +57,8 @@ function dd(...$data)
 }
 
 /**
- * @param string $key
- * @param string $lang
+ * @param string|null $key
+ * @param null $lang
  * @return string|Translator
  */
 function lang($key = null, $lang = null)
@@ -104,11 +113,20 @@ function builder()
     return app()->make(Builder::class);
 }
 
+/**
+ * @param $route
+ * @param array $args
+ * @return string
+ */
 function route($route, array $args = [])
 {
     return app()->get(RouterInterface::class)->route($route, $args);
 }
 
+/**
+ * @param $route
+ * @param array $args
+ */
 function redirect($route, $args = [])
 {
     $uri = route($route, $args);
@@ -125,12 +143,35 @@ function collect($values)
     return Collection::create($values);
 }
 
+/**
+ * @param $key
+ * @param null $default
+ * @return mixed|null
+ */
 function _env($key, $default = null)
 {
     return DotEnv::get($key, $default);
 }
 
+/**
+ * @param string $view
+ * @param array $args
+ * @return string
+ */
 function view($view, array $args = [])
 {
     return app()->make(ViewInterface::class)->view($view, $args);
+}
+
+/**
+ * @return RouteInterface
+ */
+function current_route()
+{
+    return app()->make(HttpDispatcher::class)->getCurrentRoute();
+}
+
+function get_site_url()
+{
+    return $_SERVER['HTTP_HOST'];
 }

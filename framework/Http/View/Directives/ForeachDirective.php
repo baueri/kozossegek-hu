@@ -15,6 +15,7 @@ class ForeachDirective extends AtDirective
     }
 
     public function getReplacement(array $matches): string {
+
         if($matches[0] == '@endforeach') {
             return '<?php endforeach; ?>';
         }

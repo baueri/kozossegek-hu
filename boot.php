@@ -40,7 +40,8 @@ $application->singleton(Database::class, function (Application $app) {
         $settings['user'],
         $settings['password'],
         $settings['database'],
-        $settings['charset']
+        $settings['charset'],
+        $settings['port']
     );
     return $app->make(PDOMysqlDatabase::class, $databaseConfiguration);
 });

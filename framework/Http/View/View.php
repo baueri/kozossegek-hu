@@ -108,4 +108,13 @@ class View implements ViewInterface
     {
         return $this->section;
     }
+
+    /**
+     * @param $key
+     * @param $value
+     */
+    public static function addVariable($key, $value)
+    {
+        static::$envVariables[$key] = $value;
+    }
 }

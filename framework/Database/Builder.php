@@ -4,6 +4,9 @@
 namespace Framework\Database;
 
 
+use Cake\Datasource\Paginator;
+use Framework\Http\Request;
+
 class Builder
 {
     /**
@@ -122,18 +125,24 @@ class Builder
     public function limit($limit)
     {
         $this->limit = " limit $limit";
-        
+
         return $this;
     }
-    
-    public function paginate($page, $limit)
+
+    /**
+     * @param $limit
+     * @param $page
+     * @return PaginatedResultSet
+     */
+    public function paginate($limit, $page = null)
     {
-        $count = $this->count();
-        
-        return [
-            'total' => $count,
-            'rows' => $this->limit(($page-1) * $limit . ', ' . $limit)->get()
-        ];
+        $page = $page ?: app()->get(Request::class)['pg'] ?: 1;
+
+        $total = $this->count();
+
+        $rows = $this->limit(($page-1) * $limit . ', ' . $limit)->get();
+
+        return new PaginatedResultSet($rows, $limit, $page, $total);
     }
 
     public function orderBy($column, $order = null)

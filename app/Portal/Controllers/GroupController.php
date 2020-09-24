@@ -14,18 +14,17 @@ class GroupController extends \Framework\Http\Controller {
     public function kozossegek(Request $request, \App\Portal\Services\SearchGroupService $service,
             OccasionFrequencyRepository $occasionFrequencyRepository, AgeGroupRepository $ageGroupRepository)
     {
-        $page = $request['pg'] ?: 1;
         $filter = collect($request->all());
         
-        $groups = $service->search($filter, $page);
+        $groups = $service->search($filter);
         
         $model = [
             'groups' => $groups,
             'occasion_frequencies' => $occasionFrequencyRepository->all(),
             'age_groups' => $ageGroupRepository->all(),
-            'page' => $page,
-            'total' => $groups['total'],
-            'perpage' => $groups['perpage'],
+            'page' => $groups->page(),
+            'total' => $groups->total(),
+            'perpage' => $groups->perpage(),
             'filter' => $filter
         ];
         

@@ -8,66 +8,88 @@ namespace App\Models;
  * and open the template in the editor.
  */
 
+use Framework\Model\Model;
+use Framework\Model\TimeStamps;
+use Framework\Support\StringHelper;
+
 /**
  * Description of Group
  *
  * @author ivan
  */
-class Group extends \Framework\Model\Model
+class Group extends Model
 {
-    use \Framework\Model\TimeStamps;
-    
+    use TimeStamps;
+
     public $name;
-    
+
     public $description;
-    
+
     public $city;
-    
+
     public $denomination;
-    
+
     public $institute_id;
-    
+
     public $group_leaders;
-    
+
     public $group_leader_email;
-    
+
     public $group_leader_phone;
-    
+
     public $spiritual_movement;
-    
+
     public $age_group;
-    
+
     public $occasion_frequency;
-    
+
     public $status;
-    
-    
+
     /**
-     * @return AgeGroup
+     * @var Institute|null
      */
-    public function ageGroup()
+    public $institute;
+
+
+    /**
+     * @return string
+     */
+    public function ageGroup(): string
     {
         return lang('age_group.' . $this->age_group);
     }
-    
-    public function occasionFrequency()
+
+    /**
+     * @return string
+     */
+    public function occasionFrequency(): string
     {
         return lang('occasion_frequency.' . $this->occasion_frequency);
     }
-    
-    public function excerpt($words = 25)
+
+    /**
+     * @param int $words
+     * @return string
+     */
+    public function excerpt($words = 25): string
     {
-        return \Framework\Support\StringHelper::more($this->description, $words, '...');
+        return StringHelper::more($this->description, $words, '...');
     }
-    
-    public function url()
+
+    /**
+     * @return string
+     */
+    public function url(): string
     {
         return route('kozosseg', ['kozosseg' => $this->slug()]);
     }
-    
-    public function slug()
+
+    /**
+     * @return string
+     */
+    public function slug(): string
     {
-        return \Framework\Support\StringHelper::slugify($this->name . '-' . $this->id);
+        return StringHelper::slugify($this->name . '-' . $this->id);
     }
-    
+
 }

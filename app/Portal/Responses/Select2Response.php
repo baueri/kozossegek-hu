@@ -9,13 +9,13 @@ namespace App\Portal\Responses;
 abstract class Select2Response {
 
     /**
-     * @var \Framework\Database\Repository\ModelCollection
+     * @var \Framework\Model\ModelCollection
      */
     private $collection;
 
     private $withReset;
     
-    public function __construct(\Framework\Database\Repository\ModelCollection $collection) {
+    public function __construct(\Framework\Model\ModelCollection $collection) {
         $this->collection = $collection;
     }
     

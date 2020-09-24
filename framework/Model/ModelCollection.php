@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Framework\Database\Repository;
+namespace Framework\Model;
 
 
 use Framework\Support\Collection;
@@ -9,10 +9,11 @@ use Framework\Support\Collection;
 class ModelCollection extends Collection
 {
     /**
-     * 
-     * @param string $localAttribute
-     * @param string $remoteAttribute
-     * @param mixed  $relations
+     *
+     * @param mixed $relations
+     * @param $toLoad
+     * @param $on
+     * @param string $target
      * @return static
      */
     public function with($relations, $toLoad, $on, $target = 'id')
@@ -39,7 +40,7 @@ class ModelCollection extends Collection
                     return $relation;
                 }
             } elseif(is_object($relation) && $relation->{$target} == $onValue) {
-                return $relation->{$target};
+                return $relation;
             }
         }
         

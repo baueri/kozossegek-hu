@@ -2,6 +2,7 @@
 
 namespace Framework\Dispatcher;
 
+use Exception;
 use Framework\Application;
 use Framework\Http\HttpKernel;
 use Framework\Http\Request;
@@ -80,7 +81,12 @@ class HttpDispatcher implements Dispatcher
             echo $response;
         }
     }
-    
+
+    /**
+     * @param RouteInterface $route
+     * @return mixed|string
+     * @throws RouteNotFoundException
+     */
     private function resolveRoute(RouteInterface $route)
     {
         if ($route->getView()) {
@@ -90,6 +96,11 @@ class HttpDispatcher implements Dispatcher
         return $this->resolveController($route);
     }
 
+    /**
+     * @param RouteInterface $route
+     * @return mixed
+     * @throws RouteNotFoundException
+     */
     private function resolveController(RouteInterface $route)
     {
         $controller = $this->app->make($route->getController());
@@ -101,12 +112,17 @@ class HttpDispatcher implements Dispatcher
         return $this->app->resolve($controller, $route->getUse(), $this->request->getUriValues());
     }
 
+    /**
+     * @return string
+     */
     private function resolveView()
     {
-        $request = $this->request;
-        return $this->app->make(View::class)->view($request->route->getView(), $request->getUriValues());
+        return $this->app->make(View::class)->view($this->request->route->getView(), $this->request->getUriValues());
     }
 
+    /**
+     * @return RouteInterface|null
+     */
     public function getCurrentRoute()
     {
         return $this->router->find($this->request->requestMethod, $this->request->uri);
@@ -114,8 +130,8 @@ class HttpDispatcher implements Dispatcher
 
     /**
      *
-     * @param \Exception $e
-     * @throws \Exception
+     * @param Exception $e
+     * @throws Exception
      */
     public function handleError($e)
     {
@@ -126,7 +142,6 @@ class HttpDispatcher implements Dispatcher
             ]);
             throw $e;
         }
-        
 
         if (DEBUG) {
             echo "<pre style='white-space:pre-line'><h3>Váratlan hiba történt (" . get_class($e) . ")</h3>";

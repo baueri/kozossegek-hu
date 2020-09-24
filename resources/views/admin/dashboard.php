@@ -1,5 +1,3 @@
-@section('admin_title')Vezérlőpult@endsection
+@section('title')Vezérlőpult@endsection
 @extends('admin')
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus aliquet, mi eget eleifend scelerisque, diam odio sollicitudin ex, id eleifend dolor dui non ex. Praesent pulvinar aliquam magna. Cras et dapibus turpis. Nullam ultricies diam purus, id aliquam ante dictum ut. Proin dapibus elementum eros, et volutpat dui pellentesque sed. Praesent ac sodales est. Proin pulvinar aliquet rutrum. Duis rutrum ultrices rhoncus. Nam nec dui dictum, pharetra felis eu, laoreet sapien. Praesent dapibus ex quam, nec ullamcorper mauris fermentum ac. Vivamus faucibus laoreet elit nec euismod. Aenean aliquet eget sem non commodo.</p>
-
-<p>Nunc faucibus felis volutpat, faucibus lacus et, elementum diam. Quisque eu lectus ut odio euismod placerat vel at lectus. Integer malesuada risus sit amet luctus volutpat. Maecenas scelerisque eros id condimentum varius. Aenean pellentesque semper tortor, et luctus urna mollis in. Mauris consequat pellentesque justo viverra convallis. Phasellus mollis tortor justo, ac mattis nisl semper vel. Mauris sed dictum massa. Sed et egestas erat. Maecenas a aliquet elit, ut tempor neque. Nam vel venenatis odio.</p>
+Hát... ide lehetne sok szépet írni, de nem tudom, mi kerüljön ide.

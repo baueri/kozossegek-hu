@@ -5,6 +5,7 @@ namespace Framework\Middleware;
 
 
 use Framework\Application;
+use Framework\Auth\BaseAuth;
 
 class BaseAuthMiddleware implements Middleware
 {
@@ -12,33 +13,28 @@ class BaseAuthMiddleware implements Middleware
      * @var Application
      */
     private $app;
+    /**
+     * @var BaseAuth
+     */
+    private $auth;
 
     /**
      * BaseAuthMiddleware constructor.
      * @param Application $app
+     * @param BaseAuth $auth
      */
-    public function __construct(Application $app)
+    public function __construct(Application $app, BaseAuth $auth)
     {
         $this->app = $app;
+        $this->auth = $auth;
     }
 
     public function handle()
     {
-        if (!$this->app->config('app.base_auth')) {
+        if (!app()->config('app.base_auth')) {
             return true;
         }
 
-        $user = $_SERVER['PHP_AUTH_USER'];
-        $pass = $_SERVER['PHP_AUTH_PW'];
-
-        $validated = $user == $this->app->config('app.base_auth.user') && $pass === $this->app->config('app.base_auth.password');
-
-        if (!$validated) {
-            header('WWW-Authenticate: Basic realm="kozossegek.hu Basic Authentication"');
-            header('HTTP/1.0 401 Unauthorized');
-            die ("Not authorized");
-        }
-
-        return true;
+        $this->auth->authenticate('kozossegek.hu Basic Authentication', app()->config('app.base_auth.user'), app()->config('app.base_auth.password'));
     }
 }
