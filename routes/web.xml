@@ -2,7 +2,7 @@
 <routes>
     <route-group namespace="App\Portal\Controllers\">
         <route method="get" uri="" as="home" controller="HomeController" use="home"/>
-        <route method="get" uri="kozossegek" as="kozossegek" controller="GroupController" use="kozossegek"/>
+        <route method="get" uri="kozossegek" as="portal.groups" controller="GroupController" use="kozossegek"/>
         <route method="get" uri="kozosseg/{kozosseg}" as="kozosseg" controller="GroupController" use="kozosseg"/>
     </route-group>
     <route-group namespace="App\Admin" prefix="admin" as="admin" middleware="App\Middleware\AdminMiddleware">

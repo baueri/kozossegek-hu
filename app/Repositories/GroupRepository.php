@@ -6,6 +6,7 @@ use App\Models\Group;
 use Framework\Database\PaginatedResultSet;
 use Framework\Model\Model;
 use Framework\Model\ModelCollection;
+use Framework\Model\ModelNotFoundException;
 use Framework\Model\PaginatedModelCollection;
 use Framework\Repository;
 use Framework\Support\Collection;
@@ -72,9 +73,15 @@ class GroupRepository extends Repository
      */
     public function findBySlug($slug)
     {
-        $id = substr($slug, strrchr($slug, '-'));
+        $id = substr($slug, strrpos($slug, '-')+1);
 
-        return $this->find($id);
+        $group = $this->find($id);
+
+        if (!$group) {
+            throw new ModelNotFoundException('', 404);
+        }
+
+        return $group;
     }
 
 }

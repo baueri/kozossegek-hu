@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>kozossegek.hu</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/bootstrap-margins-paddings.css">
+<!--    <link rel="stylesheet" href="/css/bootstrap-margins-paddings.css">-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
     <link rel="stylesheet" href="/css/style.css">
 
@@ -24,23 +24,25 @@
 </head>
 <body>
     <nav class="navbar navbar-expand-sm bg-light navbar-light sticky-top">
+        <input type="checkbox" style="display: none" id="toggle_main_menu" name="toggle_main_menu">
         <div class="container">
             <a href="/" class="navbar-brand">
                 <img src="/images/logo_xs.png">
             </a>
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a href="/kozossegek" class="nav-link"><span>Közösséget keresek</span></a>
+                    <a href="{{ route('portal.groups') }}" class="nav-link"><span>Közösséget keresek</span></a>
                 </li>
                 <li class="nav-item">
-                    <a href="oldalak/rolunk.html" class="nav-link"><span>Rólunk</span></a>
+                    <a href="{{ route('portal.page', ['slug' => 'rolunk']) }}" class="nav-link"><span>Rólunk</span></a>
                 </li>
                 <li class="nav-item">
-                    <a href="a-kozossegekrol" class="nav-link">Közösség? Minek?</a>
+                    <a href="{{ route('portal.page', ['slug' => 'a-kozossegekrol']) }}" class="nav-link">Közösség? Minek?</a>
                 </li>
             </ul>
-
         </div>
+
+        <label class="mobile-menu-toggle float-right mr-3" for="toggle_main_menu"><i class="fa fa-bars"></i></label>
     </nav>
     @yield('portal')
     <footer id="footer" class="text-white">

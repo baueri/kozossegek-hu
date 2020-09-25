@@ -11,6 +11,8 @@ use Framework\Http\Route\RouteInterface;
 use Framework\Http\Route\RouteNotFoundException;
 use Framework\Http\Route\RouterInterface;
 use Framework\Http\View\View;
+use Framework\Model\ModelNotFoundException;
+use Framework\Support\StringHelper;
 
 class HttpDispatcher implements Dispatcher
 {
@@ -62,6 +64,7 @@ class HttpDispatcher implements Dispatcher
 
         $this->request->route = $route;
 
+        header('Accept-Encoding: gzip, deflate');
 
         $middleware = array_unique(array_merge($this->kernel->getMiddleware(), $route->getMiddleware()));
 
@@ -78,7 +81,7 @@ class HttpDispatcher implements Dispatcher
                 echo json_encode(is_object($response) && method_exists($response, 'valuesToArray') ? $response->valuesToArray() : $response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
             }
         } else {
-            echo $response;
+            echo $this->app->config('app.sanitize') ? StringHelper::sanitize($response) : $response;
         }
     }
 
@@ -135,21 +138,28 @@ class HttpDispatcher implements Dispatcher
      */
     public function handleError($e)
     {
+        http_response_code($e->getCode());
+
         if (Response::contentTypeIsJson()) {
             print json_encode([
                 'success' => false,
-                'server_error' => 'internal_server_error'
+                'error_code' => $e->getCode()
             ]);
             throw $e;
         }
 
-        if (DEBUG) {
+        if ($this->app->config('app.debug')) {
             echo "<pre style='white-space:pre-line'><h3>Váratlan hiba történt (" . get_class($e) . ")</h3>";
             echo $e->getMessage() . "\n\n";
             echo $e->getTraceAsString();
             echo "</pre>";
+            exit;
         }
 
-        throw $e;
+        try {
+            throw $e;
+        } catch (ModelNotFoundException|RouteNotFoundException $e) {
+            return print(view('portal.error', ['code' => $e->getCode(), 'message' => 'A keresett oldal nem található']));
+        }
     }
 }

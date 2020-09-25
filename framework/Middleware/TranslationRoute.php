@@ -32,6 +32,6 @@ class TranslationRoute implements Middleware
 
     public function handle()
     {
-        $this->router->addGlobalArg('lang', getLang());
+//        $this->router->addGlobalArg('lang', getLang());
     }
 }

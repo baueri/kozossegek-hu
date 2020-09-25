@@ -1,7 +1,16 @@
 $(() => {
-    $.fn.select2.defaults.set( "theme", "bootstrap" );
 
-    $('#main-finder select').select2();
+    $(".img-big").on("load", function () {
+        $(this).css("opacity", "1");
+    });
+
+    $(".kozi-kiskepek img").click(function () {
+        $(".img-big").css("opacity", "0");
+        var img = $(this);
+        setTimeout(function(){
+            $(".img-big").attr("src", img.attr("src"));
+        }, 200);
+    });
 
 });
 
@@ -22,7 +31,7 @@ function readURL(input) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
 
-        reader.onload = function(e) {
+        reader.onload = function (e) {
             $('#blah')
                 .attr('src', e.target.result)
                 .width(150)

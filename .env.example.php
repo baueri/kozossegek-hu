@@ -7,4 +7,5 @@ return [
     'DB_USER' => 'user',
     'DB_PASSWORD' => 'password',
     'DB_NAME' => 'kozossegek',
+    'SANITIZE_OUTPUT' => true
 ];
