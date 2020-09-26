@@ -25,5 +25,7 @@
         <route method="get" uri="groups" controller="GroupController" use="list" as="groups"/>
         <route method="get" uri="logout" controller="LoginController" use="logout" as="logout"/>
     </route-group>
+	
+	<route method="get" uri="teszt" controller="App\Portal\Controllers\TesztController" use="teszt"/>
     <route method="get" uri="{slug}" controller="App\Portal\Controllers\PageController" use="page" as="portal.page"/>
 </routes>
