@@ -24,6 +24,6 @@ class AdminMiddleware implements Middleware
 
     public function handle()
     {
-        $this->auth->authenticate('admin', 'admin', 'jelszo');
+        //$this->auth->authenticate('admin', 'admin', 'jelszo');
     }
 }
