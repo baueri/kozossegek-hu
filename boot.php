@@ -18,7 +18,6 @@ define('ROOT', __DIR__ . DS);
 define('APP', ROOT . 'app' . DS);
 define('RESOURCES', ROOT . 'resources' . DS);
 define('CACHE', ROOT . 'cache' . DS);
-define('DEBUG', true);
 define('LANG', 'hu');
 
 include 'vendor/autoload.php';
@@ -44,4 +43,8 @@ $application->singleton(Database::class, function (Application $app) {
         $settings['port']
     );
     return $app->make(PDOMysqlDatabase::class, $databaseConfiguration);
+});
+
+$application->bind(Model::class, function(Request $request, $entity) {
+    dd($entity);
 });

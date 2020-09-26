@@ -1,8 +1,6 @@
 @section('header')
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+    @include('asset_groups.select2')
 @endsection
 @extends('portal')
 <div class="container inner">
@@ -14,18 +12,19 @@
     <form method="get" id="finder">
         <div class="input-group">
             <select name="varos" style="width:200px" class="form-control">
-                <option value="{{ $filter['varos'] }}">{{ $filter['varos'] ?: '-- város --' }}</option>
+                <option value="{{ $filter['varos'] }}">{{ $filter['varos'] }}</option>
             </select>
-            <input type="text" name="search" value="{{ $filter['search'] }}" class="form-control" placeholder="Keresés...">
+            <input type="text" name="search" value="{{ $filter['search'] }}" class="form-control" placeholder="keresés...">
             <select class="form-control" id="korosztaly" name="korosztaly">
+                <option></option>
                 @foreach($age_groups as $age_group)
-                    <option value="{{ $age_group->name }}" {{ $age_group->name == $age_group ? 'selected' : '' }}>{{ $age_group }}</option>
+                    <option value="{{ $age_group->name }}" {{ $age_group->name == $filter['korosztaly'] ? 'selected' : '' }}>{{ $age_group }}</option>
                 @endforeach
             </select>
             <select class="form-control" id="rendszeresseg" name="rendszeresseg">
                 <option></option>
                 @foreach($occasion_frequencies as $occasion_frequency)
-                    <option value="{{ $occasion_frequency->name }}" {{ $occasion_frequency->name==$occasion_frequency ? 'selected' : '' }}>{{ $occasion_frequency }}</option>
+                    <option value="{{ $occasion_frequency->name }}" {{ $occasion_frequency->name == $filter['rendszeresseg'] ? 'selected' : '' }}>{{ $occasion_frequency }}</option>
                 @endforeach
             </select>
             <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
@@ -61,24 +60,26 @@
     @include('partials.simple-pager')
 </div>
 <script>
-    $(() => {
+    $(()=>{
         $("[name=varos]").select2({
             placeholder: "város",
             allowClear: true,
             ajax: {
-              url: '/api/v1/search-city',
-              dataType: 'json',
-              delay: 300
-              // Additional AJAX parameters go here; see the end of this chapter for the full code of this example
+                url: '/api/v1/search-city',
+                dataType: 'json',
+                delay: 300
+                // Additional AJAX parameters go here; see the end of this chapter for the full code of this example
             }
         });
         $("[name=korosztaly]").select2({
             placeholder: "korosztály",
             allowClear: true,
         });
+
         $("[name=rendszeresseg]").select2({
             placeholder: "rendszeresség",
             allowClear: true,
         });
+
     });
 </script>

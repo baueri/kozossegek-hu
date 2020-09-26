@@ -69,7 +69,7 @@ class View implements ViewInterface
             $dirPath = APP . $dirPath . DS . 'Views' . DS;
 
         } else {
-            $dirPath = app()->config('app.views_dir', RESOURCES . 'views' . DS);
+            $dirPath = config('app.views_dir', RESOURCES . 'views' . DS);
         }
 
         return $dirPath . $viewPath . '.php';

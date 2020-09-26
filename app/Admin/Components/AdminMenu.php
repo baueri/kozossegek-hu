@@ -17,7 +17,7 @@ class AdminMenu
         $currentRoute = current_route();
         return array_map(function ($item) use ($currentRoute) {
             return static::parseMenuItem($item, $currentRoute);
-        }, static::getMenuItems());
+        }, config('admin_menu'));
     }
 
     private static function parseMenuItem(array $menuItem, RouteInterface $currentRoute)
@@ -41,54 +41,4 @@ class AdminMenu
         }));
     }
 
-    /**
-     * @return string[][]
-     */
-    private static function getMenuItems()
-    {
-        return [
-            [
-                'title' => 'Vezérlőpult',
-                'icon' => 'home',
-                'as' => 'admin.dashboard'
-            ],
-            [
-                'title' => 'Oldalak',
-                'icon' => 'file',
-                'as' => 'admin.page.list'
-            ],
-            [
-                'title' => 'Közösségek',
-                'icon' => 'church',
-                'as' => 'admin.group.list',
-                'submenu' => [
-                    [
-                        'title' => 'Közösségek',
-                        'icon' => 'stream',
-                        'as' => 'admin.group.list',
-                    ],[
-                        'title' => 'Új közösség',
-                        'icon' => 'plus',
-                        'as' => 'admin.group.create',
-                    ],
-                ]
-            ],
-            [
-                'title' => 'Felhasználók',
-                'icon' => 'users',
-                'as' => 'admin.users'
-            ],
-            [
-                'title' => 'Gépház',
-                'icon' => 'cog',
-                'as' => 'admin.settings'
-            ],
-            [
-                'title' => 'Kilépés',
-                'link_class' => 'text-danger',
-                'icon' => 'sign-out-alt',
-                'as' => 'admin.logout'
-            ],
-        ];
-    }
 }

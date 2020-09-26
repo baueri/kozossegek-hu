@@ -15,6 +15,11 @@ class PageRepository extends Repository
 
         return $this->getInstance($row);
     }
+    
+    public function getPages()
+    {
+        return $this->getInstances($this->getBuilder()->paginate(30));
+    }
 
     public static function getModelClass(): string
     {

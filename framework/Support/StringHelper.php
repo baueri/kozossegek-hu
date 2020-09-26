@@ -7,29 +7,30 @@ namespace Framework\Support;
  *
  * @author ivan
  */
-class StringHelper {
-    
+class StringHelper
+{
+
     public static function more($text, $numberOfWords, $moreText = '')
     {
         if (str_word_count($text, 0) > $numberOfWords) {
             $words = str_word_count($text, 2);
-            $pos   = array_keys($words);
-            $text  = trim(substr($text, 0, $pos[$numberOfWords]), ' ') . $moreText;
+            $pos = array_keys($words);
+            $text = trim(substr($text, 0, $pos[$numberOfWords]), ' ') . $moreText;
         }
-        
+
         return $text;
     }
-    
+
     public static function camel($text)
     {
         return lcfirst(str_replace(' ', '', ucwords(preg_replace('/[^a-zA-Z0-9\x7f-\xff]++/', ' ', $text))));
     }
-    
+
     public static function snake($text, $delimiter = '_')
     {
         return strtolower(preg_replace(['/([A-Z]+)([A-Z][a-z])/', '/([a-z\d])([A-Z])/'], '\1' . $delimiter . '\2', ucfirst($text)));
     }
-    
+
     public static function slugify($text)
     {
         // replace non letter or digits by -
@@ -51,9 +52,23 @@ class StringHelper {
         $text = strtolower($text);
 
         if (empty($text)) {
-          return 'n-a';
+            return 'n-a';
         }
 
         return $text;
+    }
+
+    public static function sanitize($buffer)
+    {
+        $search = [
+            '/\>[^\S ]+/s',     // strip whitespaces after tags, except space
+            '/[^\S ]+\</s',     // strip whitespaces before tags, except space
+            '/(\s)+/s',         // shorten multiple whitespace sequences
+            '/<!--(.|\s)*?-->/' // Remove HTML comments
+        ];
+
+        $replace = ['>','<','\\1',''];
+
+        return preg_replace($search, $replace, $buffer);
     }
 }

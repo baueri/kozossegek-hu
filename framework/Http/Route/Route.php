@@ -115,9 +115,19 @@ class Route implements RouteInterface
         $uri = $this->uriMask;
 
         foreach ($args as $key => $arg) {
-            $uri = str_replace('{' . $key . '}', $arg, $uri);
+            if (strpos($uri, '{' . $key . '}') !== false) {
+                $uri = str_replace('{' . $key . '}', $arg, $uri);
+                unset($args[$key]);
+            }
         }
-        return '/' . trim(preg_replace('/({\?[a-zA-Z\-\_]+})/', '', $uri), '/');
+
+        $uri = '/' . trim(preg_replace('/({\?[a-zA-Z\-\_]+})/', '', $uri), '/');
+
+        if (!empty($args)) {
+            $uri .= '?' . http_build_query($args);
+        }
+
+        return $uri;
     }
 
     /**

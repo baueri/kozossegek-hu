@@ -171,7 +171,21 @@ function current_route()
     return app()->make(HttpDispatcher::class)->getCurrentRoute();
 }
 
+/**
+ * @return string
+ */
 function get_site_url()
 {
     return $_SERVER['HTTP_HOST'];
+}
+
+/**
+ * 
+ * @param mixed $key
+ * @param mixed $default
+ * @return mixed
+ */
+function config($key, $default = null)
+{
+    return app()->config($key, $default);
 }
