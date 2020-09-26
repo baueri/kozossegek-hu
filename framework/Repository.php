@@ -80,7 +80,7 @@ abstract class Repository
      */
     public function all()
     {
-        return $this->getInstances($this->getBuilder()->paginate(30));
+        return $this->getInstances($this->getBuilder()->all());
     }
 
     /**

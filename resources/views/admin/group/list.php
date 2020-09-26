@@ -1,4 +1,5 @@
 @section('title')Közösségek@endsection
+@section('header')@include('asset_groups.select2')@endsection
 @extends('admin')
 
 <form method="get" id="finder">
@@ -8,14 +9,15 @@
         </select>
         <input type="text" name="search" value="{{ $filter['search'] }}" class="form-control" placeholder="Keresés...">
         <select class="form-control" id="korosztaly" name="korosztaly">
+            <option></option>
             @foreach($age_groups as $age_group)
-            <option value="{{ $age_group->name }}" {{ $age_group->name == $age_group ? 'selected' : '' }}>{{ $age_group }}</option>
+                <option value="{{ $age_group->name }}" {{ $age_group->name == $filter['korosztaly'] ? 'selected' : '' }}>{{ $age_group }}</option>
             @endforeach
         </select>
         <select class="form-control" id="rendszeresseg" name="rendszeresseg">
             <option></option>
             @foreach($occasion_frequencies as $occasion_frequency)
-            <option value="{{ $occasion_frequency->name }}" {{ $occasion_frequency->name==$occasion_frequency ? 'selected' : '' }}>{{ $occasion_frequency }}</option>
+                <option value="{{ $occasion_frequency->name }}" {{ $occasion_frequency->name == $filter['rendszeresseg'] ? 'selected' : '' }}>{{ $occasion_frequency }}</option>
             @endforeach
         </select>
         <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
@@ -36,7 +38,6 @@
                 url: '/api/v1/search-city',
                 dataType: 'json',
                 delay: 300
-                // Additional AJAX parameters go here; see the end of this chapter for the full code of this example
             }
         });
         $("[name=korosztaly]").select2({

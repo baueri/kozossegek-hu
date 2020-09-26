@@ -12,6 +12,11 @@ use Framework\Support\Collection;
  */
 class InstituteRepository extends \Framework\Repository
 {
+    public function getInstitutes()
+    {
+        return $this->getInstances($this->getBuilder()->paginate(30));
+    }
+    
     
     //put your code here
     public static function getModelClass(): string {

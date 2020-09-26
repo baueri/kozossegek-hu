@@ -81,7 +81,7 @@ class HttpDispatcher implements Dispatcher
                 echo json_encode(is_object($response) && method_exists($response, 'valuesToArray') ? $response->valuesToArray() : $response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
             }
         } else {
-            echo $this->app->config('app.sanitize') ? StringHelper::sanitize($response) : $response;
+            echo config('app.sanitize') ? StringHelper::sanitize($response) : $response;
         }
     }
 
@@ -148,7 +148,7 @@ class HttpDispatcher implements Dispatcher
             throw $e;
         }
 
-        if ($this->app->config('app.debug')) {
+        if (config('app.debug')) {
             echo "<pre style='white-space:pre-line'><h3>Váratlan hiba történt (" . get_class($e) . ")</h3>";
             echo $e->getMessage() . "\n\n";
             echo $e->getTraceAsString();

@@ -48,6 +48,6 @@ class ViewCache
     {
         $cacheFilePath = $this->getCacheFilename($fileName);
 
-        return app()->config('app.docache') || !file_exists($cacheFilePath) || filemtime($fileName) > filemtime($cacheFilePath);
+        return config('app.docache') || !file_exists($cacheFilePath) || filemtime($fileName) > filemtime($cacheFilePath);
     }
 }

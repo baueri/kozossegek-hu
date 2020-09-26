@@ -12,17 +12,19 @@
     <form method="get" id="finder">
         <div class="input-group">
             <select name="varos" style="width:200px" class="form-control">
+                <option value="{{ $filter['varos'] }}">{{ $filter['varos'] }}</option>
             </select>
             <input type="text" name="search" value="{{ $filter['search'] }}" class="form-control" placeholder="keresés...">
             <select class="form-control" id="korosztaly" name="korosztaly">
+                <option></option>
                 @foreach($age_groups as $age_group)
-                    <option value="{{ $age_group->name }}" {{ $age_group->name == $age_group ? 'selected' : '' }}>{{ $age_group }}</option>
+                    <option value="{{ $age_group->name }}" {{ $age_group->name == $filter['korosztaly'] ? 'selected' : '' }}>{{ $age_group }}</option>
                 @endforeach
             </select>
             <select class="form-control" id="rendszeresseg" name="rendszeresseg">
                 <option></option>
                 @foreach($occasion_frequencies as $occasion_frequency)
-                    <option value="{{ $occasion_frequency->name }}" {{ $occasion_frequency->name==$occasion_frequency ? 'selected' : '' }}>{{ $occasion_frequency }}</option>
+                    <option value="{{ $occasion_frequency->name }}" {{ $occasion_frequency->name == $filter['rendszeresseg'] ? 'selected' : '' }}>{{ $occasion_frequency }}</option>
                 @endforeach
             </select>
             <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>

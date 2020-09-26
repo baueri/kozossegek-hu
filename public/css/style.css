@@ -272,7 +272,7 @@ input[name=search]::placeholder {
     font-size: 14px;
 }
 
-#finder {
+#main-finder #finder {
     margin: auto;
     width: 100%;
     max-width: 800px;

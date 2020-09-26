@@ -6,14 +6,49 @@
         <route method="get" uri="kozosseg/{kozosseg}" as="kozosseg" controller="GroupController" use="kozosseg"/>
     </route-group>
     <route-group namespace="App\Admin" prefix="admin" as="admin" middleware="App\Middleware\AdminMiddleware">
-        <route-group namespace="Page" prefix="page" as="page">
-            <route method="get" uri="list" controller="PageController" use="list" as="list"/>
+        <!-- ADMIN  -->
+        <!-- ************************************** -->
+        
+        <!-- OLDALAK -->
+        <route-group namespace="Page" prefix="page" controller="PageController" as="page">
+            <route method="get" uri="list" use="list" as="list"/>
+            
+            <route method="get" uri="create" use="create" as="create"/>
+            <route method="post" uri="create" use="doCreate" as="do_create"/>
+            
+            <route method="get" uri="{id}/edit" use="edit" as="edit"/>
+            <route method="post" uri="{id}/update" use="doupdate" as="do_update"/>
+            <route method="get" uri="{id}/delete" use="delete" as="delete"/>
         </route-group>
+        
+        
+        <!-- KÖZÖSSÉGEK -->
         <route-group namespace="Group" prefix="group" as="group">
             <route method="get" uri="list" controller="GroupController" use="list" as="list"/>
-            <route method="get" uri="{id}/delete" controller="GroupController" use="delete" as="delete"/>
+            
             <route method="get" uri="create" controller="GroupController" use="create" as="create"/>
+            <route method="post" uri="create" controller="GroupController" use="doCreate" as="do_create"/>
+            
+            <route method="get" uri="{id}/edit" controller="GroupController" use="edit" as="edit"/>
+            <route method="post" uri="{id}/update" controller="GroupController" use="doupdate" as="do_update"/>
+            <route method="get" uri="{id}/delete" controller="GroupController" use="delete" as="delete"/>
         </route-group>
+        
+                
+        
+        <!-- Intézmények -->
+        <route-group namespace="Institute" prefix="institute" as="institute">
+            <route method="get" uri="list" controller="InstituteController" use="list" as="list"/>
+            
+            <route method="get" uri="create" controller="InstituteController" use="create" as="create"/>
+            <route method="post" uri="create" controller="InstituteController" use="doCreate" as="do_create"/>
+            
+            <route method="get" uri="{id}/edit" controller="InstituteController" use="edit" as="edit"/>
+            <route method="post" uri="{id}/update" controller="InstituteController" use="doupdate" as="do_update"/>
+            <route method="get" uri="{id}/delete" controller="InstituteController" use="delete" as="delete"/>
+        </route-group>
+        
+        <!-- FELHASZNÁLÓK -->
         <route-group>
             <route method="get" uri="users" namespace="User" controller="UserController" use="list" as="users"/>
         </route-group>

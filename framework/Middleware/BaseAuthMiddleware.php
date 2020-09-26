@@ -31,10 +31,10 @@ class BaseAuthMiddleware implements Middleware
 
     public function handle()
     {
-        if (!app()->config('app.base_auth')) {
+        if (!config('app.base_auth')) {
             return true;
         }
 
-        $this->auth->authenticate('kozossegek.hu Basic Authentication', app()->config('app.base_auth.user'), app()->config('app.base_auth.password'));
+        $this->auth->authenticate('kozossegek.hu Basic Authentication', config('app.base_auth.user'), config('app.base_auth.password'));
     }
 }
