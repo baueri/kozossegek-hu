@@ -7,7 +7,6 @@ namespace App\Admin\Page;
 use App\Admin\Components\AdminTable;
 use App\Models\PageStatus;
 use App\Repositories\PageRepository;
-use Framework\Database\PaginatedResultSet;
 use Framework\Database\PaginatedResultSetInterface;
 use Framework\Http\Request;
 use Framework\Http\View\ViewInterface;
@@ -51,6 +50,6 @@ class PageTable extends AdminTable
 
     protected function getData(): PaginatedResultSetInterface
     {
-        return $this->repository->all();
+        return $this->repository->getPages();
     }
 }
