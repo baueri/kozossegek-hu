@@ -39,8 +39,8 @@ class PageTable extends AdminTable
 
     public function getSlug($slug)
     {
-        $url = get_site_url() . '/' . $slug;
-        return "<a href='http://$url' target='_blank'>http://$url</a>";
+        $url = route('portal.page', compact('slug')) ;
+        return "<a href='$url' target='_blank'>http://$url</a>";
     }
 
     public function getStatus($status)
@@ -51,6 +51,8 @@ class PageTable extends AdminTable
     public function getTitle($title, \App\Models\Page $page)
     {
         
+        $url = route('admin.page.edit', ['id' => $page->id]) ;
+        return "<a href='$url'>$title</a>";
     }
 
     protected function getData(): PaginatedResultSetInterface

@@ -24,9 +24,11 @@ class PageController extends AdminController
         redirect('admin.page.list');
     }
     
-    public function edit()
+    public function edit(Request $request, \App\Repositories\PageRepository $repository)
     {
-        return 'Oldal szerkesztése form';
+        $page = $repository->find($request->getUriValue('id'));
+        $action = 'udate';
+        return $this->view('admin.page.edit', compact('page', 'action'));
     }
     
     public function update()

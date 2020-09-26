@@ -44,3 +44,7 @@ $application->singleton(Database::class, function (Application $app) {
     );
     return $app->make(PDOMysqlDatabase::class, $databaseConfiguration);
 });
+
+$application->bind(Model::class, function(Request $request, $entity) {
+    dd($entity);
+});
