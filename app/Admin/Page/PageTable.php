@@ -47,6 +47,11 @@ class PageTable extends AdminTable
     {
         return (new PageStatus($status))->translate();
     }
+    
+    public function getTitle($title, \App\Models\Page $page)
+    {
+        
+    }
 
     protected function getData(): PaginatedResultSetInterface
     {
