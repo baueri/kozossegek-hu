@@ -8,6 +8,8 @@ use Framework\Model\Model;
 
 class Page extends Model
 {
+    use \Framework\Model\TimeStamps;
+    
     public $id;
 
     public $title;

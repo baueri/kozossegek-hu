@@ -23,7 +23,8 @@ class PageTable extends AdminTable
         'title' => 'Oldal címe',
         'slug' => 'url',
         'user_id' => 'Szerző',
-        'status' => 'Állapot'
+        'status' => 'Állapot',
+        'delete' => '<i class="fa fa-trash"></i>'
     ];
 
     /**
@@ -31,7 +32,7 @@ class PageTable extends AdminTable
      * @param ViewInterface $view
      * @param PageRepository $repository
      */
-    public function __construct(ViewInterface $view, Request $request, PageRepository $repository)
+    public function __construct(ViewInterface $view, Request $request, AdminPageRepository $repository)
     {
         parent::__construct($view, $request);
         $this->repository = $repository;
@@ -40,7 +41,7 @@ class PageTable extends AdminTable
     public function getSlug($slug)
     {
         $url = route('portal.page', compact('slug')) ;
-        return "<a href='$url' target='_blank'>http://$url</a>";
+        return "<a href='$url' target='_blank'>$url</a>";
     }
 
     public function getStatus($status)
@@ -50,9 +51,16 @@ class PageTable extends AdminTable
     
     public function getTitle($title, \App\Models\Page $page)
     {
-        
         $url = route('admin.page.edit', ['id' => $page->id]) ;
         return "<a href='$url'>$title</a>";
+    }
+    
+    public function getDelete(...$params)
+    {
+        [,$page] = $params;
+        
+        $url = route('admin.page.delete', ['id' => $page->id]) ;
+        return "<a href='$url'><i class='fa fa-trash text-danger'></i></a>";
     }
 
     protected function getData(): PaginatedResultSetInterface

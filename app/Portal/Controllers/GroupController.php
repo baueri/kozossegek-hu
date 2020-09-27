@@ -43,7 +43,7 @@ class GroupController extends Controller {
             $backUrl = $_SERVER['HTTP_REFERER'];
         }
 
-        $slug = $request->getUriValue('kozosseg');
+        $slug = $request['kozosseg'];
         $group = $repo->findBySlug($slug);
 
         $institute = $instituteRepo->find($group->institute_id);

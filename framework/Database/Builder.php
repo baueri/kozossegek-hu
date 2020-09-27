@@ -4,7 +4,6 @@
 namespace Framework\Database;
 
 
-use Cake\Datasource\Paginator;
 use Framework\Http\Request;
 
 class Builder
@@ -95,9 +94,11 @@ class Builder
                     $in = implode(',', array_fill(0, count($value), '?'));
                     $query .= sprintf("$column $operator (%s)", $in);
                     $bindings = array_merge($bindings, $value);
-                } else {
+                } elseif($operator) {
                     $query .= sprintf('%s %s ?', $column, $operator);
                     $bindings[] = $value;
+                } else {
+                    $query .= $column;
                 }
 
                 if (isset($this->where[$i + 1])) {
@@ -177,9 +178,9 @@ class Builder
         return $this;
     }
 
-    public function where($column, $operator, $value = null, $clause = 'and')
+    public function where($column, $operator = null, $value = null, $clause = 'and')
     {
-        if (is_null($value)) {
+        if (is_null($value) && $operator) {
             $value = $operator;
             $operator = '=';
         }
@@ -245,6 +246,16 @@ class Builder
         $bindings = array_merge(array_values($allColumns), array_values($values));
 
         return $this->db->insert($query, $bindings);
+    }
+    
+    public function delete()
+    {
+
+        [$query, $bindings] = $this->build();
+
+        $base = sprintf('delete from %s', implode(', ', $this->table));
+        
+        return $this->db->delete($base . $query, $bindings);
     }
 
     public function exists()

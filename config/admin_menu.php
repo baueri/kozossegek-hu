@@ -15,6 +15,7 @@ return [
                 'title' => 'Oldalak',
                 'icon' => 'stream',
                 'as' => 'admin.page.list',
+                'similars' => ['admin.page.edit']
             ], [
                 'title' => 'Új oldal',
                 'icon' => 'plus',

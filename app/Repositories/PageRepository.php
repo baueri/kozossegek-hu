@@ -9,16 +9,22 @@ use Framework\Repository;
 
 class PageRepository extends Repository
 {
-    public function findBySlug($slug):Page
+    protected static $dbColumns = [
+        'id', 'title', 'content', 'user_id'
+    ];
+    
+    public function findBySlug($slug):?Page
     {
         $row = $this->getBuilder()->where('slug', $slug)->first();
 
         return $this->getInstance($row);
     }
     
-    public function getPages()
+    public function getPages($filter = [])
     {
-        return $this->getInstances($this->getBuilder()->paginate(30));
+        $builder = $this->getBuilder();
+        
+        return $this->getInstances($builder->paginate(30));
     }
 
     public static function getModelClass(): string

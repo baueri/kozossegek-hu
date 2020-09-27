@@ -27,11 +27,8 @@ abstract class Model
      */
     public function __construct($values = [])
     {
-        foreach ($values as $col => $value) {
-            if (property_exists($this, $col)) {
-                $this->{$col} = $value;
-            }
-        }
+        
+        $this->setProperties($values);
 
         $this->originalValues = $values;
     }
@@ -84,5 +81,29 @@ abstract class Model
     {
         return $this->getId() == $id;
     }
+    
+    /**
+     * 
+     * @param array $data
+     */
+    public function update(array $data)
+    {
+        $this->setProperties($data);
+    }
 
+    /**
+     * 
+     * @param array $values
+     * @return static
+     */
+    protected function setProperties(array $values)
+    {
+        foreach ($values as $col => $value) {
+            if (property_exists($this, $col)) {
+                $this->{$col} = $value;
+            }
+        }
+        
+        return $this;
+    }
 }

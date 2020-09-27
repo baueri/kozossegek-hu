@@ -15,9 +15,10 @@ class AdminMenu
     public static function getMenu()
     {
         $currentRoute = current_route();
-        return array_map(function ($item) use ($currentRoute) {
+        
+        return collect(config('admin_menu'))->map(function($item) use($currentRoute){
             return static::parseMenuItem($item, $currentRoute);
-        }, config('admin_menu'));
+        });
     }
 
     private static function parseMenuItem(array $menuItem, RouteInterface $currentRoute)
@@ -36,7 +37,16 @@ class AdminMenu
 
     private static function isActive($menuItem, RouteInterface $currentRoute)
     {
-        return $currentRoute->getAs() == $menuItem['as'] || (isset($menuItem['submenu']) && array_filter($menuItem['submenu'], function($subMenuItem) use($currentRoute){
+        if ($currentRoute->getAs() == $menuItem['as']) {
+            return true;
+        }
+        
+        if (isset($menuItem['similars']) && in_array($currentRoute->getAs(), $menuItem['similars'])) {
+            return true;
+        }
+        
+        
+        return (isset($menuItem['submenu']) && array_filter($menuItem['submenu'], function($subMenuItem) use($currentRoute){
             return static::isActive($subMenuItem, $currentRoute);
         }));
     }

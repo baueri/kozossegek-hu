@@ -50,6 +50,12 @@ class PDOMysqlDatabase implements Database
         return new static($configuration);
     }
 
+    /**
+     * 
+     * @param type $query
+     * @param type $params
+     * @return ResultSet
+     */
     public function execute($query, ...$params): ResultSet
     {
         $statement = $this->pdo->prepare($query);
@@ -121,4 +127,12 @@ class PDOMysqlDatabase implements Database
     {
         return (bool) $this->first($query, $params);
     }
+
+    public function delete($query, $params = [])
+    {
+        $this->execute($query, ...$params);
+        
+        return true;
+    }
+
 }

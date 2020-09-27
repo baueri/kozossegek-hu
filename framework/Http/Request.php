@@ -8,7 +8,6 @@ use ArrayAccess;
 use Countable;
 use Framework\Support\Collection;
 use IteratorAggregate;
-use Traversable;
 
 /**
  * Class Request
@@ -21,8 +20,6 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
      * @var Collection
      */
     public $request;
-
-    public $session;
 
     /**
      * @var Collection
@@ -119,7 +116,11 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
 
     public function offsetGet($offset)
     {
-        return $this->request->offsetGet($offset);
+        if ($attribute = $this->getUriValue($offset)) {
+            return $attribute;
+        }
+        
+        return $this->request[$offset];
     }
 
     public function offsetSet($offset, $value)

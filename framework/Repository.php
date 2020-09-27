@@ -8,16 +8,12 @@ use Framework\Database\PaginatedResultSetInterface;
 use Framework\Model\ModelCollection;
 use Framework\Model\Model;
 use Framework\Model\PaginatedModelCollection;
+use Framework\Model\ModelNotFoundException;
 use Framework\Traits\Makeable;
 
 abstract class Repository
 {
     use Makeable;
-
-    /**
-     * @var string[]
-     */
-    protected static $dbColumns = [];
 
     /**
      * @return Database\Builder
@@ -38,6 +34,15 @@ abstract class Repository
         return $this->getInstance($row);
     }
 
+    public function findOrFail($id)
+    {
+        if ($model = $this->find($id)) {
+            return $model;
+        }
+       
+        throw new ModelNotFoundException();
+    }
+    
     /**
      * @return Model|mixed
      */
@@ -142,7 +147,7 @@ abstract class Repository
     public function update(Model $model)
     {
         $changes = $this->getChanges($model);
-
+        
         if (!$changes) {
             return false;
         }
@@ -175,7 +180,8 @@ abstract class Repository
     public function valuesToArray(Model $model)
     {
         $values = [];
-        foreach (static::$dbColumns as $column) {
+        
+        foreach (array_keys($model->getOriginalValues()) as $column) {
             $values[$column] = $model->{$column};
         }
 
@@ -190,20 +196,18 @@ abstract class Repository
      */
     public function delete(Model $model)
     {
-        $query = sprintf('DELETE FROM %s WHERE %s=?', static::getTable(), static::getPrimaryCol());
-        db()->execute($query, $model->getId());
-
-        return true;
+        if (property_exists($model, 'deleted_at')) {
+            $model->deleted_at = date('Y-m-d H:i:s');
+            return $this->save($model);
+        }
+        
+        return $this->getBuilder()->where(static::getPrimaryCol(), $model->getId())->delete();
+        
     }
-
+    
     public function updateOrCreate(array $where, array $data)
     {
         return $this->getBuilder()->updateOrInsert($where, $data);
-    }
-
-    public static function getDbColumns()
-    {
-        return static::$dbColumns;
     }
 
 }
