@@ -27,9 +27,6 @@
             </div>
         </div>
         @include('admin.partials.menu')
-        <ul class="list-unstyled components" style="position:absolute; bottom: 0; width: 100%">
-            <li><a href="{{ route('home') }}" target="_blank">oldal megtekintése</a></li>
-        </ul>
     </nav>
 
     <!-- Page Content  -->
