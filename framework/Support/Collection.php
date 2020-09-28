@@ -204,9 +204,9 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     {
         $result = [];
 
-        foreach ($this->items as $item) {
-            if ($func($item)) {
-                $result[] = $item;
+        foreach ($this->items as $key => $item) {
+            if ($func($item, $key)) {
+                $result[$key] = $item;
             }
         }
 
@@ -661,5 +661,17 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     public function isEmpty()
     {
         return empty($this->items);
+    }
+    
+    /**
+     * 
+     * @param $keys
+     * @return static
+     */
+    public function except(...$keys)
+    {
+        return $this->filter(function($item, $key) use($keys) {
+            return !in_array($key, $keys);
+        });
     }
 }

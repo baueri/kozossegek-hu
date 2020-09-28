@@ -9,7 +9,7 @@
             <p>Erre a helyre írjunk valami nagyon motiválót, hogy a látogató érezze, hogy gondolunk rá :-) Lehet jó hosszú, pl, hogy miért fontos közösséghez tartozni, vagy, hogy mi mindent megteszünk annak érdekében, hogy a hozzá legjobban illő közösséget
                 találjuk meg.</p>
         </div>
-        <form method="get" id="finder">
+        <form method="get" id="finder" action="{{ route('portal.groups') }}">
             <div class="input-group">
                 <select name="varos" style="width:200px" class="form-control">
                     <option></option>

@@ -17,7 +17,7 @@ class AdminMiddleware implements Middleware
      * AdminMiddleware constructor.
      * @param BaseAuth $auth
      */
-    public function __construct(BaseAuth $auth)
+    public function __construct(\Framework\Http\Request $request,   BaseAuth $auth)
     {
         $this->auth = $auth;
     }

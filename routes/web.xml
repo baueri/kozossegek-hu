@@ -5,6 +5,10 @@
         <route method="get" uri="kozossegek" as="portal.groups" controller="GroupController" use="kozossegek"/>
         <route method="get" uri="kozosseg/{kozosseg}" as="kozosseg" controller="GroupController" use="kozosseg"/>
     </route-group>
+    <!-- BELÉPÉS -->
+    <route method="get" uri="login" controller="App\Portal\Controllers\LoginController" use="login" as="login"/>
+    <route method="post" uri="login" controller="App\Portal\Controllers\LoginController" use="doLogin"/>
+    
     <route-group namespace="App\Admin" prefix="admin" as="admin" middleware="App\Middleware\AdminMiddleware">
         <!-- ADMIN  -->
         <!-- ************************************** -->
@@ -12,6 +16,9 @@
         <!-- OLDALAK -->
         <route-group namespace="Page" prefix="page" controller="PageController" as="page">
             <route method="get" uri="list" use="list" as="list"/>
+            <route method="get" uri="trash" use="trash" as="trash"/>
+            <route method="get" uri="empty-trash" use="emptyTrash" as="empty_trash"/>
+            <route method="get" uri="restore" use="restore" as="restore"/>
             
             <route method="get" uri="create" use="create" as="create"/>
             <route method="post" uri="create" use="doCreate" as="do_create"/>
@@ -35,7 +42,7 @@
             <route method="post" uri="create" controller="GroupController" use="doCreate" as="do_create"/>
             
             <route method="get" uri="{id}/edit" controller="GroupController" use="edit" as="edit"/>
-            <route method="post" uri="{id}/update" controller="GroupController" use="doupdate" as="do_update"/>
+            <route method="post" uri="{id}/update" controller="GroupController" use="update" as="update"/>
             <route method="get" uri="{id}/delete" controller="GroupController" use="delete" as="delete"/>
         </route-group>
         

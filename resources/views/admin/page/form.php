@@ -1,7 +1,5 @@
 @section('header')
-<!-- include summernote css/js -->
-<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+    @include('asset_groups.editor')
 @endsection
 
 @extends('admin')
@@ -30,28 +28,16 @@
                     <option value="DRAFT" {{ $page->status == "DRAFT" ? "selected" : "" }}>Piszkozat</option>
                 </select>
             </div>
+            <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Mentés</button>
         </div>
 
     </div>
-    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Mentés</button>
+    
 
 </form>
 <script>
 $(document).ready(function () {
-    $('[name=content]').summernote({
-        tabsize: 2,
-        height: 300,
-        toolbar: [
-            ['style', ['style']],
-            ['font', ['bold', 'underline', 'clear']],
-            ['color', ['color']],
-            ['para', ['ul', 'ol', 'paragraph']],
-            ['table', ['table']],
-            ['insert', ['link', 'picture', 'video']],
-            ['view', ['fullscreen', 'codeview', 'help']]
-        ]
-    });
-
+    initSummernote('[name=content]');
     var slugGenerator;
     
     $("[name=title]").change(function () {

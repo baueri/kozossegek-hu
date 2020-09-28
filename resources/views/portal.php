@@ -37,7 +37,7 @@
                     <a href="{{ route('portal.page', ['slug' => 'rolunk']) }}" class="nav-link"><span>Rólunk</span></a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('portal.page', ['slug' => 'a-kozossegekrol']) }}" class="nav-link">Közösség? Minek?</a>
+                    <a href="{{ route('portal.page', ['slug' => 'a-kozossegekrol']) }}" class="nav-link">A közösségről</a>
                 </li>
             </ul>
         </div>

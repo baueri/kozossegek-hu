@@ -7,8 +7,11 @@ namespace App\Admin\Page;
  *
  * @author ivan
  */
-class AdminPageRepository extends \App\Repositories\PageRepository {
-    public function getPages($filter = array()) {
+class AdminPageRepository extends \App\Repositories\PageRepository
+{
+    
+    public function getPages($filter = array())
+    {
         
         $builder = $this->getBuilder();
         
@@ -16,11 +19,14 @@ class AdminPageRepository extends \App\Repositories\PageRepository {
             $builder->where('status', $status);
         }
         
-        if ($deleted = $filter['deleted']) {
-            
-            $builder->where('deleted_at IS NOT NULL');
+        if ($filter['deleted']) {
+            $builder->whereNotNull('deleted_at');
         } else {
-            $builder->where('deleted_at IS NULL');
+            $builder->whereNull('deleted_at');
+        }
+        
+        if ($search = $filter['search']) {
+            $builder->where('title', 'like', "%$search%");
         }
         
         return $this->getInstances($builder->paginate(30));

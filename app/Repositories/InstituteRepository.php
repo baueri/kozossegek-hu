@@ -3,7 +3,6 @@
 namespace App\Repositories;
 
 use App\Models\Institute;
-use Framework\Support\Collection;
 
 /**
  * Description of InstituteRepository
@@ -12,6 +11,22 @@ use Framework\Support\Collection;
  */
 class InstituteRepository extends \Framework\Repository
 {
+    /**
+     * 
+     * @param type $keyword
+     * @param type $city
+     * @return \Framework\Database\PaginatedResultSet|Institute[]
+     */
+    public function search($keyword, $city)
+    {
+        $rows = $this->getBuilder()
+                ->where('city', $city)
+                ->where('name', 'like', "%$keyword%")
+                ->paginate(15);
+        
+        return $this->getInstances($rows);
+    }
+    
     public function getInstitutes()
     {
         return $this->getInstances($this->getBuilder()->paginate(30));

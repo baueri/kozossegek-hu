@@ -16,9 +16,9 @@ class GroupStatus extends AbstractSimpleTranslatable
         if ($this->name == GroupStatusEnum::ACTIVE) {
             return 'fa fa-check-circle text-success';
         } elseif($this->name == GroupStatusEnum::INACTIVE) {
-            return 'fa fa-exclamation-circle text-warning';
+            return 'fa fa-moon text-muted';
         } elseif($this->name == GroupStatusEnum::PENDING) {
-            return 'fa fa-sync-alt text-danger';
+            return 'fa fa-question text-danger';
         }
 
         return null;

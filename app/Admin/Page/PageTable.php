@@ -60,11 +60,15 @@ class PageTable extends AdminTable
         [,$page] = $params;
         
         $url = route('admin.page.delete', ['id' => $page->id]) ;
-        return "<a href='$url'><i class='fa fa-trash text-danger'></i></a>";
+        return "<a href='$url' title='lomtárba'><i class='fa fa-trash text-danger'></i></a>";
     }
 
     protected function getData(): PaginatedResultSetInterface
     {
-        return $this->repository->getPages();
+        $filter = $this->request->all();
+        if ($this->request->route->getAs() == 'admin.page.trash') {
+            $filter['deleted'] = true;
+        }
+        return $this->repository->getPages($filter);
     }
 }

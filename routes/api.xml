@@ -2,8 +2,8 @@
 <routes as="api">
     <route-group namespace="App\Portal\Controllers\Api">
         <route-group middleware="Framework\Middleware\JsonApi" namespace="V1" prefix="api/v1">
-            <route method="all" controller="CitySearchController" uri="search-city" use="search"/>
+            <route method="all" controller="SearchController" uri="search-city" use="searchCity" as="search-city"/>
+            <route method="all" controller="SearchController" uri="search-institute" use="searchInstitute" as="search-institute"/>
         </route-group>
     </route-group>
-    
 </routes>

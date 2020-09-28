@@ -10,6 +10,13 @@ namespace Framework\Support;
 class StringHelper
 {
 
+    /**
+     * 
+     * @param string $text
+     * @param int $numberOfWords
+     * @param string $moreText
+     * @return string
+     */
     public static function more($text, $numberOfWords, $moreText = '')
     {
         if (str_word_count($text, 0) > $numberOfWords) {
@@ -19,6 +26,22 @@ class StringHelper
         }
 
         return $text;
+    }
+    
+    /**
+     * 
+     * @param string $text
+     * @param int $numberOfCharacters
+     * @param string $moreText
+     * @return string
+     */
+    public static function shorten($text, $numberOfCharacters, $moreText = '')
+    {
+        if (strlen($text) <= $numberOfCharacters) {
+            return $text;
+        }
+        
+        return mb_substr($text, 0, $numberOfCharacters) . $moreText;
     }
 
     public static function camel($text)

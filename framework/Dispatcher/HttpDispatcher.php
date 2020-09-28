@@ -109,7 +109,7 @@ class HttpDispatcher implements Dispatcher
         $controller = $this->app->make($route->getController());
         
         if (!method_exists($controller, $route->getUse())) {
-            throw new RouteNotFoundException();
+            throw new RouteNotFoundException($this->request->uri);
         }
         
         return $this->app->resolve($controller, $route->getUse(), $this->request->getUriValues());

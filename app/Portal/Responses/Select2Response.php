@@ -13,9 +13,7 @@ abstract class Select2Response {
      */
     private $collection;
 
-    private $withReset;
-    
-    public function __construct(\Framework\Model\ModelCollection $collection) {
+    public function __construct($collection) {
         $this->collection = $collection;
     }
     

@@ -119,7 +119,7 @@ class Builder
     public function first()
     {
         $this->limit(1);
-
+        
         return $this->db->first(...$this->getBaseSelect());
     }
 
@@ -178,9 +178,9 @@ class Builder
         return $this;
     }
 
-    public function where($column, $operator = null, $value = null, $clause = 'and')
+    public function where($column, $operator, $value = null, $clause = 'and')
     {
-        if (is_null($value) && $operator) {
+        if (is_null($value)) {
             $value = $operator;
             $operator = '=';
         }
@@ -188,6 +188,22 @@ class Builder
         $this->where[] = [$column, $operator, $value, $clause];
 
         return $this;
+    }
+    
+    public function whereRaw($where) {
+        $this->where[] = [$where];
+       
+        return $this;
+    }
+    
+    public function whereNull($column, $operator = '')
+    {
+        return $this->whereRaw("$column IS $operator NULL");
+    }
+    
+    public function whereNotNull($column)
+    {
+        return $this->whereNull($column, 'NOT');
     }
 
     public function whereIn($column, array $values)

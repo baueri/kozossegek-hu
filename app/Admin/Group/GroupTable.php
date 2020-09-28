@@ -13,7 +13,6 @@ use App\Repositories\InstituteRepository;
 use Framework\Database\PaginatedResultSetInterface;
 use Framework\Http\Request;
 use Framework\Http\View\ViewInterface;
-use Framework\Model\ModelCollection;
 
 class GroupTable extends AdminTable
 {
@@ -67,7 +66,8 @@ class GroupTable extends AdminTable
     }
 
     public function getName($name, Group $group) {
-        return "<a href='#'>$name <i class='fa fa-pencil-alt'></i></a>";
+        $uri = route('admin.group.edit', ['id' => $group->id]);
+        return "<a href='$uri'>$name <i class='fa fa-pencil-alt'></i></a>";
     }
 
     public function getCreatedAt($createdAt)
@@ -87,6 +87,12 @@ class GroupTable extends AdminTable
         $class = $status->getClass();
         $text = $status->translate();
         return "<i class='$class' title='$text'></i>";
+    }
+    
+    public function getGroupLeaders($groupLeaders)
+    {
+        $shorten = \Framework\Support\StringHelper::shorten($groupLeaders, 15, '...');
+        return "<span title='$groupLeaders'>$shorten</span>";
     }
 
     /**

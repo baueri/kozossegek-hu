@@ -30,8 +30,9 @@
     </nav>
 
     <!-- Page Content  -->
-    <div id="content" class="p-4 p-md-5 pt-1">
-        <h2 class="mb-4">@yield('title')</h2>
+    <div id="content" class="p-4">
+        <h3 class="mb-2">@yield('title')</h3>
+        @include('admin.partials.message')
         @yield('admin')
     </div>
 </div>

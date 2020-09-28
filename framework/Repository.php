@@ -29,6 +29,7 @@ abstract class Repository
      */
     public function find($id)
     {
+        
         $row = $this->getBuilder()->where(static::getPrimaryCol(), $id)->first();
 
         return $this->getInstance($row);
@@ -112,8 +113,12 @@ abstract class Repository
     public function create(array $values)
     {
         $values['id'] = $this->insert($values);
+        
+        $model = $this->getInstance($values);
+        
+        Event\EventDisptatcher::dispatch(new Database\Repository\Events\ModelCreated($model));
 
-        return $this->getInstance($values);
+        return $model;
     }
     
     /**
@@ -122,7 +127,7 @@ abstract class Repository
      */
     public function insert(array $values)
     {
-        return $this->getBuilder()->insert($values);
+        return  $this->getBuilder()->insert($values);
     }
 
     /**
@@ -201,7 +206,11 @@ abstract class Repository
             return $this->save($model);
         }
         
-        return $this->getBuilder()->where(static::getPrimaryCol(), $model->getId())->delete();
+        $deleted = $this->getBuilder()->where(static::getPrimaryCol(), $model->getId())->delete();
+        
+        Event\EventDisptatcher::dispatch(new Database\Repository\Events\ModelDeleted($model));
+        
+        return $deleted;
         
     }
     

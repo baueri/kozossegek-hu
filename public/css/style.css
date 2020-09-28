@@ -1,3 +1,5 @@
+
+
 img {
     max-width: 100%;
     height: auto;
@@ -331,4 +333,12 @@ input[name=search]::placeholder {
 
 .img-big {
     transition: ease-in opacity .2s;
+}
+
+.note-float-left {
+    margin-right: 1em;
+}
+
+.note-float-right {
+    margin-left: 1em;
 }

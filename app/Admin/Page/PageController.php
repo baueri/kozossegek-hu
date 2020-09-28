@@ -26,15 +26,24 @@ class PageController extends AdminController
      * @param Request $request
      * @param PageRepository $repository
      */
-    public function __construct(ViewInterface $view, \Framework\Http\Request $request, PageRepository $repository) {
+    public function __construct(ViewInterface $view, \Framework\Http\Request $request, AdminPageRepository $repository) {
         parent::__construct($view);
         $this->request = $request;
         $this->repository = $repository;
     }
     
-    public function list(Request $request, PageTable $table)
+    public function list(PageTable $table)
     {
-        return $this->view('admin.page.list', compact('table'));
+        $is_trash = false;
+        $filter = $this->request;
+        return $this->view('admin.page.list', compact('table', 'is_trash', 'filter'));
+    }
+    
+    public function trash(TrashPageTable $table)
+    {
+        $is_trash = true;
+        $filter = $this->request;
+        return $this->view('admin.page.list', compact('table', 'is_trash', 'filter'));
     }
     
     public function create()

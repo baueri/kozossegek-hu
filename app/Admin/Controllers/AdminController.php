@@ -17,5 +17,6 @@ class AdminController extends Controller
         $currentRoute = current_route();
         View::addVariable('current_route', $currentRoute);
         View::addVariable('admin_menu', AdminMenu::getMenu());
+        View::addVariable('system_message', \Framework\Http\Message::get());
     }
 }

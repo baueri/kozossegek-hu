@@ -1,7 +1,7 @@
 @extends('portal')
 
-<div class="container">
-    <h1>{{ $page->title }}</h1>
+<div class="container p-4 page">
+    <h2 class="mb-4">{{ $page->title }}</h2>
     <div>
         {{ $page->content }}
     </div>

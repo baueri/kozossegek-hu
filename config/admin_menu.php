@@ -32,6 +32,7 @@ return [
                 'title' => 'Közösségek',
                 'icon' => 'stream',
                 'as' => 'admin.group.list',
+                'similars' => ['admin.group.edit']
             ], [
                 'title' => 'Új közösség',
                 'icon' => 'plus',
