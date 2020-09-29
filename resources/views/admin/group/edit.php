@@ -1,2 +1,2 @@
-@section('title')Közösség módosítása@endsection
+@title('Közösség módosítása')
 @extends('admin.group.form')

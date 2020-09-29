@@ -1,4 +1,4 @@
-@section('title')Beállítások@endsection
+@title('Beállítások')
 @extends('admin')
 <form>
 

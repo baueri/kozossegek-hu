@@ -43,8 +43,8 @@ class Builder
     }
 
     /**
-     * 
-     * @return []
+     *
+     * @return array[]
      */
     public function get()
     {
@@ -190,20 +190,20 @@ class Builder
         return $this;
     }
     
-    public function whereRaw($where) {
-        $this->where[] = [$where];
+    public function whereRaw($where, $clause = 'and') {
+        $this->where[] = [$where, null, null, $clause];
        
         return $this;
     }
     
-    public function whereNull($column, $operator = '')
+    public function whereNull($column, $clause = 'and')
     {
-        return $this->whereRaw("$column IS $operator NULL");
+        return $this->whereRaw("$column IS NULL", $clause);
     }
     
-    public function whereNotNull($column)
+    public function whereNotNull($column, $clause = 'and')
     {
-        return $this->whereNull($column, 'NOT');
+        return $this->whereRaw("$column IS NOT NULL", $clause);
     }
 
     public function whereIn($column, array $values)

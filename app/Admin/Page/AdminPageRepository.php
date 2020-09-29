@@ -28,7 +28,7 @@ class AdminPageRepository extends \App\Repositories\PageRepository
         if ($search = $filter['search']) {
             $builder->where('title', 'like', "%$search%");
         }
-        
+
         return $this->getInstances($builder->paginate(30));
     }
 }

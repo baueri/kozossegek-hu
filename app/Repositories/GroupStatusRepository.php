@@ -2,22 +2,24 @@
 
 namespace App\Repositories;
 
+use App\Enums\GroupStatusEnum;
+use App\Models\GroupStatus;
+use ReflectionException;
+
 /**
  * Description of GroupStatusRepository
  *
  * @author ivan
  */
 class GroupStatusRepository {
-        
+
     /**
-     * 
-     * @return Denomination[]
+     *
+     * @return GroupStatus[]
+     * @throws ReflectionException
      */
     public function all() : array
     {
-        $values = \App\Enums\GroupStatusEnum::values();
-        return array_map(function($value){
-            return new \App\Models\GroupStatus($value);
-        }, $values);
+        return GroupStatusEnum::values()->make(GroupStatus::class)->all();
     }
 }

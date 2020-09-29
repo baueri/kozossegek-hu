@@ -54,7 +54,7 @@
                 <textarea name="description" id="description">{{ $group->description }}</textarea>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3 group-side-content">
             <div class="form-group">
                 <label for="status">Állapot</label>
                 <select id="status" name="status" class="form-control">
@@ -129,5 +129,7 @@
             }
         });
         initSummernote('[name=description]');
+
+        $(".group-side-content select").select2();
     });
 </script>

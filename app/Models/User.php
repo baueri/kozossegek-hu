@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Framework\Model\Model;
+
 /**
  * Description of User
  *
@@ -10,4 +12,12 @@ namespace App\Models;
 class User extends Model
 {
     public $id;
+
+    public $name;
+
+    public $username;
+
+    public $password;
+
+    public $email;
 }

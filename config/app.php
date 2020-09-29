@@ -7,5 +7,8 @@ return [
     'docache' => _env('ENVIRONMENT') != 'production',
     'sanitize' => _env('SANITIZE_OUTPUT', false),
     'debug' => _env('DEBUG', false),
+    'providers' => [
+
+    ]
     
 ];

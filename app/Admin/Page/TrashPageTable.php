@@ -4,7 +4,6 @@ namespace App\Admin\Page;
 
 /**
  * Lomtár
- * Description of TrashPageTable
  *
  * @author ivan
  */
@@ -20,8 +19,10 @@ class TrashPageTable extends PageTable
         'delete' => '<i class="fa fa-trash"></i>'
     ];
     
-    public function getRestore($restore, \App\Models\Page $page)
+    public function getRestore(...$params)
     {
+        [,$page] = $params;
+
         $url = route('admin.page.restore', ['id' => $page->id]);
         
         return "<a href='$url' title='visszaállítás'><i class='fa fa-trash-restore text-success'></a>";

@@ -52,7 +52,10 @@ class Application extends Container
      */
     public function run(Dispatcher $dispatcher)
     {
-        $this->boot();
+        foreach ($this->bootstrappers as $bootstrapper) {
+            $this->make($bootstrapper)->boot();
+        }
+
         $dispatcher->dispatch();
     }
 
@@ -78,11 +81,9 @@ class Application extends Container
         $this->get(Dispatcher::class)->handleError($e);
     }
 
-    private function boot()
+    public function boot($bootstrapper)
     {
-        foreach ($this->bootstrappers as $bootstrapper) {
-            $this->make($bootstrapper)->boot();
-        }
+        $this->bootstrappers[] = $bootstrapper;
     }
 
     public function getLocale()

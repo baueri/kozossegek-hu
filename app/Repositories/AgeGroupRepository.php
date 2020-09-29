@@ -2,19 +2,18 @@
 
 namespace App\Repositories;
 
+use App\Enums\AgeGroupEnum;
 use App\Models\AgeGroup;
+use ReflectionException;
 
 class AgeGroupRepository {
-    
+
     /**
-     * 
      * @return AgeGroup[]
+     * @throws ReflectionException
      */
     public function all() : array
     {
-        $values = \App\Enums\AgeGroupEnum::values();
-        return array_map(function($value){
-            return new AgeGroup($value);
-        }, $values);
+        return AgeGroupEnum::values()->make(AgeGroup::class)->all();
     }
 }

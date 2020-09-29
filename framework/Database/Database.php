@@ -7,26 +7,27 @@ namespace Framework\Database;
 interface Database
 {
     /**
-     * 
+     *
      * @param string $query
-     * @return \Framework\Database\ResultSet
+     * @param mixed ...$params
+     * @return ResultSet
      */
     public function execute($query, ...$params): ResultSet;
 
     /**
-     * 
+     *
      * @param string $query
-     * @param [] $bindings
-     * @return []
+     * @param array $bindings
+     * @return array []
      */
-    public function select($query, $bindings = []): array;
+    public function select(string $query, $bindings = []): array;
 
     /**
      * @param string $query
      * @param array $bindings
      * @return mixed
      */
-    public function first($query, $bindings = []);
+    public function first(string $query, $bindings = []);
 
     public function update($query, ...$params): int;
 

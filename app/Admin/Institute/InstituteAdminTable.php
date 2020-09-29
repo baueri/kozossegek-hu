@@ -2,19 +2,19 @@
 
 namespace App\Admin\Institute;
 
+use App\Admin\Components\AdminTable;
+use App\Repositories\InstituteRepository;
+use Framework\Database\PaginatedResultSetInterface;
+use Framework\Http\Request;
+
 /**
  * Description of InstituteAdminTable
  *
  * @author ivan
  */
-class InstituteAdminTable extends \App\Admin\Components\AdminTable {
+class InstituteAdminTable extends AdminTable
+{
 
-    /**
-     * @var App\Repositories\InstituteRepository
-     */
-    private $repository;
-    
-    
     protected $columns = [
         'id' => '#',
         'name' => 'Intézmény neve',
@@ -23,13 +23,25 @@ class InstituteAdminTable extends \App\Admin\Components\AdminTable {
         'address' => 'Cím'
     ];
 
-    public function __construct(\Framework\Http\View\ViewInterface $view, \Framework\Http\Request $request, \App\Repositories\InstituteRepository $repository) {
-        parent::__construct($view, $request);
+    /**
+     * @var InstituteRepository
+     */
+    private $repository;
+
+    /**
+     * InstituteAdminTable constructor.
+     * @param Request $request
+     * @param InstituteRepository $repository
+     */
+    public function __construct(Request $request, InstituteRepository $repository)
+    {
+        parent::__construct($request);
         $this->repository = $repository;
     }
-    
+
     //put your code here
-    protected function getData(): \Framework\Database\PaginatedResultSetInterface {
+    protected function getData(): PaginatedResultSetInterface
+    {
         return $this->repository->getInstitutes();
     }
 

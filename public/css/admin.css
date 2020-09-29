@@ -8,7 +8,12 @@
 }
 
 #content {
-    margin-left: 250px;
+    margin-left: 200px;
+    /*background: #eaeaea;*/
+}
+
+#sidebar {
+    width: 200px; max-width: 200px; min-width: 200px
 }
 
 #sidebar ul li a {
@@ -24,4 +29,19 @@
 .select2-container--bootstrap .select2-selection--single {
     height: auto;
     padding: 8px 24px 8px 12px;
+}
+
+.user-logo h3 {
+    font-size: 1rem !important;
+    text-shadow: 2px 2px 4px #000;
+    cursor: default;
+}
+
+input[type=text], .select2-container--bootstrap .select2-selection--single, select {
+    background: #eee;
+}
+
+*::placeholder {
+    color: #999 !important;
+    font-size: 14px;
 }

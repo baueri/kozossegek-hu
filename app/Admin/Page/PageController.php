@@ -3,6 +3,8 @@
 namespace App\Admin\Page;
 
 use App\Admin\Controllers\AdminController;
+use App\Admin\Page\Services\PageListService;
+use Framework\Http\Message;
 use Framework\Http\Request;
 use App\Repositories\PageRepository;
 use Framework\Http\View\ViewInterface;
@@ -16,34 +18,39 @@ class PageController extends AdminController
     private $repository;
 
     /**
-     * @var \Framework\Http\Request
+     * @var Request
      */
     private $request;
 
     /**
-     * 
+     *
      * @param ViewInterface $view
      * @param Request $request
-     * @param PageRepository $repository
+     * @param AdminPageRepository $repository
      */
-    public function __construct(ViewInterface $view, \Framework\Http\Request $request, AdminPageRepository $repository) {
+    public function __construct(ViewInterface $view, Request $request, AdminPageRepository $repository) {
         parent::__construct($view);
         $this->request = $request;
         $this->repository = $repository;
     }
     
-    public function list(PageTable $table)
+    public function list(PageTable $table, PageListService $service)
     {
-        $is_trash = false;
-        $filter = $this->request;
-        return $this->view('admin.page.list', compact('table', 'is_trash', 'filter'));
+        return $service->show($table);
     }
     
-    public function trash(TrashPageTable $table)
+    public function trash(TrashPageTable $table, PageListService $service)
     {
-        $is_trash = true;
-        $filter = $this->request;
-        return $this->view('admin.page.list', compact('table', 'is_trash', 'filter'));
+        return $service->show($table);
+    }
+
+    public function emptyTrash(PageRepository $repository)
+    {
+        $repository->getBuilder()->whereNotNull('deleted_at')->delete();
+
+        Message::warning('Lomtár kiürítve.');
+
+        redirect('admin.page.trash');
     }
     
     public function create()
@@ -54,8 +61,11 @@ class PageController extends AdminController
     
     public function doCreate()
     {
-        $this->repository->create($this->request->only('title', 'slug', 'content', 'status'));
-        redirect('admin.page.list');
+        $page = $this->repository->create($this->request->only('title', 'slug', 'content', 'status'));
+
+        Message::success('Oldal létrehozva');
+
+        redirect('admin.page.edit', ['id' => $page->id]);
     }
     
     public function edit()
@@ -72,6 +82,8 @@ class PageController extends AdminController
         $post->update($this->request->only('title', 'slug', 'content', 'status'));
         
         $this->repository->save($post);
+
+        Message::success('Oldal frissítve');
         
         return redirect('admin.page.edit', ['id' => $this->request['id']]);
         
@@ -80,6 +92,8 @@ class PageController extends AdminController
     public function delete()
     {
         $this->repository->delete($this->repository->findOrFail($this->request['id']));
+
+        Message::warning('Oldal lomtárba helyezve');
         
         return redirect('admin.page.list');
     }

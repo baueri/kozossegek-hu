@@ -189,3 +189,8 @@ function config($key, $default = null)
 {
     return app()->config($key, $default);
 }
+
+function make($abstraction, $values = [])
+{
+    return app()->make($abstraction, ...$values);
+}

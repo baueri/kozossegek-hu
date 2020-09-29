@@ -1,5 +1,6 @@
 <?php
 
+use App\Bootstrapper\RegisterTitleDirective;
 use Arrilot\DotEnv\DotEnv;
 use Framework\Application;
 use Framework\Database\Database;
@@ -45,6 +46,4 @@ $application->singleton(Database::class, function (Application $app) {
     return $app->make(PDOMysqlDatabase::class, $databaseConfiguration);
 });
 
-$application->bind(Model::class, function(Request $request, $entity) {
-    dd($entity);
-});
+$application->boot(RegisterTitleDirective::class);

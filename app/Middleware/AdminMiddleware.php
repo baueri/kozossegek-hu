@@ -2,28 +2,31 @@
 
 namespace App\Middleware;
 
-use Framework\Auth\BaseAuth;
+use App\Auth\Auth;
+use App\Auth\Authenticate;
 use Framework\Middleware\Middleware;
 
 class AdminMiddleware implements Middleware
 {
+    /**
+     * @var Authenticate
+     */
+    private $service;
 
     /**
-     * @var BaseAuth
+     * @param Authenticate $service
      */
-    private $auth;
-
-    /**
-     * AdminMiddleware constructor.
-     * @param BaseAuth $auth
-     */
-    public function __construct(\Framework\Http\Request $request,   BaseAuth $auth)
+    public function __construct(Authenticate $service)
     {
-        $this->auth = $auth;
+        $this->service = $service;
     }
 
     public function handle()
     {
-        //$this->auth->authenticate('admin', 'admin', 'jelszo');
+        $this->service->authenticateBySession();
+
+        if (!Auth::loggedIn()) {
+            redirect('login');
+        }
     }
 }

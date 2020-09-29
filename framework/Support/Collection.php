@@ -674,4 +674,15 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
             return !in_array($key, $keys);
         });
     }
+
+    public function make($abstraction = null)
+    {
+        return $this->map(function($item) use($abstraction) {
+            if (!$abstraction) {
+                return app()->make($item);
+            }
+
+            return app()->make($abstraction, $item);
+        });
+    }
 }

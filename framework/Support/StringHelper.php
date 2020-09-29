@@ -11,7 +11,7 @@ class StringHelper
 {
 
     /**
-     * 
+     *
      * @param string $text
      * @param int $numberOfWords
      * @param string $moreText
@@ -27,9 +27,9 @@ class StringHelper
 
         return $text;
     }
-    
+
     /**
-     * 
+     *
      * @param string $text
      * @param int $numberOfCharacters
      * @param string $moreText
@@ -40,20 +40,33 @@ class StringHelper
         if (strlen($text) <= $numberOfCharacters) {
             return $text;
         }
-        
+
         return mb_substr($text, 0, $numberOfCharacters) . $moreText;
     }
 
+    /**
+     * @param $text
+     * @return string
+     */
     public static function camel($text)
     {
         return lcfirst(str_replace(' ', '', ucwords(preg_replace('/[^a-zA-Z0-9\x7f-\xff]++/', ' ', $text))));
     }
 
+    /**
+     * @param $text
+     * @param string $delimiter
+     * @return string
+     */
     public static function snake($text, $delimiter = '_')
     {
         return strtolower(preg_replace(['/([A-Z]+)([A-Z][a-z])/', '/([a-z\d])([A-Z])/'], '\1' . $delimiter . '\2', ucfirst($text)));
     }
 
+    /**
+     * @param $text
+     * @return string
+     */
     public static function slugify($text)
     {
         // replace non letter or digits by -
@@ -81,6 +94,10 @@ class StringHelper
         return $text;
     }
 
+    /**
+     * @param $buffer
+     * @return string|string[]|null
+     */
     public static function sanitize($buffer)
     {
         $search = [
@@ -90,8 +107,17 @@ class StringHelper
             '/<!--(.|\s)*?-->/' // Remove HTML comments
         ];
 
-        $replace = ['>','<','\\1',''];
+        $replace = ['>', '<', '\\1', ''];
 
         return preg_replace($search, $replace, $buffer);
+    }
+
+    /**
+     * @param $string
+     * @return mixed
+     */
+    public static function isEmail($string)
+    {
+        return (bool) filter_var($string, FILTER_VALIDATE_EMAIL);
     }
 }

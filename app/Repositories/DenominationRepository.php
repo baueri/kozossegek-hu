@@ -1,7 +1,9 @@
 <?php
 
 namespace App\Repositories;
+use App\Enums\DenominationEnum;
 use App\Models\Denomination;
+use ReflectionException;
 
 /**
  * Description of DenominationRepository
@@ -9,16 +11,14 @@ use App\Models\Denomination;
  * @author ivan
  */
 class DenominationRepository {
-    
+
     /**
-     * 
+     *
      * @return Denomination[]
+     * @throws ReflectionException
      */
     public function all() : array
     {
-        $values = \App\Enums\DenominationEnum::values();
-        return array_map(function($value){
-            return new Denomination($value);
-        }, $values);
+        return DenominationEnum::values()->make(Denomination::class)->all();
     }
 }

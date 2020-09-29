@@ -5,10 +5,11 @@ namespace App\Models;
 
 
 use Framework\Model\Model;
+use Framework\Model\TimeStamps;
 
 class Page extends Model
 {
-    use \Framework\Model\TimeStamps;
+    use TimeStamps;
     
     public $id;
 

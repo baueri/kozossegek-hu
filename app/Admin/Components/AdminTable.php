@@ -2,24 +2,23 @@
 
 namespace App\Admin\Components;
 
+use Exception;
 use Framework\Database\PaginatedResultSetInterface;
 use Framework\Dispatcher\Dispatcher;
 use Framework\Http\Request;
-use Framework\Http\View\ViewInterface;
 use Framework\Support\StringHelper;
+use InvalidArgumentException;
 
 abstract class AdminTable
 {
-    /**
-     * @var ViewInterface
-     */
-    private $view;
-
     /**
      * @var array
      */
     protected $columns = [];
 
+    /**
+     * @var array
+     */
     protected $centeredColumns = [];
 
     /**
@@ -29,16 +28,14 @@ abstract class AdminTable
 
     /**
      * AdminTable constructor.
-     * @param ViewInterface $view
      * @param Request $request
      */
-    public function __construct(ViewInterface $view, Request $request)
+    public function __construct(Request $request)
     {
         if (!$this->columns) {
-            throw new \InvalidArgumentException('missing columns for ' . static::class);
+            throw new InvalidArgumentException('missing columns for ' . static::class);
         }
 
-        $this->view = $view;
         $this->request = $request;
     }
 
@@ -62,9 +59,13 @@ abstract class AdminTable
             'page' => $data->page(),
             'perpage' => $data->perpage()
         ];
-        return $this->view->view('admin.partials.table', $model);
+        return view('admin.partials.table', $model);
     }
 
+    /**
+     * @param $rows
+     * @return array
+     */
     protected function transformData($rows)
     {
         $transformed = [];
@@ -78,6 +79,11 @@ abstract class AdminTable
         return $transformed;
     }
 
+    /**
+     * @param $row
+     * @param $column
+     * @return mixed|null
+     */
     protected function transformRowColumn($row, $column)
     {
         $method = StringHelper::camel("get" . ucfirst($column));
@@ -90,12 +96,17 @@ abstract class AdminTable
         return call_user_func_array([$this, $method], [$value, $row]);
     }
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
         try {
             return $this->render();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             app()->get(Dispatcher::class)->handleError($e);
+
+            return '';
         }
     }
 }

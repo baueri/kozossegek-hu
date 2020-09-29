@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <routes>
     <route-group namespace="App\Portal\Controllers\">
+        <route method="get" uri="test" as="test" controller="TestController" use="testPipe"/>
         <route method="get" uri="" as="home" controller="HomeController" use="home"/>
         <route method="get" uri="kozossegek" as="portal.groups" controller="GroupController" use="kozossegek"/>
         <route method="get" uri="kozosseg/{kozosseg}" as="kozosseg" controller="GroupController" use="kozosseg"/>

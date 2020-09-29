@@ -1,5 +1,4 @@
-@section('title') Intézmények @endsection
-
+@title('Intézmények')
 @extends('admin')
 
 {{ $table }}

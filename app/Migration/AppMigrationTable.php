@@ -2,10 +2,13 @@
 
 namespace App\Migration;
 
-class AppMigrationTable extends \Phinx\Db\Table
+use Phinx\Db\Adapter\MysqlAdapter;
+use Phinx\Db\Table;
+
+class AppMigrationTable extends Table
 {
     /**
-     * 
+     *
      * @param bool $withDeletedAt
      * @return static
      */
@@ -13,26 +16,25 @@ class AppMigrationTable extends \Phinx\Db\Table
     {
         $this->timestamp('created_at', ['default' => 'CURRENT_TIMESTAMP']);
         $this->timestamp('updated_at', ['null' => true, 'update' => 'CURRENT_TIMESTAMP']);
-        
+
         if ($withDeletedAt) {
             $this->timestamp('deleted_at', ['null' => true]);
         }
-         
+
         return $this;
-                
+
     }
-    
+
     /**
-     * 
-     * @param string $columName
+     *
+     * @param string $columnName
      * @param array $options
      * @return static
      */
-    public function timestamp(string $columName, array $options = [''])
+    public function timestamp(string $columnName, array $options = [''])
     {
-        
-        $this->addColumn($columName, \Phinx\Db\Adapter\MysqlAdapter::PHINX_TYPE_DATETIME, $options);
-        
+        $this->addColumn($columnName, MysqlAdapter::PHINX_TYPE_DATETIME, $options);
+
         return $this;
     }
 }

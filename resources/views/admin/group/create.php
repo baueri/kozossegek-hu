@@ -1,2 +1,2 @@
-@section('title')Új közösség létrehozása@endsection
+@title('Új közösség létrehozása')
 @extends('admin.group.form')

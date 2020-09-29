@@ -19,7 +19,7 @@
 </head>
 <body>
 <div class="wrapper d-flex align-items-stretch">
-    <nav id="sidebar" style="width: 250px; max-width: 250px; min-width: 250px">
+    <nav id="sidebar">
         <div class="img bg-wrap text-center py-4" style="background-image: url(/assets/sidebar-09/images/bg_1.jpg);">
             <div class="user-logo">
 <!--                <div class="img" style="background-image: url(/images/logo_only.png);"></div>-->

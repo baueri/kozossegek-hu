@@ -1,3 +1,2 @@
-@section('title') Új oldal létrehozása @endsection
-
+@title('Új oldal létrehozása')
 @extends('admin.page.form')

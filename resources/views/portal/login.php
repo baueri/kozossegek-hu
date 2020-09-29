@@ -1,54 +1,94 @@
-<html>
+<!DOCTYPE>
+<html lang="hu">
     <head>
         <title>kozossegek.hu - Belépés</title>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
         <style>
+            @import url(https://fonts.googleapis.com/css?family=Roboto:300);
+
+            .login-page {
+                width: 360px;
+                padding: 8% 0 0;
+                margin: auto;
+            }
+            .form {
+                position: relative;
+                z-index: 1;
+                background: #FFFFFF;
+                max-width: 360px;
+                margin: 0 auto 100px;
+                padding: 45px;
+                text-align: center;
+                box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+            }
+            .form input {
+                font-family: "Roboto", sans-serif;
+                outline: 0;
+                background: #f2f2f2;
+                width: 100%;
+                border: 0;
+                margin: 0 0 15px;
+                padding: 15px;
+                box-sizing: border-box;
+                font-size: 14px;
+            }
+            .form button {
+                font-family: "Roboto", sans-serif;
+                text-transform: uppercase;
+                outline: 0;
+                background: #4CAF50;
+                width: 100%;
+                border: 0;
+                padding: 15px;
+                color: #FFFFFF;
+                font-size: 14px;
+                -webkit-transition: all 0.3s ease-in;
+                transition: all 0.3s ease-in;
+                cursor: pointer;
+            }
+            .form button:hover,.form button:active,.form button:focus {
+                background: #43A047;
+            }
+            .form .message {
+                font-family: "Roboto", sans-serif;
+                margin: 15px 0 0;
+                color: #b3b3b3;
+                font-size: 12px;
+            }
+            .form .message a {
+                color: #4CAF50;
+                text-decoration: none;
+                font-weight: bold;
+            }
+            .bg_image {
+                position: absolute;
+                width: 106%;
+                height: 106%;
+                top: -3%;
+                left: -3%;
+                filter: blur(10px);
+                background: url("/assets/sidebar-09/images/bg_1.jpg") no-repeat center;
+                background-size: cover;
+            }
             body {
-                margin: 0;
-                padding: 0;
-                background-color: #17a2b8;
-                height: 100vh;
-            }
-            #login .container #login-row #login-column #login-box {
-                margin-top: 120px;
-                max-width: 600px;
-                height: 320px;
-                border: 1px solid #9C9C9C;
-                background-color: #EAEAEA;
-            }
-            #login .container #login-row #login-column #login-box #login-form {
-                padding: 20px;
-            }
-            #login .container #login-row #login-column #login-box #login-form #register-link {
-                margin-top: -85px;
+                overflow: hidden;
             }
         </style>
     </head>
     <body>
-        <div id="login">
-            <div class="container text-center">
-                <div id="login-row" class="row justify-content-center text-left align-items-center">
-                    <div id="login-column" class="col-md-6">
-                        <div id="login-box" class="col-md-12">
-                            <form id="login-form" class="form" method="post">
-                                <h3 class="text-center text-info mb-4">Belépés</h3>
-                                <div class="alert alert-danger">Hibás felhasználónév/jelszó</div>
-                                <div class="form-group">
-                                    <label for="email" class="text-info">email:</label><br>
-                                    <input type="text" name="username" id="username" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label for="password" class="text-info">jelszó:</label><br>
-                                    <input type="password" name="password" id="password" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <input type="submit" name="submit" class="btn btn-info btn-md" value="belépés">
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <div class="bg_image"></div>
+    <div class="login-page">
+        <div class="form">
+            <form class="login-form" method="post">
+                <img src="/images/logo_only.png" style="width: 100px; height: auto; margin-bottom: 2em"/>
+                <input type="text" name="username" placeholder="felhasználónév" autofocus/>
+                <input type="password" name="password" placeholder="jelszó"/>
+                <button>belépés</button>
+                <p class="message">
+                    <a href="#" style="float: left">Vissza a főoldalra</a>
+                    <a href="#" style="float: right">Elfelejtettem a jelszavam</a>
+                </p>
+            </form>
         </div>
+    </div>
     </body>
 </html>
