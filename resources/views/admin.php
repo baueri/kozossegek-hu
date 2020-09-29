@@ -14,8 +14,8 @@
     <link rel="stylesheet" href="/assets/sidebar-09/css/style.css">
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <link rel="stylesheet" href="/css/admin.css">
     @yield('header')
+    <link rel="stylesheet" href="/css/admin.css">
 </head>
 <body>
 <div class="wrapper d-flex align-items-stretch">

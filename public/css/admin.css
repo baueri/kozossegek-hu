@@ -20,3 +20,8 @@
 }
 
 .note-editor.note-frame.fullscreen {background: #fff}
+
+.select2-container--bootstrap .select2-selection--single {
+    height: auto;
+    padding: 8px 24px 8px 12px;
+}

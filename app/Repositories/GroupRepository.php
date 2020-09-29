@@ -59,6 +59,14 @@ class GroupRepository extends Repository
         if ($rendszeresseg = $filter['rendszeresseg']) {
             $builder->where('occasion_frequency', $rendszeresseg);
         }
+
+        if ($intezmeny = $filter['institute_id']) {
+            $builder->where('institute_id', $intezmeny);
+        }
+
+        if ($status = $filter['status']) {
+            $builder->where('status', $status);
+        }
         
         if ($filter['deleted']) {
             $builder->whereNotNull('deleted_at');
