@@ -11,6 +11,7 @@ use App\Admin\Group\Services\UpdateGroup;
 use Framework\Http\Request;
 use App\Admin\Group\Services\DeleteGroup;
 use App\Admin\Group\Services\CreateGroup;
+use App\Admin\Group\Services\BaseGroupForm;
 
 class GroupController extends AdminController
 {
@@ -19,7 +20,7 @@ class GroupController extends AdminController
         return $service->show();
     }
 
-    public function create(Services\BaseGroupForm $service)
+    public function create(BaseGroupForm $service)
     {
         return $service->show();
     }

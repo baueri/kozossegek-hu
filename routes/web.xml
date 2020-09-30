@@ -9,6 +9,7 @@
     <!-- BELÉPÉS -->
     <route method="get" uri="login" controller="App\Portal\Controllers\LoginController" use="login" as="login"/>
     <route method="post" uri="login" controller="App\Portal\Controllers\LoginController" use="doLogin"/>
+    <route method="get" uri="admin/logout" controller="App\Portal\Controllers\LoginController" use="logout" as="admin.logout"/>
     
     <route-group namespace="App\Admin" prefix="admin" as="admin" middleware="App\Middleware\AdminMiddleware">
         <!-- ADMIN  -->
@@ -71,7 +72,6 @@
     </route-group>
     <route-group namespace="App\Admin\Controllers" prefix="admin" as="admin">
         <route method="get" uri="groups" controller="GroupController" use="list" as="groups"/>
-        <route method="get" uri="logout" controller="LoginController" use="logout" as="logout"/>
     </route-group>
     <route method="get" uri="{slug}" controller="App\Portal\Controllers\PageController" use="page" as="portal.page"/>
 </routes>

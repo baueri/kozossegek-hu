@@ -5,6 +5,7 @@ namespace App\Portal\Controllers;
 use App\Auth\Auth;
 use App\Auth\Authenticate;
 use Framework\Http\Request;
+use Framework\Http\Message;
 
 /**
  * Description of LoginController
@@ -24,10 +25,26 @@ class LoginController extends \Framework\Http\Controller
     
     public function doLogin(Request $request, Authenticate $service)
     {
-        $user = $service->authenticate($request['username'], $request['password']);
-
-        Auth::login($user);
-
-        redirect('admin.dashboard');
+        try {
+            $user = $service->authenticate($request['username'], $request['password']);
+            
+            Auth::login($user);
+    
+            redirect('admin.dashboard');
+            
+        } catch (\Framework\Exception\UnauthorizedException $e) {
+            Message::danger('Hibás felhasználónév vagy jelszó');
+            
+            return view('portal.login');
+        };
+    }
+    
+    public function logout()
+    {
+        Auth::logout();
+        
+        Message::success('Sikeres kijelentkezés.');
+        
+        redirect('login');
     }
 }

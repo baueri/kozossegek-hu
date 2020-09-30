@@ -6,6 +6,7 @@ namespace App\Repositories;
 
 use App\Models\Page;
 use Framework\Repository;
+use Framework\Model\PaginatedModelCollection;
 
 class PageRepository extends Repository
 {
@@ -20,6 +21,11 @@ class PageRepository extends Repository
         return $this->getInstance($row);
     }
     
+    /**
+     * 
+     * @param array $filter
+     * @return \Framework\Model\ModelCollection|\Framework\Model\Model[]|\Framework\Database\PaginatedResultSet|PaginatedModelCollection
+     */
     public function getPages($filter = [])
     {
         $builder = $this->getBuilder();

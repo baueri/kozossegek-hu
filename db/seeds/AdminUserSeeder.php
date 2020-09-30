@@ -15,6 +15,7 @@ class AdminUserSeeder extends AbstractSeed
                 'name' => 'Bauer Iván',
                 'email' => 'birkaivan@gmail.com',
                 'username' => 'baueri',
+                'password' => Password::hash('cheese90kk')
             ],
             [
                 'name' => 'Rónaszéki Benedek',
@@ -32,7 +33,7 @@ class AdminUserSeeder extends AbstractSeed
         ];
 
         foreach ($users as $user) {
-            $user['password'] = $basePass;
+            $user['password'] = $user['password'] ?? $basePass;
             $this->insert('users', $user);
         }
     }

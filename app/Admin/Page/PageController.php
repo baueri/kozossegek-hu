@@ -8,6 +8,7 @@ use Framework\Http\Message;
 use Framework\Http\Request;
 use App\Repositories\PageRepository;
 use Framework\Http\View\ViewInterface;
+use App\Auth\Auth;
 
 class PageController extends AdminController
 {
@@ -61,7 +62,10 @@ class PageController extends AdminController
     
     public function doCreate()
     {
-        $page = $this->repository->create($this->request->only('title', 'slug', 'content', 'status'));
+        $data = $this->request->only('title', 'slug', 'content', 'status');
+        $data['user_id'] = Auth::user()->id;
+        
+        $page = $this->repository->create($data);
 
         Message::success('Oldal létrehozva');
 

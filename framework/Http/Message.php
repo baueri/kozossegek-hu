@@ -54,6 +54,14 @@ class Message
     }
     
     /**
+     * @return array|NULL
+     */
+    public static function flash()
+    {
+        return static::get();
+    }
+    
+    /**
      * @return array|null
      */
     private static function getSessionData()

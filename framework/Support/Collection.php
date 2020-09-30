@@ -674,6 +674,14 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
             return !in_array($key, $keys);
         });
     }
+    
+    /**
+     * @return static
+     */
+    public function unique()
+    {
+        return new static(array_unique($this->items));
+    }
 
     public function make($abstraction = null)
     {

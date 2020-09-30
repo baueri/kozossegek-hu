@@ -4,41 +4,43 @@
 
 <form method="get" id="finder">
     <div class="row ">
-        <div class="col-md-2 offset-6">
-            <div class="form-group">
-            <select class="form-control" name="status">
-                <option></option>
-                @foreach($statuses as $status)
-                <option value="{{ $status->name }}" {{ $filter['status'] == $status->name ? 'selected' : '' }}>{{ $status }}</option>
-                @endforeach
-            </select>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="input-group">
-                <input type="text" name="search" value="{{ $filter['search'] }}" class="form-control" placeholder="keresés névre, leírásra...">
-                <div class="input-group-append">
-                    <button type="submit" class="btn btn-primary">Keresés</button>
+        <div class="col-md-4 offset-8">
+        	<div class="form-group">
+                <div class="input-group">
+                    <input type="text" name="search" value="{{ $filter['search'] }}" class="form-control" placeholder="keresés névre, leírásra...">
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-primary">Keresés</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
     <div class="row">
-        <div class="col-md-3 col-lg-2 offset-lg-3">
+    	<div class="col-md-3">
+            <div class="form-group">
+                <select class="form-control" name="status">
+                    <option></option>
+                    @foreach($statuses as $status)
+                    	<option value="{{ $status->name }}" {{ $filter['status'] == $status->name ? 'selected' : '' }}>{{ $status }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+        <div class="col-md-3">
             <div class="form-group">
                 <select name="varos" id="varos" class="form-control">
                     <option value="{{ $filter['varos'] }}">{{ $filter['varos'] ?: 'város' }}</option>
                 </select>
             </div>
         </div>
-        <div class="col-md-3 col-lg-2">
+        <div class="col-md-3">
             <div class="form-group">
                 <select name="institute_id" id="institute_id" class="form-control">
                     <option value="{{ $filter['institute_id'] }}">{{ $institute ? $institute->name : 'intézmény' }}</option>
                 </select>
             </div>
         </div>
-        <div class="col-md-3 col-lg-2">
+        <div class="col-md-3">
             <div class="form-group">
                 <select class="form-control" id="korosztaly" name="korosztaly">
                     <option></option>

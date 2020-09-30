@@ -23,14 +23,14 @@ class Auth
 
     public static function login(User $user)
     {
-        db()->execute('replace into user_sessions (session_id, user_id, created_at) values(?, ?, CURRENT_TIMESTAMP)', session_id(), $user->id);
+        db()->execute('replace into user_sessions (unique_id, user_id, created_at) values(?, ?, CURRENT_TIMESTAMP)', session_id(), $user->id);
 
         static::setUser($user);
     }
 
     public static function logout()
     {
-        db()->execute('delete from user_sessions where session_id=?', session_id());
+        db()->execute('delete from user_sessions where unique_id=?', session_id());
 
         static::$user = null;
     }
@@ -41,5 +41,10 @@ class Auth
     public static function loggedIn()
     {
         return (bool) static::$user;
+    }
+    
+    public static function user()
+    {
+        return static::$user;
     }
 }

@@ -10,6 +10,7 @@ use App\Models\PageStatus;
 use App\Repositories\PageRepository;
 use Framework\Database\PaginatedResultSetInterface;
 use Framework\Http\Request;
+use App\Repositories\UserRepository;
 
 class PageTable extends AdminTable
 {
@@ -17,6 +18,11 @@ class PageTable extends AdminTable
      * @var PageRepository
      */
     private $repository;
+    
+    /**
+     * @var UserRepository
+     */
+    private $userRepository;
 
     protected $columns = [
         'id' => '#',
@@ -33,10 +39,11 @@ class PageTable extends AdminTable
      * @param Request $request
      * @param AdminPageRepository $repository
      */
-    public function __construct(Request $request, AdminPageRepository $repository)
+    public function __construct(Request $request, AdminPageRepository $repository, UserRepository $userRepository)
     {
         parent::__construct($request);
         $this->repository = $repository;
+        $this->userRepository = $userRepository;
     }
 
     public function getSlug($slug)
@@ -71,6 +78,13 @@ class PageTable extends AdminTable
         }
         return date('Y.m.d H:i', strtotime($updatedAt));
     }
+    
+    public function getUserId(...$params)
+    {
+        [,$page] = $params;
+        
+        return $page->user->name;
+    }
 
     protected function getData(): PaginatedResultSetInterface
     {
@@ -78,6 +92,13 @@ class PageTable extends AdminTable
         if ($this->request->route->getAs() == 'admin.page.trash') {
             $filter['deleted'] = true;
         }
-        return $this->repository->getPages($filter);
+        
+        $pages = $this->repository->getPages($filter);
+        
+        $userIds = $pages->pluck('user_id')->unique()->all();
+        
+        $pages->with($this->userRepository->getUsersByIds($userIds), 'user', 'user_id');
+        
+        return $pages;
     }
 }

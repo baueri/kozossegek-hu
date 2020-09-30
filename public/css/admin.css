@@ -37,7 +37,7 @@
     cursor: default;
 }
 
-input[type=text], .select2-container--bootstrap .select2-selection--single, select {
+input[type=text], input[type=email], input[type=tel], .select2-container--bootstrap .select2-selection--single, select {
     background: #eee;
 }
 

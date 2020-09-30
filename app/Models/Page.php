@@ -22,5 +22,10 @@ class Page extends Model
     public $status;
 
     public $slug;
+    
+    /**
+     * @var User
+     */
+    public $user;
 
 }

@@ -4,7 +4,7 @@
         <title>kozossegek.hu - Belépés</title>
         <style>
             @import url(https://fonts.googleapis.com/css?family=Roboto:300);
-
+            
             .login-page {
                 width: 360px;
                 padding: 8% 0 0;
@@ -16,7 +16,7 @@
                 background: #FFFFFF;
                 max-width: 360px;
                 margin: 0 auto 100px;
-                padding: 45px;
+                padding: 25px 45px 45px;
                 text-align: center;
                 box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
             }
@@ -49,7 +49,6 @@
                 background: #43A047;
             }
             .form .message {
-                font-family: "Roboto", sans-serif;
                 margin: 15px 0 0;
                 color: #b3b3b3;
                 font-size: 12px;
@@ -70,7 +69,24 @@
                 background-size: cover;
             }
             body {
+            
+                font-family: "Roboto", sans-serif;
                 overflow: hidden;
+            }
+            
+            .alert {
+                padding: .8em .5em;
+                margin-bottom: 1em;
+                border-radius: 3px;
+            }
+            .alert-success {
+                background:green;
+            }
+            
+            .alert-danger {
+                background: #F8D7DA;
+                color: #CC3300;
+                border: 1px solid #BA8187;
             }
         </style>
     </head>
@@ -79,7 +95,8 @@
     <div class="login-page">
         <div class="form">
             <form class="login-form" method="post">
-                <img src="/images/logo_only.png" style="width: 100px; height: auto; margin-bottom: 2em"/>
+                <img src="/images/logo_only.png" style="width: 80px; height: auto; margin-bottom: 2em"/>
+                @include('admin.partials.message')
                 <input type="text" name="username" placeholder="felhasználónév" autofocus/>
                 <input type="password" name="password" placeholder="jelszó"/>
                 <button>belépés</button>

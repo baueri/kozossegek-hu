@@ -51,7 +51,7 @@ class BaseGroupForm {
         $age_groups = (new \App\Repositories\AgeGroupRepository)->all();
         $action = $this->getAction($group);
 
-        return view('admin.group.edit', compact('group', 'institute', 'denominations',
+        return view('admin.group.create', compact('group', 'institute', 'denominations',
                 'statuses', 'occasion_frequencies', 'age_groups', 'action'));
     }
     

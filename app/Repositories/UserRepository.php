@@ -27,6 +27,12 @@ class UserRepository extends Repository
 
         return $this->getInstance($builder->first());
     }
+    
+    public function getUsersByIds(array $userIds) {
+        $rows = $this->getBuilder()->whereIn('id', $userIds)->get();
+        
+        return $this->getInstances($rows);
+    }
 
     public static function getModelClass(): string
     {
