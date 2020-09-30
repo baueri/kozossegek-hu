@@ -23,13 +23,46 @@ class DummyGroupSeeder extends AbstractSeed
             'KÉK énekkar',
             'Rókusi ifjúsági csoport',
             'SZICS (Szent-Mihályi ifjúsági csoport)',
+            'Hit és fény',
+            'Tiszavirág közösség',
+            'Új Jeruzsálem közösség',
+            'Katolikus Ifjúsági Mozgalom (KIM)',
+            'Magvető',
+            'Keresztény Ökomenikus Diákegylet',
+            'Hálóklub',
+            'Jegyesek',
+            'Baba-mama klub',
+            'Taizéi imakör',
+            'Karitász',
+            'CSÜCSOP',
+            'Cursillo',
+            'Házas Hétvége',
+            'MÉCS',
+            'Nyolc Boldogság katolikus közösség',
+            'Hetvenkét Tanítvány Mozgalom',
+            'Hét Láng közösség',
+            'Antióchia közösség',
+            'Actio Catholica',
+            'Chemin Neuf közösség',
+            'Bokor bázisközösség',
+            'Bárka közösség',
+            'Emmausz közösség',
+            'Ferences világi rend',
+            'Fokoláre mozgalom',
+            'Mária kongregáció',
+            'Mária légió',
+            'Szeretetláng mozgalom',
+            'Szentjánosbogár közösség',
+            'Schönstatti apostoli mozgalom',
+            'Regnum Christi Mozgalom',
         ];
         
         
-        for ($i = 0; $i < 100; $i++) {
+        for ($i = 0; $i < 1000; $i++) {
+            $institute = $this->fetchRow('select id, city from institutes order by rand()');
             $data = [
                 'name' => $randomNames[array_rand($randomNames)],
-                'city' => 'Szeged',
+                'city' => $institute['city'],
                 'description' => $faker->paragraphs(3, true),
                 'denomination' => App\Enums\DenominationEnum::KATOLIKUS,
                 'group_leaders' => $faker->name . (rand(0, 20) > 15 ? ', ' . $faker->name : ''),
@@ -39,7 +72,7 @@ class DummyGroupSeeder extends AbstractSeed
                 'age_group' => \App\Enums\AgeGroupEnum::random(),
                 'occasion_frequency' => App\Enums\OccasionFrequencyEnum::random(),
                 'status' => \App\Enums\GroupStatusEnum::ACTIVE,
-                'institute_id' => $this->fetchRow('select id from institutes order by rand()')['id']
+                'institute_id' => $institute['id']
             ];
             
             $this->insert('groups', $data);

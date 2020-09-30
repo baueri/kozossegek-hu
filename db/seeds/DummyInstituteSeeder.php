@@ -20,12 +20,12 @@ class DummyInstituteSeeder extends AbstractSeed
              'rendház'
          ];
          
-         for ($i = 0; $i < 20; $i++) {
+         for ($i = 0; $i < 100; $i++) {
              $data = [
                  'name' => $faker->company . ' ' . $suffixes[array_rand($suffixes)],
-                 'city' => 'Szeged',
+                 'city' => $faker->city,
                  'address' => $faker->address,
-                 'leader_name' => $faker->name('male') . ' atya'
+                 'leader_name' => $faker->lastName . ' ' . $faker->firstNameMale . ' atya'
              ];
              
              $this->insert('institutes', $data);
