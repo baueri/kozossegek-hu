@@ -2,7 +2,9 @@
 
 namespace App\Admin\Group;
 
-use App\Admin\Components\AdminTable;
+use App\Admin\Components\AdminTable\AdminTable;
+use App\Admin\Components\AdminTable\Deletable;
+use App\Admin\Components\AdminTable\Editable;
 use App\Models\AgeGroup;
 use App\Models\Group;
 use App\Models\GroupStatus;
@@ -13,7 +15,7 @@ use Framework\Database\PaginatedResultSetInterface;
 use Framework\Http\Request;
 use Framework\Support\StringHelper;
 
-class GroupTable extends AdminTable
+class GroupTable extends AdminTable implements Editable, Deletable
 {
 
     protected $columns = [
@@ -25,8 +27,8 @@ class GroupTable extends AdminTable
         'age_group' => 'Korosztály',
         'status' => 'Státusz',
         'created_at' => 'Létrehozva',
-        'delete' => '<i class="fa fa-trash"></i>'
     ];
+
     protected $centeredColumns = ['status'];
     /**
      * @var GroupRepository
@@ -60,21 +62,9 @@ class GroupTable extends AdminTable
         return $institute->name;
     }
 
-    public function getName($name, Group $group)
-    {
-        $uri = route('admin.group.edit', ['id' => $group->id]);
-        return "<a href='$uri'>$name <i class='fa fa-pencil-alt'></i></a>";
-    }
-
     public function getCreatedAt($createdAt)
     {
         return date('Y.m.d H:i', strtotime($createdAt));
-    }
-
-    public function getDelete($col, Group $group)
-    {
-        $uri = route('admin.group.delete', ['id' => $group->id]);
-        return "<a href='$uri' class='text-danger'><i class='fa fa-trash'></i>";
     }
 
     public function getStatus($status)
@@ -107,5 +97,20 @@ class GroupTable extends AdminTable
         $groups->with($institutes, 'institute', 'institute_id', 'id');
 
         return $groups;
+    }
+
+    public function getDeleteUrl($model): string
+    {
+        return route('admin.group.delete', ['id' => $model->id]);
+    }
+
+    public function getEditUrl($model): string
+    {
+        return route('admin.group.edit', ['id' => $model->id]);
+    }
+
+    public function getEditColumn(): string
+    {
+        return 'name';
     }
 }

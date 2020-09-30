@@ -2,14 +2,20 @@
 
 namespace App\Admin\Institute;
 
+use App\Admin\Controllers\AdminController;
+
 /**
  * Description of InstituteController
  *
  * @author ivan
  */
-class InstituteController extends \App\Admin\Controllers\AdminController
+class InstituteController extends AdminController
 {
-    public function list(\Framework\Http\Request $request, InstituteAdminTable $table)
+    /**
+     * @param InstituteAdminTable $table
+     * @return string
+     */
+    public function list(InstituteAdminTable $table)
     {
         return $this->view('admin.institute.list', compact('table'));
     }

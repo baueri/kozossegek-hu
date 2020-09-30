@@ -4,6 +4,7 @@ namespace App\Portal\Controllers;
 
 use App\Auth\Auth;
 use App\Auth\Authenticate;
+use Framework\Exception\UnauthorizedException;
 use Framework\Http\Request;
 use Framework\Http\Message;
 
@@ -31,12 +32,11 @@ class LoginController extends \Framework\Http\Controller
             Auth::login($user);
     
             redirect('admin.dashboard');
-            
-        } catch (\Framework\Exception\UnauthorizedException $e) {
+        } catch (UnauthorizedException $e) {
             Message::danger('Hibás felhasználónév vagy jelszó');
             
             return view('portal.login');
-        };
+        }
     }
     
     public function logout()

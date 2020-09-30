@@ -9,6 +9,7 @@ use Framework\Http\View\Directives\ExtendsDirective;
 use Framework\Http\View\Directives\IfDirective;
 use Framework\Http\View\Directives\IncludeDirective;
 use Framework\Http\View\Directives\LangDirective;
+use Framework\Http\View\Directives\RouteDirective;
 use Framework\Http\View\Directives\SectionDirective;
 use Framework\Http\View\Directives\YieldDirective;
 use Framework\Http\View\ViewParser;
@@ -20,6 +21,7 @@ class BootDirectives implements Bootstrapper
     public function boot()
     {
         ViewParser::registerDirective(new ExtendsDirective());
+        ViewParser::registerDirective(new RouteDirective());
         ViewParser::registerDirective(new IncludeDirective());
         ViewParser::registerDirective(new EchoDirective());
         ViewParser::registerDirective(new LangDirective());

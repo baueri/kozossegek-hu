@@ -159,7 +159,16 @@ class HttpDispatcher implements Dispatcher
         try {
             throw $e;
         } catch (ModelNotFoundException|RouteNotFoundException $e) {
-            return print(view('portal.error', ['code' => $e->getCode(), 'message' => 'A keresett oldal nem található']));
+            return print(view('portal.error', [
+                'code' => $e->getCode(),
+                'message' => 'A keresett oldal nem található',
+                'message2' => 'Az oldal, amit keresel lehet, hogy törölve lett vagy ideiglenesen nem elérhető.']));
+        } catch (Exception $e) {
+            return print(view('portal.error', [
+                'code' => 500,
+                'message' => 'Váratlan hiba történt',
+                'message2' => 'Az oldal üzemeltetői értesítve lettek a hibáról'
+            ]));
         }
     }
 }

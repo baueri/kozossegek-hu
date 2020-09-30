@@ -3,30 +3,18 @@
 @extends('admin')
 
 <form method="get" id="finder">
-    <div class="row ">
-        <div class="col-md-4 offset-8">
-        	<div class="form-group">
-                <div class="input-group">
-                    <input type="text" name="search" value="{{ $filter['search'] }}" class="form-control" placeholder="keresés névre, leírásra...">
-                    <div class="input-group-append">
-                        <button type="submit" class="btn btn-primary">Keresés</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="btn-group btn-shadow mb-3 mr-auto">
+        <a class="btn {{ !$filter['status'] ? 'active btn-primary' : 'btn-default' }}" href="@route('admin.group.list')">Összes</a>
+        <a class="btn {{ $filter['status'] == 'pending' ? 'active btn-primary' : 'btn-default' }}" href="@route('admin.group.list', ['status' => 'pending'])">Függőben</a>
+        <a class="btn {{ $filter['status'] == 'inactive' ? 'active btn-primary' : 'btn-default' }}" href="@route('admin.group.list', ['status' => 'inactive'])">Inaktív</a>
     </div>
     <div class="row">
-    	<div class="col-md-3">
+        <div class="col-md-3">
             <div class="form-group">
-                <select class="form-control" name="status">
-                    <option></option>
-                    @foreach($statuses as $status)
-                    	<option value="{{ $status->name }}" {{ $filter['status'] == $status->name ? 'selected' : '' }}>{{ $status }}</option>
-                    @endforeach
-                </select>
+                <input type="text" name="search" value="{{ $filter['search'] }}" class="form-control" placeholder="keresés névre, leírásra...">
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <div class="form-group">
                 <select name="varos" id="varos" class="form-control">
                     <option value="{{ $filter['varos'] }}">{{ $filter['varos'] ?: 'város' }}</option>
@@ -40,7 +28,7 @@
                 </select>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <div class="form-group">
                 <select class="form-control" id="korosztaly" name="korosztaly">
                     <option></option>
@@ -50,15 +38,9 @@
                 </select>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="form-group">
-                <select class="form-control" id="rendszeresseg" name="rendszeresseg">
-                    <option></option>
-                    @foreach($occasion_frequencies as $occasion_frequency)
-                    <option value="{{ $occasion_frequency->name }}" {{ $occasion_frequency->name == $filter['rendszeresseg'] ? 'selected' : '' }}>{{ $occasion_frequency }}</option>
-                    @endforeach
-                </select>
-            </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary">Keresés</button>
+            <a class="btn btn-default" href="@route('admin.group.list')">Alapállapot</a>
         </div>
     </div>
     <div class="row">
@@ -74,7 +56,7 @@
     </div>
     <div class="row mb-3">
         <div class="col-md-2 offset-10 text-right">
-            <a href="{{ route('admin.group.list') }}">Szűrés törlése</a>
+
         </div>
     </div>
 </form>
@@ -101,13 +83,12 @@
             placeholder: "rendszeresség",
             allowClear: true,
         });
-        $("[name=status]").select2({placeholder: "státusz", allowClear: true});
 
         $("[name=institute_id]").select2({
             placeholder: "plébánia / intézmény",
             allowClear: true,
             ajax: {
-                url: "{{ route('api.search-institute') }}",
+                url: "@route('api.search-institute')",
                 dataType: 'json',
                 delay: 300,
                 data: function (params) {

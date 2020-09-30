@@ -46,7 +46,7 @@ $(document).ready(function () {
 
             var title = $(this);
             slugGenerator = setTimeout(function () {
-                $.post("{{ route('admin.page.api.generate_slug') }}?title=" + title.val(), function (response) {
+                $.post("@route('admin.page.api.generate_slug')?title=" + title.val(), function (response) {
                     if (response.success) {
                         $("[name=slug]").val(response.slug);
                     }

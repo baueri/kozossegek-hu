@@ -109,7 +109,7 @@
             placeholder: "város",
             allowClear: true,
             ajax: {
-                url: "{{ route('api.search-city') }}",
+                url: "@route('api.search-city')",
                 dataType: 'json',
                 delay: 300
             }
@@ -119,7 +119,7 @@
             placeholder: "intézmény",
             allowClear: true,
             ajax: {
-                url: "{{ route('api.search-institute') }}",
+                url: "@route('api.search-institute')",
                 dataType: 'json',
                 delay: 300,
                 data: function (params) {

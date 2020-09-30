@@ -7,17 +7,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>kozossegek.hu - ADMIN</title>
 
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-<!--    <link rel="stylesheet" href="/css/bootstrap-margins-paddings.css">-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
     <link rel="stylesheet" href="/assets/sidebar-09/css/style.css">
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     @yield('header')
     <link rel="stylesheet" href="/css/admin.css">
 </head>
 <body>
+<nav id="top_menu" class="navbar navbar-expand navbar-dark bg-dark fixed-top">
+    <ul class="navbar-nav mr-auto">
+        @foreach($current_menu_item['submenu'] as $submenuItem)
+        <li class="nav-item  {{ $submenuItem['active'] ? 'active' : '' }}">
+            <a class="nav-link" href="{{ $submenuItem['uri'] }}"><i class="fa fa-{{ $submenuItem['icon'] }}"></i> {{ $submenuItem['title'] }}</a>
+        </li>
+        <li class="nav-item divider"></li>
+        @endforeach
+    </ul>
+    <ul class="navbar-nav ml-auto">
+        <li class="nav-item text-white">
+            Hello {{ App\Auth\Auth::user()->keresztnev() }}
+        </li>
+        <li class="divider nav-item"></li>
+        <li class="nav-item"><a href="@route('home')" title="ugrás az oldalra" target="_blank" class="text-white nav-link"><i class="fa fa-eye"></i></a></li>
+        <li class="nav-item"><a href="@route('admin.logout')" title="kilépés" class="text-danger nav-link"><i class="fa fa-sign-out-alt"></i></a></li>
+    </ul>
+</nav>
+
 <div class="wrapper d-flex align-items-stretch">
     <nav id="sidebar">
         <div class="img bg-wrap text-center py-4" style="background-image: url(/assets/sidebar-09/images/bg_1.jpg);">
@@ -37,5 +56,10 @@
     </div>
 </div>
 @yield('footer')
+<script>
+    $(()=>{
+        $("[title]").tooltip();
+    });
+</script>
 </body>
 </html>

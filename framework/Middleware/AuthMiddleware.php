@@ -24,9 +24,6 @@ class AuthMiddleware implements Middleware
 
     public function handle()
     {
-        
-        View::addVariable('system_message', \Framework\Http\Message::get());
-        
         $this->service->authenticateBySession();
     }
 }

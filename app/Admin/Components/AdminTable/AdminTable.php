@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin\Components;
+namespace App\Admin\Components\AdminTable;
 
 use Exception;
 use Framework\Database\PaginatedResultSetInterface;
@@ -27,6 +27,11 @@ abstract class AdminTable
     protected $request;
 
     /**
+     * @var string[]
+     */
+    protected $dates = ['created_at', 'updated_at', 'deleted_at'];
+
+    /**
      * AdminTable constructor.
      * @param Request $request
      */
@@ -51,7 +56,7 @@ abstract class AdminTable
     {
         $data = $this->getData();
         $model = [
-            'columns' => $this->columns,
+            'columns' => $this->getColumns(),
             'centered_columns' => $this->centeredColumns,
             'rows' => $this->transformData($data->rows()),
             'adminTable' => $this,
@@ -71,12 +76,23 @@ abstract class AdminTable
         $transformed = [];
 
         foreach ($rows as $i => $row) {
-            foreach (array_keys($this->columns) as $column) {
+            foreach (array_keys($this->getColumns()) as $column) {
                 $transformed[$i][$column] = $this->transformRowColumn($row, $column);
             }
         }
 
         return $transformed;
+    }
+
+    private function getColumns()
+    {
+        $columns = $this->columns;
+
+        if ($this instanceof Deletable) {
+            $columns['delete'] = '<i class="fa fa-trash"></i>';
+        }
+
+        return $columns;
     }
 
     /**
@@ -90,10 +106,36 @@ abstract class AdminTable
         $value = property_exists($row, $column) ? $row->{$column} : null;
 
         if (!method_exists($this, $method)) {
+
+            if ($this instanceof Editable && $column == $this->getEditColumn()) {
+                return $this->getEdit($value, $row);
+            }
+
+            if (in_array($column, $this->dates)) {
+                if (!$value) {
+                    return '-';
+                }
+                return date('Y.m.d H:i', strtotime($value));
+            }
+
             return $value;
         }
 
         return call_user_func_array([$this, $method], [$value, $row]);
+    }
+
+    protected function getEdit($value, $model)
+    {
+        $url = $this->getEditUrl($model);
+
+        return "<a href='$url' title='szerkesztés'>$value</a>";
+    }
+
+    protected function getDelete($t, $model)
+    {
+        $url = $this->getDeleteUrl($model);
+
+        return "<a href='$url' title='lomtárba'><i class='fa fa-trash text-danger'></i></a>";
     }
 
     /**

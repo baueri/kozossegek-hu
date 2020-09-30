@@ -5,12 +5,13 @@ namespace App\Admin\Components;
 
 
 use Framework\Http\Route\RouteInterface;
+use Framework\Support\Collection;
 
 class AdminMenu
 {
 
     /**
-     * @return string[][]
+     * @return string[][]|Collection
      */
     public static function getMenu()
     {

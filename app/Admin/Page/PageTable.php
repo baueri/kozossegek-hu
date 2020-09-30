@@ -4,7 +4,9 @@
 namespace App\Admin\Page;
 
 
-use App\Admin\Components\AdminTable;
+use App\Admin\Components\AdminTable\AdminTable;
+use App\Admin\Components\AdminTable\Deletable;
+use App\Admin\Components\AdminTable\Editable;
 use App\Models\Page;
 use App\Models\PageStatus;
 use App\Repositories\PageRepository;
@@ -12,7 +14,7 @@ use Framework\Database\PaginatedResultSetInterface;
 use Framework\Http\Request;
 use App\Repositories\UserRepository;
 
-class PageTable extends AdminTable
+class PageTable extends AdminTable implements Deletable, Editable
 {
     /**
      * @var PageRepository
@@ -30,8 +32,8 @@ class PageTable extends AdminTable
         'slug' => 'url',
         'user_id' => 'Szerző',
         'status' => 'Állapot',
+        'created_at' => 'Létrehozva',
         'updated_at' => 'Utoljára módosítva',
-        'delete' => '<i class="fa fa-trash"></i>'
     ];
 
     /**
@@ -56,29 +58,7 @@ class PageTable extends AdminTable
     {
         return (new PageStatus($status))->translate();
     }
-    
-    public function getTitle($title, Page $page)
-    {
-        $url = route('admin.page.edit', ['id' => $page->id]) ;
-        return "<a href='$url'>$title</a>";
-    }
-    
-    public function getDelete(...$params)
-    {
-        [,$page] = $params;
-        
-        $url = route('admin.page.delete', ['id' => $page->id]) ;
-        return "<a href='$url' title='lomtárba'><i class='fa fa-trash text-danger'></i></a>";
-    }
 
-    public function getUpdatedAt($updatedAt)
-    {
-        if (!$updatedAt) {
-            return '-';
-        }
-        return date('Y.m.d H:i', strtotime($updatedAt));
-    }
-    
     public function getUserId(...$params)
     {
         [,$page] = $params;
@@ -96,9 +76,24 @@ class PageTable extends AdminTable
         $pages = $this->repository->getPages($filter);
         
         $userIds = $pages->pluck('user_id')->unique()->all();
-        
+
         $pages->with($this->userRepository->getUsersByIds($userIds), 'user', 'user_id');
-        
+
         return $pages;
+    }
+
+    public function getDeleteUrl($model): string
+    {
+        return route('admin.page.delete', ['id' => $model->id]);
+    }
+
+    public function getEditUrl($model): string
+    {
+        return route('admin.page.edit', ['id' => $model->id]);
+    }
+
+    public function getEditColumn(): string
+    {
+        return 'title';
     }
 }

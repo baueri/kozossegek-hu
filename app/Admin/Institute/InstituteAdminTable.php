@@ -2,7 +2,9 @@
 
 namespace App\Admin\Institute;
 
-use App\Admin\Components\AdminTable;
+use App\Admin\Components\AdminTable\AdminTable;
+use App\Admin\Components\AdminTable\Deletable;
+use App\Admin\Components\AdminTable\Editable;
 use App\Repositories\InstituteRepository;
 use Framework\Database\PaginatedResultSetInterface;
 use Framework\Http\Request;
@@ -12,7 +14,7 @@ use Framework\Http\Request;
  *
  * @author ivan
  */
-class InstituteAdminTable extends AdminTable
+class InstituteAdminTable extends AdminTable implements Deletable, Editable
 {
 
     protected $columns = [
@@ -20,7 +22,7 @@ class InstituteAdminTable extends AdminTable
         'name' => 'Intézmény neve',
         'leader_name' => 'Intézményvezető',
         'city' => 'Város',
-        'address' => 'Cím'
+        'address' => 'Cím',
     ];
 
     /**
@@ -39,10 +41,23 @@ class InstituteAdminTable extends AdminTable
         $this->repository = $repository;
     }
 
-    //put your code here
+    public function getDeleteUrl($model): string
+    {
+        return route('admin.institute.delete', ['id' => $model->id]);
+    }
+
     protected function getData(): PaginatedResultSetInterface
     {
         return $this->repository->getInstitutes();
     }
 
+    public function getEditUrl($model): string
+    {
+        return route('admin.institute.edit', ['id' => $model->id]);
+    }
+
+    public function getEditColumn(): string
+    {
+        return 'name';
+    }
 }

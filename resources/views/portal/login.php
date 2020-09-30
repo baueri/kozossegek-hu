@@ -10,7 +10,8 @@
             @import url(https://fonts.googleapis.com/css?family=Roboto:300);
             
             .login-page {
-                width: 360px;
+                max-width: 360px;
+                width: 100%;
                 padding: 8% 0 0;
                 margin: auto;
             }
@@ -18,7 +19,6 @@
                 position: relative;
                 z-index: 1;
                 background: #FFFFFF;
-                max-width: 360px;
                 margin: 0 auto 100px;
                 padding: 25px 45px 45px;
                 text-align: center;
@@ -84,7 +84,9 @@
                 border-radius: 3px;
             }
             .alert-success {
-                background:green;
+                background: #FAFAD2;
+                color: green;
+                border: 1px solid green;
             }
             
             .alert-danger {

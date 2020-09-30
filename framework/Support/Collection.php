@@ -111,22 +111,31 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     }
 
     /**
-     * @param Closure|null $callback
+     * @param Closure|string|null $callback
      * @param null $default
      * @return mixed
      */
-    public function first(Closure $callback = null, $default = null)
+    public function first($callback = null, $default = null)
     {
         if (!$callback) {
             return reset($this->items) ?: $default;
         } else {
             foreach ($this->items as $key => $val) {
-                if ($callback($val, $key)) {
+                if ((is_callable($callback) && $callback($val, $key)) || (bool) static::getItemVal($val, $callback)) {
                     return $val;
                 }
             }
             return $default;
         }
+    }
+
+    private static function getItemVal($item, $key)
+    {
+        if (is_array($item) && isset($item[$key])) {
+            return $item[$key];
+        }
+
+        return $item->{$key};
     }
 
     /**

@@ -2,12 +2,14 @@
 
 namespace App\Admin\Page;
 
+use App\Repositories\PageRepository;
+
 /**
  * Description of AdminPageRepository
  *
  * @author ivan
  */
-class AdminPageRepository extends \App\Repositories\PageRepository
+class AdminPageRepository extends PageRepository
 {
     
     public function getPages($filter = array())

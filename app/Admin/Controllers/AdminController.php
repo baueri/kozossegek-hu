@@ -16,6 +16,9 @@ class AdminController extends Controller
         parent::__construct($view);
         $currentRoute = current_route();
         View::addVariable('current_route', $currentRoute);
-        View::addVariable('admin_menu', AdminMenu::getMenu());
+        $admin_menu = AdminMenu::getMenu();
+        View::addVariable('admin_menu', $admin_menu);
+        View::addVariable('current_menu_item', $admin_menu->first('active'));
+
     }
 }

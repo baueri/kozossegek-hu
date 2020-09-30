@@ -18,6 +18,10 @@ class ModelCollection extends Collection
      */
     public function with($relations, $toLoad, $on, $target = 'id')
     {
+        if (!$relations) {
+            return $this;
+        }
+        
         foreach ($this->items as $item) {
             $item->{$toLoad} = static::getAttributeValue($relations, $target, $item->{$on});
         }

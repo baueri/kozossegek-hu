@@ -9,6 +9,7 @@
 
 #content {
     margin-left: 200px;
+    margin-top: 41px;
     /*background: #eaeaea;*/
 }
 
@@ -22,6 +23,16 @@
 
 #sidebar .submenu > li > a {
     padding: 4px 30px;
+}
+
+#top_menu {
+    margin-left: 200px;
+    background: #32373d !important;
+}
+
+#top_menu .nav-link {
+    padding-top: 0px;
+    padding-bottom: 0px;
 }
 
 .note-editor.note-frame.fullscreen {background: #fff}
@@ -38,10 +49,47 @@
 }
 
 input[type=text], input[type=email], input[type=tel], .select2-container--bootstrap .select2-selection--single, select {
-    background: #eee;
+    /*background: #eee;*/
 }
 
 *::placeholder {
     color: #999 !important;
     font-size: 14px;
+}
+
+.nav-item.divider {
+    padding: 5px 10px;
+    position: relative;
+}
+
+.nav-item.divider:before {
+    content: " ";
+    display: block;
+    border-left: 1px solid #666;
+    width: 1px;
+    height: 100%;
+}
+
+.btn-group.btn-shadow .btn-primary.active {
+    box-shadow: inset 5px 5px 5px -1px rgba(0, 0, 0, 0.4);
+}
+
+.btn-default {
+    border: 1px solid #b9c8e4;
+    background: #dee5f2;
+}
+
+.btn-group.btn-shadow .btn-default {
+    background: #dee5f2;
+    background: linear-gradient(to bottom, #ffffff 0%, #dee5f2 100%);
+}
+
+.btn-group.btn-shadow .btn-primary {
+    background: #2F89FC;
+    background: linear-gradient(to bottom, #2F89FC 0%, #0062cc 100%);
+}
+
+.btn-group.btn-shadow .btn-default:active, .btn-group.btn-shadow .btn-default:focus {
+    box-shadow: none;
+    background: linear-gradient(to bottom, #dee5f2 0%, #ffffff 100%);
 }

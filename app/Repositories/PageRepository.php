@@ -5,6 +5,7 @@ namespace App\Repositories;
 
 
 use App\Models\Page;
+use Framework\Model\ModelNotFoundException;
 use Framework\Repository;
 use Framework\Model\PaginatedModelCollection;
 
@@ -17,6 +18,10 @@ class PageRepository extends Repository
     public function findBySlug($slug):?Page
     {
         $row = $this->getBuilder()->where('slug', $slug)->first();
+
+        if (!$row) {
+            throw new ModelNotFoundException('page not found');
+        }
 
         return $this->getInstance($row);
     }

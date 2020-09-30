@@ -13,6 +13,7 @@ class PageController extends Controller
     public function page(Request $request, PageRepository $repository)
     {
         $page = $repository->findBySlug($request['slug']);
+
         return $this->view('portal.page', compact('page'));
     }
 }

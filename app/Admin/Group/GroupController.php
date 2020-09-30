@@ -8,6 +8,7 @@ use App\Admin\Controllers\AdminController;
 use App\Admin\Group\Services\ListGroups;
 use App\Admin\Group\Services\EditGroup;
 use App\Admin\Group\Services\UpdateGroup;
+use Framework\Exception\UnauthorizedException;
 use Framework\Http\Request;
 use App\Admin\Group\Services\DeleteGroup;
 use App\Admin\Group\Services\CreateGroup;

@@ -20,4 +20,9 @@ class User extends Model
     public $password;
 
     public $email;
+
+    public function keresztnev()
+    {
+        return substr($this->name, strpos($this->name, ' '));
+    }
 }
