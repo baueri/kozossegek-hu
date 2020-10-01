@@ -8,9 +8,9 @@ namespace App\Repositories;
  * @author ivan
  */
 class CityRepository extends \Framework\Repository {
-   
+
     /**
-     * 
+     *
      * @param strgin $keyword
      * @param int $limit
      * @return ModelCollection
@@ -22,12 +22,12 @@ class CityRepository extends \Framework\Repository {
             ->limit($limit)
             ->orderBy('name', 'asc')
             ->get();
-        
+
         $counties = builder()->select('*')->from('counties')->get();
-        
+
         return $this->getInstances($rows)->with($counties, 'county', 'county_id');
     }
-    
+
     public static function getModelClass(): string {
         return \App\Models\City::class;
     }

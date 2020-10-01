@@ -88,7 +88,8 @@ class GroupTable extends AdminTable implements Editable, Deletable
     {
         $groups = $this->repository->search($this->request->merge([
             'order_by' => 'id',
-            'order' => 'desc'
+            'order' => 'desc',
+            'deleted' => $this->request->route->getAs() == 'admin.group.trash'
         ]));
 
         $instituteIds = $groups->pluck('institute_id');

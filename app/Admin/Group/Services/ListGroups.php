@@ -78,9 +78,20 @@ class ListGroups
         $institute = $this->instituteRepository->find($this->request['institute_id']);
         $filter = $this->request;
         $table = $this->table;
+        $current_page = $this->getCurrentPage();
 
         return view('admin.group.list', compact('table', 'age_groups', 'occasion_frequencies', 'statuses',
-            'institute', 'filter'));
+            'institute', 'filter', 'current_page'));
+    }
+
+    private function getCurrentPage()
+    {
+        if ($this->request->route->getAs() == 'admin.group.trash') {
+            return 'trash';
+        }
+
+        return $this->request['status'] ?: 'all';
+
     }
 
 }

@@ -25,30 +25,35 @@ class GroupController extends AdminController
     {
         return $service->show();
     }
-    
+
     public function doCreate(Request $request, CreateGroup $service)
     {
         $group = $service->create($request->except('files', 'image')->all());
-        
+
         redirect('admin.group.edit', ['id' => $group->id]);
     }
-    
+
     public function edit(EditGroup $service)
     {
         return $service->show();
     }
-    
+
     public function update(Request $request, UpdateGroup $service)
     {
         $service->update($request['id'], $request->except('id')->all());
-        
+
         redirect('admin.group.edit', ['id' => $request['id']]);
     }
-    
+
     public function delete(Request $request, DeleteGroup $service)
     {
         $service->delete($request['id']);
-        
+
         redirect('admin.group.list');
+    }
+
+    public function trash(ListGroups $service)
+    {
+        return $service->show();
     }
 }

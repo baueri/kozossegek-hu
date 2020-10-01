@@ -46,6 +46,9 @@
             <route method="get" uri="{id}/edit" controller="GroupController" use="edit" as="edit"/>
             <route method="post" uri="{id}/update" controller="GroupController" use="update" as="update"/>
             <route method="get" uri="{id}/delete" controller="GroupController" use="delete" as="delete"/>
+
+            <route method="get" uri="trash" controller="GroupController" use="trash" as="trash"/>
+
         </route-group>
 
 

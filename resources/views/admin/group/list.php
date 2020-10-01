@@ -2,9 +2,10 @@
 
 @section('title')
     <div class="btn-group btn-group-sm btn-shadow ml-4">
-        <a class="btn {{ !$filter['status'] ? 'active btn-primary' : 'btn-default' }}" href="@route('admin.group.list')">Összes</a>
-        <a class="btn {{ $filter['status'] == 'pending' ? 'active btn-primary' : 'btn-default' }}" href="@route('admin.group.list', ['status' => 'pending'])">Függőben</a>
-        <a class="btn {{ $filter['status'] == 'inactive' ? 'active btn-primary' : 'btn-default' }}" href="@route('admin.group.list', ['status' => 'inactive'])">Inaktív</a>
+        <a class="btn {{ $current_page == 'all' ? 'active btn-primary' : 'btn-default' }}" href="@route('admin.group.list')">Összes</a>
+        <a class="btn {{ $current_page == 'inactive' ? 'active btn-primary' : 'btn-default' }}" href="@route('admin.group.list', ['status' => 'inactive'])">Inaktív</a>
+        <a class="btn {{ $current_page == 'pending' ? 'active btn-primary' : 'btn-default' }}" href="@route('admin.group.list', ['status' => 'pending'])">Függőben</a>
+        <a class="btn {{ $current_page == 'trash' ? 'active btn-primary' : 'btn-default' }}" href="@route('admin.group.trash')">Lomtár</a>
     </div>
 @endsection
 @section('header')@include('asset_groups.select2')@endsection
@@ -46,15 +47,6 @@
         <div class="col-md-3 col-lg-3">
             <button type="submit" class="btn btn-primary btn-sm">Keresés</button>
             <a class="btn btn-default btn-sm" href="@route('admin.group.list')">Alapállapot</a>
-        </div>
-        <div class="col-md-3 col-lg-2 offset-md-6 offset-lg-7">
-            <div class="form-group">
-                <select class="form-control" name="order">
-                    <option value="created_at" {{ $filter['order'] == 'created_at' ? 'selected' : '' }}>Újak elöl</option>
-                    <option value="pending_first" {{ $filter['order'] == 'pending_first' ? 'selected' : '' }}>Függőben levők elöl</option>
-                    <option value="abc"  {{ $filter['order'] == 'abc' ? 'selected' : '' }}>Név szerint növekvő</option>
-                </select>
-            </div>
         </div>
     </div>
 </form>
