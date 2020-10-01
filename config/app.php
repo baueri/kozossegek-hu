@@ -9,9 +9,11 @@ return [
     'debug' => _env('DEBUG', false),
     'coming_soon' => _env('COMING_SOON', false),
 
-    'error_email' => _env('ERROR_EMAIL', 'birkaivan@gmail.com'),
-    'contact_email' => _env('CONTACT_EMAIL', 'birkaivan@gmail.com'),
-    'sender_email' => _env('SENDER_EMAIL', 'birkaivan@gmail.com'),
+    'email' => _env('EMAIL'),
+    'email_password' => _env('EMAIL_PASSWORD'),
+    'email_host' => _env('EMAIL_HOST'),
+    'email_port' => _env('EMAIL_PORT'),
+    'email_ssl' => _env('EMAIL_SSL'),
 
     'providers' => [
 

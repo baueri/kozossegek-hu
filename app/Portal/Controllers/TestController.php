@@ -8,16 +8,14 @@ use App\Portal\Test\TestPipe1;
 use App\Portal\Test\TestPipe2;
 use Framework\Support\PipeLine\PipeLine;
 
+use Framework\Mail\Mailer;
+use Framework\Mail\Mailable;
+
 class TestController
 {
-    public function testPipe(PipeLine $pipeLine)
+    public function testEmail(Mailer $mailer)
     {
-        $builder = builder()->select('*')->from('groups');
-        $pipeLine->send($builder)
-            ->pipes([TestPipe1::class, TestPipe2::class])
-            ->run();
-
-        dd($builder->toSql());
-
+        $mail = (new Mailable())->subject('Még egy teszt')->view('mail.test_email');
+        echo $mail->getBody();
     }
 }

@@ -62,7 +62,10 @@ class HttpKernel
             return print(view('portal.error', [
                 'code' => $exception->getCode(),
                 'message2' => 'Nincs jogosultsága az oldal megtekintéséhez']));
-        } catch (\Error $exception) {
+        } catch (\Error|\Exception $exception) {
+            
+            error_log($exception);
+
             return print(view('portal.error', [
                 'code' => 500,
                 'message' => 'Váratlan hiba történt',
