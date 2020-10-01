@@ -342,3 +342,7 @@ input[name=search]::placeholder {
 .note-float-right {
     margin-left: 1em;
 }
+
+.page {
+    overflow: hidden;
+}

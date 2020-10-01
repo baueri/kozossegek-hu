@@ -17,7 +17,7 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
     @yield('header')
-    
+
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     <script src="/js/scripts.js"></script>
@@ -37,8 +37,13 @@
                     <a href="@route('portal.page', ['slug' => 'rolunk'])" class="nav-link"><span>Rólunk</span></a>
                 </li>
                 <li class="nav-item">
-                    <a href="@route('portal.page', ['slug' => 'a-kozossegekrol'])" class="nav-link">A közösségről</a>
+                    <a href="@route('portal.page', ['slug' => 'a-kozosseg'])" class="nav-link">A közösségről</a>
                 </li>
+                @auth
+                    <li class="nav-item">
+                        <a href="@route('admin.dashboard')" class="nav-link"><i class="fa fa-user-lock"></i></a>
+                    </li>
+                @endauth
             </ul>
         </div>
 

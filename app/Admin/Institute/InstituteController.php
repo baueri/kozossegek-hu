@@ -27,7 +27,15 @@ class InstituteController extends AdminController
 
     public function edit(Request $request, InstituteRepository $repository)
     {
-        $institute = $repository->findOrFail($request['id']);
+        $institute = $repository->find($request['id']);
+
+        if (!$institute) {
+            
+            Message::danger('A keresett intézmény nem található');
+
+            redirect('admin.institute.list');
+        }
+
         $action = route('admin.institute.update', $institute);
 
         return view('admin.institute.edit', compact('institute', 'action'));
