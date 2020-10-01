@@ -16,6 +16,8 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     @yield('header')
     <link rel="stylesheet" href="/css/admin.css">
+    <script src="/js/admin.js"></script>
+
 </head>
 <body>
 <nav id="top_menu" class="navbar navbar-expand navbar-dark bg-dark fixed-top">
@@ -29,7 +31,7 @@
     </ul>
     <ul class="navbar-nav ml-auto">
         <li class="nav-item text-white">
-            Hello {{ App\Auth\Auth::user()->keresztnev() }}
+            Hello <a href="">{{ App\Auth\Auth::user()->keresztnev() }}</a>
         </li>
         <li class="divider nav-item"></li>
         <li class="nav-item"><a href="@route('home')" title="ugrás az oldalra" target="_blank" class="text-white nav-link"><i class="fa fa-eye"></i></a></li>
@@ -39,7 +41,7 @@
 
 <div class="wrapper d-flex align-items-stretch">
     <nav id="sidebar">
-        <div class="img bg-wrap text-center py-4" style="background-image: url(/assets/sidebar-09/images/bg_1.jpg);">
+        <div class="img bg-wrap text-center" style="background-image: url(/assets/sidebar-09/images/bg_1.jpg);">
             <div class="user-logo">
 <!--                <div class="img" style="background-image: url(/images/logo_only.png);"></div>-->
                 <h3 style="">kozossegek.hu | <b>admin</b></h3>
@@ -49,10 +51,12 @@
     </nav>
 
     <!-- Page Content  -->
-    <div id="content" class="p-4">
-        <h3 class="mb-2">@yield('title')</h3>
-        @include('admin.partials.message')
-        @yield('admin')
+    <div id="content" class="">
+        <h5 class="mb-0 pt-2 pb-2 pl-4" id="admin-title">@yield('title')</h5>
+        <div class="p-3">
+            @include('admin.partials.message')
+            @yield('admin')
+        </div>
     </div>
 </div>
 @yield('footer')

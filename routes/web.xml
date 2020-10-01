@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <routes>
-    <route-group namespace="App\Portal\Controllers\">
+    <route-group namespace="App\Portal\Controllers\" middleware="App\Middleware\ComingSoon">
         <route method="get" uri="test" as="test" controller="TestController" use="testPipe"/>
         <route method="get" uri="" as="home" controller="HomeController" use="home"/>
         <route method="get" uri="kozossegek" as="portal.groups" controller="GroupController" use="kozossegek"/>
@@ -10,62 +10,66 @@
     <route method="get" uri="login" controller="App\Portal\Controllers\LoginController" use="login" as="login"/>
     <route method="post" uri="login" controller="App\Portal\Controllers\LoginController" use="doLogin"/>
     <route method="get" uri="admin/logout" controller="App\Portal\Controllers\LoginController" use="logout" as="admin.logout"/>
-    
+
     <route-group namespace="App\Admin" prefix="admin" as="admin" middleware="App\Middleware\AdminMiddleware">
         <!-- ADMIN  -->
         <!-- ************************************** -->
-        
+
         <!-- OLDALAK -->
         <route-group namespace="Page" prefix="page" controller="PageController" as="page">
             <route method="get" uri="list" use="list" as="list"/>
             <route method="get" uri="trash" use="trash" as="trash"/>
             <route method="get" uri="empty-trash" use="emptyTrash" as="empty_trash"/>
             <route method="get" uri="restore" use="restore" as="restore"/>
-            
+
             <route method="get" uri="create" use="create" as="create"/>
             <route method="post" uri="create" use="doCreate" as="do_create"/>
-            
+
             <route method="get" uri="{id}/edit" use="edit" as="edit"/>
             <route method="post" uri="{id}/update" use="update" as="update"/>
             <route method="get" uri="{id}/delete" use="delete" as="delete"/>
-            
+
         </route-group>
-        
+
         <route-group controller="Page\ApiPageController" prefix="page/api" as="page.api" middleware="Framework\Middleware\JsonApi">
             <route method="post" uri="generate-slug" use="generateSlug" as="generate_slug"/>
         </route-group>
-        
-        
+
+
         <!-- KÖZÖSSÉGEK -->
         <route-group namespace="Group" prefix="group" as="group">
             <route method="get" uri="list" controller="GroupController" use="list" as="list"/>
-            
+
             <route method="get" uri="create" controller="GroupController" use="create" as="create"/>
             <route method="post" uri="create" controller="GroupController" use="doCreate" as="do_create"/>
-            
+
             <route method="get" uri="{id}/edit" controller="GroupController" use="edit" as="edit"/>
             <route method="post" uri="{id}/update" controller="GroupController" use="update" as="update"/>
             <route method="get" uri="{id}/delete" controller="GroupController" use="delete" as="delete"/>
         </route-group>
-        
-                
-        
+
+
+
         <!-- Intézmények -->
         <route-group namespace="Institute" prefix="institute" as="institute">
             <route method="get" uri="list" controller="InstituteController" use="list" as="list"/>
-            
+
             <route method="get" uri="create" controller="InstituteController" use="create" as="create"/>
             <route method="post" uri="create" controller="InstituteController" use="doCreate" as="do_create"/>
-            
+
             <route method="get" uri="{id}/edit" controller="InstituteController" use="edit" as="edit"/>
-            <route method="post" uri="{id}/update" controller="InstituteController" use="doupdate" as="do_update"/>
+            <route method="post" uri="{id}/update" controller="InstituteController" use="update" as="update"/>
             <route method="get" uri="{id}/delete" controller="InstituteController" use="delete" as="delete"/>
         </route-group>
-        
+
         <!-- FELHASZNÁLÓK -->
-        <route-group>
-            <route method="get" uri="users" namespace="User" controller="UserController" use="list" as="users"/>
+        <route-group controller="UserController" prefix="user" as="user">
+            <route method="get" uri="user" namespace="User" controller="UserController" use="list" as="list"/>
         </route-group>
+
+        <route method="get" uri="tags" controller="TagController" as="tags" use="tags"/>
+
+        <route method="get" uri="porfile" controller="UserController" use="profile"/>
 
         <route method="get" uri="" controller="Controllers\DashboardController" use="dashboard" as="dashboard"/>
         <route method="get" uri="settings" controller="Settings\SettingsController" use="settings" as="settings"/>

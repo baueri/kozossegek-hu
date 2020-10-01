@@ -50,20 +50,20 @@ class Builder
     {
         return $this->db->select(...$this->getBaseSelect());
     }
-    
+
     /**
      * @return int
      */
     public function count()
     {
         $oldSelect = $this->select;
-        
+
         $this->select = ['count(*) as cnt'];
-        
+
         $count = $this->db->first(...$this->getBaseSelect())['cnt'];
-        
+
         $this->select = $oldSelect;
-        
+
         return $count;
     }
 
@@ -119,7 +119,7 @@ class Builder
     public function first()
     {
         $this->limit(1);
-        
+
         return $this->db->first(...$this->getBaseSelect());
     }
 
@@ -160,6 +160,11 @@ class Builder
         return $this;
     }
 
+    public function table($table)
+    {
+        return $this->from($table);
+    }
+
     public function select($select = '*')
     {
         $this->select = [$select];
@@ -189,18 +194,18 @@ class Builder
 
         return $this;
     }
-    
+
     public function whereRaw($where, $clause = 'and') {
         $this->where[] = [$where, null, null, $clause];
-       
+
         return $this;
     }
-    
+
     public function whereNull($column, $clause = 'and')
     {
         return $this->whereRaw("$column IS NULL", $clause);
     }
-    
+
     public function whereNotNull($column, $clause = 'and')
     {
         return $this->whereRaw("$column IS NOT NULL", $clause);
@@ -263,14 +268,14 @@ class Builder
 
         return $this->db->insert($query, $bindings);
     }
-    
+
     public function delete()
     {
 
         [$query, $bindings] = $this->build();
 
         $base = sprintf('delete from %s', implode(', ', $this->table));
-        
+
         return $this->db->delete($base . $query, $bindings);
     }
 
@@ -284,11 +289,11 @@ class Builder
     public function toSql($withBindings = false)
     {
         [$query, $bindings] = $this->getBaseSelect();
-        
+
         if (!$withBindings) {
-            return $query;        
+            return $query;
         }
-        
+
         return str_replace(['?'], array_map(function($binding){
             return "$binding";
         }, $bindings), $query);

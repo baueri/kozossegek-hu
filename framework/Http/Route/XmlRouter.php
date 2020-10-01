@@ -9,6 +9,8 @@ use Framework\Http\Request;
 use Framework\Misc\XmlObject;
 use Framework\Support\Collection;
 
+use Framework\Model\Model;
+
 /**
  * Class XmlRouter
  * @package Framework\Http\Route
@@ -159,8 +161,12 @@ class XmlRouter implements RouterInterface
         throw new RouteNotFoundException($uri);
     }
 
-    public function route(string $name, array $args = [])
+    public function route(string $name, $args = [])
     {
+        if ($args instanceof Model) {
+            $args = ['id' => $args->getId()];
+        }
+
         $args = array_merge(static::$globalArgs, $args);
 
         foreach ($this->routes as $route) {

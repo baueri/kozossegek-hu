@@ -13,7 +13,7 @@ use Framework\Database\PaginatedResultSet;
 class InstituteRepository extends \Framework\Repository
 {
     /**
-     * 
+     *
      * @param string $keyword
      * @param string $city
      * @return PaginatedResultSet|Institute[]
@@ -28,16 +28,21 @@ class InstituteRepository extends \Framework\Repository
 
         $rows = $builder->where('name', 'like', "%$keyword%")
             ->paginate(15);
-        
+
         return $this->getInstances($rows);
     }
-    
+
     public function getInstitutes()
     {
         return $this->getInstances($this->getBuilder()->paginate(30));
     }
-    
-    
+
+    public function getInstitutesForAdmin()
+    {
+        return $this->getInstances($this->getBuilder()->orderBy('id', 'desc')->paginate(30));
+    }
+
+
     //put your code here
     public static function getModelClass(): string {
         return Institute::class;

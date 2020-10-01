@@ -62,4 +62,9 @@ class PasswordGenerator
         $this->settings[$option] = $value;
         return $this;
     }
+
+    public function __toString()
+    {
+        return $this->generate();
+    }
 }

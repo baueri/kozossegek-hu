@@ -14,6 +14,8 @@ use Framework\Http\View\View;
 use Framework\Http\View\ViewInterface;
 use Framework\Support\Config\Config;
 
+use Framework\PasswordGenerator;
+
 define('DS', DIRECTORY_SEPARATOR);
 define('ROOT', __DIR__ . DS);
 define('APP', ROOT . 'app' . DS);

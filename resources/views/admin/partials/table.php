@@ -10,13 +10,19 @@
         </tr>
     </thead>
     <tbody>
-        @foreach($rows as $row)
+        @if(isset($rows) && $rows)
+            @foreach($rows as $row)
+                <tr>
+                    @foreach($columns as $key => $column)
+                        <td {{ in_array($key, $centered_columns) ? 'class="text-center"' : '' }}>{{ $row[$key] }}</td>
+                    @endforeach
+                </tr>
+            @endforeach
+        @else
             <tr>
-                @foreach($columns as $key => $column)
-                    <td {{ in_array($key, $centered_columns) ? 'class="text-center"' : '' }}>{{ $row[$key] }}</td>
-                @endforeach
+                <td colspan="{{ count($columns) }}"><h6 class="text-center p-3" style="color:#444; font-weight: 300;"><i>Nincs megjeleníthető adat</i></h6></td>
             </tr>
-        @endforeach
+        @endif
     </tbody>
 </table>
 

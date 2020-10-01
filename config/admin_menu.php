@@ -15,7 +15,7 @@ return [
                 'title' => 'Oldalak',
                 'icon' => 'stream',
                 'as' => 'admin.page.list',
-                'similars' => ['admin.page.edit']
+                'similars' => ['admin.page.edit', 'admin.page.trash']
             ], [
                 'title' => 'Új oldal',
                 'icon' => 'plus',
@@ -43,17 +43,30 @@ return [
     [
         'title' => 'Intézmények',
         'icon' => 'church',
-        'as' => 'admin.institute.list'
+        'as' => 'admin.institute.list',
+        'submenu' => [
+            [
+                'title' => 'Intézmények',
+                'icon' => 'church',
+                'as' => 'admin.institute.list',
+                'similars' => ['admin.institute.edit']
+            ],
+            [
+                'title' => 'Új intézmény',
+                'icon' => 'plus',
+                'as' => 'admin.institute.create',
+            ],
+        ]
     ],
     [
         'title' => 'Felhasználók',
         'icon' => 'users',
-        'as' => 'admin.users'
+        'as' => 'admin.user.list'
     ],
     [
         'title' => 'Címkék',
         'icon' => 'tags',
-        'as' => 'admin.settings'
+        'as' => 'admin.tags'
     ],
     [
         'title' => 'Gépház',

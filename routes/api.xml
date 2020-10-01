@@ -4,6 +4,7 @@
         <route-group middleware="Framework\Middleware\JsonApi" namespace="V1" prefix="api/v1">
             <route method="all" controller="SearchController" uri="search-city" use="searchCity" as="search-city"/>
             <route method="all" controller="SearchController" uri="search-institute" use="searchInstitute" as="search-institute"/>
+            <route method="all" controller="SearchController" uri="search-district" use="searchDistrict" as="search-district"/>
         </route-group>
     </route-group>
 </routes>

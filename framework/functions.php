@@ -37,6 +37,8 @@ function d(...$data)
     foreach ($data as $toDump) {
         if (is_bool($toDump)) {
             print_r($toDump ? 'true' : 'false');
+        } elseif(is_null($toDump)){
+            print_r('null');
         } else {
             print_r($toDump);
         }
@@ -118,7 +120,7 @@ function builder()
  * @param array $args
  * @return string
  */
-function route($route, array $args = [])
+function route($route, $args = [])
 {
     return app()->get(RouterInterface::class)->route($route, $args);
 }
@@ -180,7 +182,7 @@ function get_site_url()
 }
 
 /**
- * 
+ *
  * @param mixed $key
  * @param mixed $default
  * @return mixed

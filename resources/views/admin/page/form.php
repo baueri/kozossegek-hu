@@ -3,7 +3,6 @@
 @endsection
 
 @extends('admin')
-
 <form method="post" action="{{ $action }}">
     <div class="row">
         <div class="col-md-9">
@@ -32,14 +31,14 @@
         </div>
 
     </div>
-    
+
 
 </form>
 <script>
 $(document).ready(function () {
     initSummernote('[name=content]');
     var slugGenerator;
-    
+
     $("[name=title]").change(function () {
         clearTimeout(slugGenerator);
         if (!$("[name=slug]").val()) {

@@ -1,20 +1,23 @@
 @title('Közösségek')
-@section('header')@include('asset_groups.select2')@endsection
-@extends('admin')
 
-<form method="get" id="finder">
-    <div class="btn-group btn-shadow mb-3 mr-auto">
+@section('title')
+    <div class="btn-group btn-group-sm btn-shadow ml-4">
         <a class="btn {{ !$filter['status'] ? 'active btn-primary' : 'btn-default' }}" href="@route('admin.group.list')">Összes</a>
         <a class="btn {{ $filter['status'] == 'pending' ? 'active btn-primary' : 'btn-default' }}" href="@route('admin.group.list', ['status' => 'pending'])">Függőben</a>
         <a class="btn {{ $filter['status'] == 'inactive' ? 'active btn-primary' : 'btn-default' }}" href="@route('admin.group.list', ['status' => 'inactive'])">Inaktív</a>
     </div>
+@endsection
+@section('header')@include('asset_groups.select2')@endsection
+@extends('admin')
+
+<form method="get" id="finder">
     <div class="row">
         <div class="col-md-3">
             <div class="form-group">
                 <input type="text" name="search" value="{{ $filter['search'] }}" class="form-control" placeholder="keresés névre, leírásra...">
             </div>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-3">
             <div class="form-group">
                 <select name="varos" id="varos" class="form-control">
                     <option value="{{ $filter['varos'] }}">{{ $filter['varos'] ?: 'város' }}</option>
@@ -28,7 +31,7 @@
                 </select>
             </div>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-3">
             <div class="form-group">
                 <select class="form-control" id="korosztaly" name="korosztaly">
                     <option></option>
@@ -38,13 +41,13 @@
                 </select>
             </div>
         </div>
-        <div class="col-md-2">
-            <button type="submit" class="btn btn-primary">Keresés</button>
-            <a class="btn btn-default" href="@route('admin.group.list')">Alapállapot</a>
-        </div>
     </div>
     <div class="row">
-        <div class="col-md-3 col-lg-2 offset-md-9 offset-lg-10">
+        <div class="col-md-3 col-lg-3">
+            <button type="submit" class="btn btn-primary btn-sm">Keresés</button>
+            <a class="btn btn-default btn-sm" href="@route('admin.group.list')">Alapállapot</a>
+        </div>
+        <div class="col-md-3 col-lg-2 offset-md-6 offset-lg-7">
             <div class="form-group">
                 <select class="form-control" name="order">
                     <option value="created_at" {{ $filter['order'] == 'created_at' ? 'selected' : '' }}>Újak elöl</option>
@@ -52,11 +55,6 @@
                     <option value="abc"  {{ $filter['order'] == 'abc' ? 'selected' : '' }}>Név szerint növekvő</option>
                 </select>
             </div>
-        </div>
-    </div>
-    <div class="row mb-3">
-        <div class="col-md-2 offset-10 text-right">
-
         </div>
     </div>
 </form>

@@ -93,3 +93,12 @@ input[type=text], input[type=email], input[type=tel], .select2-container--bootst
     box-shadow: none;
     background: linear-gradient(to bottom, #dee5f2 0%, #ffffff 100%);
 }
+
+#admin-title {
+    background-color: #eaeaea;
+    color: #444;
+}
+
+#sidebar .bg-wrap {
+    padding: 28px 0 29px;
+}

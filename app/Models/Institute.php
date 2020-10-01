@@ -10,14 +10,16 @@ namespace App\Models;
 class Institute extends \Framework\Model\Model
 {
     use \Framework\Model\TimeStamps;
-    
+
     public $id;
-    
+
     public $name;
-    
+
     public $city;
-    
+
+    public $district;
+
     public $address;
-    
+
     public $leader_name;
 }
