@@ -20,14 +20,14 @@ class Session
         return isset($_SESSION[$key]);
     }
 
-    public static function put($key, $value)
+    public static function set($key, $value)
     {
         $_SESSION[$key] = $value;
     }
 
-    public static function flash($key)
+    public static function flash($key, $default = null)
     {
-        $value = static::get($key);
+        $value = static::get($key, $default);
 
         static::forget($key);
 

@@ -20,4 +20,17 @@ class HttpKernel extends \Framework\Http\HttpKernel
     {
         echo view('maintenance');
     }
+
+    public function handleError($error)
+    {
+        mail(config('app.error_email'),
+         'kozossegek.hu HIBA: ' . $error->getMessage(),
+          $error->getTraceAsString(),
+            array(
+            'From' => 'noreply@kozossegek.hu',
+            'X-Mailer' => 'PHP/' . phpversion()
+        ));
+
+        parent::handleError($error);
+    }
 }

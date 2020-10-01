@@ -9,16 +9,16 @@ class Message
     const MSG_WARNING = 'warning';
     const MSG_INFO    = 'info';
     const MSG_DANGER  = 'danger';
-    
+
     const SESSION_KEY_NAME = 'system_message';
-    
+
     public static function set($message, $type, $list = null)
     {
-        $_SESSION[self::SESSION_KEY_NAME] = [
+        Session::set(self::SESSION_KEY_NAME, [
             'message' => $message,
             'type' => $type,
             'list' => $list
-        ];
+        ]);
     }
 
     public static function success($message, $list = null)
@@ -42,36 +42,12 @@ class Message
     }
 
     /**
-     * 
+     *
      * @return array|null
      */
     public static function get()
     {
-        $data = static::getSessionData();
-        static::destroySessionData();
-        
-        return $data;
-    }
-    
-    /**
-     * @return array|NULL
-     */
-    public static function flash()
-    {
-        return static::get();
-    }
-    
-    /**
-     * @return array|null
-     */
-    private static function getSessionData()
-    {
-        return $_SESSION[self::SESSION_KEY_NAME];
-    }
-    
-    private function destroySessionData()
-    {
-        unset($_SESSION[self::SESSION_KEY_NAME]);
+        return Session::flash(self::SESSION_KEY_NAME);
     }
 
 }

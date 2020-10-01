@@ -25,6 +25,9 @@ define('LANG', 'hu');
 
 include 'vendor/autoload.php';
 
+ini_set("log_errors", 1);
+ini_set("error_log", ROOT . "error.log");
+
 DotEnv::load(ROOT . '.env.php');
 
 $application = new Application();

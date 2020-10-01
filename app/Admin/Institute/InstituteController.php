@@ -33,7 +33,7 @@ class InstituteController extends AdminController
             
             Message::danger('A keresett intézmény nem található');
 
-            redirect('admin.institute.list');
+            redirect_route('admin.institute.list');
         }
 
         $action = route('admin.institute.update', $institute);
@@ -51,7 +51,7 @@ class InstituteController extends AdminController
 
         Message::success('Sikeres mentés');
 
-        redirect('admin.institute.edit', $institute);
+        redirect_route('admin.institute.edit', $institute);
     }
 
     public function create()
@@ -67,7 +67,7 @@ class InstituteController extends AdminController
 
         Message::success('Új intézmény létrehozva');
 
-        redirect('admin.institute.edit', $institute);
+        redirect_route('admin.institute.edit', $institute);
     }
 
     public function delete(Request $request, InstituteRepository $repository)
@@ -76,6 +76,6 @@ class InstituteController extends AdminController
 
         Message::warning('Intézmény törölve');
 
-        redirect('admin.institute.list');
+        redirect_route('admin.institute.list');
     }
 }

@@ -74,9 +74,9 @@ class Application extends Container
     }
 
     /**
-     * @param \Exception $e
+     * @param \Error|\Exception|\Throwable $e
      */
-    public function handleError(\Exception $e)
+    public function handleError($e)
     {
         $this->get(Dispatcher::class)->handleError($e);
     }

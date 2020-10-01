@@ -22,6 +22,6 @@ try {
 
     $application->run($application->get(Dispatcher::class));
 
-} catch (Exception $e) {
+} catch (Error $e) {
     $application->handleError($e);
 }

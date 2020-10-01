@@ -51,7 +51,7 @@ class PageController extends AdminController
 
         Message::warning('Lomtár kiürítve.');
 
-        redirect('admin.page.trash');
+        redirect_route('admin.page.trash');
     }
     
     public function create()
@@ -69,7 +69,7 @@ class PageController extends AdminController
 
         Message::success('Oldal létrehozva');
 
-        redirect('admin.page.edit', ['id' => $page->id]);
+        redirect_route('admin.page.edit', ['id' => $page->id]);
     }
     
     public function edit()
@@ -89,7 +89,7 @@ class PageController extends AdminController
 
         Message::success('Oldal frissítve');
         
-        return redirect('admin.page.edit', ['id' => $this->request['id']]);
+        return redirect_route('admin.page.edit', ['id' => $this->request['id']]);
         
     }
     
@@ -99,6 +99,6 @@ class PageController extends AdminController
 
         Message::warning('Oldal lomtárba helyezve');
         
-        return redirect('admin.page.list');
+        return redirect_route('admin.page.list');
     }
 }

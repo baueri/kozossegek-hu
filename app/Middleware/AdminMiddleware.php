@@ -5,14 +5,16 @@ namespace App\Middleware;
 use App\Auth\Auth;
 use Framework\Middleware\Middleware;
 use Framework\Http\Message;
+use Framework\Http\Session;
 
 class AdminMiddleware implements Middleware
 {
     public function handle()
     {
         if (!Auth::loggedIn()) {
+            Session::set('last_visited', $_SERVER['REQUEST_URI']);
             Message::danger('Nem vagy belépve!');
-            redirect('login');
+            redirect_route('login');
         }
     }
 }

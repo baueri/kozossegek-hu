@@ -30,7 +30,7 @@ class GroupController extends AdminController
     {
         $group = $service->create($request->except('files', 'image')->all());
 
-        redirect('admin.group.edit', ['id' => $group->id]);
+        redirect_route('admin.group.edit', ['id' => $group->id]);
     }
 
     public function edit(EditGroup $service)
@@ -42,14 +42,14 @@ class GroupController extends AdminController
     {
         $service->update($request['id'], $request->except('id')->all());
 
-        redirect('admin.group.edit', ['id' => $request['id']]);
+        redirect_route('admin.group.edit', ['id' => $request['id']]);
     }
 
     public function delete(Request $request, DeleteGroup $service)
     {
         $service->delete($request['id']);
 
-        redirect('admin.group.list');
+        redirect_route('admin.group.list');
     }
 
     public function trash(ListGroups $service)

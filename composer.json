@@ -10,7 +10,8 @@
         "psr/container": "^1.0",
         "robmorgan/phinx": "^0.12.3",
         "fzaninotto/faker": "^1.9",
-        "arrilot/dotenv-php": "^2.0"
+        "arrilot/dotenv-php": "^2.0",
+        "phpmailer/phpmailer": "~6.1"
     },
     "autoload": {
       "psr-4": {

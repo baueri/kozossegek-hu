@@ -8,11 +8,10 @@ use Framework\Http\HttpKernel;
 use Framework\Http\Request;
 use Framework\Http\Response;
 use Framework\Http\Route\RouteInterface;
-use Framework\Http\Route\RouteNotFoundException;
 use Framework\Http\Route\RouterInterface;
 use Framework\Http\View\View;
-use Framework\Model\ModelNotFoundException;
 use Framework\Support\StringHelper;
+use Framework\Http\Route\RouteNotFoundException;
 
 class HttpDispatcher implements Dispatcher
 {
@@ -57,7 +56,7 @@ class HttpDispatcher implements Dispatcher
     public function dispatch(): void
     {
         $route = $this->getCurrentRoute();
-        
+
         if ($route->getController() && !class_exists($route->getController())) {
             throw new RouteNotFoundException($route->getController());
         }
@@ -107,11 +106,11 @@ class HttpDispatcher implements Dispatcher
     private function resolveController(RouteInterface $route)
     {
         $controller = $this->app->make($route->getController());
-        
+
         if (!method_exists($controller, $route->getUse())) {
             throw new RouteNotFoundException($this->request->uri);
         }
-        
+
         return $this->app->resolve($controller, $route->getUse(), $this->request->getUriValues());
     }
 
@@ -138,37 +137,6 @@ class HttpDispatcher implements Dispatcher
      */
     public function handleError($e)
     {
-        http_response_code($e->getCode());
-
-        if (Response::contentTypeIsJson()) {
-            print json_encode([
-                'success' => false,
-                'error_code' => $e->getCode()
-            ]);
-            throw $e;
-        }
-
-        if (config('app.debug')) {
-            echo "<pre style='white-space:pre-line'><h3>Váratlan hiba történt (" . get_class($e) . ")</h3>";
-            echo $e->getMessage() . "\n\n";
-            echo $e->getTraceAsString();
-            echo "</pre>";
-            exit;
-        }
-
-        try {
-            throw $e;
-        } catch (ModelNotFoundException|RouteNotFoundException $e) {
-            return print(view('portal.error', [
-                'code' => $e->getCode(),
-                'message' => 'A keresett oldal nem található',
-                'message2' => 'Az oldal, amit keresel lehet, hogy törölve lett vagy ideiglenesen nem elérhető.']));
-        } catch (Exception $e) {
-            return print(view('portal.error', [
-                'code' => 500,
-                'message' => 'Váratlan hiba történt',
-                'message2' => 'Az oldal üzemeltetői értesítve lettek a hibáról'
-            ]));
-        }
+        $this->kernel->handleError($e);
     }
 }

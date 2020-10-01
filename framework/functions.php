@@ -126,14 +126,21 @@ function route($route, $args = [])
 }
 
 /**
- * @param $route
- * @param array $args
+ * @var string $uri
  */
-function redirect($route, $args = [])
+function redirect($uri)
 {
-    $uri = route($route, $args);
     header("Location: $uri");
     exit;
+}
+
+/**
+ * @param string $route
+ * @param array $args
+ */
+function redirect_route($route, $args = [])
+{
+    redirect(route($route, $args));
 }
 
 /**
