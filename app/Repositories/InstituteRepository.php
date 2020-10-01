@@ -39,7 +39,7 @@ class InstituteRepository extends \Framework\Repository
 
     public function getInstitutesForAdmin()
     {
-        return $this->getInstances($this->getBuilder()->orderBy('id', 'desc')->paginate(30));
+        return $this->getInstances($this->getBuilder()->orderBy('id', 'desc')->whereNull('deleted_at')->paginate(30));
     }
 
 

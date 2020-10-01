@@ -1,0 +1,2 @@
+@title('Címkék')
+@extends('admin')

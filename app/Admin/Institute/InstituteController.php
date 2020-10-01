@@ -61,4 +61,13 @@ class InstituteController extends AdminController
 
         redirect('admin.institute.edit', $institute);
     }
+
+    public function delete(Request $request, InstituteRepository $repository)
+    {
+        $repository->delete($repository->findOrFail($request['id']));
+
+        Message::warning('Intézmény törölve');
+
+        redirect('admin.institute.list');
+    }
 }

@@ -67,7 +67,7 @@
             <route method="get" uri="user" namespace="User" controller="UserController" use="list" as="list"/>
         </route-group>
 
-        <route method="get" uri="tags" controller="TagController" as="tags" use="tags"/>
+        <route method="get" uri="tags" controller="Controllers\TagController" as="tags" use="tags"/>
 
         <route method="get" uri="porfile" controller="UserController" use="profile"/>
 
