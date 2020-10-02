@@ -10,6 +10,6 @@ class DashboardController extends AdminController
 {
     public function dashboard()
     {
-        return $this->view('admin.dashboard');
+        return view('admin.dashboard');
     }
 }

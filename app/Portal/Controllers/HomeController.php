@@ -18,6 +18,6 @@ class HomeController extends Controller
             'age_groups' => $ageGroupRepository->all()
         ];
 
-        return $this->view('portal.home', $model);
+        return view('portal.home', $model);
     }
 }

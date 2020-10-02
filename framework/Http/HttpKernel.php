@@ -33,6 +33,9 @@ class HttpKernel
     */
     public function handleError($exception)
     {
+
+        error_log($exception);
+
         http_response_code($exception->getCode());
 
         if (Response::contentTypeIsJson()) {
@@ -63,9 +66,6 @@ class HttpKernel
                 'code' => $exception->getCode(),
                 'message2' => 'Nincs jogosultsága az oldal megtekintéséhez']));
         } catch (\Error|\Exception $exception) {
-            
-            error_log($exception);
-
             return print(view('portal.error', [
                 'code' => 500,
                 'message' => 'Váratlan hiba történt',

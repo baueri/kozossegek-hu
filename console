@@ -13,8 +13,11 @@ include 'boot.php';
 
 $application->bind(Kernel::class, ConsoleKernel::class);
 $dispatcher = $application->make(CliDispatcher::class);
-
-$application->run($dispatcher);
+try {
+    $application->run($dispatcher);
+} catch(\Error|\Exception $e) {
+    $application->handleError($e);
+}
 
 
 ?>

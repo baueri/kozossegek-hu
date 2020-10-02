@@ -71,7 +71,24 @@ return [
     [
         'title' => 'Gépház',
         'icon' => 'cog',
-        'as' => 'admin.settings'
+        'as' => 'admin.settings',
+        'submenu' => [
+            [
+                'title' => 'Gépház',
+                'icon' => 'cog',
+                'as' => 'admin.settings',
+            ],
+            [
+                'title' => 'Eseménynapló',
+                'icon' => 'file-signature',
+                'as' => 'admin.event_log',
+            ],
+            [
+                'title' => 'Hibanapló',
+                'icon' => 'exclamation-circle ' . (file_exists(ROOT . 'error.log') && filesize(ROOT . 'error.log') ? 'text-danger' : ''),
+                'as' => 'admin.error_log',
+            ]
+        ]
     ],
     [
         'title' => 'Kilépés',

@@ -32,8 +32,6 @@ DotEnv::load(ROOT . '.env.php');
 
 $application = new Application();
 
-$application->up();
-
 $application->bind(RouteInterface::class, Route::class);
 $application->bind(ViewInterface::class, View::class);
 $application->singleton(Config::class);

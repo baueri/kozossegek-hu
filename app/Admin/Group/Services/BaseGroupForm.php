@@ -6,6 +6,7 @@ use Framework\Http\Request;
 use App\Repositories\GroupRepository;
 use App\Repositories\InstituteRepository;
 use App\Models\Group;
+use App\Models\Institute;
 
 /**
  * Description of BaseGroupForm
@@ -13,7 +14,7 @@ use App\Models\Group;
  * @author ivan
  */
 class BaseGroupForm {
-    
+
     /**
      * @var InstituteRepository
      */
@@ -30,7 +31,7 @@ class BaseGroupForm {
     protected $request;
 
     /**
-     * 
+     *
      * @param Request $request
      * @param GroupRepository $repository
      * @param InstituteRepository $instituteRepository
@@ -44,7 +45,7 @@ class BaseGroupForm {
 
     public function show() {
         $group = $this->getGroup();
-        $institute = $this->instituteRepository->find($group->institute_id);
+        $institute = $this->instituteRepository->find($group->institute_id) ?: new Institute;
         $denominations = (new \App\Repositories\DenominationRepository)->all();
         $statuses = (new \App\Repositories\GroupStatusRepository)->all();
         $occasion_frequencies = (new \App\Repositories\OccasionFrequencyRepository)->all();
@@ -54,12 +55,12 @@ class BaseGroupForm {
         return view('admin.group.create', compact('group', 'institute', 'denominations',
                 'statuses', 'occasion_frequencies', 'age_groups', 'action'));
     }
-    
+
     protected function getGroup(): Group
     {
         return new Group;
     }
-    
+
     protected function getAction(Group $group)
     {
         return route('admin.group.do_create');

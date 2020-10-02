@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Framework\Model\Model;
+use Framework\Model\TimeStamps;
 
 /**
  * Description of User
@@ -11,6 +12,8 @@ use Framework\Model\Model;
  */
 class User extends Model
 {
+    use TimeStamps;
+
     public $id;
 
     public $name;
@@ -24,5 +27,14 @@ class User extends Model
     public function keresztnev()
     {
         return substr($this->name, strpos($this->name, ' '));
+    }
+
+   /**
+    * @return bool
+    * @todo !!!
+    */
+    public function isAdmin()
+    {
+        return true;
     }
 }

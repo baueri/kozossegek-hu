@@ -85,7 +85,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
                 $this->items[$key][] = $item;
             }
         }
-        
+
         return $this;
 
     }
@@ -97,7 +97,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     public function set($key, $item)
     {
         $this->items[$key] = $item;
-        
+
         return $this;
     }
 
@@ -176,10 +176,12 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     public function each(Closure $func)
     {
         foreach ($this->items as $key => $item) {
-            if ($func($item, $key) === false) {
+            if ($func($item, $key, $this) === false) {
                 break;
             }
         }
+
+        return $this;
     }
 
     /**
@@ -671,9 +673,14 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     {
         return empty($this->items);
     }
-    
+
+    public function isNotEmpty()
+    {
+        return !$this->isEmpty();
+    }
+
     /**
-     * 
+     *
      * @param $keys
      * @return static
      */
@@ -683,7 +690,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
             return !in_array($key, $keys);
         });
     }
-    
+
     /**
      * @return static
      */

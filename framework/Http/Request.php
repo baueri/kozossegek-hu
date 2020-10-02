@@ -35,13 +35,13 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
      * @var string
      */
     public $uri;
-    
+
     /**
      *
      * @var Route\Route
      */
     public $route;
-    
+
     /**
      * @var []
      */
@@ -49,7 +49,12 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
 
     public function __construct()
     {
-        $this->request = new Collection($_REQUEST);
+
+        $this->request = (new Collection($_REQUEST))->each(function($item, $key, $collection){
+            if ($item == "true" || $item == "false") {
+                $collection[$key] = filter_var($item, FILTER_VALIDATE_BOOLEAN);
+            }
+        });
 
         $this->files = new Collection($_FILES);
 
@@ -67,7 +72,7 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
     {
         return call_user_func_array([$this->request, $name], $arguments);
     }
-    
+
     /**
      * @return []
      */
@@ -85,11 +90,11 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
                 }
             }
         }
-        
+
         return $this->uriValues;
 
     }
-    
+
     /**
      * @param string $key
      * @return string|int|null
@@ -119,7 +124,7 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
         if ($attribute = $this->getUriValue($offset)) {
             return $attribute;
         }
-        
+
         return $this->request[$offset];
     }
 

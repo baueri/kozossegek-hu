@@ -7,4 +7,9 @@
             <route method="all" controller="SearchController" uri="search-district" use="searchDistrict" as="search-district"/>
         </route-group>
     </route-group>
+
+
+    <route-group  namespace="App\Admin\Controllers\Api" as="admin">
+        <route method="post" uri="maintenance" controller="SettingsController" use="toggleMaintenance" as="maintenance"/>
+    </route-group>
 </routes>

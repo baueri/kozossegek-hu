@@ -1,3 +1,3 @@
 @title('Vezérlőpult')
 @extends('admin')
-Hát... ide lehetne sok szépet írni, de nem tudom, mi kerüljön ide.
+Vettem borsót. Egyelőre ennyit mondok... Majd később kifejtem.

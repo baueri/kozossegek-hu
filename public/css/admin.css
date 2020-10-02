@@ -10,6 +10,7 @@
 #content {
     margin-left: 200px;
     margin-top: 41px;
+    min-height: calc(100vh - 41px)
     /*background: #eaeaea;*/
 }
 
@@ -46,10 +47,6 @@
     font-size: 1rem !important;
     text-shadow: 2px 2px 4px #000;
     cursor: default;
-}
-
-input[type=text], input[type=email], input[type=tel], .select2-container--bootstrap .select2-selection--single, select {
-    /*background: #eee;*/
 }
 
 *::placeholder {
@@ -101,4 +98,55 @@ input[type=text], input[type=email], input[type=tel], .select2-container--bootst
 
 #sidebar .bg-wrap {
     padding: 28px 0 29px;
+}
+
+
+.switch input { display: none; }
+.switch label {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    position: relative;
+    white-space: nowrap;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.switch label:before, .switch label:after {
+    width: 100%;
+    padding:.3em;
+    transition: ease-in .3s all;
+    display: inline-block;
+    text-align: center;
+    margin-left: 0;
+}
+
+.switch label:before {
+    margin-left: -100%;
+    color: #fff;
+    content: "BE";
+    border-right: 10px solid #fff;
+}
+
+.switch input:checked ~ label:before {
+    margin-left: 0;
+}
+
+.switch label:after {
+    content: "KI";
+    border-left: 10px solid #fff;
+    background: #ccc;
+}
+
+.switch label:not([class^=bg-]) {
+    background: var(--primary);
+}
+
+:disabled {
+    cursor: not-allowed;
+}
+
+#is_maintenance_on {
+    position: fixed;
+    bottom: 1em;
+    right: 1em;
 }

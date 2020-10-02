@@ -15,7 +15,7 @@ class PasswordGenerator
     const OPTION_UPPER = 'UPPER';
     const OPTION_NUMBERS = 'NUMBER';
 
-    private array $settings = [
+    private $settings = [
         self::OPTION_LOWER => true,
         self::OPTION_UPPER => true,
         self::OPTION_NUMBERS => true,

@@ -14,6 +14,10 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
+    <!-- <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script> -->
+
     @yield('header')
     <link rel="stylesheet" href="/css/admin.css">
     <script src="/js/admin.js"></script>
@@ -22,16 +26,18 @@
 <body>
 <nav id="top_menu" class="navbar navbar-expand navbar-dark bg-dark fixed-top">
     <ul class="navbar-nav mr-auto">
-        @foreach($current_menu_item['submenu'] as $submenuItem)
-        <li class="nav-item  {{ $submenuItem['active'] ? 'active' : '' }}">
-            <a class="nav-link" href="{{ $submenuItem['uri'] }}"><i class="fa fa-{{ $submenuItem['icon'] }}"></i> {{ $submenuItem['title'] }}</a>
-        </li>
-        <li class="nav-item divider"></li>
-        @endforeach
+        @if(isset($current_menu_item['submenu']))
+            @foreach($current_menu_item['submenu'] as $submenuItem)
+            <li class="nav-item  {{ $submenuItem['active'] ? 'active' : '' }}">
+                <a class="nav-link" href="{{ $submenuItem['uri'] }}"><i class="fa fa-{{ $submenuItem['icon'] }}"></i> {{ $submenuItem['title'] }}</a>
+            </li>
+            <li class="nav-item divider"></li>
+            @endforeach
+        @endif
     </ul>
     <ul class="navbar-nav ml-auto">
         <li class="nav-item text-white">
-            Hello <a href="">{{ App\Auth\Auth::user()->keresztnev() }}</a>
+            Hello <a href="@route('admin.user.profile')">{{ App\Auth\Auth::user()->keresztnev() }}</a>
         </li>
         <li class="divider nav-item"></li>
         <li class="nav-item"><a href="@route('home')" title="ugrás az oldalra" target="_blank" class="text-white nav-link"><i class="fa fa-eye"></i></a></li>
@@ -59,6 +65,9 @@
         </div>
     </div>
 </div>
+@if($is_maintenance_on)
+    <div id="is_maintenance_on" title="Karbantartás bekapcsolva!"><i class="fa fa-exclamation-triangle text-danger" style="font-size: 36px; cursor:pointer;"></i></div>
+@endif
 @yield('footer')
 <script>
     $(()=>{

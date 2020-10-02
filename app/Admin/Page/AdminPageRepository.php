@@ -11,22 +11,22 @@ use App\Repositories\PageRepository;
  */
 class AdminPageRepository extends PageRepository
 {
-    
-    public function getPages($filter = array())
+
+    public function getPages($filter)
     {
-        
+
         $builder = $this->getBuilder();
-        
+
         if ($status = $filter['status']) {
             $builder->where('status', $status);
         }
-        
+
         if ($filter['deleted']) {
             $builder->whereNotNull('deleted_at');
         } else {
             $builder->whereNull('deleted_at');
         }
-        
+
         if ($search = $filter['search']) {
             $builder->where('title', 'like', "%$search%");
         }

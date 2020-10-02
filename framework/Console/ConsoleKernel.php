@@ -6,6 +6,8 @@ namespace Framework\Console;
 
 use Framework\Application;
 use Framework\Console\BaseCommands\ListCommands;
+use Framework\Console\BaseCommands\SiteUp;
+use Framework\Console\BaseCommands\SiteDown;
 use Framework\Console\Exception\CommandNotFoundException;
 
 class ConsoleKernel
@@ -14,7 +16,9 @@ class ConsoleKernel
      * @var Command[]
      */
     private $baseCommands = [
-        ListCommands::class
+        ListCommands::class,
+        SiteUp::class,
+        SiteDown::class,
     ];
 
     /**

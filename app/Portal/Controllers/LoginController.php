@@ -22,7 +22,7 @@ class LoginController extends \Framework\Http\Controller
             redirect_route('admin.dashboard');
         }
 
-        return $this->view('portal.login');
+        return view('portal.login');
     }
 
     public function doLogin(Request $request, Authenticate $service)

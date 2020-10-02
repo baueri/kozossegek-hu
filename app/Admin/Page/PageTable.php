@@ -20,7 +20,7 @@ class PageTable extends AdminTable implements Deletable, Editable
      * @var PageRepository
      */
     private $repository;
-    
+
     /**
      * @var UserRepository
      */
@@ -62,19 +62,19 @@ class PageTable extends AdminTable implements Deletable, Editable
     public function getUserId(...$params)
     {
         [,$page] = $params;
-        
+
         return $page->user->name;
     }
 
     protected function getData(): PaginatedResultSetInterface
     {
-        $filter = $this->request->all();
+        $filter = $this->request;
         if ($this->request->route->getAs() == 'admin.page.trash') {
             $filter['deleted'] = true;
         }
-        
+
         $pages = $this->repository->getPages($filter);
-        
+
         $userIds = $pages->pluck('user_id')->unique()->all();
 
         $pages->with($this->userRepository->getUsersByIds($userIds), 'user', 'user_id');

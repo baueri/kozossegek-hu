@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <routes>
-    <route-group namespace="App\Portal\Controllers\" middleware="App\Middleware\ComingSoon">
+    <route-group namespace="App\Portal\Controllers\">
+        <middleware name="Framework\Middleware\CheckMaintenance"/>
+        <middleware name="App\Middleware\ComingSoon"/>
         <route method="get" uri="test" as="test" controller="TestController" use="testEmail"/>
         <route method="get" uri="" as="home" controller="HomeController" use="home"/>
         <route method="get" uri="kozossegek" as="portal.groups" controller="GroupController" use="kozossegek"/>
@@ -37,17 +39,17 @@
 
 
         <!-- KÖZÖSSÉGEK -->
-        <route-group namespace="Group" prefix="group" as="group">
-            <route method="get" uri="list" controller="GroupController" use="list" as="list"/>
+        <route-group namespace="Group" prefix="group" as="group" controller="GroupController">
+            <route method="get" uri="list" use="list" as="list"/>
 
-            <route method="get" uri="create" controller="GroupController" use="create" as="create"/>
-            <route method="post" uri="create" controller="GroupController" use="doCreate" as="do_create"/>
+            <route method="get" uri="create" use="create" as="create"/>
+            <route method="post" uri="create" use="doCreate" as="do_create"/>
 
-            <route method="get" uri="{id}/edit" controller="GroupController" use="edit" as="edit"/>
-            <route method="post" uri="{id}/update" controller="GroupController" use="update" as="update"/>
-            <route method="get" uri="{id}/delete" controller="GroupController" use="delete" as="delete"/>
+            <route method="get" uri="{id}/edit" use="edit" as="edit"/>
+            <route method="post" uri="{id}/update" use="update" as="update"/>
+            <route method="get" uri="{id}/delete" use="delete" as="delete"/>
 
-            <route method="get" uri="trash" controller="GroupController" use="trash" as="trash"/>
+            <route method="get" uri="trash" use="trash" as="trash"/>
 
         </route-group>
 
@@ -66,8 +68,11 @@
         </route-group>
 
         <!-- FELHASZNÁLÓK -->
-        <route-group controller="UserController" prefix="user" as="user">
-            <route method="get" uri="user" namespace="User" controller="UserController" use="list" as="list"/>
+        <route-group controller="User\UserController" prefix="user" as="user">
+            <route method="get" uri="user" use="list" as="list"/>
+            <route method="get" uri="profile" use="profile" as="profile"/>
+            <route method="post" uri="profile/update" use="updateProfile" as="profile.update"/>
+            <route method="post" uri="profile/change-password" use="changeMyPassword" as="profile.change_password"/>
         </route-group>
 
         <route method="get" uri="tags" controller="Controllers\TagController" as="tags" use="tags"/>
@@ -76,6 +81,9 @@
 
         <route method="get" uri="" controller="Controllers\DashboardController" use="dashboard" as="dashboard"/>
         <route method="get" uri="settings" controller="Settings\SettingsController" use="settings" as="settings"/>
+        <route method="get" uri="error-log" controller="Settings\SettingsController" use="errorLog" as="error_log"/>
+        <route method="get" uri="error-log/clear" controller="Settings\SettingsController" use="clearErrorLog" as="clear_error_log"/>
+        <route method="get" uri="event-log" controller="Settings\SettingsController" use="eventLog" as="event_log"/>
     </route-group>
     <route-group namespace="App\Admin\Controllers" prefix="admin" as="admin">
         <route method="get" uri="groups" controller="GroupController" use="list" as="groups"/>

@@ -9,6 +9,7 @@ use Framework\Http\Request;
 use App\Repositories\PageRepository;
 use Framework\Http\View\ViewInterface;
 use App\Auth\Auth;
+use App\Models\Page;
 
 class PageController extends AdminController
 {
@@ -29,17 +30,17 @@ class PageController extends AdminController
      * @param Request $request
      * @param AdminPageRepository $repository
      */
-    public function __construct(ViewInterface $view, Request $request, AdminPageRepository $repository) {
-        parent::__construct($view);
+    public function __construct(Request $request, AdminPageRepository $repository)
+    {
         $this->request = $request;
         $this->repository = $repository;
     }
-    
+
     public function list(PageTable $table, PageListService $service)
     {
         return $service->show($table);
     }
-    
+
     public function trash(TrashPageTable $table, PageListService $service)
     {
         return $service->show($table);
@@ -53,52 +54,53 @@ class PageController extends AdminController
 
         redirect_route('admin.page.trash');
     }
-    
+
     public function create()
     {
+        $page = new Page();
         $action = route('admin.page.do_create');
-        return $this->view('admin.page.create', compact('action'));
+        return view('admin.page.create', compact('action', 'page'));
     }
-    
+
     public function doCreate()
     {
         $data = $this->request->only('title', 'slug', 'content', 'status');
         $data['user_id'] = Auth::user()->id;
-        
+
         $page = $this->repository->create($data);
 
         Message::success('Oldal létrehozva');
 
         redirect_route('admin.page.edit', ['id' => $page->id]);
     }
-    
+
     public function edit()
     {
         $page = $this->repository->findOrFail($this->request['id']);
         $action = route('admin.page.update', ['id' => $page->id]);
-        return $this->view('admin.page.edit', compact('page', 'action'));
+        return view('admin.page.edit', compact('page', 'action'));
     }
-    
+
     public function update()
     {
         $post = $this->repository->find($this->request['id']);
-        
+
         $post->update($this->request->only('title', 'slug', 'content', 'status'));
-        
+
         $this->repository->save($post);
 
         Message::success('Oldal frissítve');
-        
+
         return redirect_route('admin.page.edit', ['id' => $this->request['id']]);
-        
+
     }
-    
+
     public function delete()
     {
         $this->repository->delete($this->repository->findOrFail($this->request['id']));
 
         Message::warning('Oldal lomtárba helyezve');
-        
+
         return redirect_route('admin.page.list');
     }
 }

@@ -19,7 +19,7 @@ class GroupController extends Controller {
             OccasionFrequencyRepository $occasionFrequencyRepository, AgeGroupRepository $ageGroupRepository)
     {
         $filter = collect($request->all());
-        
+
         $groups = $service->search($filter);
 
         $model = [
@@ -31,10 +31,10 @@ class GroupController extends Controller {
             'perpage' => $groups->perpage(),
             'filter' => $filter
         ];
-        
-        return $this->view('portal.kozossegek', $model);
+
+        return view('portal.kozossegek', $model);
     }
-    
+
     public function kozosseg(Request $request, GroupRepository $repo, InstituteRepository $instituteRepo)
     {
         $backUrl = null;
@@ -47,8 +47,8 @@ class GroupController extends Controller {
         $group = $repo->findBySlug($slug);
 
         $institute = $instituteRepo->find($group->institute_id);
-        
-        return $this->view('portal.kozosseg', compact('group', 'institute', 'backUrl'));
+
+        return view('portal.kozosseg', compact('group', 'institute', 'backUrl'));
     }
 
 }

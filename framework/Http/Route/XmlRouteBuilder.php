@@ -75,12 +75,37 @@ class XmlRouteBuilder
         );
     }
 
+    protected function getParentProperties($propertyName)
+    {
+        $elements = $this->element->getParents();
+        $parentProperties = [];
+
+        foreach ($elements as $element) {
+            if ($element->{$propertyName}) {
+                foreach ($element->{$propertyName} as $property) {
+                    $parentProperties[] = $property;
+                }
+            }
+        }
+
+        return $parentProperties;
+    }
+
     /**
      * @return array
      */
     public function getMiddleware()
     {
-        return $this->getAttributeValues('middleware');
+        $middleware = $this->getAttributeValues('middleware');
+        $parentProperties = $this->getParentProperties('middleware');
+
+        return collect($parentProperties)
+            ->map(function(XmlObject $middleware){
+                return (string) $middleware['name'];
+            })
+            ->merge($middleware)
+            ->unique()
+            ->all();
     }
 
     /**
