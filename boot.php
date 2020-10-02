@@ -23,10 +23,11 @@ define('RESOURCES', ROOT . 'resources' . DS);
 define('CACHE', ROOT . 'cache' . DS);
 define('LANG', 'hu');
 
-include 'vendor/autoload.php';
-
 ini_set("log_errors", 1);
 ini_set("error_log", ROOT . "error.log");
+
+include 'vendor/autoload.php';
+
 
 DotEnv::load(ROOT . '.env.php');
 
