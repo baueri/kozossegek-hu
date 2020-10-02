@@ -87,6 +87,11 @@ return [
                 'title' => 'Hibanapló',
                 'icon' => 'exclamation-circle ' . (file_exists(ROOT . 'error.log') && filesize(ROOT . 'error.log') ? 'text-danger' : ''),
                 'as' => 'admin.error_log',
+            ],
+            [
+                'title' => 'Verzióinformáció',
+                'icon' => 'info-circle',
+                'as' => 'admin.release_notes'
             ]
         ]
     ],

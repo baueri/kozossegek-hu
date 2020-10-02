@@ -6,7 +6,6 @@ use App\Models\Group;
 use Framework\Database\PaginatedResultSet;
 use Framework\Model\Model;
 use Framework\Model\ModelCollection;
-use Framework\Model\ModelNotFoundException;
 use Framework\Model\PaginatedModelCollection;
 use Framework\Repository;
 use Framework\Support\Collection;
@@ -67,7 +66,7 @@ class GroupRepository extends Repository
         if ($status = $filter['status']) {
             $builder->where('status', $status);
         }
-        
+
         if ($filter['deleted']) {
             $builder->whereNotNull('deleted_at');
         } else {
@@ -90,10 +89,6 @@ class GroupRepository extends Repository
         $id = substr($slug, strrpos($slug, '-')+1);
 
         $group = $this->find($id);
-
-        if (!$group) {
-            throw new ModelNotFoundException('', 404);
-        }
 
         return $group;
     }

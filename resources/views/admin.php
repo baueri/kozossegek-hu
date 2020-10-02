@@ -33,6 +33,10 @@
             </li>
             <li class="nav-item divider"></li>
             @endforeach
+        @else
+            <li class="nav-item  {{ $current_menu_item['active'] ? 'active' : '' }}">
+                <a class="nav-link" href="{{ $current_menu_item['uri'] }}"><i class="fa fa-{{ $current_menu_item['icon'] }}"></i> {{ $current_menu_item['title'] }}</a>
+            </li>
         @endif
     </ul>
     <ul class="navbar-nav ml-auto">
@@ -63,8 +67,13 @@
             @include('admin.partials.message')
             @yield('admin')
         </div>
+
+        <footer id="footer" class="p-3 text-right">
+            <i>közösségek.hu {{ APP_VERSION }}</i>
+        </footer>
     </div>
 </div>
+
 @if($is_maintenance_on)
     <div id="is_maintenance_on" title="Karbantartás bekapcsolva!"><i class="fa fa-exclamation-triangle text-danger" style="font-size: 36px; cursor:pointer;"></i></div>
 @endif

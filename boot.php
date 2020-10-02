@@ -23,6 +23,8 @@ define('RESOURCES', ROOT . 'resources' . DS);
 define('CACHE', ROOT . 'cache' . DS);
 define('LANG', 'hu');
 
+define('APP_VERSION', 'v0.0.1 pre-alpha');
+
 include 'vendor/autoload.php';
 
 ini_set("log_errors", 1);

@@ -22,4 +22,8 @@ class Institute extends \Framework\Model\Model
     public $address;
 
     public $leader_name;
+
+    public $user_id;
+
+    public $user;
 }

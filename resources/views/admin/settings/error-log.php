@@ -34,7 +34,7 @@
         @else
             <tr>
                 <td colspan="3" class="text-center" style="background: #eaeaea">
-                    <h5 class="p-2" style="color:#666;"><i>Hurrá, nincs hiba...</i></h5>
+                    <h6 class="p-2" style="color:#666;"><i>Hurrá, nincs hiba... legalábbis mi nem tudunk róla. ¯\_(ツ)_/¯</i></h6>
                 </td>
             </tr>
         @endif

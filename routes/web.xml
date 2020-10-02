@@ -14,8 +14,11 @@
     <route method="get" uri="admin/logout" controller="App\Portal\Controllers\LoginController" use="logout" as="admin.logout"/>
 
     <route-group namespace="App\Admin" prefix="admin" as="admin" middleware="App\Middleware\AdminMiddleware">
+
         <!-- ADMIN  -->
         <!-- ************************************** -->
+
+        <route method="get" uri="release-notes" as="release_notes" view="admin.release_notes"/>
 
         <!-- OLDALAK -->
         <route-group namespace="Page" prefix="page" controller="PageController" as="page">

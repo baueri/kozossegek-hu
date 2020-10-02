@@ -5,9 +5,10 @@ namespace App\Admin\Institute;
 use App\Admin\Controllers\AdminController;
 
 use App\Repositories\InstituteRepository;
-
+use App\Models\Institute;
 use Framework\Http\Request;
 use Framework\Http\Message;
+use App\Auth\Auth;
 
 /**
  * Description of InstituteController
@@ -30,7 +31,7 @@ class InstituteController extends AdminController
         $institute = $repository->find($request['id']);
 
         if (!$institute) {
-            
+
             Message::danger('A keresett intézmény nem található');
 
             redirect_route('admin.institute.list');
@@ -57,13 +58,16 @@ class InstituteController extends AdminController
     public function create()
     {
         $action = route('admin.institute.do_create');
+        $institute = new Institute;
 
-        return view('admin.institute.create', compact('action'));
+        return view('admin.institute.create', compact('action', 'institute'));
     }
 
     public function doCreate(Request $request, InstituteRepository $repository)
     {
-        $institute = $repository->create($request->only('name', 'city', 'district', 'address', 'leader_name'));
+        $data = $request->only('name', 'city', 'district', 'address', 'leader_name');
+        $data['user_id'] = Auth::user()->id;
+        $institute = $repository->create($data);
 
         Message::success('Új intézmény létrehozva');
 

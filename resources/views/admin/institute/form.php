@@ -5,7 +5,7 @@
 <form method="post" class="row" action="{{ $action }}">
     <div class="col-md-4">
         <div class="form-group">
-            <label>Intézmény neve</label>
+            <label>Intézmény / plébánia neve</label>
             <input type="text" name="name" class="form-control" value="{{ $institute->name }}">
         </div>
         <div class="form-group">

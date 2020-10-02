@@ -17,8 +17,9 @@ class Mailer
     /**
      * @param PHPMailer $phpMailer
      */
-    public function __construct(PHPMailer $phpMailer)
+    public function __construct()
     {
+        $phpMailer = new PHPMailer(true);
         $phpMailer->isSMTP();
         $phpMailer->Host = config('app.email_host');
         $phpMailer->SMTPAuth = true;
@@ -40,7 +41,7 @@ class Mailer
 
     public function send(Mailable $mailable)
     {
-        $this->phpMailer->setFrom($mailable->from, 'kozossegek.hu');
+        $this->phpMailer->setFrom($mailable->from ?: $this->phpMailer->Username, 'kozossegek.hu');
         $this->phpMailer->Subject = $mailable->subject;
         $this->phpMailer->Body = $mailable->getBody();
         $this->phpMailer->send();

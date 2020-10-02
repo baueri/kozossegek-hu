@@ -8,6 +8,7 @@ use App\Admin\Components\AdminTable\Editable;
 use App\Repositories\InstituteRepository;
 use Framework\Database\PaginatedResultSetInterface;
 use Framework\Http\Request;
+use App\Repositories\UserRepository;
 
 /**
  * Description of InstituteAdminTable
@@ -19,10 +20,13 @@ class InstituteAdminTable extends AdminTable implements Deletable, Editable
 
     protected $columns = [
         'id' => '#',
-        'name' => 'Intézmény neve',
-        'leader_name' => 'Intézményvezető',
+        'name' => 'Intézmény / plébánia neve',
+        'leader_name' => 'Plébános / intézményvezető',
         'city' => 'Város',
+        'district' => 'Városrész',
         'address' => 'Cím',
+        'updated_at' => 'Utoljára módosítva',
+        'user' => 'Létrehozta'
     ];
 
     /**
@@ -31,14 +35,20 @@ class InstituteAdminTable extends AdminTable implements Deletable, Editable
     private $repository;
 
     /**
+     * @var UserRepository
+     */
+    private $userRepository;
+
+    /**
      * InstituteAdminTable constructor.
      * @param Request $request
      * @param InstituteRepository $repository
      */
-    public function __construct(Request $request, InstituteRepository $repository)
+    public function __construct(Request $request, InstituteRepository $repository, UserRepository $userRepository)
     {
         parent::__construct($request);
         $this->repository = $repository;
+        $this->userRepository = $userRepository;
     }
 
     public function getDeleteUrl($model): string
@@ -48,7 +58,18 @@ class InstituteAdminTable extends AdminTable implements Deletable, Editable
 
     protected function getData(): PaginatedResultSetInterface
     {
-        return $this->repository->getInstitutesForAdmin();
+        $institutes = $this->repository->getInstitutesForAdmin();
+        $userIds = $institutes->pluck('user_id');
+        $users = $this->userRepository->getUsersByIds($userIds->all());
+
+        $institutes->with($users, 'user', 'user_id');
+
+        return $institutes;
+    }
+
+    public function getUser($user)
+    {
+        return $user->name;
     }
 
     public function getEditUrl($model): string
