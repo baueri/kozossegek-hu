@@ -3,5 +3,4 @@ vendor/
 .maintenance
 cache/
 .idea/
-_env/
 error.log
