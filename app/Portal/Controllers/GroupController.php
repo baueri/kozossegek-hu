@@ -8,6 +8,7 @@ use App\Repositories\InstituteRepository;
 use App\Repositories\OccasionFrequencyRepository;
 use Framework\Http\Controller;
 use Framework\Http\Request;
+use Framework\Model\ModelNotFoundException;
 /**
  * Description of GroupController
  *
@@ -45,6 +46,10 @@ class GroupController extends Controller {
 
         $slug = $request['kozosseg'];
         $group = $repo->findBySlug($slug);
+
+        if (!$group) {
+            throw new ModelNotFoundException();
+        }
 
         $institute = $instituteRepo->find($group->institute_id);
 

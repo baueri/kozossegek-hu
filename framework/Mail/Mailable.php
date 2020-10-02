@@ -29,13 +29,6 @@ class Mailable
      */
     public $subject;
 
-    /**
-     * @param string $from
-     */
-    public function __construct(?string $from = null)
-    {
-        $this->from($from ?: config('app.email'));
-    }
 
     /**
      * @param  string $view
@@ -85,6 +78,6 @@ class Mailable
     /**
      * @return void
      */
-    public function build():void {}
+    public function build(){}
 
 }

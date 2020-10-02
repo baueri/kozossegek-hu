@@ -10,7 +10,8 @@
 #content {
     margin-left: 200px;
     margin-top: 41px;
-    min-height: calc(100vh - 41px)
+    min-height: calc(100vh - 41px);
+    position: relative;
     /*background: #eaeaea;*/
 }
 
@@ -149,4 +150,15 @@
     position: fixed;
     bottom: 1em;
     right: 1em;
+}
+
+#footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+
+.select2-container {
+    width: 100% !important;
 }

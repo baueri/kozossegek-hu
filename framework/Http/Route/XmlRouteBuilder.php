@@ -111,8 +111,13 @@ class XmlRouteBuilder
     /**
      * @return string
      */
-    public function getController()
+    public function getController($withNamespace = true)
     {
+        if (!$withNamespace) {
+            
+            return (string) $this->getAncestorController();
+        }
+
         return (string) $this->getNamespace() . '\\' . $this->getAncestorController();
     }
 

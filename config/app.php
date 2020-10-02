@@ -9,11 +9,13 @@ return [
     'debug' => _env('DEBUG', false),
     'coming_soon' => _env('COMING_SOON', false),
 
-    'email' => _env('EMAIL'),
+    'email' => _env('EMAIL_ADDRESS'),
     'email_password' => _env('EMAIL_PASSWORD'),
     'email_host' => _env('EMAIL_HOST'),
     'email_port' => _env('EMAIL_PORT'),
     'email_ssl' => _env('EMAIL_SSL'),
+
+    'error_email' => _env('ERROR_EMAIL', 'birkaivan@gmail.com'),
 
     'providers' => [
 

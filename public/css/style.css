@@ -82,17 +82,12 @@ nav.navbar .nav-link:hover {
     color: var(--green);
 }
 
-/*#main-finder button {*/
-/*    padding: 12px 20px;*/
-/*    width: 100%;*/
-/*}*/
 .select2-container--bootstrap {
     display: block !important;
 }
-/*#finder .select2-container--bootstrap, #finder input[type=text], #finder select, #finder .select2-selection select2-selection--single {*/
-/*    float:left;*/
-/*    border-radius: 0;*/
-/*}*/
+.select2-container {
+    width: 100% !important;
+}
 .select2-container--bootstrap .select2-selection {
     height: 38px !important;
 }

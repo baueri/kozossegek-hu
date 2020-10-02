@@ -7,6 +7,8 @@ namespace App;
 use Framework\Middleware\BaseAuthMiddleware;
 use Framework\Middleware\TranslationRoute;
 use Framework\Middleware\AuthMiddleware;
+use Framework\Mail\Mailer;
+use App\Mailable\CriticalErrorEmail;
 
 class HttpKernel extends \Framework\Http\HttpKernel
 {
@@ -23,13 +25,16 @@ class HttpKernel extends \Framework\Http\HttpKernel
 
     public function handleError($error)
     {
-        mail(config('app.error_email'),
-         'kozossegek.hu HIBA: ' . $error->getMessage(),
-          $error->getTraceAsString(),
-            array(
-            'From' => 'noreply@kozossegek.hu',
-            'X-Mailer' => 'PHP/' . phpversion()
-        ));
+        if($error->getCode() != '404' && config('app.environment') == 'production') {
+
+            $mail = (new CriticalErrorEmail($error));
+
+            $mail->build();
+
+            $mailer = new Mailer();
+
+            $mailer->to(config('app.error_email'))->send($mail);
+        }
 
         parent::handleError($error);
     }
