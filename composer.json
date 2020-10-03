@@ -7,11 +7,9 @@
         }
     ],
     "require": {
-        "psr/container": "^1.0",
-        "robmorgan/phinx": "^0.12.3",
-        "fzaninotto/faker": "^1.9",
         "arrilot/dotenv-php": "^2.0",
-        "phpmailer/phpmailer": "~6.1"
+        "phpmailer/phpmailer": "~6.1",
+        "robmorgan/phinx": "^0.12.4"
     },
     "autoload": {
       "psr-4": {
@@ -28,5 +26,8 @@
     "migrate:rollback": "vendor/bin/phinx rollback",
     "db:seed": "vendor/bin/phinx seed:run",
     "make:seed": "vendor/bin/phinx seed:create"
-  }
+  },
+    "require-dev": {
+        "fzaninotto/faker": "^1.9"
+    }
 }
