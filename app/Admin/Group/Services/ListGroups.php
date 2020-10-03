@@ -8,6 +8,8 @@ use App\Repositories\CityRepository;
 use App\Repositories\GroupStatusRepository;
 use App\Repositories\InstituteRepository;
 use App\Repositories\OccasionFrequencyRepository;
+
+use App\Enums\GroupStatusEnum;
 use Framework\Http\Request;
 
 /**
@@ -79,9 +81,10 @@ class ListGroups
         $filter = $this->request;
         $table = $this->table;
         $current_page = $this->getCurrentPage();
+        $pending_groups = builder()->from('groups')->where('status', GroupStatusEnum::PENDING)->count();
 
         return view('admin.group.list', compact('table', 'age_groups', 'occasion_frequencies', 'statuses',
-            'institute', 'filter', 'current_page'));
+            'institute', 'filter', 'current_page', 'pending_groups'));
     }
 
     private function getCurrentPage()
