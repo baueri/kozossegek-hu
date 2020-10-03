@@ -2,13 +2,28 @@
 
 global $argv;
 
-print "környezetfüggő env változó másolása: " . $argv[1] . PHPE_EOL;
+
+$environments = [
+	'development' => "_env/.env_demo.php",
+	'production' => "_env/.env_eles.php"
+];
+
+if (!isset($argv[1]) || !isset($environments[$argv[1]])) {
+	print "hibás környezeti változó!" . PHP_EOL;
+	exit(1);
+}
+
+$file = $environments[$argv[1]];
+
+print "környezetfüggő env változó másolása: " . $argv[1] . PHP_EOL;
 print "-----------------" . PHP_EOL;
 
-sleep(3);
+sleep(1);
 
-if ($argv[1] == 'development') {
-	copy("_env/.env_demo.php", ".env.php");
-} elseif($argv[1] == 'production') {
-	copy("_env/.env_eles.php", ".env.php");
+
+if (!copy($file, ".env.php")) {
+	print "Nem sikerült átmásolni a fájlt!" . PHP_EOL;
+	exit(1);
 }
+
+ print "Sikeres fájl másolás" . PHP_EOL;
