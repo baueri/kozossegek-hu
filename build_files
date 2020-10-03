@@ -1,9 +1,0 @@
-app
-config
-db
-framework
-public resources
-routes
-vendor
-boot.php
-phinx.php
