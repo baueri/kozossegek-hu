@@ -7,15 +7,22 @@
 use App\Console\ConsoleKernel;
 use Framework\Application;
 use Framework\Console\ConsoleKernel as Kernel;
+use Framework\Dispatcher\Dispatcher;
 use Framework\Dispatcher\CliDispatcher;
 
 include 'boot.php';
 
 $application->bind(Kernel::class, ConsoleKernel::class);
-$dispatcher = $application->make(CliDispatcher::class);
+$application->singleton(Dispatcher::class, CliDispatcher::class);
+
+$dispatcher = $application->make(Dispatcher::class);
+
 try {
     $application->run($dispatcher);
-} catch(\Error|\Exception $e) {
+} catch(\Error|\Exception|\Throwable $e) {
+    if (_env('DEBUG')) {
+        throw $e;
+    }
     $application->handleError($e);
 }
 

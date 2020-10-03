@@ -51,6 +51,9 @@ function d(...$data)
     if (!Response::contentTypeIsJson() && !is_cli()) {
         print "</pre>";
     }
+    if (is_cli()) {
+        print PHP_EOL;
+    }
 }
 
 function dd(...$data)

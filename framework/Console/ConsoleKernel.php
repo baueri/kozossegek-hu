@@ -9,8 +9,10 @@ use Framework\Console\BaseCommands\ListCommands;
 use Framework\Console\BaseCommands\SiteUp;
 use Framework\Console\BaseCommands\SiteDown;
 use Framework\Console\Exception\CommandNotFoundException;
+use Framework\Console\Out;
+use Framework\Kernel;
 
-class ConsoleKernel
+class ConsoleKernel implements Kernel
 {
     /**
      * @var Command[]
@@ -62,5 +64,11 @@ class ConsoleKernel
         }
 
         throw new CommandNotFoundException("command not found: $signature");
+    }
+
+    public function handleError($error)
+    {
+        Out::danger('HIBA');
+        Out::danger($error->getMessage());
     }
 }

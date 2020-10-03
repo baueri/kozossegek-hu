@@ -19,6 +19,6 @@
      {
          (new Maintenance)->up();
 
-         Out::warning('The site is now on line');
+         Out::success('The site is now on line');
      }
  }

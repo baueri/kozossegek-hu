@@ -22,14 +22,17 @@ define('APP', ROOT . 'app' . DS);
 define('RESOURCES', ROOT . 'resources' . DS);
 define('CACHE', ROOT . 'cache' . DS);
 define('LANG', 'hu');
+define('APP_VERSION', 'v0.0.1 pre-alpha');
 
-ini_set("log_errors", 1);
-ini_set("error_log", ROOT . "error.log");
 
 include 'vendor/autoload.php';
 
-
 DotEnv::load(ROOT . '.env.php');
+
+if (!_env('DEBUG')) {
+    ini_set("log_errors", 1);
+    ini_set("error_log", ROOT . "error.log");
+}
 
 $application = new Application();
 

@@ -37,7 +37,7 @@ class Out
         self::NOTIFICATION_TYPE_WARNING => self::COLOR_MAGENTA,
     ];
 
-    public function color($text, $color)
+    public static function color($text, $color)
     {
         return "\033[" . $color . "m" . $text . "\033[0m";
 
@@ -49,11 +49,10 @@ class Out
      * @param string $format
      * @param mixed ...$params
      *
-     * @return Out
      */
-    public function write_f($format, ...$params)
+    public static function write_f($format, ...$params)
     {
-        return $this->write(sprintf($format, ...$params));
+        static::write(sprintf($format, ...$params));
     }
 
     /**
@@ -62,28 +61,22 @@ class Out
      * @param string $text
      * @param string $color
      *
-     * @return Out
      */
-    public function write($text, $color = self::COLOR_WHITE)
+    public static function write($text, $color = self::COLOR_WHITE)
     {
         print("\033[" . $color . "m" . $text . "\033[0m");
-
-        return $this;
     }
 
     /**
      * @param string $msg
      * @param string $borderColor
-     * @return Out
      */
-    public function heading($msg, string $borderColor = self::COLOR_BLUE)
+    public static function heading($msg, string $borderColor = self::COLOR_BLUE)
     {
-        $this->writeln(str_repeat('-', strlen($msg) + 5), $borderColor)
-            ->writeln($msg)
-            ->writeln(str_repeat('-', strlen($msg) + 5), $borderColor)
-            ->writeln();
-
-        return $this;
+        static::writeln(str_repeat('-', strlen($msg) + 5), $borderColor);
+        static::writeln($msg);
+        static::writeln(str_repeat('-', strlen($msg) + 5), $borderColor);
+        static::writeln();
     }
 
     /**
@@ -92,11 +85,10 @@ class Out
      * @param string $text
      * @param string $color
      *
-     * @return Out
      */
-    public function writeln($text = '', $color = self::COLOR_WHITE)
+    public static function writeln($text = '', $color = self::COLOR_WHITE)
     {
-        return $this->write("$text\r\n", $color);
+        static::write("$text\r\n", $color);
     }
 
     /**
@@ -104,11 +96,10 @@ class Out
      *
      * @param string $msg
      *
-     * @return Out
      */
-    public function success($msg)
+    public static function success($msg)
     {
-        return $this->notify(self::NOTIFICATION_TYPE_SUCCESS, $msg);
+        static::notify(self::NOTIFICATION_TYPE_SUCCESS, $msg);
     }
 
     /**
@@ -117,33 +108,30 @@ class Out
      * @param string $type
      * @param string $message
      *
-     * @return Out
      */
-    public function notify($type, $message)
+    public static function notify($type, $message)
     {
-        return $this->write("[" . $type . "] ", self::NOTIFICATION_COLORS[$type])
-            ->writeln($message . "\n");
+        static::write("[" . $type . "] ", self::NOTIFICATION_COLORS[$type]);
+        static::writeln($message . "\n");
     }
 
     /**
      * Info
      *
      * @param string $msg
-     * @return Out
      */
-    public function info($msg)
+    public static function info($msg)
     {
-        return $this->notify(self::NOTIFICATION_TYPE_INFO, $msg);
     }
 
     /**
      * Error notification and instantly ends process
      * @param string $msg
      */
-    public function fatal($msg)
+    public static function fatal($msg)
     {
-        $this->error($msg);
-        $this->writeln('A kód nem futott végig', self::COLOR_RED);
+        static::error($msg);
+        static::writeln('A kód nem futott végig', self::COLOR_RED);
         die();
     }
 
@@ -152,20 +140,18 @@ class Out
      *
      * @param string $msg
      *
-     * @return Out
      */
-    public function error($msg)
+    public static function error($msg)
     {
-        return $this->notify(self::NOTIFICATION_TYPE_ERROR, $msg);
+        static::notify(self::NOTIFICATION_TYPE_ERROR, $msg);
     }
 
     /**
      * @param $msg
-     * @return Out
      */
-    public function warning($msg)
+    public static function warning($msg)
     {
-        return $this->notify(static::NOTIFICATION_TYPE_WARNING, $msg);
+        static::notify(static::NOTIFICATION_TYPE_WARNING, $msg);
     }
 
     /**
@@ -173,12 +159,10 @@ class Out
      *
      * @param string $data
      *
-     * @return Out
      */
-    public function dump($data)
+    public static function dump($data)
     {
         $color = is_bool($data) ? static::COLOR_CYAN : null;
-        return $this->write(print_r($data, true), $color);
+        static::write(print_r($data, true), $color);
     }
 }
-

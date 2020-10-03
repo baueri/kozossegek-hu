@@ -8,6 +8,6 @@
     <title>kozossegek.hu</title>
 </head>
 <body style="text-align: center;">
-    <img src="/images/coming_soon.png" style="max-width: 100%;">
+    <img src="/images/coming_soon.png" style="max-width: 600px; width: 100%; height: auto;">
 </body>
 </html>
