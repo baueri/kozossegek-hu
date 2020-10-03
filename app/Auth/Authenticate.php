@@ -35,21 +35,19 @@ class Authenticate
     public function authenticate($username, $password)
     {
         $user = $this->repository->findByAuth($username);
-        
+
         if (! $user || ! Password::verify($password, $user->password)) {
             throw new UnauthorizedException('invalid username or password');
         }
-        
+
         return $user;
     }
 
     public function authenticateBySession()
     {
-        $userId = db()->first('select user_id from user_sessions where unique_id=?', [
-            session_id()
-        ])['user_id'];
-        
-        if ($userId) {
+        $result = db()->first('select user_id from user_sessions where unique_id=?', [session_id()]);
+
+        if ($result && $userId = $result['user_id']) {
             $user = $this->repository->find($userId);
             Auth::setUser($user);
         }

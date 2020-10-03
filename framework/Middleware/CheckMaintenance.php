@@ -8,6 +8,8 @@ use Framework\Bootstrapper;
 use Framework\Http\HttpKernel;
 use Framework\Maintenance;
 
+use Framework\Middleware\Middleware;
+
 class CheckMaintenance implements Middleware
 {
     /**

@@ -5,6 +5,7 @@
  use Framework\Console\Command;
  use Framework\Console\ConsoleKernel;
  use Framework\Console\Out;
+ use Framework\Maintenance;
 
  class SiteDown implements Command
  {
@@ -15,7 +16,7 @@
 
      public function handle()
      {
-         app()->down();
+         (new Maintenance)->down();
 
          Out::warning('The site is now down for maintenance');
      }

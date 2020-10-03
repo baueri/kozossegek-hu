@@ -43,7 +43,7 @@ class CliDispatcher implements Dispatcher
 
     public function handleError($e)
     {
-
+        $this->kernel->handleError($e);
     }
 
     private function getArgs()

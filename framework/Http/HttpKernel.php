@@ -9,10 +9,10 @@ use Framework\Http\Exception\RouteNotFoundException;
 use Framework\Model\ModelNotFoundException;
 use Framework\Middleware\Middleware;
 use Exception;
-
 use Framework\Exception\UnauthorizedException;
+use Framework\Kernel;
 
-class HttpKernel
+class HttpKernel implements Kernel
 {
     /**
      * @var string[]|Middleware[]

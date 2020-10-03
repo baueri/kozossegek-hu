@@ -3,11 +3,11 @@
 
 namespace Framework;
 
-use Framework\Middleware\CheckMaintenance;
 use Framework\Container\Container;
 use Framework\Dispatcher\Dispatcher;
 use Framework\Http\View\Bootstrappers\BootDirectives;
 use Framework\Support\Config\Config;
+
 
 class Application extends Container
 {
@@ -20,7 +20,7 @@ class Application extends Container
      * @var Bootstrapper[]
      */
     protected $bootstrappers = [
-        BootDirectives::class
+        BootDirectives::class,
     ];
 
     private $locale = LANG;

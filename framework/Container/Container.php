@@ -53,6 +53,10 @@ class Container implements ContainerInterface
 
     public function bind($abstraction, $concrete)
     {
+        if (!$abstraction) {
+            throw new InvalidArgumentException('abstraction name must not be empty');
+        }
+
         if ($this->isBindingRegistered($abstraction)) {
             throw new AlreadyBoundException("$abstraction already has a binding");
         }

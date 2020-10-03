@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <routes>
     <route-group namespace="App\Portal\Controllers\">
-        <middleware name="Framework\Middleware\CheckMaintenance"/>
         <middleware name="App\Middleware\ComingSoon"/>
         <route method="get" uri="test" as="test" controller="TestController" use="testEmail"/>
         <route method="get" uri="" as="home" controller="HomeController" use="home"/>
@@ -91,7 +90,7 @@
     <route-group namespace="App\Admin\Controllers" prefix="admin" as="admin">
         <route method="get" uri="groups" controller="GroupController" use="list" as="groups"/>
     </route-group>
-	
+
 	<route method="get" uri="teszt" controller="App\Portal\Controllers\TesztController" use="teszt"/>
     <route method="get" uri="{slug}" controller="App\Portal\Controllers\PageController" use="page" as="portal.page"/>
 </routes>

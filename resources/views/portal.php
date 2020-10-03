@@ -27,7 +27,7 @@
         <input type="checkbox" style="display: none" id="toggle_main_menu" name="toggle_main_menu">
         <div class="container">
             <a href="/" class="navbar-brand">
-                <img src="/images/logo_xs.png">
+                <img src="/images/logo.png">
             </a>
             <ul class="navbar-nav">
                 <li class="nav-item">
