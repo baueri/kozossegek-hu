@@ -8,7 +8,7 @@
         <title>kozossegek.hu - Belépés</title>
         <style>
             @import url(https://fonts.googleapis.com/css?family=Roboto:300);
-            
+
             .login-page {
                 max-width: 360px;
                 width: 100%;
@@ -73,11 +73,11 @@
                 background-size: cover;
             }
             body {
-            
+
                 font-family: "Roboto", sans-serif;
                 overflow: hidden;
             }
-            
+
             .alert {
                 padding: .8em .5em;
                 margin-bottom: 1em;
@@ -88,7 +88,7 @@
                 color: green;
                 border: 1px solid green;
             }
-            
+
             .alert-danger {
                 background: #F8D7DA;
                 color: #CC3300;
@@ -101,7 +101,7 @@
     <div class="login-page">
         <div class="form">
             <form class="login-form" method="post">
-                <img src="/images/logo_only.png" style="width: 80px; height: auto; margin-bottom: 2em"/>
+                <img src="/images/logo_only.jpg" style="width: 80px; height: auto; margin-bottom: 2em"/>
                 @include('admin.partials.message')
                 <input type="text" name="username" placeholder="felhasználónév" autofocus/>
                 <input type="password" name="password" placeholder="jelszó"/>
