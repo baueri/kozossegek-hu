@@ -3,7 +3,7 @@
 namespace App\Portal\Services;
 
 use App\Events\SearchTriggered;
-use App\Repositories\GroupRepository;
+use App\Repositories\GroupViewRepository;
 use Framework\Database\PaginatedResultSet;
 use Framework\Event\EventDisptatcher;
 use Framework\Model\Model;
@@ -15,15 +15,15 @@ class SearchGroupService
 {
 
     /**
-     * @var GroupRepository
+     * @var GroupViewRepository
      */
     private $groupRepo;
 
     /**
      *
-     * @param GroupRepository $groupRepo
+     * @param GroupViewRepository $groupRepo
      */
-    public function __construct(GroupRepository $groupRepo)
+    public function __construct(GroupViewRepository $groupRepo)
     {
         $this->groupRepo = $groupRepo;
     }
@@ -35,14 +35,14 @@ class SearchGroupService
      * @return PaginatedResultSet|Model[]|ModelCollection|PaginatedModelCollection
      */
     public function search(Collection $filter, $perPage = 21)
-    { 
+    {
         $groups = $this->groupRepo->search($filter, $perPage);
-        
+
         $this->logEvent($filter);
-        
+
         return $groups;
     }
-    
+
     private function logEvent(Collection $filter)
     {
         EventDisptatcher::dispatch(new SearchTriggered('search', $filter->set('user_agent', $_SERVER['HTTP_USER_AGENT'])->toArray()));

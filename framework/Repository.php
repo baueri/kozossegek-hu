@@ -29,7 +29,7 @@ abstract class Repository
      */
     public function find($id)
     {
-        
+
         $row = $this->getBuilder()->where(static::getPrimaryCol(), $id)->first();
 
         return $this->getInstance($row);
@@ -40,10 +40,10 @@ abstract class Repository
         if ($model = $this->find($id)) {
             return $model;
         }
-       
+
         throw new ModelNotFoundException();
     }
-    
+
     /**
      * @return Model|mixed
      */
@@ -53,7 +53,7 @@ abstract class Repository
 
         return $this->getInstance($row);
     }
-    
+
 
     public static function getPrimaryCol()
     {
@@ -113,14 +113,14 @@ abstract class Repository
     public function create(array $values)
     {
         $values['id'] = $this->insert($values);
-        
+
         $model = $this->getInstance($values);
-        
+
         Event\EventDisptatcher::dispatch(new Database\Repository\Events\ModelCreated($model));
 
         return $model;
     }
-    
+
     /**
      * @param array $values
      * @return int
@@ -152,7 +152,6 @@ abstract class Repository
     public function update(Model $model)
     {
         $changes = $this->getChanges($model);
-        
         if (!$changes) {
             return false;
         }
@@ -175,7 +174,13 @@ abstract class Repository
     {
         $original = $model->getOriginalValues();
         $newValues = $this->valuesToArray($model);
-        return array_diff($newValues, $original);
+        $changes = [];
+        foreach($newValues as $key => $value) {
+            if ($value != $original[$key]) {
+                $changes[$key] = $value;
+            }
+        }
+        return $changes;
     }
 
     /**
@@ -185,7 +190,7 @@ abstract class Repository
     public function valuesToArray(Model $model)
     {
         $values = [];
-        
+
         foreach (array_keys($model->getOriginalValues()) as $column) {
             $values[$column] = $model->{$column};
         }
@@ -205,15 +210,15 @@ abstract class Repository
             $model->deleted_at = date('Y-m-d H:i:s');
             return $this->save($model);
         }
-        
+
         $deleted = $this->getBuilder()->where(static::getPrimaryCol(), $model->getId())->delete();
-        
+
         Event\EventDisptatcher::dispatch(new Database\Repository\Events\ModelDeleted($model));
-        
+
         return $deleted;
-        
+
     }
-    
+
     public function updateOrCreate(array $where, array $data)
     {
         return $this->getBuilder()->updateOrInsert($where, $data);

@@ -10,8 +10,12 @@ namespace App\Models;
 class GroupView extends Group
 {
     public $institute_name;
-    
+
     public $leader_name;
-    
-    public $tags;
+
+    public $spiritual_movement;
+
+    public $city;
+
+    public $district;
 }

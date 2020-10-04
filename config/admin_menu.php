@@ -38,6 +38,16 @@ return [
                 'icon' => 'plus',
                 'as' => 'admin.group.create',
             ],
+            [
+                'title' => 'Lelkiségi mozgalmak',
+                'icon' => 'landmark',
+                'as' => 'admin.group.spiritual_movements',
+            ],
+            [
+                'title' => 'Címkék',
+                'icon' => 'tags',
+                'as' => 'admin.tags'
+            ],
         ]
     ],
     [
@@ -62,11 +72,6 @@ return [
         'title' => 'Felhasználók',
         'icon' => 'users',
         'as' => 'admin.user.list'
-    ],
-    [
-        'title' => 'Címkék',
-        'icon' => 'tags',
-        'as' => 'admin.tags'
     ],
     [
         'title' => 'Gépház',

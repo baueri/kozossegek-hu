@@ -6,7 +6,6 @@ use App\Admin\Group\GroupTable;
 use App\Repositories\AgeGroupRepository;
 use App\Repositories\CityRepository;
 use App\Repositories\GroupStatusRepository;
-use App\Repositories\InstituteRepository;
 use App\Repositories\OccasionFrequencyRepository;
 
 use App\Enums\GroupStatusEnum;
@@ -36,11 +35,6 @@ class ListGroups
     private $table;
 
     /**
-     * @var InstituteRepository
-     */
-    private $instituteRepository;
-
-    /**
      * @var CityRepository
      */
     private $cityRepository;
@@ -55,16 +49,14 @@ class ListGroups
      * @param GroupTable $table
      * @param AgeGroupRepository $ageGroupRepository
      * @param OccasionFrequencyRepository $occasionFrequencyRepository
-     * @param InstituteRepository $instituteRepository
      * @param CityRepository $cityRepository
      */
-    public function __construct(Request $request, GroupTable $table, AgeGroupRepository $ageGroupRepository, OccasionFrequencyRepository $occasionFrequencyRepository,
-                                InstituteRepository $instituteRepository, CityRepository $cityRepository)
+    public function __construct(Request $request, GroupTable $table, AgeGroupRepository $ageGroupRepository,
+                    OccasionFrequencyRepository $occasionFrequencyRepository, CityRepository $cityRepository)
     {
         $this->table = $table;
         $this->ageGroupRepository = $ageGroupRepository;
         $this->occasionFrequencyRepository = $occasionFrequencyRepository;
-        $this->instituteRepository = $instituteRepository;
         $this->cityRepository = $cityRepository;
         $this->request = $request;
     }
@@ -77,7 +69,11 @@ class ListGroups
         $age_groups = $this->ageGroupRepository->all();
         $occasion_frequencies = $this->occasionFrequencyRepository->all();
         $statuses = (new GroupStatusRepository())->all();
-        $institute = $this->instituteRepository->find($this->request['institute_id']);
+
+        if($institute_id = $this->request['institute_id']) {
+            $institute = db()->fetchColumn("select name from institutes where id=?", [$institute_id]);
+        }
+
         $filter = $this->request;
         $table = $this->table;
         $current_page = $this->getCurrentPage();

@@ -10,6 +10,8 @@ use App\Admin\Group\Services\EditGroup;
 use App\Admin\Group\Services\UpdateGroup;
 use Framework\Exception\UnauthorizedException;
 use Framework\Http\Request;
+
+use Framework\Http\View\Section;
 use App\Admin\Group\Services\DeleteGroup;
 use App\Admin\Group\Services\CreateGroup;
 use App\Admin\Group\Services\BaseGroupForm;
@@ -55,5 +57,15 @@ class GroupController extends AdminController
     public function trash(ListGroups $service)
     {
         return $service->show();
+    }
+
+    public function spiritualMovements()
+    {
+        $movements = builder()
+            ->select('*')
+            ->from('spiritual_movements')
+            ->orderBy('name', 'asc')
+            ->get();
+        return view('admin.group.spiritual_movements', compact('movements'));
     }
 }

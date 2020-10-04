@@ -25,8 +25,6 @@ class Group extends Model
 
     public $description;
 
-    public $city;
-
     public $denomination;
 
     public $institute_id;
@@ -37,7 +35,7 @@ class Group extends Model
 
     public $group_leader_phone;
 
-    public $spiritual_movement;
+    public $spiritual_movement_id;
 
     public $age_group;
 
