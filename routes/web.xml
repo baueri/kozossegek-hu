@@ -7,89 +7,11 @@
         <route method="get" uri="kozossegek" as="portal.groups" controller="GroupController" use="kozossegek"/>
         <route method="get" uri="kozosseg/{kozosseg}" as="kozosseg" controller="GroupController" use="kozosseg"/>
     </route-group>
+    
     <!-- BELÉPÉS -->
     <route method="get" uri="login" controller="App\Portal\Controllers\LoginController" use="login" as="login"/>
     <route method="post" uri="login" controller="App\Portal\Controllers\LoginController" use="doLogin"/>
     <route method="get" uri="admin/logout" controller="App\Portal\Controllers\LoginController" use="logout" as="admin.logout"/>
-
-    <route-group namespace="App\Admin" prefix="admin" as="admin" middleware="App\Middleware\AdminMiddleware">
-
-        <!-- ADMIN  -->
-        <!-- ************************************** -->
-
-        <route method="get" uri="release-notes" as="release_notes" view="admin.release_notes"/>
-
-        <!-- OLDALAK -->
-        <route-group namespace="Page" prefix="page" controller="PageController" as="page">
-            <route method="get" uri="list" use="list" as="list"/>
-            <route method="get" uri="trash" use="trash" as="trash"/>
-            <route method="get" uri="empty-trash" use="emptyTrash" as="empty_trash"/>
-            <route method="get" uri="restore" use="restore" as="restore"/>
-
-            <route method="get" uri="create" use="create" as="create"/>
-            <route method="post" uri="create" use="doCreate" as="do_create"/>
-
-            <route method="get" uri="{id}/edit" use="edit" as="edit"/>
-            <route method="post" uri="{id}/update" use="update" as="update"/>
-            <route method="get" uri="{id}/delete" use="delete" as="delete"/>
-
-        </route-group>
-
-        <route-group controller="Page\ApiPageController" prefix="page/api" as="page.api" middleware="Framework\Middleware\JsonApi">
-            <route method="post" uri="generate-slug" use="generateSlug" as="generate_slug"/>
-        </route-group>
-
-
-        <!-- KÖZÖSSÉGEK -->
-        <route-group namespace="Group" prefix="group" as="group" controller="GroupController">
-            <route method="get" uri="list" use="list" as="list"/>
-
-            <route method="get" uri="create" use="create" as="create"/>
-            <route method="post" uri="create" use="doCreate" as="do_create"/>
-
-            <route method="get" uri="{id}/edit" use="edit" as="edit"/>
-            <route method="post" uri="{id}/update" use="update" as="update"/>
-            <route method="get" uri="{id}/delete" use="delete" as="delete"/>
-
-            <route method="get" uri="trash" use="trash" as="trash"/>
-
-            <route method="get" uri="spiritual_movements" use="spiritualMovements" as="spiritual_movements"/>
-        </route-group>
-
-
-        <!-- Intézmények -->
-        <route-group namespace="Institute" prefix="institute" as="institute">
-            <route method="get" uri="list" controller="InstituteController" use="list" as="list"/>
-
-            <route method="get" uri="create" controller="InstituteController" use="create" as="create"/>
-            <route method="post" uri="create" controller="InstituteController" use="doCreate" as="do_create"/>
-
-            <route method="get" uri="{id}/edit" controller="InstituteController" use="edit" as="edit"/>
-            <route method="post" uri="{id}/update" controller="InstituteController" use="update" as="update"/>
-            <route method="get" uri="{id}/delete" controller="InstituteController" use="delete" as="delete"/>
-        </route-group>
-
-        <!-- FELHASZNÁLÓK -->
-        <route-group controller="User\UserController" prefix="user" as="user">
-            <route method="get" uri="user" use="list" as="list"/>
-            <route method="get" uri="profile" use="profile" as="profile"/>
-            <route method="post" uri="profile/update" use="updateProfile" as="profile.update"/>
-            <route method="post" uri="profile/change-password" use="changeMyPassword" as="profile.change_password"/>
-        </route-group>
-
-        <route method="get" uri="tags" controller="Controllers\TagController" as="tags" use="tags"/>
-
-        <route method="get" uri="porfile" controller="UserController" use="profile"/>
-
-        <route method="get" uri="" controller="Controllers\DashboardController" use="dashboard" as="dashboard"/>
-        <route method="get" uri="settings" controller="Settings\SettingsController" use="settings" as="settings"/>
-        <route method="get" uri="error-log" controller="Settings\SettingsController" use="errorLog" as="error_log"/>
-        <route method="get" uri="error-log/clear" controller="Settings\SettingsController" use="clearErrorLog" as="clear_error_log"/>
-        <route method="get" uri="event-log" controller="Settings\SettingsController" use="eventLog" as="event_log"/>
-    </route-group>
-    <route-group namespace="App\Admin\Controllers" prefix="admin" as="admin">
-        <route method="get" uri="groups" controller="GroupController" use="list" as="groups"/>
-    </route-group>
 
 	<route method="get" uri="teszt" controller="App\Portal\Controllers\TesztController" use="teszt"/>
     <route method="get" uri="{slug}" controller="App\Portal\Controllers\PageController" use="page" as="portal.page"/>

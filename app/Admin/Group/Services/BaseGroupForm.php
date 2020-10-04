@@ -54,9 +54,11 @@ class BaseGroupForm {
         $action = $this->getAction($group);
         $spiritual_movements = db()->select('select * from spiritual_movements order by name');
         $tags = builder('tags')->select('*')->get();
-
+        $age_group_array = array_filter(explode(',', $group->age_group));
+        $group_tags = array_filter(explode(',', $group->tags));
         return view('admin.group.create', compact('group', 'institute', 'denominations',
-                'statuses', 'occasion_frequencies', 'age_groups', 'action', 'spiritual_movements', 'tags'));
+                'statuses', 'occasion_frequencies', 'age_groups', 'action', 'spiritual_movements', 'tags',
+                'age_group_array', 'group_tags'));
     }
 
     protected function getGroup(): Group

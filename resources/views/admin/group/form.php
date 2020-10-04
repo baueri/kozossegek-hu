@@ -48,7 +48,12 @@
                 <div>
                     @foreach($tags as $tag)
                         <label class="mr-2" for="tag-{{ $tag['id'] }}">
-                            <input type="checkbox" name="tag[]" id="tag-{{$tag['id']}}" value="{{ $tag['id'] }}"> {{ $tag['tag'] }}
+                            <input type="checkbox"
+                                name="tags[]"
+                                id="tag-{{$tag['id']}}"
+                                value="{{ $tag['slug'] }}"
+                                @if(in_array($tag['slug'], $group_tags)) checked @endif
+                            > {{ $tag['tag'] }}
                         </label>
                     @endforeach
                 </div>
@@ -77,9 +82,9 @@
             </div>
             <div class="form-group">
                 <label for="age_group">Korosztály</label>
-                <select class="form-control" name="age_group">
+                <select class="form-control" name="age_group[]" multiple="multiple">
                     @foreach($age_groups as $age_group)
-                    <option value="{{ $age_group->name }}">{{ $age_group }}</option>
+                        <option value="{{ $age_group->name }}" @if(in_array($age_group->name, $age_group_array)) selected @endif>{{ $age_group }}</option>
                     @endforeach
                 </select>
             </div>

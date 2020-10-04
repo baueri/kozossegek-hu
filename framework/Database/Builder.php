@@ -77,7 +77,7 @@ class Builder
         [$query, $bindings] = $this->build();
 
         $base = sprintf('select %s from %s ',
-            implode(', ', $this->select),
+            implode(', ', $this->select ?: ['*']),
             implode(', ', $this->table)
         );
 
@@ -232,10 +232,10 @@ class Builder
         [$query, $bindings] = $this->build();
 
         $base = sprintf('update %s set %s',
-        $this->table,
+        implode(', ', $this->table),
         $set);
 
-        return $this->db->update($base . $query, array_values($values)+$bindings);
+        return $this->db->update($base . $query, ...array_merge(array_values($values), $bindings));
     }
 
     public function insert(array $values)

@@ -29,9 +29,7 @@ abstract class Repository
      */
     public function find($id)
     {
-
         $row = $this->getBuilder()->where(static::getPrimaryCol(), $id)->first();
-
         return $this->getInstance($row);
     }
 
