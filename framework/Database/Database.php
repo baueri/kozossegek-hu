@@ -34,8 +34,10 @@ interface Database
     public function insert($query, $params = []): int;
 
     public function exists($query, $params = []) :bool;
-    
+
     public function delete($query, $params = []);
+
+    public function fetchColumn($query, $params = []);
 
     public function lastInsertId(): ?int;
 

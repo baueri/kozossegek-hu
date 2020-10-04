@@ -53,8 +53,8 @@
 
             <route method="get" uri="trash" use="trash" as="trash"/>
 
+            <route method="get" uri="spiritual_movements" use="spiritualMovements" as="spiritual_movements"/>
         </route-group>
-
 
 
         <!-- Intézmények -->

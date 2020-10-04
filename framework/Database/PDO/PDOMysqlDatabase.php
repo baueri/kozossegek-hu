@@ -51,7 +51,7 @@ class PDOMysqlDatabase implements Database
     }
 
     /**
-     * 
+     *
      * @param type $query
      * @param type $params
      * @return ResultSet
@@ -104,14 +104,6 @@ class PDOMysqlDatabase implements Database
     }
 
     /**
-     * @return PDO
-     */
-    public function getPDO()
-    {
-        return $this->pdo;
-    }
-
-    /**
      * @param $query
      * @param mixed ...$params
      * @return int
@@ -128,10 +120,17 @@ class PDOMysqlDatabase implements Database
         return (bool) $this->first($query, $params);
     }
 
+    public function fetchColumn($query, $params = [])
+    {
+        $row = $this->first($query, $params);
+
+        return array_shift($row);
+    }
+
     public function delete($query, $params = [])
     {
         $this->execute($query, ...$params);
-        
+
         return true;
     }
 

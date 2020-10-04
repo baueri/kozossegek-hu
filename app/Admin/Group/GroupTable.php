@@ -9,8 +9,7 @@ use App\Models\AgeGroup;
 use App\Models\Group;
 use App\Models\GroupStatus;
 use App\Models\Institute;
-use App\Repositories\GroupRepository;
-use App\Repositories\InstituteRepository;
+use App\Repositories\GroupViewRepository;
 use Framework\Database\PaginatedResultSetInterface;
 use Framework\Http\Request;
 use Framework\Support\StringHelper;
@@ -22,7 +21,7 @@ class GroupTable extends AdminTable implements Editable, Deletable
         'id' => '#',
         'name' => 'Közösség neve',
         'city' => 'Város',
-        'institute' => 'Intézmény / plébánia',
+        'institute_name' => 'Intézmény / plébánia',
         'group_leaders' => 'Közösség vezető(i)',
         'age_group' => 'Korosztály',
         'status' => 'Státusz',
@@ -31,35 +30,24 @@ class GroupTable extends AdminTable implements Editable, Deletable
 
     protected $centeredColumns = ['status'];
     /**
-     * @var GroupRepository
+     * @var GroupViewRepository
      */
     private $repository;
-    /**
-     * @var InstituteRepository
-     */
-    private $instituteRepository;
 
     /**
      * GroupTable constructor.
      * @param Request $request
-     * @param GroupRepository $repository
-     * @param InstituteRepository $instituteRepository
+     * @param GroupViewRepository $repository
      */
-    public function __construct(Request $request, GroupRepository $repository, InstituteRepository $instituteRepository)
+    public function __construct(Request $request, GroupViewRepository $repository)
     {
         parent::__construct($request);
         $this->repository = $repository;
-        $this->instituteRepository = $instituteRepository;
     }
 
     public function getAgeGroup($ageGroup)
     {
         return (new AgeGroup($ageGroup))->translate();
-    }
-
-    public function getInstitute(?Institute $institute)
-    {
-        return $institute->name;
     }
 
     public function getCreatedAt($createdAt)
@@ -86,28 +74,21 @@ class GroupTable extends AdminTable implements Editable, Deletable
      */
     protected function getData(): PaginatedResultSetInterface
     {
-        $groups = $this->repository->search($this->request->merge([
+        return $this->repository->search($this->request->merge([
             'order_by' => 'id',
             'order' => 'desc',
             'deleted' => $this->request->route->getAs() == 'admin.group.trash'
         ]));
-
-        $instituteIds = $groups->pluck('institute_id');
-        $institutes = $this->instituteRepository->getInstitutesByIds($instituteIds->toArray());
-
-        $groups->with($institutes, 'institute', 'institute_id', 'id');
-
-        return $groups;
     }
 
     public function getDeleteUrl($model): string
     {
-        return route('admin.group.delete', ['id' => $model->id]);
+        return route('admin.group.delete', $model);
     }
 
     public function getEditUrl($model): string
     {
-        return route('admin.group.edit', ['id' => $model->id]);
+        return route('admin.group.edit', $model);
     }
 
     public function getEditColumn(): string

@@ -114,9 +114,9 @@ function db($connection = null)
 /**
  * @return Builder
  */
-function builder()
+function builder($table = null)
 {
-    return app()->make(Builder::class);
+    return app()->make(Builder::class)->table($table);
 }
 
 /**
@@ -151,9 +151,14 @@ function redirect_route($route, $args = [])
  * @param $values
  * @return Collection
  */
-function collect($values)
+function collect($values = [])
 {
     return Collection::create($values);
+}
+
+function collect_file($file)
+{
+    return collect(array_filter(explode(PHP_EOL, file_get_contents($file))));
 }
 
 /**

@@ -9,6 +9,8 @@ class TagController extends AdminController
 {
     public function tags()
     {
-        return view('admin.tag.tags');
+        $tags = builder('tags')->select('*')->get();
+
+        return view('admin.tag.tags', compact('tags'));
     }
 }

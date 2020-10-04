@@ -3,8 +3,8 @@
 namespace App\Portal\Controllers;
 use App\Portal\Services\SearchGroupService;
 use App\Repositories\AgeGroupRepository;
-use App\Repositories\GroupRepository;
 use App\Repositories\InstituteRepository;
+use App\Repositories\GroupViewRepository;
 use App\Repositories\OccasionFrequencyRepository;
 use Framework\Http\Controller;
 use Framework\Http\Request;
@@ -36,7 +36,7 @@ class GroupController extends Controller {
         return view('portal.kozossegek', $model);
     }
 
-    public function kozosseg(Request $request, GroupRepository $repo, InstituteRepository $instituteRepo)
+    public function kozosseg(Request $request, GroupViewRepository $repo, InstituteRepository $instituteRepo)
     {
         $backUrl = null;
 

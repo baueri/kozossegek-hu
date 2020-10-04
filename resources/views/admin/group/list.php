@@ -32,7 +32,7 @@
         <div class="col-md-3">
             <div class="form-group">
                 <select name="institute_id" id="institute_id" class="form-control">
-                    <option value="{{ $filter['institute_id'] }}">{{ $institute ? $institute->name : 'intézmény' }}</option>
+                    <option value="{{ $filter['institute_id'] }}">{{ $institute ?? 'intézmény' }}</option>
                 </select>
             </div>
         </div>

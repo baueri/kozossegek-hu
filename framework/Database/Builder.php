@@ -51,6 +51,11 @@ class Builder
         return $this->db->select(...$this->getBaseSelect());
     }
 
+    public function fetchColumn()
+    {
+        return $this->db->fetchColumn(...$this->getBaseSelect());
+    }
+
     /**
      * @return int
      */

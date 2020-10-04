@@ -16,7 +16,10 @@ use Framework\Support\Config\Config;
 
 use Framework\PasswordGenerator;
 
-define('DS', DIRECTORY_SEPARATOR);
+if(!defined('DS')) {
+    define('DS', DIRECTORY_SEPARATOR);
+}
+
 define('ROOT', __DIR__ . DS);
 define('APP', ROOT . 'app' . DS);
 define('RESOURCES', ROOT . 'resources' . DS);

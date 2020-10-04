@@ -103,7 +103,12 @@ abstract class AdminTable
     protected function transformRowColumn($row, $column)
     {
         $method = StringHelper::camel("get" . ucfirst($column));
-        $value = property_exists($row, $column) ? $row->{$column} : null;
+        if (is_object($row)) {
+            $value = property_exists($row, $column) ? $row->{$column} : null;
+        } else {
+            $value = $row[$column] ?? null;
+        }
+
 
         if (!method_exists($this, $method)) {
 

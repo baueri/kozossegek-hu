@@ -12,19 +12,13 @@
             </div>
 
             <div class="row">
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for="city">Város / település</label>
-                        <select name="city" style="width:100%" class="form-control">
-                            <option value="{{ $group->city }}">{{ $group->city ?: 'város' }}</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="form-group">
                         <label for="institute_id">Intézmény / plébánia</label>
                         <select name="institute_id" style="width:100%" class="form-control">
-                            <option value="{{ $institute->id }}">{{ $institute->name ?: 'intézmény' }}</option>
+                            <option value="{{ $group->institute_id }}">
+                                {{ $group->institute_id ? $group->institute_name . ' (' . $group->city . ')' : 'intézmény' }}
+                            </option>
                         </select>
                     </div>
                 </div>
@@ -38,7 +32,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="group_leader_email">Telefon</label>
+                        <label for="group_leader_phone">Telefon</label>
                         <input type="tel" name="group_leader_phone" id="group_leader_phone" value="{{ $group->group_leader_phone }}" class="form-control">
                     </div>
                 </div>
@@ -47,6 +41,16 @@
                         <label for="group_leader_email">Email cím</label>
                         <input type="email" name="group_leader_email" id="group_leader_email" value="{{ $group->group_leader_email }}" class="form-control">
                     </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Címkék</label>
+                <div>
+                    @foreach($tags as $tag)
+                        <label class="mr-2" for="tag-{{ $tag['id'] }}">
+                            <input type="checkbox" name="tag[]" id="tag-{{$tag['id']}}" value="{{ $tag['id'] }}"> {{ $tag['tag'] }}
+                        </label>
+                    @endforeach
                 </div>
             </div>
             <div class="form-group">
@@ -83,13 +87,20 @@
                 <label for="occasion_frequency">Alkalmak gyakorisága</label>
                 <select class="form-control" name="occasion_frequency">
                     @foreach($occasion_frequencies as $occasion_frequency)
-                    <option value="{{ $occasion_frequency->name }}">{{ $occasion_frequency }}</option>
+                        <option value="{{ $occasion_frequency->name }}" @if($group->occasion_frequency == $occasion_frequency->name) selected @endif>{{ $occasion_frequency }}</option>
                     @endforeach
                 </select>
             </div>
             <div class="form-group">
-                <label for="spiritual_movement">Lelkiségi mozgalom</label>
-                <input type="text" name="spiritual_movement" id="spiritual_movement" value="{{ $group->spiritual_movement }}" class="form-control">
+                <label for="spiritual_movement_id">Lelkiségi mozgalom</label>
+                <select id="spiritual_movement_id" name="spiritual_movement_id" class="form-control">
+                    <option></option>
+                    @foreach($spiritual_movements as $spiritual_movement)
+                        <option value="{{ $spiritual_movement['id'] }}" @if($group->spiritual_movement_id == $spiritual_movement['id']) selected @endif>
+                            {{ $spiritual_movement['name'] }}
+                        </option>
+                    @endforeach
+                </select>
             </div>
             <div class="form-group text-center">
                 <label for="image" style="cursor: pointer">
@@ -105,14 +116,9 @@
 
 <script>
     $(() => {
-        $("[name=city]").select2({
-            placeholder: "város",
+        $("[name=spiritual_movement_id]").select2({
+            placeholder: "lelkiségi mozgalom",
             allowClear: true,
-            ajax: {
-                url: "@route('api.search-city')",
-                dataType: 'json',
-                delay: 300
-            }
         });
 
         $("[name=institute_id]").select2({
@@ -128,8 +134,9 @@
                 }
             }
         });
+
         initSummernote('[name=description]');
 
-        $(".group-side-content select").select2();
+        $(".group-side-content select:not(#spiritual_movement_id)").select2();
     });
 </script>
