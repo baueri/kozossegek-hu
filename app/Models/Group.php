@@ -12,6 +12,8 @@ use Framework\Model\Model;
 use Framework\Model\TimeStamps;
 use Framework\Support\StringHelper;
 
+use App\Models\AgeGroup;
+
 /**
  * Description of Group
  *
@@ -43,6 +45,8 @@ class Group extends Model
 
     public $status;
 
+    public $tags;
+
     /**
      * @var Institute|null
      */
@@ -54,7 +58,7 @@ class Group extends Model
      */
     public function ageGroup(): string
     {
-        return lang('age_group.' . $this->age_group);
+        return GroupHelper::parseAgeGroup($this->age_group);
     }
 
     /**

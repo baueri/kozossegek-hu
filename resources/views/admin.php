@@ -15,33 +15,43 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.9/css/bootstrap-dialog.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.9/js/bootstrap-dialog.min.js"></script>
+
     <!-- <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
     <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script> -->
 
     @yield('header')
     <link rel="stylesheet" href="/css/admin.css">
     <script src="/js/admin.js"></script>
+    <script src="/assets/sidebar-09/js/main.js"></script>
 
 </head>
 <body>
 <nav id="top_menu" class="navbar navbar-expand navbar-dark bg-dark fixed-top">
     <ul class="navbar-nav mr-auto">
+        <li class="nav-item" id="mobile_menu_toggle">
+            <a class="nav-link"><i class="fa fa-bars"></i>
+        </li>
         @if(isset($current_menu_item['submenu']))
             @foreach($current_menu_item['submenu'] as $submenuItem)
             <li class="nav-item  {{ $submenuItem['active'] ? 'active' : '' }}">
-                <a class="nav-link" href="{{ $submenuItem['uri'] }}"><i class="fa fa-{{ $submenuItem['icon'] }}"></i> {{ $submenuItem['title'] }}</a>
+                <a class="nav-link" href="{{ $submenuItem['uri'] }}"><i class="fa fa-{{ $submenuItem['icon'] }}"></i>
+                    <span>{{ $submenuItem['title'] }}</a></span>
             </li>
             <li class="nav-item divider"></li>
             @endforeach
         @else
             <li class="nav-item  {{ $current_menu_item['active'] ? 'active' : '' }}">
-                <a class="nav-link" href="{{ $current_menu_item['uri'] }}"><i class="fa fa-{{ $current_menu_item['icon'] }}"></i> {{ $current_menu_item['title'] }}</a>
+                <a class="nav-link" href="{{ $current_menu_item['uri'] }}">
+                    <i class="fa fa-{{ $current_menu_item['icon'] }}"></i>
+                    <span>{{ $current_menu_item['title'] }}</span></a>
             </li>
         @endif
     </ul>
     <ul class="navbar-nav ml-auto">
         <li class="nav-item text-white">
-            Hello <a href="@route('admin.user.profile')">{{ App\Auth\Auth::user()->keresztnev() }}</a>
+            <span>Hello <a href="@route('admin.user.profile')">{{ App\Auth\Auth::user()->keresztnev() }}</a></span>
         </li>
         <li class="divider nav-item"></li>
         <li class="nav-item"><a href="@route('home')" title="ugrás az oldalra" target="_blank" class="text-white nav-link"><i class="fa fa-eye"></i></a></li>
@@ -78,9 +88,13 @@
     <div id="is_maintenance_on" title="Karbantartás bekapcsolva!"><i class="fa fa-exclamation-triangle text-danger" style="font-size: 36px; cursor:pointer;"></i></div>
 @endif
 @yield('footer')
+
 <script>
     $(()=>{
         $("[title]").tooltip();
+        $("#mobile_menu_toggle").click(function(){
+            $("body").toggleClass("sidebar-open");
+        });
     });
 </script>
 </body>

@@ -35,7 +35,7 @@ class HttpKernel implements Kernel
     public function handleError($exception)
     {
 
-        http_response_code($exception->getCode());
+        http_response_code((int) $exception->getCode() ?: 500);
 
         if (Response::contentTypeIsJson()) {
             print json_encode([

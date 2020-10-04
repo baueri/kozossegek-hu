@@ -10,6 +10,8 @@ use App\Models\Group;
 use App\Models\GroupStatus;
 use App\Models\Institute;
 use App\Repositories\GroupViewRepository;
+
+use App\Helpers\GroupHelper;
 use Framework\Database\PaginatedResultSetInterface;
 use Framework\Http\Request;
 use Framework\Support\StringHelper;
@@ -47,7 +49,7 @@ class GroupTable extends AdminTable implements Editable, Deletable
 
     public function getAgeGroup($ageGroup)
     {
-        return (new AgeGroup($ageGroup))->translate();
+        return GroupHelper::parseAgeGroup($ageGroup);
     }
 
     public function getCreatedAt($createdAt)

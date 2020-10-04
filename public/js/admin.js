@@ -38,3 +38,17 @@ $.fn.districtSelect = function (options) {
 
     return this;
 }
+
+function notify(msg, type) {
+    var DOM = $("<div class='notification alert alert-"+type+"'>" + msg + "</div>");
+    DOM.appendTo("#content").slideToggle("fast");
+    DOM.click(function(){dismissNotification(DOM)});
+    setTimeout(function() {
+        dismissNotification(DOM);
+    }, 3500);
+}
+
+function dismissNotification(DOM) {
+    DOM.slideUp();
+    setTimeout(function() { DOM.remove() }, 1000);
+}

@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 use Phinx\Migration\AbstractMigration;
+use App\Services\RefreshGroupViewTable;
 
 final class ReplaceGroupView extends AbstractMigration
 {
@@ -18,17 +19,6 @@ final class ReplaceGroupView extends AbstractMigration
      */
     public function up(): void
     {
-        $this->execute('CREATE OR REPLACE VIEW v_groups AS
-            SELECT
-                groups.*,
-                institutes.name as institute_name,
-                institutes.city,
-                institutes.district,
-                institutes.leader_name,
-                spiritual_movements.name as spiritual_movement
-            FROM groups
-            LEFT JOIN institutes ON groups.institute_id=institutes.id
-            LEFT JOIN spiritual_movements ON groups.spiritual_movement_id=spiritual_movements.id
-            GROUP BY groups.id');
+        $this->execute(RefreshGroupViewTable::getQuery());
     }
 }

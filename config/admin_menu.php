@@ -41,7 +41,7 @@ return [
             [
                 'title' => 'Lelkiségi mozgalmak',
                 'icon' => 'landmark',
-                'as' => 'admin.group.spiritual_movements',
+                'as' => 'admin.spiritual_movements',
             ],
             [
                 'title' => 'Címkék',

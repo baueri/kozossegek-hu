@@ -58,14 +58,4 @@ class GroupController extends AdminController
     {
         return $service->show();
     }
-
-    public function spiritualMovements()
-    {
-        $movements = builder()
-            ->select('*')
-            ->from('spiritual_movements')
-            ->orderBy('name', 'asc')
-            ->get();
-        return view('admin.group.spiritual_movements', compact('movements'));
-    }
 }

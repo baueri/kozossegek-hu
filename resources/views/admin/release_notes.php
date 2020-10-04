@@ -1,6 +1,15 @@
 @title('Verzióinformáció')
 @extends('admin')
 
+<h3>v0.0.3 pre-alpha</h3>
+<ul>
+    <li>Csoport jellemzők szerkeszthetősége</li>
+    <li>Több korosztály is választható legyen</li>
+    <li>Keretrendszer javítások</li>
+    <li>Admin oldal mobilbaráttá alakítása</li>
+</ul>
+
+
 <h3>v0.0.2 pre-alpha</h3>
 <ul>
     <li>Javítások</li>

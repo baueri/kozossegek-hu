@@ -211,8 +211,12 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
      * @param callback $func
      * @return static;
      */
-    public function filter($func)
+    public function filter($func = null)
     {
+        if (!$func) {
+            return new static(array_filter($this->items));
+        }
+
         $result = [];
 
         foreach ($this->items as $key => $item) {

@@ -33,6 +33,9 @@ class UpdateGroup
     {
         $group = $this->repository->findOrFail($id);
 
+        $data['age_group'] = implode(',', $data['age_group']);
+        $data['tags'] = implode(',', $data['tags']);
+
         $group->update($data);
 
         $this->repository->update($group);
