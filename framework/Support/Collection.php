@@ -110,6 +110,16 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         return array_pop($this->items);
     }
 
+    public function keyBy($key) {
+        $items = [];
+        foreach($this->items as $item) {
+            $items[$item[$key]] = $item;
+        }
+
+        return new static($items);
+    }
+
+
     /**
      * @param Closure|string|null $callback
      * @param null $default

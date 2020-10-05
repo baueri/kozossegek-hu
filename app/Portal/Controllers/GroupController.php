@@ -23,6 +23,7 @@ class GroupController extends Controller {
 
         $groups = $service->search($filter);
 
+
         $model = [
             'groups' => $groups,
             'occasion_frequencies' => $OccasionFrequencies->all(),
@@ -30,7 +31,9 @@ class GroupController extends Controller {
             'page' => $groups->page(),
             'total' => $groups->total(),
             'perpage' => $groups->perpage(),
-            'filter' => $filter
+            'filter' => $filter,
+            'selected_tags' => explode(',', $filter['tags']),
+            'tags' => builder('tags')->get()
         ];
 
         return view('portal.kozossegek', $model);
@@ -52,8 +55,8 @@ class GroupController extends Controller {
         }
 
         $institute = $instituteRepo->find($group->institute_id);
-        $tags = collect(explode(',', $group->tags))->filter();
-        $tag_names = $tags->isNotEmpty() ? collect(builder('tags')->whereIn('slug', $tags->all())->get()) : [];
+
+        $tag_names = builder('v_group_tags')->where('group_id', $group->id)->get();
 
         return view('portal.kozosseg', compact('group', 'institute', 'backUrl', 'tag_names'));
     }

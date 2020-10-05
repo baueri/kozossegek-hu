@@ -92,7 +92,7 @@ nav.navbar .nav-link:hover {
 .select2-container--bootstrap .select2-selection--single .select2-selection__rendered {
     padding: 3px 0 !important;
 }
-#finder input {
+#finder input:not([type=checkbox]) {
     padding: 3px 10px;
     width: calc(100% - 542px);
 }
@@ -104,6 +104,10 @@ nav.navbar .nav-link:hover {
 #finder button[type=submit] {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
+}
+
+.form-group label [type=checkbox] ~ span {
+    color: #444;
 }
 
 /*

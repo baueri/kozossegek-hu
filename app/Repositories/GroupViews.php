@@ -65,12 +65,12 @@ class GroupViews extends Repository
         }
 
         if ($tags = $filter['tags']) {
+            
             $tags = explode(',', $tags);
-            $builder->where(function($builder) use($tags){
-                foreach($tags as $tag) {
-                    $builder->whereRaw("FIND_IN_SET(?, tags)", $tag, 'or');
-                }
-            });
+
+            $innerQuery = builder('group_tags')->select('group_id')->whereIn('tag', $tags)->toSql();
+
+            $builder->whereRaw("id in ($innerQuery)", $tags);
         }
 
         if ($filter['deleted']) {
@@ -80,7 +80,7 @@ class GroupViews extends Repository
         }
 
         $builder->orderBy($filter['order_by'] ?: 'name', $filter['order'] ?: 'asc');
-        
+
         return $this->getInstances($builder->paginate($perPage));
     }
 

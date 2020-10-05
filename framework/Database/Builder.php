@@ -113,6 +113,7 @@ class Builder
                 $in = implode(',', array_fill(0, count($value), '?'));
                 $where .= sprintf("$column $operator (%s)", $in);
                 $bindings = array_merge($bindings, $value);
+
             } elseif(is_callable($column)) {
 
                 $builder = builder();
@@ -136,6 +137,9 @@ class Builder
                 $bindings[] = $value;
             } else {
                 $where .= $column;
+                if(is_array($value)) {
+                    $bindings = array_merge($bindings, $value);
+                }
             }
 
             if (isset($this->where[$i + 1])) {
@@ -337,11 +341,11 @@ class Builder
             return $query;
         }
 
-        
+        foreach ($bindings as $binding) {
+            $query = substr($query, 0, strpos($query, '?')) . $binding . substr($query, strpos($query, '?')+1);
+        }
 
-        return str_replace(['?'], array_map(function($binding){
-            return "$binding";
-        }, $bindings), $query);
+        return $query;
 
     }
 }

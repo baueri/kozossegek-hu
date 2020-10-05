@@ -42,15 +42,6 @@
             <route method="get" uri="trash" use="trash" as="trash"/>
         </route-group>
 
-        <!-- Lelkiségi mozgalmak -->
-        <route-group controller="SpiritualMovementController">
-            <route method="get" uri="spiritual-movements" use="spiritualMovements" as="spiritual_movements"/>
-            <route method="post" middleware="Framework\Middleware\JsonApi" uri="api/spiritual-movements/create" use="create" as="spiritual_movements.create"/>
-            <route method="post" middleware="Framework\Middleware\JsonApi" uri="api/spiritual-movements/save" use="update" as="spiritual_movements.save"/>
-            <route method="post" middleware="Framework\Middleware\JsonApi" uri="api/spiritual-movements/delete" use="delete" as="spiritual_movements.delete"/>
-        </route-group>
-
-
         <!-- Intézmények -->
         <route-group prefix="institute" as="institute" controller="InstituteController">
             <route method="get" uri="list" use="list" as="list"/>
@@ -71,7 +62,21 @@
             <route method="post" uri="profile/change-password" use="changeMyPassword" as="profile.change_password"/>
         </route-group>
 
-        <route method="get" uri="tags" controller="TagController" as="tags" use="tags"/>
+        <!-- Címkék -->
+        <route-group controller="TagController" as="tags" prefix="tags" middleware="">
+            <route method="get" uri="" as="list" use="tags"/>
+            <route method="post" uri="create" as="create" use="create" middleware="Framework\Middleware\JsonApi"/>
+            <route method="post" uri="delete" as="delete" use="delete" middleware="Framework\Middleware\JsonApi"/>
+            <route method="post" uri="save" as="save" use="update" middleware="Framework\Middleware\JsonApi"/>
+        </route-group>
+
+        <!-- Lelkiségi mozgalmak -->
+        <route-group controller="SpiritualMovementController">
+            <route method="get" uri="spiritual-movements" use="spiritualMovements" as="spiritual_movements"/>
+            <route method="post" middleware="Framework\Middleware\JsonApi" uri="api/spiritual-movements/create" use="create" as="spiritual_movements.create"/>
+            <route method="post" middleware="Framework\Middleware\JsonApi" uri="api/spiritual-movements/save" use="update" as="spiritual_movements.save"/>
+            <route method="post" middleware="Framework\Middleware\JsonApi" uri="api/spiritual-movements/delete" use="delete" as="spiritual_movements.delete"/>
+        </route-group>
 
         <route method="get" uri="porfile" controller="UserController" use="profile"/>
 

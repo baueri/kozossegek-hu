@@ -10,26 +10,42 @@
         Ami szinte azonnal dörnyezik: a kurumok a vigásokkal tárnyolnak, úgy horozják a hajoracsot.
     </p>
     <form method="get" id="finder">
-        <div class="input-group">
-            <select name="varos" style="width:200px" class="form-control">
-                <option value="{{ $filter['varos'] }}">{{ $filter['varos'] }}</option>
-            </select>
-            <input type="text" name="search" value="{{ $filter['search'] }}" class="form-control" placeholder="keresés...">
-            <select class="form-control" id="korosztaly" name="korosztaly">
-                <option></option>
-                @foreach($age_groups as $age_group)
-                    <option value="{{ $age_group->name }}" {{ $age_group->name == $filter['korosztaly'] ? 'selected' : '' }}>{{ $age_group }}</option>
-                @endforeach
-            </select>
-            <select class="form-control" id="rendszeresseg" name="rendszeresseg">
-                <option></option>
-                @foreach($occasion_frequencies as $occasion_frequency)
-                    <option value="{{ $occasion_frequency->name }}" {{ $occasion_frequency->name == $filter['rendszeresseg'] ? 'selected' : '' }}>{{ $occasion_frequency }}</option>
-                @endforeach
-            </select>
-            <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+        <div class="form-group">
+            <div class="input-group">
+                <select name="varos" style="width:200px" class="form-control">
+                    <option value="{{ $filter['varos'] }}">{{ $filter['varos'] }}</option>
+                </select>
+                <input type="text" name="search" value="{{ $filter['search'] }}" class="form-control" placeholder="keresés...">
+                <select class="form-control" id="korosztaly" name="korosztaly">
+                    <option></option>
+                    @foreach($age_groups as $age_group)
+                        <option value="{{ $age_group->name }}" {{ $age_group->name == $filter['korosztaly'] ? 'selected' : '' }}>{{ $age_group }}</option>
+                    @endforeach
+                </select>
+                <select class="form-control" id="rendszeresseg" name="rendszeresseg">
+                    <option></option>
+                    @foreach($occasion_frequencies as $occasion_frequency)
+                        <option value="{{ $occasion_frequency->name }}" {{ $occasion_frequency->name == $filter['rendszeresseg'] ? 'selected' : '' }}>{{ $occasion_frequency }}</option>
+                    @endforeach
+                </select>
+                <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+            </div>
         </div>
-        <p class="mt-15 text-right">
+        <div class="form-group">
+            <label>Közösség jellemzői:</label><br>
+            @foreach($tags as $tag)
+                <label for="tag-{{ $tag['slug'] }}" class="mr-1">
+                    <input type="checkbox"
+                        class="group-tag"
+                        id="tag-{{ $tag['slug'] }}"
+                        value="{{ $tag['slug'] }}"
+                        @if(in_array($tag['slug'], $selected_tags)) checked @endif  
+                      > <span>{{ $tag['tag'] }}</span>
+                </label>
+            @endforeach
+            <input type="hidden" name="tags" value="{{ $filter['tags'] }}">
+        </div>
+        <p class="mt-2 text-right">
             <a href="/kozossegek">Szűrés törlése</a>
         </p>
     </form>
@@ -56,7 +72,7 @@
             </div>
         @endforeach
     </div>
-    
+
     @include('partials.simple-pager')
 </div>
 <script>
@@ -79,6 +95,15 @@
         $("[name=rendszeresseg]").select2({
             placeholder: "rendszeresség",
             allowClear: true,
+        });
+
+        $(".group-tag").change(function(){
+            var val = "";
+            $(".group-tag:checked").each(function(){
+                val += (val ? "," : "") + $(this).val();
+            });
+
+            $("[name=tags]").val(val);
         });
 
     });
