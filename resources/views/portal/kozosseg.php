@@ -37,14 +37,58 @@
             <p class="kozi-tulajdonsag">
                 <label>Címkék</label><br>
                 @foreach($tag_names as $tag)
-                    <a href="@route('portal.groups', ['tag' => $tag['slug']])" class="badge badge-primary">{{ $tag['tag'] }}</a>
+                    <a href="@route('portal.groups', ['tags' => $tag['tag']])" class="badge badge-primary">{{ $tag['tag_name'] }}</a>
                 @endforeach
             </p>
             {{ $group->description }}
             <p class="mt-4">
-                <a href="#" class="btn btn-outline-primary"><i class="fas fa-envelope"></i> Érdekel!</a>
+                <a href="#" class="btn btn-outline-primary" data-toggle="modal" data-target="#contact-modal"><i class="fas fa-envelope"></i> Érdekel!</a>
                 <a href="#" class="text-danger float-right"><i class="fas fa-exclamation-triangle"></i> Jelentem</a>
             </p>
         </div>
     </div>
+</div>
+<div class="modal fade" id="contact-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Vedd fel a kapcsolatot a közzösségvezetővel!</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    <form>
+      <div class="modal-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Neved*</label>
+                        <input type="text" class="form-control" required>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Email címed*</label>
+                        <input type="email" class="form-control" required>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <textarea class="form-control" rows=5>Kedves {{ $group->group_leaders }}!
+
+Érdeklődni szeretnék, hogy lehet-e csatlakozni a {{ $group->name }} közösségbe?</textarea>
+            </div>
+            <div class="text-right">
+                <p class="mb-0"><label><input type="checkbox"> Nem vagyok robot</label></p>
+                <p><label><input type="checkbox"> Az <a href="">adatvédelmi tájékoztatót</a> elolvastam és elfogadom</label></p>
+            </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Bezár</button>
+        <button type="submit" class="btn btn-primary">Üzenet küldése</button>
+      </div>
+  </form>
+
+    </div>
+  </div>
 </div>

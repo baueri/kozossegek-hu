@@ -46,7 +46,7 @@ return [
             [
                 'title' => 'Címkék',
                 'icon' => 'tags',
-                'as' => 'admin.tags'
+                'as' => 'admin.tags.list'
             ],
         ]
     ],

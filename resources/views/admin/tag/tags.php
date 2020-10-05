@@ -1,8 +1,8 @@
 @title('Címkék')
 @section('title')
-    <form class="float-right mr-3" id="create_movement">
+    <form class="float-right mr-3" id="create_tag">
         <div class="input-group input-group-sm">
-            <input type="text" class="form-control" name="new_movement_name" placeholder="címke neve...">
+            <input type="text" class="form-control" name="new_tag_name" placeholder="címke neve...">
             <div class="input-group-append">
                 <button class="btn btn-primary"><i class="fa fa-plus"></i> Új címke</button>
             </div>
@@ -38,7 +38,7 @@
         $(".delete-movement").click(function(){
             var row = $(this).closest(".row");
             var id = row.data("id");
-            $.post("@route('admin.spiritual_movements.delete')", {id:id}, function(response){
+            $.post("@route('admin.tags.delete')", {id:id}, function(response){
                 notify("Sikeres törlés", "warning");
                 setTimeout(() => {
                     row.slideUp();
@@ -47,10 +47,10 @@
             });
         });
 
-        $("#create_movement").submit(function(e) {
+        $("#create_tag").submit(function(e) {
             e.preventDefault();
-            var name = $("[name=new_movement_name]").val();
-            $.post("@route('admin.spiritual_movements.create')", {name:name}, function(response){
+            var tag = $("[name=new_tag_name]").val();
+            $.post("@route('admin.tags.create')", {tag:tag}, function(response){
                 if(response.success) {
                     window.location.reload();
                 } else {
@@ -63,7 +63,7 @@
         {
             var id = row.data("id");
             var value = $("input", row).val();
-            $.post("@route('admin.spiritual_movements.save')", {id:id, value:value}, function(response){
+            $.post("@route('admin.tags.save')", {id:id, value:value}, function(response){
                 if(response.success) {
                     notify("Sikeres mentés!", "success");
                 } else {
