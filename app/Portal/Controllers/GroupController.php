@@ -2,10 +2,10 @@
 
 namespace App\Portal\Controllers;
 use App\Portal\Services\SearchGroupService;
-use App\Repositories\AgeGroupRepository;
-use App\Repositories\InstituteRepository;
-use App\Repositories\GroupViewRepository;
-use App\Repositories\OccasionFrequencyRepository;
+use App\Repositories\AgeGroups;
+use App\Repositories\Institutes;
+use App\Repositories\GroupViews;
+use App\Repositories\OccasionFrequencies;
 use Framework\Http\Controller;
 use Framework\Http\Request;
 use Framework\Model\ModelNotFoundException;
@@ -17,7 +17,7 @@ use Framework\Model\ModelNotFoundException;
 class GroupController extends Controller {
 
     public function kozossegek(Request $request, SearchGroupService $service,
-            OccasionFrequencyRepository $occasionFrequencyRepository, AgeGroupRepository $ageGroupRepository)
+            OccasionFrequencies $OccasionFrequencies, AgeGroups $AgeGroups)
     {
         $filter = collect($request->all());
 
@@ -25,8 +25,8 @@ class GroupController extends Controller {
 
         $model = [
             'groups' => $groups,
-            'occasion_frequencies' => $occasionFrequencyRepository->all(),
-            'age_groups' => $ageGroupRepository->all(),
+            'occasion_frequencies' => $OccasionFrequencies->all(),
+            'age_groups' => $AgeGroups->all(),
             'page' => $groups->page(),
             'total' => $groups->total(),
             'perpage' => $groups->perpage(),
@@ -36,7 +36,7 @@ class GroupController extends Controller {
         return view('portal.kozossegek', $model);
     }
 
-    public function kozosseg(Request $request, GroupViewRepository $repo, InstituteRepository $instituteRepo)
+    public function kozosseg(Request $request, GroupViews $repo, Institutes $instituteRepo)
     {
         $backUrl = null;
 
@@ -53,7 +53,7 @@ class GroupController extends Controller {
 
         $institute = $instituteRepo->find($group->institute_id);
         $tags = collect(explode(',', $group->tags))->filter();
-        $tag_names = collect(builder('tags')->whereIn('slug', $tags->all())->get())->pluck('tag');
+        $tag_names = $tags->isNotEmpty() ? collect(builder('tags')->whereIn('slug', $tags->all())->get()) : [];
 
         return view('portal.kozosseg', compact('group', 'institute', 'backUrl', 'tag_names'));
     }

@@ -3,9 +3,9 @@
 namespace App\Portal\Controllers\Api\V1;
 
 use Framework\Http\Request;
-use App\Repositories\CityRepository;
-use App\Repositories\DistrictRepository;
-use App\Repositories\InstituteRepository;
+use App\Repositories\Cities;
+use App\Repositories\Districts;
+use App\Repositories\Institutes;
 use App\Portal\Responses\DistrictResponse;
 use App\Portal\Responses\CitySearchResponse;
 use App\Portal\Responses\InstituteSearchResponse;
@@ -33,19 +33,19 @@ class SearchController
 
     /**
      *
-     * @param CityRepository $repository
+     * @param Cities $repository
      */
-    public function searchCity(CityRepository $repository)
+    public function searchCity(Cities $repository)
     {
         return new CitySearchResponse($repository->search($this->request['term']));
     }
 
-    public function searchInstitute(InstituteRepository $repository)
+    public function searchInstitute(Institutes $repository)
     {
         return new InstituteSearchResponse($repository->search($this->request['term'], $this->request['city']));
     }
 
-    public function searchDistrict(DistrictRepository $repository)
+    public function searchDistrict(Districts $repository)
     {
         return new DistrictResponse($repository->searchDistrict($this->request['term'], $this->request['city']));
     }

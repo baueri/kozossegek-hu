@@ -6,11 +6,11 @@ use App\Models\Denomination;
 use ReflectionException;
 
 /**
- * Description of DenominationRepository
+ * Description of Denominations
  *
  * @author ivan
  */
-class DenominationRepository {
+class Denominations {
 
     /**
      *

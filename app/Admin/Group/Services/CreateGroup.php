@@ -10,15 +10,15 @@ namespace App\Admin\Group\Services;
 class CreateGroup {
 
     /**
-     * @var \App\Repositories\GroupRepository
+     * @var \App\Repositories\Groups
      */
     private $repository;
 
     /**
      *
-     * @param \App\Repositories\GroupRepository $repository
+     * @param \App\Repositories\Groups $repository
      */
-    public function __construct(\App\Repositories\GroupRepository $repository) {
+    public function __construct(\App\Repositories\Groups $repository) {
         $this->repository = $repository;
     }
 

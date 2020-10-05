@@ -4,7 +4,7 @@ namespace App\Admin\Institute;
 
 use App\Admin\Controllers\AdminController;
 
-use App\Repositories\InstituteRepository;
+use App\Repositories\Institutes;
 use App\Models\Institute;
 use Framework\Http\Request;
 use Framework\Http\Message;
@@ -26,7 +26,7 @@ class InstituteController extends AdminController
         return view('admin.institute.list', compact('table'));
     }
 
-    public function edit(Request $request, InstituteRepository $repository)
+    public function edit(Request $request, Institutes $repository)
     {
         $institute = $repository->find($request['id']);
 
@@ -42,7 +42,7 @@ class InstituteController extends AdminController
         return view('admin.institute.edit', compact('institute', 'action'));
     }
 
-    public function update(Request $request, InstituteRepository $repository)
+    public function update(Request $request, Institutes $repository)
     {
         $institute = $repository->findOrFail($request['id']);
 
@@ -63,7 +63,7 @@ class InstituteController extends AdminController
         return view('admin.institute.create', compact('action', 'institute'));
     }
 
-    public function doCreate(Request $request, InstituteRepository $repository)
+    public function doCreate(Request $request, Institutes $repository)
     {
         $data = $request->only('name', 'city', 'district', 'address', 'leader_name');
         $data['user_id'] = Auth::user()->id;
@@ -74,7 +74,7 @@ class InstituteController extends AdminController
         redirect_route('admin.institute.edit', $institute);
     }
 
-    public function delete(Request $request, InstituteRepository $repository)
+    public function delete(Request $request, Institutes $repository)
     {
         $repository->delete($repository->findOrFail($request['id']));
 

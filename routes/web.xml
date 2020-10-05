@@ -6,13 +6,17 @@
         <route method="get" uri="" as="home" controller="HomeController" use="home"/>
         <route method="get" uri="kozossegek" as="portal.groups" controller="GroupController" use="kozossegek"/>
         <route method="get" uri="kozosseg/{kozosseg}" as="kozosseg" controller="GroupController" use="kozosseg"/>
+        <route method="get" uri="feedback" as="portal.feedback" view="portal.feedback"/>
     </route-group>
-    
+
     <!-- BELÉPÉS -->
     <route method="get" uri="login" controller="App\Portal\Controllers\LoginController" use="login" as="login"/>
     <route method="post" uri="login" controller="App\Portal\Controllers\LoginController" use="doLogin"/>
     <route method="get" uri="admin/logout" controller="App\Portal\Controllers\LoginController" use="logout" as="admin.logout"/>
 
+
 	<route method="get" uri="teszt" controller="App\Portal\Controllers\TesztController" use="teszt"/>
+
+    <!-- Adatbázisban tárolt statikus oldalak. FIGYELEM!!!! EZ ALÁ MÁR NE KERÜLJÖN ROUTE!!! -->
     <route method="get" uri="{slug}" controller="App\Portal\Controllers\PageController" use="page" as="portal.page"/>
 </routes>

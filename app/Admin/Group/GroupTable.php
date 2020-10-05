@@ -9,7 +9,7 @@ use App\Models\AgeGroup;
 use App\Models\Group;
 use App\Models\GroupStatus;
 use App\Models\Institute;
-use App\Repositories\GroupViewRepository;
+use App\Repositories\GroupViews;
 
 use App\Helpers\GroupHelper;
 use Framework\Database\PaginatedResultSetInterface;
@@ -32,16 +32,16 @@ class GroupTable extends AdminTable implements Editable, Deletable
 
     protected $centeredColumns = ['status'];
     /**
-     * @var GroupViewRepository
+     * @var GroupViews
      */
     private $repository;
 
     /**
      * GroupTable constructor.
      * @param Request $request
-     * @param GroupViewRepository $repository
+     * @param GroupViews $repository
      */
-    public function __construct(Request $request, GroupViewRepository $repository)
+    public function __construct(Request $request, GroupViews $repository)
     {
         parent::__construct($request);
         $this->repository = $repository;

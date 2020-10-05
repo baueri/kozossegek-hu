@@ -5,7 +5,7 @@ namespace App\Admin\Institute;
 use App\Admin\Components\AdminTable\AdminTable;
 use App\Admin\Components\AdminTable\Deletable;
 use App\Admin\Components\AdminTable\Editable;
-use App\Repositories\InstituteRepository;
+use App\Repositories\Institutes;
 use Framework\Database\PaginatedResultSetInterface;
 use Framework\Http\Request;
 use App\Repositories\UserRepository;
@@ -30,7 +30,7 @@ class InstituteAdminTable extends AdminTable implements Deletable, Editable
     ];
 
     /**
-     * @var InstituteRepository
+     * @var Institutes
      */
     private $repository;
 
@@ -42,9 +42,9 @@ class InstituteAdminTable extends AdminTable implements Deletable, Editable
     /**
      * InstituteAdminTable constructor.
      * @param Request $request
-     * @param InstituteRepository $repository
+     * @param Institutes $repository
      */
-    public function __construct(Request $request, InstituteRepository $repository, UserRepository $userRepository)
+    public function __construct(Request $request, Institutes $repository, UserRepository $userRepository)
     {
         parent::__construct($request);
         $this->repository = $repository;

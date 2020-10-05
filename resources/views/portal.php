@@ -65,12 +65,11 @@
                 <div class="col-md-4 col-sm-6 col-xs-12">
                     <ul class="navbar-nav">
                         <li class="nav-item"><a href="" class="nav-link">Közösséget keresek</a></li>
-                        <li class="nav-item"><a href="" class="nav-link">Közösséget hirdetek</a></li>
                         <li class="nav-item"><a href="" class="nav-link">Rólunk</a></li>
 
-                        <li class="nav-item"><a href="" class="nav-link">Visszajelzés küldése</a></li>
-                        <li class="nav-item"><a href="" class="nav-link">Közösség jelentése</a></li>
-                        <li class="nav-item"><a href="" class="nav-link">Adatkezelési tájékoztató</a></li>
+                        <li class="nav-item"><a href="@route('portal.feedback')" class="nav-link">Visszajelzés küldése</a></li>
+                        <li class="nav-item"><a href="@route('portal.page', ['slug' => 'adatkezelesi-tajekoztato'])" class="nav-link">Adatkezelési tájékoztató</a></li>
+                        <li class="nav-item"><a href="@route('portal.page', ['slug' => 'impresszum'])" class="nav-link">Impresszum</a></li>
                     </ul>
                 </div>
 
