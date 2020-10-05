@@ -52,8 +52,10 @@ class GroupController extends Controller {
         }
 
         $institute = $instituteRepo->find($group->institute_id);
+        $tags = collect(explode(',', $group->tags))->filter();
+        $tag_names = collect(builder('tags')->whereIn('slug', $tags->all())->get())->pluck('tag');
 
-        return view('portal.kozosseg', compact('group', 'institute', 'backUrl'));
+        return view('portal.kozosseg', compact('group', 'institute', 'backUrl', 'tag_names'));
     }
 
 }

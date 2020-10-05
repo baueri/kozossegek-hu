@@ -13,7 +13,7 @@ return [
         'submenu' => [
             [
                 'title' => 'Oldalak',
-                'icon' => 'stream',
+                'icon' => 'file',
                 'as' => 'admin.page.list',
                 'similars' => ['admin.page.edit', 'admin.page.trash']
             ], [
@@ -30,7 +30,7 @@ return [
         'submenu' => [
             [
                 'title' => 'Közösségek',
-                'icon' => 'stream',
+                'icon' => 'file',
                 'as' => 'admin.group.list',
                 'similars' => ['admin.group.edit']
             ], [
