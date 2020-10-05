@@ -13,6 +13,7 @@ use App\Repositories\PageRepository;
 use Framework\Database\PaginatedResultSetInterface;
 use Framework\Http\Request;
 use App\Repositories\UserRepository;
+use App\Repositories\AdminPageRepository;
 
 class PageTable extends AdminTable implements Deletable, Editable
 {

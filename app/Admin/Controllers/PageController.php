@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin\Page;
+namespace App\Admin\Controllers;
 
 use App\Admin\Controllers\AdminController;
 use App\Admin\Page\Services\PageListService;
@@ -10,6 +10,9 @@ use App\Repositories\PageRepository;
 use Framework\Http\View\ViewInterface;
 use App\Auth\Auth;
 use App\Models\Page;
+use App\Repositories\AdminPageRepository;
+use App\Admin\Page\PageTable;
+
 
 class PageController extends AdminController
 {

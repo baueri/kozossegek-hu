@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Admin\Group;
+namespace App\Admin\Controllers;
 
 
 use App\Admin\Controllers\AdminController;

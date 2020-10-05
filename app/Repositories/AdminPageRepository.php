@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin\Page;
+namespace App\Repositories;
 
 use App\Repositories\PageRepository;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin\Institute;
+namespace App\Admin\Controllers;
 
 use App\Admin\Controllers\AdminController;
 
@@ -9,6 +9,7 @@ use App\Models\Institute;
 use Framework\Http\Request;
 use Framework\Http\Message;
 use App\Auth\Auth;
+use App\Admin\Institute\InstituteAdminTable;
 
 /**
  * Description of InstituteController
