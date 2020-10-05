@@ -9,9 +9,9 @@ final class AddTagsToGroupsTable extends AbstractMigration
 
     public function up(): void
     {
-        $tags = collect(builder('tags')->get())->pluck('slug');
+        $tags = collect(explode(PHP_EOL, file_get_contents(ROOT . 'db/sources/tags.txt')))->filter()->all();
         $this->table('groups')
-            ->addColumn('tags', MysqlAdapter::PHINX_TYPE_SET, ['values' => $tags->all()])
+            ->addColumn('tags', MysqlAdapter::PHINX_TYPE_SET, ['values' => $tags])
             ->save();
 
         $this->table('group_tags')->drop()->save();
