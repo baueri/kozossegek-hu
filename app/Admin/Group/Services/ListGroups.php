@@ -3,10 +3,10 @@
 namespace App\Admin\Group\Services;
 
 use App\Admin\Group\GroupTable;
-use App\Repositories\AgeGroupRepository;
-use App\Repositories\CityRepository;
+use App\Repositories\AgeGroups;
+use App\Repositories\Cities;
 use App\Repositories\GroupStatusRepository;
-use App\Repositories\OccasionFrequencyRepository;
+use App\Repositories\OccasionFrequencies;
 
 use App\Enums\GroupStatusEnum;
 use Framework\Http\Request;
@@ -20,14 +20,14 @@ class ListGroups
 {
 
     /**
-     * @var OccasionFrequencyRepository
+     * @var OccasionFrequencies
      */
-    private $occasionFrequencyRepository;
+    private $OccasionFrequencies;
 
     /**
-     * @var AgeGroupRepository
+     * @var AgeGroups
      */
-    private $ageGroupRepository;
+    private $AgeGroups;
 
     /**
      * @var GroupTable
@@ -35,9 +35,9 @@ class ListGroups
     private $table;
 
     /**
-     * @var CityRepository
+     * @var Cities
      */
-    private $cityRepository;
+    private $Cities;
 
     /**
      * @var Request
@@ -47,17 +47,17 @@ class ListGroups
     /**
      * @param Request $request
      * @param GroupTable $table
-     * @param AgeGroupRepository $ageGroupRepository
-     * @param OccasionFrequencyRepository $occasionFrequencyRepository
-     * @param CityRepository $cityRepository
+     * @param AgeGroups $AgeGroups
+     * @param OccasionFrequencies $OccasionFrequencies
+     * @param Cities $Cities
      */
-    public function __construct(Request $request, GroupTable $table, AgeGroupRepository $ageGroupRepository,
-                    OccasionFrequencyRepository $occasionFrequencyRepository, CityRepository $cityRepository)
+    public function __construct(Request $request, GroupTable $table, AgeGroups $AgeGroups,
+                    OccasionFrequencies $OccasionFrequencies, Cities $Cities)
     {
         $this->table = $table;
-        $this->ageGroupRepository = $ageGroupRepository;
-        $this->occasionFrequencyRepository = $occasionFrequencyRepository;
-        $this->cityRepository = $cityRepository;
+        $this->AgeGroups = $AgeGroups;
+        $this->OccasionFrequencies = $OccasionFrequencies;
+        $this->Cities = $Cities;
         $this->request = $request;
     }
 
@@ -66,8 +66,8 @@ class ListGroups
      */
     public function show()
     {
-        $age_groups = $this->ageGroupRepository->all();
-        $occasion_frequencies = $this->occasionFrequencyRepository->all();
+        $age_groups = $this->AgeGroups->all();
+        $occasion_frequencies = $this->OccasionFrequencies->all();
         $statuses = (new GroupStatusRepository())->all();
 
         if($institute_id = $this->request['institute_id']) {

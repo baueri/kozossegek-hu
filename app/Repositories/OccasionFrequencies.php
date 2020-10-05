@@ -7,11 +7,11 @@ use App\Models\OccasionFrequency;
 use ReflectionException;
 
 /**
- * Description of OccasionFrequencyRepository
+ * Description of OccasionFrequencies
  *
  * @author ivan
  */
-class OccasionFrequencyRepository {
+class OccasionFrequencies {
 
     /**
      *

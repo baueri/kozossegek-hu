@@ -37,12 +37,12 @@
             <p class="kozi-tulajdonsag">
                 <label>Címkék</label><br>
                 @foreach($tag_names as $tag)
-                    <a href="#" class="badge badge-primary">{{ $tag }}</a>
+                    <a href="@route('portal.groups', ['tag' => $tag['slug']])" class="badge badge-primary">{{ $tag['tag'] }}</a>
                 @endforeach
             </p>
             {{ $group->description }}
             <p class="mt-4">
-                <a href="#" class="btn btn-outline-primary"><i class="fas fa-comment-dots"></i> Felveszem a kapcsolatot</a>
+                <a href="#" class="btn btn-outline-primary"><i class="fas fa-envelope"></i> Érdekel!</a>
                 <a href="#" class="text-danger float-right"><i class="fas fa-exclamation-triangle"></i> Jelentem</a>
             </p>
         </div>

@@ -6,7 +6,7 @@ use App\Enums\AgeGroupEnum;
 use App\Models\AgeGroup;
 use ReflectionException;
 
-class AgeGroupRepository {
+class AgeGroups {
 
     /**
      * @return AgeGroup[]

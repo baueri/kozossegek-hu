@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-class DistrictRepository
+class Districts
 {
 
     public function searchDistrict(?string $keyword, ?string $city)

@@ -10,7 +10,7 @@ use Framework\Model\PaginatedModelCollection;
 use Framework\Repository;
 use Framework\Support\Collection;
 
-class GroupRepository extends Repository
+class Groups extends Repository
 {
 
     public static function getModelClass(): string

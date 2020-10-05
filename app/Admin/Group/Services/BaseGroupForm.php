@@ -3,9 +3,9 @@
 namespace App\Admin\Group\Services;
 
 use Framework\Http\Request;
-use App\Repositories\GroupRepository;
-use App\Repositories\InstituteRepository;
-use App\Repositories\GroupViewRepository;
+use App\Repositories\Groups;
+use App\Repositories\Institutes;
+use App\Repositories\GroupViews;
 use App\Models\Group;
 use App\Models\Institute;
 
@@ -17,12 +17,12 @@ use App\Models\Institute;
 class BaseGroupForm {
 
     /**
-     * @var InstituteRepository
+     * @var Institutes
      */
-    protected $instituteRepository;
+    protected $Institutes;
 
     /**
-     * @var GroupRepository
+     * @var Groups
      */
     protected $repository;
 
@@ -34,23 +34,23 @@ class BaseGroupForm {
     /**
      *
      * @param Request $request
-     * @param GroupRepository $repository
-     * @param InstituteRepository $instituteRepository
+     * @param Groups $repository
+     * @param Institutes $Institutes
      */
-    public function __construct(Request $request, GroupViewRepository $repository,
-            InstituteRepository $instituteRepository) {
+    public function __construct(Request $request, GroupViews $repository,
+            Institutes $Institutes) {
         $this->request = $request;
         $this->repository = $repository;
-        $this->instituteRepository = $instituteRepository;
+        $this->Institutes = $Institutes;
     }
 
     public function show() {
         $group = $this->getGroup();
-        $institute = $this->instituteRepository->find($group->institute_id) ?: new Institute;
-        $denominations = (new \App\Repositories\DenominationRepository)->all();
+        $institute = $this->Institutes->find($group->institute_id) ?: new Institute;
+        $denominations = (new \App\Repositories\Denominations)->all();
         $statuses = (new \App\Repositories\GroupStatusRepository)->all();
-        $occasion_frequencies = (new \App\Repositories\OccasionFrequencyRepository)->all();
-        $age_groups = (new \App\Repositories\AgeGroupRepository)->all();
+        $occasion_frequencies = (new \App\Repositories\OccasionFrequencies)->all();
+        $age_groups = (new \App\Repositories\AgeGroups)->all();
         $action = $this->getAction($group);
         $spiritual_movements = db()->select('select * from spiritual_movements order by name');
         $tags = builder('tags')->select('*')->get();

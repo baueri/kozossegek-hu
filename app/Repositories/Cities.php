@@ -3,11 +3,11 @@
 namespace App\Repositories;
 
 /**
- * Description of CityRepository
+ * Description of Cities
  *
  * @author ivan
  */
-class CityRepository extends \Framework\Repository {
+class Cities extends \Framework\Repository {
 
     /**
      *

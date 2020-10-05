@@ -6,11 +6,11 @@ use App\Models\Institute;
 use Framework\Database\PaginatedResultSet;
 
 /**
- * Description of InstituteRepository
+ * Description of Institutes
  *
  * @author ivan
  */
-class InstituteRepository extends \Framework\Repository
+class Institutes extends \Framework\Repository
 {
     /**
      *

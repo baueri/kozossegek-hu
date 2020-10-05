@@ -36,4 +36,11 @@ class DatabaseConfiguration
         $this->charset = $charset;
         $this->port = $port;
     }
+
+    public function __debugInfo()
+    {
+        $result = get_object_vars($this);
+        $result['password'] = '***';
+        return $result;
+    }
 }

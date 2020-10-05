@@ -19,12 +19,12 @@ class Table
     /**
      * @var string
      */
-    protected string $tableName;
+    protected $tableName;
 
     /**
      * @var Action[]
      */
-    protected array $actions = [];
+    protected $actions = [];
 
     /**
      * Table constructor.

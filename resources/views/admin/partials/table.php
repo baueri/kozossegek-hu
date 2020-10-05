@@ -1,7 +1,7 @@
 
 <div class="mb-4">@include('partials.simple-pager')</div>
 
-<table class="table table-striped table-hover table-sm table-responsive">
+<table class="table table-striped table-hover table-sm table-responsive-sm">
     <thead>
         <tr>
             @foreach($columns as $key => $column)

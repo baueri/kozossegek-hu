@@ -3,7 +3,7 @@
 namespace App\Portal\Services;
 
 use App\Events\SearchTriggered;
-use App\Repositories\GroupViewRepository;
+use App\Repositories\GroupViews;
 use Framework\Database\PaginatedResultSet;
 use Framework\Event\EventDisptatcher;
 use Framework\Model\Model;
@@ -15,15 +15,15 @@ class SearchGroupService
 {
 
     /**
-     * @var GroupViewRepository
+     * @var GroupViews
      */
     private $groupRepo;
 
     /**
      *
-     * @param GroupViewRepository $groupRepo
+     * @param GroupViews $groupRepo
      */
-    public function __construct(GroupViewRepository $groupRepo)
+    public function __construct(GroupViews $groupRepo)
     {
         $this->groupRepo = $groupRepo;
     }

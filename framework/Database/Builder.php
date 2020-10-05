@@ -92,24 +92,7 @@ class Builder
         $query = '';
 
         if ($this->where) {
-            $query .= ' where ';
-            foreach ($this->where as $i => [$column, $operator, $value, $clause]) {
-
-                if ($operator == 'in') {
-                    $in = implode(',', array_fill(0, count($value), '?'));
-                    $query .= sprintf("$column $operator (%s)", $in);
-                    $bindings = array_merge($bindings, $value);
-                } elseif($operator) {
-                    $query .= sprintf('%s %s ?', $column, $operator);
-                    $bindings[] = $value;
-                } else {
-                    $query .= $column;
-                }
-
-                if (isset($this->where[$i + 1])) {
-                    $query .= " $clause ";
-                }
-            }
+            $query .= ' where ' . $this->buildWhere($bindings);
         }
 
         if ($this->orderBy) {
@@ -119,6 +102,55 @@ class Builder
         $query .= $this->limit;
 
         return [$query, $bindings];
+    }
+
+    public function buildWhere(&$bindings = [])
+    {
+        $where = '';
+        foreach ($this->where as $i => [$column, $operator, $value, $clause]) {
+
+            if ($operator == 'in') {
+                $in = implode(',', array_fill(0, count($value), '?'));
+                $where .= sprintf("$column $operator (%s)", $in);
+                $bindings = array_merge($bindings, $value);
+            } elseif(is_callable($column)) {
+
+                $builder = builder();
+
+                $column($builder);
+
+                $closureBindings = array_map(function($where){
+                    return $where[2];
+                }, $builder->getWhere());
+
+                $closureWhere = $builder->buildWhere();
+
+                $where .= "($closureWhere) $operator";
+
+                if(is_array($closureBindings)) {
+                    $bindings = array_merge($bindings, $closureBindings);
+                }
+
+            } elseif($operator) {
+                $where .= sprintf('%s %s ?', $column, $operator);
+                $bindings[] = $value;
+            } else {
+                $where .= $column;
+            }
+
+            if (isset($this->where[$i + 1])) {
+                $where .= " $clause ";
+            }
+
+        }
+
+
+        return $where;
+    }
+
+    public function getWhere()
+    {
+        return $this->where;
     }
 
     public function first()
@@ -188,8 +220,13 @@ class Builder
         return $this;
     }
 
-    public function where($column, $operator, $value = null, $clause = 'and')
+    public function where($column, $operator = null, $value = null, $clause = 'and')
     {
+        if (is_callable($column)) {
+            $this->where[] = [$column, null, null, $operator ?: 'and'];
+            return $this;
+        }
+
         if (is_null($value)) {
             $value = $operator;
             $operator = '=';
@@ -200,20 +237,21 @@ class Builder
         return $this;
     }
 
-    public function whereRaw($where, $clause = 'and') {
-        $this->where[] = [$where, null, null, $clause];
+    public function whereRaw($where, $bindings = [], $clause = 'and')
+    {
+        $this->where[] = [$where, null, $bindings, $clause];
 
         return $this;
     }
 
     public function whereNull($column, $clause = 'and')
     {
-        return $this->whereRaw("$column IS NULL", $clause);
+        return $this->whereRaw("$column IS NULL", [], $clause);
     }
 
     public function whereNotNull($column, $clause = 'and')
     {
-        return $this->whereRaw("$column IS NOT NULL", $clause);
+        return $this->whereRaw("$column IS NOT NULL", [], $clause);
     }
 
     public function whereIn($column, array $values)
@@ -298,6 +336,8 @@ class Builder
         if (!$withBindings) {
             return $query;
         }
+
+        
 
         return str_replace(['?'], array_map(function($binding){
             return "$binding";
