@@ -1,7 +1,7 @@
 <?php
 namespace App\Admin\Page\Services;
 
-use App\Admin\Page\AdminPageRepository;
+use App\Repositories\AdminPageRepository;
 use App\Admin\Page\PageTable;
 use App\Admin\Page\TrashPageTable;
 use Framework\Http\Request;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin\User;
+namespace App\Admin\Controllers;
 
 use App\Admin\Controllers\AdminController;
 use Framework\Http\View\Section;

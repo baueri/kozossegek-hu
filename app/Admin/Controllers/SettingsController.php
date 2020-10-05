@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin\Settings;
+namespace App\Admin\Controllers;
 
 use App\Admin\Controllers\AdminController;
 use Framework\Maintenance;
@@ -42,7 +42,7 @@ class SettingsController extends AdminController
     public function eventLog()
     {
         \Framework\Http\View\Section::add('title', 'Eseménynapló');
-        
+
         return view('admin');
     }
 }
