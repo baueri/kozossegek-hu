@@ -1,6 +1,16 @@
 @title('Verzióinformáció')
 @extends('admin')
 
+<h3>v0.0.6 pre-alpha</h3>
+<ul>
+    <li>Címkék, csoporthoz tartozó címkék szerkezeti átalakítása</li>
+    <li>Címkék mentése, létrehozása, törlése</li>
+    <li>Keresés címke szerint</li>
+    <li>Keretrendszer fejlesztések</li>
+    <li>Mappaszerkezeti refaktorálás</li>
+</ul>
+
+
 <h3>v0.0.3 pre-alpha</h3>
 <ul>
     <li>Csoport jellemzők szerkeszthetősége</li>

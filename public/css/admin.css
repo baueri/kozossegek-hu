@@ -16,6 +16,7 @@
     margin-top: 41px;
     min-height: calc(100vh - 41px);
     position: relative;
+    padding-bottom: 57px;
     /*background: #eaeaea;*/
 }
 
