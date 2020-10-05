@@ -36,11 +36,9 @@
             </p>
             <p class="kozi-tulajdonsag">
                 <label>Címkék</label><br>
-                <a href="#" class="badge badge-secondary">Fiatal felnőtt</a>
-                <a href="#" class="badge badge-secondary">Jezsuita lelkiség</a>
-                <a href="#" class="badge badge-secondary">Katolikus</a>
-                <a href="#" class="badge badge-secondary">Közvetlen</a>
-                <a href="#" class="badge badge-secondary">Nyitott</a>
+                @foreach($tag_names as $tag)
+                    <a href="#" class="badge badge-primary">{{ $tag }}</a>
+                @endforeach
             </p>
             {{ $group->description }}
             <p class="mt-4">
