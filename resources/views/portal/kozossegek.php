@@ -39,7 +39,7 @@
                         class="group-tag"
                         id="tag-{{ $tag['slug'] }}"
                         value="{{ $tag['slug'] }}"
-                        @if(in_array($tag['slug'], $selected_tags)) checked @endif  
+                        @if(in_array($tag['slug'], $selected_tags)) checked @endif
                       > <span>{{ $tag['tag'] }}</span>
                 </label>
             @endforeach
@@ -58,11 +58,15 @@
                     <img class="card-img-top" src="https://picsum.photos/400/250?random={{ $groupid }}" />
                     <div class="card-body">
                         <h4>{{ $group->name }}</h4>
-                        {{ $group->excerpt() }}
+                        <div class="description">
+                            {{ $group->excerpt() }}
+                        </div>
                     </div>
                     <div class="card-footer">
                         <div class="kozi-info text-dark">
-                            <div><i class="fas fa-map-marker-alt text-danger"></i><small>{{ $group->city }}</small></div>
+                            <div><i class="fas fa-map-marker-alt text-danger"></i>
+                                <small>{{ $group->city . ($group->district ? '<br><span style="color:#888">' . $group->district . '</span>' : '')  }}</small>
+                            </div>
                             <div><i class="fas fa-user-graduate"></i><small>{{ $group->ageGroup() }}</small></div>
                             <div><i class="fas fa-calendar-alt"></i><small>{{ $group->occasionFrequency() }}</small></div>
                         </div>

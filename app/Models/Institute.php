@@ -26,4 +26,6 @@ class Institute extends \Framework\Model\Model
     public $user_id;
 
     public $user;
+
+    public $image;
 }

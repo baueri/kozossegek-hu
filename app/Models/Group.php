@@ -46,7 +46,7 @@ class Group extends Model
 
     public $status;
 
-    public $tags;
+    public $on_days;
 
     /**
      * @var Institute|null

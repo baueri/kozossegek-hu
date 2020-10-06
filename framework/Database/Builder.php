@@ -5,6 +5,7 @@ namespace Framework\Database;
 
 
 use Framework\Http\Request;
+use Framework\Exception\MethodNotFoundException;
 
 class Builder
 {
@@ -24,6 +25,8 @@ class Builder
     private $limit;
 
     private $distinct = false;
+
+    protected static $macros = [];
 
     /**
      * Builder constructor.
@@ -75,8 +78,9 @@ class Builder
     protected function getBaseSelect()
     {
         [$query, $bindings] = $this->build();
-
-        $base = sprintf('select %s from %s ',
+        $distinct = $this->distinct ? 'DISTINCT ' : '';
+        $base = sprintf('select %s%s from %s ',
+            $distinct,
             implode(', ', $this->select ?: ['*']),
             implode(', ', $this->table)
         );
@@ -109,7 +113,7 @@ class Builder
         $where = '';
         foreach ($this->where as $i => [$column, $operator, $value, $clause]) {
 
-            if ($operator == 'in') {
+            if ($operator == 'in' || $operator == 'not in') {
                 $in = implode(',', array_fill(0, count($value), '?'));
                 $where .= sprintf("$column $operator (%s)", $in);
                 $bindings = array_merge($bindings, $value);
@@ -258,9 +262,14 @@ class Builder
         return $this->whereRaw("$column IS NOT NULL", [], $clause);
     }
 
-    public function whereIn($column, array $values)
+    public function whereNotIn($column, array $values, $clause = 'and')
     {
-        $this->where($column, 'in', $values);
+        return $this->where($column, 'not in', $values, $clause);
+    }
+
+    public function whereIn($column, array $values, $clause = 'and')
+    {
+        $this->where($column, 'in', $values, $claues);
 
         return $this;
     }
@@ -347,5 +356,27 @@ class Builder
 
         return $query;
 
+    }
+
+    private function getTable()
+    {
+        return implode(',', $this->table);
+    }
+
+    public function __call($method, $args)
+    {
+        if (isset(static::$macros[$this->getTable()][$method])) {
+            $macro = static::$macros[$this->getTable()][$method];
+            $macro($this, ...$args);
+
+            return $this;
+        }
+
+        throw new MethodNotFoundException("call to undefined method $method on " . __CLASS__);
+    }
+
+    public function macro($macroName, $callback)
+    {
+        static::$macros[$this->getTable()][$macroName] = $callback;
     }
 }

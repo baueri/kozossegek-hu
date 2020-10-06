@@ -2,7 +2,7 @@
     @include('asset_groups.select2')
 @endsection
 @extends('portal')
-<div id="main-finder" class="">
+<div id="main-finder" class="p-3 p-lg-5 p-lg-6">
     <div class="container">
         <div class="text-white text-center" style="margin-bottom: 2em;">
             <h1>Találd meg a neked való közösséget!</h1>

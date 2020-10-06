@@ -97,6 +97,16 @@
                 </select>
             </div>
             <div class="form-group">
+                <label for="on_days">Mely napo(ko)n</label>
+                <select class="form-control" name="on_days[]" multiple="multiple">
+                    @foreach($days as $day)
+                        <option value="{{ $day }}" @if(in_array($day, $group_days)) selected @endif>
+                             @lang("day.$day")
+                         </option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="form-group">
                 <label for="spiritual_movement_id">Lelkiségi mozgalom</label>
                 <select id="spiritual_movement_id" name="spiritual_movement_id" class="form-control">
                     <option></option>
@@ -126,6 +136,12 @@
             allowClear: true,
         });
 
+        $("[name=on_days]").select2({
+            placeholder: "napok",
+            allowClear: true,
+        });
+
+
         $("[name=institute_id]").select2({
             placeholder: "intézmény",
             allowClear: true,
@@ -142,6 +158,6 @@
 
         initSummernote('[name=description]');
 
-        $(".group-side-content select:not(#spiritual_movement_id)").select2();
+        $(".group-side-content select:not(#spiritual_movement_id, #on_days)").select2();
     });
 </script>

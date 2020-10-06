@@ -3,7 +3,7 @@
     "age_group.fiatal_felnott": "fiatal felnőtt",
     "age_group.kozepkoru": "középkorú",
     "age_group.nyugdijas": "nyugdíjas",
-    
+
     "occasion_frequency.hetente": "hetente",
     "occasion_frequency.havonta": "havonta",
     "occasion_frequency.kethetente": "két hetente",
@@ -17,5 +17,13 @@
     "page_status.PUBLISHED": "közzétéve",
     "page_status.DRAFT": "piszkozat",
 
-    "denomination.katolikus": "katolikus"
+    "denomination.katolikus": "katolikus",
+
+    "day.he": "hétfő",
+    "day.ke": "kedd",
+    "day.sze": "szerda",
+    "day.csut": "csütörtök",
+    "day.pe": "péntek",
+    "day.szo": "szombat",
+    "day.vas": "vasárnap"
 }

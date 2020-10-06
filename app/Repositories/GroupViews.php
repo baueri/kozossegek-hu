@@ -65,12 +65,10 @@ class GroupViews extends Repository
         }
 
         if ($tags = $filter['tags']) {
-            
+
             $tags = explode(',', $tags);
 
-            $innerQuery = builder('group_tags')->select('group_id')->whereIn('tag', $tags)->toSql();
-
-            $builder->whereRaw("id in ($innerQuery)", $tags);
+            $builder->whereGroupTag($tags);
         }
 
         if ($filter['deleted']) {
@@ -95,5 +93,21 @@ class GroupViews extends Repository
         $group = $this->find($id);
 
         return $group;
+    }
+
+    public function findSimilarGroups(GroupView $group, $tags, int $take = 4)
+    {
+
+        $builder = $this->getBuilder()
+            ->where('id', '<>', $group->id)
+            ->where('city', $group->city)
+            ->whereNull('deleted_at')
+            ->limit($take);
+
+        if ($tags) {
+            $builder->whereGroupTag(collect($tags)->pluck('tag')->all());
+        }
+
+        return $this->getInstances($builder->get());
     }
 }

@@ -39,6 +39,7 @@ $.fn.districtSelect = function (options) {
     return this;
 }
 
+
 function notify(msg, type) {
     var DOM = $("<div class='notification alert alert-"+type+"'>" + msg + "</div>");
     DOM.appendTo("#content").slideToggle("fast");
@@ -52,3 +53,12 @@ function dismissNotification(DOM) {
     DOM.slideUp();
     setTimeout(function() { DOM.remove() }, 1000);
 }
+
+var loadFile = function(event, element) {
+var id = $(element).data("target");
+  var output = document.getElementById(id);
+  output.src = URL.createObjectURL(event.target.files[0]);
+  output.onload = function() {
+    URL.revokeObjectURL(output.src) // free memory
+  }
+};

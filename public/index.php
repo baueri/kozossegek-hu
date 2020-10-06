@@ -23,6 +23,7 @@ try {
     $application->run($application->get(Dispatcher::class));
 
 } catch (Error|\Exception $e) {
+    
     ob_get_clean();
     $application->handleError($e);
 }

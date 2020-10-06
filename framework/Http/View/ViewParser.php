@@ -6,6 +6,7 @@ namespace Framework\Http\View;
 
 use Exception;
 use Framework\Http\View\Directives\Directive;
+use Framework\Http\View\Directives\RegisterableDirective;
 
 class ViewParser
 {
@@ -37,10 +38,18 @@ class ViewParser
     }
 
     /**
-     * @param Directive $directive instance or class name of the directive
+     * @param Directive|string $directive
+     * @param Closure $callback
      */
-    public static function registerDirective(Directive $directive)
+    public static function registerDirective($directive, $callback = null)
     {
-        static::$directives[get_class($directive)] = $directive;
+        if ($directive instanceof Directive) {
+            static::$directives[get_class($directive)] = $directive;
+        } elseif(is_string($directive) && is_callable($callback)) {
+            static::$directives[$directive] = new RegisterableDirective($directive, $callback);
+        } else {
+            throw new \InvalidArgumentException('invalid directive');
+        }
+
     }
 }
