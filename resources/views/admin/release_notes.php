@@ -1,6 +1,17 @@
 @title('Verzióinformáció')
 @extends('admin')
 
+<h3>v0.0.7 pre-alpha</h3>
+<ul>
+    <li>címke javítás</li>
+    <li>front-end módosítások</li>
+    <li>Hasonló közösségek funkció egy közösség adatlapja alatt</li>
+    <li>képfeltöltés intézményhez</li>
+    <li>keresés intézmények között admin oldalon</li>
+    <li>Most már lehet azt is megadni, hogy egy közösség mely napokon tartja az alkalmakat</li>
+    <li>Gépház alól kivéve a "karbantartás" gomb</li>
+</ul>
+
 <h3>v0.0.6 pre-alpha</h3>
 <ul>
     <li>Címkék, csoporthoz tartozó címkék szerkezeti átalakítása</li>

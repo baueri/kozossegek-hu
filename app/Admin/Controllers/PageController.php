@@ -12,7 +12,7 @@ use App\Auth\Auth;
 use App\Models\Page;
 use App\Repositories\AdminPageRepository;
 use App\Admin\Page\PageTable;
-
+use App\Admin\Page\TrashPageTable;
 
 class PageController extends AdminController
 {

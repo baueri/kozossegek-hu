@@ -44,6 +44,10 @@
     height: auto;
     padding: 8px 24px 8px 12px;
 }
+.form-group-sm .select2-container--bootstrap .select2-selection--single, .input-group-sm .select2-container--bootstrap .select2-selection--single, .select2-container--bootstrap .select2-selection--single.input-sm {
+    height: 31px;
+    padding: 6px 22px 5px 10px;
+}
 
 .user-logo h3 {
     font-size: 1rem !important;
@@ -200,4 +204,17 @@
     border-right: 1px solid #ccc;
     border-top-left-radius: 4px;
     border-bottom-left-radius: 4px;
+}
+
+.file-upload {
+    padding: 2em 5em;
+    border: 5px dashed #ccc;
+    border-radius: 10px;
+    height: auto !important;
+    position: relative;
+}
+
+.file-upload-image {
+    max-width: 100%;
+    height: auto;
 }

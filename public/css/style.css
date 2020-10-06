@@ -1,4 +1,7 @@
+body {
+    font-family: 'PT Sans', sans-serif;
 
+}
 
 img {
     max-width: 100%;
@@ -9,7 +12,6 @@ img {
     background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/images/main.jpg") no-repeat top center;
     background-position: fixed;
     background-size: cover;
-    padding: 12em 5em;
     min-height: calc(100vh - 321px);
 }
 
@@ -178,26 +180,32 @@ nav.navbar .nav-link:hover {
     background-color: #0a0a0a;
 }
 
-.card-body p {
+.card-body .description {
     text-overflow: ellipsis;
     overflow: hidden;
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
+}
+.kozi-adatlap .card {
+    text-decoration: none;
+}
+.kozi-adatlap .card-body .description {
+    --webkit-line-clamp: 2;
 }
 
 .kozi-box {
     margin-bottom: 30px !important;
     text-decoration: none !important;
     color: var(--gray-dark);
-    transition: all ease-in .2s;
+    transition: all linear .1s;
     position: relative;
     color: var(--gray-dark);
 }
 
 .kozi-box:hover {
-    box-shadow: 0 0 28px #000;
-    transform: scale(1.05);
+    box-shadow: 0 0 20px #000;
+    transform: scale(1.02);
     z-index: 1;
 }
 
@@ -246,9 +254,9 @@ nav.navbar .nav-link:hover {
 
 .kozi-adatlap .title .subtitle {
     margin-top: 0;
-    font-weight: bold;
     font-size: 14px;
-    text-transform: uppercase;
+    color: #555;
+    /* text-transform: uppercase; */
 }
 
 .req label::after {
@@ -283,14 +291,12 @@ input[name=search]::placeholder {
 }
 
 .mobile-menu-toggle {
-    font-size: 24px;
+    font-size: 2em;
     color: #333;
-    position: absolute;
-    right: 1em;
     display: none;
 }
 
-#toggle_main_menu:checked+.container .navbar-nav {
+#toggle_main_menu:checked~.navbar-nav {
     display: block;
     right: 0;
     z-index: 2;
@@ -311,7 +317,7 @@ input[name=search]::placeholder {
 }
 
 @media (max-width: 768px) {
-    .navbar-nav {
+    #header .navbar-nav {
         display: block;
         position: fixed;
         width: 250px;
@@ -342,4 +348,45 @@ input[name=search]::placeholder {
 
 .page {
     overflow: hidden;
+}
+
+
+@media (max-width: 425px) {
+    .col-xxs-12 {
+        -ms-flex: 0 0 100%;
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+
+
+@media (max-width: 768px) {
+    .navbar-brand {
+        width: 55px;
+    }
+    .navbar-brand .logo-lg {display: none;}
+    .navbar-brand .logo-sm {
+        display: block !important;
+    }
+}
+@media (max-width: 425px) {
+    .navbar-brand {
+        width: 40px;
+    }
+}
+
+@media (max-width: 1199px) {
+    .card-deck {
+        margin-left: auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 2fr));
+        grid-gap: .5rem;
+    }
+}
+
+@media (min-width: 1200px) {
+
+    .p-lg-6 {
+        padding: calc(1rem * 10) !important;
+    }
 }

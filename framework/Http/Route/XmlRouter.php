@@ -10,6 +10,7 @@ use Framework\Misc\XmlObject;
 use Framework\Support\Collection;
 
 use Framework\Model\Model;
+use Framework\Http\Exception\RouteNotFoundException;
 
 /**
  * Class XmlRouter

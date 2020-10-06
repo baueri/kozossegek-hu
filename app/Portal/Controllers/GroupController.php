@@ -57,8 +57,9 @@ class GroupController extends Controller {
         $institute = $instituteRepo->find($group->institute_id);
 
         $tag_names = builder('v_group_tags')->where('group_id', $group->id)->get();
+        $similar_groups = $repo->findSimilarGroups($group, $tag_names);
 
-        return view('portal.kozosseg', compact('group', 'institute', 'backUrl', 'tag_names'));
+        return view('portal.kozosseg', compact('group', 'institute', 'backUrl', 'tag_names', 'similar_groups'));
     }
 
 }

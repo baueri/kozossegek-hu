@@ -8,6 +8,7 @@ use App\Repositories\Institutes;
 use App\Repositories\GroupViews;
 use App\Models\Group;
 use App\Models\Institute;
+use App\Enums\DayEnum;
 
 /**
  * Description of BaseGroupForm
@@ -55,10 +56,13 @@ class BaseGroupForm {
         $spiritual_movements = db()->select('select * from spiritual_movements order by name');
         $tags = builder('tags')->select('*')->get();
         $age_group_array = array_filter(explode(',', $group->age_group));
-        $group_tags = array_filter(explode(',', $group->tags));
+        $group_tags = collect(builder('group_tags')->whereGroupId($group->id)->get())->pluck('tag')->all();
+        $days = DayEnum::all();
+        $group_days = explode(',', $group->on_days);
+        
         return view('admin.group.create', compact('group', 'institute', 'denominations',
                 'statuses', 'occasion_frequencies', 'age_groups', 'action', 'spiritual_movements', 'tags',
-                'age_group_array', 'group_tags'));
+                'age_group_array', 'group_tags', 'days', 'group_days'));
     }
 
     protected function getGroup(): Group

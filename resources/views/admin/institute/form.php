@@ -1,8 +1,10 @@
 @section('header')
     @include('asset_groups.select2')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.css"/>
 @endsection
 @extends('admin')
-<form method="post" class="row" action="{{ $action }}">
+<form method="post" id="institute-form" class="row" action="{{ $action }}">
     <div class="col-md-4">
         <div class="form-group">
             <label>Intézmény / plébánia neve</label>
@@ -31,10 +33,56 @@
 
         <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Mentés</button>
     </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label>Fénykép</label>
+            <label class="file-upload form-control text-center" style="">
+                <img src="{{ '/media/institutes/inst_' . $institute->id . '.jpg' }}" class="file-upload-image" id="image">
+            </label>
+            <input type="file" onchange="loadFile(event, this);" data-target="temp-image">
+            <div style="display: none"/><img id="temp-image" /></div>
+            <input type="hidden" name="image">
+        </div>
+    </div>
 </form>
 <script>
+    var image_val;
     $(() => {
+
+        var upload = null;
         $("[name=city]").citySelect();
         $("[name=district]").districtSelect({city_selector: "[name=city]"});
+
+        $("form#institute-form").submit(function(e){
+            if (upload) {
+
+                upload.croppie("result", {type: "base64", format: "jpeg", size: {width: 600, height: 600}}).then(function(base64){
+                    image_val = base64;
+                    $("[name=image]").val(base64);
+                });
+
+            }
+        });
+
+        $("#temp-image").on("load", function(){
+            var newImg = $($(this).closest("div").html());
+            console.log($(this).closest("div").html());
+            $(".file-upload").html(newImg);
+            newImg.attr("id", "image").show();
+
+            upload = $("#image").croppie({
+                enableExif: true,
+                viewport: {
+                    width: '400',
+                    height: '400',
+                    type: 'rectangle'
+                },
+                boundary: {
+                    width: '400',
+                    height: '400'
+                }
+            });
+        });
+
     });
 </script>

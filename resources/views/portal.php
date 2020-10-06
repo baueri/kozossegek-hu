@@ -7,11 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>kozossegek.hu</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-<!--    <link rel="stylesheet" href="/css/bootstrap-margins-paddings.css">-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
     <link rel="stylesheet" href="/css/style.css">
 
     <link href="https://fonts.googleapis.com/css2?family=Baloo+Da+2&family=Oswald:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -23,12 +23,13 @@
     <script src="/js/scripts.js"></script>
 </head>
 <body>
-    <nav class="navbar navbar-expand-sm bg-light navbar-light sticky-top">
-        <input type="checkbox" style="display: none" id="toggle_main_menu" name="toggle_main_menu">
+    <nav id="header" class="navbar navbar-expand-sm bg-light navbar-light sticky-top">
         <div class="container">
-            <a href="/" class="navbar-brand">
-                <img src="/images/logo.png">
+            <a href="/" class="navbar-brand ml-4 ml-sm-0 mt-1 mb-1 mt-sm-0 mb-sm-0">
+                <img src="/images/logo.png" class="logo-lg">
+                <img src="/images/logo_only.png" class="logo-sm" style="display:none;">
             </a>
+            <input type="checkbox" style="display: none" id="toggle_main_menu" name="toggle_main_menu">
             <ul class="navbar-nav">
                 <li class="nav-item">
                     <a href="@route('portal.groups')" class="nav-link"><span>Közösséget keresek</span></a>
@@ -45,9 +46,11 @@
                     </li>
                 @endauth
             </ul>
+
+
+            <label class="mobile-menu-toggle float-right mr-4 mr-sm-0 mb-0" for="toggle_main_menu"><i class="fa fa-bars"></i></label>
         </div>
 
-        <label class="mobile-menu-toggle float-right mr-3" for="toggle_main_menu"><i class="fa fa-bars"></i></label>
     </nav>
     @yield('portal')
     <footer id="footer" class="text-white">

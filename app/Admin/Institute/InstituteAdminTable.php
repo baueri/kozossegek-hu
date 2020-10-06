@@ -58,7 +58,7 @@ class InstituteAdminTable extends AdminTable implements Deletable, Editable
 
     protected function getData(): PaginatedResultSetInterface
     {
-        $institutes = $this->repository->getInstitutesForAdmin();
+        $institutes = $this->repository->getInstitutesForAdmin($this->request);
         $userIds = $institutes->pluck('user_id');
         $users = $this->userRepository->getUsersByIds($userIds->all());
 

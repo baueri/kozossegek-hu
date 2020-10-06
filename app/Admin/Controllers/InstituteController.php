@@ -22,9 +22,11 @@ class InstituteController extends AdminController
      * @param InstituteAdminTable $table
      * @return string
      */
-    public function list(InstituteAdminTable $table)
+    public function list(Request $request, InstituteAdminTable $table)
     {
-        return view('admin.institute.list', compact('table'));
+        $city = $request['city'];
+        $search = $request['search'];
+        return view('admin.institute.list', compact('table', 'city', 'search'));
     }
 
     public function edit(Request $request, Institutes $repository)
@@ -46,6 +48,13 @@ class InstituteController extends AdminController
     public function update(Request $request, Institutes $repository)
     {
         $institute = $repository->findOrFail($request['id']);
+
+        if ($image = $request['image']) {
+            if (!file_exists(ROOT . 'public/media/institutes/')) {
+                mkdir(ROOT . 'public/media/institutes/');
+            }
+            file_put_contents(ROOT . 'public/media/institutes/inst_' . $institute->id . '.jpg', base64_decode(substr($image, strpos($image,','))));
+        }
 
         $institute->update($request->only('name', 'city', 'district', 'address', 'leader_name'));
 
@@ -69,6 +78,13 @@ class InstituteController extends AdminController
         $data = $request->only('name', 'city', 'district', 'address', 'leader_name');
         $data['user_id'] = Auth::user()->id;
         $institute = $repository->create($data);
+        
+        if ($image = $request['image']) {
+            if (!file_exists(ROOT . 'public/media/institutes/')) {
+                mkdir(ROOT . 'public/media/institutes/');
+            }
+            file_put_contents(ROOT . 'public/media/institutes/inst_' . $institute->id . '.jpg', base64_decode(substr($image, strpos($image,','))));
+        }
 
         Message::success('Új intézmény létrehozva');
 

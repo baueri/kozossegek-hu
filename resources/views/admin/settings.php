@@ -1,10 +1,10 @@
 @title('Gépház')
 @extends('admin')
 <div class="form-group">
-    <label>Karbantartás</label>
+    <label>Minta kapcsoló</label>
     <div class="switch">
-        <input type="checkbox" id="maintenance" name="maintenance" {{ $maintenance_on ? 'checked' : '' }}>
-        <label for="maintenance"></label>
+        <input type="checkbox" id="sample_toggle" name="sample_toggle" checked>
+        <label for="sample_toggle"></label>
     </div>
 </div>
 <form method="post">
@@ -20,13 +20,3 @@
         </div>
     </div>
 </form>
-<script>
-    $(()=>{
-        $("#maintenance").change(function(){
-            var toggle = $(this).is(":checked");
-            $.post("@route('api.admin.maintenance')", {toggle:toggle}, function(response){
-                console.log(response);
-            });
-        });
-    });
-</script>
