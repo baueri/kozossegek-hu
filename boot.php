@@ -25,7 +25,7 @@ define('APP', ROOT . 'app' . DS);
 define('RESOURCES', ROOT . 'resources' . DS);
 define('CACHE', ROOT . 'cache' . DS);
 define('LANG', 'hu');
-define('APP_VERSION', 'v0.0.6 pre-alpha');
+define('APP_VERSION', 'v0.0.7 pre-alpha');
 
 
 include 'vendor/autoload.php';
