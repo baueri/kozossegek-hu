@@ -53,7 +53,24 @@ class InstituteController extends AdminController
             if (!file_exists(ROOT . 'public/media/institutes/')) {
                 mkdir(ROOT . 'public/media/institutes/');
             }
-            file_put_contents(ROOT . 'public/media/institutes/inst_' . $institute->id . '.jpg', base64_decode(substr($image, strpos($image,','))));
+            $imageSource = base64_decode(substr($image, strpos($image,',')));
+
+            $stamp = imagecreatefrompng(ROOT . 'resources/watermark.png');
+            $img = imagecreatefromstring($imageSource);
+
+            $marge_right = 10;
+            $marge_bottom = 10;
+            $sx = imagesx($stamp);
+            $sy = imagesy($stamp);
+
+            imagecopy($img, $stamp, imagesx($img) - $sx - $marge_right, imagesy($img) - $sy - $marge_bottom, 0, 0, $sx, $sy);
+            ob_start();
+            imagejpeg($img);
+            $contents = ob_get_clean();
+
+            file_put_contents(ROOT . 'public/media/institutes/inst_' . $institute->id . '.jpg', $contents);
+
+
         }
 
         $institute->update($request->only('name', 'city', 'district', 'address', 'leader_name'));
@@ -78,7 +95,7 @@ class InstituteController extends AdminController
         $data = $request->only('name', 'city', 'district', 'address', 'leader_name');
         $data['user_id'] = Auth::user()->id;
         $institute = $repository->create($data);
-        
+
         if ($image = $request['image']) {
             if (!file_exists(ROOT . 'public/media/institutes/')) {
                 mkdir(ROOT . 'public/media/institutes/');

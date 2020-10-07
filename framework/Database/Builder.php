@@ -191,9 +191,11 @@ class Builder
         return new PaginatedResultSet($rows, $limit, $page, $total);
     }
 
-    public function orderBy($column, $order = null)
+    public function orderBy($columns, $order = null)
     {
-        $this->orderBy[] = $column . ($order ? ' ' . $order : '');
+        foreach((array) $columns as $column) {
+            $this->orderBy[] = $column . ($order ? ' ' . $order : '');
+        }
 
         return $this;
     }
@@ -250,6 +252,11 @@ class Builder
         $this->where[] = [$where, null, $bindings, $clause];
 
         return $this;
+    }
+
+    public function whereInSet($column, $value, $clause = 'and')
+    {
+        return $this->whereRaw("FIND_IN_SET(?, $column)", [$value], $clause);
     }
 
     public function whereNull($column, $clause = 'and')
@@ -378,5 +385,12 @@ class Builder
     public function macro($macroName, $callback)
     {
         static::$macros[$this->getTable()][$macroName] = $callback;
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->toSql();
     }
 }

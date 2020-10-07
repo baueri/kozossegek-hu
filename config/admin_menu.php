@@ -33,10 +33,6 @@ return [
                 'icon' => 'file',
                 'as' => 'admin.group.list',
                 'similars' => ['admin.group.edit']
-            ], [
-                'title' => 'Új közösség',
-                'icon' => 'plus',
-                'as' => 'admin.group.create',
             ],
             [
                 'title' => 'Lelkiségi mozgalmak',

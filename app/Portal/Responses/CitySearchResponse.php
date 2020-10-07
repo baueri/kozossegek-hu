@@ -10,7 +10,7 @@ namespace App\Portal\Responses;
 class CitySearchResponse extends Select2Response {
     //put your code here
     public function getText($model) {
-        return $model->name;
+        return $model['city'];
     }
 
 }

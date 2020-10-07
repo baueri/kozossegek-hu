@@ -14,11 +14,15 @@ abstract class Select2Response {
     private $collection;
 
     public function __construct($collection) {
+        if (is_array($collection)) {
+            $collection = collect($collection);
+        }
+        
         $this->collection = $collection;
     }
-    
+
     abstract public function getText($model);
-    
+
     public function getId($model)
     {
         return $this->getText($model);
@@ -28,8 +32,8 @@ abstract class Select2Response {
     {
         return json_encode($this->getResponse());
     }
-    
-    
+
+
     public function getResponse()
     {
         return ['results' => $this->collection->map(function($model){

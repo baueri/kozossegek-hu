@@ -19,10 +19,16 @@ class GroupController extends Controller {
     public function kozossegek(Request $request, SearchGroupService $service,
             OccasionFrequencies $OccasionFrequencies, AgeGroups $AgeGroups)
     {
-        $filter = collect($request->all());
-
+        $filter = $request->all();
+        $filter['order_by'] = ['city', 'district'];
+        $pg = $filter['page'] ?: 1;
         $groups = $service->search($filter);
 
+        if (!$filter['varos']) {
+            $groupsGrouped = $groups->groupBy('city');
+        } else {
+            $groupsGrouped = $groups->groupBy('district');
+        }
 
         $model = [
             'groups' => $groups,
