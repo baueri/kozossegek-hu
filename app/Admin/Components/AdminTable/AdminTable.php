@@ -55,6 +55,7 @@ abstract class AdminTable
     public function render()
     {
         $data = $this->getData();
+
         $model = [
             'columns' => $this->getColumns(),
             'centered_columns' => $this->centeredColumns,
@@ -64,6 +65,7 @@ abstract class AdminTable
             'page' => $data->page(),
             'perpage' => $data->perpage()
         ];
+
         return view('admin.partials.table', $model);
     }
 

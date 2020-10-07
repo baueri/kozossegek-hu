@@ -34,7 +34,7 @@ class SearchGroupService
      * @param int $perPage
      * @return PaginatedResultSet|Model[]|ModelCollection|PaginatedModelCollection
      */
-    public function search(Collection $filter, $perPage = 21)
+    public function search($filter, $perPage = 21)
     {
         $groups = $this->groupRepo->search($filter, $perPage);
 
@@ -43,8 +43,9 @@ class SearchGroupService
         return $groups;
     }
 
-    private function logEvent(Collection $filter)
+    private function logEvent($data)
     {
-        EventDisptatcher::dispatch(new SearchTriggered('search', $filter->set('user_agent', $_SERVER['HTTP_USER_AGENT'])->toArray()));
+        $data['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
+        EventDisptatcher::dispatch(new SearchTriggered('search', $data));
     }
 }

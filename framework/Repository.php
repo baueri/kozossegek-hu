@@ -190,7 +190,9 @@ abstract class Repository
         $values = [];
 
         foreach (array_keys($model->getOriginalValues()) as $column) {
-            $values[$column] = $model->{$column};
+            if (property_exists($model, $column)) {    
+                $values[$column] = $model->{$column};
+            }
         }
 
         return $values;

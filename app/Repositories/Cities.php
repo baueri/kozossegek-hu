@@ -28,6 +28,18 @@ class Cities extends \Framework\Repository {
         return $this->getInstances($rows)->with($counties, 'county', 'county_id');
     }
 
+    public function searchCitiesByExistingInstitutes($keyword, $limit = 10)
+    {
+        return builder('institutes')
+            ->distinct()
+            ->select('city')
+            ->where('city', 'like', "%$keyword%")
+            ->orderBy('name', 'asc')
+            ->limit($limit)
+            ->get();
+
+    }
+
     public static function getModelClass(): string {
         return \App\Models\City::class;
     }

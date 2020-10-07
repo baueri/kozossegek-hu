@@ -723,4 +723,15 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
             return app()->make($abstraction, $item);
         });
     }
+
+    public function groupBy($key)
+    {
+        $grouped = [];
+
+        foreach ($this->items as $item) {
+            $grouped[static::getItemVal($item, $key)][] = $item;
+        }
+
+        return new self($grouped);
+    }
 }

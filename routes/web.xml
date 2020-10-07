@@ -5,6 +5,7 @@
         <route method="get" uri="test" as="test" controller="TestController" use="testEmail"/>
         <route method="get" uri="" as="home" controller="HomeController" use="home"/>
         <route method="get" uri="kozossegek" as="portal.groups" controller="GroupController" use="kozossegek"/>
+        <route method="get" uri="kozossegek/page/{page}/" as="portal.groups.page" controller="GroupController" use="kozossegek"/>
         <route method="get" uri="kozosseg/{kozosseg}" as="kozosseg" controller="GroupController" use="kozosseg"/>
         <route method="get" uri="feedback" as="portal.feedback" view="portal.feedback"/>
     </route-group>
@@ -13,6 +14,9 @@
     <route method="get" uri="login" controller="App\Portal\Controllers\LoginController" use="login" as="login"/>
     <route method="post" uri="login" controller="App\Portal\Controllers\LoginController" use="doLogin"/>
     <route method="get" uri="admin/logout" controller="App\Portal\Controllers\LoginController" use="logout" as="admin.logout"/>
+
+    <!-- VÍZJELES KÉPGENERÁLÁS -->
+    <route method="get" uri="/media-library/{type}/{resource}" as="w-image" use="image_with_watermark"/>
 
 
 	<route method="get" uri="teszt" controller="App\Portal\Controllers\TesztController" use="teszt"/>

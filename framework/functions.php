@@ -212,3 +212,8 @@ function make($abstraction, $values = [])
 {
     return app()->make($abstraction, ...$values);
 }
+
+function image_with_watermark()
+{
+    
+}

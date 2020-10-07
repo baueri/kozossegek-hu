@@ -36,9 +36,9 @@
     <div class="col-md-6">
         <div class="form-group">
             <label>Fénykép</label>
-            <label class="file-upload form-control text-center" style="">
-                <img src="{{ '/media/institutes/inst_' . $institute->id . '.jpg' }}" class="file-upload-image" id="image">
-            </label>
+            <div class="institute-image">
+                <img src="{{ '/media/institutes/inst_' . $institute->id . '.jpg' }}" id="image" >
+            </div>
             <input type="file" onchange="loadFile(event, this);" data-target="temp-image">
             <div style="display: none"/><img id="temp-image" /></div>
             <input type="hidden" name="image">
@@ -50,12 +50,28 @@
     $(() => {
 
         var upload = null;
+        function initCroppie()
+        {
+            upload = $("#image").croppie({
+                enableExif: true,
+                viewport: {
+                    width: '300',
+                    height: '300',
+                    type: 'rectangle'
+                },
+                boundary: {
+                    width: '300',
+                    height: '300'
+                }
+            });
+        }
+
+        initCroppie();
         $("[name=city]").citySelect();
         $("[name=district]").districtSelect({city_selector: "[name=city]"});
 
         $("form#institute-form").submit(function(e){
             if (upload) {
-
                 upload.croppie("result", {type: "base64", format: "jpeg", size: {width: 600, height: 600}}).then(function(base64){
                     image_val = base64;
                     $("[name=image]").val(base64);
@@ -66,23 +82,11 @@
 
         $("#temp-image").on("load", function(){
             var newImg = $($(this).closest("div").html());
-            console.log($(this).closest("div").html());
-            $(".file-upload").html(newImg);
+            $(".institute-image").html(newImg);
             newImg.attr("id", "image").show();
-
-            upload = $("#image").croppie({
-                enableExif: true,
-                viewport: {
-                    width: '400',
-                    height: '400',
-                    type: 'rectangle'
-                },
-                boundary: {
-                    width: '400',
-                    height: '400'
-                }
-            });
+            initCroppie();
         });
 
     });
+
 </script>

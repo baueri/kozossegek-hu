@@ -2,7 +2,7 @@
 
 builder('v_groups')->macro('whereGroupTag', function($builder, array $tags){
 
-    $innerQuery = builder('group_tags')->distinct()->select('group_id')->whereIn('tag', $tags)->toSql();
+    $innerQuery = builder('group_tags')->distinct()->select('group_id')->whereIn('tag', $tags);
 
     $builder->whereRaw("id in ($innerQuery)", $tags);
 

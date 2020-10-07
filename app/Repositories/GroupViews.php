@@ -38,6 +38,9 @@ class GroupViews extends Repository
      */
     public function search($filter = [], $perPage = 30)
     {
+        if (is_array($filter)) {
+            $filter = collect($filter);
+        }
         $builder = builder()->select('*')->from('v_groups');
 
         if ($keyword = $filter['search']) {
@@ -49,7 +52,7 @@ class GroupViews extends Repository
         }
 
         if ($korosztaly = $filter['korosztaly']) {
-            $builder->where('age_group', $korosztaly);
+            $builder->whereInSet('age_group', $korosztaly);
         }
 
         if ($rendszeresseg = $filter['rendszeresseg']) {

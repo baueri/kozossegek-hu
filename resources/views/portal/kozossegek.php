@@ -9,7 +9,7 @@
         Aztán lassul a kolódásra antár ; folyák, szatkások, margány gugasor raktárnyi tokrával, bons negyedik viteres köhenébe rengeteg varrás.
         Ami szinte azonnal dörnyezik: a kurumok a vigásokkal tárnyolnak, úgy horozják a hajoracsot.
     </p>
-    <form method="get" id="finder">
+    <form method="get" id="finder" action="@route('portal.groups')">
         <div class="form-group">
             <div class="input-group">
                 <select name="varos" style="width:200px" class="form-control">
@@ -52,10 +52,21 @@
     <hr>
     <p><small>Összes találat: {{ $total }}</small></p>
     <div class="row" style="padding-top:2em">
-        @foreach($groups as $groupid => $group)
+        @foreach($groups as $i => $group)
+            @if($i == 0 || $groups[$i-1]->city != $group->city)
+                <div class="col-md-12">
+                    <h2>{{ $group->city }}</h2>
+                    <hr>
+                    @if($filter['varos'] && $group->district && ($i == 0 || $groups[$i-1]->district == $group->district))
+                        <h4 style="color:var(--secondary)">{{ $group->district }}</h4>
+
+                    @endif
+                </div>
+            @endif
+
             <div class="col-lg-4 col-md-6">
                 <a href="{{ $group->url() }}" class="card kozi-box">
-                    <img class="card-img-top" src="https://picsum.photos/400/250?random={{ $groupid }}" />
+                    <img class="card-img-top" src="https://picsum.photos/400/250?random={{ $i }}" />
                     <div class="card-body">
                         <h4>{{ $group->name }}</h4>
                         <div class="description">
@@ -76,8 +87,7 @@
             </div>
         @endforeach
     </div>
-
-    @include('partials.simple-pager')
+    @include('partials.simple-pager', ['route' => 'portal.groups.page','total' => $total,'page' => $page,'perpage' => $perpage,'routeparams' => $filter])
 </div>
 <script>
     $(()=>{

@@ -60,7 +60,7 @@ class HttpDispatcher implements Dispatcher
 
         $route = $this->getCurrentRoute();
 
-        if (!$route->getView() && $route->getController(false) && !class_exists($route->getController())) {
+        if (!$route->getView() && $route->getController() && !class_exists($route->getController())) {
             throw new PageNotFoundException($route->getController());
         }
 
@@ -95,6 +95,9 @@ class HttpDispatcher implements Dispatcher
 
         if ($route->getView()) {
             return $this->resolveView();
+        }
+        if (!$route->getController() && $callback = $route->getUse()) {
+            return call_user_func($callback, $this->request);
         }
 
         return $this->resolveController($route);
