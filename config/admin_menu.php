@@ -1,4 +1,4 @@
-<?php
+ <?php
 
 return [
     [
@@ -27,10 +27,11 @@ return [
         'title' => 'Közösségek',
         'icon' => 'comments',
         'as' => 'admin.group.list',
+        'similars' => ['admin.group.create'],
         'submenu' => [
             [
                 'title' => 'Közösségek',
-                'icon' => 'file',
+                'icon' => 'comments',
                 'as' => 'admin.group.list',
                 'similars' => ['admin.group.edit']
             ],

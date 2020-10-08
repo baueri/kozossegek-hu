@@ -150,6 +150,7 @@ abstract class Repository
     public function update(Model $model)
     {
         $changes = $this->getChanges($model);
+
         if (!$changes) {
             return false;
         }
@@ -164,7 +165,7 @@ abstract class Repository
         }, $dbColumns));
 
         $query = sprintf('UPDATE %s SET %s WHERE %s=?', $table, $set, $primaryCol);
-
+        
         return (bool)db()->update($query, ...array_merge($values, [$id]));
     }
 
@@ -190,7 +191,7 @@ abstract class Repository
         $values = [];
 
         foreach (array_keys($model->getOriginalValues()) as $column) {
-            if (property_exists($model, $column)) {    
+            if (property_exists($model, $column)) {
                 $values[$column] = $model->{$column};
             }
         }

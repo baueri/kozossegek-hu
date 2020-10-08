@@ -111,7 +111,7 @@ class Builder
     public function buildWhere(&$bindings = [])
     {
         $where = '';
-        foreach ($this->where as $i => [$column, $operator, $value, $clause]) {
+        foreach ($this->where as $i => [$column, $operator, $value]) {
 
             if ($operator == 'in' || $operator == 'not in') {
                 $in = implode(',', array_fill(0, count($value), '?'));
@@ -147,6 +147,7 @@ class Builder
             }
 
             if (isset($this->where[$i + 1])) {
+                $clause = $this->where[$i + 1][3];
                 $where .= " $clause ";
             }
 
@@ -279,6 +280,16 @@ class Builder
         $this->where($column, 'in', $values, $claues);
 
         return $this;
+    }
+
+    public function orWhere($column, $operator, $value)
+    {
+        return $this->where($column, $operator, $value, 'or');
+    }
+
+    public function orWhereInSet($column, $value)
+    {
+        return $this->whereInSet($columnt, $value, 'or');
     }
 
     public function update(array $values)
