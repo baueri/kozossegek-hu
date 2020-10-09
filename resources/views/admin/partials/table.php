@@ -1,4 +1,5 @@
 
+<div class="mt-4">Összes találat: <b>{{ $total }}</b></div>
 <div class="mb-4">@include('partials.simple-pager')</div>
 
 <table class="table table-striped table-hover table-sm table-responsive-sm">

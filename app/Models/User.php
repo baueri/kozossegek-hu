@@ -24,6 +24,8 @@ class User extends Model
 
     public $email;
 
+    public $last_login;
+
     public function keresztnev()
     {
         return substr($this->name, strpos($this->name, ' '));

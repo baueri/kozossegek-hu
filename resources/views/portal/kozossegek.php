@@ -66,7 +66,7 @@
 
             <div class="col-lg-4 col-md-6">
                 <a href="{{ $group->url() }}" class="card kozi-box">
-                    <img class="card-img-top" src="https://picsum.photos/400/250?random={{ $i }}" />
+                    <img class="card-img-top" src="{{ $group->getThumbnail() }}" />
                     <div class="card-body">
                         <h4>{{ $group->name }}</h4>
                         <div class="description">

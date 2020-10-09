@@ -24,6 +24,7 @@ class Auth
     public static function login(User $user)
     {
         db()->execute('replace into user_sessions (unique_id, user_id, created_at) values(?, ?, CURRENT_TIMESTAMP)', session_id(), $user->id);
+        db()->execute('update users set last_login=CURRENT_TIMESTAMP where id=?', $user->id);
 
         static::setUser($user);
     }
@@ -42,7 +43,7 @@ class Auth
     {
         return (bool) static::$user;
     }
-    
+
     public static function user()
     {
         return static::$user;

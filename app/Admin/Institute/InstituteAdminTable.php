@@ -8,7 +8,7 @@ use App\Admin\Components\AdminTable\Editable;
 use App\Repositories\Institutes;
 use Framework\Database\PaginatedResultSetInterface;
 use Framework\Http\Request;
-use App\Repositories\UserRepository;
+use App\Repositories\Users;
 
 /**
  * Description of InstituteAdminTable
@@ -35,7 +35,7 @@ class InstituteAdminTable extends AdminTable implements Deletable, Editable
     private $repository;
 
     /**
-     * @var UserRepository
+     * @var Users
      */
     private $userRepository;
 
@@ -44,7 +44,7 @@ class InstituteAdminTable extends AdminTable implements Deletable, Editable
      * @param Request $request
      * @param Institutes $repository
      */
-    public function __construct(Request $request, Institutes $repository, UserRepository $userRepository)
+    public function __construct(Request $request, Institutes $repository, Users $userRepository)
     {
         parent::__construct($request);
         $this->repository = $repository;

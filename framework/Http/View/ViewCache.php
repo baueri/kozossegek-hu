@@ -18,11 +18,13 @@ class ViewCache
      */
     public function cache(string $fileName, ?string $content)
     {
-        $this->createDirIfNotExists();
+        $cachedFileName = $this->getCacheFilename($fileName);
+
+        $this->createDirIfNotExists($cachedFileName);
 
         $content = $content = "<?php //this is the cache file of " . $fileName . " ?>\n" . $content;
 
-        return file_put_contents($this->getCacheFilename($fileName), $content);
+        return file_put_contents($cachedFileName, $content);
     }
 
     /**
@@ -31,13 +33,14 @@ class ViewCache
      */
     public function getCacheFilename(string $fileName)
     {
-        return static::$cacheDir . md5($fileName) . '.php';
+        $hashedFilename = md5($fileName);
+        return static::$cacheDir . substr($hashedFilename, 0, 2) . DS . md5($fileName) . '.php';
     }
 
-    private function createDirIfNotExists()
+    private function createDirIfNotExists($cachedFileName)
     {
-        if (!is_dir(static::$cacheDir)) {
-            mkdir(static::$cacheDir, 0775, true);
+        if (!is_dir(dirname($cachedFileName))) {
+            mkdir(dirname($cachedFileName), 0775, true);
         }
     }
 

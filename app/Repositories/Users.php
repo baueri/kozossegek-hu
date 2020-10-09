@@ -8,8 +8,15 @@ use App\Models\User;
 use Framework\Repository;
 use Framework\Support\StringHelper;
 
-class UserRepository extends Repository
+class Users extends Repository
 {
+
+    public function getUsers($limit = 30)
+    {
+        $rows = $this->getBuilder()->paginate($limit);
+
+        return $this->getInstances($rows);
+    }
 
     /**
      * @param $auth
@@ -27,7 +34,7 @@ class UserRepository extends Repository
 
         return $this->getInstance($builder->first());
     }
-    
+
     public function getUsersByIds(array $userIds)
     {
         if (!$userIds) {

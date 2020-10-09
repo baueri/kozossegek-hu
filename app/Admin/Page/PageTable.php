@@ -12,7 +12,7 @@ use App\Models\PageStatus;
 use App\Repositories\PageRepository;
 use Framework\Database\PaginatedResultSetInterface;
 use Framework\Http\Request;
-use App\Repositories\UserRepository;
+use App\Repositories\Users;
 use App\Repositories\AdminPageRepository;
 
 class PageTable extends AdminTable implements Deletable, Editable
@@ -23,7 +23,7 @@ class PageTable extends AdminTable implements Deletable, Editable
     private $repository;
 
     /**
-     * @var UserRepository
+     * @var Users
      */
     private $userRepository;
 
@@ -42,7 +42,7 @@ class PageTable extends AdminTable implements Deletable, Editable
      * @param Request $request
      * @param AdminPageRepository $repository
      */
-    public function __construct(Request $request, AdminPageRepository $repository, UserRepository $userRepository)
+    public function __construct(Request $request, AdminPageRepository $repository, Users $userRepository)
     {
         parent::__construct($request);
         $this->repository = $repository;

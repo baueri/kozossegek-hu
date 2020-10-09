@@ -64,8 +64,9 @@ class GroupController extends Controller {
 
         $tag_names = builder('v_group_tags')->where('group_id', $group->id)->get();
         $similar_groups = $repo->findSimilarGroups($group, $tag_names);
+        $images = $group->getImages();
 
-        return view('portal.kozosseg', compact('group', 'institute', 'backUrl', 'tag_names', 'similar_groups'));
+        return view('portal.kozosseg', compact('group', 'institute', 'backUrl', 'tag_names', 'similar_groups', 'images'));
     }
 
 }

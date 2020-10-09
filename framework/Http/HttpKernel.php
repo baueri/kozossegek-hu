@@ -34,7 +34,6 @@ class HttpKernel implements Kernel
     */
     public function handleError($exception)
     {
-
         http_response_code((int) $exception->getCode() ?: 500);
 
         if (Response::contentTypeIsJson()) {
@@ -45,9 +44,10 @@ class HttpKernel implements Kernel
             throw $exception;
         }
 
+
         if (config('app.debug')) {
-            echo "<pre style='white-space:pre-line'><h3>Váratlan hiba történt (" . get_class($exception) . ")</h3>";
-            echo $exception->getMessage() . "\n\n";
+            echo "<pre style='white-space:pre-line'><h3>Unexpected error (" . get_class($exception) . ")</h3>";
+            echo "{$exception->getMessage()} in <b>{$exception->getFile()}</b> on line <b>{$exception->getLine()}</b> \n\n";
             echo $exception->getTraceAsString();
             echo "</pre>";
             exit;

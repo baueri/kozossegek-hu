@@ -3,13 +3,14 @@
 <div class="container inner kozi-adatlap">
     <div class="row">
         <div class="col-md-4">
-            <img class="img-big" src="https://picsum.photos/650/650?random=0" style="border-bottom: 3px solid #222;">
-            <div class="kozi-kiskepek row m-0">
-                <div class="col-lg-3 col-md-6 col-6 p-0"><img class="active" src="https://picsum.photos/650/650?random=0"/></div>
-                <div class="col-lg-3 col-md-6 col-6 p-0"><img src="https://picsum.photos/650/650?random=1"/></div>
-                <div class="col-lg-3 col-md-6 col-6 p-0"><img src="https://picsum.photos/650/650?random=2"/></div>
-                <div class="col-lg-3 col-md-6 col-6 p-0"><img src="https://picsum.photos/650/650?random=3"/></div>
-            </div>
+            <img class="img-big" src="{{ $images[0] }}" style="border-bottom: 3px solid #222;">
+            @if(count($images) > 1)
+                <div class="kozi-kiskepek row m-0">
+                    @foreach($images as $i => $image)
+                        <div class="col-lg-3 col-md-6 col-6 p-0"><img @if($i == 0) class="active" @endif src="{{ $image }}"/></div>
+                    @endforeach
+                </div>
+            @endif
         </div>
         <div class="col-md-8 pt-4 pt-md-0">
             <div class="title">
@@ -51,7 +52,7 @@
     <div class="card-deck">
         @foreach($similar_groups as $i => $similar_group)
                 <a href="{{ $similar_group->url() }}" class="card text-dark mt-4 mt-lg-0">
-                    <img class="card-img-top" src="https://picsum.photos/400/250?random={{ $i }}" />
+                    <img class="card-img-top" src="{{ $similar_group->getThumbnail() }}" />
                     <div class="card-body">
                         <h6>{{ $similar_group->name }}</h6>
                         <div class="description" style="font-size: 14px;">

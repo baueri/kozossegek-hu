@@ -22,8 +22,7 @@ try {
 
     $application->run($application->get(Dispatcher::class));
 
-} catch (Error|\Exception $e) {
-    
+} catch (Error|\Exception|\Throwable $e) {
     ob_get_clean();
     $application->handleError($e);
 }

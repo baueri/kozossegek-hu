@@ -1,7 +1,7 @@
 <?php
 namespace App\Auth;
 
-use App\Repositories\UserRepository;
+use App\Repositories\Users;
 use Framework\Exception\UnauthorizedException;
 use Framework\Support\Password;
 
@@ -10,16 +10,16 @@ class Authenticate
 
     /**
      *
-     * @var UserRepository
+     * @var Users
      */
     private $repository;
 
     /**
      * UserAuth constructor.
      *
-     * @param UserRepository $repository
+     * @param Users $repository
      */
-    public function __construct(UserRepository $repository)
+    public function __construct(Users $repository)
     {
         $this->repository = $repository;
     }
