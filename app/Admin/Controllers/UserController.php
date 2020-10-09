@@ -5,30 +5,36 @@ namespace App\Admin\Controllers;
 use App\Admin\Controllers\AdminController;
 use Framework\Http\View\Section;
 use Framework\Http\Request;
-use App\Repositories\UserRepository;
+use App\Repositories\Users;
 use App\Auth\Auth;
 use Framework\Http\Message;
 use \Framework\Support\Password;
+use App\Admin\User\UserTable;
 
 class UserController extends AdminController
 {
-    public function list()
-    {
-        Section::add('title', 'Felhasználók');
 
-        return view('admin');
+    public function list(UserTable $table)
+    {
+        return view('admin.user.list', compact('table'));
+    }
+
+    public function edit(Request $request, Users $repository)
+    {
+        $user = $repository->findOrFail($request['id']);
+        $my_profile = $user->is(Auth::user());
+
+        return view('admin.user.profile', compact('user', 'my_profile'));
     }
 
     public function profile()
     {
-
-            // throw new \Exception("kecske");
         $user = \App\Auth\Auth::user();
-
-        return view('admin.user.profile', compact('user'));
+        $my_profile = true;
+        return view('admin.user.profile', compact('user', 'my_profile'));
     }
 
-    public function updateProfile(Request $request, UserRepository $repository)
+    public function updateProfile(Request $request, Users $repository)
     {
         $user = Auth::user();
 
@@ -41,7 +47,7 @@ class UserController extends AdminController
         return redirect_route('admin.user.profile');
     }
 
-    public function changeMyPassword(Request $request, UserRepository $repository)
+    public function changeMyPassword(Request $request, Users $repository)
     {
         $password1 = $request['new_password'];
         $password2 = $request['new_password_again'];

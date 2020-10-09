@@ -27,7 +27,7 @@ abstract class Model
      */
     public function __construct($values = [])
     {
-        
+
         $this->setProperties($values);
 
         $this->originalValues = $values;
@@ -74,16 +74,16 @@ abstract class Model
     }
 
     /**
-     * @param $id
+     * @param static $model
      * @return bool
      */
-    public function is($id)
+    public function is($model)
     {
-        return $this->getId() == $id;
+        return $model instanceof $this && $this->getId() == $model->getId();
     }
-    
+
     /**
-     * 
+     *
      * @param array $data
      */
     public function update(array $data)
@@ -92,7 +92,7 @@ abstract class Model
     }
 
     /**
-     * 
+     *
      * @param array $values
      * @return static
      */
@@ -103,7 +103,7 @@ abstract class Model
                 $this->{$col} = $value;
             }
         }
-        
+
         return $this;
     }
 }

@@ -28,4 +28,19 @@ class Institute extends \Framework\Model\Model
     public $user;
 
     public $image;
+
+    public function getImageRelPath()
+    {
+        return $this->hasImage() ? \App\Helpers\InstituteHelper::getInstituteRelPath($this->id) : '/images/default_thumbnail.jpg';
+    }
+
+    public function getImageAbsPath()
+    {
+        return \App\Helpers\InstituteHelper::getInstituteAbsPath($this->id);
+    }
+
+    public function hasImage()
+    {
+        return file_exists($this->getImageAbsPath());
+    }
 }

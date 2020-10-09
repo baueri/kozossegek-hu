@@ -36,6 +36,11 @@ return [
                 'similars' => ['admin.group.edit']
             ],
             [
+                'title' => 'Új közösség',
+                'icon' => 'plus',
+                'as' => 'admin.group.create',
+            ],
+            [
                 'title' => 'Lelkiségi mozgalmak',
                 'icon' => 'landmark',
                 'as' => 'admin.spiritual_movements',

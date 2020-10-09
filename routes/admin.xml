@@ -56,7 +56,12 @@
 
         <!-- FELHASZNÁLÓK -->
         <route-group controller="UserController" prefix="user" as="user">
-            <route method="get" uri="user" use="list" as="list"/>
+            <route method="get" uri="list" use="list" as="list"/>
+
+            <route method="get" uri="{id}/edit" use="edit" as="edit"/>
+            <route method="post" uri="{id}/update" use="update" as="update"/>
+            <route method="get" uri="{id}/delete" use="delete" as="delete"/>
+            
             <route method="get" uri="profile" use="profile" as="profile"/>
             <route method="post" uri="profile/update" use="updateProfile" as="profile.update"/>
             <route method="post" uri="profile/change-password" use="changeMyPassword" as="profile.change_password"/>

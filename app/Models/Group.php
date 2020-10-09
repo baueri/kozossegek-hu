@@ -12,6 +12,7 @@ use Framework\Model\Model;
 use Framework\Model\TimeStamps;
 use Framework\Support\StringHelper;
 use App\Helpers\GroupHelper;
+use App\Helpers\InstituteHelper;
 
 use App\Models\AgeGroup;
 
@@ -95,4 +96,42 @@ class Group extends Model
         return StringHelper::slugify($this->name . '-' . $this->id);
     }
 
+    public function getImages($thumbnail = false)
+    {
+        if ($this->hasImage()) {
+            return [];
+        }
+
+        if (file_exists(InstituteHelper::getInstituteAbsPath($this->institute_id, $thumbnail))) {
+            return [InstituteHelper::getInstituteRelPath($this->institute_id, $thumbnail)];
+        }
+
+        $suffix = $thumbnail ? '_wide' : '';
+
+        return ["/images/default_thumbnail$suffix.jpg"];
+
+    }
+
+    /**
+     * @todo !!!
+     * @return string
+     */
+    public function getThumbnail()
+    {
+        return $this->getFirstImage(true);
+    }
+
+    public function getFirstImage($thumbnail = false)
+    {
+        return $this->getImages($thumbnail)[0];
+    }
+
+    /**
+     * @todo képmentést megoldani!!!
+     * @return boolean [description]
+     */
+    public function hasImage()
+    {
+        return false;
+    }
 }

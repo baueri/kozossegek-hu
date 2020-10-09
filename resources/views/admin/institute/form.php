@@ -37,7 +37,7 @@
         <div class="form-group">
             <label>Fénykép</label>
             <div class="institute-image">
-                <img src="{{ '/media/institutes/inst_' . $institute->id . '.jpg' }}" id="image" >
+                <img src="{{ $institute->hasImage() ? $institute->getImageRelPath() : '' }}" id="image" width="300">
             </div>
             <input type="file" onchange="loadFile(event, this);" data-target="temp-image">
             <div style="display: none"/><img id="temp-image" /></div>
@@ -54,9 +54,10 @@
         {
             upload = $("#image").croppie({
                 enableExif: true,
+                mouseWheelZoom: false,
                 viewport: {
-                    width: '300',
-                    height: '300',
+                    width: '250',
+                    height: '250',
                     type: 'rectangle'
                 },
                 boundary: {
@@ -66,7 +67,7 @@
             });
         }
 
-        initCroppie();
+        // initCroppie();
         $("[name=city]").citySelect();
         $("[name=district]").districtSelect({city_selector: "[name=city]"});
 

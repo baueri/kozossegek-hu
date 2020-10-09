@@ -230,3 +230,7 @@
 .btn-create:hover {
     color: #fff;
 }
+
+.croppie-container .cr-boundary, .croppie-container .cr-slider-wrap {
+    margin: 0;
+}
