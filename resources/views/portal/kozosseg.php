@@ -51,29 +51,31 @@
             </p>
         </div>
     </div>
-    <h5 class="mt-4">Hasonló közösségek</h5>
-    <div class="card-deck">
-        @foreach($similar_groups as $i => $similar_group)
-                <a href="{{ $similar_group->url() }}" class="card text-dark mt-4 mt-lg-0">
-                    <img class="card-img-top" src="{{ $similar_group->getThumbnail() }}" />
-                    <div class="card-body">
-                        <h6>{{ $similar_group->name }}</h6>
-                        <div class="description" style="font-size: 14px;">
-                            {{ $similar_group->excerpt(15) }}
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <div class="kozi-info text-dark">
-                            <div><i class="fas fa-map-marker-alt text-danger"></i>
-                                <small>{{ $similar_group->city }}</small>
+    @if($similar_groups)
+        <h5 class="mt-4">Hasonló közösségek</h5>
+        <div class="card-deck">
+            @foreach($similar_groups as $i => $similar_group)
+                    <a href="{{ $similar_group->url() }}" class="card text-dark mt-4 mt-lg-0">
+                        <img class="card-img-top" src="{{ $similar_group->getThumbnail() }}" />
+                        <div class="card-body">
+                            <h6>{{ $similar_group->name }}</h6>
+                            <div class="description" style="font-size: 14px;">
+                                {{ $similar_group->excerpt(15) }}
                             </div>
-                            <div><i class="fas fa-user-graduate"></i><small>{{ $similar_group->ageGroup() }}</small></div>
-                            <div><i class="fas fa-calendar-alt"></i><small>{{ $similar_group->occasionFrequency() }}</small></div>
                         </div>
-                    </div>
-                </a>
-        @endforeach
-    </div>
+                        <div class="card-footer">
+                            <div class="kozi-info text-dark">
+                                <div><i class="fas fa-map-marker-alt text-danger"></i>
+                                    <small>{{ $similar_group->city }}</small>
+                                </div>
+                                <div><i class="fas fa-user-graduate"></i><small>{{ $similar_group->ageGroup() }}</small></div>
+                                <div><i class="fas fa-calendar-alt"></i><small>{{ $similar_group->occasionFrequency() }}</small></div>
+                            </div>
+                        </div>
+                    </a>
+            @endforeach
+        </div>
+    @endif
 </div>
 
 

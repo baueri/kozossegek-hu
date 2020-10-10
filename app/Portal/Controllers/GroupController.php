@@ -74,7 +74,7 @@ class GroupController extends Controller {
         $institute = $instituteRepo->find($group->institute_id);
 
         $tag_names = builder('v_group_tags')->where('group_id', $group->id)->get();
-        $similar_groups = $repo->findSimilarGroups($group, $tag_names);
+        $similar_groups = $repo->findSimilarGroups($group, $tag_names)->all();
         $images = $group->getImages();
         $_SESSION['honepot_check_time'] = $checkTime = time();
         $_SESSION['honeypot_check_hash'] = $honeypot_check_hash = md5($checkTime);
@@ -103,7 +103,7 @@ class GroupController extends Controller {
         $checkTime = $_SESSION['honepot_check_time'];
         $check_hash = $_SESSION['honeypot_check_hash'];
 
-        if (time() - $checkTime < 5 || $request['website'] !== $check_hash) {
+        if (!$checkTime || !$check_hash || time() - $checkTime < 5 || $request['website'] !== $check_hash) {
             throw new \Framework\Exception\UnauthorizedException();
         }
 
