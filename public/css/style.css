@@ -368,6 +368,18 @@ input[name=search]::placeholder {
     .navbar-brand .logo-sm {
         display: block !important;
     }
+
+    #finder .input-group > *, #finder [name=korosztaly]+span, #finder [name=rendszeresseg]+span {
+        display: block !important;
+        width: 100% !important;
+        margin-bottom: 1em !important;
+        border-radius: 4px !important;
+    }
+
+    #finder .select2-selection {
+        border-radius: 4px;
+        border-radius: 4px;
+    }
 }
 @media (max-width: 425px) {
     .navbar-brand {

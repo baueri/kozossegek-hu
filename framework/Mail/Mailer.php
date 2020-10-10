@@ -41,7 +41,11 @@ class Mailer
 
     public function send(Mailable $mailable)
     {
-        $this->phpMailer->setFrom($mailable->from ?: $this->phpMailer->Username, 'kozossegek.hu');
+        if ($mailable->from) {
+            $this->phpMailer->setFrom(...$mailable->from);
+        } else {
+            $this->phpMailer->setFrom($this->phpMailer->Username, 'kozossegek.hu');
+        }
         $this->phpMailer->Subject = $mailable->subject;
         $this->phpMailer->Body = $mailable->getBody();
         $this->phpMailer->send();

@@ -12,6 +12,7 @@ use Framework\Http\Route\RouterInterface;
 use Framework\Http\View\ViewInterface;
 use Framework\Support\Collection;
 use Framework\Translator;
+use Framework\Dispatcher\Dispatcher;
 
 /**
  * @return Application|null
@@ -190,6 +191,14 @@ function current_route()
 }
 
 /**
+ * @return Dispatcher
+ */
+function dispatcher()
+{
+    return app()->make(Dispatcher::class);
+}
+
+/**
  * @return string
  */
 function get_site_url()
@@ -215,5 +224,5 @@ function make($abstraction, $values = [])
 
 function image_with_watermark()
 {
-    
+
 }

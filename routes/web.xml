@@ -2,12 +2,19 @@
 <routes>
     <route-group namespace="App\Portal\Controllers\">
         <middleware name="App\Middleware\ComingSoon"/>
+
         <route method="get" uri="test" as="test" controller="TestController" use="testEmail"/>
+
         <route method="get" uri="" as="home" controller="HomeController" use="home"/>
+
         <route method="get" uri="kozossegek" as="portal.groups" controller="GroupController" use="kozossegek"/>
         <route method="get" uri="kozossegek/page/{page}/" as="portal.groups.page" controller="GroupController" use="kozossegek"/>
         <route method="get" uri="kozosseg/{kozosseg}" as="kozosseg" controller="GroupController" use="kozosseg"/>
         <route method="get" uri="feedback" as="portal.feedback" view="portal.feedback"/>
+
+        <!-- Közösség kapcsolatfelvételi űrlap -->
+        <route method="post" uri="group-contact-form" as="portal.group-contact-form" controller="GroupController" use="groupContactForm"/>
+        <route method="post" uri="contact-group" as="portal.contact-group" controller="GroupController" use="sendContactMessage"/>
     </route-group>
 
     <!-- BELÉPÉS -->
@@ -17,6 +24,7 @@
 
     <!-- VÍZJELES KÉPGENERÁLÁS -->
     <route method="get" uri="/media-library/{type}/{resource}" as="w-image" use="image_with_watermark"/>
+
 
 
 	<route method="get" uri="teszt" controller="App\Portal\Controllers\TesztController" use="teszt"/>

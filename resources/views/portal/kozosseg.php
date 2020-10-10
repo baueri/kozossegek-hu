@@ -1,5 +1,8 @@
 @extends('portal')
-
+<?php $nvr = 'a_' . substr(md5(time()), 0, 5); ?>
+<script>
+    var nvr = "{{ $nvr }}";
+</script>
 <div class="container inner kozi-adatlap">
     <div class="row">
         <div class="col-md-4">
@@ -43,7 +46,7 @@
             </p>
             {{ $group->description }}
             <p class="mt-4">
-                <a href="#" class="btn btn-outline-primary" data-toggle="modal" data-target="#contact-modal"><i class="fas fa-envelope"></i> Érdekel!</a>
+                <span class="btn btn-outline-primary open-contact-modal"><i class="fas fa-envelope"></i> Érdekel!</span>
                 <a href="#" class="text-danger float-right"><i class="fas fa-exclamation-triangle"></i> Jelentem</a>
             </p>
         </div>
@@ -85,31 +88,10 @@
       </div>
     <form>
       <div class="modal-body">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label>Neved*</label>
-                        <input type="text" class="form-control" required>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label>Email címed*</label>
-                        <input type="email" class="form-control" required>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <textarea class="form-control" rows=5>Kedves {{ $group->group_leaders }}!
 
-Érdeklődni szeretnék, hogy lehet-e csatlakozni a {{ $group->name }} közösségbe?</textarea>
-            </div>
-            <div class="text-right">
-                <p class="mb-0"><label><input type="checkbox"> Nem vagyok robot</label></p>
-                <p><label><input type="checkbox"> Az <a href="">adatvédelmi tájékoztatót</a> elolvastam és elfogadom</label></p>
-            </div>
       </div>
       <div class="modal-footer">
+       <input type="text" name="website" id="{{ $nvr }}" value="{{ $honeypot_check_hash }}">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Bezár</button>
         <button type="submit" class="btn btn-primary">Üzenet küldése</button>
       </div>
@@ -118,3 +100,39 @@
     </div>
   </div>
 </div>
+<style>
+    #{{ $nvr }} {
+        width: 0px;
+        padding: 0;
+        border: 0;
+        margin: 0;
+    }
+</style>
+<script>
+    $(() => {
+        $(".open-contact-modal").click(function(){
+            $.post("@route('portal.group-contact-form', ['kozosseg' => $slug])", function(form) {
+                $("#contact-modal .modal-body").html(form);
+                $("#contact-modal").modal("show");
+
+            });
+        });
+
+        $("#contact-modal form").submit(function(e) {
+            e.preventDefault();
+
+            var data = {
+                name: $("[name=name]").val(),
+                email: $("[name=email]").val(),
+                message: $("[name=message]").val(),
+                website: $("[name=website]").val()
+            }
+            $.post("@route('portal.contact-group', $group)", data, function(response) {
+                if (response.success) {
+                    $("#contact-modal .modal-body").html(response.msg);
+                    $("#contact-modal [type=submit]").remove();
+                }
+            });
+        });
+    })
+</script>
