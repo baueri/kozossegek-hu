@@ -10,7 +10,7 @@ class Mailable
     public $to;
 
     /**
-     * @var string
+     * @var string[]
      */
     public $from;
 
@@ -56,9 +56,9 @@ class Mailable
      * @param  string $from
      * @return static
      */
-    final public function from(string $from)
+    final public function from(string $from, string $name = null)
     {
-        $this->from = $from;
+        $this->from = array_filter([$from, $name]);
 
         return $this;
     }

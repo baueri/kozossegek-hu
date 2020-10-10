@@ -61,7 +61,7 @@ class HttpDispatcher implements Dispatcher
         $route = $this->getCurrentRoute();
 
         if (!$route->getView() && $route->getController() && !class_exists($route->getController())) {
-            throw new PageNotFoundException($route->getController());
+            throw new PageNotFoundException("controller " . $route->getController() . " not found");
         }
 
         $this->request->route = $route;
@@ -75,6 +75,7 @@ class HttpDispatcher implements Dispatcher
         $response = $this->resolveRoute($route);
 
         if (is_array($response) || is_object($response)) {
+            \Framework\Http\Response::asJson();
             if (is_object($response) && method_exists($response, '__toString')) {
                 echo $response;
             } else {

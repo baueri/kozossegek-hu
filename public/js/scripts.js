@@ -14,6 +14,7 @@ $(() => {
 
 });
 
+
 $(window).on("load scroll", () => {
     if ($(window).scrollTop() > 0 || typeof window.orientation !== 'undefined') {
         $(".navbar").addClass("compact");

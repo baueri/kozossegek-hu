@@ -5,10 +5,14 @@ use App\Portal\Services\SearchGroupService;
 use App\Repositories\AgeGroups;
 use App\Repositories\Institutes;
 use App\Repositories\GroupViews;
+use App\Repositories\Groups;
 use App\Repositories\OccasionFrequencies;
 use Framework\Http\Controller;
 use Framework\Http\Request;
 use Framework\Model\ModelNotFoundException;
+use Framework\Mail\Mailer;
+use App\Mail\GroupContactMail;
+
 /**
  * Description of GroupController
  *
@@ -45,6 +49,13 @@ class GroupController extends Controller {
         return view('portal.kozossegek', $model);
     }
 
+    /**
+     * Közösség adatlap
+     * @param  Request    $request
+     * @param  GroupViews $repo
+     * @param  Institutes $instituteRepo
+     * @return string
+     */
     public function kozosseg(Request $request, GroupViews $repo, Institutes $instituteRepo)
     {
         $backUrl = null;
@@ -65,8 +76,51 @@ class GroupController extends Controller {
         $tag_names = builder('v_group_tags')->where('group_id', $group->id)->get();
         $similar_groups = $repo->findSimilarGroups($group, $tag_names);
         $images = $group->getImages();
+        $_SESSION['honepot_check_time'] = $checkTime = time();
+        $_SESSION['honeypot_check_hash'] = $honeypot_check_hash = md5($checkTime);
+        $slug = $group->slug();
 
-        return view('portal.kozosseg', compact('group', 'institute', 'backUrl', 'tag_names', 'similar_groups', 'images'));
+        return view('portal.kozosseg', compact('group', 'institute', 'backUrl', 'tag_names',
+            'similar_groups', 'images', 'honeypot_check_hash', 'slug'));
+    }
+
+    /**
+     * kapcsolatfelvételi űrlap html
+     * @param  Request    $request
+     * @param  GroupViews $repo
+     * @return string
+     */
+    public function groupContactForm(Request $request, GroupViews $repo)
+    {
+        $slug = $request['kozosseg'];
+        $group = $repo->findBySlug($slug);
+
+        return view('portal.partials.group-contact-form', compact('group'));
+    }
+
+    public function sendContactMessage(Request $request, Groups $repo, Mailer $mailer)
+    {
+        $checkTime = $_SESSION['honepot_check_time'];
+        $check_hash = $_SESSION['honeypot_check_hash'];
+
+        if (time() - $checkTime < 5 || $request['website'] !== $check_hash) {
+            throw new \Framework\Exception\UnauthorizedException();
+        }
+
+        try {
+
+            $group = $repo->findOrFail($request['id']);
+
+            $mail = new GroupContactMail($request, $group);
+            $mailer = $mailer->to($group->group_leader_email)->send($mail);
+
+            return [
+                'success' => true,
+                'msg' => '<div class="alert alert-success">Köszönjük! Üzenetedet elküldtük a közösségvezető(k)nek!</div>'
+            ];
+        } catch(Exception $e) {
+            return ['success' => false];
+        }
     }
 
 }
