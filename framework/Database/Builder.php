@@ -277,7 +277,7 @@ class Builder
 
     public function whereIn($column, array $values, $clause = 'and')
     {
-        $this->where($column, 'in', $values, $claues);
+        $this->where($column, 'in', $values, $clause);
 
         return $this;
     }
@@ -384,8 +384,7 @@ class Builder
     public function __call($method, $args)
     {
         if (isset(static::$macros[$this->getTable()][$method])) {
-            $macro = static::$macros[$this->getTable()][$method];
-            $macro($this, ...$args);
+            $this->apply($method, ...$args);
 
             return $this;
         }
@@ -398,6 +397,12 @@ class Builder
         static::$macros[$this->getTable()][$macroName] = $callback;
 
         return $this;
+    }
+
+    public function apply($method, ...$args)
+    {
+        $macro = static::$macros[$this->getTable()][$method];
+        $macro($this, ...$args);
     }
 
     public function __toString()

@@ -72,7 +72,7 @@ class GroupViews extends Repository
 
             $tags = explode(',', $tags);
 
-            $builder->whereGroupTag($tags);
+            $builder->apply('whereGroupTag', $tags);
         }
 
         if ($filter['deleted']) {
