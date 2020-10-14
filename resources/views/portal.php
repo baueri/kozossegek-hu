@@ -60,8 +60,9 @@
                     <h5>A honlapról</h5>
                     <p class="">
                         <em>
-                            Egy keresztény platform keresztény közösséget kereső fiatalok és idősek számára.
-                            <a href="#">bővebben...</a>
+                            @widget('footer-bal')
+                            Egy keresztény platform katolikus közösséget kereső fiatalok és felnőttek számára.
+                            <a href="@route('portal.page', 'rolunk')">bővebben...</a>
                         </em>
                     </p>
                 </div>
@@ -71,17 +72,21 @@
                         <li class="nav-item"><a href="" class="nav-link">Rólunk</a></li>
 
                         <li class="nav-item"><a href="@route('portal.feedback')" class="nav-link">Visszajelzés küldése</a></li>
-                        <li class="nav-item"><a href="@route('portal.page', ['slug' => 'adatkezelesi-tajekoztato'])" class="nav-link">Adatkezelési tájékoztató</a></li>
-                        <li class="nav-item"><a href="@route('portal.page', ['slug' => 'impresszum'])" class="nav-link">Impresszum</a></li>
+                        <li class="nav-item"><a href="@route('portal.page', 'adatkezelesi-tajekoztato')" class="nav-link">Adatkezelési tájékoztató</a></li>
+                        <li class="nav-item"><a href="@route('portal.page', 'impresszum')" class="nav-link">Impresszum</a></li>
                     </ul>
                 </div>
 
                 <div class="col-md-4 col-sm-6 col-xs-12">
-                    <h5>Légy naprakész!</h5>
+                    <h5>Partnereink</h5>
+                    <div class="partnereink">
+                        <a href="https://pasztoralis.hu/" title="Pasztorális helynökség Szeged"><img src="/images/szcsem_szines_latin.png"></a>
+                    </div>
+                    <!-- <h5>Légy naprakész!</h5>
                     <p><small>Add meg a városodat és az email címedet, amennyiben értesítést szeretnél kapni az új közösségekről!</small></p>
                     <div class="form-group"><input type="text" class="form-control" placeholder="városom"></div>
                     <div class="form-group"><input type="email" class="form-control" placeholder="email címem"></div>
-                    <div class="form-group"></div><button type="submit" class="btn btn-primary w-100">Feliratkozom</button>
+                    <div class="form-group"></div><button type="submit" class="btn btn-primary w-100">Feliratkozom</button> -->
                 </div>
             </div>
         </div>

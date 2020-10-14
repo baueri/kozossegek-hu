@@ -27,7 +27,6 @@ define('CACHE', ROOT . 'cache' . DS);
 define('LANG', 'hu');
 define('APP_VERSION', 'v0.0.7 pre-alpha');
 
-
 include 'vendor/autoload.php';
 
 DotEnv::load(ROOT . '.env.php');

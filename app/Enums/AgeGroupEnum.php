@@ -19,5 +19,4 @@ class AgeGroupEnum extends \Framework\Support\Enum
     const FIATAL_FELNOTT = 'fiatal_felnott';
     const KOZEPKORU = 'kozepkoru';
     const NYUGDIJAS = 'nyugdijas';
-    const KOROSZTALYTOL_FUGGETLEN = 'korosztalytol_fuggetlen';
 }

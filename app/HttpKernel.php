@@ -9,6 +9,7 @@ use Framework\Middleware\TranslationRoute;
 use Framework\Middleware\AuthMiddleware;
 use Framework\Mail\Mailer;
 use App\Mailable\CriticalErrorEmail;
+use App\Components\Widget\WidgetServiceProvider;
 use Framework\Middleware\CheckMaintenance;
 
 class HttpKernel extends \Framework\Http\HttpKernel
@@ -17,7 +18,8 @@ class HttpKernel extends \Framework\Http\HttpKernel
         BaseAuthMiddleware::class,
         TranslationRoute::class,
         CheckMaintenance::class,
-        AuthMiddleware::class
+        AuthMiddleware::class,
+        WidgetServiceProvider::class
     ];
 
     public function handleMaintenance()
