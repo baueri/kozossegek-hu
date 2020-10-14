@@ -48,6 +48,8 @@ class HttpDispatcher implements Dispatcher
         $this->router = $router;
         $this->request = $request;
         $this->kernel = $kernel;
+
+        \Framework\Http\Cookie::setTestCookie();
     }
 
     /**

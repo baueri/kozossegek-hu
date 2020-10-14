@@ -162,13 +162,18 @@ class XmlRouter implements RouterInterface
         throw new RouteNotFoundException($uri);
     }
 
+   /**
+    * @param string $name
+    * @param array|string $args
+    */
     public function route(string $name, $args = [])
     {
         if ($args instanceof Model) {
             $args = ['id' => $args->getId()];
         }
-
-        $args = array_merge(static::$globalArgs, $args);
+        if (is_array($args)) {
+            $args = array_merge(static::$globalArgs, $args);
+        }
 
         foreach ($this->routes as $route) {
             if ($route->getAs() == $name) {

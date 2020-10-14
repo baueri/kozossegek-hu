@@ -28,6 +28,13 @@ class LoginController extends \Framework\Http\Controller
     public function doLogin(Request $request, Authenticate $service)
     {
         try {
+
+            if (!\Framework\Http\Cookie::enabled()) {
+                Message::danger('A belépéshez engedélyezd a cookie-kat a böngésződben!');
+                return redirect_route('login');
+            }
+
+
             $user = $service->authenticate($request['username'], $request['password']);
 
             Auth::login($user);

@@ -350,6 +350,11 @@ input[name=search]::placeholder {
     overflow: hidden;
 }
 
+#footer .partnereink img {
+    max-width: 75px;
+    height: auto;
+}
+
 
 @media (max-width: 425px) {
     .col-xxs-12 {

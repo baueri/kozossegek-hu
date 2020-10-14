@@ -122,7 +122,7 @@ function builder($table = null)
 
 /**
  * @param $route
- * @param array $args
+ * @param array|string $args
  * @return string
  */
 function route($route, $args = [])

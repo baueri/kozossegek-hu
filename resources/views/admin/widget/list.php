@@ -1,0 +1,3 @@
+@title('Widgetek')
+
+@extends('admin')
