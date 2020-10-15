@@ -100,7 +100,7 @@
 #admin-title {
     background-color: #eaeaea;
     color: #444;
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 
 #sidebar .bg-wrap {

@@ -60,7 +60,6 @@
                     <h5>A honlapról</h5>
                     <p class="">
                         <em>
-                            @widget('footer-bal')
                             Egy keresztény platform katolikus közösséget kereső fiatalok és felnőttek számára.
                             <a href="@route('portal.page', 'rolunk')">bővebben...</a>
                         </em>

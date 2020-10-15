@@ -13,6 +13,7 @@ use Framework\Http\View\ViewInterface;
 use Framework\Support\Collection;
 use Framework\Translator;
 use Framework\Dispatcher\Dispatcher;
+use App\Repositories\Widgets;
 
 /**
  * @return Application|null
@@ -225,4 +226,9 @@ function make($abstraction, $values = [])
 function image_with_watermark()
 {
 
+}
+
+function widget($uniqid)
+{
+    return app()->get(Widgets::class)->getByUniqId($uniqid);
 }
