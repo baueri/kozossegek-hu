@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <routes>
-    <route-group controller="App\Components\Widget\AdminWidgetController" prefix="admin" as="admin" middleware="App\Middleware\AdminMiddleware">
-        <route method="get" uri="widgets" as="widget.list" use="list"/>
+    <route-group controller="App\Components\Widget\AdminWidgetController" prefix="admin/widget" as="admin.widget" middleware="App\Middleware\AdminMiddleware">
+        <route method="get" uri="list" as="list" use="list"/>
+        <route method="get" uri="create" as="create" use="create"/>
     </route-group>
 </routes>

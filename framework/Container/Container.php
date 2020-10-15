@@ -3,8 +3,6 @@
 
 namespace Framework\Container;
 
-
-use App\Models\Group;
 use Framework\Container\Exceptions\AbstractionAlreadySharedException;
 use Framework\Container\Exceptions\AlreadyBoundException;
 use Framework\Model\Model;

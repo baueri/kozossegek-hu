@@ -11,4 +11,9 @@ class AdminWidgetController extends AdminController
     {
         return view('admin.widget.list');
     }
+
+    public function create()
+    {
+        return view('admin.widget.create');
+    }
 }

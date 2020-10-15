@@ -56,5 +56,6 @@ $application->singleton(Database::class, function (Application $app) {
 });
 
 $application->boot(RegisterTitleDirective::class);
+$application->singleton(App\Repositories\Widgets::class);
 
 include APP . 'macros.php';
