@@ -50,11 +50,9 @@
         @foreach($groups as $i => $group)
             @if($i == 0 || $groups[$i-1]->city != $group->city)
                 <div class="col-md-12">
-                    <h2>{{ $group->city }}</h2>
-                    <hr>
+                    <h4>{{ $group->city }}</h4>
                     @if($filter['varos'] && $group->district && ($i == 0 || $groups[$i-1]->district == $group->district))
-                        <h4 style="color:var(--secondary)">{{ $group->district }}</h4>
-
+                        <h6 style="color:var(--secondary)">{{ $group->district }}</h6>
                     @endif
                 </div>
             @endif
