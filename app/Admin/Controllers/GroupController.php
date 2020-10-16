@@ -8,10 +8,7 @@ use App\Admin\Controllers\AdminController;
 use App\Admin\Group\Services\ListGroups;
 use App\Admin\Group\Services\EditGroup;
 use App\Admin\Group\Services\UpdateGroup;
-use Framework\Exception\UnauthorizedException;
 use Framework\Http\Request;
-
-use Framework\Http\View\Section;
 use App\Admin\Group\Services\DeleteGroup;
 use App\Admin\Group\Services\CreateGroup;
 use App\Admin\Group\Services\BaseGroupForm;
@@ -57,5 +54,14 @@ class GroupController extends AdminController
     public function trash(ListGroups $service)
     {
         return $service->show();
+    }
+    
+    public function rebuildSearchEngine(\App\Services\RebuildSearchEngine $service)
+    {
+        $service->updateAll();
+        
+        Message::success('Sikeres keresőmotor frissítés');
+        
+        return redirect('admin.group.list');
     }
 }

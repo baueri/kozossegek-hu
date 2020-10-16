@@ -7,28 +7,18 @@ namespace App\Admin\Group\Services;
  *
  * @author ivan
  */
-class CreateGroup {
+class CreateGroup extends BaseGroupService {
 
-    /**
-     * @var \App\Repositories\Groups
-     */
-    private $repository;
-
-    /**
-     *
-     * @param \App\Repositories\Groups $repository
-     */
-    public function __construct(\App\Repositories\Groups $repository) {
-        $this->repository = $repository;
-    }
 
     public function create(array $data)
     {
-        
+        $tags = $data['tags'];
         $data['age_group'] = implode(',', $data['age_group']);
-        $data['tags'] = implode(',', $data['tags']);
+        $data['tags'] = implode(',', $tags);
 
         $group = $this->repository->create($data);
+        
+        $this->updateSearchEngine($group);
 
         \Framework\Http\Message::success('Közösség létrehozva.');
 

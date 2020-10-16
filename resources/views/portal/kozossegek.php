@@ -45,7 +45,6 @@
             <a href="/kozossegek">Szűrés törlése</a>
         </p>
     </form>
-    <hr>
     <p><small>Összes találat: {{ $total }}</small></p>
     <div class="row" style="padding-top:2em">
         @foreach($groups as $i => $group)
@@ -64,7 +63,8 @@
                 <a href="{{ $group->url() }}" class="card kozi-box">
                     <img class="card-img-top" src="{{ $group->getThumbnail() }}" />
                     <div class="card-body">
-                        <h4>{{ $group->name }}</h4>
+                        <h4 class="mb-1">{{ $group->name }}</h4>
+                        <h6 style="color:#aaa">{{ $group->spiritual_movement }}</h6>
                         <div class="description">
                             {{ $group->excerpt() }}
                         </div>

@@ -25,6 +25,8 @@ class Builder
     private $limit;
 
     private $distinct = false;
+    
+    private $selectBindings = [];
 
     protected static $macros = [];
 
@@ -65,12 +67,16 @@ class Builder
     public function count()
     {
         $oldSelect = $this->select;
+        
+        $oldSelectBindings = $this->selectBindings;
+        $this->selectBindings = [];
 
         $this->select = ['count(*) as cnt'];
 
         $count = $this->db->first(...$this->getBaseSelect())['cnt'];
 
         $this->select = $oldSelect;
+        $this->selectBindings = $oldSelectBindings;
 
         return $count;
     }
@@ -78,13 +84,15 @@ class Builder
     protected function getBaseSelect()
     {
         [$query, $bindings] = $this->build();
+        $bindings = array_merge($this->selectBindings, $bindings);
+        
         $distinct = $this->distinct ? 'DISTINCT ' : '';
         $base = sprintf('select %s%s from %s ',
             $distinct,
             implode(', ', $this->select ?: ['*']),
             implode(', ', $this->table)
         );
-
+        
         return [$base . $query, $bindings];
     }
 
@@ -213,9 +221,11 @@ class Builder
         return $this->from($table);
     }
 
-    public function select($select = '*')
+    public function select($select = '*', $bindings = [])
     {
         $this->select = [$select];
+        $this->selectBindings = array_merge($this->selectBindings, $bindings);
+        
         return $this;
     }
 
@@ -225,9 +235,11 @@ class Builder
         return $this;
     }
 
-    public function addSelect($select)
+    public function addSelect($select, $bindings = [])
     {
-        $this->select = $select;
+        $this->select[] = $select;
+        $this->selectBindings = array_merge($this->selectBindings, $bindings);
+        
         return $this;
     }
 
@@ -369,7 +381,7 @@ class Builder
         }
 
         foreach ($bindings as $binding) {
-            $query = substr($query, 0, strpos($query, '?')) . $binding . substr($query, strpos($query, '?')+1);
+            $query = substr($query, 0, strpos($query, '?')) . "'$binding'" . substr($query, strpos($query, '?')+1);
         }
 
         return $query;

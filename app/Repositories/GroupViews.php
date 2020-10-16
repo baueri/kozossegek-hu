@@ -8,7 +8,7 @@ use App\Models\GroupView;
 
 class GroupViews extends Repository
 {
-
+    
     public static function getModelClass(): string
     {
         return GroupView::class;
@@ -41,10 +41,27 @@ class GroupViews extends Repository
         if (is_array($filter)) {
             $filter = collect($filter);
         }
+        
         $builder = builder()->select('*')->from('v_groups');
 
         if ($keyword = $filter['search']) {
-            $builder->where('name', 'like', "%$keyword%");
+            $keywords = '+'.str_replace(' ', '* +', trim($keyword, ' ')) . '*';
+            /* @var $found \Framework\Database\PaginatedResultSet */
+            /*$query = builder('search_engine')->select('group_id, MATCH(keywords) AGAINST (? IN BOOLEAN MODE) as relevance', [$keywords])
+                    ->whereRaw("MATCH(keywords) AGAINST (? IN BOOLEAN MODE)", [$keywords])
+                    ->orderBy('relevance', 'desc');*/
+            
+            $found = db()->select('select group_id, MATCH(keywords) AGAINST (? IN BOOLEAN MODE) as relevance 
+                from search_engine 
+                where MATCH(keywords) AGAINST (? IN BOOLEAN MODE) order by relevance desc', [$keywords, $keywords]);
+            
+            //$found = $query->paginate($perPage);
+            
+            if ($found) {
+                $builder->whereIn('id', collect($found)->pluck('group_id')->all());
+            } else {
+                $builder->where('name', 'like', "%$keyword%");
+            }
         }
 
         if ($varos = $filter['varos']) {
@@ -82,7 +99,7 @@ class GroupViews extends Repository
         }
 
         $builder->orderBy($filter['order_by'] ?: 'name', $filter['order'] ?: 'asc');
-
+       
         return $this->getInstances($builder->paginate($perPage));
     }
 
