@@ -171,6 +171,7 @@ class XmlRouter implements RouterInterface
         if ($args instanceof Model) {
             $args = ['id' => $args->getId()];
         }
+        
         if (is_array($args)) {
             $args = array_merge(static::$globalArgs, $args);
         }

@@ -6,6 +6,10 @@
     <i class="fa fa-caret-down"></i>
   </button>
   <div class="dropdown-menu" aria-labelledby="create-widget">
-    <a class="dropdown-item" href="@route('admin.widget.create', ['type' => 'text'])">Szövegrész</a>
+      @foreach($parsers as $parser)
+          <a class="dropdown-item" href="@route('admin.widget.create', ['type' => $parser['type']])">{{ $parser['name'] }}</a>
+      @endforeach
   </div>
 </div>
+
+{{ $table }}

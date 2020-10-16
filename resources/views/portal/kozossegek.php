@@ -4,11 +4,7 @@
 @endsection
 @extends('portal')
 <div class="container inner">
-    <h3 class="text-center" style="margin-bottom: 1em">Fecskedjen tehát egy böldöncöt</h3>
-    <p class="text-center"> Mögötte az éppen nem fesítő kurumok, bár szenijük ott is konz - főzik legalább.
-        Aztán lassul a kolódásra antár ; folyák, szatkások, margány gugasor raktárnyi tokrával, bons negyedik viteres köhenébe rengeteg varrás.
-        Ami szinte azonnal dörnyezik: a kurumok a vigásokkal tárnyolnak, úgy horozják a hajoracsot.
-    </p>
+    @widget('KOKE')
     <form method="get" id="finder" action="@route('portal.groups')">
         <div class="form-group">
             <div class="input-group">

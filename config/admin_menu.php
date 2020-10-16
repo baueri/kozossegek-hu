@@ -76,16 +76,9 @@ return [
         'as' => 'admin.user.list'
     ],
     [
-        'title' => 'Megjelenés',
-        'icon' => 'palette',
-        'as' => 'admin.appearance',
-        'submenu' => [
-            [
-                'title' => 'Widgetek',
-                'icon' => 'layer-group',
-                'as' => 'admin.widget.list'
-            ]
-        ]
+        'title' => 'Widgetek',
+        'icon' => 'layer-group',
+        'as' => 'admin.widget.list'
     ],
     [
         'title' => 'Gépház',

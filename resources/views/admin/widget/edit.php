@@ -1,5 +1,5 @@
 @section('title')
-    Új widget ({{ $type }})
+    Widget szerkesztése ({{ $type }})
 @endsection
 
 @extends('admin.widget.form')

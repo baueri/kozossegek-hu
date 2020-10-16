@@ -13,6 +13,7 @@ final class CreateWidgetsTable extends AbstractMigration
             ->addColumn('name', MysqlAdapter::PHINX_TYPE_STRING)
             ->addColumn('type', MysqlAdapter::PHINX_TYPE_STRING, ['length' => 20])
             ->addColumn('uniqid', MysqlAdapter::PHINX_TYPE_STRING)
+            ->addColumn('data', MysqlAdapter::PHINX_TYPE_TEXT)
             ->addIndex('uniqid', ['unique' => true])
             ->addIndex('type')
             ->create();

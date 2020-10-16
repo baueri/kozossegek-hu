@@ -181,7 +181,7 @@ class Builder
      * @param $page
      * @return PaginatedResultSet
      */
-    public function paginate($limit, $page = null)
+    public function paginate($limit = 30, $page = null)
     {
         $page = $page ?: app()->get(Request::class)['pg'] ?: 1;
 
