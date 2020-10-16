@@ -57,13 +57,7 @@
         <div class="container" id="footer-top">
             <div class="row">
                 <div class="col-md-4 col-sm-6 col-xs-12">
-                    <h5>A honlapról</h5>
-                    <p class="">
-                        <em>
-                            Egy keresztény platform katolikus közösséget kereső fiatalok és felnőttek számára.
-                            <a href="@route('portal.page', 'rolunk')">bővebben...</a>
-                        </em>
-                    </p>
+                    @widget('LABA')
                 </div>
                 <div class="col-md-4 col-sm-6 col-xs-12">
                     <ul class="navbar-nav">

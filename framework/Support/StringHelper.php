@@ -73,7 +73,7 @@ class StringHelper
         $text = preg_replace('~[^\pL\d]+~u', '-', $text);
 
         // transliterate
-        $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
+        $text = preg_replace("/&([a-z])[a-z]+;/i", "$1", htmlentities($text));
 
         // remove unwanted characters
         $text = preg_replace('~[^-\w]+~', '', $text);
@@ -92,6 +92,17 @@ class StringHelper
         }
 
         return $text;
+    }
+    
+    /**
+     * 
+     * @param string $string
+     * @return string
+     */
+    public static function convertSpecialChars($string)
+    {
+        return preg_replace("/&([a-z])[a-z]+;/i", "$1", iconv('utf-8', 'us-ascii//TRANSLIT', $string));
+
     }
 
     /**

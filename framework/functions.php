@@ -5,7 +5,6 @@ use Framework\Application;
 use Framework\Database\Builder;
 use Framework\Database\Database;
 use Framework\Dispatcher\HttpDispatcher;
-use Framework\Http\Request;
 use Framework\Http\Response;
 use Framework\Http\Route\RouteInterface;
 use Framework\Http\Route\RouterInterface;
@@ -40,7 +39,7 @@ function d(...$data)
     foreach ($data as $toDump) {
         if (is_bool($toDump)) {
             print_r($toDump ? 'true' : 'false');
-        } elseif(is_null($toDump)){
+        } elseif (is_null($toDump)) {
             print_r('null');
         } else {
             print_r($toDump);
@@ -225,10 +224,10 @@ function make($abstraction, $values = [])
 
 function image_with_watermark()
 {
-
 }
 
 function widget($uniqid)
 {
+    
     return app()->get(Widgets::class)->getByUniqId($uniqid);
 }

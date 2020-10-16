@@ -5,3 +5,5 @@ cache/
 .idea/
 error.log
 media/
+/nbproject/private/
+/nbproject

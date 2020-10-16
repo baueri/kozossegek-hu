@@ -1,9 +1,10 @@
 <?php
 
 namespace App\Components\Widget;
+
 use App\Models\Widget;
 
-class TextWidget implements WidgetRenderer
+class TextWidget implements WidgetParser
 {
     public static function getType()
     {
@@ -19,4 +20,14 @@ class TextWidget implements WidgetRenderer
     {
         return $widget->data;
     }
+
+    public function getFormView(): string
+    {
+        return 'admin.widget.template.text';
+    }
+
+    public function prepareDataForSave(&$data): string {
+        $data['data'] = $data['w_text'];
+    }
+
 }

@@ -10,10 +10,6 @@ class Widgets extends \Framework\Repository
     {
         $row = $this->getBuilder()->where('`uniqid`', $uniqid)->first();
 
-        if (!$row) {
-            throw new ModelNotFoundException;
-        }
-
         return $this->getInstance($row);
     }
 

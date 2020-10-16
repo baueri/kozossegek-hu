@@ -147,8 +147,12 @@ abstract class Repository
      * @param Model $model
      * @return bool
      */
-    public function update(Model $model)
+    public function update(Model $model, $data = [])
     {
+        if ($data) {
+            $model->update($data);
+        }
+        
         $changes = $this->getChanges($model);
 
         if (!$changes) {
@@ -202,10 +206,10 @@ abstract class Repository
     abstract public static function getTable(): string;
 
     /**
-     * @param Model $model
+     * @param Model|int $model
      * @return bool
      */
-    public function delete(Model $model)
+    public function delete($model)
     {
         if (property_exists($model, 'deleted_at')) {
             $model->deleted_at = date('Y-m-d H:i:s');

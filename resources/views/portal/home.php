@@ -5,9 +5,7 @@
 <div id="main-finder" class="p-3 p-lg-5 p-lg-6">
     <div class="container">
         <div class="text-white text-center" style="margin-bottom: 2em;">
-            <h1>Találd meg a neked való közösséget!</h1>
-            <p>Erre a helyre írjunk valami nagyon motiválót, hogy a látogató érezze, hogy gondolunk rá :-) Lehet jó hosszú, pl, hogy miért fontos közösséghez tartozni, vagy, hogy mi mindent megteszünk annak érdekében, hogy a hozzá legjobban illő közösséget
-                találjuk meg.</p>
+            @widget('FOKE')
         </div>
         <form method="get" id="finder" action="@route('portal.groups')">
             <div class="input-group">

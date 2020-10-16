@@ -3,5 +3,10 @@
     <route-group controller="App\Components\Widget\AdminWidgetController" prefix="admin/widget" as="admin.widget" middleware="App\Middleware\AdminMiddleware">
         <route method="get" uri="list" as="list" use="list"/>
         <route method="get" uri="create" as="create" use="create"/>
+        <route method="post" uri="create" as="do_create" use="doCreate"/>
+        <route method="post" uri="update" as="update" use="update"/>
+        <route method="post" uri="api/generate-uniqid" as="api.generate_uniqid" use="generateUniqId"/>
+        <route method="get" uri="{id}/edit" as="edit" use="edit"/>
+        <route method="get" uri="{id}/delete" as="delete" use="delete"/>
     </route-group>
 </routes>
