@@ -1,6 +1,29 @@
 @title('Verzióinformáció')
 @extends('admin')
 
+
+<h3>v0.0.8 pre-alpha</h3>
+<ul>
+    <li>Keresőmotor elkészítése (szabadszavas keresés)
+        <ul>
+            <li>Elkészült a keresőmotor kezdeti verziója</li>
+            <li>A főoldalon most már csak egy keresőmező van, ami a megadott kulcsszavak alapján relevancia szerint sorba rendezve listázza kis a talált közösségeket</li>
+            <li>Új közösség létrehozásakor/frissítésekor lefut egy kód, ami frissíti a generált kulcsszavakat a keresőmotor táblájában</li>
+            <li>A <a href="@route('admin.group.list')">közösségek</a> admin oldalra bekerült egy "keresőmotor frissítése" gomb, ami az összes közösség kulcsszó-halmazát frissíti.<br>
+                <small class="text-danger">Kis adatmennyiségnél ez még gyorsan lefut, de ha megnő a közösségek száma, akkor erre majd egy naponta háttérben futó szkriptet kell írni, hogy ne akassza le a weblapot.</small>
+            </li>
+        </ul>
+    </li>
+    <li>Widgetek fejlesztése
+        <ul>
+            <li>Szövegdobozokat lehet létrehozni, amiket a honlap különböző részeire lehet beágyazni.</li>
+        </ul>
+    </li>
+    <li>"Korosztálytól független" korcsoport kiszedve</li>
+    <li>Lábléc jobb oldali szekció cseréje partnerek szekcióra</li>
+    <li>Rendszerjavítások</li>
+</ul>
+
 <h3>v0.0.7 pre-alpha</h3>
 <ul>
     <li>címke javítás</li>
