@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use Framework\Console\Command;
-use DateTime;
 use Framework\Console\Out;
 
 class ClearUserSession implements Command

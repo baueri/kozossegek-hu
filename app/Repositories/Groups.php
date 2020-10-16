@@ -3,14 +3,8 @@
 namespace App\Repositories;
 
 use App\Models\Group;
-use Framework\Database\PaginatedResultSet;
-use Framework\Model\Model;
-use Framework\Model\ModelCollection;
-use Framework\Model\PaginatedModelCollection;
-use Framework\Repository;
-use Framework\Support\Collection;
 
-class Groups extends Repository
+class Groups extends \Framework\Repository
 {
 
     public static function getModelClass(): string

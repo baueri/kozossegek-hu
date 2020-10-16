@@ -28,6 +28,11 @@
             <p class="kozi-tulajdonsag">
                 <label>Helyszín:</label> {{ $institute->city }}, {{ $institute->name }}
             </p>
+            @if($group->spiritual_movement)
+                <p class="kozi-tulajdonsag">
+                    <label>Lelkiségi mozgalom:</label> {{ $group->spiritual_movement }}
+                </p>
+            @endif
             <p class="kozi-tulajdonsag">
                 <label>Alkalmak gyakorisága:</label> {{ $group->occasionFrequency() }}
             </p>

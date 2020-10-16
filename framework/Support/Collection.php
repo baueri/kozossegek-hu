@@ -113,7 +113,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     public function keyBy($key) {
         $items = [];
         foreach($this->items as $item) {
-            $items[$item[$key]] = $item;
+            $items[static::getItemVal($item, $key)] = $item;
         }
 
         return new static($items);
@@ -441,12 +441,16 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
      * @param Closure $func
      * @return static
      */
-    public function map(Closure $func)
+    public function map(Closure $func, $keepKeys = false)
     {
         $result = [];
 
         foreach ($this->items as $key => $item) {
-            $result[] = $func($item, $key);
+            if (!$keepKeys) {
+                $result[] = $func($item, $key);
+            } else {
+                $result[$key] = $func($item, $key);
+            }
         }
 
         return new self($result);

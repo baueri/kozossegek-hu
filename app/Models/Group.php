@@ -62,7 +62,29 @@ class Group extends Model
     {
         return GroupHelper::parseAgeGroup($this->age_group);
     }
+    
+    public function getAgeGroups()
+    {
+        return GroupHelper::getAgeGroups($this->age_group);
+    }
 
+    public function denomination(): string
+    {
+        return lang("denomination.{$this->denomination}");
+    }
+    
+    public function getDays()
+    {
+        $days = array_filter(explode(',', $this->on_days));
+        $daysTranslated = [];
+        
+        foreach ($days as $day) {
+            $daysTranslated[$day] = lang("day.$day");
+        }
+        
+        return $daysTranslated;
+    }
+    
     /**
      * @return string
      */

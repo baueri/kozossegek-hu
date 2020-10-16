@@ -7,22 +7,8 @@ namespace App\Admin\Group\Services;
  *
  * @author ivan
  */
-class UpdateGroup
+class UpdateGroup extends BaseGroupService
 {
-
-    /**
-     * @var \App\Repositories\Groups
-     */
-    private $repository;
-
-    /**
-     *
-     * @param \App\Repositories\Groups $repository
-     */
-    public function __construct(\App\Repositories\Groups $repository) {
-
-        $this->repository = $repository;
-    }
 
     /**
      *
@@ -52,7 +38,10 @@ class UpdateGroup
         $group->update($data);
 
         $this->repository->update($group);
+        
+        $this->updateSearchEngine($group);
 
         \Framework\Http\Message::success('Sikeres mentés.');
     }
+    
 }

@@ -15,6 +15,9 @@
 @section('header')@include('asset_groups.select2')@endsection
 @extends('admin')
 
+<div class="form-group">
+    <a href="@route('admin.group.refresh_search_engine')" class="btn btn-sm btn-primary"><i class="fa fa-search-plus"></i> Keresőmotor frissítése</a>
+</div>
 <form method="get" id="finder">
     <div class="row">
         <div class="col-md-3">
