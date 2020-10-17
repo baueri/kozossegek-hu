@@ -63,6 +63,6 @@ class GroupController extends AdminController
         
         Message::success('Sikeres keresőmotor frissítés');
         
-        return redirect('admin.group.list');
+        return redirect_route('admin.group.list');
     }
 }
