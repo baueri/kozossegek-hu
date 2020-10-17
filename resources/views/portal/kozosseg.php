@@ -52,7 +52,7 @@
             {{ $group->description }}
             <p class="mt-4">
                 <span class="btn btn-outline-primary open-contact-modal"><i class="fas fa-envelope"></i> Érdekel!</span>
-                <a href="#" class="text-danger float-right"><i class="fas fa-exclamation-triangle"></i> Jelentem</a>
+                <!--<a href="#" class="text-danger float-right"><i class="fas fa-exclamation-triangle"></i> Jelentem</a>-->
             </p>
         </div>
     </div>

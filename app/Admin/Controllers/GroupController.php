@@ -28,7 +28,7 @@ class GroupController extends AdminController
 
     public function doCreate(Request $request, CreateGroup $service)
     {
-        $group = $service->create($request->except('files', 'image')->all());
+        $group = $service->create($request);
 
         redirect_route('admin.group.edit', ['id' => $group->id]);
     }
@@ -40,7 +40,7 @@ class GroupController extends AdminController
 
     public function update(Request $request, UpdateGroup $service)
     {
-        $service->update($request['id'], $request->except('id')->all());
+        $service->update($request['id'], $request);
 
         redirect_route('admin.group.edit', ['id' => $request['id']]);
     }
