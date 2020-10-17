@@ -2,6 +2,10 @@
 
 namespace App\Admin\Group\Services;
 
+use App\Models\Group;
+use Framework\Http\Message;
+use Framework\Http\Request;
+
 /**
  * Description of CreateGrooup
  *
@@ -10,8 +14,15 @@ namespace App\Admin\Group\Services;
 class CreateGroup extends BaseGroupService {
 
 
-    public function create(array $data)
+    /**
+     * 
+     * @param Request $request
+     * @return Group
+     */
+    public function create($request)
     {
+        $data = $request->except('files', 'image')->all();
+        
         $tags = $data['tags'];
         $data['age_group'] = implode(',', $data['age_group']);
         $data['tags'] = implode(',', $tags);
@@ -19,8 +30,10 @@ class CreateGroup extends BaseGroupService {
         $group = $this->repository->create($data);
         
         $this->updateSearchEngine($group);
+        
+        $this->syncImages($group, [$request['image']]);
 
-        \Framework\Http\Message::success('Közösség létrehozva.');
+        Message::success('Közösség létrehozva.');
 
         return $group;
     }

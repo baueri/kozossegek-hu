@@ -13,6 +13,7 @@ use App\Repositories\Groups;
 use App\Repositories\GroupViews;
 use App\Repositories\Institutes;
 use App\Services\RebuildSearchEngine;
+use App\Storage\Base64Image;
 
 /**
  * Description of BaseGroupService
@@ -54,5 +55,20 @@ abstract class BaseGroupService {
     protected function updateSearchEngine(Group $group)
     {
         $this->searchEngineRebuilder->updateSearchEngine($group);
+    }
+    
+    protected function syncImages(Group $group, $images)
+    {
+        $images = array_filter($images);
+        
+        if (!$images) {
+            return null;
+        }
+        
+        foreach($images as $imageSource) {
+            $image = new Base64Image($imageSource);
+            $image->saveImage($group->getStorageImageDir() . $group->id . '_1.jpg');
+            $image->saveThumbnail($group->getStorageImageDir() . 'thumbnails' . DS . $group->id . '_1.jpg');
+        }
     }
 }

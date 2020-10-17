@@ -1,9 +1,11 @@
 @section('header')
     @include('asset_groups.select2')
     @include('asset_groups.editor')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.css"/>
 @endsection
 @extends('admin')
-<form method="post" action="{{ $action }}">
+<form method="post" id="group-form" action="{{ $action }}">
     <div class="row">
         <div class="col-md-9">
             <div class="form-group">
@@ -62,6 +64,19 @@
                 <label for="description">Leírás</label>
                 <textarea name="description" id="description">{{ $group->description }}</textarea>
             </div>
+            <div class="row group-images">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Fényképek</label>
+                        <div class="group-image">
+                            <img src="{{ $images ? $images[0] : '' }}" id="image" width="300">
+                        </div>
+                        <input type="file" onchange="loadFile(event, this);" data-target="temp-image">
+                        <div style="display: none"/><img id="temp-image" /></div>
+                        <input type="hidden" name="image">
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="col-md-3 group-side-content">
             <div class="form-group">
@@ -117,20 +132,49 @@
                     @endforeach
                 </select>
             </div>
-            <div class="form-group text-center">
-                <label for="image" style="cursor: pointer">
-                    Fénykép<br>
-                    <i class="fa fa-image" style="font-size: 5rem"></i>
-                    <input type="file" id="image" name="image" style="display: none">
-                </label>
-            </div>
             <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Mentés</button>
         </div>
     </div>
 </form>
 
 <script>
+    var image_val;
     $(() => {
+        
+        var upload = null;
+        function initCroppie()
+        {
+            upload = $("#image").croppie({
+                enableExif: true,
+                mouseWheelZoom: false,
+                viewport: {
+                    width: '250',
+                    height: '250',
+                    type: 'rectangle'
+                },
+                boundary: {
+                    width: '300',
+                    height: '300'
+                }
+            });
+        }
+        
+        $("#temp-image").on("load", function(){
+            var newImg = $($(this).closest("div").html());
+            $(".group-image").html(newImg);
+            newImg.attr("id", "image").show();
+            initCroppie();
+        });
+        
+        $("form#group-form").submit(function(e){
+            if (upload) {
+                upload.croppie("result", {type: "base64", format: "jpeg", size: {width: 600, height: 600}}).then(function(base64){
+                    image_val = base64;
+                    $("[name=image]").val(base64);
+                });
+            }
+        });
+        
         $("[name=spiritual_movement_id]").select2({
             placeholder: "lelkiségi mozgalom",
             allowClear: true,

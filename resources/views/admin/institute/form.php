@@ -77,7 +77,6 @@
                     image_val = base64;
                     $("[name=image]").val(base64);
                 });
-
             }
         });
 

@@ -14,8 +14,6 @@ use Framework\Support\StringHelper;
 use App\Helpers\GroupHelper;
 use App\Helpers\InstituteHelper;
 
-use App\Models\AgeGroup;
-
 /**
  * Description of Group
  *
@@ -120,9 +118,16 @@ class Group extends Model
 
     public function getImages($thumbnail = false)
     {
-        if ($this->hasImage()) {
-            return [];
+        $dir = $this->getStorageImageDir($thumbnail);
+        
+        $images = collect(glob("$dir*.jpg"))->map(function($image) {
+            return '/media/groups/images/' . basename($image, '.jpg');
+        });
+
+        if ($images->isNotEmpty()) {
+            return $images->all();
         }
+             
 
         if (file_exists(InstituteHelper::getInstituteAbsPath($this->institute_id, $thumbnail))) {
             return [InstituteHelper::getInstituteRelPath($this->institute_id, $thumbnail)];
@@ -147,6 +152,12 @@ class Group extends Model
     {
         return $this->getImages($thumbnail)[0];
     }
+    
+    public function getStorageImageDir($thumbnail = false)
+    {
+        return rtrim(GroupHelper::getStoragePath($this->id), DS) . DS . ($thumbnail ? 'thumbnails' : '') . DS;
+    }
+    
 
     /**
      * @todo képmentést megoldani!!!

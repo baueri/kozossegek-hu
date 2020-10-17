@@ -23,11 +23,10 @@
     <route method="get" uri="admin/logout" controller="App\Portal\Controllers\LoginController" use="logout" as="admin.logout"/>
 
     <!-- VÍZJELES KÉPGENERÁLÁS -->
-    <route method="get" uri="/media-library/{type}/{resource}" as="w-image" use="image_with_watermark"/>
+    <route method="get" uri="/media/groups/images/{image}" as="watermark_image" use="image_with_watermark"/>
+    <route method="get" uri="/media/groups/images/{thumbnails}/{image}" as="watermark_image" use="image_with_watermark"/>
 
-
-
-	<route method="get" uri="teszt" controller="App\Portal\Controllers\TesztController" use="teszt"/>
+    <route method="get" uri="teszt" controller="App\Portal\Controllers\TesztController" use="teszt"/>
 
     <!-- Adatbázisban tárolt statikus oldalak. FIGYELEM!!!! EZ ALÁ MÁR NE KERÜLJÖN ROUTE!!! -->
     <route method="get" uri="{slug}" controller="App\Portal\Controllers\PageController" use="page" as="portal.page"/>
