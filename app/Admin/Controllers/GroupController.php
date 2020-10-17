@@ -3,15 +3,16 @@
 
 namespace App\Admin\Controllers;
 
-
 use App\Admin\Controllers\AdminController;
-use App\Admin\Group\Services\ListGroups;
-use App\Admin\Group\Services\EditGroup;
-use App\Admin\Group\Services\UpdateGroup;
-use Framework\Http\Request;
-use App\Admin\Group\Services\DeleteGroup;
-use App\Admin\Group\Services\CreateGroup;
 use App\Admin\Group\Services\BaseGroupForm;
+use App\Admin\Group\Services\CreateGroup;
+use App\Admin\Group\Services\DeleteGroup;
+use App\Admin\Group\Services\EditGroup;
+use App\Admin\Group\Services\ListGroups;
+use App\Admin\Group\Services\UpdateGroup;
+use App\Services\RebuildSearchEngine;
+use Framework\Http\Message;
+use Framework\Http\Request;
 
 class GroupController extends AdminController
 {
@@ -56,7 +57,7 @@ class GroupController extends AdminController
         return $service->show();
     }
     
-    public function rebuildSearchEngine(\App\Services\RebuildSearchEngine $service)
+    public function rebuildSearchEngine(RebuildSearchEngine $service)
     {
         $service->updateAll();
         
