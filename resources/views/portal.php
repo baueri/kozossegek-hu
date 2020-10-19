@@ -26,7 +26,7 @@
     <nav id="header" class="navbar navbar-expand-sm bg-light navbar-light sticky-top">
         <div class="container">
             <a href="/" class="navbar-brand ml-4 ml-sm-0 mt-1 mb-1 mt-sm-0 mb-sm-0">
-                <img src="/images/logo.png" class="logo-lg">
+                <img src="/images/logo_sm.png" class="logo-lg">
                 <img src="/images/logo_only.png" class="logo-sm" style="display:none;">
             </a>
             <input type="checkbox" style="display: none" id="toggle_main_menu" name="toggle_main_menu">

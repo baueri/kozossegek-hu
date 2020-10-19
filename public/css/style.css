@@ -99,8 +99,7 @@ nav.navbar .nav-link:hover {
     padding: 3px 0 !important;
 }
 #finder input:not([type=checkbox]) {
-    padding: 3px 10px;
-    width: calc(100% - 542px);
+    
 }
 
 #finder [name=korosztaly]+span, #finder [name=rendszeresseg]+span {
@@ -280,13 +279,17 @@ nav.navbar .nav-link:hover {
 
 input[name=search]::placeholder {
     color: #999;
-    font-size: 14px;
 }
 
 #main-finder #finder {
     margin: auto;
     width: 100%;
     max-width: 800px;
+}
+
+#main-finder #finder button {
+    padding-left: 2em;
+    padding-right: 2em;
 }
 
 .select2-selection__clear {
