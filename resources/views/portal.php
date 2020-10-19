@@ -21,12 +21,23 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     <script src="/js/scripts.js"></script>
+    @if(is_prod())
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-43190044-6"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-43190044-6');
+        </script>
+    @endif
 </head>
 <body>
     <nav id="header" class="navbar navbar-expand-sm bg-light navbar-light sticky-top">
         <div class="container">
             <a href="/" class="navbar-brand ml-4 ml-sm-0 mt-1 mb-1 mt-sm-0 mb-sm-0">
-                <img src="/images/logo.png" class="logo-lg">
+                <img src="/images/logo_sm.png" class="logo-lg">
                 <img src="/images/logo_only.png" class="logo-sm" style="display:none;">
             </a>
             <input type="checkbox" style="display: none" id="toggle_main_menu" name="toggle_main_menu">
@@ -61,9 +72,7 @@
                 </div>
                 <div class="col-md-4 col-sm-6 col-xs-12">
                     <ul class="navbar-nav">
-                        <li class="nav-item"><a href="" class="nav-link">Közösséget keresek</a></li>
                         <li class="nav-item"><a href="" class="nav-link">Rólunk</a></li>
-
                         <li class="nav-item"><a href="@route('portal.feedback')" class="nav-link">Visszajelzés küldése</a></li>
                         <li class="nav-item"><a href="@route('portal.page', 'adatkezelesi-tajekoztato')" class="nav-link">Adatkezelési tájékoztató</a></li>
                         <li class="nav-item"><a href="@route('portal.page', 'impresszum')" class="nav-link">Impresszum</a></li>
@@ -73,7 +82,7 @@
                 <div class="col-md-4 col-sm-6 col-xs-12">
                     <h5>Partnereink</h5>
                     <div class="partnereink">
-                        <a href="https://pasztoralis.hu/" title="Pasztorális helynökség Szeged"><img src="/images/szcsem_szines_latin.png"></a>
+                        <a href="https://pasztoralis.hu/" title="Pasztorális helynökség Szeged" target="_blank"><img src="/images/szcsem_szines_latin.png"></a>
                     </div>
                     <!-- <h5>Légy naprakész!</h5>
                     <p><small>Add meg a városodat és az email címedet, amennyiben értesítést szeretnél kapni az új közösségekről!</small></p>

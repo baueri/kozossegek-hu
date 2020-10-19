@@ -46,19 +46,20 @@
         </p>
     </form>
     <p><small>Összes találat: {{ $total }}</small></p>
-    <div class="row" style="padding-top:2em">
+    <div class="row row-cols-xxs-1 row-cols-2 row-cols-md-2 row-cols-lg-3 row-cols-xl-4" style="padding-top:2em">
         @foreach($groups as $i => $group)
             @if($i == 0 || $groups[$i-1]->city != $group->city)
-                <div class="col-md-12">
+                    </div>
                     <h4>{{ $group->city }}</h4>
                     @if($filter['varos'] && $group->district && ($i == 0 || $groups[$i-1]->district == $group->district))
                         <h6 style="color:var(--secondary)">{{ $group->district }}</h6>
                     @endif
-                </div>
+                    <div class="row row-cols-xxs-1 row-cols row-cols-2 row-cols-md-2 row-cols-lg-3 row-cols-xl-4" style="padding-top:2em">
             @endif
 
-            <div class="col-lg-4 col-md-6">
-                <a href="{{ $group->url() }}" class="card kozi-box">
+
+            <div class="col mb-4">
+                <a href="{{ $group->url() }}" class="card h-100 kozi-box">
                     <img class="card-img-top" src="{{ $group->getThumbnail() }}" />
                     <div class="card-body">
                         <h4 class="mb-1">{{ $group->name }}</h4>

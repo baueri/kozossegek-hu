@@ -4,6 +4,7 @@ vendor/
 cache/
 .idea/
 error.log
-media/
 /nbproject/private/
 /nbproject
+storage/
+public/media
