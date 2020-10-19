@@ -132,8 +132,6 @@ class Group extends Model
             return [InstituteHelper::getImageRelPath($this->institute_id)];
         }
 
-        $suffix = $thumbnail ? '_wide' : '';
-
         return ["/images/default_thumbnail.jpg"];
 
     }

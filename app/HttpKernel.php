@@ -29,7 +29,7 @@ class HttpKernel extends \Framework\Http\HttpKernel
 
     public function handleError($error)
     {
-        if($error->getCode() != '404' && config('app.environment') == 'production') {
+        if($error->getCode() != '404' && is_prod()) {
 
             $mail = (new CriticalErrorEmail($error));
 
