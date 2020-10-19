@@ -121,7 +121,7 @@ class Group extends Model
         $dir = $this->getStorageImageDir();
 
         $images = collect(glob("$dir*.jpg"))->map(function($image) {
-            return '/media/groups/images/' . basename($image, '.jpg');
+            return "/media/groups/images/" . basename($image);
         });
 
         if ($images->isNotEmpty()) {
@@ -129,7 +129,7 @@ class Group extends Model
         }
 
         if (file_exists(InstituteHelper::getImageStoragePath($this->institute_id))) {
-            return [InstituteHelper::getInstituteRelPath($this->institute_id)];
+            return [InstituteHelper::getImageRelPath($this->institute_id)];
         }
 
         $suffix = $thumbnail ? '_wide' : '';

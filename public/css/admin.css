@@ -234,3 +234,7 @@
 .croppie-container .cr-boundary, .croppie-container .cr-slider-wrap {
     margin: 0;
 }
+
+#image-upload {
+    display: none;
+}

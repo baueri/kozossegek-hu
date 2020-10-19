@@ -239,7 +239,6 @@ function image_with_watermark($imgPath)
 
     $mime_type = mime_content_type($imgPath);
     header('Content-Type: '.$mime_type);
-
 }
 
 function widget($uniqid)
