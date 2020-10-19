@@ -222,33 +222,28 @@ function make($abstraction, $values = [])
     return app()->make($abstraction, ...$values);
 }
 
-function image_with_watermark(Framework\Http\Request $request)
+function image_with_watermark($imgPath)
 {
-    [$groupId] = explode('_', $image = $request['image']);
-    $path = App\Helpers\GroupHelper::getStoragePath($groupId);
-    
-    $imgPath = "$path$image.jpg";
-
     $stamp = imagecreatefrompng(ROOT . 'resources/watermark.png');
     $img = imagecreatefromjpeg($imgPath);
-    
+
     $marge_right = 10;
     $marge_bottom = 10;
     $sx = imagesx($stamp);
     $sy = imagesy($stamp);
-    
+
     imagecopy($img, $stamp, imagesx($img) - $sx - $marge_right, imagesy($img) - $sy - $marge_bottom, 0, 0, $sx, $sy);
-    
+
     ob_start();
     imagejpeg($img);
 
-    $mime_type = mime_content_type($imgPath);    
+    $mime_type = mime_content_type($imgPath);
     header('Content-Type: '.$mime_type);
 
 }
 
 function widget($uniqid)
 {
-    
+
     return app()->get(Widgets::class)->getByUniqId($uniqid);
 }

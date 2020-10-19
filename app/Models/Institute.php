@@ -31,16 +31,16 @@ class Institute extends \Framework\Model\Model
 
     public function getImageRelPath()
     {
-        return $this->hasImage() ? \App\Helpers\InstituteHelper::getInstituteRelPath($this->id) : '/images/default_thumbnail.jpg';
+        return \App\Helpers\InstituteHelper::getImageRelPath($this->id);
     }
 
-    public function getImageAbsPath()
+    public function getImageStoragePath()
     {
-        return \App\Helpers\InstituteHelper::getInstituteAbsPath($this->id);
+        return \App\Helpers\InstituteHelper::getImageStoragePath($this->id);
     }
 
     public function hasImage()
     {
-        return file_exists($this->getImageAbsPath());
+        return file_exists($this->getImageStoragePath());
     }
 }

@@ -10,6 +10,7 @@ use Framework\Http\Request;
 use Framework\Http\Message;
 use App\Auth\Auth;
 use App\Admin\Institute\InstituteAdminTable;
+use App\Storage\Base64Image;
 
 /**
  * Description of InstituteController
@@ -49,33 +50,9 @@ class InstituteController extends AdminController
     {
         $institute = $repository->findOrFail($request['id']);
 
-        if ($image = $request['image']) {
-            if (!file_exists(ROOT . 'public/media/institutes/')) {
-                mkdir(ROOT . 'public/media/institutes/');
-            }
-            $imageSource = base64_decode(substr($image, strpos($image,',')));
-            $thumbnail = imagecrop(imagecreatefromstring($imageSource), ['x' => 0, 'y' => 350, 'width' => 400, 'height' => 250]);
-            ob_start();
-            imagejpeg($thumbnail);
-            $thumnailSource = ob_get_clean();
-
-            //
-            // $stamp = imagecreatefrompng(ROOT . 'resources/watermark.png');
-            // $img = imagecreatefromstring($imageSource);
-            //
-            // $marge_right = 10;
-            // $marge_bottom = 10;
-            // $sx = imagesx($stamp);
-            // $sy = imagesy($stamp);
-            //
-            // imagecopy($img, $stamp, imagesx($img) - $sx - $marge_right, imagesy($img) - $sy - $marge_bottom, 0, 0, $sx, $sy);
-            // ob_start();
-            // imagejpeg($img);
-            // $contents = ob_get_clean();
-
-            file_put_contents(ROOT . 'public/media/institutes/inst_' . $institute->id . '.jpg', $imageSource);
-            file_put_contents(ROOT . 'public/media/institutes/inst_' . $institute->id . '_wide.jpg', $thumnailSource);
-
+        if ($imageSource = $request['image']) {
+            $image = new Base64Image($imageSource);
+            $image->saveImage($institute->getImageStoragePath());
         }
 
         $institute->update($request->only('name', 'city', 'district', 'address', 'leader_name'));
