@@ -61,9 +61,7 @@
                 </div>
                 <div class="col-md-4 col-sm-6 col-xs-12">
                     <ul class="navbar-nav">
-                        <li class="nav-item"><a href="" class="nav-link">Közösséget keresek</a></li>
                         <li class="nav-item"><a href="" class="nav-link">Rólunk</a></li>
-
                         <li class="nav-item"><a href="@route('portal.feedback')" class="nav-link">Visszajelzés küldése</a></li>
                         <li class="nav-item"><a href="@route('portal.page', 'adatkezelesi-tajekoztato')" class="nav-link">Adatkezelési tájékoztató</a></li>
                         <li class="nav-item"><a href="@route('portal.page', 'impresszum')" class="nav-link">Impresszum</a></li>
@@ -73,7 +71,7 @@
                 <div class="col-md-4 col-sm-6 col-xs-12">
                     <h5>Partnereink</h5>
                     <div class="partnereink">
-                        <a href="https://pasztoralis.hu/" title="Pasztorális helynökség Szeged"><img src="/images/szcsem_szines_latin.png"></a>
+                        <a href="https://pasztoralis.hu/" title="Pasztorális helynökség Szeged" target="_blank"><img src="/images/szcsem_szines_latin.png"></a>
                     </div>
                     <!-- <h5>Légy naprakész!</h5>
                     <p><small>Add meg a városodat és az email címedet, amennyiben értesítést szeretnél kapni az új közösségekről!</small></p>

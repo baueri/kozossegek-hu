@@ -155,12 +155,12 @@ class Route implements RouteInterface
     public function getUriForPregReplace()
     {
         return preg_replace([
-            '/({[a-zA-Z\-\_]+})/',
-            '/({\?[a-zA-Z\-\_]+})/',
+            '/({[a-zA-Z\-\_\.]+})/',
+            '/({\?[a-zA-Z\-\_\.]+})/',
             '/\//'
         ], [
-            '([a-zA-Z0-9\-\_]+)',
-            '([\?a-zA-Z0-9\-\_]+)',
+            '([a-zA-Z0-9\-\_\.]+)',
+            '([\?a-zA-Z0-9\-\_\.]+)',
             '\/'
         ], trim($this->uriMask, '/'));
     }

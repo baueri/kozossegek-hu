@@ -71,7 +71,10 @@
                         <div class="group-image">
                             <img src="{{ $images ? $images[0] : '' }}" id="image" width="300">
                         </div>
-                        <input type="file" onchange="loadFile(event, this);" data-target="temp-image">
+                        <label for="image-upload" class="btn btn-primary">
+                            <i class="fa fa-upload"></i> Kép feltöltése
+                            <input type="file" onchange="loadFile(event, this);" data-target="temp-image" id="image-upload">
+                        </label>
                         <div style="display: none"/><img id="temp-image" /></div>
                         <input type="hidden" name="image">
                     </div>
