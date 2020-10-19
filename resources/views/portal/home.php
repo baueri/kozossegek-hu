@@ -8,11 +8,9 @@
             @widget('FOKE')
         </div>
         <form method="get" id="finder" action="@route('portal.groups')">
-            <div class="input-group">
-
+            <div class="input-group input-group-lg">
                 <input type="text" name="search" class="form-control" placeholder="keresés...">
-
-                <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                <button type="submit" class="btn btn-primary btn-lg"><i class="fa fa-search"></i></button>
             </div>
         </form>
     </div>
