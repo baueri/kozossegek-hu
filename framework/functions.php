@@ -1,9 +1,11 @@
 <?php
 
+use App\Repositories\Widgets;
 use Arrilot\DotEnv\DotEnv;
 use Framework\Application;
 use Framework\Database\Builder;
 use Framework\Database\Database;
+use Framework\Dispatcher\Dispatcher;
 use Framework\Dispatcher\HttpDispatcher;
 use Framework\Http\Response;
 use Framework\Http\Route\RouteInterface;
@@ -11,8 +13,6 @@ use Framework\Http\Route\RouterInterface;
 use Framework\Http\View\ViewInterface;
 use Framework\Support\Collection;
 use Framework\Translator;
-use Framework\Dispatcher\Dispatcher;
-use App\Repositories\Widgets;
 
 /**
  * @return Application|null
@@ -222,12 +222,32 @@ function make($abstraction, $values = [])
     return app()->make($abstraction, ...$values);
 }
 
-function image_with_watermark()
+function image_with_watermark($imgPath)
 {
+    $stamp = imagecreatefrompng(ROOT . 'resources/watermark.png');
+    $img = imagecreatefromjpeg($imgPath);
+
+    $marge_right = 10;
+    $marge_bottom = 10;
+    $sx = imagesx($stamp);
+    $sy = imagesy($stamp);
+
+    imagecopy($img, $stamp, imagesx($img) - $sx - $marge_right, imagesy($img) - $sy - $marge_bottom, 0, 0, $sx, $sy);
+
+    ob_start();
+    imagejpeg($img);
+
+    $mime_type = mime_content_type($imgPath);
+    header('Content-Type: '.$mime_type);
 }
 
 function widget($uniqid)
 {
-    
+
     return app()->get(Widgets::class)->getByUniqId($uniqid);
+}
+
+function is_prod()
+{
+    return config('app.environment') === 'production';
 }

@@ -32,4 +32,20 @@ class GroupHelper
                 return $ageGroup->translate();
             }, true);
     }
+    
+    public static function getRelpath($groupId)
+    {
+        $groupIdFull = str_pad($groupId, 7, '0', STR_PAD_LEFT);
+        $groupIdReversed = strrev($groupIdFull);
+        preg_match_all('/([0-9]{2})/', $groupIdReversed, $matches);
+        
+        return $matches[0][0] . DS . $matches[0][1] . DS . $groupIdFull . DS;
+    }
+    
+    public static function getStoragePath($groupId)
+    {
+        $root = ROOT . 'storage/groups/images' . DS;
+        
+        return $root . static::getRelpath($groupId);
+    }
 }

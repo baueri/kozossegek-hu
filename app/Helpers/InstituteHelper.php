@@ -4,18 +4,17 @@ namespace App\Helpers;
 
 class InstituteHelper
 {
-    public static function getInstituteRelPath($instituteId, $thumbnail = false)
-    {
-        $suffix = $thumbnail ? '_wide' : '';
 
-        return "/media/institutes/inst_$instituteId$suffix.jpg";
+    const STORAGE_DIR = ROOT . 'storage/institutes/images/';
+
+    public static function getImageRelPath($instituteId)
+    {
+        return "/media/institutes/images/inst_$instituteId.jpg";
     }
 
-    public static function getInstituteAbsPath($instituteId, $thumbnail = false)
+    public static function getImageStoragePath($instituteId)
     {
-        $suffix = $thumbnail ? '_wide' : '';
-        
-        return ROOT . "public/media/institutes/inst_$instituteId$suffix.jpg";
+        return self::STORAGE_DIR . "/inst_$instituteId.jpg";
     }
 
 }

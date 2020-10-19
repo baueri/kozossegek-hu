@@ -1,6 +1,6 @@
 body {
     font-family: 'PT Sans', sans-serif;
-
+    color: #555;
 }
 
 img {
@@ -19,6 +19,9 @@ nav.navbar.compact .navbar-brand>div {
     display: none;
 }
 
+#header .nav-link {
+    color: #3E8FAE;
+}
 nav.navbar .nav-link i {
     font-size: 20px;
     margin-right: 5px;
@@ -95,8 +98,7 @@ nav.navbar .nav-link:hover {
     padding: 3px 0 !important;
 }
 #finder input:not([type=checkbox]) {
-    padding: 3px 10px;
-    width: calc(100% - 542px);
+    
 }
 
 #finder [name=korosztaly]+span, #finder [name=rendszeresseg]+span {
@@ -276,13 +278,17 @@ nav.navbar .nav-link:hover {
 
 input[name=search]::placeholder {
     color: #999;
-    font-size: 14px;
 }
 
 #main-finder #finder {
     margin: auto;
     width: 100%;
     max-width: 800px;
+}
+
+#main-finder #finder button {
+    padding-left: 2em;
+    padding-right: 2em;
 }
 
 .select2-selection__clear {
@@ -358,6 +364,12 @@ input[name=search]::placeholder {
 
 @media (max-width: 425px) {
     .col-xxs-12 {
+        -ms-flex: 0 0 100%;
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+    
+    .row-cols-xxs-1 > * {
         -ms-flex: 0 0 100%;
         flex: 0 0 100%;
         max-width: 100%;

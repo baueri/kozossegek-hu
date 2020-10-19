@@ -59,10 +59,12 @@ class BaseGroupForm {
         $group_tags = collect(builder('group_tags')->whereGroupId($group->id)->get())->pluck('tag')->all();
         $days = DayEnum::all();
         $group_days = explode(',', $group->on_days);
+        $images = $group->getImages();
+        
         
         return view('admin.group.create', compact('group', 'institute', 'denominations',
                 'statuses', 'occasion_frequencies', 'age_groups', 'action', 'spiritual_movements', 'tags',
-                'age_group_array', 'group_tags', 'days', 'group_days'));
+                'age_group_array', 'group_tags', 'days', 'group_days', 'images'));
     }
 
     protected function getGroup(): Group
