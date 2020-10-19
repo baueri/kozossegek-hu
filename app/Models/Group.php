@@ -60,7 +60,7 @@ class Group extends Model
     {
         return GroupHelper::parseAgeGroup($this->age_group);
     }
-    
+
     public function getAgeGroups()
     {
         return GroupHelper::getAgeGroups($this->age_group);
@@ -70,19 +70,19 @@ class Group extends Model
     {
         return lang("denomination.{$this->denomination}");
     }
-    
+
     public function getDays()
     {
         $days = array_filter(explode(',', $this->on_days));
         $daysTranslated = [];
-        
+
         foreach ($days as $day) {
             $daysTranslated[$day] = lang("day.$day");
         }
-        
+
         return $daysTranslated;
     }
-    
+
     /**
      * @return string
      */
@@ -116,10 +116,10 @@ class Group extends Model
         return StringHelper::slugify($this->name . '-' . $this->id);
     }
 
-    public function getImages($thumbnail = false)
+    public function getImages()
     {
-        $dir = $this->getStorageImageDir($thumbnail);
-        
+        $dir = $this->getStorageImageDir();
+
         $images = collect(glob("$dir*.jpg"))->map(function($image) {
             return '/media/groups/images/' . basename($image, '.jpg');
         });
@@ -127,15 +127,14 @@ class Group extends Model
         if ($images->isNotEmpty()) {
             return $images->all();
         }
-             
 
-        if (file_exists(InstituteHelper::getInstituteAbsPath($this->institute_id, $thumbnail))) {
-            return [InstituteHelper::getInstituteRelPath($this->institute_id, $thumbnail)];
+        if (file_exists(InstituteHelper::getImageStoragePath($this->institute_id))) {
+            return [InstituteHelper::getInstituteRelPath($this->institute_id)];
         }
 
         $suffix = $thumbnail ? '_wide' : '';
 
-        return ["/images/default_thumbnail$suffix.jpg"];
+        return ["/images/default_thumbnail.jpg"];
 
     }
 
@@ -148,16 +147,16 @@ class Group extends Model
         return $this->getFirstImage(true);
     }
 
-    public function getFirstImage($thumbnail = false)
+    public function getFirstImage()
     {
-        return $this->getImages($thumbnail)[0];
+        return $this->getImages()[0];
     }
-    
-    public function getStorageImageDir($thumbnail = false)
+
+    public function getStorageImageDir()
     {
-        return rtrim(GroupHelper::getStoragePath($this->id), DS) . DS . ($thumbnail ? 'thumbnails' : '') . DS;
+        return GroupHelper::getStoragePath($this->id);
     }
-    
+
 
     /**
      * @todo képmentést megoldani!!!

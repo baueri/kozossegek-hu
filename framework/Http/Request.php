@@ -84,9 +84,9 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
             $uriParts2 = explode('/', trim($this->route->getUriMask(), '/'));
             $this->uriValues = [];
             foreach ($uriParts2 as $i => $uriPart) {
-                preg_match('/{([a-zA-Z0-9]+)}/', $uriPart, $matches);
-                if ($matches) {
-                    $this->uriValues[$matches[1]] = $uriParts[$i];
+                preg_match_all('/{([a-zA-Z0-9\_]+)}/', $uriPart, $matches);
+                if ($matches[1]) {
+                    $this->uriValues[$matches[1][0]] = $uriParts[$i];
                 }
             }
         }
