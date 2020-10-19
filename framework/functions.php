@@ -246,3 +246,8 @@ function widget($uniqid)
 
     return app()->get(Widgets::class)->getByUniqId($uniqid);
 }
+
+function is_prod()
+{
+    return config('app.environment') === 'production';
+}
