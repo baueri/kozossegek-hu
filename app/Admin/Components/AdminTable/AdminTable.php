@@ -138,11 +138,11 @@ abstract class AdminTable
         return "<a href='$url' title='szerkesztés'>$value</a>";
     }
 
-    protected function getDelete($t, $model)
+    protected function getDelete($t, $model, $title = 'lomtárba')
     {
         $url = $this->getDeleteUrl($model);
 
-        return "<a href='$url' title='lomtárba'><i class='fa fa-trash text-danger'></i></a>";
+        return "<a href='$url' title='$title'><i class='fa fa-trash text-danger'></i></a>";
     }
 
     /**

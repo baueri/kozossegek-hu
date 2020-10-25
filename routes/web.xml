@@ -9,24 +9,25 @@
 
         <route method="get" uri="kozossegek" as="portal.groups" controller="GroupController" use="kozossegek"/>
         <route method="get" uri="kozossegek/page/{page}/" as="portal.groups.page" controller="GroupController" use="kozossegek"/>
-        <route method="get" uri="kozosseg/{kozosseg}" as="kozosseg" controller="GroupController" use="kozosseg"/>
+        <route method="get" uri="{varos}/{intezmeny}/{kozosseg}" as="kozosseg" controller="GroupController" use="kozosseg"/>
         <route method="get" uri="feedback" as="portal.feedback" view="portal.feedback"/>
 
         <!-- Közösség kapcsolatfelvételi űrlap -->
         <route method="post" uri="group-contact-form" as="portal.group-contact-form" controller="GroupController" use="groupContactForm"/>
         <route method="post" uri="send-contact-message" as="portal.contact-group" controller="GroupController" use="sendContactMessage"/>
+        
+        <route method="get" uri="profile" as="portal.my_profile" controller="UserController" use="profile"/>
+        <route method="get" uri="my-group" as="portal.my_group" controller="GroupController" use="myGroup"/>
     </route-group>
 
     <!-- BELÉPÉS -->
     <route method="get" uri="login" controller="App\Portal\Controllers\LoginController" use="login" as="login"/>
     <route method="post" uri="login" controller="App\Portal\Controllers\LoginController" use="doLogin"/>
-    <route method="get" uri="admin/logout" controller="App\Portal\Controllers\LoginController" use="logout" as="admin.logout"/>
+    <route method="get" uri="logout" controller="App\Portal\Controllers\LoginController" use="logout" as="logout"/>
 
     <!-- VÍZJELES KÉPGENERÁLÁS -->
     <route method="get" uri="/media/{entity_type}/images/{image}" as="watermark_image" controller="App\Portal\Controllers\ImageController" use="getImageWithWatermark"/>
 
-    <route method="get" uri="teszt" controller="App\Portal\Controllers\TesztController" use="teszt"/>
-
     <!-- Adatbázisban tárolt statikus oldalak. FIGYELEM!!!! EZ ALÁ MÁR NE KERÜLJÖN ROUTE!!! -->
-    <route method="get" uri="{slug}" controller="App\Portal\Controllers\PageController" use="page" as="portal.page"/>
+    <route method="get" uri="{slug}" controller="App\Portal\Controllers\PageController" use="page" as="portal.page" middleware="App\Middleware\ComingSoon"/>
 </routes>

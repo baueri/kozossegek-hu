@@ -19,7 +19,13 @@ class GroupViews extends Repository
         return 'v_groups';
     }
 
-
+    public function getGroupByUser(\App\Models\User $user)
+    {
+        $row = $this->getBuilder()->where('user_id', $user->id)->first();
+        
+        return $this->getInstance($row);
+    }
+    
     /**
      * @param int $perPage
      * @return PaginatedModelCollection

@@ -7,10 +7,9 @@ use Framework\Middleware\Middleware;
 use Framework\Http\Message;
 use Framework\Http\Session;
 use Framework\Maintenance;
-
+use Framework\Exception\UnauthorizedException;
 use App\Admin\Components\AdminMenu;
 use Framework\Http\View\View;
-use Framework\Http\View\ViewInterface;
 
 class AdminMiddleware implements Middleware
 {
@@ -28,6 +27,10 @@ class AdminMiddleware implements Middleware
             Session::set('last_visited', $_SERVER['REQUEST_URI']);
             Message::danger('Nem vagy belépve!');
             redirect_route('login');
+        }
+        
+        if (!Auth::user()->hasUserGroup('SUPER_ADMIN')) {
+            throw new UnauthorizedException();
         }
 
         $currentRoute = current_route();
