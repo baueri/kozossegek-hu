@@ -21,6 +21,10 @@ class Auth
         self::$user = $user;
     }
 
+    /**
+     * 
+     * @param User $user
+     */
     public static function login(User $user)
     {
         db()->execute('replace into user_sessions (unique_id, user_id, created_at) values(?, ?, CURRENT_TIMESTAMP)', session_id(), $user->id);
@@ -44,6 +48,10 @@ class Auth
         return (bool) static::$user;
     }
 
+    /**
+     * 
+     * @return User
+     */
     public static function user()
     {
         return static::$user;

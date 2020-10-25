@@ -46,6 +46,8 @@ class Group extends Model
     public $status;
 
     public $on_days;
+    
+    public $user_id;
 
     /**
      * @var Institute|null
@@ -98,14 +100,6 @@ class Group extends Model
     public function excerpt($words = 25): string
     {
         return StringHelper::more($this->description, $words, '...');
-    }
-
-    /**
-     * @return string
-     */
-    public function url(): string
-    {
-        return route('kozosseg', ['kozosseg' => $this->slug()]);
     }
 
     /**

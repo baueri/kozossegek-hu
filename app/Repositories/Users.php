@@ -11,9 +11,17 @@ use Framework\Support\StringHelper;
 class Users extends Repository
 {
 
-    public function getUsers($limit = 30)
+    public function getUsers($filter = [], $limit = 30)
     {
-        $rows = $this->getBuilder()->paginate($limit);
+        $builder = $this->getBuilder();
+        
+        if ($filter['deleted']) {
+            $builder->whereNotNull('deleted_at');
+        } else {
+            $builder->whereNull('deleted_at');
+        }
+        
+        $rows = $builder->paginate($limit);
 
         return $this->getInstances($rows);
     }

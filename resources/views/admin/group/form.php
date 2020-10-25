@@ -171,7 +171,7 @@
         
         $("form#group-form").submit(function(e){
             if (upload) {
-                upload.croppie("result", {type: "base64", format: "jpeg", size: {width: 600, height: 600}}).then(function(base64){
+                upload.croppie("result", {type: "base64", format: "jpeg", size: {width: 510, height: 510}}).then(function(base64){
                     image_val = base64;
                     $("[name=image]").val(base64);
                 });

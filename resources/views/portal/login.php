@@ -107,7 +107,7 @@
                 <input type="password" name="password" placeholder="jelszó"/>
                 <button>belépés</button>
                 <p class="message">
-                    <a href="#" style="float: left">Vissza a főoldalra</a>
+                    <a href="/" style="float: left">Vissza a főoldalra</a>
                     <a href="#" style="float: right">Elfelejtettem a jelszavam</a>
                 </p>
             </form>

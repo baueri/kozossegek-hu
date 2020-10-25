@@ -1,8 +1,7 @@
+<?php use App\Auth\Auth; ?>
 <!doctype html>
-<html lang="en">
+<html lang="hu">
 <head>
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-    <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>kozossegek.hu</title>
@@ -21,6 +20,8 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     <script src="/js/scripts.js"></script>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
     @if(is_prod())
         <!-- Global site tag (gtag.js) - Google Analytics -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=UA-43190044-6"></script>
@@ -51,11 +52,19 @@
                 <li class="nav-item">
                     <a href="@route('portal.page', ['slug' => 'a-kozosseg'])" class="nav-link">A közösségről</a>
                 </li>
-                @auth
+                <?php if(Auth::loggedIn()): ?>
+                <li class="nav-item">
+                    <a href="@route('portal.my_group')" class="nav-link" title="Közösségem szerkesztése"><i class="fa fa-users-cog"></i></a>
+                </li>
+                <li class="nav-item">
+                    <a href="@route('portal.my_profile')" class="nav-link" title="Profilom"><i class="fa fa-user-lock"></i></a>
+                </li>
+                <?php endif; ?>
+                <?php if (Auth::loggedIn() && Auth::user()->isAdmin()): ?>
                     <li class="nav-item">
-                        <a href="@route('admin.dashboard')" class="nav-link"><i class="fa fa-user-lock"></i></a>
+                        <a href="@route('admin.dashboard')" class="nav-link" title="Admin"><i class="fa fa-cog"></i></a>
                     </li>
-                @endauth
+                <?php endif; ?>
             </ul>
 
 

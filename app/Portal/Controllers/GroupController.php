@@ -122,5 +122,13 @@ class GroupController extends Controller {
             return ['success' => false];
         }
     }
+    
+    public function myGroup(GroupViews $groups)
+    {
+        $user = \App\Auth\Auth::user();
+        $group = $groups->getGroupByUser($user);
+        
+        dd($group);
+    }
 
 }

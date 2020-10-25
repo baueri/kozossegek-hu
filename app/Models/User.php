@@ -25,6 +25,8 @@ class User extends Model
     public $email;
 
     public $last_login;
+    
+    public $user_group;
 
     public function keresztnev()
     {
@@ -33,10 +35,14 @@ class User extends Model
 
    /**
     * @return bool
-    * @todo !!!
     */
     public function isAdmin()
     {
-        return true;
+        return $this->hasUserGroup('SUPER_ADMIN');
+    }
+    
+    public function hasUserGroup($group)
+    {
+        return $this->user_group == $group;
     }
 }
