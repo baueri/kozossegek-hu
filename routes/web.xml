@@ -9,7 +9,7 @@
 
         <route method="get" uri="kozossegek" as="portal.groups" controller="GroupController" use="kozossegek"/>
         <route method="get" uri="kozossegek/page/{page}/" as="portal.groups.page" controller="GroupController" use="kozossegek"/>
-        <route method="get" uri="{varos}/{intezmeny}/{kozosseg}" as="kozosseg" controller="GroupController" use="kozosseg"/>
+        <route method="get" uri="kozosseg/{varos}/{intezmeny}/{kozosseg}" as="kozosseg" controller="GroupController" use="kozosseg"/>
         <route method="get" uri="feedback" as="portal.feedback" view="portal.feedback"/>
 
         <!-- Közösség kapcsolatfelvételi űrlap -->

@@ -86,6 +86,10 @@ class GroupViews extends Repository
         if ($intezmeny = $filter['institute_id']) {
             $builder->where('institute_id', $intezmeny);
         }
+        
+        if ($filter['pending']) {
+            $builder->where('pending', 1);
+        }
 
         if ($status = $filter['status']) {
             $builder->where('status', $status);

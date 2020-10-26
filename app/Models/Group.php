@@ -48,6 +48,8 @@ class Group extends Model
     public $on_days;
     
     public $user_id;
+    
+    public $pending;
 
     /**
      * @var Institute|null

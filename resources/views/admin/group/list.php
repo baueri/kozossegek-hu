@@ -3,7 +3,7 @@
 @section('title')
     <div class="btn-group btn-group-sm btn-shadow ml-4">
         <a class="btn {{ $current_page == 'all' ? 'active btn-primary' : 'btn-default' }}" href="@route('admin.group.list')">Összes</a>
-        <a class="btn {{ $current_page == 'pending' ? 'active btn-primary' : 'btn-default' }}" href="@route('admin.group.list', ['status' => 'pending'])">
+        <a class="btn {{ $current_page == 'pending' ? 'active btn-primary' : 'btn-default' }}" href="@route('admin.group.list', ['pending' => '1'])">
             Függőben @if($pending_groups)
              ({{ $pending_groups }})
              @endif
