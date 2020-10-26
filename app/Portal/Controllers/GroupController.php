@@ -127,8 +127,20 @@ class GroupController extends Controller {
     {
         $user = \App\Auth\Auth::user();
         $group = $groups->getGroupByUser($user);
-        
-        dd($group);
+        $tags = builder('tags')->select('*')->get();
+        $spiritual_movements = db()->select('select * from spiritual_movements order by name');
+        $occasion_frequencies = (new \App\Repositories\OccasionFrequencies)->all();
+        $age_groups = (new \App\Repositories\AgeGroups)->all();
+        $denominations = (new \App\Repositories\Denominations)->all();
+        $age_group_array = array_filter(explode(',', $group->age_group));
+        $statuses = (new \App\Repositories\GroupStatusRepository)->all();
+        $images = $group->getImages();
+        $days = \App\Enums\DayEnum::all();
+        $group_days = explode(',', $group->on_days);
+
+        return view('portal.my_group', compact('group', 'institute', 'denominations',
+                'statuses', 'occasion_frequencies', 'age_groups', 'action', 'spiritual_movements', 'tags',
+                'age_group_array', 'group_tags', 'days', 'group_days', 'images'));
     }
 
 }

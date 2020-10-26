@@ -27,6 +27,7 @@ class GroupTable extends AdminTable implements Editable, Deletable
         'group_leaders' => 'Közösség vezető(i)',
         'age_group' => 'Korosztály',
         'status' => 'Státusz',
+        'pending' => 'Függőben',
         'created_at' => 'Létrehozva',
     ];
 
@@ -65,6 +66,15 @@ class GroupTable extends AdminTable implements Editable, Deletable
         return "<i class='$class' title='$text'></i>";
     }
 
+    public function getPending($pending)
+    {
+        if ($pending) {
+            return 'igen';
+        }
+        
+        return 'nem';
+    }
+    
     public function getGroupLeaders($groupLeaders)
     {
         $shorten = StringHelper::shorten($groupLeaders, 15, '...');

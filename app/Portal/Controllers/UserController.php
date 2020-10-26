@@ -13,7 +13,9 @@ namespace App\Portal\Controllers;
  *
  * @author ivan
  */
-class UserController {
+class UserController
+{
+    
     public function profile()
     {
         $user = \App\Auth\Auth::user();

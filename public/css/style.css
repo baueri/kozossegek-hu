@@ -87,20 +87,6 @@ nav.navbar .nav-link:hover {
     color: var(--green);
 }
 
-.select2-container--bootstrap {
-    display: block !important;
-}
-
-.select2-container--bootstrap .select2-selection {
-    height: 38px !important;
-}
-.select2-container--bootstrap .select2-selection--single .select2-selection__rendered {
-    padding: 3px 0 !important;
-}
-#finder input:not([type=checkbox]) {
-    
-}
-
 #finder [name=korosztaly]+span, #finder [name=rendszeresseg]+span {
     width: 150px !important;
 }
@@ -114,48 +100,6 @@ nav.navbar .nav-link:hover {
     color: #444;
 }
 
-/*
-.select2-selection, input[type=text] {
-    border-radius: 0 !important;
-    height: initial !important;
-    border: 1px solid #aaa !important;
-    box-sizing: border-box;
-    color: #555;
-    font-size: 14px;
-    box-shadow: 0 0 0px 3px #e3e3e3 inset;
-    padding: 10px 15px !important;
-    position: relative;
-}
-
-.select2-selection {
-    padding: 7px 15px !important;
-}
-
-
-.select2-selection__arrow {
-    display: none;
-}
-
-.select2-selection::after {
-    position: absolute;
-    top: 0;
-    right: 0;
-    height: 100% !important;
-    width: 30px !important;
-    content: "\f0d7";
-    font-weight: 900;
-    color: #555;
-    font-family: "Font Awesome 5 Free";
-    -moz-osx-font-smoothing: grayscale;
-    -webkit-font-smoothing: antialiased;
-    display: inline-block;
-    font-style: normal;
-    font-variant: normal;
-    text-rendering: auto;
-    text-align: center;
-    padding: 13px 0px;
-}
-*/
 .inner {
     padding-top: 2em;
     padding-bottom: 4em;
@@ -361,7 +305,43 @@ input[name=search]::placeholder {
     height: auto;
 }
 
+.note-icon-caret {
+    display: none !important;
+}
 
+
+.select2-container--bootstrap .select2-selection--single {
+    height: auto !important;
+    padding: 8px 24px 8px 12px !important;
+}
+.form-group-sm .select2-container--bootstrap .select2-selection--single, .input-group-sm .select2-container--bootstrap .select2-selection--single, .select2-container--bootstrap .select2-selection--single.input-sm {
+    height: 31px !important;
+    padding: 6px 22px 5px 10px !important;
+}
+
+.select2-selection__choice {
+    padding-left: 0 !important;
+}
+
+.select2-selection__choice__remove {
+    border: none !important;
+    border-right: 1px solid #ccc !important;
+    border-top-left-radius: 4px !important;
+    border-bottom-left-radius: 4px !important;
+}
+
+.select2-container {
+    width: 100% !important;
+}
+
+
+.croppie-container .cr-boundary, .croppie-container .cr-slider-wrap {
+    margin: 0;
+}
+
+#image-upload {
+    display: none;
+}
 @media (max-width: 425px) {
     .col-xxs-12 {
         -ms-flex: 0 0 100%;

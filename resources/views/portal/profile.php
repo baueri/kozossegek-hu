@@ -1,16 +1,11 @@
 @extends('portal')
 <div class="container inner">
-    <h2>Profilom</h2>
     <div class="row">
         <div class="col-md-3">
-            <ul class="list-group">
-                <li class="list-group-item"><a href="">Profilom</a></li>
-                <li class="list-group-item"><a href="">Közösségem</a></li>
-                <li class="list-group-item"><a href="@route('logout')" class="text-danger">Kijelentkezés</a></li>
-
-            </ul>
+            @include('portal.partials.user-sidemenu')
         </div>
         <div class="col-md-9">
+            <h2>Profilom</h2>
             <form method="post" action="{{ $action }}" class="mb-4">
                 <div class="row">
                     <div class="col-md-5">
