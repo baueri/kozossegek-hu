@@ -20,6 +20,7 @@
         </ul>
     </li>
     <li>dizájn módosítások</li>
+    <li>Login felület beágyazása a látogatói oldal dizájnjába</li>
     <li>
         <b>Tervbe véve:</b> Felhasználói oldalon közösség létrehozása
     </li>
