@@ -5,8 +5,9 @@
             @include('portal.partials.user-sidemenu')
         </div>
         <div class="col-md-9">
-            <h2>Profilom</h2>
-            <form method="post" action="{{ $action }}" class="mb-4">
+            @include('admin.partials.message')
+            <h1 class="h3">Profilom</h1>
+            <form method="post" action="@route('portal.profile.update')" class="mb-4">
                 <div class="row">
                     <div class="col-md-5">
                         <div class="form-group">

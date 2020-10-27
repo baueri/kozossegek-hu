@@ -1,6 +1,29 @@
 @title('Verzióinformáció')
 @extends('admin')
 
+<h3>v0.1.0 pre-alpha</h3>
+<ul>
+    <li>Új felhasználó létrehozása admin oldalon</li>
+    <li>
+        Felhasználói jogkör fejlesztés
+        <ul>
+            <li>Felhasználó admin oldalon jogkör beállítása felhasználónak</li>
+            <li>Csak Szuper Admin léphet be az adminisztrációs oldalra</li>
+        </ul>
+    </li>
+    <li>Látogatói oldalon belépett felhasználó profil módosítása</li>
+    <li>Látogatói oldalon belépett felhasználó közösségének adatainak módosítása</li>
+    <li>Közösség admin szerkesztő oldalon:
+        <ul>
+            <li>Felhasználó (karbantartó) hozzáadása közösséghez</li>
+            <li>'Jóváhagyva' állapot külön kapcsolható a státusztól függetlenül</li>
+        </ul>
+    </li>
+    <li>dizájn módosítások</li>
+    <li>
+        <b>Tervbe véve:</b> Felhasználói oldalon közösség létrehozása
+    </li>
+</ul>
 
 <h3>v0.0.8 pre-alpha</h3>
 <ul>

@@ -29,6 +29,16 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
+                        <label>Karbantartó</label>
+                        <select name="user_id" class="form-control">
+                            <option value="{{ $group->user_id }}">{{ $owner->name }}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
                         <label for="group_leaders">Közösségvezető(k)</label>
                         <input type="text" name="group_leaders" id="group_leaders" class="form-control" value="{{ $group->group_leaders }}">
                     </div>
@@ -153,7 +163,7 @@
 <script>
     var image_val;
     $(() => {
-        
+
         var upload = null;
         function initCroppie()
         {
@@ -171,14 +181,14 @@
                 }
             });
         }
-        
+
         $("#temp-image").on("load", function(){
             var newImg = $($(this).closest("div").html());
             $(".group-image").html(newImg);
             newImg.attr("id", "image").show();
             initCroppie();
         });
-        
+
         $("form#group-form").submit(function(e){
             if (upload) {
                 upload.croppie("result", {type: "base64", format: "jpeg", size: {width: 510, height: 510}}).then(function(base64){
@@ -187,7 +197,7 @@
                 });
             }
         });
-        
+
         $("[name=spiritual_movement_id]").select2({
             placeholder: "lelkiségi mozgalom",
             allowClear: true,
@@ -197,7 +207,6 @@
             placeholder: "napok",
             allowClear: true,
         });
-
 
         $("[name=institute_id]").select2({
             placeholder: "intézmény",
@@ -210,6 +219,16 @@
                     params.city = $("[name=city]").val();
                     return params;
                 }
+            }
+        });
+
+        $("[name=user_id]").select2({
+            placeholder: "karbantartó",
+            allowClear: true,
+            ajax: {
+                url: "@route('api.search-user')",
+                dataType: 'json',
+                delay: 300
             }
         });
 

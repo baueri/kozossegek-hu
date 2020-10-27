@@ -6,9 +6,11 @@ use Framework\Http\Request;
 use App\Repositories\Cities;
 use App\Repositories\Districts;
 use App\Repositories\Institutes;
+use App\Repositories\Users;
 use App\Portal\Responses\DistrictResponse;
 use App\Portal\Responses\CitySearchResponse;
 use App\Portal\Responses\InstituteSearchResponse;
+use App\Portal\Responses\UserResponse;
 
 /**
  * Description of CitySearchController
@@ -53,5 +55,10 @@ class SearchController
     public function searchDistrict(Districts $repository)
     {
         return new DistrictResponse($repository->searchDistrict($this->request['term'], $this->request['city']));
+    }
+
+    public function searchUser(Users $users)
+    {
+        return new UserResponse($users->searchUsers($this->request['term']));
     }
 }
