@@ -19,11 +19,7 @@ nav.navbar.compact .navbar-brand>div {
     display: none;
 }
 
-#header .nav-link {
-    color: #3E8FAE;
-}
 nav.navbar .nav-link i {
-    font-size: 20px;
     margin-right: 5px;
 }
 
@@ -43,6 +39,11 @@ nav.navbar .submenu {
     right: 0;
 }
 
+nav a {
+    text-transform: initial !important;
+    font-weight: bold;
+}
+
 nav.navbar .nav-item:hover .submenu {
     display: block;
 }
@@ -52,8 +53,6 @@ nav.navbar .submenu .nav-item:hover {
 }
 
 nav.navbar .submenu a {
-    font-family: 'Arial';
-    text-transform: initial !important;
 }
 
 
@@ -107,9 +106,8 @@ nav.navbar {
 }
 
 nav.navbar .nav-link {
-    color: var(--gray-dark);
+    color: #000;
     text-transform: uppercase;
-    font-family: 'Oswald', sans-serif;
     transition: color ease-in .2s;
 }
 
@@ -281,6 +279,13 @@ input[name=search]::placeholder {
     right: 0;
     z-index: 2;
 }
+#toggle_main_menu:checked~.navbar-nav .submenu {
+    display: block;
+    position: relative;
+    border: none;
+    background: transparent;
+    padding-left: 1em;
+}
 
 #toggle_main_menu:checked~.mobile-menu-toggle {
     position: fixed;
@@ -299,7 +304,7 @@ input[name=search]::placeholder {
 
 
 
-@media (max-width: 768px) {
+@media (max-width: 991px) {
     #header .navbar-nav {
         display: block;
         position: fixed;
@@ -381,14 +386,13 @@ input[name=search]::placeholder {
         flex: 0 0 100%;
         max-width: 100%;
     }
-    
+
     .row-cols-xxs-1 > * {
         -ms-flex: 0 0 100%;
         flex: 0 0 100%;
         max-width: 100%;
     }
 }
-
 
 @media (max-width: 768px) {
     .navbar-brand {
@@ -398,6 +402,10 @@ input[name=search]::placeholder {
     .navbar-brand .logo-sm {
         display: block !important;
     }
+}
+
+@media (max-width: 991px) {
+
 
     #finder .input-group > *, #finder [name=korosztaly]+span, #finder [name=rendszeresseg]+span {
         display: block !important;

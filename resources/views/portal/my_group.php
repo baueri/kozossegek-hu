@@ -5,6 +5,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.css"/>
 @endsection
 @extends('portal')
+
 <div class="container inner">
     <div class="row">
         <div class="col-md-3">
@@ -12,8 +13,8 @@
         </div>
         <div class="col-md-9">
             @include('admin.partials.message')
-            
-            <h2>Közösség módosítása</h2>
+
+            <h1 class="h3">Közösség módosítása</h1>
             @if(!$group)
                 <div class="alert alert-warning">
                     Még nem hoztad létre a közösséged, <a href="">kattints ide</a> a létrehozásához.
@@ -22,7 +23,7 @@
             <p>
                 <a href="{{ $group->url() }}">Megtekintés</a>
             </p>
-            <h3 class="h4 mt-3">általános adatok</h3>
+            <h3 class="h4 mt-3">Általános adatok</h3>
             <form method="post" id="group-form" action="@route('portal.update_my_group')">
                 <div class="row">
                     @if($group->pending)
@@ -129,6 +130,12 @@
                         @endforeach
                     </div>
                 </div>
+
+                <div class="form-group">
+                    <label for="description">Leírás</label>
+                    <textarea name="description" id="description">{{ $group->description }}</textarea>
+                </div>
+
                 <h3 class="h4 mt-3">Közösségvezető(k) adatai</h3>
 
                 <div class="row">
@@ -150,10 +157,6 @@
                             <input type="email" name="group_leader_email" id="group_leader_email" value="{{ $group->group_leader_email ?: $user->email }}" class="form-control">
                         </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label for="description">Leírás</label>
-                    <textarea name="description" id="description">{{ $group->description }}</textarea>
                 </div>
                 <div class="row group-images">
                     <div class="col-md-12">

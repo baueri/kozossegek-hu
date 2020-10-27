@@ -62,7 +62,7 @@
                 <a href="{{ $group->url() }}" class="card h-100 kozi-box">
                     <img class="card-img-top" src="{{ $group->getThumbnail() }}" />
                     <div class="card-body">
-                        <h4 class="mb-1">{{ $group->name }}</h4>
+                        <h2 class="mb-1 h5">{{ $group->name }}</h2>
                         <h6 style="color:#aaa">{{ $group->spiritual_movement }}</h6>
                         <div class="description">
                             {{ $group->excerpt() }}
