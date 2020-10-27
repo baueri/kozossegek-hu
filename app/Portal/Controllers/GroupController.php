@@ -1,17 +1,26 @@
 <?php
 
 namespace App\Portal\Controllers;
+
+use App\Admin\Group\Services\UpdateGroup;
+use App\Auth\Auth;
+use App\Enums\DayEnum;
+use App\Mail\GroupContactMail;
 use App\Portal\Services\SearchGroupService;
 use App\Repositories\AgeGroups;
-use App\Repositories\Institutes;
-use App\Repositories\GroupViews;
+use App\Repositories\Denominations;
 use App\Repositories\Groups;
+use App\Repositories\GroupStatusRepository;
+use App\Repositories\GroupViews;
+use App\Repositories\Institutes;
 use App\Repositories\OccasionFrequencies;
+use Framework\Exception\UnauthorizedException;
 use Framework\Http\Controller;
+use Framework\Http\Message;
 use Framework\Http\Request;
-use Framework\Model\ModelNotFoundException;
 use Framework\Mail\Mailer;
-use App\Mail\GroupContactMail;
+use Framework\Model\ModelNotFoundException;
+use \Exception;
 
 /**
  * Description of GroupController
@@ -79,9 +88,11 @@ class GroupController extends Controller {
         $_SESSION['honepot_check_time'] = $checkTime = time();
         $_SESSION['honeypot_check_hash'] = $honeypot_check_hash = md5($checkTime);
         $slug = $group->slug();
+        $metaKeywords = builder('search_engine')->where('group_id', $group->id)->first()['keywords'];
+        
 
         return view('portal.kozosseg', compact('group', 'institute', 'backUrl', 'tag_names',
-            'similar_groups', 'images', 'honeypot_check_hash', 'slug'));
+            'similar_groups', 'images', 'honeypot_check_hash', 'slug', 'keywords'));
     }
 
     /**
@@ -104,7 +115,7 @@ class GroupController extends Controller {
         $check_hash = $_SESSION['honeypot_check_hash'];
 
         if (!$checkTime || !$check_hash || time() - $checkTime < 5 || $request['website'] !== $check_hash) {
-            throw new \Framework\Exception\UnauthorizedException();
+            throw new UnauthorizedException();
         }
 
         try {
@@ -125,22 +136,47 @@ class GroupController extends Controller {
     
     public function myGroup(GroupViews $groups)
     {
-        $user = \App\Auth\Auth::user();
+        $user = Auth::user();
         $group = $groups->getGroupByUser($user);
-        $tags = builder('tags')->select('*')->get();
-        $spiritual_movements = db()->select('select * from spiritual_movements order by name');
-        $occasion_frequencies = (new \App\Repositories\OccasionFrequencies)->all();
-        $age_groups = (new \App\Repositories\AgeGroups)->all();
-        $denominations = (new \App\Repositories\Denominations)->all();
-        $age_group_array = array_filter(explode(',', $group->age_group));
-        $statuses = (new \App\Repositories\GroupStatusRepository)->all();
-        $images = $group->getImages();
-        $days = \App\Enums\DayEnum::all();
-        $group_days = explode(',', $group->on_days);
+        if ($group) {
+            $tags = builder('tags')->select('*')->get();
+            $group_tags = collect(builder('group_tags')->whereGroupId($group->id)->get())->pluck('tag')->all();
+            $spiritual_movements = db()->select('select * from spiritual_movements order by name');
+            $occasion_frequencies = (new OccasionFrequencies)->all();
+            $age_groups = (new AgeGroups)->all();
+            $denominations = (new Denominations)->all();
+            $age_group_array = array_filter(explode(',', $group->age_group));
+            $statuses = (new GroupStatusRepository)->all();
+            $images = $group->getImages();
+            $days = DayEnum::all();
+            $group_days = explode(',', $group->on_days);
+        }
 
         return view('portal.my_group', compact('group', 'institute', 'denominations',
                 'statuses', 'occasion_frequencies', 'age_groups', 'action', 'spiritual_movements', 'tags',
-                'age_group_array', 'group_tags', 'days', 'group_days', 'images'));
+                'age_group_array', 'group_tags', 'days', 'group_days', 'images', 'group_tags'));
+    }
+    
+    public function updateMyGroup(Request $request, UpdateGroup $service, \App\Repositories\GroupViews $groups)
+    {
+        try {
+            
+            $group = $groups->getGroupByUser(Auth::user());
+            $service->update($group->id, $request->only(
+                'status', 'name', 'denomination', 'institute_id', 'age_group', 'occasion_frequency',
+                    'on_days', 'spiritual_movement', 'tags', 'group_leaders', 'group_leader_phone', 'group_leader_email',
+                    'description', 'image'
+            ));
+             
+            Message::success('Sikeres mentés!');
+            
+        } catch(ModelNotFoundException $e) {
+            Message::danger('Nincs ilyen közösség!');
+        } catch (\Error $e) {
+            Message::danger('Sikertelen mentés!');
+        } finally {
+            redirect_route('portal.my_group');
+        }
     }
 
 }

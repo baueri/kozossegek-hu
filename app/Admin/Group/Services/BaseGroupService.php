@@ -68,7 +68,7 @@ abstract class BaseGroupService {
         foreach($images as $imageSource) {
             $image = new Base64Image($imageSource);
             $image->saveImage($group->getStorageImageDir() . $group->id . '_1.jpg');
-            $image->saveThumbnail($group->getStorageImageDir() . 'thumbnails' . DS . $group->id . '_1.jpg');
+            //$image->saveThumbnail($group->getStorageImageDir() . 'thumbnails' . DS . $group->id . '_1.jpg');
         }
     }
 }

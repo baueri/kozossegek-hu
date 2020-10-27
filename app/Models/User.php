@@ -45,4 +45,9 @@ class User extends Model
     {
         return $this->user_group == $group;
     }
+    
+    public function firstName()
+    {
+        return substr($this->name, strpos($this->name, ' '));
+    }
 }

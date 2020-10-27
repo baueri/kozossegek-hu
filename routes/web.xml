@@ -18,6 +18,7 @@
         
         <route method="get" uri="profile" as="portal.my_profile" controller="UserController" use="profile"/>
         <route method="get" uri="my-group" as="portal.my_group" controller="GroupController" use="myGroup"/>
+        <route method="post" uri="update-group" as="portal.update_my_group" controller="GroupController" use="updateMyGroup"/>
     </route-group>
 
     <!-- BELÉPÉS -->

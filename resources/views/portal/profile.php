@@ -10,10 +10,6 @@
                 <div class="row">
                     <div class="col-md-5">
                         <div class="form-group">
-                            <label>Felhasználónév</label>
-                            <input type="text" name="username" value="{{ $user->username }}" class="form-control disabled" disabled/>
-                        </div>
-                        <div class="form-group">
                             <label>E-mail cím</label>
                             <input type="email" name="email" value="{{ $user->email }}" class="form-control"/>
                         </div>

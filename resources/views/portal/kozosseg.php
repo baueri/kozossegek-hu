@@ -1,3 +1,9 @@
+@section('header')
+<meta name="keywords" content="{{ $keywords }}" />
+<meta name="description" content="{{ $group->name }}" />
+<link rel="canonical" href="https://<?php echo get_site_url() . $group->url(); ?>" />
+
+@endsection
 @extends('portal')
 <?php $nvr = 'a_' . substr(md5(time()), 0, 5); ?>
 <script>
@@ -6,7 +12,7 @@
 <div class="container inner kozi-adatlap">
     <div class="row">
         <div class="col-md-4">
-            <img class="img-big" src="{{ $images[0] }}" style="border-bottom: 3px solid #222;">
+            <img class="img-big" src="{{ $images[0] }}" style="border-bottom: 3px solid #222;" alt="{{ $group->name }}">
             @if(count($images) > 1)
                 <div class="kozi-kiskepek row m-0">
                     @foreach($images as $i => $image)
@@ -22,8 +28,8 @@
                         <a href="{{ $backUrl }}"><i class="fa fa-angle-double-left"></i> vissza</a>
                     </div>
                 @endif
-                <h2 class="primary-title">{{ $group->name }}</h2>
-                <h5 class="subtitle">{{  $group->city . ($group->district ? ', ' . $group->district : '')  }}</h5>
+                <h1 class="primary-title h2">{{ $group->name }}</h1>
+                <h2 class="subtitle h5">{{  $group->city . ($group->district ? ', ' . $group->district : '')  }}</h2>
             </div>
             <p class="kozi-tulajdonsag">
                 <label>Helyszín:</label> {{ $institute->city }}, {{ $institute->name }}

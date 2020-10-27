@@ -11,14 +11,19 @@
             @include('portal.partials.user-sidemenu')
         </div>
         <div class="col-md-9">
+            @include('admin.partials.message')
+            
             <h2>Közösség módosítása</h2>
+            <p>
+                <a href="{{ $group->url() }}">Megtekintés</a>
+            </p>
             @if(!$group)
-            <div class="alert alert-warning">
-                Még nem hoztad létre a közösséged, <a href="">kattints ide</a> a létrehozásához.
-            </div>
+                <div class="alert alert-warning">
+                    Még nem hoztad létre a közösséged, <a href="">kattints ide</a> a létrehozásához.
+                </div>
             @else
             <h3 class="h4 mt-3">általános adatok</h3>
-            <form method="post" id="group-form" action="{{ $action }}">
+            <form method="post" id="group-form" action="@route('portal.update_my_group')">
                 <div class="row">
                     @if($group->pending)
                     <div class="col-md-12">
@@ -40,7 +45,7 @@
                 </div>
                 <div class="form-group required">
                     <label for="name">Közösség neve</label>
-                    <input type="text" id="name" value='{{ $group->name }}' name="name" class="form-control" autofocus required>
+                    <input type="text" id="name" value='{{ $group->name }}' name="name" class="form-control" required>
                 </div>
                 <div class="row">
                     <div class="col-md-3">
@@ -155,7 +160,7 @@
                         <div class="form-group">
                             <label>Fotó a közösségről <small>(Ha ezt nem adod meg, akkor az intézmény fotója jelenik meg)</small></label>
                             <div class="group-image">
-                                <img src="{{ $images ? $images[0] : '' }}" id="image" width="300">
+                                <img src="{{ $images ? $images[0] . '?' . time() : '' }}" id="image" width="300">
                             </div>
                             <label for="image-upload" class="btn btn-primary">
                                 <i class="fa fa-upload"></i> Kép feltöltése
