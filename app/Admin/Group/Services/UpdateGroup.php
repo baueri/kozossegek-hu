@@ -3,9 +3,9 @@
 namespace App\Admin\Group\Services;
 
 use App\Models\Group;
-use App\Storage\Base64Image;
 use Framework\Http\Message;
 use Framework\Http\Request;
+use Framework\Support\Collection;
 
 /**
  * Description of UpdateGroup
@@ -18,17 +18,19 @@ class UpdateGroup extends BaseGroupService
     /**
      *
      * @param int $id
-     * @param Request $request
+     * @param Request|Collection $request
      */
-    public function update($id, Request $request)
+    public function update($id, $request)
     {
+        if (is_array($request)) {
+            $request = collect($request);
+        }
+        
         /* @var $group Group */
         $group = $this->repository->findOrFail($id);
         
         $data = $request->except('id')->all();
         
-        //dd($request->all());
-
         $data['age_group'] = implode(',', $data['age_group']);
 
         $data['on_days'] = implode(',', $data['on_days']);
@@ -53,7 +55,6 @@ class UpdateGroup extends BaseGroupService
         
         $this->syncImages($group, [$request['image']]);
         
-
         Message::success('Sikeres mentés.');
     }
     

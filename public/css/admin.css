@@ -107,45 +107,56 @@
     padding: 28px 0 29px;
 }
 
+.switch {
+    overflow: hidden;
+    white-space: nowrap;
+    border-radius: 0.25rem;
+}
 
 .switch input { display: none; }
 .switch label {
-    border: 1px solid #ccc;
-    border-radius: 4px;
     position: relative;
     white-space: nowrap;
-    overflow: hidden;
     cursor: pointer;
+    margin-bottom: 0;
+    display: inline-block;
 }
 
-.switch label:before, .switch label:after {
-    width: 100%;
-    padding:.3em;
-    transition: ease-in .3s all;
-    display: inline-block;
+.switch label {
+    padding:0.25rem 0.55rem;
+    transition: ease-in .3s all !important;
     text-align: center;
     margin-left: 0;
 }
 
-.switch label:before {
-    margin-left: -100%;
+.switch label:first-of-type {
+    margin-left: calc(-100% + 10px);
     color: #fff;
-    content: "BE";
-    border-right: 10px solid #fff;
+    background: var(--primary);
+    width: calc(100% - 10px);
 }
 
-.switch input:checked ~ label:before {
+.switch label:first-of-type:after {
+    display: block;
+    width: 10px;
+    background: #fff;
+    top: 0;
+    content: " ";
+    height: 100%;
+    position: absolute;
+    right: -10px;
+    border:1px solid #ccc;
+    z-index: 1;
+}
+
+
+.switch input:first-of-type:checked ~ label:first-of-type {
     margin-left: 0;
 }
 
-.switch label:after {
-    content: "KI";
-    border-left: 10px solid #fff;
+.switch label:last-of-type {
+    width: 100%;
     background: #ccc;
-}
-
-.switch label:not([class^=bg-]) {
-    background: var(--primary);
 }
 
 :disabled {

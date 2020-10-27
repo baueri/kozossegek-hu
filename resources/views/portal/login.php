@@ -73,7 +73,7 @@
                 background-size: cover;
             }
             body {
-
+                background: #efefef;
                 font-family: "Roboto", sans-serif;
                 overflow: hidden;
             }
@@ -97,7 +97,7 @@
         </style>
     </head>
     <body>
-    <div class="bg_image"></div>
+    <!--<div class="bg_image"></div>-->
     <div class="login-page">
         <div class="form">
             <form class="login-form" method="post">

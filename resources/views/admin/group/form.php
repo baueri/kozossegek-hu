@@ -4,6 +4,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.css"/>
 @endsection
+@title($title)
 @extends('admin')
 <form method="post" id="group-form" action="{{ $action }}">
     <div class="row">
@@ -82,6 +83,15 @@
             </div>
         </div>
         <div class="col-md-3 group-side-content">
+            <div class="form-group">
+                <label>Jóváhagyva</label>
+                <div class="switch yesno" style="width:100px;">
+                    <input type="radio" id="pending-0" name="pending" value="0" @if(!$group->pending) checked @endif>
+                    <input type="radio" id="pending-1" name="pending" value="1" @if($group->pending) checked @endif>
+                    <label for="pending-1">igen</label>
+                    <label for="pending-0">nem</label>
+                </div>
+            </div>
             <div class="form-group">
                 <label for="status">Állapot</label>
                 <select id="status" name="status" class="form-control">

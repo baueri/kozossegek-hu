@@ -52,17 +52,26 @@
                 </li>
                 <?php if(Auth::loggedIn()): ?>
                 <li class="nav-item">
-                    <a href="@route('portal.my_group')" class="nav-link" title="Közösségem szerkesztése"><i class="fa fa-users-cog"></i></a>
-                </li>
-                <li class="nav-item">
-                    <a href="@route('portal.my_profile')" class="nav-link" title="Profilom"><i class="fa fa-user-lock"></i></a>
+                    <a href="" class="nav-link text-success">{{ Auth::user()->firstName() }} <i class="fa fa-caret-down"></i></a>
+                    <ul class="submenu">
+                        <li class="nav-item">
+                            <a href="@route('portal.my_profile')" class="nav-link">Profilom</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@route('portal.my_group')" class="nav-link">Közösségem</a>
+                        </li>
+                        <?php if (Auth::user()->isAdmin()): ?>
+                            <li class="nav-item">
+                                <a href="@route('admin.dashboard')" class="nav-link"><i class="fa fa-cog"></i> Admin</a>
+                            </li>
+                        <?php endif; ?>
+                        <li class="nav-item">
+                            <a href="@route('logout')" class="nav-link text-danger"><i class="fa fa-sign-out-alt"></i> Kijelentkezés</a>
+                        </li>
+                    </ul>
                 </li>
                 <?php endif; ?>
-                <?php if (Auth::loggedIn() && Auth::user()->isAdmin()): ?>
-                    <li class="nav-item">
-                        <a href="@route('admin.dashboard')" class="nav-link" title="Admin"><i class="fa fa-cog"></i></a>
-                    </li>
-                <?php endif; ?>
+
             </ul>
 
 

@@ -60,11 +60,11 @@ class BaseGroupForm {
         $days = DayEnum::all();
         $group_days = explode(',', $group->on_days);
         $images = $group->getImages();
+        $title = $group->exists() ? 'Közösség módosítása' : 'Új közösség létrehozása';
         
-        
-        return view('admin.group.create', compact('group', 'institute', 'denominations',
+        return view('admin.group.form', compact('group', 'institute', 'denominations',
                 'statuses', 'occasion_frequencies', 'age_groups', 'action', 'spiritual_movements', 'tags',
-                'age_group_array', 'group_tags', 'days', 'group_days', 'images'));
+                'age_group_array', 'group_tags', 'days', 'group_days', 'images', 'title'));
     }
 
     protected function getGroup(): Group
