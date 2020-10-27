@@ -14,14 +14,14 @@
             @include('admin.partials.message')
             
             <h2>Közösség módosítása</h2>
-            <p>
-                <a href="{{ $group->url() }}">Megtekintés</a>
-            </p>
             @if(!$group)
                 <div class="alert alert-warning">
                     Még nem hoztad létre a közösséged, <a href="">kattints ide</a> a létrehozásához.
                 </div>
             @else
+            <p>
+                <a href="{{ $group->url() }}">Megtekintés</a>
+            </p>
             <h3 class="h4 mt-3">általános adatok</h3>
             <form method="post" id="group-form" action="@route('portal.update_my_group')">
                 <div class="row">
