@@ -8,7 +8,7 @@
     <form method="get" id="finder" action="@route('portal.groups')">
         <div class="form-group">
             <div class="input-group">
-                <select name="varos" style="width:200px" class="form-control">
+                <select name="varos" style="width:200px !important;" class="form-control">
                     <option value="{{ $filter['varos'] }}">{{ $filter['varos'] }}</option>
                 </select>
                 <input type="text" name="search" value="{{ $filter['search'] }}" class="form-control" placeholder="keresés...">
@@ -35,7 +35,7 @@
                         class="group-tag"
                         id="tag-{{ $tag['slug'] }}"
                         value="{{ $tag['slug'] }}"
-                        @if(in_array($tag['slug'], $selected_tags)) checked @endif
+                        <?php if(in_array($tag['slug'], $selected_tags)): ?> checked <?php endif; ?>
                       > <span>{{ $tag['tag'] }}</span>
                 </label>
             @endforeach

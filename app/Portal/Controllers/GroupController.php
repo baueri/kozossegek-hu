@@ -32,7 +32,7 @@ class GroupController extends Controller {
     public function kozossegek(Request $request, SearchGroupService $service,
             OccasionFrequencies $OccasionFrequencies, AgeGroups $AgeGroups)
     {
-        $filter = $request->all();
+        $filter = $request->only('varos', 'search', 'korosztaly', 'rendszeresseg', 'tags');
         $filter['order_by'] = ['city', 'district'];
         $pg = $filter['page'] ?: 1;
         $groups = $service->search($filter);
@@ -42,7 +42,7 @@ class GroupController extends Controller {
         } else {
             $groupsGrouped = $groups->groupBy('district');
         }
-
+        
         $model = [
             'groups' => $groups,
             'occasion_frequencies' => $OccasionFrequencies->all(),
