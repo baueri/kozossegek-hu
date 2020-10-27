@@ -39,7 +39,7 @@ class LoginController extends \Framework\Http\Controller
 
             Auth::login($user);
              
-            $route = $user->isAdmin() ? route('admin.dashboard') : route('portal.my_group');
+            $route = $user->isAdmin() ? route('admin.dashboard') : route('home');
             redirect(Session::flash('last_visited', $route));
             
         } catch (UnauthorizedException $e) {
