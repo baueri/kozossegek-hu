@@ -151,7 +151,7 @@ class GroupController extends Controller {
             $days = DayEnum::all();
             $group_days = explode(',', $group->on_days);
         }
-
+        
         return view('portal.my_group', compact('group', 'institute', 'denominations',
                 'statuses', 'occasion_frequencies', 'age_groups', 'action', 'spiritual_movements', 'tags',
                 'age_group_array', 'group_tags', 'days', 'group_days', 'images', 'group_tags'));
