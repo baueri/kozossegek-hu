@@ -1,5 +1,6 @@
 body {
-    font-family: 'PT Sans', sans-serif;
+    font-family: 'Ubuntu', sans-serif;
+
     color: #555;
 }
 
@@ -41,7 +42,6 @@ nav.navbar .submenu {
 
 nav a {
     text-transform: initial !important;
-    font-weight: bold;
 }
 
 nav.navbar .nav-item:hover .submenu {
@@ -81,30 +81,6 @@ nav.navbar {
     transition: all ease-in .1s;
 }
 
-.navbar-brand span {
-    display: block;
-    float: left;
-}
-
-.navbar-brand div {
-    margin-top: 8px;
-    transition: width ease-in .1s;
-}
-
-.navbar-brand div span:first-child {
-    font-family: 'Oswald', sans-serif;
-    text-transform: uppercase;
-    font-weight: bold;
-    font-size: 28px;
-    position: relative;
-}
-
-.navbar-brand div span:last-child {
-    margin-top: -6px;
-    text-transform: uppercase;
-    font-size: 14px;
-}
-
 nav.navbar .nav-link {
     color: #000;
     text-transform: uppercase;
@@ -113,6 +89,17 @@ nav.navbar .nav-link {
 
 nav.navbar .nav-link:hover {
     color: var(--green);
+}
+
+.featured {
+    background: url("https://cdn.wallpapersafari.com/44/68/7morZf.jpg") no-repeat center;
+    color: #fff;
+}
+
+.featured h1 {
+    
+    font-weight: bold;
+    padding: 0.6em;
 }
 
 #finder [name=korosztaly]+span, #finder [name=rendszeresseg]+span {
