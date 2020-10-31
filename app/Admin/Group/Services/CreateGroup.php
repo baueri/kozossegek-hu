@@ -21,19 +21,17 @@ class CreateGroup extends BaseGroupService {
      */
     public function create($request)
     {
-        $data = $request->except('files', 'image')->all();
+        $data = $request->except('files', 'image', 'tags')->all();
         
-        $tags = $data['tags'];
         $data['age_group'] = implode(',', $data['age_group']);
-        $data['tags'] = implode(',', $tags);
-
+        
         $group = $this->repository->create($data);
+        
+        $this->syncTags($group, $request['tags']);
         
         $this->updateSearchEngine($group);
         
         $this->syncImages($group, [$request['image']]);
-
-        Message::success('Közösség létrehozva.');
 
         return $group;
     }

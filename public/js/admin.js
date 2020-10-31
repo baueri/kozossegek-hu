@@ -62,3 +62,25 @@ var id = $(element).data("target");
     URL.revokeObjectURL(output.src) // free memory
   }
 };
+
+function deleteConfirm(action)
+{
+    var outer = $("<div class='modal fade' tabindex='-1'></div>");
+    var dialog = $("<div class='modal-dialog'></div>");
+    var content = $("<div class='modal-content'></div>");
+    var header = $("<div class='modal-header'><h5 class='modal-title'>Biztos?</h5><button type='button' class='close' data-dismiss='modal' aria-label='bezár'><span aria-hidden='true'>&times;</span></button></div>");
+    var body = $("<div class='modal-body'>Biztosan törlöd?</div>");
+    var cancelBtn = $('<button type="button" class="btn btn-default" data-dismiss="modal">Mégsem</button>');
+    var okBtn = $('<button type="button" class="btn btn-danger">Igen</button>');
+    var footer = $("<div class='modal-footer'></div>");
+    
+    okBtn.click(action);
+    
+    footer.append(cancelBtn).append(okBtn);
+    content.append(header).append(body).append(footer);
+    
+    dialog.append(content);
+    outer.append(dialog);
+    
+    outer.modal('show');
+}

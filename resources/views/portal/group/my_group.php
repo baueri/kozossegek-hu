@@ -12,26 +12,20 @@
             @include('portal.partials.user-sidemenu')
         </div>
         <div class="col-md-9">
+            
             @include('admin.partials.message')
 
             <h1 class="h3">Közösség módosítása</h1>
-            @if(!$group)
-                <div class="alert alert-warning">
-                    Még nem hoztad létre a közösséged, <a href="">kattints ide</a> a létrehozásához.
-                </div>
-            @else
             <p>
                 <a href="{{ $group->url() }}">Megtekintés</a>
             </p>
             <h3 class="h4 mt-3">Általános adatok</h3>
-            <form method="post" id="group-form" action="@route('portal.update_my_group')">
+            <form method="post" id="group-form" action="{{ $action }}">
                 <div class="row">
                     @if($group->pending)
-                    <div class="col-md-12">
-                        <div class="alert alert-warning">
-                            A közösséged még függőben van, amíg nincs jóváhagyva, addig nem jelenítjük meg a közösségek között.
-                        </div>
-                    </div>
+                        @include('partials.alert', ['level' => 'warning', 'message' => 'A közösséged még függőben van, amíg nincs jóváhagyva, addig nem jelenítjük meg a közösségek között.'])
+                    @elseif($group->status == App\Enums\GroupStatusEnum::INACTIVE) 
+                        @include('partials.alert', ['level' => 'warning', 'message' => '<b>A közösséged jelenleg inaktív.</b><br> Nem jelenik meg sem a keresési találatok közzött, illetve az adatlapját se lehet megtekinteni.'])
                     @endif
                     <div class="col-md-3">
                         <div class="form-group">
@@ -177,8 +171,6 @@
 
         <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Mentés</button>
         </form>
-
-        @endif
     </div>
 </div>
 </div>

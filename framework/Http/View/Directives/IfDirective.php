@@ -25,6 +25,10 @@ class IfDirective implements Directive
         if (strpos($matches[0], '@else') === 0) {
             return '<?php else: ?>';
         }
+        
+        if (strpos($matches[0], '@elseif') === 0) {
+            return '<?php elseif: ?>';
+        }
 
         return '<?php if(' . $matches[1] . '): ?>';
     }
@@ -34,6 +38,6 @@ class IfDirective implements Directive
      */
     public function getPattern()
     {
-        return '/@if\((.*)\)|(@else)|(@endif)/';
+        return '/@if\((.*)\)|@elseif\((.*)\)|(@else)|(@endif)/';
     }
 }

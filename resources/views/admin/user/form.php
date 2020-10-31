@@ -27,7 +27,7 @@
     </div>
     <div class="row">
         <div class="col-md-3">
-            <h6>Jelszócsere</h6>
+            <h6>Jelszó</h6>
             <hr>
             <div class="form-group">
                 <label>Új jelszó</label>
@@ -40,13 +40,13 @@
         </div>
     </div>
     
-            <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Mentés</button>
+    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Mentés</button>
 </form>
 
 @if($my_profile)
     <form method="post" id="change_password" action="@route('admin.user.profile.change_password')"  autocomplete="off">
         <div class="row"><div class="col-md-3">
-            <h5>Jelszócsere</h6>
+            <h6>Jelszó</h6>
             <hr>
             <div class="form-group">
                 <label>Régi jelszó</label>

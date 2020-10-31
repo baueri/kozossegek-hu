@@ -2,10 +2,12 @@
 
 namespace App\Portal\Controllers;
 
+use App\Admin\Group\Services\CreateGroup;
 use App\Admin\Group\Services\UpdateGroup;
 use App\Auth\Auth;
 use App\Enums\DayEnum;
 use App\Mail\GroupContactMail;
+use App\Models\GroupView;
 use App\Portal\Services\SearchGroupService;
 use App\Repositories\AgeGroups;
 use App\Repositories\Denominations;
@@ -14,13 +16,14 @@ use App\Repositories\GroupStatusRepository;
 use App\Repositories\GroupViews;
 use App\Repositories\Institutes;
 use App\Repositories\OccasionFrequencies;
+use Error;
+use Exception;
 use Framework\Exception\UnauthorizedException;
 use Framework\Http\Controller;
 use Framework\Http\Message;
 use Framework\Http\Request;
 use Framework\Mail\Mailer;
 use Framework\Model\ModelNotFoundException;
-use \Exception;
 
 /**
  * Description of GroupController
@@ -29,33 +32,9 @@ use \Exception;
  */
 class GroupController extends Controller {
 
-    public function kozossegek(Request $request, SearchGroupService $service,
-            OccasionFrequencies $OccasionFrequencies, AgeGroups $AgeGroups)
+    public function kozossegek(\App\Portal\Services\GroupList $service)
     {
-        $filter = $request->only('varos', 'search', 'korosztaly', 'rendszeresseg', 'tags');
-        $filter['order_by'] = ['city', 'district'];
-        $pg = $filter['page'] ?: 1;
-        $groups = $service->search($filter);
-
-        if (!$filter['varos']) {
-            $groupsGrouped = $groups->groupBy('city');
-        } else {
-            $groupsGrouped = $groups->groupBy('district');
-        }
-        
-        $model = [
-            'groups' => $groups,
-            'occasion_frequencies' => $OccasionFrequencies->all(),
-            'age_groups' => $AgeGroups->all(),
-            'page' => $groups->page(),
-            'total' => $groups->total(),
-            'perpage' => $groups->perpage(),
-            'filter' => $filter,
-            'selected_tags' => explode(',', $filter['tags']),
-            'tags' => builder('tags')->get()
-        ];
-
-        return view('portal.kozossegek', $model);
+        return $service->getHtml();
     }
 
     /**
@@ -68,6 +47,7 @@ class GroupController extends Controller {
     public function kozosseg(Request $request, GroupViews $repo, Institutes $instituteRepo)
     {
         $backUrl = null;
+        $user = Auth::user();
 
         if (strpos($_SERVER['HTTP_REFERER'], route('portal.groups')) !== false) {
             $backUrl = $_SERVER['HTTP_REFERER'];
@@ -76,7 +56,7 @@ class GroupController extends Controller {
         $slug = $request['kozosseg'];
         $group = $repo->findBySlug($slug);
 
-        if (!$group) {
+        if (!$group || !$group->isVisibleBy($user)) {
             throw new ModelNotFoundException();
         }
 
@@ -109,22 +89,12 @@ class GroupController extends Controller {
         return view('portal.partials.group-contact-form', compact('group'));
     }
 
-    public function sendContactMessage(Request $request, Groups $repo, Mailer $mailer)
+    public function sendContactMessage(Request $request, Groups $repo, \App\Portal\Services\SendContactMessage $service)
     {
-        $checkTime = $_SESSION['honepot_check_time'];
-        $check_hash = $_SESSION['honeypot_check_hash'];
-
-        if (!$checkTime || !$check_hash || time() - $checkTime < 5 || $request['website'] !== $check_hash) {
-            throw new UnauthorizedException();
-        }
-
         try {
-
-            $group = $repo->findOrFail($request['id']);
-
-            $mail = new GroupContactMail($request, $group);
-            $mailer = $mailer->to($group->group_leader_email)->send($mail);
-
+            
+            $service->send($repo->findOrFail($request['id']), $request->all());
+            
             return [
                 'success' => true,
                 'msg' => '<div class="alert alert-success">Köszönjük! Üzenetedet elküldtük a közösségvezető(k)nek!</div>'
@@ -138,26 +108,59 @@ class GroupController extends Controller {
     {
         $user = Auth::user();
         $group = $groups->getGroupByUser($user);
+        $statuses = (new GroupStatusRepository)->all();
+        $tags = builder('tags')->select('*')->get();
+        $spiritual_movements = db()->select('select * from spiritual_movements order by name');
+        $occasion_frequencies = (new OccasionFrequencies)->all();
+        $age_groups = (new AgeGroups)->all();
+        $denominations = (new Denominations)->all();
+        $days = DayEnum::all();
+        
         if ($group) {
-            $tags = builder('tags')->select('*')->get();
             $group_tags = collect(builder('group_tags')->whereGroupId($group->id)->get())->pluck('tag')->all();
-            $spiritual_movements = db()->select('select * from spiritual_movements order by name');
-            $occasion_frequencies = (new OccasionFrequencies)->all();
-            $age_groups = (new AgeGroups)->all();
-            $denominations = (new Denominations)->all();
             $age_group_array = array_filter(explode(',', $group->age_group));
-            $statuses = (new GroupStatusRepository)->all();
             $images = $group->getImages();
-            $days = DayEnum::all();
             $group_days = explode(',', $group->on_days);
+            $view = 'portal.group.edit_my_group';
+            $action = route('portal.my_group.update');
+        } else {
+            $group = new GroupView([
+                'group_leaders' => $user->name,
+                'group_leader_email' => $user->email
+            ]);
+            $view = 'portal.group.create_my_group';
+            $action = route('portal.my_group.create');
         }
         
-        return view('portal.my_group', compact('group', 'institute', 'denominations',
+        return view($view, compact('group', 'institute', 'denominations',
                 'statuses', 'occasion_frequencies', 'age_groups', 'action', 'spiritual_movements', 'tags',
                 'age_group_array', 'group_tags', 'days', 'group_days', 'images', 'group_tags'));
     }
     
-    public function updateMyGroup(Request $request, UpdateGroup $service, \App\Repositories\GroupViews $groups)
+    public function createMyGroup(Request $request, CreateGroup $service, Groups $groups)
+    {
+        try {
+            $data = $request->only(
+                'status', 'name', 'denomination', 'institute_id', 'age_group', 'occasion_frequency',
+                    'on_days', 'spiritual_movement', 'tags', 'group_leaders', 'group_leader_phone', 'group_leader_email',
+                    'description', 'image'
+            );
+            
+            $data['user_id'] = Auth::user()->id;
+            
+            $service->create(collect($data));
+            
+            Message::success('Közösség sikeresen létrehozva!<br>Mielőtt még láthatóvá tennénk a közösségedet, átnézzük, hogy minden adatot rendben találunk-e. Köszönjük a türelmet!');
+            
+            redirect_route('portal.my_group');
+            
+        } catch (\Exception|\Error|\Throwable| \ErrorException $ex) {
+            Message::danger('Közösség létrehozása nem sikerült, kérjük próbáld meg később!');
+            dd($ex);
+        }
+    }
+    
+    public function updateMyGroup(Request $request, UpdateGroup $service, GroupViews $groups)
     {
         try {
             
@@ -172,7 +175,7 @@ class GroupController extends Controller {
             
         } catch(ModelNotFoundException $e) {
             Message::danger('Nincs ilyen közösség!');
-        } catch (\Error $e) {
+        } catch (Error $e) {
             Message::danger('Sikertelen mentés!');
         } finally {
             redirect_route('portal.my_group');

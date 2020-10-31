@@ -670,6 +670,11 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         return $this->items;
     }
 
+    /**
+     * 
+     * @param $keys
+     * @return array
+     */
     public function only(...$keys)
     {
         $values = [];
