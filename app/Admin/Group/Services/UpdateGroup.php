@@ -3,9 +3,9 @@
 namespace App\Admin\Group\Services;
 
 use App\Models\Group;
-use App\Storage\Base64Image;
 use Framework\Http\Message;
 use Framework\Http\Request;
+use Framework\Support\Collection;
 
 /**
  * Description of UpdateGroup
@@ -18,32 +18,34 @@ class UpdateGroup extends BaseGroupService
     /**
      *
      * @param int $id
-     * @param Request $request
+     * @param Request|Collection $request
      */
-    public function update($id, Request $request)
+    public function update($id, $request)
     {
+        if (is_array($request)) {
+            $request = collect($request);
+        }
+        
         /* @var $group Group */
         $group = $this->repository->findOrFail($id);
         
-        $data = $request->except('id')->all();
+        $data = $request->except('id', 'tags')->all();
         
-        //dd($request->all());
-
+        $data['description'] = strip_tags($data['description'], ['a', 'h1', 'h2', 'h3', 'p', 'b', 'u', 'ul', 'ol', 'li', 'code', 'pre']);
+        
+        $data['name'] = strip_tags($data['name']);
+        $data['group_leaders'] = strip_tags($data['group_leaders']);
+        $data['group_leader_email'] = strip_tags($data['group_leader_email']);
+        $data['group_leader_phone'] = strip_tags($data['group_leader_phone']);
         $data['age_group'] = implode(',', $data['age_group']);
-
         $data['on_days'] = implode(',', $data['on_days']);
-
-        $delete = builder('group_tags')->where('group_id', $id);
-
-        if ($data['tags']) {
-            $delete->whereNotIn('tag', $data['tags'] ?: []);
+        
+        if(!$this->validate($data)) {
+            Message::danger('A csillaggal jelölt mezők kitöltése kötelező!');
+            redirect_route('portal.my_group');
         }
-
-        $delete->delete();
-
-        foreach($data['tags'] as $tag) {
-            db()->execute('replace into group_tags (group_id, tag) values (?, ?)', $id, $tag);
-        }
+        
+        $this->syncTags($group, (array) $request['tags']);
 
         $group->update($data);
 
@@ -53,8 +55,6 @@ class UpdateGroup extends BaseGroupService
         
         $this->syncImages($group, [$request['image']]);
         
-
         Message::success('Sikeres mentés.');
     }
-    
 }

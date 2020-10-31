@@ -1,5 +1,6 @@
 body {
-    font-family: 'PT Sans', sans-serif;
+    font-family: 'Ubuntu', sans-serif;
+
     color: #555;
 }
 
@@ -19,13 +20,41 @@ nav.navbar.compact .navbar-brand>div {
     display: none;
 }
 
-#header .nav-link {
-    color: #3E8FAE;
-}
 nav.navbar .nav-link i {
-    font-size: 20px;
     margin-right: 5px;
 }
+
+nav.navbar .nav-item {
+    position: relative;
+}
+
+nav.navbar .submenu {
+    display: none;
+    position: absolute;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    white-space: nowrap;
+    background: #fff;
+    border: 1px solid #ccc;
+    right: 0;
+}
+
+nav a {
+    text-transform: initial !important;
+}
+
+nav.navbar .nav-item:hover .submenu {
+    display: block;
+}
+
+nav.navbar .submenu .nav-item:hover {
+    background: #fafafa;
+}
+
+nav.navbar .submenu a {
+}
+
 
 .nav-fbook {
     margin-left: 20px;
@@ -52,34 +81,9 @@ nav.navbar {
     transition: all ease-in .1s;
 }
 
-.navbar-brand span {
-    display: block;
-    float: left;
-}
-
-.navbar-brand div {
-    margin-top: 8px;
-    transition: width ease-in .1s;
-}
-
-.navbar-brand div span:first-child {
-    font-family: 'Oswald', sans-serif;
-    text-transform: uppercase;
-    font-weight: bold;
-    font-size: 28px;
-    position: relative;
-}
-
-.navbar-brand div span:last-child {
-    margin-top: -6px;
-    text-transform: uppercase;
-    font-size: 14px;
-}
-
 nav.navbar .nav-link {
-    color: var(--gray-dark);
+    color: #000;
     text-transform: uppercase;
-    font-family: 'Oswald', sans-serif;
     transition: color ease-in .2s;
 }
 
@@ -87,18 +91,15 @@ nav.navbar .nav-link:hover {
     color: var(--green);
 }
 
-.select2-container--bootstrap {
-    display: block !important;
+.featured {
+    background: url("https://cdn.wallpapersafari.com/44/68/7morZf.jpg") no-repeat center;
+    color: #fff;
 }
 
-.select2-container--bootstrap .select2-selection {
-    height: 38px !important;
-}
-.select2-container--bootstrap .select2-selection--single .select2-selection__rendered {
-    padding: 3px 0 !important;
-}
-#finder input:not([type=checkbox]) {
+.featured h1 {
     
+    font-weight: bold;
+    padding: 0.6em;
 }
 
 #finder [name=korosztaly]+span, #finder [name=rendszeresseg]+span {
@@ -114,48 +115,6 @@ nav.navbar .nav-link:hover {
     color: #444;
 }
 
-/*
-.select2-selection, input[type=text] {
-    border-radius: 0 !important;
-    height: initial !important;
-    border: 1px solid #aaa !important;
-    box-sizing: border-box;
-    color: #555;
-    font-size: 14px;
-    box-shadow: 0 0 0px 3px #e3e3e3 inset;
-    padding: 10px 15px !important;
-    position: relative;
-}
-
-.select2-selection {
-    padding: 7px 15px !important;
-}
-
-
-.select2-selection__arrow {
-    display: none;
-}
-
-.select2-selection::after {
-    position: absolute;
-    top: 0;
-    right: 0;
-    height: 100% !important;
-    width: 30px !important;
-    content: "\f0d7";
-    font-weight: 900;
-    color: #555;
-    font-family: "Font Awesome 5 Free";
-    -moz-osx-font-smoothing: grayscale;
-    -webkit-font-smoothing: antialiased;
-    display: inline-block;
-    font-style: normal;
-    font-variant: normal;
-    text-rendering: auto;
-    text-align: center;
-    padding: 13px 0px;
-}
-*/
 .inner {
     padding-top: 2em;
     padding-bottom: 4em;
@@ -307,6 +266,13 @@ input[name=search]::placeholder {
     right: 0;
     z-index: 2;
 }
+#toggle_main_menu:checked~.navbar-nav .submenu {
+    display: block;
+    position: relative;
+    border: none;
+    background: transparent;
+    padding-left: 1em;
+}
 
 #toggle_main_menu:checked~.mobile-menu-toggle {
     position: fixed;
@@ -318,11 +284,14 @@ input[name=search]::placeholder {
     z-index: 1;
     transition: background-color ease-in .2s;
 }
+
 #toggle_main_menu:checked~.mobile-menu-toggle i {
     visibility: hidden;
 }
 
-@media (max-width: 768px) {
+
+
+@media (max-width: 991px) {
     #header .navbar-nav {
         display: block;
         position: fixed;
@@ -361,21 +330,56 @@ input[name=search]::placeholder {
     height: auto;
 }
 
+.note-icon-caret {
+    display: none !important;
+}
 
+
+.select2-container--bootstrap .select2-selection--single {
+    height: auto !important;
+    padding: 8px 24px 8px 12px !important;
+}
+.form-group-sm .select2-container--bootstrap .select2-selection--single, .input-group-sm .select2-container--bootstrap .select2-selection--single, .select2-container--bootstrap .select2-selection--single.input-sm {
+    height: 31px !important;
+    padding: 6px 22px 5px 10px !important;
+}
+
+.select2-selection__choice {
+    padding-left: 0 !important;
+}
+
+.select2-selection__choice__remove {
+    border: none !important;
+    border-right: 1px solid #ccc !important;
+    border-top-left-radius: 4px !important;
+    border-bottom-left-radius: 4px !important;
+}
+
+.select2-container {
+    /*width: 100% !important;*/
+}
+
+
+.croppie-container .cr-boundary, .croppie-container .cr-slider-wrap {
+    margin: 0;
+}
+
+#image-upload {
+    display: none;
+}
 @media (max-width: 425px) {
     .col-xxs-12 {
         -ms-flex: 0 0 100%;
         flex: 0 0 100%;
         max-width: 100%;
     }
-    
+
     .row-cols-xxs-1 > * {
         -ms-flex: 0 0 100%;
         flex: 0 0 100%;
         max-width: 100%;
     }
 }
-
 
 @media (max-width: 768px) {
     .navbar-brand {
@@ -385,6 +389,10 @@ input[name=search]::placeholder {
     .navbar-brand .logo-sm {
         display: block !important;
     }
+}
+
+@media (max-width: 991px) {
+
 
     #finder .input-group > *, #finder [name=korosztaly]+span, #finder [name=rendszeresseg]+span {
         display: block !important;

@@ -10,9 +10,9 @@
                 <p>{{ $message2 }}</p>
             @endif
             <p><a href="@route('home')">Vissza a főoldalra</a></p>
-            <div class="error-pg-social">
+            <!--<div class="error-pg-social">
                 <a href="#"><i class="fa fa-facebook"></i></a>
-            </div>
+            </div>-->
         </div>
     </div>
 </div>

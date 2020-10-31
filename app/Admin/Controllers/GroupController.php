@@ -29,6 +29,8 @@ class GroupController extends AdminController
     public function doCreate(Request $request, CreateGroup $service)
     {
         $group = $service->create($request);
+        
+        Message::success('Közösség létrehozva.');
 
         redirect_route('admin.group.edit', ['id' => $group->id]);
     }

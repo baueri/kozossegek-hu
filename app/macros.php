@@ -1,6 +1,12 @@
 <?php
 use App\Enums\AgeGroupEnum;
 
+builder()->macro('deleted', function($builder){
+    $builder->whereNotNull('deleted_at');
+})->macro('notDeleted', function($builder){
+    $builder->whereNull('deleted_at');
+});
+
 builder('v_groups')->macro('whereGroupTag', function($builder, array $tags){
 
     $innerQuery = builder('group_tags')->distinct()->select('group_id')->whereIn('tag', $tags);

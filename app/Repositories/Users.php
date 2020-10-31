@@ -10,10 +10,35 @@ use Framework\Support\StringHelper;
 
 class Users extends Repository
 {
-
-    public function getUsers($limit = 30)
+    public function searchUsers($keyword)
     {
-        $rows = $this->getBuilder()->paginate($limit);
+        if (!$keyword) {
+            return [];
+        }
+
+        $builder = $this->getBuilder()
+            ->limit(20);
+
+        if (filter_var($keyword, FILTER_VALIDATE_EMAIL)) {
+            $builder->where('email', 'like', "%$keyword%");
+        } else {
+            $builder->where('name', 'like', "%$keyword%");
+        }
+
+        return $this->getInstances($builder->get());
+    }
+
+    public function getUsers($filter = [], $limit = 30)
+    {
+        $builder = $this->getBuilder();
+
+        if ($filter['deleted']) {
+            $builder->whereNotNull('deleted_at');
+        } else {
+            $builder->whereNull('deleted_at');
+        }
+
+        $rows = $builder->paginate($limit);
 
         return $this->getInstances($rows);
     }

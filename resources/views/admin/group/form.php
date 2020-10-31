@@ -4,6 +4,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.css"/>
 @endsection
+@title($title)
 @extends('admin')
 <form method="post" id="group-form" action="{{ $action }}">
     <div class="row">
@@ -21,6 +22,16 @@
                             <option value="{{ $group->institute_id }}">
                                 {{ $group->institute_id ? $group->institute_name . ' (' . $group->city . ')' : 'intézmény' }}
                             </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Karbantartó</label>
+                        <select name="user_id" class="form-control">
+                            <option value="{{ $group->user_id }}">{{ $owner->name }}</option>
                         </select>
                     </div>
                 </div>
@@ -83,6 +94,15 @@
         </div>
         <div class="col-md-3 group-side-content">
             <div class="form-group">
+                <label>Jóváhagyva</label>
+                <div class="switch yesno" style="width:100px;">
+                    <input type="radio" id="pending-0" name="pending" value="0" @if(!$group->pending) checked @endif>
+                    <input type="radio" id="pending-1" name="pending" value="1" @if($group->pending) checked @endif>
+                    <label for="pending-1">igen</label>
+                    <label for="pending-0">nem</label>
+                </div>
+            </div>
+            <div class="form-group">
                 <label for="status">Állapot</label>
                 <select id="status" name="status" class="form-control">
                     @foreach($statuses as $status)
@@ -136,6 +156,9 @@
                 </select>
             </div>
             <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Mentés</button>
+            @if($group->exists())
+                <a href="#" onclick="deleteConfirm(() => { window.location.href = '@route("admin.group.delete", $group)' });" class="btn btn-danger"><i class="fa fa-trash"></i> törlés</a>
+            @endif
         </div>
     </div>
 </form>
@@ -143,7 +166,7 @@
 <script>
     var image_val;
     $(() => {
-        
+
         var upload = null;
         function initCroppie()
         {
@@ -161,23 +184,23 @@
                 }
             });
         }
-        
+
         $("#temp-image").on("load", function(){
             var newImg = $($(this).closest("div").html());
             $(".group-image").html(newImg);
             newImg.attr("id", "image").show();
             initCroppie();
         });
-        
+
         $("form#group-form").submit(function(e){
             if (upload) {
-                upload.croppie("result", {type: "base64", format: "jpeg", size: {width: 600, height: 600}}).then(function(base64){
+                upload.croppie("result", {type: "base64", format: "jpeg", size: {width: 510, height: 510}}).then(function(base64){
                     image_val = base64;
                     $("[name=image]").val(base64);
                 });
             }
         });
-        
+
         $("[name=spiritual_movement_id]").select2({
             placeholder: "lelkiségi mozgalom",
             allowClear: true,
@@ -187,7 +210,6 @@
             placeholder: "napok",
             allowClear: true,
         });
-
 
         $("[name=institute_id]").select2({
             placeholder: "intézmény",
@@ -200,6 +222,16 @@
                     params.city = $("[name=city]").val();
                     return params;
                 }
+            }
+        });
+
+        $("[name=user_id]").select2({
+            placeholder: "karbantartó",
+            allowClear: true,
+            ajax: {
+                url: "@route('api.search-user')",
+                dataType: 'json',
+                delay: 300
             }
         });
 

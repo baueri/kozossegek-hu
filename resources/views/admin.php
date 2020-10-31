@@ -52,7 +52,7 @@
         </li>
         <li class="divider nav-item"></li>
         <li class="nav-item"><a href="@route('home')" title="ugrás az oldalra" target="_blank" class="text-white nav-link"><i class="fa fa-eye"></i></a></li>
-        <li class="nav-item"><a href="@route('admin.logout')" title="kilépés" class="text-danger nav-link"><i class="fa fa-sign-out-alt"></i></a></li>
+        <li class="nav-item"><a href="@route('logout')" title="kilépés" class="text-danger nav-link"><i class="fa fa-sign-out-alt"></i></a></li>
     </ul>
 </nav>
 

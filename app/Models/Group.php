@@ -46,6 +46,10 @@ class Group extends Model
     public $status;
 
     public $on_days;
+    
+    public $user_id;
+    
+    public $pending;
 
     /**
      * @var Institute|null
@@ -103,14 +107,6 @@ class Group extends Model
     /**
      * @return string
      */
-    public function url(): string
-    {
-        return route('kozosseg', ['kozosseg' => $this->slug()]);
-    }
-
-    /**
-     * @return string
-     */
     public function slug(): string
     {
         return StringHelper::slugify($this->name . '-' . $this->id);
@@ -162,6 +158,19 @@ class Group extends Model
      */
     public function hasImage()
     {
+        return false;
+    }
+    
+    public function isVisibleBy(?User $user)
+    {
+        if ($user && ($user->isAdmin() || $this->user_id == $user->id)) {
+            return true;
+        }
+        
+        if ($this->pending == 0 && $this->status == \App\Enums\GroupStatusEnum::ACTIVE) {
+            return true;
+        }
+        
         return false;
     }
 }
