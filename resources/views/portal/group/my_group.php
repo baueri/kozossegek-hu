@@ -125,7 +125,7 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group required">
                     <label for="description">Leírás</label>
                     <textarea name="description" id="description">{{ $group->description }}</textarea>
                 </div>
