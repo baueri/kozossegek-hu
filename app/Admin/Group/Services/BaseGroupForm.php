@@ -6,6 +6,7 @@ use Framework\Http\Request;
 use App\Repositories\Groups;
 use App\Repositories\Institutes;
 use App\Repositories\GroupViews;
+use App\Repositories\Users;
 use App\Models\Group;
 use App\Models\Institute;
 use App\Enums\DayEnum;
@@ -20,12 +21,17 @@ class BaseGroupForm {
     /**
      * @var Institutes
      */
-    protected $Institutes;
+    protected $institutes;
 
     /**
      * @var Groups
      */
     protected $repository;
+
+   /**
+    * @var Users
+    */
+    protected $users;
 
     /**
      * @var Request
@@ -36,18 +42,19 @@ class BaseGroupForm {
      *
      * @param Request $request
      * @param Groups $repository
-     * @param Institutes $Institutes
+     * @param Institutes $institutes
      */
     public function __construct(Request $request, GroupViews $repository,
-            Institutes $Institutes) {
+            Institutes $institutes, Users $users) {
         $this->request = $request;
         $this->repository = $repository;
-        $this->Institutes = $Institutes;
+        $this->institutes = $institutes;
+        $this->users = $users;
     }
 
     public function show() {
         $group = $this->getGroup();
-        $institute = $this->Institutes->find($group->institute_id) ?: new Institute;
+        $institute = $this->institutes->find($group->institute_id) ?: new Institute;
         $denominations = (new \App\Repositories\Denominations)->all();
         $statuses = (new \App\Repositories\GroupStatusRepository)->all();
         $occasion_frequencies = (new \App\Repositories\OccasionFrequencies)->all();
@@ -60,11 +67,12 @@ class BaseGroupForm {
         $days = DayEnum::all();
         $group_days = explode(',', $group->on_days);
         $images = $group->getImages();
-        
-        
-        return view('admin.group.create', compact('group', 'institute', 'denominations',
+        $title = $group->exists() ? 'Közösség módosítása' : 'Új közösség létrehozása';
+        $owner = $this->users->find($group->user_id);
+
+        return view('admin.group.form', compact('group', 'institute', 'denominations',
                 'statuses', 'occasion_frequencies', 'age_groups', 'action', 'spiritual_movements', 'tags',
-                'age_group_array', 'group_tags', 'days', 'group_days', 'images'));
+                'age_group_array', 'group_tags', 'days', 'group_days', 'images', 'title', 'owner'));
     }
 
     protected function getGroup(): Group

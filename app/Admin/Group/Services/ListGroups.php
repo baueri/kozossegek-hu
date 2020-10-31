@@ -77,7 +77,7 @@ class ListGroups
         $filter = $this->request;
         $table = $this->table;
         $current_page = $this->getCurrentPage();
-        $pending_groups = builder()->from('groups')->where('status', GroupStatusEnum::PENDING)->count();
+        $pending_groups = builder()->from('groups')->where('pending', 1)->count();
 
         return view('admin.group.list', compact('table', 'age_groups', 'occasion_frequencies', 'statuses',
             'institute', 'filter', 'current_page', 'pending_groups'));
@@ -87,6 +87,10 @@ class ListGroups
     {
         if ($this->request->route->getAs() == 'admin.group.trash') {
             return 'trash';
+        }
+        
+        if ($this->request['pending']) {
+            return 'pending';
         }
 
         return $this->request['status'] ?: 'all';

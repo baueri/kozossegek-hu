@@ -33,14 +33,15 @@ class LoginController extends \Framework\Http\Controller
                 Message::danger('A belépéshez engedélyezd a cookie-kat a böngésződben!');
                 return redirect_route('login');
             }
-
-
+                
+            /* @var $user \App\Models\User */
             $user = $service->authenticate($request['username'], $request['password']);
 
             Auth::login($user);
-
-            redirect(Session::flash('last_visited', route('admin.dashboard')));
-
+             
+            $route = $user->isAdmin() ? route('admin.dashboard') : route('home');
+            redirect(Session::flash('last_visited', $route));
+            
         } catch (UnauthorizedException $e) {
 
             Message::danger('Hibás felhasználónév vagy jelszó');

@@ -25,9 +25,13 @@ class Institutes extends \Framework\Repository
         if ($city) {
             $builder->where('city', $city);
         }
-
-        $rows = $builder->where('name', 'like', "%$keyword%")
-            ->paginate(15);
+        
+        if ($keyword) {
+            $keyword = trim($keyword, ' ');
+            $builder->whereRaw('MATCH (name, city) AGAINST (? IN BOOLEAN MODE)', [$keyword ? '+' . str_replace(' ', '* +', $keyword) . '*' : '']);
+        }
+        
+        $rows = $builder->orderBy('name', 'asc')->paginate(15);
 
         return $this->getInstances($rows);
     }

@@ -73,7 +73,20 @@ return [
     [
         'title' => 'Felhasználók',
         'icon' => 'users',
-        'as' => 'admin.user.list'
+        'as' => 'admin.user.list',
+        'submenu' => [
+            [
+                'title' => 'Felhasználók',
+                'icon' => 'users',
+                'as' => 'admin.user.list',
+                'similars' => ['admin.user.edit', 'admin.user.profile'],
+            ],
+            [
+                'title' => 'Új felhasználó',
+                'icon' => 'plus',
+                'as' => 'admin.user.create'
+            ]
+        ]
     ],
     [
         'title' => 'Widgetek',
@@ -111,6 +124,6 @@ return [
         'title' => 'Kilépés',
         'link_class' => 'text-danger',
         'icon' => 'sign-out-alt',
-        'as' => 'admin.logout'
+        'as' => 'logout'
     ],
 ];

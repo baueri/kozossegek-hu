@@ -1,7 +1,7 @@
 @title('Profilom')
 @extends('admin')
 
-<form method="post" action="@route('admin.user.profile.update')" class="mb-4">
+<form method="post" action="{{ $action }}" class="mb-4">
     <div class="row">
         <div class="col-md-3">
             <div class="form-group">
