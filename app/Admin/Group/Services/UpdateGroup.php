@@ -29,23 +29,13 @@ class UpdateGroup extends BaseGroupService
         /* @var $group Group */
         $group = $this->repository->findOrFail($id);
         
-        $data = $request->except('id')->all();
+        $data = $request->except('id', 'tags')->all();
         
         $data['age_group'] = implode(',', $data['age_group']);
 
         $data['on_days'] = implode(',', $data['on_days']);
 
-        $delete = builder('group_tags')->where('group_id', $id);
-
-        if ($data['tags']) {
-            $delete->whereNotIn('tag', $data['tags'] ?: []);
-        }
-
-        $delete->delete();
-
-        foreach($data['tags'] as $tag) {
-            db()->execute('replace into group_tags (group_id, tag) values (?, ?)', $id, $tag);
-        }
+        $this->syncTags($group, $request['tags']);
 
         $group->update($data);
 

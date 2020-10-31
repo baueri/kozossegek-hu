@@ -160,4 +160,17 @@ class Group extends Model
     {
         return false;
     }
+    
+    public function isVisibleBy(?User $user)
+    {
+        if ($user && ($user->isAdmin() || $this->user_id == $user->id)) {
+            return true;
+        }
+        
+        if ($this->pending == 0 && $this->status == \App\Enums\GroupStatusEnum::ACTIVE) {
+            return true;
+        }
+        
+        return false;
+    }
 }

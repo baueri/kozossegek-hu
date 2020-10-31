@@ -57,6 +57,21 @@ abstract class BaseGroupService {
         $this->searchEngineRebuilder->updateSearchEngine($group);
     }
     
+    protected function syncTags(Group $group, array $tags = [])
+    {
+        $delete = builder('group_tags')->where('group_id', $id);
+
+        if ($tags) {
+            $delete->whereNotIn('tag', $tags ?: []);
+        }
+
+        $delete->delete();
+        
+        foreach($tags as $tag) {
+            db()->execute('replace into group_tags (group_id, tag) values (?, ?)', $group->id, $tag);
+        }
+    }
+    
     protected function syncImages(Group $group, $images)
     {
         $images = array_filter($images);

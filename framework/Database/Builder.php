@@ -395,26 +395,31 @@ class Builder
 
     public function __call($method, $args)
     {
-        if (isset(static::$macros[$this->getTable()][$method])) {
-            $this->apply($method, ...$args);
-
-            return $this;
-        }
-
-        throw new MethodNotFoundException("call to undefined method $method on " . __CLASS__);
-    }
-
-    public function macro($macroName, $callback)
-    {
-        static::$macros[$this->getTable()][$macroName] = $callback;
+        $macro = $this->getMacro($method);
+        
+        $macro($this, ...$args);
 
         return $this;
     }
 
-    public function apply($method, ...$args)
+    public function macro($macroName, $callback)
     {
-        $macro = static::$macros[$this->getTable()][$method];
-        $macro($this, ...$args);
+        $key = !$this->getTable() ? 'global' : $this->getTable();
+        
+        static::$macros[$key][$macroName] = $callback;
+
+        return $this;
+    }
+    
+    protected function getMacro($method)
+    {
+        if (isset(static::$macros[$this->getTable()][$method])) {
+            return static::$macros[$this->getTable()][$method];
+        } elseif (isset(static::$macros['global'][$method])) {
+            return static::$macros['global'][$method];
+        }
+        
+        throw new InvalidArgumentException("database builder macro $method not found");
     }
 
     public function __toString()

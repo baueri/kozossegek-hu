@@ -33,4 +33,9 @@ class UserController
 
         redirect_route('portal.my_profile');
     }
+    
+    public function passwordChange(Request $request)
+    {
+        
+    }
 }

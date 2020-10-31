@@ -3,8 +3,8 @@
 namespace App\Repositories;
 
 use Framework\Repository;
-
 use App\Models\GroupView;
+use Framework\Support\Collection;
 
 class GroupViews extends Repository
 {
@@ -87,8 +87,8 @@ class GroupViews extends Repository
             $builder->where('institute_id', $intezmeny);
         }
         
-        if ($filter['pending']) {
-            $builder->where('pending', 1);
+        if ($filter->exists('pending')) {
+            $builder->where('pending', $filter['pending']);
         }
 
         if ($status = $filter['status']) {
@@ -103,9 +103,9 @@ class GroupViews extends Repository
         }
 
         if ($filter['deleted']) {
-            $builder->whereNotNull('deleted_at');
+            $builder->deleted();
         } else {
-            $builder->whereNull('deleted_at');
+            $builder->notDeleted();
         }
 
         $builder->orderBy($filter['order_by'] ?: 'name', $filter['order'] ?: 'asc');
@@ -120,10 +120,16 @@ class GroupViews extends Repository
     public function findBySlug($slug)
     {
         $id = substr($slug, strrpos($slug, '-')+1);
-
-        $group = $this->find($id);
-
-        return $group;
+        
+        $builder = $this->getBuilder();
+        
+        $row = $builder->where('id', $id)->notDeleted()->first();
+        
+        if ($row) {
+            return $this->getInstance($row);
+        }
+        
+        return null;
     }
 
     public function findSimilarGroups(GroupView $group, $tags, int $take = 4)

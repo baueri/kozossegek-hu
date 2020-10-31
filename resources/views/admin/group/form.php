@@ -156,6 +156,9 @@
                 </select>
             </div>
             <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Mentés</button>
+            @if($group->exists())
+                <a href="#" onclick="deleteConfirm(() => { window.location.href = '@route("admin.group.delete", $group)' });" class="btn btn-danger"><i class="fa fa-trash"></i> törlés</a>
+            @endif
         </div>
     </div>
 </form>

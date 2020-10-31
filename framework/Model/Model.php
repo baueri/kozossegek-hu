@@ -27,7 +27,6 @@ abstract class Model
      */
     public function __construct($values = [])
     {
-
         $this->setProperties($values);
 
         $this->originalValues = $values;
