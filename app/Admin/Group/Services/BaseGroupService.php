@@ -86,4 +86,21 @@ abstract class BaseGroupService {
             //$image->saveThumbnail($group->getStorageImageDir() . 'thumbnails' . DS . $group->id . '_1.jpg');
         }
     }
+    
+    /**
+     * 
+     * @param array $data
+     */
+    protected function validate(array $data)
+    {
+        $requiredFields = ['name', 'denomination', 'status', 'institute_id', 'age_group', 'occasion_frequency', 'description', 'group_leaders', 'group_leader_email'];
+        
+        foreach ($requiredFields as $field) {
+            if(!isset($data[$field]) || !$data[$field]) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
 }
