@@ -44,8 +44,8 @@ class UpdateGroup extends BaseGroupService
             Message::danger('A csillaggal jelölt mezők kitöltése kötelező!');
             redirect_route('portal.my_group');
         }
-
-        $this->syncTags($group, $request['tags']);
+        
+        $this->syncTags($group, (array) $request['tags']);
 
         $group->update($data);
 
