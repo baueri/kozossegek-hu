@@ -40,7 +40,7 @@
                 </div>
                 <div class="form-group required">
                     <label for="name">Közösség neve</label>
-                    <input type="text" id="name" value='{{ $group->name }}' name="name" class="form-control" required>
+                    <input type="text" id="name" value='{{ $group->name }}' name="name" class="form-control">
                 </div>
                 <div class="row">
                     <div class="col-md-3">

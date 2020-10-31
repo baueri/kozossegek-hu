@@ -31,9 +31,19 @@ class UpdateGroup extends BaseGroupService
         
         $data = $request->except('id', 'tags')->all();
         
+        $data['description'] = strip_tags($data['description'], ['a', 'h1', 'h2', 'h3', 'p', 'b', 'u', 'ul', 'ol', 'li', 'code', 'pre']);
+        
+        $data['name'] = strip_tags($data['name']);
+        $data['group_leaders'] = strip_tags($data['group_leaders']);
+        $data['group_leader_email'] = strip_tags($data['group_leader_email']);
+        $data['group_leader_phone'] = strip_tags($data['group_leader_phone']);
         $data['age_group'] = implode(',', $data['age_group']);
-
         $data['on_days'] = implode(',', $data['on_days']);
+        
+        if(!$this->validate($data)) {
+            Message::danger('A csillaggal jelölt mezők kitöltése kötelező!');
+            redirect_route('portal.my_group');
+        }
 
         $this->syncTags($group, $request['tags']);
 
@@ -47,5 +57,4 @@ class UpdateGroup extends BaseGroupService
         
         Message::success('Sikeres mentés.');
     }
-    
 }
