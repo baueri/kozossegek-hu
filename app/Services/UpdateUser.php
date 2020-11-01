@@ -32,25 +32,37 @@ class UpdateUser
         }
 
         if (array_filter($passwordChange)) {
-
-            $password1 = $passwordChange['new_password'];
-            $password2 = $passwordChange['new_password_again'];
-
+            
             if (!Password::verify($passwordChange['old_password'], $user->password)) {
                 Message::danger('Hibás régi jelszó!');
                 return false;
             }
-
-            if (!$password1 || !$password2 || $password1 !== $password2) {
-                Message::danger('A két jelszó nem egyezik!');
-                return false;
-            }
-
-            $user->password = Password::hash($password1);
+            
+             $this->changePassword($user, $passwordChange);
         }
 
         $user->update($changes);
 
+        return $this->users->save($user);
+    }
+    
+    public function changePassword(User $user, $passwordChange)
+    {
+        $password1 = $passwordChange['new_password'];
+        $password2 = $passwordChange['new_password_again'];
+        
+        if(!$password1) {
+            Message::danger('Nem adtál meg jelszót!');
+            return false;
+        }
+        
+        if (!$password2 || $password1 !== $password2) {
+            Message::danger('A két jelszó nem egyezik!');
+            return false;
+        }
+
+        $user->password = Password::hash($password1);
+        
         return $this->users->save($user);
     }
 }

@@ -2,17 +2,16 @@
 <div class="container text-center">
     <div id="error-pg">
         <div class="error-pg">
-            <div class="error-pg-404">
-                <h1>{{ $code}}</h1>
-            </div>
+            @if($code)
+                <div class="error-pg-404">
+                    <h1>{{ $code}}</h1>
+                </div>
+            @endif
             <h2>{{ $message }}</h2>
             @if($message2)
                 <p>{{ $message2 }}</p>
             @endif
             <p><a href="@route('home')">Vissza a főoldalra</a></p>
-            <!--<div class="error-pg-social">
-                <a href="#"><i class="fa fa-facebook"></i></a>
-            </div>-->
         </div>
     </div>
 </div>
