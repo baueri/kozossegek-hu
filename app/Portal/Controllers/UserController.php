@@ -76,6 +76,7 @@ class UserController
         
         if ($request->postRequestSent()) {
             $ok = $service->changePassword($user, $request->only('new_password', 'new_password_again'));
+            builder('password_reset')->where('token', $request['token'])->delete();
             if ($ok) {
                 Message::success('Sikeres jelszócsere!');
                 \Framework\Http\Session::forget('last_visited');
