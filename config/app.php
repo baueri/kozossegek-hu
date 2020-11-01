@@ -1,5 +1,6 @@
 <?php
 return [
+    'site_url' => _env('SITE_URL', 'http://kozossegek.local'),
     'environment' => _env('ENVIRONMENT', 'development'),
     'base_auth' => _env('BASE_AUTH', false),
     'base_auth.user' => 'kozossegek',

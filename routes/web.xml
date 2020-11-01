@@ -16,9 +16,14 @@
         <route method="post" uri="group-contact-form" as="portal.group-contact-form" controller="GroupController" use="groupContactForm"/>
         <route method="post" uri="send-contact-message" as="portal.contact-group" controller="GroupController" use="sendContactMessage"/>
 
+        <route method="get" uri="forgot-password" as="portal.forgot_password" view="portal.forgot-password"/>
+        <route method="post" uri="reset-password" as="portal.reset_password" controller="UserController" use="resetPassword"/>
+        <route method="all" uri="recover-password" as="portal.recover_password" controller="UserController" use="recoverPassword"/>
+        
         <route-group middleware="App\Middleware\LoggedInMiddleware">
             <route method="get" uri="profile" as="portal.my_profile" controller="UserController" use="profile"/>
             <route method="post" uri="profile/update" as="portal.profile.update" controller="UserController" use="update"/>
+            
             <route method="get" uri="my-group" as="portal.my_group" controller="GroupController" use="myGroup"/>
             <route method="post" uri="update-group" as="portal.my_group.update" controller="GroupController" use="updateMyGroup"/>
             <route method="post" uri="create-group" as="portal.my_group.create" controller="GroupController" use="createMyGroup"/>

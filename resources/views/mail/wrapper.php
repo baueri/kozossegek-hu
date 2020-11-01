@@ -6,5 +6,6 @@
     </head>
     <body>
         @yield('mail.wrapper')
+        @include('mail.footer')
     </body>
 </html>

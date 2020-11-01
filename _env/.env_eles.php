@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'SITE_URL' => 'https://demo.kozossegek.hu',
     'ENVIRONMENT' => 'production',
     'DEBUG' => false,
 
