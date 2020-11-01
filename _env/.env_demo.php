@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'SITE_URL' => 'https://demo.kozossegek.hu',
     'ENVIRONMENT' => 'development',
     'DEBUG' => false,
     'DB_HOST' => 'mysql.nethely.hu',

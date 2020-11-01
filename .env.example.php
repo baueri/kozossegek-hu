@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'SITE_URL' => 'http://kozossegek.local',
     'ENVIRONMENT' => 'development',
     'DEBUG' => true,
     'DB_HOST' => 'localhost',
@@ -11,4 +12,11 @@ return [
     'BASE_AUTH' => true,
     'SANITIZE_OUTPUT' => true,
     'COMING_SOON' => true,
+    
+    //EMAIL beállítások
+    'EMAIL_HOST' => 'please_set',
+    'EMAIL_PORT' => '1025',
+    'EMAIL_ADDRESS' => 'please_set',
+    'EMAIL_PASSWORD' => 'please_set',
+    'EMAIL_SSL' => 'STARTTLS',
 ];
