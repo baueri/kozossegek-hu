@@ -1,6 +1,15 @@
 @title('Verzióinformáció')
 @extends('admin')
 
+<h3>v0.1.1 pre-alpha</h3>
+<ul>
+    <li>[NEW]: Elfelejtett jelszó funkció fejlesztése</li>
+    <li>[NEW:] Látogatói oldalon új közösség létrehozása</li>
+    <li>[CHANGED]: Logó átalakítás: Magát a logót kicsit kisebbre vettem, a szöveget pedig nagyobbra.</li>
+    <li>[CHANGED]: Layout módosítások</li>
+    <li>[FIXED]: Csak a megtekinthető - tehát aktív, nem törölt, nem függőben levő - közösségek lettek kereshetőek, megtekinthetőek</li>
+</ul>
+
 <h3>v0.1.0 pre-alpha</h3>
 <ul>
     <li>Új felhasználó létrehozása admin oldalon</li>
