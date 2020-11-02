@@ -16,11 +16,7 @@ builder('v_groups')->macro('whereGroupTag', function($builder, array $tags){
 })->macro('whereAgeGroup', function($builder, $ageGroup) {
 
     $builder->where('age_group', '<>', '');
-    if ($ageGroup != AgeGroupEnum::KOROSZTALYTOL_FUGGETLEN) {
-        $builder->whereRaw('(FIND_IN_SET(?, age_group) OR FIND_IN_SET(?, age_group))', [$ageGroup, AgeGroupEnum::KOROSZTALYTOL_FUGGETLEN]);
-    } else {
-        $builder->whereInSet('age_group', $ageGroup);
-    }
+    $builder->whereRaw('FIND_IN_SET(?, age_group)', [$ageGroup]);
 
 });
 
