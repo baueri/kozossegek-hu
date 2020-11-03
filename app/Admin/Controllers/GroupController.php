@@ -10,6 +10,7 @@ use App\Admin\Group\Services\DeleteGroup;
 use App\Admin\Group\Services\EditGroup;
 use App\Admin\Group\Services\ListGroups;
 use App\Admin\Group\Services\UpdateGroup;
+use App\Repositories\Groups;
 use App\Services\RebuildSearchEngine;
 use Framework\Http\Message;
 use Framework\Http\Request;
@@ -66,5 +67,20 @@ class GroupController extends AdminController
         Message::success('Sikeres keresőmotor frissítés');
         
         return redirect_route('admin.group.list');
+    }
+
+    /**
+     * @param Request $request
+     * @param Groups $groups
+     */
+    public function restore(Request $request, Groups $groups)
+    {
+        $group = $groups->find($request['id']);
+        $group->deleted_at = null;
+        $groups->save($group);
+
+        Message::success('Közösség sikeresen visszaállítva.');
+
+        redirect_route('admin.group.edit', $group);
     }
 }
