@@ -44,8 +44,9 @@ abstract class BaseGroupService {
     protected $repository;
 
     /**
-     * 
+     *
      * @param Groups $repository
+     * @param RebuildSearchEngine $searchEngineRebuilder
      */
     public function __construct(Groups $repository, RebuildSearchEngine $searchEngineRebuilder) {
         $this->repository = $repository;

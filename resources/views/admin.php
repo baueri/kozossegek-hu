@@ -24,7 +24,7 @@
     <script src="/assets/sidebar-09/js/main.js"></script>
 
 </head>
-<body>
+<body class="{{ $show_debugbar ? 'has-debugbar' : '' }}">
 <nav id="top_menu" class="navbar navbar-expand navbar-dark bg-dark fixed-top">
     <ul class="navbar-nav mr-auto">
         <li class="nav-item" id="mobile_menu_toggle">
@@ -80,9 +80,8 @@
         </footer>
     </div>
 </div>
-
-@if($is_maintenance_on)
-    <div id="is_maintenance_on" title="Karbantartás bekapcsolva!"><i class="fa fa-exclamation-triangle text-danger" style="font-size: 36px; cursor:pointer;"></i></div>
+@if($show_debugbar)
+    {{ debugbar()->render() }}
 @endif
 @yield('footer')
 
