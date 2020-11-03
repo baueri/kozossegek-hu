@@ -9,10 +9,10 @@ interface Database
     /**
      *
      * @param string $query
-     * @param mixed ...$params
+     * @param mixed ...$bindings
      * @return ResultSet
      */
-    public function execute($query, ...$params): ResultSet;
+    public function execute($query, ...$bindings): ResultSet;
 
     /**
      *

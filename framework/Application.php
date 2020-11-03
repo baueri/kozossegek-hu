@@ -4,6 +4,8 @@
 namespace Framework;
 
 use Framework\Container\Container;
+use Framework\Database\BootListenQueries;
+use Framework\Database\QueryHistory;
 use Framework\Dispatcher\Dispatcher;
 use Framework\Http\View\Bootstrappers\BootDirectives;
 use Framework\Support\Config\Config;
@@ -21,6 +23,7 @@ class Application extends Container
      */
     protected $bootstrappers = [
         BootDirectives::class,
+        BootListenQueries::class,
     ];
 
     private $locale = LANG;
@@ -33,6 +36,8 @@ class Application extends Container
         $this->singleton(static::class, function() {
             return static::getInstance();
         });
+
+        $this->singleton(QueryHistory::class);
 
         static::$singleton = $this;
     }

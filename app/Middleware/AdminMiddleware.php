@@ -38,6 +38,7 @@ class AdminMiddleware implements Middleware
         $admin_menu = AdminMenu::getMenu();
         View::addVariable('admin_menu', $admin_menu);
         View::addVariable('current_menu_item', $admin_menu->first('active'));
+        View::addVariable('show_debugbar', config('app.environment') !== 'production');
 
         if ($this->maintenance->isMaintenanceOn() && \App\Auth\Auth::loggedIn()) {
             View::addVariable('is_maintenance_on', true);
