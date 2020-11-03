@@ -106,9 +106,29 @@ nav.navbar .nav-link:hover {
     width: 150px !important;
 }
 
-#finder button[type=submit] {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
+.main-block {
+    margin-top: 4em;
+    margin-bottom: 4em;
+}
+
+#main-finder [name=search] {
+    display: block;
+    margin: auto;
+    padding: 1em 2em;
+    width: 100%;
+    max-width: 450px;
+    border: 2px solid #ccc;
+}
+
+#main-finder button {
+    border-radius: 0;
+    display: block;
+    margin: 1em auto;
+}
+
+#main-finder [name=search]::placeholder {
+    font-style: italic;
+    color: #cdcdcd;
 }
 
 .form-group label [type=checkbox] ~ span {

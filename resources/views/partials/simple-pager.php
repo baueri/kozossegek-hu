@@ -1,10 +1,11 @@
 <div class="row">
     <div class="col-md-4">
+        
         @if($page-1 > 0)
             <?php $first = http_build_query(array_merge($_REQUEST, ['pg' => 1])); ?>
             <?php $prev = http_build_query(array_merge($_REQUEST, ['pg' => $page-1])); ?>
             <a href="?{{ $first }}" class="left"><i class="fa fa-angle-double-left"></i> Első oldal</a>&nbsp;&nbsp;&nbsp;
-            <a href="?pg={{ $prev }}" class="left"><i class="fa fa-angle-left"></i> Előző oldal</a>
+            <a href="?{{ $prev }}" class="left"><i class="fa fa-angle-left"></i> Előző oldal</a>
         @endif
     </div>
 

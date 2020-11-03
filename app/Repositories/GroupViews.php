@@ -2,6 +2,11 @@
 
 namespace App\Repositories;
 
+use App\Models\User;
+use Framework\Database\PaginatedResultSet;
+use Framework\Model\Model;
+use Framework\Model\ModelCollection;
+use Framework\Model\PaginatedModelCollection;
 use Framework\Repository;
 use App\Models\GroupView;
 use Framework\Support\Collection;
@@ -19,7 +24,7 @@ class GroupViews extends Repository
         return 'v_groups';
     }
 
-    public function getGroupByUser(\App\Models\User $user)
+    public function getGroupByUser(User $user)
     {
         $row = $this->getBuilder()->where('user_id', $user->id)->first();
         
@@ -40,7 +45,7 @@ class GroupViews extends Repository
     /**
      * @param Collection|array $filter
      * @param int $perPage
-     * @return PaginatedResultSet|[]
+     * @return PaginatedResultSet|Model[]|ModelCollection|PaginatedModelCollection []
      */
     public function search($filter = [], $perPage = 30)
     {
@@ -51,12 +56,9 @@ class GroupViews extends Repository
         $builder = builder()->select('*')->from('v_groups');
 
         if ($keyword = $filter['search']) {
-            $keywords = '+'.str_replace(' ', '* +', trim($keyword, ' ')) . '*';
-            /* @var $found \Framework\Database\PaginatedResultSet */
-            /*$query = builder('search_engine')->select('group_id, MATCH(keywords) AGAINST (? IN BOOLEAN MODE) as relevance', [$keywords])
-                    ->whereRaw("MATCH(keywords) AGAINST (? IN BOOLEAN MODE)", [$keywords])
-                    ->orderBy('relevance', 'desc');*/
-            
+            $keywords = ''.str_replace(' ', '* ', trim($keyword, ' ')) . '*';
+            /* @var $found PaginatedResultSet */
+
             $found = db()->select('select group_id, MATCH(keywords) AGAINST (? IN BOOLEAN MODE) as relevance 
                 from search_engine 
                 where MATCH(keywords) AGAINST (? IN BOOLEAN MODE) order by relevance desc', [$keywords, $keywords]);
