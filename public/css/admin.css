@@ -2,6 +2,10 @@
     /*transition: none !important;*/
 }
 
+body.has-debugbar {
+    padding-bottom: 40px;
+}
+
 #sidebar {
     height: 100vh;
     position: fixed;

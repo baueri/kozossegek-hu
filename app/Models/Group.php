@@ -138,7 +138,7 @@ class Group extends Model
      */
     public function getThumbnail()
     {
-        return $this->getFirstImage(true);
+        return $this->getFirstImage();
     }
 
     public function getFirstImage()

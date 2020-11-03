@@ -10,6 +10,7 @@ use App\Repositories\OccasionFrequencies;
 
 use App\Enums\GroupStatusEnum;
 use Framework\Http\Request;
+use ReflectionException;
 
 /**
  * Description of GroupListService
@@ -63,6 +64,7 @@ class ListGroups
 
     /**
      * @return string
+     * @throws ReflectionException
      */
     public function show()
     {
@@ -77,7 +79,7 @@ class ListGroups
         $filter = $this->request;
         $table = $this->table;
         $current_page = $this->getCurrentPage();
-        $pending_groups = builder()->from('groups')->where('pending', 1)->count();
+        $pending_groups = builder()->from('groups')->where('pending', 1)->notDeleted()->count();
 
         return view('admin.group.list', compact('table', 'age_groups', 'occasion_frequencies', 'statuses',
             'institute', 'filter', 'current_page', 'pending_groups'));
