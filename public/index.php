@@ -1,5 +1,6 @@
 <?php
 
+use App\Admin\Components\DebugBar\DebugBar;
 use App\HttpKernel;
 use Framework\Application;
 use Framework\Dispatcher\Dispatcher;
@@ -16,6 +17,7 @@ try {
     $application->singleton(Framework\Http\Request::class);
     $application->singleton(\Framework\Http\HttpKernel::class, HttpKernel::class);
     $application->singleton(Dispatcher::class, HttpDispatcher::class);
+    $application->singleton(DebugBar::class);
 
     /* @var $request Request */
     $request = $application->get(Request::class);

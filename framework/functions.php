@@ -1,5 +1,6 @@
 <?php
 
+use App\Admin\Components\DebugBar\DebugBar;
 use App\Repositories\Widgets;
 use Arrilot\DotEnv\DotEnv;
 use Framework\Application;
@@ -250,4 +251,12 @@ function widget($uniqid)
 function is_prod()
 {
     return config('app.environment') === 'production';
+}
+
+/**
+ * @return DebugBar
+ */
+function debugbar()
+{
+    return app()->get(DebugBar::class);
 }

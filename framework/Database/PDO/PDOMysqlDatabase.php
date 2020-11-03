@@ -6,7 +6,9 @@ namespace Framework\Database\PDO;
 
 use Framework\Database\Database;
 use Framework\Database\DatabaseConfiguration;
+use Framework\Database\Events\QueryRan;
 use Framework\Database\ResultSet;
+use Framework\Event\EventDisptatcher;
 use PDO;
 
 class PDOMysqlDatabase implements Database
@@ -53,15 +55,21 @@ class PDOMysqlDatabase implements Database
 
     /**
      *
-     * @param type $query
-     * @param type $params
+     * @param string $query
+     * @param mixed ...$bindings
      * @return ResultSet
      */
-    public function execute($query, ...$params): ResultSet
+    public function execute($query, ...$bindings): ResultSet
     {
+        $start = microtime(true);
+
         $statement = $this->pdo->prepare($query);
 
-        $statement->execute($params);
+        $statement->execute($bindings);
+
+        $time = microtime(true) - $start;
+
+        EventDisptatcher::dispatch(new QueryRan($query, $bindings, $time));
 
         return new PDOResultSet($statement);
     }
@@ -71,7 +79,7 @@ class PDOMysqlDatabase implements Database
      * @param mixed ...$bindings
      * @return array
      */
-    public function select($query, $bindings = []): array
+    public function select(string $query, $bindings = []): array
     {
         return $this->execute($query, ...$bindings)->getRows();
     }
@@ -99,7 +107,7 @@ class PDOMysqlDatabase implements Database
      * @param mixed ...$bindings
      * @return array
      */
-    public function first($query, $bindings = [])
+    public function first(string $query, $bindings = [])
     {
         return $this->execute($query, ...$bindings)->fetchRow();
     }

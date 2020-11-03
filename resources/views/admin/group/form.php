@@ -157,7 +157,11 @@
             </div>
             <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Mentés</button>
             @if($group->exists())
-                <a href="#" onclick="deleteConfirm(() => { window.location.href = '@route("admin.group.delete", $group)' });" class="btn btn-danger"><i class="fa fa-trash"></i> törlés</a>
+                @if(!$group->deleted_at)
+                    <a href="#" onclick="deleteConfirm(() => { window.location.href = '@route("admin.group.delete", $group)' });" class="btn btn-danger"><i class="fa fa-trash"></i> törlés</a>
+                @else
+                    <a href="@route('admin.group.restore', $group)" class="btn btn-warning"><i class="fa fa-sync"></i> visszaállítás</a>
+                @endif
             @endif
         </div>
     </div>
