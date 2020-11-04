@@ -115,5 +115,9 @@
         </div>
     </footer>
     @yield('footer')
+
+    @if($show_debugbar)
+    {{ debugbar()->render() }}
+    @endif
 </body>
 </html>

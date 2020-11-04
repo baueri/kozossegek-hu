@@ -4,6 +4,8 @@
 namespace App;
 
 
+use App\Admin\Components\DebugBar\ErrorTab;
+use App\Middleware\DebugBarMiddleware;
 use Framework\Middleware\BaseAuthMiddleware;
 use Framework\Middleware\TranslationRoute;
 use Framework\Middleware\AuthMiddleware;
@@ -16,6 +18,7 @@ class HttpKernel extends \Framework\Http\HttpKernel
 {
     protected $middleware = [
         BaseAuthMiddleware::class,
+        DebugBarMiddleware::class,
         TranslationRoute::class,
         CheckMaintenance::class,
         AuthMiddleware::class,
@@ -39,6 +42,9 @@ class HttpKernel extends \Framework\Http\HttpKernel
 
             $mailer->to(config('app.error_email'))->send($mail);
         }
+
+        $content = "<pre style='white-space:pre-line'><h3>Unexpected error (" . get_class($error) . ")</h3> {$error->getMessage()} in <b>{$error->getFile()}</b> on line <b>{$error->getLine()}</b> \n\n {$error->getTraceAsString()}</pre>";
+        debugbar()->tab(ErrorTab::class)->pushError($content);
 
         parent::handleError($error);
     }

@@ -1,44 +1,41 @@
 <div id="debugbar">
-    <div id="debugbar-header">
-        @foreach($headers as $id => $header)
-            <label for="{{ $id }}">
-                {{ $header }}
-            </label>
-        @endforeach
+    <div id="debugbar-header" class="bg-light">
+        <div class="btn-group btn-shadow">
+            @foreach($headers as $id => $header)
+                <label for="{{ $id }}" class="btn btn-default btn-sm mb-0">
+                    {{ $header }}
+                </label>
+            @endforeach
+        </div>
         <label class="float-right text-danger" for="close"><i class="fa fa-times"></i><input type="radio" name="debug-tab" id="close" style="display: none"></label>
     </div>
     <div id="debugbar-content">
         @foreach($tab_contents as $id => $tab_content)
+        <div>
             <input type="radio" id="{{ $id }}" value="1" style="display: none;" name="debug-tab">
             <div>{{ $tab_content }}</div>
+        </div>
         @endforeach
     </div>
 </div>
 <style>
     #debugbar {
-        /*height: 39px;*/
         position: fixed;
+        z-index: 999;
         bottom: 0;
         left: 0;
         width: 100%;
         background: #fff;
     }
     #debugbar-header {
-        border-top: 2px solid #333;
-        border-bottom: 2px solid #333;
-    }
-    #debugbar-header label {
-        margin: 0;
-        padding: 5px 10px;
-        color: var(--red);
+        border-top: 1px solid #ccc;
     }
 
-    #debugbar-header label.active {
-        background: var(--blue);
-        color: #fff;
+    #debugbar-header .btn {
+        border-radius: 0;
     }
 
-    #debugbar-content > div {
+    #debugbar-content > div > div {
         display: none;
     }
 
