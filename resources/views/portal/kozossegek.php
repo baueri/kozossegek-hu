@@ -1,6 +1,6 @@
 @section('header')
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-@include('asset_groups.select2')
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    @include('asset_groups.select2')
 @endsection
 @extends('portal')
 
@@ -29,6 +29,7 @@
                 <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
             </div>
         </div>
+
         <div class="form-group">
             <label>Közösség jellemzői:</label><br>
             @foreach($tags as $tag)

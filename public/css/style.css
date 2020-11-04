@@ -387,6 +387,31 @@ input[name=search]::placeholder {
 #image-upload {
     display: none;
 }
+
+.btn-group.btn-shadow .btn-primary.active {
+    box-shadow: inset 5px 5px 5px -1px rgba(0, 0, 0, 0.4);
+}
+
+.btn-default {
+    border: 1px solid #b9c8e4;
+    background: #dee5f2;
+}
+
+.btn-group.btn-shadow .btn-default {
+    background: #dee5f2;
+    background: linear-gradient(to bottom, #ffffff 0%, #dee5f2 100%);
+}
+
+.btn-group.btn-shadow .btn-primary {
+    background: #2F89FC;
+    background: linear-gradient(to bottom, #2F89FC 0%, #0062cc 100%);
+}
+
+.btn-group.btn-shadow .btn-default:active, .btn-group.btn-shadow .btn-default:focus {
+    box-shadow: none;
+    background: linear-gradient(to bottom, #dee5f2 0%, #ffffff 100%);
+}
+
 @media (max-width: 425px) {
     .col-xxs-12 {
         -ms-flex: 0 0 100%;
@@ -447,3 +472,4 @@ input[name=search]::placeholder {
         padding: calc(1rem * 10) !important;
     }
 }
+

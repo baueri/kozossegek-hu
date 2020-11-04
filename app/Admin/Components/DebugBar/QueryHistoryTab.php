@@ -26,7 +26,8 @@ class QueryHistoryTab extends DebugBarTab
 
     public function getName()
     {
-        return 'lekérdezések';
+        $count = $this->queryHistory->getQueryHistory()->count();
+        return "lekérdezések ($count)";
     }
 
     public function render()

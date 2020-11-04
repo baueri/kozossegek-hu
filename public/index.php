@@ -11,9 +11,12 @@ use Framework\Http\Request;
 
 session_start();
 
+ob_start();
+
 include '../boot.php';
 
 try {
+    ob_start();
     $application->singleton(Framework\Http\Request::class);
     $application->singleton(\Framework\Http\HttpKernel::class, HttpKernel::class);
     $application->singleton(Dispatcher::class, HttpDispatcher::class);
