@@ -57,8 +57,7 @@ class HttpDispatcher implements Dispatcher
      */
     public function dispatch(): void
     {
-
-        header('Accept-Encoding: gzip, deflate');
+//        header('Accept-Encoding: gzip, deflate');
 
         $route = $this->getCurrentRoute();
 

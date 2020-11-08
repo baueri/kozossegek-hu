@@ -19,4 +19,17 @@ class AgeGroupEnum extends \Framework\Support\Enum
     const FIATAL_FELNOTT = 'fiatal_felnott';
     const KOZEPKORU = 'kozepkoru';
     const NYUGDIJAS = 'nyugdijas';
+
+    public static function getIcon($ageGroup)
+    {
+        if ($ageGroup === self::TINEDZSER) {
+            return 'fa fa-child';
+        } elseif($ageGroup === self::FIATAL_FELNOTT) {
+            return 'fa fa-user-graduate';
+        } elseif($ageGroup === self::KOZEPKORU) {
+            return 'fa fa-work';
+        } elseif ($ageGroup === self::NYUGDIJAS) {
+            return '';
+        }
+    }
 }
