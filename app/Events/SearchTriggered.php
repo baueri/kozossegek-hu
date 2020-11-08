@@ -12,7 +12,6 @@ class SearchTriggered extends BaseLogEvent
     protected static $listeners = [
         \App\EventListeners\LogSearch::class
     ];
-    
 }
 
 

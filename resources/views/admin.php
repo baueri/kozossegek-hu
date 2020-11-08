@@ -24,7 +24,7 @@
     <script src="/assets/sidebar-09/js/main.js"></script>
 
 </head>
-<body class="{{ $show_debugbar ? 'has-debugbar' : '' }}">
+<body>
 <nav id="top_menu" class="navbar navbar-expand navbar-dark bg-dark fixed-top">
     <ul class="navbar-nav mr-auto">
         <li class="nav-item" id="mobile_menu_toggle">

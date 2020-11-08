@@ -473,3 +473,6 @@ input[name=search]::placeholder {
     }
 }
 
+.text-gray {
+    color: var(--gray);
+}

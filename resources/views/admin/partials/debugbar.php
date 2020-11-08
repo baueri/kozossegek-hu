@@ -19,6 +19,11 @@
     </div>
 </div>
 <style>
+
+    body{
+        padding-bottom: 32px;
+    }
+
     #debugbar {
         position: fixed;
         z-index: 999;
@@ -42,4 +47,5 @@
     #debugbar-content input[type=radio]:checked ~ div {
         display: block;
     }
+
 </style>

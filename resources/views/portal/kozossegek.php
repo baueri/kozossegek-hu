@@ -1,5 +1,4 @@
 @section('header')
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     @include('asset_groups.select2')
 @endsection
 @extends('portal')
@@ -13,7 +12,6 @@
                 <select name="varos" style="width:200px !important;" class="form-control">
                     <option value="{{ $filter['varos'] }}">{{ $filter['varos'] }}</option>
                 </select>
-                <input type="text" name="search" value="{{ $filter['search'] }}" class="form-control" placeholder="keresés...">
                 <select class="form-control" id="korosztaly" name="korosztaly">
                     <option></option>
                     @foreach($age_groups as $age_group)
@@ -26,6 +24,7 @@
                     <option value="{{ $occasion_frequency->name }}" {{ $occasion_frequency->name == $filter['rendszeresseg'] ? 'selected' : '' }}>{{ $occasion_frequency }}</option>
                     @endforeach
                 </select>
+                <input type="text" name="search" value="{{ $filter['search'] }}" class="form-control" placeholder="keresés közösség nevére, jellemzőre, városra stb...">
                 <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
             </div>
         </div>
@@ -56,20 +55,18 @@
                 <img class="card-img-top" src="{{ $group->getThumbnail() }}" />
                 <div class="card-body">
                     <h2 class="mb-1 h6 font-weight-bold">{{ $group->name }}</h2>
-                    <div class="description" style="display: none;">
-                        {{ $group->excerpt() }}
-                    </div>
+                        <i class="fas fa-map-marker-alt text-danger"></i><span class="text-gray"> {{ $group->city . ($group->district ? '<br>' . $group->district . '</span>' : '')  }}<br>
+                        <i class="fas fa-user-graduate"></i> <span class="text-gray">{{ $group->ageGroup() }}</span><br>
+                        <i class="fas fa-calendar-alt"></i> <span class="text-gray">{{ $group->occasionFrequency() }}</span>
                 </div>
-                <div class="card-footer">
-                    <div class="kozi-info text-dark">
-                        <div><i class="fas fa-map-marker-alt text-danger"></i>
-                            <small>{{ $group->city . ($group->district ? '<br><span style="color:#888">' . $group->district . '</span>' : '')  }}</small>
-                        </div>
-                        <div><i class="fas fa-user-graduate"></i><small>{{ $group->ageGroup() }}</small></div>
-                        <div><i class="fas fa-calendar-alt"></i><small>{{ $group->occasionFrequency() }}</small></div>
-                    </div>
-
-                </div>
+<!--                <div class="card-footer">-->
+<!--                    <div class="kozi-info text-dark">-->
+<!--                        <div>-->
+<!--                            <small></small>-->
+<!--                        </div>-->
+<!--                        <div></div>-->
+<!--                    </div>-->
+<!--                </div>-->
             </a>
         </div>
         @endforeach
