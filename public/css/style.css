@@ -1,5 +1,5 @@
 body {
-    font-family: 'Ubuntu', sans-serif;
+    /*font-family: 'Ubuntu', sans-serif;*/
 
     color: #555;
 }
@@ -168,6 +168,7 @@ nav.navbar .nav-link:hover {
     -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
 }
+
 .kozi-adatlap .card {
     text-decoration: none;
 }
@@ -178,16 +179,21 @@ nav.navbar .nav-link:hover {
 .kozi-box {
     margin-bottom: 30px !important;
     text-decoration: none !important;
-    color: var(--gray-dark);
     transition: all linear .1s;
     position: relative;
     color: var(--gray-dark);
+    overflow: hidden;
 }
 
 .kozi-box:hover {
-    box-shadow: 0 0 20px #000;
-    transform: scale(1.02);
+    box-shadow: 0 0 12px #000;
     z-index: 1;
+}
+
+.kozi-more-info {
+    position: absolute;
+    bottom: 1em;
+    right: 1em;
 }
 
 .kozi-info>* {
@@ -257,6 +263,15 @@ nav.navbar .nav-link:hover {
 
 input[name=search]::placeholder {
     color: #999;
+}
+
+.container.inner #finder [name=search]::placeholder {
+    font-size: 14px;
+}
+
+.container.inner #finder button[type=submit] {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
 }
 
 #main-finder #finder {

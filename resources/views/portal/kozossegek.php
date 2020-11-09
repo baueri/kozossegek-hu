@@ -24,8 +24,8 @@
                     <option value="{{ $occasion_frequency->name }}" {{ $occasion_frequency->name == $filter['rendszeresseg'] ? 'selected' : '' }}>{{ $occasion_frequency }}</option>
                     @endforeach
                 </select>
-                <input type="text" name="search" value="{{ $filter['search'] }}" class="form-control" placeholder="keresés közösség nevére, jellemzőre, városra stb...">
-                <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                <input type="text" name="search" value="{{ $filter['search'] }}" class="form-control" placeholder="keresés kulcsszavak alapján...">
+                <button type="submit" class="btn btn-primary">keresés indítása</button>
             </div>
         </div>
 
@@ -47,30 +47,20 @@
             <a href="/kozossegek">Szűrés törlése</a>
         </p>
     </form>
-    <p><small>Összes találat: {{ $total }}</small></p>
-    <div class="row row-cols-xxs-1 row-cols-2 row-cols-md-2 row-cols-lg-3 row-cols-xl-4" style="padding-top:2em">
-        @foreach($groups as $i => $group)
-        <div class="col mb-4">
-            <a href="{{ $group->url() }}" class="card h-100 kozi-box">
-                <img class="card-img-top" src="{{ $group->getThumbnail() }}" />
-                <div class="card-body">
-                    <h2 class="mb-1 h6 font-weight-bold">{{ $group->name }}</h2>
-                        <i class="fas fa-map-marker-alt text-danger"></i><span class="text-gray"> {{ $group->city . ($group->district ? '<br>' . $group->district . '</span>' : '')  }}<br>
-                        <i class="fas fa-user-graduate"></i> <span class="text-gray">{{ $group->ageGroup() }}</span><br>
-                        <i class="fas fa-calendar-alt"></i> <span class="text-gray">{{ $group->occasionFrequency() }}</span>
-                </div>
-<!--                <div class="card-footer">-->
-<!--                    <div class="kozi-info text-dark">-->
-<!--                        <div>-->
-<!--                            <small></small>-->
-<!--                        </div>-->
-<!--                        <div></div>-->
-<!--                    </div>-->
-<!--                </div>-->
-            </a>
+    <div class="mb-3">
+        <small>Összes találat: {{ $total }}</small>
+        <div class="float-right" style="font-size: 1.4em;">
+            <a href="?<?php echo http_build_query(array_merge($_REQUEST, ['view' => 'grid1'])); ?>" class="{{ $template == 'grid1' ? 'text-success' : 'text-dark' }}"><i class="fa fa-th-large"></i></a>
+            <a href="?<?php echo http_build_query(array_merge($_REQUEST, ['view' => 'grid2'])); ?>" class="{{ $template == 'grid2' ? 'text-success' : 'text-dark' }}"><i class="fa fa-th"></i></a>
         </div>
-        @endforeach
     </div>
+<!--    <div class="row row-cols-xxs-1 row-cols-2 row-cols-md-2 row-cols-lg-3 row-cols-xl-4" style="padding-top:2em">-->
+    @if($template == 'grid1')
+        @include('portal.partials.kozossegek-view1')
+    @else
+        @include('portal.partials.kozossegek-view2')
+    @endif
+
     @include('partials.simple-pager', ['route' => 'portal.groups.page','total' => $total,'page' => $page,'perpage' => $perpage,'routeparams' => $filter])
 </div>
 <script>

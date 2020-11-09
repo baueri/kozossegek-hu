@@ -163,7 +163,7 @@
                                 <i class="fa fa-upload"></i> Kép feltöltése
                                 <input type="file" onchange="loadFile(event, this);" data-target="temp-image" id="image-upload">
                             </label>
-                            <div style="display: none"/><img id="temp-image" /></div>
+                            <div style="display: none"><img id="temp-image" /></div>
                         <input type="hidden" name="image">
                     </div>
                 </div>

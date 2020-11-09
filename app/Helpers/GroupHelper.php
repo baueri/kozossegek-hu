@@ -14,7 +14,13 @@ class GroupHelper
      */
     public static function parseAgeGroup($ageGroup)
     {
-        return static::getAgeGroups($ageGroup)->implode(', ');
+        $ageGroups = static::getAgeGroups($ageGroup);
+
+        if ($ageGroups->count() > 1) {
+            return 'vegyes';
+        }
+
+        return $ageGroups->implode(', ');
     }
     
     /**
