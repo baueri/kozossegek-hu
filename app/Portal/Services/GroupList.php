@@ -55,14 +55,9 @@ class GroupList {
         $filter['order_by'] = ['city', 'district'];
         $filter['pending'] = 0;
         $filter['status'] = GroupStatusEnum::ACTIVE;
-        $groups = $this->service->search($filter);
+        $groups = $this->service->search($filter, 18);
+        $template = $this->request['view'] ?: 'grid1';
 
-        if (!$filter['varos']) {
-            $groupsGrouped = $groups->groupBy('city');
-        } else {
-            $groupsGrouped = $groups->groupBy('district');
-        }
-        
         $model = [
             'groups' => $groups,
             'occasion_frequencies' => $this->occasionFrequencies->all(),
@@ -72,7 +67,8 @@ class GroupList {
             'perpage' => $groups->perpage(),
             'filter' => $filter,
             'selected_tags' => explode(',', $filter['tags']),
-            'tags' => builder('tags')->get()
+            'tags' => builder('tags')->get(),
+            'template' => $template
         ];
 
         return view('portal.kozossegek', $model);
