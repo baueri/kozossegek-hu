@@ -8,7 +8,7 @@
                 </div>
                 <div class="col-md-8">
                     <div class="card-body">
-                        <h6 class="card-title">{{ $group->name }}</h6>
+                        <h5 class="card-title">{{ $group->name }}</h5>
                         <p class="card-text">
                             <i class="fa fa-map-marker-alt text-danger" title="város, település"></i> <span>{{ $group->city . ($group->district ? ', ' . $group->district . '</span>' : '')  }}<br>
                             <i class="fa fa-user-tie text-success" title="korosztály"></i> <span>{{ $group->ageGroup() }}</span><br>
