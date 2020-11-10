@@ -13,6 +13,7 @@
         </style>
     </head>
     <body>
+        <div style="text-align: center"><img src="https://kozossegek.hu/images/logo_lg.png" style="max-width: 200px;"></div>
         @yield('mail.wrapper')
         @include('mail.footer')
     </body>

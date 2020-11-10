@@ -1,6 +1,6 @@
 @extends('mail.wrapper')
 <div>
-    <div style="text-align: center"><img src="https://kozossegek.hu/images/logo.png" style="max-width: 200px;"></div>
+
     <p><strong>Kedves {{ $user->name }}!</strong></p>
     <p>Sikeres regisztráció a kozossegek.hu oldalon!</p>
     <p>A regisztráció befejezéséhez kérjük kattints az alábbi linkre!</p>
