@@ -1,6 +1,29 @@
 @title('Verzióinformáció')
 @extends('admin')
 
+<h3>v0.1.2 pre-alpha</h3>
+<ul>
+    <li>[NEW]: Admin oldalon email sabolonok megtekintése. <a href="@route('admin.email_template.list')">Ugrás a sablonokhoz</a>.</li>
+    <li>[NEW:] Admin oldali fiók regisztrációkor aktiváló email küldése az új felhasználónak</li>
+    <li>[NEW:] Demo környezet alatt bekerült egy "debug sáv" az oldalak aljára, ez segít a fejlesztésben, hibajavításban</li>
+    <li>[NEW:] "Közösséget keresek" oldalon a találatok elrendezése át lett alakítva
+        <ul>
+            <li>+1 bekerült a találati lista fölé jobbra két ikon két nézet váltásához</li>
+        </ul>
+    </li>
+    <li>[CHANGED]: Látogatói oldalon a felső menübe bekerült egy user ikon
+        <ul>
+            <li>Ha be van lépve valaki, akkor megjelenik alatta a szokásos almenü</li>
+            <li>Egyébként meg a login oldalra visz</li>
+        </ul>
+    </li>
+    <li>[CHANGED]: Közösség "aktív" státusz át lett nevezve: "közzétéve"</li>
+    <li>[CHANGED]: "Közösséget keresek" oldalon a kereső input mező leghátulra került</li>
+    <li>[CHANGED]: Szintén a "közösséget keresek" oldalon a város címsorok lekerültek</li>
+    <li>[FIXED]: Admin oldalon a közösségek listázásánál volt egy kis lekérdezés-beli kavarodás, javítva lett</li>
+    <li>[FIXED]: Lomtárba helyezett(törölt) közösséget vissza lehet állítani nem töröltté</li>
+    <li>[FIXED]: Vissza lapozó javítva lett</li>
+</ul>
 <h3>v0.1.1 pre-alpha</h3>
 <ul>
     <li>[NEW]: Elfelejtett jelszó funkció fejlesztése</li>
