@@ -2,7 +2,7 @@
     Összes lekérdezés: {{ count($queries) }}<br>
     Lekérdezések ideje: {{ $total_time }}ms
 </div>
-<table class="table" id="query-history">
+<table class="table table-sm" id="query-history">
     <thead>
         <tr>
             <th>lekérdezés</th>

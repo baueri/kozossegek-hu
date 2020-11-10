@@ -31,7 +31,7 @@ class AppMigrationTable extends Table
      * @param array $options
      * @return static
      */
-    public function timestamp(string $columnName, array $options = [''])
+    public function timestamp(string $columnName, array $options = [])
     {
         $this->addColumn($columnName, MysqlAdapter::PHINX_TYPE_DATETIME, $options);
 

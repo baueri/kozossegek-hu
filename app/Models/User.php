@@ -28,6 +28,8 @@ class User extends Model
     
     public $user_group;
 
+    public $activated_at;
+
     public function keresztnev()
     {
         return substr($this->name, strpos($this->name, ' '));

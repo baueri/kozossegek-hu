@@ -7,8 +7,9 @@ namespace Framework\Database;
 use Framework\Bootstrapper;
 use Framework\Database\Events\QueryRan;
 use Framework\Database\Listeners\LogQueryHistory;
+use Framework\Http\View\ViewLoaded;
 
-class BootListenQueries implements Bootstrapper
+class BootListeners implements Bootstrapper
 {
 
     public function boot()

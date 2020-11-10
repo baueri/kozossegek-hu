@@ -3,10 +3,9 @@
 namespace App\Portal\Services;
 
 use App\Mail\GroupContactMail;
+use App\Models\Group;
 use Framework\Exception\UnauthorizedException;
-use Framework\Http\Request;
 use Framework\Mail\Mailer;
-use UI\Controls\Group;
 
 /**
  * Description of SendContactMessage
@@ -35,7 +34,7 @@ class SendContactMessage {
             throw new UnauthorizedException();
         }
         
-        $mail = new GroupContactMail($data, $group);
+        $mail = new GroupContactMail($data);
         
         $this->mailer->to($group->group_leader_email)->send($mail);
     }

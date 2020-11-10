@@ -101,6 +101,13 @@
             <route method="get" uri="event-log" use="eventLog" as="event_log"/>
         </route-group>
 
+        <route-group controller="EmailTemplateController" as="email_template">
+            <route method="get" uri="email-templates" view="admin.email-templates" as="list"/>
+            <route method="get" uri="email-template/registration" use="registration" as="registration"/>
+            <route method="get" uri="email-template/reset-password" use="passwordReset" as="reset_password"/>
+            <route method="get" uri="email-template/group-contact" use="groupContact" as="group_contact"/>
+        </route-group>
+
         <route-group>
             <route method="get" uri="appearance" as="appearance" view="admin"/>
             

@@ -88,6 +88,12 @@ return [
             ]
         ]
     ],
+
+    [
+        'title' => 'Email sablon',
+        'icon' => 'envelope',
+        'as' => 'admin.email_template.list',
+    ],
     [
         'title' => 'Widgetek',
         'icon' => 'layer-group',

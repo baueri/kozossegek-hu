@@ -5,10 +5,14 @@ namespace App\Admin\Controllers;
 use App\Admin\Controllers\AdminController;
 use App\Admin\User\UserTable;
 use App\Auth\Auth;
+use App\Mail\RegistrationEmail;
 use App\Models\User;
+use App\Repositories\UserTokens;
 use App\Repositories\Users;
 use Framework\Http\Message;
 use Framework\Http\Request;
+use Framework\Mail\Mailable;
+use Framework\Mail\Mailer;
 use Framework\Support\Password;
 
 class UserController extends AdminController
@@ -27,12 +31,21 @@ class UserController extends AdminController
         return view('admin.user.create', compact('user', 'action'));
     }
     
-    public function doCreate(Request $request, Users $repository)
+    public function doCreate(Request $request, Users $repository, UserTokens $passwordResetRepository)
     {
         $data = $request->only('username', 'name', 'email', 'user_group');
+
         $data['password'] = Password::hash(time());
+
+        /* @var $user User */
         $user = $repository->create($data);
-        
+
+        $passwordReset = $passwordResetRepository->createUserToken($user, route('portal.user.activate'));
+
+        $mailable = RegistrationEmail::make($user, $passwordReset);
+
+        Mailer::make()->to($user->email)->send($mailable);
+
         Message::success('Sikeres létrehozás');
         
         return redirect_route('admin.user.edit', $user);

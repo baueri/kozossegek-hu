@@ -16,12 +16,15 @@
             @include('admin.partials.message')
 
             <h1 class="h3">Közösség módosítása</h1>
+            @if($group->exists())
             <p>
                 <a href="{{ $group->url() }}">Megtekintés</a>
             </p>
+            @endif
             <h3 class="h4 mt-3">Általános adatok</h3>
             <form method="post" id="group-form" action="{{ $action }}">
                 <div class="row">
+<!--                    --><?php //dd($group->status == App\Enums\GroupStatusEnum::INACTIVE); ?>
                     @if($group->pending)
                         @include('partials.alert', ['level' => 'warning', 'message' => 'A közösséged még függőben van, amíg nincs jóváhagyva, addig nem jelenítjük meg a közösségek között.'])
                     @elseif($group->status == App\Enums\GroupStatusEnum::INACTIVE) 

@@ -7,6 +7,7 @@
 <div class="container inner">
     @widget('KOKE')
     <form method="get" id="finder" action="@route('portal.groups')">
+        <input type="hidden" name="view" value="{{ $template }}">
         <div class="form-group">
             <div class="input-group">
                 <select name="varos" style="width:200px !important;" class="form-control">

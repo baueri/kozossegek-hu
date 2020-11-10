@@ -22,12 +22,12 @@ class IfDirective implements Directive
             return '<?php endif; ?>';
         }
 
+        if (strpos($matches[0], '@elseif') === 0) {
+            return '<?php elseif(' . $matches[2] . '): ?>';
+        }
+
         if (strpos($matches[0], '@else') === 0) {
             return '<?php else: ?>';
-        }
-        
-        if (strpos($matches[0], '@elseif') === 0) {
-            return '<?php elseif: ?>';
         }
 
         return '<?php if(' . $matches[1] . '): ?>';

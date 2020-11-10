@@ -56,9 +56,9 @@
 <div class="container main-block">
     <div class="row">
         <div class="col-md-7">
-            <img src="/images/img2.jpg">
+            <img src="/images/group_illustration1_alt.png">
         </div>
-        <div class="col-md-5">
+        <div class="col-md-5 align-middle h-100">
             <h3 class="text-center">Közösséget vezetek.<br>Hogyan tudom itt hirdetni?</h3>
             <p class="text-justify mt-3">
                 Nagyon örülünk annak, ha te is hirdetnéd nálunk a közösséged! Bár még nincs közvetlen felület erre a honlapon,

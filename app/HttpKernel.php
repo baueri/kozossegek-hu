@@ -6,6 +6,7 @@ namespace App;
 
 use App\Admin\Components\DebugBar\ErrorTab;
 use App\Middleware\DebugBarMiddleware;
+use App\Middleware\ListenViewLoading;
 use Framework\Middleware\BaseAuthMiddleware;
 use Framework\Middleware\TranslationRoute;
 use Framework\Middleware\AuthMiddleware;
@@ -19,6 +20,7 @@ class HttpKernel extends \Framework\Http\HttpKernel
     protected $middleware = [
         BaseAuthMiddleware::class,
         DebugBarMiddleware::class,
+        ListenViewLoading::class,
         TranslationRoute::class,
         CheckMaintenance::class,
         AuthMiddleware::class,

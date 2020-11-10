@@ -2,11 +2,15 @@
 
 namespace App\Portal\Controllers;
 
+use App\Mail\ResetPasswordEmail;
+use App\Repositories\UserTokens;
 use Framework\Http\Request;
 use App\Repositories\Users;
 use App\Auth\Auth;
 use App\Services\UpdateUser;
 use Framework\Http\Message;
+use Framework\Http\Session;
+use Framework\Mail\Mailer;
 
 /**
  * Description of UserController
@@ -34,23 +38,14 @@ class UserController
         redirect_route('portal.my_profile');
     }
     
-    public function resetPassword(Request $request, Users $users, \Framework\Mail\Mailer $mailer)
+    public function resetPassword(Request $request, Users $users, Mailer $mailer, UserTokens $userTokens)
     {
         $user = $users->getUserByEmail($request['email']);
         
         if ($user) {
-            $token = md5(time());
-            $url = config('app.site_url') . route('portal.recover_password', compact('token'));
-            builder('password_reset')->insert([
-                'email' => $user->email,
-                'token' => $token,
-                'expires_at' => (new \DateTime())->modify('+1 day')->format('Y-m-d H:i:s')
-            ]);
+            $userToken = $userTokens->createUserToken($user, route('portal.recover_password'));
             
-            $mail = new \Framework\Mail\Mailable();
-            $mail->subject('kozossegek.hu - elfelejtett jelszó')
-                    ->view('mail.forgot-password')
-                    ->with(compact('user', 'url'));
+            $mail = ResetPasswordEmail::make($user, $userToken);
             
             $mailer->to($user->email)->send($mail);
         }
@@ -60,26 +55,26 @@ class UserController
         redirect_route('login');
     }
     
-    public function recoverPassword(Request $request, Users $users, UpdateUser $service)
+    public function recoverPassword(Request $request, Users $users, UpdateUser $service, UserTokens $userTokens)
     {
-        $passwordReset = builder('password_reset')->where('token', $request['token'])->first();
-        
-        if (!$passwordReset) {
+        $token = $userTokens->getByToken($request['token']);
+
+        if (!$token) {
             return view('portal.error', ['message2' => 'Jelszó visszaállítás sikertelen! Hibás token.']);
         }
         
-        if (strtotime($passwordReset['expires_at']) < time()) {
+        if (strtotime($token->expires_at) < time()) {
             return view('portal.error', ['message2' => 'Ennek a tokennek az érvényességi ideje lejárt!']);
         }
         
-        $user = $users->getUserByEmail($passwordReset['email']);
+        $user = $users->getUserByEmail($token->email);
         
         if ($request->postRequestSent()) {
             $ok = $service->changePassword($user, $request->only('new_password', 'new_password_again'));
-            builder('password_reset')->where('token', $request['token'])->delete();
             if ($ok) {
+                $userTokens->delete($token);
                 Message::success('Sikeres jelszócsere!');
-                \Framework\Http\Session::forget('last_visited');
+                Session::forget('last_visited');
                 redirect_route('login');
             }
         }
@@ -89,5 +84,36 @@ class UserController
         }
         
         return view('portal.password-reset', compact('user'));
+    }
+    public function activateUser(Request $request, Users $users, UpdateUser $service, UserTokens $userTokens)
+    {
+        $token = $userTokens->getByToken($request['token']);
+
+        if (!$token) {
+            return view('portal.error', ['message2' => 'Felhasználói aktiválása sikertelen! Hibás token.']);
+        }
+
+        if (strtotime($token->expires_at) < time()) {
+            return view('portal.error', ['message2' => 'Ennek az linknek az érvényességi ideje lejárt!']);
+        }
+
+        $user = $users->getUserByEmail($token->email);
+
+        if ($request->postRequestSent()) {
+            $user->activated_at = date('Y-m-d H:i:s');
+            $ok = $service->changePassword($user, $request->only('new_password', 'new_password_again'));
+            $userTokens->delete($token);
+            if ($ok) {
+                Message::success('Sikeres regisztráció!');
+                Session::forget('last_visited');
+                redirect_route('login');
+            }
+        }
+
+        if (!$user) {
+            return view('portal.error', ['message2' => 'Nem létező, vagy törölt felhasználó!']);
+        }
+
+        return view('portal.activate-user', compact('user'));
     }
 }

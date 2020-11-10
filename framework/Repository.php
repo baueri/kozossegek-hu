@@ -13,8 +13,6 @@ use Framework\Traits\Makeable;
 
 abstract class Repository
 {
-    use Makeable;
-
     /**
      * @return Database\Builder
      */

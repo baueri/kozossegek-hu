@@ -2,12 +2,12 @@
 
 namespace Framework\Mail;
 
+use Framework\Traits\Makeable;
 use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
-use PHPMailer\PHPMailer\Exception;
 
 class Mailer
 {
+    use Makeable;
 
     /**
      * @var PHPMailer
