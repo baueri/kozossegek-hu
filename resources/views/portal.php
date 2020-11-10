@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital@0;1&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Crimson+Text|Work+Sans:400,700" rel="stylesheet">
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
@@ -36,8 +37,8 @@
     <nav id="header" class="navbar navbar-expand-sm bg-light navbar-light sticky-top">
         <div class="container">
             <a href="/" class="navbar-brand ml-4 ml-sm-0 mt-0 mb-0 p-0 p-sm-1">
-                <img src="/images/logo_sm_2.png" class="logo-lg">
-                <img src="/images/logo_only.png" class="logo-sm" style="display:none;">
+                <img src="/images/logo_sm_2.png" class="logo-lg" alt="kozossegek.hu">
+                <img src="/images/logo_only.png" class="logo-sm" style="display:none;" alt="kozossegek.hu">
             </a>
             <input type="checkbox" style="display: none" id="toggle_main_menu" name="toggle_main_menu">
             <ul class="navbar-nav">
@@ -77,8 +78,6 @@
                 <?php endif; ?>
 
             </ul>
-
-
             <label class="mobile-menu-toggle float-right mr-4 mr-sm-0 mb-0" for="toggle_main_menu"><i class="fa fa-bars"></i></label>
         </div>
 
@@ -102,16 +101,12 @@
                 <div class="col-md-4 col-sm-6 col-xs-12">
                     <h5>Partnereink</h5>
                     <div class="partnereink">
-                        <a href="https://pasztoralis.hu/" title="Pasztorális helynökség Szeged" target="_blank"><img src="/images/szcsem_szines_latin.png"></a>
+                        <a href="https://pasztoralis.hu/" title="Pasztorális helynökség Szeged" target="_blank" rel="noopener noreferrer">
+                            <img src="/images/szcsem_szines_latin.png" alt="Pasztorális helynökség Szeged">
+                        </a>
                     </div>
-                    <!-- <h5>Légy naprakész!</h5>
-                    <p><small>Add meg a városodat és az email címedet, amennyiben értesítést szeretnél kapni az új közösségekről!</small></p>
-                    <div class="form-group"><input type="text" class="form-control" placeholder="városom"></div>
-                    <div class="form-group"><input type="email" class="form-control" placeholder="email címem"></div>
-                    <div class="form-group"></div><button type="submit" class="btn btn-primary w-100">Feliratkozom</button> -->
                 </div>
             </div>
-        </div>
         </div>
         <div id="footer-bottom">
             <div class="container text-right">

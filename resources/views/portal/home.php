@@ -1,10 +1,37 @@
 @section('header')
+    <link href="https://fonts.googleapis.com/css?family=Cardo:400,700|Oswald" rel="stylesheet">
     @include('asset_groups.select2')
+    <style>
+        .main-block h1 {
+            font-family: 'Oswald', sans-serif;
+            text-transform: uppercase;
+            font-size: 4rem;
+        }
+
+        #main-finder p {
+            padding: 0 10em;
+            font-size: 1.2rem;
+        }
+
+        .main-block {
+            margin-top: 3em;
+            margin-bottom: 3em;
+        }
+
+        #main-finder [name=search] {
+            display: block;
+            margin: auto;
+            padding: 1em 2em;
+            width: 100%;
+            max-width: 450px;
+            border: 2px solid #ccc;
+        }
+    </style>
 @endsection
 @extends('portal')
-<div id="main-finder" class="p-3 p-lg-5 p-lg-6">
+<div id="main-finder" class="p-3 p-lg-5">
     <div class="container main-block">
-        <div class="text-white text-center" style="margin-bottom: 2em; max-width: 600px; margin: auto">
+        <div class="text-white text-center" style="margin: auto">
             @widget('FOKE')
         </div>
         <form method="get" id="finder" action="@route('portal.groups')">
@@ -48,7 +75,7 @@
             <a href="https://777blog.hu/2016/09/20/5-erv-hogy-elkezdj-kozossegbe-jarni/" target="_blank" class="btn btn-success">A közösségről</a>
         </div>
         <div class="col-md-4">
-            <img src="/images/community.png">
+            <img src="/images/community.png" alt="">
         </div>
     </div>
     </div>
@@ -72,5 +99,5 @@
 <div class="container main-block text-center">
     <h3>Mire jó egy keresztény közösség?</h3>
     <p style="max-width: 560px; margin: auto;" class="mt-3 mb-3">Ide jöhet szöveg arról, hogy nézzék meg a shoeshine tv által rendezett 'kerekasztal beszélgetést' arról, hogy miben segít az, ha közösséghez tartozunk.</p>
-    <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/aqqz1mbeGTU" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/aqqz1mbeGTU" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>

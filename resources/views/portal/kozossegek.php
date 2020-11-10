@@ -2,9 +2,9 @@
     @include('asset_groups.select2')
 @endsection
 @extends('portal')
-
 @featuredTitle('Közösséget keresek')
-<div class="container inner">
+<div class="jumbotron pt-4 pb-4 mb-0">
+<div class="container">
     @widget('KOKE')
     <form method="get" id="finder" action="@route('portal.groups')">
         <input type="hidden" name="view" value="{{ $template }}">
@@ -28,9 +28,7 @@
                 <input type="text" name="search" value="{{ $filter['search'] }}" class="form-control" placeholder="keresés kulcsszavak alapján...">
                 <button type="submit" class="btn btn-primary">keresés indítása</button>
             </div>
-        </div>
-
-        <div class="form-group">
+        </div><div class="form-group">
             <label>Közösség jellemzői:</label><br>
             @foreach($tags as $tag)
             <label for="tag-{{ $tag['slug'] }}" class="mr-1">
@@ -38,8 +36,8 @@
                        class="group-tag"
                        id="tag-{{ $tag['slug'] }}"
                        value="{{ $tag['slug'] }}"
-                       <?php if (in_array($tag['slug'], $selected_tags)): ?> checked <?php endif; ?>
-                       > <span>{{ $tag['tag'] }}</span>
+                    <?php if (in_array($tag['slug'], $selected_tags)): ?> checked <?php endif; ?>
+                > <span>{{ $tag['tag'] }}</span>
             </label>
             @endforeach
             <input type="hidden" name="tags" value="{{ $filter['tags'] }}">
@@ -48,6 +46,10 @@
             <a href="/kozossegek">Szűrés törlése</a>
         </p>
     </form>
+</div>
+</div>
+    <div class="container inner">
+
     <div class="mb-3">
         <small>Összes találat: {{ $total }}</small>
         <div class="float-right" style="font-size: 1.4em;">
