@@ -5,6 +5,7 @@ namespace Framework\Http\View;
 
 
 use Exception;
+use Framework\Event\EventDisptatcher;
 use Framework\Http\View\Exception\ViewNotFoundException;
 
 class View implements ViewInterface
@@ -51,6 +52,8 @@ class View implements ViewInterface
         if (!file_exists($filePath)) {
             throw new ViewNotFoundException('view file not found: ' . $filePath);
         }
+
+        EventDisptatcher::dispatch(new ViewLoaded($filePath));
 
         return $this->getContentAndDoCache($filePath, $args);
     }

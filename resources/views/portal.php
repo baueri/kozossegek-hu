@@ -1,5 +1,5 @@
 <?php use App\Auth\Auth; ?>
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang="hu">
 <head>
     <meta charset="utf-8"/>
@@ -52,7 +52,7 @@
                 </li>
                 <?php if(Auth::loggedIn()): ?>
                 <li class="nav-item">
-                    <a href="@route('portal.my_profile')" class="nav-link text-success">{{ Auth::user()->firstName() }} <i class="fa fa-caret-down"></i></a>
+                    <a href="@route('portal.my_profile')" class="nav-link text-primary"><i class="fa fa-user-circle" style="font-size: 18px;"></i></a>
                     <ul class="submenu">
                         <li class="nav-item">
                             <a href="@route('portal.my_profile')" class="nav-link">Profilom</a>
@@ -70,6 +70,10 @@
                         </li>
                     </ul>
                 </li>
+                <?php else: ?>
+                    <li class="nav-item">
+                        <a href="@route('login')" class="nav-link text-primary"><i class="fa fa-user-circle" style="font-size: 18px;"></i></a>
+                    </li>
                 <?php endif; ?>
 
             </ul>

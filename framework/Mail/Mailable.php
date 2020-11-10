@@ -2,12 +2,11 @@
 
 namespace Framework\Mail;
 
+use Framework\Traits\Makeable;
+
 class Mailable
 {
-    /**
-     * @var string
-     */
-    public $to;
+    use Makeable;
 
     /**
      * @var string[]

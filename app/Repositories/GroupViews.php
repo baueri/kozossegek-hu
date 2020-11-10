@@ -56,15 +56,13 @@ class GroupViews extends Repository
         $builder = builder()->select('*')->from('v_groups');
 
         if ($keyword = $filter['search']) {
-            $keywords = ''.str_replace(' ', '* ', trim($keyword, ' ')) . '*';
+            $keywords = '+'.str_replace(' ', '* +', trim($keyword, ' ')) . '*';
             /* @var $found PaginatedResultSet */
 
-            $found = db()->select('select group_id, MATCH(keywords) AGAINST (? IN BOOLEAN MODE) as relevance 
+            $found = db()->select('select group_id
                 from search_engine 
-                where MATCH(keywords) AGAINST (? IN BOOLEAN MODE) order by relevance desc', [$keywords, $keywords]);
-            
-            //$found = $query->paginate($perPage);
-            
+                where MATCH(keywords) AGAINST (? IN BOOLEAN MODE)', [$keywords]);
+
             if ($found) {
                 $builder->whereIn('id', collect($found)->pluck('group_id')->all());
             } else {

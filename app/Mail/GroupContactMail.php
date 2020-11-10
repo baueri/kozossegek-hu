@@ -8,7 +8,7 @@ use App\Models\Group;
 class GroupContactMail extends Mailable
 {
 
-    public function __construct($data, Group $group)
+    public function __construct($data)
     {
         $this->subject('kozossegek.hu - Új érdeklődő szeretné felvenni a kapcsolatot a közösséggel')
             ->view('mail.group-contact')
@@ -16,7 +16,6 @@ class GroupContactMail extends Mailable
                 'name' => strip_tags($data['name']),
                 'email' => strip_tags($data['email']),
                 'message' => str_replace(PHP_EOL, '<br>', strip_tags($data['message'])),
-                'group' => $group
             ]);
     }
 }

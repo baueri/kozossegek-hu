@@ -97,9 +97,8 @@ nav.navbar .nav-link:hover {
 }
 
 .featured h1 {
-    
     font-weight: bold;
-    padding: 0.6em;
+    padding: 0.6em 0;
 }
 
 #finder [name=korosztaly]+span, #finder [name=rendszeresseg]+span {

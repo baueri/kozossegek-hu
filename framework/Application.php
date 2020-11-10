@@ -4,7 +4,7 @@
 namespace Framework;
 
 use Framework\Container\Container;
-use Framework\Database\BootListenQueries;
+use Framework\Database\BootListeners;
 use Framework\Database\QueryHistory;
 use Framework\Dispatcher\Dispatcher;
 use Framework\Http\View\Bootstrappers\BootDirectives;
@@ -23,7 +23,7 @@ class Application extends Container
      */
     protected $bootstrappers = [
         BootDirectives::class,
-        BootListenQueries::class,
+        BootListeners::class,
     ];
 
     private $locale = LANG;

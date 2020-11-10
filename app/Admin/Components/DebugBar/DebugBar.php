@@ -11,10 +11,11 @@ class DebugBar
      */
     private $tabs = [];
 
-    public function __construct(QueryHistoryTab $queryHistoryTab, ErrorTab $errorTab)
+    public function __construct(QueryHistoryTab $queryHistoryTab, ErrorTab $errorTab, LoadedViewsTab $loadedViewsTab)
     {
         $this->tabs = [
             $queryHistoryTab,
+            $loadedViewsTab,
             $errorTab,
         ];
     }
