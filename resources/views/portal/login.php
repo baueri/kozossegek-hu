@@ -7,7 +7,7 @@
                     <div class="col-md-4">
                     @include('admin.partials.message')
                     <div class="form-group">
-                        <input type="text" name="username" placeholder="felhasználónév" autofocus class="form-control"/>
+                        <input type="text" name="username" placeholder="email vagy felhasználónév" autofocus class="form-control"/>
                     </div>
                     <div class="form-group">
                         <input type="password" name="password" placeholder="jelszó" class="form-control"/>
