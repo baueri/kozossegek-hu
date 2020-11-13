@@ -101,7 +101,7 @@ class Group extends Model
      */
     public function excerpt($words = 25): string
     {
-        return StringHelper::more($this->description, $words, '...');
+        return StringHelper::more(strip_tags($this->description), $words, '...');
     }
 
     /**

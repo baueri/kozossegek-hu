@@ -97,7 +97,15 @@ return [
     [
         'title' => 'Widgetek',
         'icon' => 'layer-group',
-        'as' => 'admin.widget.list'
+        'as' => 'admin.widget.list',
+        'similars' => ['admin.widget.create', 'admin.widget.edit'],
+        'submenu' => [
+            [
+                'title' => 'Widgetek',
+                'icon' => 'layer-group',
+                'as' => 'admin.widget.list',
+            ]
+        ]
     ],
     [
         'title' => 'Gépház',

@@ -66,7 +66,7 @@
     </div>
     @if($similar_groups)
         <h5 class="mt-4">Hasonló közösségek</h5>
-        @include('portal.partials.kozossegek-view2', ['groups' => $similar_groups, 'grid_class' => 'col-md-3'])
+        @include('portal.partials.kozossegek-view2', ['groups' => $similar_groups, 'grid_class' => 'col-lg-3 col-md-4', 'hide_excerpt' => true])
     @endif
 </div>
 

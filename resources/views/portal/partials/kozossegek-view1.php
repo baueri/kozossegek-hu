@@ -13,7 +13,7 @@
                             <i class="fa fa-map-marker-alt text-danger" title="város, település"></i> <span>{{ $group->city . ($group->district ? ', ' . $group->district . '</span>' : '')  }}<br>
                             <i class="fa fa-user-tie text-success" title="korosztály"></i> <span>{{ $group->ageGroup() }}</span><br>
                             <i class="fa fa-calendar-alt text-primary" title="alkalmak gyakorisága"></i> <span>{{ $group->occasionFrequency() }}</span><br>
-                            <a href="{{ $group->url() }}" class="btn btn-outline-danger btn-sm kozi-more-info">Megnézem</a>
+                            <a href="{{ $group->url() }}" class="btn btn-outline-success btn-sm kozi-more-info">Megnézem</a>
                         </p>
                     </div>
                 </div>

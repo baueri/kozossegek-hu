@@ -3,6 +3,7 @@
 namespace App\Portal\Controllers;
 
 use App\Repositories\AgeGroups;
+use App\Repositories\Widgets;
 use Framework\Http\Controller;
 
 /**
@@ -12,12 +13,8 @@ use Framework\Http\Controller;
  */
 class HomeController extends Controller
 {
-    public function home(AgeGroups $AgeGroups)
+    public function home()
     {
-        $model = [
-            'age_groups' => $AgeGroups->all()
-        ];
-
-        return view('portal.home', $model);
+        return view('portal.home');
     }
 }

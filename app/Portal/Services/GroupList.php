@@ -56,8 +56,9 @@ class GroupList {
         $filter['pending'] = 0;
         $filter['status'] = GroupStatusEnum::ACTIVE;
         $groups = $this->service->search($filter, 18);
+        $group_tags = builder('v_group_tags')->whereIn('group_id', $groups->pluck('id')->all())->get();
+        $groups->withMany($group_tags, 'tags', 'id', 'group_id');
         $template = $this->request['view'] ?: 'grid1';
-
         $model = [
             'groups' => $groups,
             'occasion_frequencies' => $this->occasionFrequencies->all(),
