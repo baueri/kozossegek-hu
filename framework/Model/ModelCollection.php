@@ -23,9 +23,23 @@ class ModelCollection extends Collection
         }
         
         foreach ($this->items as $item) {
-            $item->{$toLoad} = static::getAttributeValue($relations, $target, $item->{$on});
+            $found = static::getAttributeValues($relations, $target, $item->{$on});
+            $item->{$toLoad} = $found[0] ?? null;
         }
         
+        return $this;
+    }
+
+    public function withMany($relations, $toLoad, $on, $target = 'id')
+    {
+        if (!$relations) {
+            return $this;
+        }
+
+        foreach ($this->items as $item) {
+            $item->{$toLoad} = static::getAttributeValues($relations, $target, $item->{$on});
+        }
+
         return $this;
     }
     
@@ -36,18 +50,19 @@ class ModelCollection extends Collection
      * @param mixed $onValue
      * @return mixed
      */
-    private static function getAttributeValue($relations, $target, $onValue)
+    private static function getAttributeValues($relations, $target, $onValue)
     {
+        $found = [];
         foreach ($relations as $relation) {
             if (is_array($relation)) {
                 if (isset($relation[$target]) && $relation[$target] == $onValue) {
-                    return $relation;
+                    $found[] = $relation;
                 }
             } elseif(is_object($relation) && $relation->{$target} == $onValue) {
-                return $relation;
+                $found[] = $relation;
             }
         }
-        
-        return null;
+
+        return $found;
     }
 }

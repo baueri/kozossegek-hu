@@ -260,3 +260,8 @@ function debugbar()
 {
     return app()->get(DebugBar::class);
 }
+
+function is_home()
+{
+    return !trim(app()->get(\Framework\Http\Request::class)->uri, '/');
+}

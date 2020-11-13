@@ -406,7 +406,12 @@ class Builder
 
         return $this;
     }
-    
+
+    public function apply($macro, ...$args)
+    {
+        return $this->__call($macro, $args);
+    }
+
     protected function getMacro($method)
     {
         if (isset(static::$macros[$this->getTable()][$method])) {
@@ -414,7 +419,7 @@ class Builder
         } elseif (isset(static::$macros['global'][$method])) {
             return static::$macros['global'][$method];
         }
-        
+
         throw new InvalidArgumentException("database builder macro $method not found");
     }
 

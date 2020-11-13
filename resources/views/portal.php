@@ -34,11 +34,12 @@
     @endif
 </head>
 <body>
-    <nav id="header" class="navbar navbar-expand-sm bg-light navbar-light sticky-top">
+    @yield('before_header')
+    <nav id="header" class="navbar navbar-expand-sm sticky-top {{ !is_home() ? 'bg-light navbar-light' : ''}}">
         <div class="container">
             <a href="/" class="navbar-brand ml-4 ml-sm-0 mt-0 mb-0 p-0 p-sm-1">
-                <img src="/images/logo_sm_2.png" class="logo-lg" alt="kozossegek.hu">
-                <img src="/images/logo_only.png" class="logo-sm" style="display:none;" alt="kozossegek.hu">
+                <div class="logo-lg"></div>
+                <div src="/images/logo_only.png" class="logo-sm" style="display:none;"></div>
             </a>
             <input type="checkbox" style="display: none" id="toggle_main_menu" name="toggle_main_menu">
             <ul class="navbar-nav">
@@ -53,7 +54,7 @@
                 </li>
                 <?php if(Auth::loggedIn()): ?>
                 <li class="nav-item">
-                    <a href="@route('portal.my_profile')" class="nav-link text-primary"><i class="fa fa-user-circle" style="font-size: 18px;"></i></a>
+                    <a href="@route('portal.my_profile')" class="nav-link text-primary user-menu"><i class="fa fa-user-circle" style="font-size: 18px;"></i></a>
                     <ul class="submenu">
                         <li class="nav-item">
                             <a href="@route('portal.my_profile')" class="nav-link">Profilom</a>
@@ -80,14 +81,17 @@
             </ul>
             <label class="mobile-menu-toggle float-right mr-4 mr-sm-0 mb-0" for="toggle_main_menu"><i class="fa fa-bars"></i></label>
         </div>
-
     </nav>
+    @yield('after_header')
     @yield('portal')
     <footer id="footer" class="text-white">
         <div class="container" id="footer-top">
             <div class="row">
                 <div class="col-md-4 col-sm-6 col-xs-12">
                     @widget('LABA')
+<!--                    <div>-->
+<!--                        <a href="" class=""><img src="/images/fbook.png" style="width: 20px;"></a>-->
+<!--                    </div>-->
                 </div>
                 <div class="col-md-4 col-sm-6 col-xs-12">
                     <ul class="navbar-nav">
@@ -109,7 +113,7 @@
             </div>
         </div>
         <div id="footer-bottom">
-            <div class="container text-right">
+            <div class="container">
                 <small>© 2020 kozossegek.hu - Minden jog fenntartva!</small>
             </div>
         </div>

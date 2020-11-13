@@ -53,8 +53,8 @@
     <div class="mb-3">
         <small>Összes találat: {{ $total }}</small>
         <div class="float-right" style="font-size: 1.4em;">
-            <a href="?<?php echo http_build_query(array_merge($_REQUEST, ['view' => 'grid1'])); ?>" class="{{ $template == 'grid1' ? 'text-success' : 'text-dark' }}"><i class="fa fa-th-large"></i></a>
-            <a href="?<?php echo http_build_query(array_merge($_REQUEST, ['view' => 'grid2'])); ?>" class="{{ $template == 'grid2' ? 'text-success' : 'text-dark' }}"><i class="fa fa-th"></i></a>
+            <a href="?<?php echo http_build_query(array_merge($_REQUEST, ['view' => 'grid1'])); ?>" class="{{ $template == 'grid1' ? 'text-dark' : 'text-lightgray' }}"><i class="fa fa-th-large"></i></a>
+            <a href="?<?php echo http_build_query(array_merge($_REQUEST, ['view' => 'grid2'])); ?>" class="{{ $template == 'grid2' ? 'text-dark' : 'text-lightgray' }}"><i class="fa fa-th"></i></a>
         </div>
     </div>
 <!--    <div class="row row-cols-xxs-1 row-cols-2 row-cols-md-2 row-cols-lg-3 row-cols-xl-4" style="padding-top:2em">-->
