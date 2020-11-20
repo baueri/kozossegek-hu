@@ -42,7 +42,11 @@ class UpdateGroup extends BaseGroupService
         
         if(!$this->validate($data)) {
             Message::danger('A csillaggal jelölt mezők kitöltése kötelező!');
-            redirect_route('portal.my_group');
+            if (is_admin()) {
+                redirect_route('admin.group.edit', $group);
+            } else {
+                redirect_route('portal.my_group');
+            }
         }
         
         $this->syncTags($group, (array) $request['tags']);

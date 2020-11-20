@@ -37,6 +37,11 @@ class GroupController extends Controller {
         return $service->getHtml();
     }
 
+    public function kozossegRegisztracio()
+    {
+        return view('portal.group.kozosseg-regisztracio');
+    }
+
     /**
      * Közösség adatlap
      * @param  Request    $request
