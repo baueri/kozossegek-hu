@@ -30,7 +30,7 @@ class SearchGroupService
 
     /**
      *
-     * @param Collection $filter
+     * @param Collection|array $filter
      * @param int $perPage
      * @return PaginatedResultSet|Model[]|ModelCollection|PaginatedModelCollection
      */

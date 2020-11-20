@@ -595,3 +595,14 @@ input[name=search]::placeholder {
     border-bottom: 2px dashed;
     border-color: rgba(0, 0, 0, .3);
 }
+
+.group-tag-badge {
+    cursor: pointer;
+    font-size: 14px;
+    padding: 5px 10px;
+}
+
+.group-tag:checked + label {
+    background: var(--primary);
+    color: #fff;
+}

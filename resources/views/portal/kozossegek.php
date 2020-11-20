@@ -31,13 +31,14 @@
         </div><div class="form-group">
             <label>Közösség jellemzői:</label><br>
             @foreach($tags as $tag)
-            <label for="tag-{{ $tag['slug'] }}" class="mr-1">
-                <input type="checkbox"
-                       class="group-tag"
-                       id="tag-{{ $tag['slug'] }}"
-                       value="{{ $tag['slug'] }}"
-                    <?php if (in_array($tag['slug'], $selected_tags)): ?> checked <?php endif; ?>
-                > <span>{{ $tag['tag'] }}</span>
+            <input type="checkbox"
+                   class="group-tag"
+                   id="tag-{{ $tag['slug'] }}"
+                   value="{{ $tag['slug'] }}"
+                   <?php if (in_array($tag['slug'], $selected_tags)): ?> checked <?php endif; ?>
+                   style="display: none;">
+            <label for="tag-{{ $tag['slug'] }}" class="mr-1 badge badge-pill badge-secondary group-tag-badge">
+                <span>{{ $tag['tag'] }}</span>
             </label>
             @endforeach
             <input type="hidden" name="tags" value="{{ $filter['tags'] }}">

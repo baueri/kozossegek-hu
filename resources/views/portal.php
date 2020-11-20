@@ -47,6 +47,9 @@
                     <a href="@route('portal.groups')" class="nav-link"><span>Közösséget keresek</span></a>
                 </li>
                 <li class="nav-item">
+                    <a href="@route('portal.register_group')" class="nav-link"><span>Közösséget hirdetek</span></a>
+                </li>
+                <li class="nav-item">
                     <a href="@route('portal.page', ['slug' => 'rolunk'])" class="nav-link"><span>Rólunk</span></a>
                 </li>
                 <li class="nav-item">
@@ -54,7 +57,7 @@
                 </li>
                 <?php if(Auth::loggedIn()): ?>
                 <li class="nav-item">
-                    <a href="@route('portal.my_profile')" class="nav-link text-primary user-menu"><i class="fa fa-user-circle" style="font-size: 18px;"></i></a>
+                    <a href="@route('portal.my_profile')" class="nav-link user-menu text-danger"><i class="fa fa-user-circle" style="font-size: 18px;"></i></a>
                     <ul class="submenu">
                         <li class="nav-item">
                             <a href="@route('portal.my_profile')" class="nav-link">Profilom</a>
@@ -74,7 +77,7 @@
                 </li>
                 <?php else: ?>
                     <li class="nav-item">
-                        <a href="@route('login')" class="nav-link text-primary"><i class="fa fa-user-circle" style="font-size: 18px;"></i></a>
+                        <a href="@route('login')" class="nav-link"><i class="fa fa-user-circle" style="font-size: 18px;"></i></a>
                     </li>
                 <?php endif; ?>
 

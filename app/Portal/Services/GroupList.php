@@ -27,7 +27,7 @@ class GroupList {
     private $service;
 
     /**
-     * @var Request2
+     * @var Request
      */
     private $request;
 
@@ -58,7 +58,7 @@ class GroupList {
         $groups = $this->service->search($filter, 18);
         $group_tags = builder('v_group_tags')->whereIn('group_id', $groups->pluck('id')->all())->get();
         $groups->withMany($group_tags, 'tags', 'id', 'group_id');
-        $template = $this->request['view'] ?: 'grid1';
+        $template = $this->request['view'] ?: 'grid2';
         $model = [
             'groups' => $groups,
             'occasion_frequencies' => $this->occasionFrequencies->all(),

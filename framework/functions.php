@@ -1,6 +1,7 @@
 <?php
 
 use App\Admin\Components\DebugBar\DebugBar;
+use App\Middleware\AdminMiddleware;
 use App\Repositories\Widgets;
 use Arrilot\DotEnv\DotEnv;
 use Framework\Application;
@@ -264,4 +265,8 @@ function debugbar()
 function is_home()
 {
     return !trim(app()->get(\Framework\Http\Request::class)->uri, '/');
+}
+
+function is_admin() {
+    return in_array(AdminMiddleware::class, current_route()->getMiddleware());
 }
