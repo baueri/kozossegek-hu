@@ -2,23 +2,21 @@
     <link href="https://fonts.googleapis.com/css?family=Cardo:400,700|Oswald" rel="stylesheet">
     @include('asset_groups.select2')
 @endsection
-@section('before_header')
-    <div class="home">
+@section('header_content')
+    <div id="main-finder" class="p-4 p-lg-5">
+        <div class="container">
+            <div class="text-white text-center" style="margin: auto">
+                <img src="/images/logo_lg_white_md.png" style="max-width: 240px;" class="mb-4"/>
+                <h1>TALÁLD MEG A KÖZÖSSÉGED!</h1>
+            </div>
+            <form method="get" id="finder" class="mt-5" action="@route('portal.groups')">
+                <input type="text" name="search" class="mb-5" placeholder="pl.: Budapest antiochia egyetemista">
+                <button type="submit" class="btn btn-primary btn-lg">Keresés</button>
+            </form>
+        </div>
+    </div>
 @endsection
 @extends('portal')
-<div id="main-finder" class="p-4 p-lg-5">
-    <div class="container">
-        <div class="text-white text-center" style="margin: auto">
-            <img src="/images/logo_lg_white_md.png" style="max-width: 240px;" class="mb-4"/>
-            <h1>TALÁLD MEG A KÖZÖSSÉGED!</h1>
-        </div>
-        <form method="get" id="finder" class="mt-5" action="@route('portal.groups')">
-            <input type="text" name="search" class="mb-5" placeholder="pl.: Budapest antiochia egyetemista">
-            <button type="submit" class="btn btn-primary btn-lg">Keresés</button>
-        </form>
-    </div>
-</div>
-</div>
 <div class="container main-block">
     <h2 class="text-center">Hogyan működik?</h2>
     <div class="row mt-5 mb-5" id="instructions">
@@ -41,7 +39,6 @@
             <p>Amennyiben felkeltette az érdeklődésedet egy közösség, az adatlapján keresztül vedd fel a kapcsolatot a közösségvezetővel!</p>
         </div>
     </div>
-
 </div>
 <!--<div class="container main-block">-->
 <!--    <div class="row">-->

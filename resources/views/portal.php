@@ -10,7 +10,8 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital@0;1&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Crimson+Text|Work+Sans:400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Crimson+Text|Work+Sans:400,700|Merriweather" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
@@ -34,58 +35,59 @@
     @endif
 </head>
 <body>
-    @yield('before_header')
-    <nav id="header" class="navbar navbar-expand-sm sticky-top {{ !is_home() ? 'bg-light navbar-light' : ''}}">
-        <div class="container">
-            <a href="/" class="navbar-brand ml-4 ml-sm-0 mt-0 mb-0 p-0 p-sm-1">
-                <div class="logo-lg"></div>
-                <div src="/images/logo_only.png" class="logo-sm" style="display:none;"></div>
-            </a>
-            <input type="checkbox" style="display: none" id="toggle_main_menu" name="toggle_main_menu">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a href="@route('portal.groups')" class="nav-link"><span>Közösséget keresek</span></a>
-                </li>
-                <li class="nav-item">
-                    <a href="@route('portal.register_group')" class="nav-link"><span>Közösséget hirdetek</span></a>
-                </li>
-                <li class="nav-item">
-                    <a href="@route('portal.page', ['slug' => 'rolunk'])" class="nav-link"><span>Rólunk</span></a>
-                </li>
-                <li class="nav-item">
-                    <a href="@route('portal.page', ['slug' => 'a-kozosseg'])" class="nav-link">A közösségről</a>
-                </li>
-                <?php if(Auth::loggedIn()): ?>
-                <li class="nav-item">
-                    <a href="@route('portal.my_profile')" class="nav-link user-menu text-danger"><i class="fa fa-user-circle" style="font-size: 18px;"></i></a>
-                    <ul class="submenu">
-                        <li class="nav-item">
-                            <a href="@route('portal.my_profile')" class="nav-link">Profilom</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="@route('portal.my_group')" class="nav-link">Közösségem</a>
-                        </li>
-                        <?php if (Auth::user()->isAdmin()): ?>
-                            <li class="nav-item">
-                                <a href="@route('admin.dashboard')" class="nav-link"><i class="fa fa-cog"></i> Admin</a>
-                            </li>
-                        <?php endif; ?>
-                        <li class="nav-item">
-                            <a href="@route('logout')" class="nav-link text-danger"><i class="fa fa-sign-out-alt"></i> Kijelentkezés</a>
-                        </li>
-                    </ul>
-                </li>
-                <?php else: ?>
+    <div class="home">
+        <nav id="header" class="navbar navbar-expand-sm sticky-top">
+            <div class="container">
+                <a href="/" class="navbar-brand ml-4 ml-sm-0 mt-0 mb-0 p-0 p-sm-1">
+                    <div class="logo-lg"></div>
+                    <div src="/images/logo_only.png" class="logo-sm" style="display:none;"></div>
+                </a>
+                <input type="checkbox" style="display: none" id="toggle_main_menu" name="toggle_main_menu">
+                <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a href="@route('login')" class="nav-link"><i class="fa fa-user-circle" style="font-size: 18px;"></i></a>
+                        <a href="@route('portal.groups')" class="nav-link"><span>Közösséget keresek</span></a>
                     </li>
-                <?php endif; ?>
+                    <li class="nav-item">
+                        <a href="@route('portal.register_group')" class="nav-link"><span>Közösséget hirdetek</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="@route('portal.page', ['slug' => 'rolunk'])" class="nav-link"><span>Rólunk</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="@route('portal.page', ['slug' => 'a-kozosseg'])" class="nav-link">A közösségről</a>
+                    </li>
+                    <?php if(Auth::loggedIn()): ?>
+                    <li class="nav-item">
+                        <a href="@route('portal.my_profile')" class="nav-link user-menu text-danger"><i class="fa fa-user-circle" style="font-size: 18px;"></i></a>
+                        <ul class="submenu">
+                            <li class="nav-item">
+                                <a href="@route('portal.my_profile')" class="nav-link">Profilom</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="@route('portal.my_group')" class="nav-link">Közösségem</a>
+                            </li>
+                            <?php if (Auth::user()->isAdmin()): ?>
+                                <li class="nav-item">
+                                    <a href="@route('admin.dashboard')" class="nav-link"><i class="fa fa-cog"></i> Admin</a>
+                                </li>
+                            <?php endif; ?>
+                            <li class="nav-item">
+                                <a href="@route('logout')" class="nav-link text-danger"><i class="fa fa-sign-out-alt"></i> Kijelentkezés</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <?php else: ?>
+                        <li class="nav-item">
+                            <a href="@route('login')" class="nav-link"><i class="fa fa-user-circle" style="font-size: 18px;"></i></a>
+                        </li>
+                    <?php endif; ?>
 
-            </ul>
-            <label class="mobile-menu-toggle float-right mr-4 mr-sm-0 mb-0" for="toggle_main_menu"><i class="fa fa-bars"></i></label>
-        </div>
-    </nav>
-    @yield('after_header')
+                </ul>
+                <label class="mobile-menu-toggle float-right mr-4 mr-sm-0 mb-0" for="toggle_main_menu"><i class="fa fa-bars"></i></label>
+            </div>
+        </nav>
+        @yield('header_content')
+    </div>
     @yield('portal')
     <footer id="footer" class="text-white">
         <div class="container" id="footer-top">
