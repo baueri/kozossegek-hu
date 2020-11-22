@@ -10,7 +10,7 @@ img {
 }
 
 .home {
-    background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/images/img2.jpg") no-repeat top center;
+    background:url("/images/img2.jpg") no-repeat top center;
     background-position: fixed;
     background-size: cover;
 }
@@ -124,15 +124,14 @@ nav.navbar .nav-link:hover {
 }
 
 .featured {
-    background: url("https://cdn.wallpapersafari.com/44/68/7morZf.jpg") no-repeat center;
-    color: #fff;
     display: inline-block;
     width: 100%;
 }
 
 .featured h1 {
-    font-weight: bold;
     padding: 0.6em 0;
+    font-family: 'Merriweather', serif;
+    color: #fff;
 }
 
 #finder [name=korosztaly]+span, #finder [name=rendszeresseg]+span {

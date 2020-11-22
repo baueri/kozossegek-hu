@@ -53,7 +53,9 @@
                 <p class="kozi-tulajdonsag">
                     <label>Címkék</label><br>
                     @foreach($tag_names as $tag)
-                        <a href="@route('portal.groups', ['tags' => $tag['tag']])" class="badge badge-primary">{{ $tag['tag_name'] }}</a>
+                        <a  href="@route('portal.groups', ['tags' => $tag['tag']])" for="tag-{{ $tag['slug'] }}" class="mr-1 badge badge-pill badge-primary group-tag-badge align-middle">
+                            <span class="align-middle">{{ $tag['tag_name'] }}</span>
+                        </a>
                     @endforeach
                 </p>
             @endif
