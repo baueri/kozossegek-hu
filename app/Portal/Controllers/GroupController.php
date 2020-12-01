@@ -6,9 +6,7 @@ use App\Admin\Group\Services\CreateGroup;
 use App\Admin\Group\Services\UpdateGroup;
 use App\Auth\Auth;
 use App\Enums\DayEnum;
-use App\Mail\GroupContactMail;
 use App\Models\GroupView;
-use App\Portal\Services\SearchGroupService;
 use App\Repositories\AgeGroups;
 use App\Repositories\Denominations;
 use App\Repositories\Groups;
@@ -18,11 +16,9 @@ use App\Repositories\Institutes;
 use App\Repositories\OccasionFrequencies;
 use Error;
 use Exception;
-use Framework\Exception\UnauthorizedException;
 use Framework\Http\Controller;
 use Framework\Http\Message;
 use Framework\Http\Request;
-use Framework\Mail\Mailer;
 use Framework\Model\ModelNotFoundException;
 
 /**
@@ -37,9 +33,18 @@ class GroupController extends Controller {
         return $service->getHtml();
     }
 
-    public function kozossegRegisztracio()
+    public function kozossegRegisztracio(Request $request)
     {
-        return view('portal.group.kozosseg-regisztracio');
+        $step = $request['next_step'] ?: 1;
+        switch ($step) {
+            case 1: 
+            default:
+                return app()->make(\App\Http\Responses\CreateGroupSteps\LoginOrRegister::class);
+            case 2:
+                return app()->make(\App\Http\Responses\CreateGroupSteps\SetGroupData::class);
+            case 3:
+                return app()->make(\App\Http\Responses\CreateGroupSteps\UploadDocument::class);
+        }
     }
 
     /**
@@ -75,7 +80,6 @@ class GroupController extends Controller {
         $slug = $group->slug();
         $metaKeywords = builder('search_engine')->where('group_id', $group->id)->first()['keywords'];
         
-
         return view('portal.kozosseg', compact('group', 'institute', 'backUrl', 'tag_names',
             'similar_groups', 'images', 'honeypot_check_hash', 'slug', 'keywords'));
     }

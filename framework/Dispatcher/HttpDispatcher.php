@@ -6,10 +6,8 @@ use Exception;
 use Framework\Application;
 use Framework\Http\HttpKernel;
 use Framework\Http\Request;
-use Framework\Http\Response;
 use Framework\Http\Route\RouteInterface;
 use Framework\Http\Route\RouterInterface;
-use Framework\Http\View\View;
 use Framework\Support\StringHelper;
 use Framework\Http\Exception\PageNotFoundException;
 
@@ -76,7 +74,6 @@ class HttpDispatcher implements Dispatcher
         $response = $this->resolveRoute($route);
 
         if (is_array($response) || is_object($response)) {
-            \Framework\Http\Response::asJson();
             if (is_object($response) && method_exists($response, '__toString')) {
                 echo $response;
             } else {

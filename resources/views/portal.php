@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="/css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-    <script src="/js/scripts.js"></script>
+    
 
     @if(is_prod())
         <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -47,9 +47,11 @@
                     <li class="nav-item">
                         <a href="@route('portal.groups')" class="nav-link"><span>Közösséget keresek</span></a>
                     </li>
-                    <li class="nav-item">
-                        <a href="@route('portal.register_group')" class="nav-link"><span>Közösséget hirdetek</span></a>
-                    </li>
+                    @if(!\App\Auth\Auth::loggedIn())
+                        <li class="nav-item">
+                            <a href="@route('portal.register_group')" class="nav-link"><span>Közösséget hirdetek</span></a>
+                        </li>
+                    @endif
                     <li class="nav-item">
                         <a href="@route('portal.page', ['slug' => 'rolunk'])" class="nav-link"><span>Rólunk</span></a>
                     </li>
@@ -128,5 +130,6 @@
     @if($show_debugbar)
     {{ debugbar()->render() }}
     @endif
+    <script src="/js/scripts.js"></script>
 </body>
 </html>

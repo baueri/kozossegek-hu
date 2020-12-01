@@ -39,13 +39,14 @@ img {
 }
 
 .home .navbar-brand > div:first-child {
-    background: url("/images/logo_sm_2_white.png") no-repeat center;
-    background-size: 100%;
+    filter: brightness(0) invert(1);
+
 }
 
 .home #header.compact .navbar-brand > div {
     background: url("/images/logo_sm_2.png") no-repeat center;
     background-size: 100%;
+    filter: none;
 }
 
 #main-finder {
@@ -129,7 +130,8 @@ nav.navbar .nav-link:hover {
 }
 
 .featured h1 {
-    padding: 0.6em 0;
+    padding: 0.8em 0;
+    margin: 0;
     font-family: 'Merriweather', serif;
     color: #fff;
 }
@@ -605,3 +607,7 @@ input[name=search]::placeholder {
     background: var(--primary);
     color: #fff;
 }
+.required label:after {
+        content: "*";
+        color: red;
+    }

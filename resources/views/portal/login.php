@@ -1,10 +1,12 @@
-@extends('portal')
+@section('header_content')
     @featuredTitle('Belépés')
-    <div class="container inner login-page">
-        <div class="form">
-            <form class="login-form" method="post">
-                <div class="row">
-                    <div class="col-md-4">
+@endsection
+@extends('portal')
+<div class="container inner login-page">
+    <div class="form">
+        <form class="login-form" method="post">
+            <div class="row">
+                <div class="col-md-4">
                     @include('admin.partials.message')
                     <div class="form-group">
                         <input type="text" name="username" placeholder="email vagy felhasználónév" autofocus class="form-control"/>
@@ -18,7 +20,7 @@
                         <a href="@route('portal.forgot_password')" style="float: right">Elfelejtettem a jelszavam</a>
                     </p>
                 </div>
-                </div>
-            </form>
-        </div>
+            </div>
+        </form>
     </div>
+</div>

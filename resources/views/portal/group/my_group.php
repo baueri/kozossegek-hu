@@ -227,19 +227,7 @@
         });
 
 
-        $("[name=institute_id]").select2({
-            placeholder: "intézmény",
-            allowClear: true,
-            ajax: {
-                url: "@route('api.search-institute')",
-                dataType: 'json',
-                delay: 300,
-                data: function (params) {
-                    params.city = $("[name=city]").val();
-                    return params;
-                }
-            }
-        });
+        $("[name=institute_id]").instituteSelect();
 
         initSummernote('[name=description]', {
             toolbar: [
@@ -254,9 +242,3 @@
         $("#age_group, #on_days").select2();
     });
 </script>
-<style>
-    .required label:after {
-        content: "*";
-        color: red;
-    }
-</style>
