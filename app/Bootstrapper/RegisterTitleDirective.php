@@ -12,17 +12,9 @@ class RegisterTitleDirective implements Bootstrapper
     public function boot()
     {
         ViewParser::registerDirective(new TitleDirective());
-        ViewParser::registerDirective('header', function($matches) {
-            if (strpos($matches[0], '@endheader') !== false) {
-                return '<?php }); ?>';
-            }
-
-            return '<?php $__env->getSection()->add("header", function($args) { extract($args); ?> ';
-        });
-        
-        ViewParser::registerDirective('featuredTitle', function($matches){
-            return "<?php echo view('portal.partials.featured-title', ['title' => {$matches[1]}]); ?>";
-        });
+        foreach (config('view.directives') as $name => $callback) {
+            ViewParser::registerDirective($name, $callback);
+        }
 
         ViewParser::registerDirective(new class() implements \Framework\Http\View\Directives\Directive{
             public function getPattern()

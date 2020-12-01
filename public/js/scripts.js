@@ -25,6 +25,26 @@ $(window).on("load scroll", () => {
     }
 });
 
+$.fn.instituteSelect = function () {
+    $(this).each(function(){
+        $(this).select2({
+            placeholder: "intézmény",
+            allowClear: true,
+            ajax: {
+                url: "/api/v1/search-institute",
+                dataType: 'json',
+                delay: 300,
+                data: function (params) {
+                    params.city = $("[name=city]").val();
+                    return params;
+                }
+            }
+        });
+    });
+    
+    return $(this);
+}
+
 var loadFile = function(event, element) {
 var id = $(element).data("target");
   var output = document.getElementById(id);
