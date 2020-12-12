@@ -38,8 +38,8 @@
                            value="{{ $tag['slug'] }}"
                            <?php if (in_array($tag['slug'], $selected_tags)): ?> checked <?php endif; ?>
                            style="display: none;">
-                    <label for="tag-{{ $tag['slug'] }}" class="mr-1 badge badge-pill badge-light group-tag-badge align-middle">
-                        <span class="align-middle mr-2" title="{{ $tag['slug'] }}" style="background: url('/images/tag/{{ $tag['slug'] }}.png'); background-size: cover; width: 24px; height: 24px; display: inline-block;"></span>
+                    <label for="tag-{{ $tag['slug'] }}" class="mr-1 badge badge-pill badge-light group-tag-badge align-middle" title="{{ $tag['tag'] }}">
+                        <span class="align-middle mr-2" style="background: url('/images/tag/{{ $tag['slug'] }}.png'); background-size: cover; width: 24px; height: 24px; display: inline-block;"></span>
                         <span class="align-middle">{{ $tag['tag'] }}</span>
                     </label>
                     @endforeach
@@ -62,7 +62,7 @@
 <script>
 $(() => {
     $("[name=varos]").select2({
-        placeholder: "város",
+        placeholder: "település",
         allowClear: true,
         ajax: {
             url: '/api/v1/search-city',

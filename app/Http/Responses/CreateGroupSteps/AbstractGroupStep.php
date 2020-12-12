@@ -2,7 +2,8 @@
 
 namespace App\Http\Responses\CreateGroupSteps;
 
-abstract class AbstractGroupStep {
+abstract class AbstractGroupStep
+{
 
     /**
      * @var \Framework\Http\Request
@@ -12,7 +13,8 @@ abstract class AbstractGroupStep {
     /**
      * @param \Framework\Http\Request $request
      */
-    public function __construct(\Framework\Http\Request $request) {
+    public function __construct(\Framework\Http\Request $request)
+    {
         $this->request = $request;
     }
     
@@ -23,7 +25,8 @@ abstract class AbstractGroupStep {
         return [];
     }
     
-    public function __toString() {
+    public function __toString()
+    {
         return view($this->getView(), array_merge(['step' => $this->request['next_step'] ?: 1], $this->getModel()));
     }
 }

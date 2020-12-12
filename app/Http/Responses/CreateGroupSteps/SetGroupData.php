@@ -1,8 +1,8 @@
 <?php
 namespace App\Http\Responses\CreateGroupSteps;
 
-
-class SetGroupData extends AbstractGroupStep {
+class SetGroupData extends AbstractGroupStep
+{
 
     /**
      * @var \App\Repositories\Institutes
@@ -10,16 +10,18 @@ class SetGroupData extends AbstractGroupStep {
     private $institutes;
 
     /**
-     * 
+     *
      * @param \Framework\Http\Request $request
      * @param \App\Repositories\Institutes $institutes
      */
-    public function __construct(\Framework\Http\Request $request, \App\Repositories\Institutes $institutes) {
+    public function __construct(\Framework\Http\Request $request, \App\Repositories\Institutes $institutes)
+    {
         parent::__construct($request);
         $this->institutes = $institutes;
     }
     
-    protected function getModel() {
+    protected function getModel()
+    {
         $institute = $this->institutes->find($this->request['institute_id']);
         $data = [
             'group_leaders' => $this->request->get('group_leaders', $this->request['name']),
@@ -38,8 +40,8 @@ class SetGroupData extends AbstractGroupStep {
         ];
     }
     
-    protected function getView() {
+    protected function getView()
+    {
         return 'portal.group.create-steps.group-data';
     }
-
 }

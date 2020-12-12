@@ -14,6 +14,18 @@ $(() => {
 
     $("[title]").tooltip();
     
+    var previousScroll = 0;
+
+    $(window).scroll(function(){
+       var currentScroll = $(this).scrollTop();
+       if (currentScroll > previousScroll){
+           
+       } else {
+          
+       }
+       previousScroll = currentScroll;
+    });
+    
 });
 
 

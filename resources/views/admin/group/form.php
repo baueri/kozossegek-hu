@@ -9,18 +9,18 @@
 <form method="post" id="group-form" action="{{ $action }}">
     <div class="row">
         <div class="col-md-9">
-            <div class="form-group">
-                <label for="name">Közösség neve</label>
-                <input type="text" id="name" value='{{ $group->name }}' name="name" class="form-control" autofocus>
+            <div class="form-group required">
+                <label for="name">Közösség neve:</label>
+                <input type="text" id="name" value='{{ $group->name }}' name="name" class="form-control" required>
             </div>
 
             <div class="row">
                 <div class="col-md-6">
-                    <div class="form-group">
+                    <div class="form-group required">
                         <label for="institute_id">Intézmény / plébánia</label>
-                        <select name="institute_id" style="width:100%" class="form-control">
+                        <select name="institute_id" style="width:100%" class="form-control" required>
                             <option value="{{ $group->institute_id }}">
-                                {{ $group->institute_id ? $group->institute_name . ' (' . $group->city . ')' : 'intézmény' }}
+                                {{ $group->institute_id ? $institute->name . ' (' . $institute->city . ')' : 'intézmény' }}
                             </option>
                         </select>
                     </div>
@@ -29,18 +29,18 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label>Karbantartó</label>
-                        <select name="user_id" class="form-control">
-                            <option value="{{ $group->user_id }}">{{ $owner->name }}</option>
+                        <label for="user_id">Karbantartó</label>
+                        <select name="user_id" class="form-control" placeholder="karbantartó">
+                            <option value="{{ $group->user_id ?: "" }}">{{ $owner->name }}</option>
                         </select>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-4">
-                    <div class="form-group">
+                    <div class="form-group required">
                         <label for="group_leaders">Közösségvezető(k)</label>
-                        <input type="text" name="group_leaders" id="group_leaders" class="form-control" value="{{ $group->group_leaders }}">
+                        <input type="text" name="group_leaders" id="group_leaders" class="form-control" value="{{ $group->group_leaders }}" required>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -50,9 +50,9 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="form-group">
+                    <div class="form-group required">
                         <label for="group_leader_email">Email cím</label>
-                        <input type="email" name="group_leader_email" id="group_leader_email" value="{{ $group->group_leader_email }}" class="form-control">
+                        <input type="email" name="group_leader_email" id="group_leader_email" value="{{ $group->group_leader_email }}" class="form-control" required>
                     </div>
                 </div>
             </div>
@@ -71,9 +71,9 @@
                     @endforeach
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group required">
                 <label for="description">Leírás</label>
-                <textarea name="description" id="description">{{ $group->description }}</textarea>
+                <textarea name="description" id="description" required>{{ $group->description }}</textarea>
             </div>
             <div class="row group-images">
                 <div class="col-md-3">
@@ -110,15 +110,15 @@
                     @endforeach
                 </select>
             </div>
-            <div class="form-group">
+            <div class="form-group required">
                 <label for="denomination">Felekezet</label>
-                <select class="form-control" name="denomination">
+                <select class="form-control" name="denomination" required>
                     @foreach($denominations as $denomination)
                     <option value="{{ $denomination->name }}">{{ $denomination }}</option>
                     @endforeach
                 </select>
             </div>
-            <div class="form-group">
+            <div class="form-group required">
                 <label for="age_group">Korosztály</label>
                 <select class="form-control" name="age_group[]" multiple="multiple">
                     @foreach($age_groups as $age_group)
@@ -126,9 +126,9 @@
                     @endforeach
                 </select>
             </div>
-            <div class="form-group">
+            <div class="form-group required">
                 <label for="occasion_frequency">Alkalmak gyakorisága</label>
-                <select class="form-control" name="occasion_frequency">
+                <select class="form-control" name="occasion_frequency" required>
                     @foreach($occasion_frequencies as $occasion_frequency)
                         <option value="{{ $occasion_frequency->name }}" @if($group->occasion_frequency == $occasion_frequency->name) selected @endif>{{ $occasion_frequency }}</option>
                     @endforeach

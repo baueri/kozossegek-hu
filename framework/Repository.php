@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Framework;
 
 use Framework\Database\PaginatedResultSet;
@@ -9,7 +8,6 @@ use Framework\Model\ModelCollection;
 use Framework\Model\Model;
 use Framework\Model\PaginatedModelCollection;
 use Framework\Model\ModelNotFoundException;
-use Framework\Traits\Makeable;
 
 abstract class Repository
 {
@@ -92,7 +90,7 @@ abstract class Repository
     public function getInstances($rows)
     {
         if ($rows instanceof PaginatedResultSetInterface) {
-            return new PaginatedModelCollection(array_map(function($row){
+            return new PaginatedModelCollection(array_map(function ($row) {
                 return $this->getInstance($row);
             }, $rows->rows()), $rows->perpage(), $rows->page(), $rows->total());
         }
@@ -176,7 +174,7 @@ abstract class Repository
         $original = $model->getOriginalValues();
         $newValues = $this->valuesToArray($model);
         $changes = [];
-        foreach($newValues as $key => $value) {
+        foreach ($newValues as $key => $value) {
             if ($value != $original[$key]) {
                 $changes[$key] = $value;
             }
@@ -219,12 +217,10 @@ abstract class Repository
         Event\EventDisptatcher::dispatch(new Database\Repository\Events\ModelDeleted($model));
 
         return $deleted;
-
     }
 
     public function updateOrCreate(array $where, array $data)
     {
         return $this->getBuilder()->updateOrInsert($where, $data);
     }
-
 }

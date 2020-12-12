@@ -94,7 +94,7 @@ abstract class BaseGroupService {
      */
     protected function validate(array $data)
     {
-        $requiredFields = ['name', 'denomination', 'status', 'institute_id', 'age_group', 'occasion_frequency', 'description', 'group_leaders', 'group_leader_email'];
+        $requiredFields = ['name', 'denomination', 'institute_id', 'age_group', 'occasion_frequency', 'description', 'group_leaders', 'group_leader_email'];
         
         foreach ($requiredFields as $field) {
             if(!isset($data[$field]) || !$data[$field]) {

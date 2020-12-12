@@ -1,7 +1,7 @@
 $.fn.citySelect = function (options) {
 
     $(this).select2($.extend({
-        placeholder: "város",
+        placeholder: "település",
         allowClear: true,
         tags: true,
         ajax: {

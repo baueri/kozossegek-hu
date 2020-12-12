@@ -64,7 +64,7 @@
     $(() => {
         $("[name=order]").select2({ placeholder: "rendezés" });
         $("[name=varos]").select2({
-            placeholder: "város",
+            placeholder: "település",
             allowClear: true,
             ajax: {
                 url: '/api/v1/search-city',

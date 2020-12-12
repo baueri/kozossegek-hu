@@ -22,7 +22,7 @@ class InstituteAdminTable extends AdminTable implements Deletable, Editable
         'id' => '#',
         'name' => 'Intézmény / plébánia neve',
         'leader_name' => 'Plébános / intézményvezető',
-        'city' => 'Város',
+        'city' => 'Település',
         'district' => 'Városrész',
         'address' => 'Cím',
         'updated_at' => 'Utoljára módosítva',

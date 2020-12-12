@@ -3,19 +3,19 @@
 namespace App\Admin\Group\Services;
 
 use App\Models\Group;
-use Framework\Http\Message;
 use Framework\Http\Request;
+use App\Http\Exception\RequestParameterException;
 
 /**
  * Description of CreateGrooup
  *
  * @author ivan
  */
-class CreateGroup extends BaseGroupService {
-
+class CreateGroup extends BaseGroupService
+{
 
     /**
-     * 
+     *
      * @param Request $request
      * @return Group
      */
@@ -23,7 +23,11 @@ class CreateGroup extends BaseGroupService {
     {
         $data = $request->except('files', 'image', 'tags')->all();
         
-        $data['age_group'] = implode(',', $data['age_group']);
+        $data['age_group'] = implode(',', $data['age_group'] ?? []);
+        
+        if (!$this->validate($data)) {
+            throw new RequestParameterException('A csillaggal jelölt mezők kitöltése kötelező!');
+        }
         
         $group = $this->repository->create($data);
         

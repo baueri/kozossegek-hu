@@ -3,7 +3,6 @@
 
 namespace Framework\Database;
 
-
 use Framework\Http\Request;
 use Framework\Exception\MethodNotFoundException;
 
@@ -87,7 +86,8 @@ class Builder
         $bindings = array_merge($this->selectBindings, $bindings);
         
         $distinct = $this->distinct ? 'DISTINCT ' : '';
-        $base = sprintf('select %s%s from %s ',
+        $base = sprintf(
+            'select %s%s from %s ',
             $distinct,
             implode(', ', $this->select ?: ['*']),
             implode(', ', $this->table)
@@ -98,7 +98,6 @@ class Builder
 
     protected function build()
     {
-
         $bindings = [];
 
         $query = '';
@@ -120,19 +119,16 @@ class Builder
     {
         $where = '';
         foreach ($this->where as $i => [$column, $operator, $value]) {
-
             if ($operator == 'in' || $operator == 'not in') {
                 $in = implode(',', array_fill(0, count($value), '?'));
                 $where .= sprintf("$column $operator (%s)", $in);
                 $bindings = array_merge($bindings, $value);
-
-            } elseif(is_callable($column)) {
-
+            } elseif (is_callable($column)) {
                 $builder = builder();
 
                 $column($builder);
 
-                $closureBindings = array_map(function($where){
+                $closureBindings = array_map(function ($where) {
                     return $where[2];
                 }, $builder->getWhere());
 
@@ -140,16 +136,15 @@ class Builder
 
                 $where .= "($closureWhere) $operator";
 
-                if(is_array($closureBindings)) {
+                if (is_array($closureBindings)) {
                     $bindings = array_merge($bindings, $closureBindings);
                 }
-
-            } elseif($operator) {
+            } elseif ($operator) {
                 $where .= sprintf('%s %s ?', $column, $operator);
                 $bindings[] = $value;
             } else {
                 $where .= $column;
-                if(is_array($value)) {
+                if (is_array($value)) {
                     $bindings = array_merge($bindings, $value);
                 }
             }
@@ -158,7 +153,6 @@ class Builder
                 $clause = $this->where[$i + 1][3];
                 $where .= " $clause ";
             }
-
         }
 
 
@@ -202,7 +196,7 @@ class Builder
 
     public function orderBy($columns, $order = null)
     {
-        foreach((array) $columns as $column) {
+        foreach ((array) $columns as $column) {
             $this->orderBy[] = $column . ($order ? ' ' . $order : '');
         }
 
@@ -312,9 +306,11 @@ class Builder
 
         [$query, $bindings] = $this->build();
 
-        $base = sprintf('update %s set %s',
-        implode(', ', $this->table),
-        $set);
+        $base = sprintf(
+            'update %s set %s',
+            implode(', ', $this->table),
+            $set
+        );
 
         return $this->db->update($base . $query, ...array_merge(array_values($values), $bindings));
     }
@@ -323,10 +319,12 @@ class Builder
     {
         $bindings = array_values($values);
 
-        $query = sprintf('insert into %s (%s) values (%s)',
+        $query = sprintf(
+            'insert into %s (%s) values (%s)',
             implode(', ', $this->table),
             implode(',', array_keys($values)),
-            implode(',', array_fill(0, count($values), '?')));
+            implode(',', array_fill(0, count($values), '?'))
+        );
 
         return $this->db->insert($query, $bindings);
     }
@@ -343,7 +341,8 @@ class Builder
         $onDuplicate = implode(',', $onDuplicateArr);
         [$table] = $this->table;
         $whereValues = implode(',', array_fill(0, count($allColumns), '?'));
-        $query = sprintf('insert into %s (%s) values(%s) on duplicate key update %s',
+        $query = sprintf(
+            'insert into %s (%s) values(%s) on duplicate key update %s',
             $table,
             $columns,
             $whereValues,
@@ -357,7 +356,6 @@ class Builder
 
     public function delete()
     {
-
         [$query, $bindings] = $this->build();
 
         $base = sprintf('delete from %s', implode(', ', $this->table));
@@ -381,7 +379,6 @@ class Builder
         }
 
         return DatabaseHelper::getQueryWithBindings($query, $bindings);
-
     }
 
     private function getTable()

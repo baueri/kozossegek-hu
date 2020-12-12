@@ -16,7 +16,8 @@ use App\Enums\DayEnum;
  *
  * @author ivan
  */
-class BaseGroupForm {
+class BaseGroupForm
+{
 
     /**
      * @var Institutes
@@ -28,9 +29,9 @@ class BaseGroupForm {
      */
     protected $repository;
 
-   /**
-    * @var Users
-    */
+    /**
+     * @var Users
+     */
     protected $users;
 
     /**
@@ -41,19 +42,21 @@ class BaseGroupForm {
     /**
      *
      * @param Request $request
-     * @param Groups $repository
      * @param Institutes $institutes
      */
-    public function __construct(Request $request, GroupViews $repository,
-            Institutes $institutes, Users $users) {
+    public function __construct(
+        Request $request,
+        Institutes $institutes,
+        Users $users
+    )
+    {
         $this->request = $request;
-        $this->repository = $repository;
         $this->institutes = $institutes;
         $this->users = $users;
     }
 
-    public function show() {
-        $group = $this->getGroup();
+    public function show(Group $group)
+    {
         $institute = $this->institutes->find($group->institute_id) ?: new Institute;
         $denominations = (new \App\Repositories\Denominations)->all();
         $statuses = (new \App\Repositories\GroupStatusRepository)->all();
@@ -70,14 +73,24 @@ class BaseGroupForm {
         $title = $group->exists() ? 'Közösség módosítása' : 'Új közösség létrehozása';
         $owner = $this->users->find($group->user_id);
 
-        return view('admin.group.form', compact('group', 'institute', 'denominations',
-                'statuses', 'occasion_frequencies', 'age_groups', 'action', 'spiritual_movements', 'tags',
-                'age_group_array', 'group_tags', 'days', 'group_days', 'images', 'title', 'owner'));
-    }
-
-    protected function getGroup(): Group
-    {
-        return new Group;
+        return view('admin.group.form', compact(
+            'group',
+            'institute',
+            'denominations',
+            'statuses',
+            'occasion_frequencies',
+            'age_groups',
+            'action',
+            'spiritual_movements',
+            'tags',
+            'age_group_array',
+            'group_tags',
+            'days',
+            'group_days',
+            'images',
+            'title',
+            'owner'
+        ));
     }
 
     protected function getAction(Group $group)

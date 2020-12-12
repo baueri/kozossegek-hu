@@ -31,13 +31,7 @@
         width: 35px;
         height: 35px;
         background: #eaeaea;
-        border-radius: 50%;
         margin: 0 5px;
-        transition: box-shadow ease-in .1s;
-    }
-
-    .tag-img:hover {
-        box-shadow: 0 0 6px #555;
     }
 
     #kozossegek-list > div {

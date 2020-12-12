@@ -11,7 +11,7 @@
             <input type="text" name="name" class="form-control" value="{{ $institute->name }}">
         </div>
         <div class="form-group">
-            <label>Város</label>
+            <label>Település</label>
             <select name="city" class="form-control">
                 <option value="{{ $institute->city }}">{{ $institute->city }}</option>
             </select>

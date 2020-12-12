@@ -22,7 +22,7 @@ class GroupTable extends AdminTable implements Editable, Deletable
     protected $columns = [
         'id' => '#',
         'name' => 'Közösség neve',
-        'city' => 'Város',
+        'city' => 'Település',
         'institute_name' => 'Intézmény / plébánia',
         'group_leaders' => 'Közösség vezető(i)',
         'age_group' => 'Korosztály',

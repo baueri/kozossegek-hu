@@ -4,16 +4,15 @@ namespace App\Storage;
 
 class Base64Image
 {
-    
     private $imageSource = '';
     
     /**
-     * 
+     *
      * @param string $imageData
      */
     public function __construct(string $imageData)
     {
-        $this->imageSource = base64_decode(substr($imageData, strpos($imageData,',')));
+        $this->imageSource = base64_decode(substr($imageData, strpos($imageData, ',')));
     }
     
     public function saveImage(string $path)
@@ -41,11 +40,10 @@ class Base64Image
     {
         $dirname = dirname($path);
         
-        if(!is_dir($dirname) && !file_exists($dirname)) {
-            if(!mkdir($dirname, 0775, true)) {
+        if (!is_dir($dirname) && !file_exists($dirname)) {
+            if (!mkdir($dirname, 0775, true)) {
                 throw new \Exception("Cannot create image dir: $dirname");
             }
         }
     }
-   
 }

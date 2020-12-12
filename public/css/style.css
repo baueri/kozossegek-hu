@@ -53,6 +53,13 @@ img {
     min-height: calc(100vh - 321px);
 }
 
+.btn-darkblue {
+    color: #fff;
+    background-color: #3f91b0;
+    border: 0;
+    border-radius: 0;
+}
+
 #main-finder button {
     background: #3f91b0;
     border: 1px solid #3f91b0;
@@ -116,8 +123,7 @@ nav.navbar .nav-link {
     color: #000;
     text-transform: uppercase;
     transition: color ease-in .2s;
-    font-size: .85rem;
-    font-family: 'Work Sans', sans-serif;
+    font-family: 'Roboto Condensed', sans-serif;
 }
 
 nav.navbar .nav-link:hover {
