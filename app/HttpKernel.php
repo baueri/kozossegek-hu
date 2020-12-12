@@ -3,7 +3,6 @@
 
 namespace App;
 
-
 use App\Admin\Components\DebugBar\ErrorTab;
 use App\Middleware\DebugBarMiddleware;
 use App\Middleware\ListenViewLoading;
@@ -34,8 +33,7 @@ class HttpKernel extends \Framework\Http\HttpKernel
 
     public function handleError($error)
     {
-        if($error->getCode() != '404' && is_prod()) {
-
+        if ($error->getCode() != '404' && is_prod()) {
             $mail = (new CriticalErrorEmail($error));
 
             $mail->build();

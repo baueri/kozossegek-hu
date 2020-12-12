@@ -24,21 +24,27 @@ class GroupController extends AdminController
 
     public function create(BaseGroupForm $service)
     {
-        return $service->show();
+        return $service->show(new Group());
     }
 
-    public function doCreate(Request $request, CreateGroup $service)
+    public function doCreate(Request $request, CreateGroup $service, BaseGroupForm $form)
     {
-        $group = $service->create($request);
+        try {
+            $group = $service->create($request);
+
+            Message::success('Közösség létrehozva.');
+
+            redirect_route('admin.group.edit', ['id' => $group->id]);
         
-        Message::success('Közösség létrehozva.');
-
-        redirect_route('admin.group.edit', ['id' => $group->id]);
+        } catch (\App\Http\Exception\RequestParameterException $e) {
+            Message::danger($e->getMessage());
+            return $form->show(new \App\Models\Group($request->all()));
+        }
     }
 
-    public function edit(EditGroup $service)
+    public function edit(Request $request, EditGroup $service, \App\Repositories\GroupViews $repository)
     {
-        return $service->show();
+        return $service->show($repository->findOrFail($request['id']));
     }
 
     public function update(Request $request, UpdateGroup $service)

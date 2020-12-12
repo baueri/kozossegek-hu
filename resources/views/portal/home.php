@@ -24,7 +24,7 @@
 <!--            <i class="fa fa-search"></i>-->
             <img src="/images/search.png" style="width: 100px;">
             <h6 class="text-danger mt-4 mb-3">Keresd meg!</h6>
-            <p>Keress rá városodra, lelkiségi mozgalomra, közösség jellegére, vagy bármire, ami esetleg érdekelhet téged!</p>
+            <p>Keress rá településedre, lelkiségi mozgalomra, közösség jellegére, vagy bármire, ami esetleg érdekelhet téged!</p>
         </div>
         <div class="col-md-4 text-center">
 <!--            <i class="fa fa-mouse-pointer"></i>-->
@@ -40,24 +40,6 @@
         </div>
     </div>
 </div>
-<!--<div class="container main-block">-->
-<!--    <div class="row">-->
-<!--        <div class="col-md-6">-->
-<!--            <div class="card h-100">-->
-<!--                <div class="card-body">-->
-<!--                    @widget('A_HONLAPROL')-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        <div class="col-md-6">-->
-<!--            <div class="card h-100">-->
-<!--                <div class="card-body">-->
-<!--                    @widget('KISZ')-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
 <div class="jumbotron main-block mt-0">
     <div class="container">
     <div class="row">

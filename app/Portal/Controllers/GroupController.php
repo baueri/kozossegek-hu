@@ -26,8 +26,8 @@ use Framework\Model\ModelNotFoundException;
  *
  * @author ivan
  */
-class GroupController extends Controller {
-
+class GroupController extends Controller
+{
     public function kozossegek(\App\Portal\Services\GroupList $service)
     {
         return $service->getHtml();
@@ -37,7 +37,7 @@ class GroupController extends Controller {
     {
         $step = $request['next_step'] ?: 1;
         switch ($step) {
-            case 1: 
+            case 1:
             default:
                 return app()->make(\App\Http\Responses\CreateGroupSteps\LoginOrRegister::class);
             case 2:
@@ -80,8 +80,17 @@ class GroupController extends Controller {
         $slug = $group->slug();
         $metaKeywords = builder('search_engine')->where('group_id', $group->id)->first()['keywords'];
         
-        return view('portal.kozosseg', compact('group', 'institute', 'backUrl', 'tag_names',
-            'similar_groups', 'images', 'honeypot_check_hash', 'slug', 'keywords'));
+        return view('portal.kozosseg', compact(
+            'group',
+            'institute',
+            'backUrl',
+            'tag_names',
+            'similar_groups',
+            'images',
+            'honeypot_check_hash',
+            'slug',
+            'keywords'
+        ));
     }
 
     /**
@@ -101,14 +110,13 @@ class GroupController extends Controller {
     public function sendContactMessage(Request $request, Groups $repo, \App\Portal\Services\SendContactMessage $service)
     {
         try {
-            
             $service->send($repo->findOrFail($request['id']), $request->all());
             
             return [
                 'success' => true,
                 'msg' => '<div class="alert alert-success">Köszönjük! Üzenetedet elküldtük a közösségvezető(k)nek!</div>'
             ];
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             return ['success' => false];
         }
     }
@@ -141,18 +149,43 @@ class GroupController extends Controller {
             $action = route('portal.my_group.create');
         }
         
-        return view($view, compact('group', 'institute', 'denominations',
-                'statuses', 'occasion_frequencies', 'age_groups', 'action', 'spiritual_movements', 'tags',
-                'age_group_array', 'group_tags', 'days', 'group_days', 'images', 'group_tags'));
+        return view($view, compact(
+            'group',
+            'institute',
+            'denominations',
+            'statuses',
+            'occasion_frequencies',
+            'age_groups',
+            'action',
+            'spiritual_movements',
+            'tags',
+            'age_group_array',
+            'group_tags',
+            'days',
+            'group_days',
+            'images',
+            'group_tags'
+        ));
     }
     
     public function createMyGroup(Request $request, CreateGroup $service, Groups $groups)
     {
         try {
             $data = $request->only(
-                'status', 'name', 'denomination', 'institute_id', 'age_group', 'occasion_frequency',
-                    'on_days', 'spiritual_movement', 'tags', 'group_leaders', 'group_leader_phone', 'group_leader_email',
-                    'description', 'image'
+                'status',
+                'name',
+                'denomination',
+                'institute_id',
+                'age_group',
+                'occasion_frequency',
+                'on_days',
+                'spiritual_movement',
+                'tags',
+                'group_leaders',
+                'group_leader_phone',
+                'group_leader_email',
+                'description',
+                'image'
             );
             
             $data['user_id'] = Auth::user()->id;
@@ -162,7 +195,6 @@ class GroupController extends Controller {
             Message::success('Közösség sikeresen létrehozva!<br>Mielőtt még láthatóvá tennénk a közösségedet, átnézzük, hogy minden adatot rendben találunk-e. Köszönjük a türelmet!');
             
             redirect_route('portal.my_group');
-            
         } catch (\Exception|\Error|\Throwable| \ErrorException $ex) {
             Message::danger('Közösség létrehozása nem sikerült, kérjük próbáld meg később!');
             dd($ex);
@@ -172,17 +204,26 @@ class GroupController extends Controller {
     public function updateMyGroup(Request $request, UpdateGroup $service, GroupViews $groups)
     {
         try {
-            
             $group = $groups->getGroupByUser(Auth::user());
             $service->update($group->id, $request->only(
-                'status', 'name', 'denomination', 'institute_id', 'age_group', 'occasion_frequency',
-                    'on_days', 'spiritual_movement', 'tags', 'group_leaders', 'group_leader_phone', 'group_leader_email',
-                    'description', 'image'
+                'status',
+                'name',
+                'denomination',
+                'institute_id',
+                'age_group',
+                'occasion_frequency',
+                'on_days',
+                'spiritual_movement',
+                'tags',
+                'group_leaders',
+                'group_leader_phone',
+                'group_leader_email',
+                'description',
+                'image'
             ));
              
             Message::success('Sikeres mentés!');
-            
-        } catch(ModelNotFoundException $e) {
+        } catch (ModelNotFoundException $e) {
             Message::danger('Nincs ilyen közösség!');
         } catch (Error $e) {
             Message::danger('Sikertelen mentés!');
@@ -190,5 +231,4 @@ class GroupController extends Controller {
             redirect_route('portal.my_group');
         }
     }
-
 }

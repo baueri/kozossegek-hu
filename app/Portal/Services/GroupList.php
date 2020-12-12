@@ -12,14 +12,14 @@ use App\Enums\GroupStatusEnum;
 use App\Repositories\AgeGroups;
 use App\Repositories\OccasionFrequencies;
 use Framework\Http\Request;
-use Swoole\Http\Request as Request2;
 
 /**
  * Description of GroupList
  *
  * @author ivan
  */
-class GroupList {
+class GroupList
+{
 
     /**
      * @var SearchGroupService
@@ -41,8 +41,13 @@ class GroupList {
      */
     private $occasionFrequencies;
 
-    public function __construct(Request $request, SearchGroupService $service,
-            OccasionFrequencies $occasionFrequencies, AgeGroups $ageGroups) {
+    public function __construct(
+        Request $request,
+        SearchGroupService $service,
+        OccasionFrequencies $occasionFrequencies,
+        AgeGroups $ageGroups
+    )
+    {
         $this->occasionFrequencies = $occasionFrequencies;
         $this->ageGroups = $ageGroups;
         $this->request = $request;
@@ -56,7 +61,11 @@ class GroupList {
         $filter['pending'] = 0;
         $filter['status'] = GroupStatusEnum::ACTIVE;
         $groups = $this->service->search($filter, 18);
-        $group_tags = builder('v_group_tags')->whereIn('group_id', $groups->pluck('id')->all())->get();
+        
+        if ($groupIds = $groups->pluck('id')->all()) {
+            $group_tags = builder('v_group_tags')->whereIn('group_id', $groupIds)->get();
+        }
+        
         $groups->withMany($group_tags, 'tags', 'id', 'group_id');
         $template = $this->request['view'] ?: 'grid2';
         $model = [

@@ -249,3 +249,8 @@
 #image-upload {
     display: none;
 }
+
+.required label:after {
+    content: "*";
+    color: red;
+}

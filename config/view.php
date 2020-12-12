@@ -23,6 +23,9 @@ return [
         },
         'spiritual_movement_selector' => function ($matches) {
             return "<?php echo (new \App\Http\Selectors\SpiritualMovementSelector)->render($matches[1]) ?>";
+        },
+        'alert' => function($matches) {
+            return "<?php echo (new \App\Http\Alert())->render($matches[1]) ?>";
         }
     ]
 ];

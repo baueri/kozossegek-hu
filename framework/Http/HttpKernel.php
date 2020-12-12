@@ -3,7 +3,6 @@
 
 namespace Framework\Http;
 
-
 use Framework\Http\Exception\PageNotFoundException;
 use Framework\Http\Exception\RouteNotFoundException;
 use Framework\Model\ModelNotFoundException;
@@ -29,9 +28,9 @@ class HttpKernel implements Kernel
         echo '<h1>Website under maintenance</h1>';
     }
 
-   /**
-    * @var \Error|\Throwable|\Exception $exception
-    */
+    /**
+     * @var \Error|\Throwable|\Exception $exception
+     */
     public function handleError($exception)
     {
         http_response_code((int) $exception->getCode() ?: 500);
@@ -59,15 +58,13 @@ class HttpKernel implements Kernel
                 'code' => $exception->getCode(),
                 'message' => 'A keresett oldal nem található',
                 'message2' => 'Az oldal, amit keresel lehet, hogy törölve lett vagy ideiglenesen nem elérhető.']));
-        } catch(UnauthorizedException $exception) {
-
+        } catch (UnauthorizedException $exception) {
             error_log($exception);
 
             return print(view('portal.error', [
                 'code' => $exception->getCode(),
                 'message2' => 'Nincs jogosultsága az oldal megtekintéséhez']));
         } catch (\Error|\Exception $exception) {
-
             error_log($exception);
 
             return print(view('portal.error', [

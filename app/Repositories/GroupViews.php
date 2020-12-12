@@ -13,7 +13,6 @@ use Framework\Support\Collection;
 
 class GroupViews extends Repository
 {
-    
     public static function getModelClass(): string
     {
         return GroupView::class;
@@ -96,7 +95,6 @@ class GroupViews extends Repository
         }
 
         if ($tags = $filter['tags']) {
-
             $tags = explode(',', $tags);
 
             $builder->apply('whereGroupTag', $tags);
@@ -134,7 +132,6 @@ class GroupViews extends Repository
 
     public function findSimilarGroups(GroupView $group, $tags, int $take = 4)
     {
-
         $builder = $this->getBuilder()
             ->where('id', '<>', $group->id)
             ->where('city', $group->city)
