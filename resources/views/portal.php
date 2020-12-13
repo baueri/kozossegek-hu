@@ -115,6 +115,9 @@
                         <a href="https://pasztoralis.hu/" title="Pasztorális helynökség Szeged" target="_blank" rel="noopener noreferrer">
                             <img src="/images/szcsem_szines_latin.png" alt="Pasztorális helynökség Szeged">
                         </a>
+                        <a href="https://halo.hu/" title="Háló Közösségi és Kulturális Központ" target="_blank" rel="noopener noreferrer">
+                            <img src="/images/halo-logo.png" alt="Háló Közösségi és Kulturális Központ">
+                        </a>
                     </div>
                 </div>
             </div>

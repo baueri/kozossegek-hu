@@ -14,8 +14,6 @@ use Framework\Http\View\View;
 use Framework\Http\View\ViewInterface;
 use Framework\Support\Config\Config;
 
-use Framework\PasswordGenerator;
-
 if(!defined('DS')) {
     define('DS', DIRECTORY_SEPARATOR);
 }
@@ -26,6 +24,7 @@ define('RESOURCES', ROOT . 'resources' . DS);
 define('CACHE', ROOT . 'cache' . DS);
 define('LANG', 'hu');
 define('APP_VERSION', 'v0.2 pre-alpha');
+define('STORAGE_PATH', ROOT . 'storage' . DS);
 
 include 'vendor/autoload.php';
 

@@ -27,7 +27,7 @@
                             @endforeach
                         </select>
                         <input type="text" name="search" value="{{ $filter['search'] }}" class="form-control" placeholder="keresés kulcsszavak alapján...">
-                        <button type="submit" class="btn btn-primary">keresés indítása</button>
+                        <button type="submit" class="btn btn-darkblue">keresés indítása</button>
                     </div>
                 </div>
                 <div class="form-group text-center mt-5">

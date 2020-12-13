@@ -21,7 +21,7 @@ class File
         if ($filePath) {
             $this->setFileName($filePath);
             $this->setFilePath($filePath);
-            $this->fileType = mime_content_type($filePath);
+            $this->fileType = strtolower(mime_content_type($filePath));
         }
     }
 
@@ -78,7 +78,8 @@ class File
         $size = filesize($this->filePath);
 
         if ($unit !== SizeUnit::B) {
-            if (!array_key_exists($unit, SizeUnit::values())) {
+            
+            if (!SizeUnit::values()->contains($unit)) {
                 throw new InvalidArgumentException('Invalid size unit ' . $unit);
             }
             return round($size / pow(1024, SizeUnit::getSizeUnits()[$unit]), $precision);
@@ -94,6 +95,7 @@ class File
     public function move($newPath)
     {
         $ok = move_uploaded_file($this->filePath, $newPath . $this->fileName);
+        
         if (!$ok) {
             throw new RuntimeException('Error while moving file: ' . $this->filePath . ' to ' . $newPath . $this->fileName);
         }
@@ -206,8 +208,17 @@ class File
         return date('Y.m.d H:i:s', filemtime($this->filePath));
     }
 
-    public function getDirectory()
+    public function getDirName()
     {
         return dirname($this->filePath);
+    }
+    
+    /**
+     * @param string $link
+     * @return bool
+     */
+    public function createSymLink($link)
+    {
+        return symlink($this->filePath, $link);
     }
 }

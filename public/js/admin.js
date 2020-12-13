@@ -84,3 +84,9 @@ function deleteConfirm(action)
     
     outer.modal('show');
 }
+
+
+function selectImageFromMediaLibrary()
+{
+    alert("hamarosan...");
+}

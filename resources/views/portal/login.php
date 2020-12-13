@@ -14,7 +14,7 @@
                     <div class="form-group">
                         <input type="password" name="password" placeholder="jelszó" class="form-control"/>
                     </div>
-                    <button type="submit" class="btn btn-success">belépés</button>
+                    <button type="submit" class="btn btn-darkblue">belépés</button>
                     <p class="message mt-3">
                         <a href="/" style="float: left">Vissza a főoldalra</a>
                         <a href="@route('portal.forgot_password')" style="float: right">Elfelejtettem a jelszavam</a>

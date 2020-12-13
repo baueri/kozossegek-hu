@@ -40,15 +40,15 @@
         </div>
     </div>
 </div>
-<div class="jumbotron main-block mt-0">
+<div class="jumbotron main-block mt-0 pt-0 pb-0">
     <div class="container">
     <div class="row">
         <div class="col-md-6 pt-5">
             @widget('MERT_JO')
-            <a href="https://777blog.hu/2016/09/20/5-erv-hogy-elkezdj-kozossegbe-jarni/" target="_blank" class="btn btn-success">A közösségről</a>
+            <a href="https://777blog.hu/2016/09/20/5-erv-hogy-elkezdj-kozossegbe-jarni/" target="_blank" class="btn btn-darkblue">A közösségről</a>
         </div>
         <div class="col-md-6">
-            <img src="/images/img2.jpg" alt="">
+            <img src="/images/kez.jpg" alt="">
         </div>
     </div>
     </div>

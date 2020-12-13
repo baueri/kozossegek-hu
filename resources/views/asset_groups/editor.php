@@ -11,7 +11,14 @@
             tabsize: 2,
             height: 300,
             callbacks: {
-                
+                onImageUpload: function(files) {
+                    sendFile(files[0], $(selector));
+                },
+                onDialogShown: function() {
+                    if ($(".summernote-select-from-library").length === 0) {
+                        $(".note-group-select-from-files").after("<div class='mb-3'><label>Médiatárból</label><br/><button class='btn btn-primary summernote-select-from-library' onclick='selectImageFromMediaLibrary()' type='button'>Médiatár</button></div>");
+                    }
+                }
             },
             toolbar: [
                 ['style', ['style']],
@@ -24,5 +31,22 @@
         }, options);
         
         $(selector).summernote(options);
+        
+        function sendFile(file, editor, welEditable) {
+            data = new FormData();
+            data.append("file", file);
+            $.ajax({
+                data: data,
+                type: "POST",
+                url: "@route('admin.content.upload.upload_file')",
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function(url) {
+                  editor.summernote('insertImage', url);
+                }
+            });
+        }
+        
     }
 </script>

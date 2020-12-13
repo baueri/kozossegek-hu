@@ -56,8 +56,23 @@ img {
 .btn-darkblue {
     color: #fff;
     background-color: #3f91b0;
-    border: 0;
+    border: 1px solid #3f91b0;
     border-radius: 0;
+}
+
+.btn-darkblue:hover {
+    background: #1C3C4B;
+    color: #fff;
+}
+
+.btn-outline-darkblue {
+    color: #3f91b0;
+    border: 1px solid #3f91b0;
+}
+
+.btn-outline-darkblue:hover {
+    background: #3f91b0;
+    color: #fff;
 }
 
 #main-finder button {
@@ -396,6 +411,10 @@ input[name=search]::placeholder {
     height: auto;
 }
 
+#footer .partnereink a {
+    margin-right: 10px;
+}
+
 .note-icon-caret {
     display: none !important;
 }
@@ -614,7 +633,7 @@ input[name=search]::placeholder {
 }
 
 .group-tag:checked + label {
-    background: var(--primary);
+    background: var(--purple);
     color: #fff;
 }
 .required label:after {
@@ -654,7 +673,6 @@ input[name=search]::placeholder {
 #kozossegek-list .city:after {
     content: " ";
     display: block;
-    border-bottom: 1px solid #ccc;
     margin-top: 1em;
     width: 100px;
 }

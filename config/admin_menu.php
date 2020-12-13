@@ -7,7 +7,7 @@ return [
         'as' => 'admin.dashboard'
     ],
     [
-        'title' => 'Oldalak',
+        'title' => 'Tartalom',
         'icon' => 'file',
         'as' => 'admin.page.list',
         'submenu' => [
@@ -20,7 +20,11 @@ return [
                 'title' => 'Új oldal',
                 'icon' => 'plus',
                 'as' => 'admin.page.create',
-            ],
+            ], [
+                'title' => 'Feltöltések',
+                'icon' => 'images',
+                'as' => 'admin.content.upload.list'
+            ]
         ]
     ],
     [

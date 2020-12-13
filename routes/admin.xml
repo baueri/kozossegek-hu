@@ -8,7 +8,7 @@
         <route method="get" uri="release-notes" as="release_notes" view="admin.release_notes"/>
 
         <!-- OLDALAK -->
-        <route-group prefix="page" controller="PageController" as="page">
+        <route-group prefix="content/page" controller="PageController" as="page">
             <route method="get" uri="list" use="list" as="list"/>
             <route method="get" uri="trash" use="trash" as="trash"/>
             <route method="get" uri="empty-trash" use="emptyTrash" as="empty_trash"/>
@@ -20,11 +20,17 @@
             <route method="get" uri="{id}/edit" use="edit" as="edit"/>
             <route method="post" uri="{id}/update" use="update" as="update"/>
             <route method="get" uri="{id}/delete" use="delete" as="delete"/>
-
+        </route-group>
+        
+        <route-group prefix="content/uploads" controller="ContentUploadController" as="content.upload">
+            <route method="get" uri="" use="list" as="list"/>
+            <route method="post" uri="upload-file" use="uploadFile" as="upload_file"/>
+            <route method="all" uri="delete-file" use="deleteFile" as="delete_file"/>
         </route-group>
 
         <route-group controller="Api\ApiPageController" prefix="page/api" as="page.api" middleware="Framework\Middleware\JsonApi">
             <route method="post" uri="generate-slug" use="generateSlug" as="generate_slug"/>
+            <route method="post" uri="summernote-upload" />
         </route-group>
 
 
@@ -113,7 +119,6 @@
 
         <route-group>
             <route method="get" uri="appearance" as="appearance" view="admin"/>
-            
         </route-group>
     </route-group>
 </routes>

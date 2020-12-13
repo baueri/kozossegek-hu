@@ -27,11 +27,15 @@
                     <option value="DRAFT" {{ $page->status == "DRAFT" ? "selected" : "" }}>Piszkozat</option>
                 </select>
             </div>
+            @if($page)
+                <p>
+                    <a href="{{ $page->getUrl() }}" target="_blank"><i class="fa fa-eye"></i> megtekintés</a>
+                </p>
+            @endif
             <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Mentés</button>
         </div>
 
     </div>
-
 
 </form>
 <script>

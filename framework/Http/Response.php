@@ -30,6 +30,11 @@ class Response
         header("$name: $value");
     }
 
+    public static function setStatusCode($code)
+    {
+        http_response_code((int) $code);
+    }
+    
     public static function getHeader($name)
     {
         return static::headers()[$name] ?? null;

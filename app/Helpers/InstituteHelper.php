@@ -5,7 +5,7 @@ namespace App\Helpers;
 class InstituteHelper
 {
 
-    const STORAGE_DIR = ROOT . 'storage/institutes/images/';
+    const STORAGE_DIR = STORAGE_PATH . 'institutes/images/';
 
     public static function getImageRelPath($instituteId)
     {
