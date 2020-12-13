@@ -68,6 +68,11 @@ return [
                 'icon' => 'plus',
                 'as' => 'admin.institute.create',
             ],
+            [
+                'title' => 'Importálás',
+                'icon' => 'cloud-upload-alt',
+                'as' => 'admin.institute.import'
+            ]
         ]
     ],
     [

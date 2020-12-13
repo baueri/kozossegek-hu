@@ -40,7 +40,7 @@ class Institutes extends \Framework\Repository
     {
         return $this->getInstances($this->getBuilder()->paginate(30));
     }
-
+    
     public function getInstitutesForAdmin($filter = [])
     {
         $builder = $this->getBuilder()->orderBy('id', 'desc')->whereNull('deleted_at');

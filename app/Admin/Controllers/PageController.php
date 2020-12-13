@@ -69,6 +69,12 @@ class PageController extends AdminController
     {
         $data = $this->request->only('title', 'slug', 'content', 'status');
         $data['user_id'] = Auth::user()->id;
+        
+        $hasUploadableImages = preg_match_all('/data\-filename="[a-zA-Z0-9\.\_]"/im', $data['content'], $images);
+        
+        if ($hasUploadableImages) {
+            dd($images);
+        }
 
         $page = $this->repository->create($data);
 

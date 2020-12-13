@@ -4,10 +4,7 @@
 namespace Framework\Http;
 
 use Framework\Http\Exception\PageNotFoundException;
-use Framework\Http\Exception\RouteNotFoundException;
-use Framework\Model\ModelNotFoundException;
 use Framework\Middleware\Middleware;
-use Exception;
 use Framework\Exception\UnauthorizedException;
 use Framework\Kernel;
 

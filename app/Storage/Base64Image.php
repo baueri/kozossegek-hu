@@ -22,7 +22,7 @@ class Base64Image
         return file_put_contents($path, $this->imageSource);
     }
     
-    public function saveThumbnail(string $path)
+    public function saveThumbnail(string $path, $width = 350, $height = 250)
     {
         $this->createDirIfMissing($path);
         
