@@ -104,31 +104,12 @@ class InstituteController extends AdminController
         return view('admin.institute.import');
     }
     
-    public function doImport(Request $request, Institutes $repository, \App\Auth\Auth $auth)
+    public function doImport(Request $request, \App\Auth\Auth $auth, \App\Services\InstituteImporter $service)
     {
         try {
             $file = $request->files['import_file'];
-
-            $rows = array_map('str_getcsv', file($file['tmp_name']));
-
-            unset($rows[0]);
-            $skipped = $imported = 0;
-            foreach ($rows as $row) {
-                $instituteData = [
-                    'name' => $row[0],
-                    'city' => mb_ucfirst(mb_strtolower($row[1])),
-                    'district' => mb_ucfirst(mb_strtolower($row[2])),
-                    'address' => $row[3],
-                    'leader_name' => $row[4],
-                    'user_id' => $auth->user()->id
-                ];
-                if (!builder('institutes')->where('name', $instituteData['name'])->where('city', $instituteData['city'])->exists()) {
-                    $imported++;
-                    $repository->create($instituteData);
-                } else {
-                    $skipped++;
-                }
-            }
+               
+            [$imported, $skipped] = $service->run($file['tmp_name'], $auth->user());
 
             Message::success("Sikeres importálás. <b>$imported</b> intézmény importálva, <b>$skipped</b> kihagyva duplikáció miatt");
         } catch(\Exception $e) {

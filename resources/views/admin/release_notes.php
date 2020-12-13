@@ -3,10 +3,14 @@
 
 <h3>v0.1.2 pre-alpha</h3>
 <ul>
+    <li>[NEW]: </li>
+</ul>
+<h3>v0.1.2 pre-alpha</h3>
+<ul>
     <li>[NEW]: Admin oldalon email sabolonok megtekintése. <a href="@route('admin.email_template.list')">Ugrás a sablonokhoz</a>.</li>
-    <li>[NEW:] Admin oldali fiók regisztrációkor aktiváló email küldése az új felhasználónak</li>
-    <li>[NEW:] Demo környezet alatt bekerült egy "debug sáv" az oldalak aljára, ez segít a fejlesztésben, hibajavításban</li>
-    <li>[NEW:] "Közösséget keresek" oldalon a találatok elrendezése át lett alakítva
+    <li>[NEW]: Admin oldali fiók regisztrációkor aktiváló email küldése az új felhasználónak</li>
+    <li>[NEW]: Demo környezet alatt bekerült egy "debug sáv" az oldalak aljára, ez segít a fejlesztésben, hibajavításban</li>
+    <li>[NEW]: "Közösséget keresek" oldalon a találatok elrendezése át lett alakítva
         <ul>
             <li>+1 bekerült a találati lista fölé jobbra két ikon két nézet váltásához</li>
         </ul>
