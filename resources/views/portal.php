@@ -36,7 +36,7 @@
 </head>
 <body>
     <div class="home">
-        <nav id="header" class="navbar navbar-expand-sm sticky-top">
+        <nav id="header" class="navbar navbar-expand-sm fixed-top">
             <div class="container">
                 <a href="/" class="navbar-brand ml-4 ml-sm-0 mt-0 mb-0 p-0 p-sm-1">
                     <div class="logo-lg"></div>

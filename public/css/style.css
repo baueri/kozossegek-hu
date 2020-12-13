@@ -1,6 +1,5 @@
 body {
     /*font-family: 'Ubuntu', sans-serif;*/
-
     color: #555;
 }
 
@@ -13,6 +12,7 @@ img {
     background:url("/images/img2.jpg") no-repeat top center;
     background-position: fixed;
     background-size: cover;
+    padding-top: 58px;
 }
 .home #header {
     transition: background-color ease-in .2s;
