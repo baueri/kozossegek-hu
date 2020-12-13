@@ -1,7 +1,7 @@
 @title('Verzióinformáció')
 @extends('admin')
 
-<h3>v0.1.2 pre-alpha</h3>
+<h3>v0.2 pre-alpha</h3>
 <ul>
     <li>[NEW]: Intézmény importálás (szinkronizálás)</li>
     <li>[CHANGED]: 'Város' szöveget lecseréltem 'település'-re</li>
