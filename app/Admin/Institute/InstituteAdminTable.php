@@ -60,7 +60,7 @@ class InstituteAdminTable extends AdminTable implements Deletable, Editable
     {
         $institutes = $this->repository->getInstitutesForAdmin($this->request);
         $userIds = $institutes->pluck('user_id');
-        $users = $this->userRepository->getUsersByIds($userIds->all());
+        $users = $this->userRepository->getUsersByIds($userIds->unique()->all());
 
         $institutes->with($users, 'user', 'user_id');
 

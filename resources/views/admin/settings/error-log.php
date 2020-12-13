@@ -40,7 +40,3 @@
         @endif
     </tbody>
 </table>
-<style>
-
-    }
-</style>

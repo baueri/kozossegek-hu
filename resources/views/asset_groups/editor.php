@@ -10,12 +10,15 @@
             lang: 'hu-HU',
             tabsize: 2,
             height: 300,
+            callbacks: {
+                
+            },
             toolbar: [
                 ['style', ['style']],
                 ['font', ['bold', 'underline', 'clear']],
                 ['color', ['color']],
                 ['para', ['ul', 'ol', 'paragraph']],
-                ['insert', ['link']],
+                ['insert', ['link', 'picture']],
                 ['view', ['fullscreen', 'codeview', 'help']]
             ]
         }, options);
