@@ -50,7 +50,7 @@ class GroupHelper
     
     public static function getStoragePath($groupId)
     {
-        $root = ROOT . 'storage/groups/images' . DS;
+        $root = STORAGE_PATH . 'groups/images' . DS;
         
         return $root . static::getRelpath($groupId);
     }

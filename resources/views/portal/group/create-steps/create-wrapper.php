@@ -20,9 +20,7 @@
     <div class="jumbotron">
         @yield('portal.group.create-steps.create-wrapper')
     </div>
-    <div class="mt-4">
-        <a href="" class="btn btn-default">vissza</a>
-    </div>
+    
 </div>
 <style>
     #steps {

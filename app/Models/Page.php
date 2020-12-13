@@ -27,5 +27,10 @@ class Page extends Model
      * @var User
      */
     public $user;
+    
+    public function getUrl()
+    {
+        return config('app.site_url') . '/' . $this->slug;
+    }
 
 }

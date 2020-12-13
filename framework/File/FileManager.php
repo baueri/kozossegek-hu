@@ -5,7 +5,7 @@ namespace Framework\File;
 use Exception;
 use Framework\File\Enums\FileType;
 
-class FileService
+class FileManager
 {
     const TYPES_IMAGE = [
         'image/jpeg', 'image/gif', 'image/png'
@@ -51,39 +51,43 @@ class FileService
      * FileManager constructor.
      * @param string $rootPath
      */
-    public function __construct($rootPath = '')
+    public function __construct($rootPath = '', array $enabledTypes = ['*'])
     {
         $this->rootPath = static::addDirectorySeparator($rootPath);
+        
+        $this->setEnabledTypes($enabledTypes);
     }
 
     /**
      * Upload a file to the server
      *
      * @param array $fileData
-     * @param string $relPath
+     * @param string $fileName
      * @return File
      * @throws Exception
      */
-    public function uploadFile(array $fileData, $relPath = DS)
+    public function uploadFile(array $fileData, $fileName = null, $subDir = '')
     {
         $file = new File($fileData['tmp_name']);
-        $file->setFileName($fileData['name']);
-        if(!$this->fileTypeEnabled($fileData['type'])) {
+        $file->setFileName($fileName ?: $fileData['name']);
+        if (!$this->fileTypeEnabled($fileData['type'])) {
             throw new Exception('File Type not allowed');
         }
-        return $file->move($this->rootPath . static::addDirectorySeparator($relPath) . DS);
+        
+        return $file->move($this->rootPath . $subDir);
     }
 
     /**
      * @param $folderName
      * @throws Exception
      */
-    public function createFolder($folderName)
+    public function createFolder($folderName = '')
     {
-        if($this->folderExists($folderName)) {
-            throw new Exception($this->rootPath . $folderName . ' already exists');
+        if ($this->folderExists($folderName)) {
+            return true;
         }
-        mkdir($this->rootPath . $folderName);
+        
+        return mkdir($this->rootPath . $folderName, 0777, true);
     }
 
     /**
@@ -100,7 +104,7 @@ class FileService
      */
     private static function addDirectorySeparator($filePath)
     {
-        return rtrim(str_replace('\\\\', '\\', $filePath), '\\');
+        return rtrim($filePath, '/') . '/';
     }
 
     /**
@@ -118,7 +122,7 @@ class FileService
      */
     public function fileTypeEnabled($type)
     {
-        return in_array($type, $this->enabledTypes);
+        return in_array($type, $this->enabledTypes) || in_array('*', $this->enabledTypes);
     }
 
     /**
@@ -137,12 +141,23 @@ class FileService
         return $this->rootPath;
     }
 
+    
+    public function getDirName()
+    {
+        return basename($this->rootPath);
+    }
+    
+    public function createSymLink($link)
+    {
+        return symlink($this->rootPath, $link);
+    }
+    
     /**
      * @return File[]
      */
-    public function getFiles()
+    public function getFiles($subDir = '')
     {
-        $files = glob($this->rootPath . '*');
+        $files = glob(rtrim($this->rootPath . $subDir, '/') . DS . '*');
         usort($files, function ($a, $b) {
             $aIsDir = is_dir($a);
             $bIsDir = is_dir($b);
@@ -156,11 +171,10 @@ class FileService
                 return 1;
             } // $b is dir, should be before $a
         });
-        return array_filter(array_map(function($file){
-            return new File($file);   
-        }, $files), function(File $file ){
+        return array_filter(array_map(function ($file) {
+            return new File($file);
+        }, $files), function (File $file) {
             return $this->fileTypeEnabled($file->getFileType()) || $file->isDir();
         });
     }
-    
 }

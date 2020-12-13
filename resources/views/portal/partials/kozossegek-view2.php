@@ -12,14 +12,14 @@
                     @endforeach
                 </p>
                 <h5 class="card-title">{{ $group->name }}</h5>
-                <h6>
+                <h6 style="color: #aaa;">
                     {{ $group->city . ($group->district ? ', ' . $group->district : '')  }}
                 </h6>
                 <p class="card-text mb-0">
                     <strong>korosztály:</strong> <span>{{ $group->ageGroup() }}</span><br>
                     <strong>alkalmak:</strong> <span>{{ $group->occasionFrequency() }}</span><br>
                 </p>
-                <a href="{{ $group->url() }}" class="btn btn-outline-success btn-sm kozi-more-info">Megnézem</a>
+                <a href="{{ $group->url() }}" class="btn btn-outline-darkblue btn-sm kozi-more-info">Megnézem</a>
             </div>
         </div>
     </div>
