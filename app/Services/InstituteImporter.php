@@ -68,7 +68,7 @@ class InstituteImporter
     {
         $query = builder('institutes')->where('name', $instituteData['name'])->where('city', $instituteData['city']);
         
-        if (isset($instituteData['district'])) {
+        if (isset($instituteData['district']) && $instituteData['district']) {
             $query->where('district', $instituteData['district']);
         }
         
