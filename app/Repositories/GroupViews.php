@@ -144,4 +144,22 @@ class GroupViews extends Repository
 
         return $this->getInstances($builder->get());
     }
+    
+    public function getGroupsWithoutUser()
+    {
+        $builder = $this->getBuilder()
+            ->where('user_id', '0')
+            ->where('group_leaders', '<>', '')
+            ->where('group_leader_email', '<>', '')
+            ->apply('notDeleted');
+        
+        return $this->getInstances($builder->get());
+    }
+
+    public function getGroupsByUser($user)
+    {
+        return $this->getInstances(
+            $row = $this->getBuilder()->where('user_id', $user->id)->get()
+        );
+    }
 }

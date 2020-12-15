@@ -89,7 +89,8 @@ class GroupController extends Controller
             'images',
             'honeypot_check_hash',
             'slug',
-            'keywords'
+            'keywords',
+            'user'
         ));
     }
 
@@ -121,51 +122,27 @@ class GroupController extends Controller
         }
     }
     
-    public function myGroup(GroupViews $groups)
+    public function myGroups(GroupViews $groupRepo)
     {
         $user = Auth::user();
-        $group = $groups->getGroupByUser($user);
-        $statuses = (new GroupStatusRepository)->all();
-        $tags = builder('tags')->select('*')->get();
-        $spiritual_movements = db()->select('select * from spiritual_movements order by name');
-        $occasion_frequencies = (new OccasionFrequencies)->all();
-        $age_groups = (new AgeGroups)->all();
-        $denominations = (new Denominations)->all();
-        $days = DayEnum::all();
         
-        if ($group) {
-            $group_tags = collect(builder('group_tags')->whereGroupId($group->id)->get())->pluck('tag')->all();
-            $age_group_array = array_filter(explode(',', $group->age_group));
-            $images = $group->getImages();
-            $group_days = explode(',', $group->on_days);
-            $view = 'portal.group.edit_my_group';
-            $action = route('portal.my_group.update');
-        } else {
-            $group = new GroupView([
-                'group_leaders' => $user->name,
-                'group_leader_email' => $user->email
-            ]);
-            $view = 'portal.group.create_my_group';
-            $action = route('portal.my_group.create');
+        $groups = $groupRepo->getGroupsByUser($user);
+        
+        return view('portal.group.my_groups', compact('groups'));
+    }
+    
+    public function myGroup(Request $request, GroupViews $groups, \App\Http\Responses\PortalEditGroupForm $response)
+    {
+        $user = Auth::user();
+        
+        /* @var $group GroupView */
+        $group = $groups->find($request['id']);
+        
+        if (!\App\Helpers\GroupHelper::isGroupEditableBy($group, $user)) {
+            
         }
         
-        return view($view, compact(
-            'group',
-            'institute',
-            'denominations',
-            'statuses',
-            'occasion_frequencies',
-            'age_groups',
-            'action',
-            'spiritual_movements',
-            'tags',
-            'age_group_array',
-            'group_tags',
-            'days',
-            'group_days',
-            'images',
-            'group_tags'
-        ));
+        return $response->getResponse($group);
     }
     
     public function createMyGroup(Request $request, CreateGroup $service, Groups $groups)
@@ -203,8 +180,10 @@ class GroupController extends Controller
     
     public function updateMyGroup(Request $request, UpdateGroup $service, GroupViews $groups)
     {
+        $group = $groups->findOrFail($request['id']);
+        
         try {
-            $group = $groups->getGroupByUser(Auth::user());
+            $user = Auth::user();
             $service->update($group->id, $request->only(
                 'status',
                 'name',
@@ -223,12 +202,13 @@ class GroupController extends Controller
             ));
              
             Message::success('Sikeres mentés!');
+            redirect_route('portal.my_group', $group);
         } catch (ModelNotFoundException $e) {
             Message::danger('Nincs ilyen közösség!');
+            redirect_route('portal.my_groups');
         } catch (Error $e) {
             Message::danger('Sikertelen mentés!');
-        } finally {
-            redirect_route('portal.my_group');
+            redirect_route('portal.my_group', $group);
         }
     }
 }

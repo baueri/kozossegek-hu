@@ -136,7 +136,7 @@ abstract class Repository
 
         $id = $this->insert(array_filter($this->valuesToArray($model)));
         $model->setId($id);
-        return (bool)$id;
+        return (bool) $id;
     }
 
     /**

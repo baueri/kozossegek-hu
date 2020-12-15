@@ -2,7 +2,6 @@
 <meta name="keywords" content="{{ $keywords }}" />
 <meta name="description" content="{{ $group->name }}" />
 <link rel="canonical" href="https://<?php echo get_site_url() . $group->url(); ?>" />
-
 @endsection
 @extends('portal')
 <?php $nvr = 'a_' . substr(md5(time()), 0, 5); ?>
@@ -10,6 +9,11 @@
     var nvr = "{{ $nvr }}";
 </script>
 <div class="container inner kozi-adatlap">
+    @if($group->status == "inactive")
+        @alert('warning')
+        Ez a közösséged jelenleg <b>inaktív</b> állapotban van, ezért mások számára nem jelenik meg a találati listában, illetve közvetlenül se tudják megtekinteni az adatlapját. Amennyiben láthatóvá szeretnéd tenni, állítsd át az állapotát <b>aktívra</b> a <a href="{{ $group->getEditUrl() }}" title="szerkesztés">szerkesztési oldalon</a>.
+        @endalert
+    @endif
     <div class="row">
         <div class="col-md-4">
             <img class="img-big" src="{{ $images[0] }}" alt="{{ $group->name }}">
@@ -28,7 +32,12 @@
                         <a href="{{ $backUrl }}"><i class="fa fa-angle-double-left"></i> vissza</a>
                     </div>
                 @endif
-                <h1 class="primary-title h2">{{ $group->name }}</h1>
+                <h1 class="primary-title h2">
+                    {{ $group->name }}
+                    @if($user->id == $group->user_id)
+                        <a href="{{ $group->getEditUrl() }}" title="szerkesztés"><i class="fa fa-edit" style="font-size: 18px;"></i></a>
+                    @endif
+                </h1>
                 <h2 class="subtitle h5">{{  $group->city . ($group->district ? ', ' . $group->district : '')  }}</h2>
             </div>
             <p class="kozi-tulajdonsag">

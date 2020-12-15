@@ -29,6 +29,24 @@ img {
     color:#fff !important;
 }
 
+.navbar-brand {
+    position:relative;
+}
+
+.demo .navbar-brand:after {
+    position: absolute;
+    content: "demo";
+    color: red;
+    top: 13px;
+    left: 0;
+    font-weight: bold;
+    transform: rotate(19deg);
+    border: 2px solid red;
+    background: rgba(255, 255, 255, 0.7);
+    padding: 5px;
+    font-size: 15px;
+}
+
 .navbar-brand > div:first-child {
     width: 200px;
     height: 50px;
@@ -633,7 +651,7 @@ input[name=search]::placeholder {
 }
 
 .group-tag:checked + label {
-    background: var(--purple);
+    background: var(--teal);
     color: #fff;
 }
 .required label:after {

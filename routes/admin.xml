@@ -49,6 +49,8 @@
             <route method="get" uri="{id}/restore" use="restore" as="restore"/>
             
             <route method="get" uri="refresh-search-engine" use="rebuildSearchEngine" as="refresh_search_engine"/>
+            <route method="get" uri="maintenance" use="maintenance" as="maintenance"/>
+            <route method="post" uri="maintenance" use="createMissingUsers" as="create_missing_users"/>
         </route-group>
 
         <!-- Intézmények -->
@@ -115,6 +117,7 @@
             <route method="get" uri="email-template/registration" use="registration" as="registration"/>
             <route method="get" uri="email-template/reset-password" use="passwordReset" as="reset_password"/>
             <route method="get" uri="email-template/group-contact" use="groupContact" as="group_contact"/>
+            <route method="get" uri="email-template/register-by-group" use="registrationByGroup" as="register_by_group"/>
         </route-group>
 
         <route-group>

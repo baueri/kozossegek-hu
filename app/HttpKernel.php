@@ -23,7 +23,7 @@ class HttpKernel extends \Framework\Http\HttpKernel
         TranslationRoute::class,
         CheckMaintenance::class,
         AuthMiddleware::class,
-        WidgetServiceProvider::class
+        WidgetServiceProvider::class,
     ];
 
     public function handleMaintenance()

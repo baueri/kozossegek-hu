@@ -85,6 +85,11 @@ function deleteConfirm(action)
     outer.modal('show');
 }
 
+function dialog(options)
+{
+    
+}
+
 
 function selectImageFromMediaLibrary()
 {

@@ -25,6 +25,12 @@ return [
             return "<?php echo (new \App\Http\Selectors\SpiritualMovementSelector)->render($matches[1]) ?>";
         },
         'alert' => function($matches) {
+            
+            if (strpos($matches[0], '@alert') !== false) {
+                return '<div class="alert alert-' . str_replace(['\'', '"'], '', $matches[1]) . '">';
+            }   
+            return '</div>';
+            
             return "<?php echo (new \App\Http\Alert())->render($matches[1]) ?>";
         }
     ]

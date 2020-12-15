@@ -173,4 +173,9 @@ class Group extends Model
         
         return false;
     }
+    
+    public function getEditUrl()
+    {
+        return route('portal.edit_my_group', $this);
+    }
 }

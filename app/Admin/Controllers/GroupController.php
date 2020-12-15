@@ -10,10 +10,17 @@ use App\Admin\Group\Services\DeleteGroup;
 use App\Admin\Group\Services\EditGroup;
 use App\Admin\Group\Services\ListGroups;
 use App\Admin\Group\Services\UpdateGroup;
+use App\Http\Exception\RequestParameterException;
+use App\Mail\RegistrationByGroupEmail;
+use App\Models\Group;
 use App\Repositories\Groups;
+use App\Repositories\GroupViews;
+use App\Repositories\UserTokens;
+use App\Services\CreateUserFromGroup;
 use App\Services\RebuildSearchEngine;
 use Framework\Http\Message;
 use Framework\Http\Request;
+use Framework\Mail\Mailer;
 
 class GroupController extends AdminController
 {
@@ -36,13 +43,13 @@ class GroupController extends AdminController
 
             redirect_route('admin.group.edit', ['id' => $group->id]);
         
-        } catch (\App\Http\Exception\RequestParameterException $e) {
+        } catch (RequestParameterException $e) {
             Message::danger($e->getMessage());
-            return $form->show(new \App\Models\Group($request->all()));
+            return $form->show(new Group($request->all()));
         }
     }
 
-    public function edit(Request $request, EditGroup $service, \App\Repositories\GroupViews $repository)
+    public function edit(Request $request, EditGroup $service, GroupViews $repository)
     {
         return $service->show($repository->findOrFail($request['id']));
     }
@@ -88,5 +95,34 @@ class GroupController extends AdminController
         Message::success('Közösség sikeresen visszaállítva.');
 
         redirect_route('admin.group.edit', $group);
+    }
+    
+    public function createUserFromGroup(Request $request, Groups $groups, CreateUserFromGroup $service)
+    {
+        $group = $groups->findOrFail($request['id']);
+        
+        $user = $service->createUserAndAddToGroup($group);
+    }
+    
+    public function createMissingUsers(Request $request, GroupViews $groupRepository, CreateUserFromGroup $service)
+    {
+        $template = $request['email_template'];
+        
+        $groups = $groupRepository->getGroupsWithoutUser();
+        
+        foreach ($groups as $group) {
+            $service->createUserAndAddToGroup($group, $template);
+        }
+        
+        Message::success('Felhasználói fiókok létrehozva, továbbá a regisztrációs email-ek kiküldésre kerültek!');
+        
+        redirect_route('admin.group.maintenance');
+    }
+    
+    public function maintenance(GroupViews $groupRepository)
+    {
+        $groups = $groupRepository->getGroupsWithoutUser();
+        
+        return view('admin.group.maintenance', compact('groups'));
     }
 }

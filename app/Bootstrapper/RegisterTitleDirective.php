@@ -3,7 +3,6 @@
 namespace App\Bootstrapper;
 
 use App\Directives\TitleDirective;
-use App\Directives\LoggedInDirective;
 use Framework\Bootstrapper;
 use Framework\Http\View\ViewParser;
 
