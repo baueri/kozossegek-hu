@@ -27,12 +27,20 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-8">
                     <div class="form-group">
-                        <label for="user_id">Karbantartó</label>
-                        <select name="user_id" class="form-control" placeholder="karbantartó">
-                            <option value="{{ $group->user_id ?: "" }}">{{ $owner->name }}</option>
-                        </select>
+                        <label for="user_id">
+                            Karbantartó
+                                @if(!$group->user_id && $group->group_leaders && $group->group_leader_email)
+                                    <br>
+                                    <a href="#" class=""><i class="fa fa-user-circle"></i> Fiók létrehozása ehhez a csoporthoz</a>
+                                @endif
+                        </label>
+                        <div style="width: 200px">
+                            <select name="user_id" class="form-control" placeholder="karbantartó">
+                                <option value="{{ $group->user_id ?: "" }}">{{ $owner->name }}</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -34,13 +34,13 @@
         </script>
     @endif
 </head>
-<body>
+<body class="@if(!is_prod())demo@endif">
     <div class="home">
         <nav id="header" class="navbar navbar-expand-sm fixed-top">
             <div class="container">
                 <a href="/" class="navbar-brand ml-4 ml-sm-0 mt-0 mb-0 p-0 p-sm-1">
                     <div class="logo-lg"></div>
-                    <div src="/images/logo_only.png" class="logo-sm" style="display:none;"></div>
+                    <img src="/images/logo_only.png" class="logo-sm" style="display:none;">
                 </a>
                 <input type="checkbox" style="display: none" id="toggle_main_menu" name="toggle_main_menu">
                 <ul class="navbar-nav">
@@ -66,7 +66,7 @@
                                 <a href="@route('portal.my_profile')" class="nav-link">Profilom</a>
                             </li>
                             <li class="nav-item">
-                                <a href="@route('portal.my_group')" class="nav-link">Közösségem</a>
+                                <a href="@route('portal.my_groups')" class="nav-link">Közösségeim</a>
                             </li>
                             <?php if (Auth::user()->isAdmin()): ?>
                                 <li class="nav-item">
@@ -103,7 +103,7 @@
                 <div class="col-md-4 col-sm-6 col-xs-12">
                     <ul class="navbar-nav">
                         <li class="nav-item"><a href="" class="nav-link">Rólunk</a></li>
-                        <li class="nav-item"><a href="@route('portal.feedback')" class="nav-link">Visszajelzés küldése</a></li>
+                        <!--<li class="nav-item"><a href="@route('portal.feedback')" class="nav-link">Visszajelzés küldése</a></li>-->
                         <li class="nav-item"><a href="@route('portal.page', 'adatkezelesi-tajekoztato')" class="nav-link">Adatkezelési tájékoztató</a></li>
                         <li class="nav-item"><a href="@route('portal.page', 'impresszum')" class="nav-link">Impresszum</a></li>
                     </ul>

@@ -54,6 +54,11 @@ return [
                 'icon' => 'tags',
                 'as' => 'admin.tags.list'
             ],
+            [
+                'title' => 'Karbantartás',
+                'icon' => 'exclamation-triangle',
+                'as' => 'admin.group.maintenance'
+            ],
         ]
     ],
     [

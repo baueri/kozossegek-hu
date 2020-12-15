@@ -181,7 +181,7 @@ img {
 }
 
 .select2-container {
-    width: 100% !important;
+    /*width: 100% !important;*/
 }
 
 #mobile_menu_toggle { display:none; }

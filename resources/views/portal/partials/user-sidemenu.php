@@ -1,6 +1,6 @@
 <ul class="list-group">
     <li class="list-group-item"><a href="@route('portal.my_profile')">Profilom</a></li>
-    <li class="list-group-item"><a href="@route('portal.my_group')">Közösségem</a></li>
+    <li class="list-group-item"><a href="@route('portal.my_groups')">Közösségeim</a></li>
     <?php if(App\Auth\Auth::user()->isAdmin()): ?>
         <li class="list-group-item"><a href="@route('admin')">Adminisztráció</a></li>
     <?php endif; ?>

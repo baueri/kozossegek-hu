@@ -21,7 +21,7 @@ class Mailable
     /**
      * @var array
      */
-    protected $viewData = [];
+    protected array $viewData = [];
 
     /**
      * @var string
@@ -46,7 +46,7 @@ class Mailable
      */
     final public function with(array $data)
     {
-        $this->viewData = $data;
+        $this->viewData = array_merge($this->viewData, $data);
 
         return $this;
     }

@@ -27,7 +27,9 @@
             <route method="post" uri="profile/update" as="portal.profile.update" controller="UserController" use="update"/>
             
             <route method="get" uri="my-group" as="portal.my_group" controller="GroupController" use="myGroup"/>
-            <route method="post" uri="update-group" as="portal.my_group.update" controller="GroupController" use="updateMyGroup"/>
+            <route method="get" uri="my-group/{id}/edit" as="portal.edit_my_group" controller="GroupController" use="myGroup"/>
+            <route method="get" uri="my-groups" as="portal.my_groups" controller="GroupController" use="myGroups"/>
+            <route method="post" uri="my-group/{id}/update" as="portal.my_group.update" controller="GroupController" use="updateMyGroup"/>
             <route method="post" uri="create-group" as="portal.my_group.create" controller="GroupController" use="createMyGroup"/>
         </route-group>
     </route-group>
@@ -39,7 +41,7 @@
 
     <!-- VÍZJELES KÉPGENERÁLÁS -->
     <route method="get" uri="/media/{entity_type}/images/{image}" as="watermark_image" controller="App\Portal\Controllers\ImageController" use="getImageWithWatermark"/>
-
+    
     <!-- Adatbázisban tárolt statikus oldalak. FIGYELEM!!!! EZ ALÁ MÁR NE KERÜLJÖN ROUTE!!! -->
     <route method="get" uri="{slug}" controller="App\Portal\Controllers\PageController" use="page" as="portal.page" middleware="App\Middleware\ComingSoon"/>
 </routes>

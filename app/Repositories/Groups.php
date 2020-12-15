@@ -3,10 +3,10 @@
 namespace App\Repositories;
 
 use App\Models\Group;
+use Framework\Repository;
 
-class Groups extends \Framework\Repository
+class Groups extends Repository
 {
-
     public static function getModelClass(): string
     {
         return Group::class;
@@ -16,5 +16,4 @@ class Groups extends \Framework\Repository
     {
         return 'groups';
     }
-
 }

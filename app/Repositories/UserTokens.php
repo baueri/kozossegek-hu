@@ -41,7 +41,7 @@ class UserTokens extends Repository
     public function make(User $user, string $page)
     {
         return $this->getInstance([
-            'token' => md5(time()),
+            'token' => bin2hex(random_bytes(20)),
             'email' => $user->email,
             'page' => $page,
             'expires_at' => (new \DateTime())->modify('+1 day')->format('Y-m-d H:i:s')

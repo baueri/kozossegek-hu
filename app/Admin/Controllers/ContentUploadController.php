@@ -21,7 +21,7 @@ class ContentUploadController
     
     public function __construct()
     {
-        $this->storage = new PublicStorage('uploads');
+        $this->storage = new PublicStorage();
     }
     
    
@@ -35,7 +35,7 @@ class ContentUploadController
             return ['name' => basename($dir), 'path' => $dir];
         }));
         
-        $files = collect($this->storage->getFiles($dir));
+        $files = collect($this->storage->getFiles("uploads/$dir"));
         $uploads = $files->map(function (File $file) {
             return [
                 'name' => $file->getFileName(),
@@ -53,7 +53,7 @@ class ContentUploadController
     {
         try {
             $dir = $request['dir'];
-            $file = $this->storage->uploadFile($request->files['file'], null, $dir);
+            $file = $this->storage->uploadFile($request->files['file'], null, "uploads/$dir");
             return $this->storage->getPublicPathFor($file);
         } catch (\Exception $e) {
             \Framework\Http\Response::setStatusCode(500);

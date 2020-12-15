@@ -12,8 +12,14 @@ class PublicStorage extends FileManager
         parent::__construct(STORAGE_PATH . 'public' . DS . $storageDir, $enabledTypes);
         
         if (!file_exists(ROOT . 'public/storage')) {
-            $this->createFolder();
-            $this->createSymLink(ROOT . 'public/storage');
+            
+            if(!$this->createFolder('', $error)) {
+                throw new \Exception($error['message'], $error['type']);
+            }
+            
+            if(!$this->createSymLink(ROOT . 'public/storage')) {
+                throw new \Exception('Nem sikerült a szimbolikus link létrehozása');
+            }
         }
     }
     

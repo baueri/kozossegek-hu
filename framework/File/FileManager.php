@@ -46,6 +46,11 @@ class FileManager
      * @var array
      */
     protected $enabledTypes = [];
+    
+    /**
+     * @var bool
+     */
+    protected $createFolderIfMissing = true;
 
     /**
      * FileManager constructor.
@@ -70,6 +75,10 @@ class FileManager
     {
         $file = new File($fileData['tmp_name']);
         $file->setFileName($fileName ?: $fileData['name']);
+        if ($this->createFolderIfMissing) {
+            $this->createFolder($subDir);
+        }
+        
         if (!$this->fileTypeEnabled($fileData['type'])) {
             throw new Exception('File Type not allowed');
         }
@@ -78,16 +87,22 @@ class FileManager
     }
 
     /**
-     * @param $folderName
+     * @param string $folderName
      * @throws Exception
      */
-    public function createFolder($folderName = '')
+    public function createFolder($folderName = '', &$error = [])
     {
         if ($this->folderExists($folderName)) {
             return true;
         }
         
-        return mkdir($this->rootPath . $folderName, 0777, true);
+        $ok = mkdir(rtrim($this->rootPath . $folderName, '/'), 0777, true);
+        
+        if (!$ok) {
+            $error = error_get_last();
+        }
+        
+        return $ok;
     }
 
     /**

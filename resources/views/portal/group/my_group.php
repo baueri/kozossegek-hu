@@ -22,14 +22,17 @@
             </p>
             @endif
             <h3 class="h4 mt-3">Általános adatok</h3>
-            <form method="post" id="group-form" action="{{ $action }}">
-                <div class="row">
-<!--                    --><?php //dd($group->status == App\Enums\GroupStatusEnum::INACTIVE); ?>
-                    @if($group->pending)
-                        @include('partials.alert', ['level' => 'warning', 'message' => 'A közösséged még függőben van, amíg nincs jóváhagyva, addig nem jelenítjük meg a közösségek között.'])
+            <form method="post" id="group-form" action="@route('portal.my_group.update', $group)">
+                @if($group->pending)
+                        @alert('warning')
+                            A közösséged még függőben van, amíg nincs jóváhagyva, addig nem jelenítjük meg a közösségek között.
+                        @endalert
                     @elseif($group->status == App\Enums\GroupStatusEnum::INACTIVE) 
-                        @include('partials.alert', ['level' => 'warning', 'message' => '<b>A közösséged jelenleg inaktív.</b><br> Nem jelenik meg sem a keresési találatok közzött, illetve az adatlapját se lehet megtekinteni.'])
+                        @alert('warning')
+                            <b>A közösséged jelenleg inaktív.</b><br> Nem jelenik meg sem a keresési találatok közzött, illetve az adatlapját se lehet megtekinteni.
+                        @endalert
                     @endif
+                <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="status">Állapot</label>
@@ -173,6 +176,7 @@
         </div>
 
         <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Mentés</button>
+        <a href="" class="text-danger float-right">közösségem törlése</a>
         </form>
     </div>
 </div>

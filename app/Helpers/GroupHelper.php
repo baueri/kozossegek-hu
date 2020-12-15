@@ -3,6 +3,8 @@
 namespace App\Helpers;
 
 use App\Models\AgeGroup;
+use App\Models\Group;
+use App\Models\User;
 use Framework\Support\Collection;
 
 class GroupHelper
@@ -54,4 +56,10 @@ class GroupHelper
         
         return $root . static::getRelpath($groupId);
     }
+    
+    public static function isGroupEditableBy(Group $group, User $user)
+    {
+        return $user->isAdmin() || $user->id == $group->user_id;
+    }
+    
 }
