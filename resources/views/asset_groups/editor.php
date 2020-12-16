@@ -10,13 +10,32 @@
             lang: 'hu-HU',
             tabsize: 2,
             height: 300,
+            disableDragAndDrop:true,
             callbacks: {
                 onImageUpload: function(files) {
                     sendFile(files[0], $(selector));
                 },
                 onDialogShown: function() {
                     if ($(".summernote-select-from-library").length === 0) {
-                        $(".note-group-select-from-files").after("<div class='mb-3'><label>Médiatárból</label><br/><button class='btn btn-primary summernote-select-from-library' onclick='selectImageFromMediaLibrary()' type='button'>Médiatár</button></div>");
+                        var mediaLibraryBox = $("<div class='mb-3'><label>Médiatárból</label><br/></div>");
+                        var mediaLibButton = $("<button class='btn btn-primary summernote-select-from-library' type='button'>Médiatár</button>");
+                        mediaLibraryBox.append(mediaLibButton);
+                        mediaLibButton.click(function () {
+                            selectImageFromMediaLibrary({
+                                onSelect: function (data) {
+                                    if (data.is_img) {
+                                        $(selector).summernote('insertImage', data.src);
+                                    } else {
+                                        $(selector).summernote('createLink', {
+                                            text: data.text,
+                                            url: data.src
+                                        });
+                                    }
+                                    $(".note-modal").modal('hide');
+                                }
+                            });
+                        });
+                        $(".note-group-select-from-files").after(mediaLibraryBox);
                     }
                 }
             },

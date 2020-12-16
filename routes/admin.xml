@@ -32,6 +32,8 @@
             <route method="post" uri="generate-slug" use="generateSlug" as="generate_slug"/>
             <route method="post" uri="summernote-upload" />
         </route-group>
+        
+        <route method="post" uri="api/uploads/get" controller="Api\UploadController" use="getUploads" />
 
 
         <!-- KÖZÖSSÉGEK -->

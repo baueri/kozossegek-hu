@@ -258,3 +258,14 @@ img {
     content: "*";
     color: red;
 }
+
+#uploads .file-item {
+    border: 1px solid #dadada;
+    padding: 10px;
+    background: #fafafa;
+    cursor: pointer;
+}
+
+.uploads-modal .file-item {
+    cursor: pointer;
+}

@@ -36,15 +36,7 @@ class ContentUploadController
         }));
         
         $files = collect($this->storage->getFiles("uploads/$dir"));
-        $uploads = $files->map(function (File $file) {
-            return [
-                'name' => $file->getFileName(),
-                'type' => $file->getFileType(),
-                'size' => $file->getFileSize('MB', 2),
-                'path' => $this->storage->getPublicPathFor($file),
-                'is_dir' => $file->isDir()
-            ];
-        })->all();
+        $uploads = \App\Helpers\FileHelper::parseFilesToArray($files);
         
         return view('admin.uploads.list', compact('uploads', 'breadCrumbs', 'dir'));
     }
