@@ -23,10 +23,13 @@ class PublicStorage extends FileManager
         }
     }
     
+    /**
+     * @param File $file
+     * @return string
+     */
     public function getPublicPathFor(File $file)
     {
-        $path = $file->getFilePath();
-        return str_replace(STORAGE_PATH . 'public', '/storage', $path);
+        return \App\Helpers\FileHelper::getPublicPathFor($file);
     }
 
     /**
