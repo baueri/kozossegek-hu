@@ -1,15 +1,10 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 namespace App\Services;
 
 use App\Models\User;
 use App\Repositories\Institutes;
+use Framework\Support\Csv;
 
 /**
  * Description of IntezmenyImporter
@@ -22,21 +17,22 @@ class InstituteImporter
     /**
      * @var Institutes
      */
-    private $institutes;
+    private Institutes $institutes;
 
     public function __construct(Institutes $institutes)
     {
         $this->institutes = $institutes;
     }
-    
+
     /**
      *
      * @param string $filePath
      * @param User $user
+     * @return int[]
      */
-    public function run($filePath, User $user)
+    public function run(string $filePath, User $user)
     {
-        $rows = array_map('str_getcsv', file($filePath));
+        $rows = Csv::parse($filePath, ';');
 
         unset($rows[0]);
         $skipped = $imported = 0;
@@ -61,10 +57,10 @@ class InstituteImporter
     }
 
     /**
-     * @param string $instituteData
+     * @param array $instituteData
      * @return bool
      */
-    private function instituteExists($instituteData)
+    private function instituteExists(array $instituteData): bool
     {
         $query = builder('institutes')->where('name', $instituteData['name'])->where('city', $instituteData['city']);
         
