@@ -39,14 +39,13 @@
                            <?php if (in_array($tag['slug'], $selected_tags)): ?> checked <?php endif; ?>
                            style="display: none;">
                     <label for="tag-{{ $tag['slug'] }}" class="mr-1 badge badge-pill badge-light group-tag-badge align-middle" title="{{ $tag['tag'] }}">
-                        <span class="align-middle mr-2" style="background: url('/images/tag/{{ $tag['slug'] }}.png'); background-size: cover; width: 24px; height: 24px; display: inline-block;"></span>
                         <span class="align-middle">{{ $tag['tag'] }}</span>
                     </label>
                     @endforeach
                     <input type="hidden" name="tags" value="{{ $filter['tags'] }}">
                 </div>
                 <p class="mt-2 text-right">
-                    <a href="/kozossegek">Szűrés törlése</a>
+                    <a href="/kozossegek" class="text-light">Szűrés törlése</a>
                 </p>
             </form>
         </div>

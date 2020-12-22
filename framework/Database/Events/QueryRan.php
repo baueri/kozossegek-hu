@@ -8,9 +8,13 @@ use Framework\Event\Event;
 
 class QueryRan extends Event
 {
-    public $query;
-    public $bindings;
-    public $time;
+    protected static $listeners = [];
+
+    public string $query;
+    
+    public array $bindings;
+    
+    public float $time;
 
     /**
      * QueryRan constructor.

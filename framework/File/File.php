@@ -221,4 +221,29 @@ class File
     {
         return symlink($this->filePath, $link);
     }
+    
+    public function getMainType(): string
+    {
+        foreach (FileManager::TYPES as $mainType => $types) {
+            if (in_array($this->fileType, $types)) {
+                return $mainType;
+            }
+        }
+        
+        return 'unknown';
+    }
+    
+    public function is(string $fileType): bool
+    {
+        return $this->getMainType() === $fileType;
+    }
+
+    public static function createFromFormData(?array $formData = null): ?File
+    {
+        if (!$formData) {
+            return null;
+        }
+
+        return new static($formData['tmp_name']);
+    }
 }

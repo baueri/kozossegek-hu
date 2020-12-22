@@ -18,7 +18,6 @@ class WidgetServiceProvider implements Middleware
 
     public function handle()
     {
-        
         ViewParser::registerDirective('widget', function($matches) {
             return "<?php echo widget({$matches[1]})->render(); ?>";
         });

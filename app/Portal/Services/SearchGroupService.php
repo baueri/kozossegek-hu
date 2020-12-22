@@ -17,7 +17,7 @@ class SearchGroupService
     /**
      * @var GroupViews
      */
-    private $groupRepo;
+    private GroupViews $groupRepo;
 
     /**
      *

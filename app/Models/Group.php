@@ -84,7 +84,7 @@ class Group extends Model
             $daysTranslated[$day] = lang("day.$day");
         }
 
-        return $daysTranslated;
+        return collect($daysTranslated);
     }
 
     /**

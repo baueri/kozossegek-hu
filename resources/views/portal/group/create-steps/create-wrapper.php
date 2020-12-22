@@ -2,22 +2,16 @@
     @featuredTitle('Közösséget hirdetek')
 @endsection
 @extends('portal')
-<div class="container p-4">
+<div class="container p-4" id="create-group">
     <div class="row mt-5 mb-5" id="steps">
-        <div class="col-md-4 text-center step {{ $step == 1 ? 'active' : '' }}">
-            <span class="step-number">1</span>
-            <span class="step-text">Felhasználói adatok</span>
-        </div>
-        <div class="col-md-4 text-center step {{ $step == 2 ? 'active' : '' }}">
-            <span class="step-number">2</span>
-            <span class="step-text">Közösség adatainak megadása</span>
-        </div>
-        <div class="col-md-4 text-center step {{ $step == 3 ? 'active' : '' }}">
-            <span class="step-number">3</span>
-            <span class="step-text">Regisztráció befejezése</span>
-        </div>
+        @foreach($steps as $step_number => $step_data)
+            <div class="col-md-4 @if(count($steps) == 2 && $step_number == 1) offset-2 @endif text-center step {{ $step_data[0] == $step ? 'active' : '' }}">
+                <span class="step-number">{{ $step_number }}</span>
+                <span class="step-text">{{ $step_data[1] }}</span>
+            </div>
+        @endforeach
     </div>
-    <div class="jumbotron">
+    <div>
         @yield('portal.group.create-steps.create-wrapper')
     </div>
     

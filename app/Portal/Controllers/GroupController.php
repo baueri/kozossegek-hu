@@ -5,21 +5,25 @@ namespace App\Portal\Controllers;
 use App\Admin\Group\Services\CreateGroup;
 use App\Admin\Group\Services\UpdateGroup;
 use App\Auth\Auth;
-use App\Enums\DayEnum;
+use App\Factories\CreateGroupStepFactory;
+use App\Helpers\GroupHelper;
+use App\Http\Responses\PortalEditGroupForm;
 use App\Models\GroupView;
-use App\Repositories\AgeGroups;
-use App\Repositories\Denominations;
+use App\Portal\Services\GroupList;
+use App\Portal\Services\SendContactMessage;
 use App\Repositories\Groups;
-use App\Repositories\GroupStatusRepository;
 use App\Repositories\GroupViews;
 use App\Repositories\Institutes;
-use App\Repositories\OccasionFrequencies;
 use Error;
+use ErrorException;
 use Exception;
+use Framework\File\File;
 use Framework\Http\Controller;
 use Framework\Http\Message;
 use Framework\Http\Request;
+use Framework\Http\Session;
 use Framework\Model\ModelNotFoundException;
+use Throwable;
 
 /**
  * Description of GroupController
@@ -28,31 +32,48 @@ use Framework\Model\ModelNotFoundException;
  */
 class GroupController extends Controller
 {
-    public function kozossegek(\App\Portal\Services\GroupList $service)
+    public function kozossegek(GroupList $service)
     {
         return $service->getHtml();
     }
 
-    public function kozossegRegisztracio(Request $request)
+    public function kozossegRegisztracio(Request $request, CreateGroupStepFactory $factory)
     {
-        $step = $request['next_step'] ?: 1;
-        switch ($step) {
-            case 1:
-            default:
-                return app()->make(\App\Http\Responses\CreateGroupSteps\LoginOrRegister::class);
-            case 2:
-                return app()->make(\App\Http\Responses\CreateGroupSteps\SetGroupData::class);
-            case 3:
-                return app()->make(\App\Http\Responses\CreateGroupSteps\UploadDocument::class);
+        $user = Auth::user();
+        $step = $request['next_step'] ?: 'login';
+
+        if ($user) {
+
+            if ($step === 'login') {
+                $step = 'group_data';
+            }
+
+            $steps = [
+                1 => ['group_data', 'Közösség adatainak megadása'],
+                ['finish_registration', 'Regisztráció befejezése']
+            ];
+        } else {
+            $steps = [
+                1 => ['login', 'Közösség adatainak megadása'],
+                ['group_data', 'Regisztráció befejezése'],
+                ['finish_registration', 'Regisztráció befejezése']
+            ];
         }
+
+        $service = $factory->getGroupStep($step);
+
+
+
+        return (string) $service->render(compact('steps', 'step'));
     }
 
     /**
      * Közösség adatlap
-     * @param  Request    $request
-     * @param  GroupViews $repo
-     * @param  Institutes $instituteRepo
+     * @param Request $request
+     * @param GroupViews $repo
+     * @param Institutes $instituteRepo
      * @return string
+     * @throws ModelNotFoundException
      */
     public function kozosseg(Request $request, GroupViews $repo, Institutes $instituteRepo)
     {
@@ -108,7 +129,7 @@ class GroupController extends Controller
         return view('portal.partials.group-contact-form', compact('group'));
     }
 
-    public function sendContactMessage(Request $request, Groups $repo, \App\Portal\Services\SendContactMessage $service)
+    public function sendContactMessage(Request $request, Groups $repo, SendContactMessage $service)
     {
         try {
             $service->send($repo->findOrFail($request['id']), $request->all());
@@ -131,14 +152,14 @@ class GroupController extends Controller
         return view('portal.group.my_groups', compact('groups'));
     }
     
-    public function myGroup(Request $request, GroupViews $groups, \App\Http\Responses\PortalEditGroupForm $response)
+    public function myGroup(Request $request, GroupViews $groups, PortalEditGroupForm $response)
     {
         $user = Auth::user();
         
         /* @var $group GroupView */
         $group = $groups->find($request['id']);
         
-        if (!\App\Helpers\GroupHelper::isGroupEditableBy($group, $user)) {
+        if (!GroupHelper::isGroupEditableBy($group, $user)) {
             
         }
         
@@ -148,7 +169,7 @@ class GroupController extends Controller
     public function createMyGroup(Request $request, CreateGroup $service, Groups $groups)
     {
         try {
-            $data = $request->only(
+            $data = collect(Session::get('create_group_data'))->only(
                 'status',
                 'name',
                 'denomination',
@@ -164,17 +185,18 @@ class GroupController extends Controller
                 'description',
                 'image'
             );
-            
+
             $data['user_id'] = Auth::user()->id;
-            
-            $service->create(collect($data));
+
+            $file = File::createFromFormData($request->files['document']);
+
+            $service->create($data, $file);
             
             Message::success('Közösség sikeresen létrehozva!<br>Mielőtt még láthatóvá tennénk a közösségedet, átnézzük, hogy minden adatot rendben találunk-e. Köszönjük a türelmet!');
             
             redirect_route('portal.my_group');
-        } catch (\Exception|\Error|\Throwable| \ErrorException $ex) {
+        } catch (Exception|Error|Throwable| ErrorException $ex) {
             Message::danger('Közösség létrehozása nem sikerült, kérjük próbáld meg később!');
-            dd($ex);
         }
     }
     

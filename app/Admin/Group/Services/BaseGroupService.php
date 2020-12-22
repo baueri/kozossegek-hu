@@ -14,43 +14,43 @@ use App\Repositories\GroupViews;
 use App\Repositories\Institutes;
 use App\Services\RebuildSearchEngine;
 use App\Storage\Base64Image;
+use Framework\File\File;
+use Framework\File\FileManager;
 
 /**
  * Description of BaseGroupService
  *
  * @author ivan
  */
-abstract class BaseGroupService {
+abstract class BaseGroupService
+{
 
     /**
      * @var RebuildSearchEngine
      */
-    private $searchEngineRebuilder;
-
-    /**
-     * @var GroupViews
-     */
-    private $groupViews;
-
-    /**
-     * @var Institutes
-     */
-    private $institutes;
-
+    private RebuildSearchEngine $searchEngineRebuilder;
 
     /**
      * @var Groups
      */
-    protected $repository;
+    protected Groups $repository;
+
+    /**
+     * @var FileManager
+     */
+    private FileManager $fileManager;
 
     /**
      *
      * @param Groups $repository
      * @param RebuildSearchEngine $searchEngineRebuilder
+     * @param FileManager $fileManager
      */
-    public function __construct(Groups $repository, RebuildSearchEngine $searchEngineRebuilder) {
+    public function __construct(Groups $repository, RebuildSearchEngine $searchEngineRebuilder, FileManager $fileManager)
+    {
         $this->repository = $repository;
         $this->searchEngineRebuilder = $searchEngineRebuilder;
+        $this->fileManager = $fileManager;
     }
     
     protected function updateSearchEngine(Group $group)
@@ -87,12 +87,18 @@ abstract class BaseGroupService {
             //$image->saveThumbnail($group->getStorageImageDir() . 'thumbnails' . DS . $group->id . '_1.jpg');
         }
     }
-    
+
+    protected function uploadDocument(Group $group, ?File $document)
+    {
+        dd("folyt köv: BaseGroupService");
+    }
+
     /**
-     * 
+     *
      * @param array $data
+     * @return bool
      */
-    protected function validate(array $data)
+    protected function validate(array $data): bool
     {
         $requiredFields = ['name', 'denomination', 'institute_id', 'age_group', 'occasion_frequency', 'description', 'group_leaders', 'group_leader_email'];
         
