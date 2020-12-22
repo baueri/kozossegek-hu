@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\Group;
 use App\Models\User;
 use Framework\Database\PaginatedResultSet;
 use Framework\Model\Model;
@@ -113,7 +114,7 @@ class GroupViews extends Repository
 
     /**
      * @param string $slug
-     * @return Group
+     * @return GroupView
      */
     public function findBySlug($slug)
     {

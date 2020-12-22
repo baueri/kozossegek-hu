@@ -2,7 +2,6 @@
 <routes>
     <route-group namespace="App\Portal\Controllers\">
         <middleware name="App\Middleware\ComingSoon"/>
-
         <route method="get" uri="test" as="test" controller="TestController" use="testEmail"/>
 
         <route method="get" uri="" as="home" controller="HomeController" use="home"/>

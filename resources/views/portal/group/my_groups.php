@@ -5,7 +5,7 @@
             @include('portal.partials.user-sidemenu')
         </div>
         <div class="col-md-9">
-            <h1>Közösségeim</h1>
+            <h1>Közösségeim <a href="@route('portal.register_group')" class="float-right btn btn-success btn-sm"><i class="fa fa-plus"></i> Új közösség</a></h1>
             <table class="table table-condensed table-striped">
                     <tr>
                         <td><i class="fa fa-eye"></i></td>

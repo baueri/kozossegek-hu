@@ -4,6 +4,7 @@
 <h3>v0.2 pre-alpha</h3>
 <ul>
     <li>[NEW]: Intézmény importálás (szinkronizálás)</li>
+    <li>[NEW]: Fájfeltöltés, képbeszúrás cikkbe</li>
     <li>[CHANGED]: 'Város' szöveget lecseréltem 'település'-re</li>
     <li>[FIXED]: 500-as hiba, ha olyan kulcsszavakra keresünk, amik közül egyik se címke</li>
     <li>[FIXED]: Közösség admin oldalon is kötelezővé tettem azokat a mezőket, amik az adatbázisban nem lehetnek érték nélküliek</li>

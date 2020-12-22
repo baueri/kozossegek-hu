@@ -37,7 +37,7 @@ class GroupController extends AdminController
     public function doCreate(Request $request, CreateGroup $service, BaseGroupForm $form)
     {
         try {
-            $group = $service->create($request);
+            $group = $service->create($request->collect());
 
             Message::success('Közösség létrehozva.');
 

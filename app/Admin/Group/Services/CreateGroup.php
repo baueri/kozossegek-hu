@@ -3,8 +3,10 @@
 namespace App\Admin\Group\Services;
 
 use App\Models\Group;
+use Framework\File\File;
 use Framework\Http\Request;
 use App\Http\Exception\RequestParameterException;
+use Framework\Support\Collection;
 
 /**
  * Description of CreateGrooup
@@ -16,10 +18,12 @@ class CreateGroup extends BaseGroupService
 
     /**
      *
-     * @param Request $request
-     * @return Group
+     * @param Collection|array $request
+     * @param File|null $document
+     * @return Group|null
+     * @throws RequestParameterException
      */
-    public function create($request)
+    public function create($request, ?File $document = null): ?Group
     {
         $data = $request->except('files', 'image', 'tags')->all();
         
@@ -30,12 +34,17 @@ class CreateGroup extends BaseGroupService
         }
         
         $group = $this->repository->create($data);
-        
-        $this->syncTags($group, $request['tags']);
-        
-        $this->updateSearchEngine($group);
-        
-        $this->syncImages($group, [$request['image']]);
+
+        if ($group) {
+
+            $this->syncTags($group, $request['tags']);
+
+            $this->updateSearchEngine($group);
+
+            $this->syncImages($group, [$request['image']]);
+
+            $this->uploadDocument($group, $document);
+        }
 
         return $group;
     }

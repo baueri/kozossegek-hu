@@ -12,7 +12,7 @@
     @foreach($queries as $row)
         <tr>
             <td>{{ $row[0] }}</td>
-            <td>{{ round($row[2], 4) }}</td>
+            <td>{{ round($row[2], 3) }}</td>
         </tr>
     @endforeach
 </table>

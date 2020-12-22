@@ -2,18 +2,21 @@
 
 namespace App\Http\Responses\CreateGroupSteps;
 
+use Framework\Http\Request;
+
 abstract class AbstractGroupStep
 {
+    const SESSION_KEY = 'create_group_data';
 
     /**
-     * @var \Framework\Http\Request
+     * @var Request
      */
-    protected $request;
+    protected Request $request;
 
     /**
-     * @param \Framework\Http\Request $request
+     * @param Request $request
      */
-    public function __construct(\Framework\Http\Request $request)
+    public function __construct(Request $request)
     {
         $this->request = $request;
     }
@@ -24,9 +27,9 @@ abstract class AbstractGroupStep
     {
         return [];
     }
-    
-    public function __toString()
+
+    public function render(array $data): string
     {
-        return view($this->getView(), array_merge(['step' => $this->request['next_step'] ?: 1], $this->getModel()));
+        return view($this->getView(), array_merge($data, $this->getModel()));
     }
 }

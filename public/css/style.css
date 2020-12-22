@@ -1,3 +1,7 @@
+:root {
+    --darkblue: #3f91b0;
+}
+
 body {
     /*font-family: 'Ubuntu', sans-serif;*/
     color: #555;
@@ -73,8 +77,8 @@ img {
 
 .btn-darkblue {
     color: #fff;
-    background-color: #3f91b0;
-    border: 1px solid #3f91b0;
+    background-color: var(--darkblue);
+    border: 1px solid var(--darkblue);
     border-radius: 0;
 }
 
@@ -84,18 +88,18 @@ img {
 }
 
 .btn-outline-darkblue {
-    color: #3f91b0;
-    border: 1px solid #3f91b0;
+    color: var(--darkblue);
+    border: 1px solid var(--darkblue);
 }
 
 .btn-outline-darkblue:hover {
-    background: #3f91b0;
+    background: var(--darkblue);
     color: #fff;
 }
 
 #main-finder button {
-    background: #3f91b0;
-    border: 1px solid #3f91b0;
+    background: var(--darkblue);
+    border: 1px solid var(--darkblue);
     transition: all ease-in .2s;
 }
 
@@ -650,11 +654,15 @@ input[name=search]::placeholder {
     padding: 5px 10px;
 }
 
+.group-tag + label {
+    padding: 5px 15px !important;
+}
+
 .group-tag:checked + label {
-    background: var(--teal);
+    background: var(--primary);
     color: #fff;
 }
-.required label:after {
+.required label:after, .required h4:after {
     content: "*";
     color: red;
 }
@@ -735,4 +743,17 @@ input[name=search]::placeholder {
 
 #kozossegek-list .card-img:hover div {
     opacity: 1;
+}
+
+#create-group .step-container {
+    border: 5px solid #bfdeff; 
+    padding: 3em;
+    margin-bottom: 3em;
+}
+#create-group .step-container > h4 {
+    margin-bottom: 1em;
+}
+
+.btn {
+    border-radius: 0;
 }

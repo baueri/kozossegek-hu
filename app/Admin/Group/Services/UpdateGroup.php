@@ -18,7 +18,7 @@ class UpdateGroup extends BaseGroupService
     /**
      *
      * @param int $id
-     * @param Request|Collection $request
+     * @param Request|Collection|array $request
      */
     public function update($id, $request)
     {

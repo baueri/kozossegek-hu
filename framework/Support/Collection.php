@@ -692,14 +692,18 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         return $values;
     }
 
-    public function isEmpty()
+    public function isEmpty(...$except)
     {
+        if ($except) {
+            return $this->except(...$except)->isEmpty();
+        }
+
         return empty($this->items);
     }
 
-    public function isNotEmpty()
+    public function isNotEmpty(...$except)
     {
-        return !$this->isEmpty();
+        return !$this->isEmpty(...$except);
     }
 
     /**
@@ -742,5 +746,10 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         }
 
         return new self($grouped);
+    }
+
+    public function collect()
+    {
+        return new static($this->items);
     }
 }

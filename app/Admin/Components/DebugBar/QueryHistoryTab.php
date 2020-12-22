@@ -32,7 +32,7 @@ class QueryHistoryTab extends DebugBarTab
 
     public function render()
     {
-        $time = round($this->queryHistory->getExecutionTime(), 4);
+        $time = round($this->queryHistory->getExecutionTime(), 2);
         $queries = $this->queryHistory->getQueryHistory()->map(function($row){
             $row[0] = DatabaseHelper::getQueryWithBindings($row[0], $row[1]);
             return $row;

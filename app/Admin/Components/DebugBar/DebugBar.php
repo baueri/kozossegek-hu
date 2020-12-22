@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Admin\Components\DebugBar;
-
 
 class DebugBar
 {
@@ -11,12 +9,11 @@ class DebugBar
      */
     private $tabs = [];
 
-    public function __construct(QueryHistoryTab $queryHistoryTab, ErrorTab $errorTab, LoadedViewsTab $loadedViewsTab)
+    public function __construct(QueryHistoryTab $queryHistoryTab, LoadedViewsTab $loadedViewsTab)
     {
         $this->tabs = [
             $queryHistoryTab,
             $loadedViewsTab,
-            $errorTab,
         ];
     }
 
@@ -47,5 +44,4 @@ class DebugBar
 
         return view('admin.partials.debugbar', compact('headers', 'tab_contents'));
     }
-
 }
