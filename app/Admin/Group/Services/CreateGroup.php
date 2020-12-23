@@ -18,25 +18,23 @@ class CreateGroup extends BaseGroupService
 
     /**
      *
-     * @param Collection|array $request
-     * @param File|null $document
+     * @param Collection $request
+     * @param array|null $document
      * @return Group|null
-     * @throws RequestParameterException
      */
-    public function create($request, ?File $document = null): ?Group
+    public function create(Collection $request, ?array $document = null): ?Group
     {
         $data = $request->except('files', 'image', 'tags')->all();
-        
+
         $data['age_group'] = implode(',', $data['age_group'] ?? []);
-        
+
         if (!$this->validate($data)) {
-            throw new RequestParameterException('A csillaggal jelölt mezők kitöltése kötelező!');
+            return null;
         }
-        
+
         $group = $this->repository->create($data);
 
         if ($group) {
-
             $this->syncTags($group, $request['tags']);
 
             $this->updateSearchEngine($group);

@@ -2,6 +2,8 @@
 
 namespace App\Admin\Components\DebugBar;
 
+use Framework\Support\StringHelper;
+
 class DebugBar
 {
     /**
@@ -42,6 +44,6 @@ class DebugBar
             $tab_contents[$name] = $tab->render();
         }
 
-        return view('admin.partials.debugbar', compact('headers', 'tab_contents'));
+        return StringHelper::sanitize(view('admin.partials.debugbar', compact('headers', 'tab_contents')));
     }
 }

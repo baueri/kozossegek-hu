@@ -67,7 +67,7 @@ abstract class Validator
         }
         if ($errors) {
 
-            $this->pushError($errors, $field);
+            $this->setError($errors, $field);
         }
 
     }

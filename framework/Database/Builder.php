@@ -1,10 +1,8 @@
 <?php
 
-
 namespace Framework\Database;
 
 use Framework\Http\Request;
-use Framework\Exception\MethodNotFoundException;
 
 class Builder
 {
@@ -24,7 +22,7 @@ class Builder
     private $limit;
 
     private $distinct = false;
-    
+
     private $selectBindings = [];
 
     protected static $macros = [];
@@ -66,7 +64,7 @@ class Builder
     public function count()
     {
         $oldSelect = $this->select;
-        
+
         $oldSelectBindings = $this->selectBindings;
         $this->selectBindings = [];
 
@@ -84,7 +82,7 @@ class Builder
     {
         [$query, $bindings] = $this->build();
         $bindings = array_merge($this->selectBindings, $bindings);
-        
+
         $distinct = $this->distinct ? 'DISTINCT ' : '';
         $base = sprintf(
             'select %s%s from %s ',
@@ -92,7 +90,7 @@ class Builder
             implode(', ', $this->select ?: ['*']),
             implode(', ', $this->table)
         );
-        
+
         return [$base . $query, $bindings];
     }
 
@@ -189,7 +187,7 @@ class Builder
 
         $total = $this->count();
 
-        $rows = $this->limit(($page-1) * $limit . ', ' . $limit)->get();
+        $rows = $this->limit(($page - 1) * $limit . ', ' . $limit)->get();
 
         return new PaginatedResultSet($rows, $limit, $page, $total);
     }
@@ -219,7 +217,7 @@ class Builder
     {
         $this->select = [$select];
         $this->selectBindings = array_merge($this->selectBindings, $bindings);
-        
+
         return $this;
     }
 
@@ -233,7 +231,7 @@ class Builder
     {
         $this->select[] = $select;
         $this->selectBindings = array_merge($this->selectBindings, $bindings);
-        
+
         return $this;
     }
 
@@ -389,7 +387,7 @@ class Builder
     public function __call($method, $args)
     {
         $macro = $this->getMacro($method);
-        
+
         $macro($this, ...$args);
 
         return $this;
@@ -398,7 +396,7 @@ class Builder
     public function macro($macroName, $callback)
     {
         $key = !$this->getTable() ? 'global' : $this->getTable();
-        
+
         static::$macros[$key][$macroName] = $callback;
 
         return $this;

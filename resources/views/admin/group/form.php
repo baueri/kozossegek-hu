@@ -80,7 +80,7 @@
                 </div>
             </div>
             <div class="form-group required">
-                <label for="description">Leírás</label>
+                <label for="description">Bemutatkozás</label>
                 <textarea name="description" id="description" required>{{ $group->description }}</textarea>
             </div>
             <div class="row group-images">

@@ -12,7 +12,7 @@
             @include('portal.partials.user-sidemenu')
         </div>
         <div class="col-md-9">
-            
+
             @include('admin.partials.message')
 
             <h1 class="h3">Közösség módosítása</h1>
@@ -27,7 +27,7 @@
                         @alert('warning')
                             A közösséged még függőben van, amíg nincs jóváhagyva, addig nem jelenítjük meg a közösségek között.
                         @endalert
-                    @elseif($group->status == App\Enums\GroupStatusEnum::INACTIVE) 
+                    @elseif($group->status == App\Enums\GroupStatusEnum::INACTIVE)
                         @alert('warning')
                             <b>A közösséged jelenleg inaktív.</b><br> Nem jelenik meg sem a keresési találatok közzött, illetve az adatlapját se lehet megtekinteni.
                         @endalert
@@ -132,7 +132,7 @@
                 </div>
 
                 <div class="form-group required">
-                    <label for="description">Leírás</label>
+                    <label for="description">Bemutatkozás</label>
                     <textarea name="description" id="description">{{ $group->description }}</textarea>
                 </div>
 

@@ -3,7 +3,6 @@
 
 namespace App\Admin\Controllers;
 
-use App\Admin\Controllers\AdminController;
 use App\Admin\Group\Services\BaseGroupForm;
 use App\Admin\Group\Services\CreateGroup;
 use App\Admin\Group\Services\DeleteGroup;
@@ -11,25 +10,32 @@ use App\Admin\Group\Services\EditGroup;
 use App\Admin\Group\Services\ListGroups;
 use App\Admin\Group\Services\UpdateGroup;
 use App\Http\Exception\RequestParameterException;
-use App\Mail\RegistrationByGroupEmail;
 use App\Models\Group;
 use App\Repositories\Groups;
 use App\Repositories\GroupViews;
-use App\Repositories\UserTokens;
 use App\Services\CreateUserFromGroup;
 use App\Services\RebuildSearchEngine;
 use Framework\Http\Message;
 use Framework\Http\Request;
-use Framework\Mail\Mailer;
+use ReflectionException;
 
 class GroupController extends AdminController
 {
+    /**
+     * @param ListGroups $service
+     * @return string
+     * @throws ReflectionException
+     */
     public function list(ListGroups $service)
     {
         return $service->show();
     }
 
-    public function create(BaseGroupForm $service)
+    /**
+     * @param BaseGroupForm $service
+     * @return string
+     */
+    public function create(BaseGroupForm $service): string
     {
         return $service->show(new Group());
     }
@@ -42,7 +48,7 @@ class GroupController extends AdminController
             Message::success('Közösség létrehozva.');
 
             redirect_route('admin.group.edit', ['id' => $group->id]);
-        
+
         } catch (RequestParameterException $e) {
             Message::danger($e->getMessage());
             return $form->show(new Group($request->all()));
@@ -72,13 +78,13 @@ class GroupController extends AdminController
     {
         return $service->show();
     }
-    
+
     public function rebuildSearchEngine(RebuildSearchEngine $service)
     {
         $service->updateAll();
-        
+
         Message::success('Sikeres keresőmotor frissítés');
-        
+
         return redirect_route('admin.group.list');
     }
 
@@ -96,33 +102,33 @@ class GroupController extends AdminController
 
         redirect_route('admin.group.edit', $group);
     }
-    
+
     public function createUserFromGroup(Request $request, Groups $groups, CreateUserFromGroup $service)
     {
         $group = $groups->findOrFail($request['id']);
-        
+
         $user = $service->createUserAndAddToGroup($group);
     }
-    
+
     public function createMissingUsers(Request $request, GroupViews $groupRepository, CreateUserFromGroup $service)
     {
         $template = $request['email_template'];
-        
+
         $groups = $groupRepository->getGroupsWithoutUser();
-        
+
         foreach ($groups as $group) {
             $service->createUserAndAddToGroup($group, $template);
         }
-        
+
         Message::success('Felhasználói fiókok létrehozva, továbbá a regisztrációs email-ek kiküldésre kerültek!');
-        
+
         redirect_route('admin.group.maintenance');
     }
-    
+
     public function maintenance(GroupViews $groupRepository)
     {
         $groups = $groupRepository->getGroupsWithoutUser();
-        
+
         return view('admin.group.maintenance', compact('groups'));
     }
 }

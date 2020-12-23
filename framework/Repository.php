@@ -148,7 +148,7 @@ abstract class Repository
         if ($data) {
             $model->update($data);
         }
-        
+
         $changes = $this->getChanges($model);
 
         if (!$changes) {
@@ -165,7 +165,7 @@ abstract class Repository
         }, $dbColumns));
 
         $query = sprintf('UPDATE %s SET %s WHERE %s=?', $table, $set, $primaryCol);
-        
+
         return (bool)db()->update($query, ...array_merge($values, [$id]));
     }
 
@@ -203,11 +203,12 @@ abstract class Repository
 
     /**
      * @param Model|int $model
+     * @param bool $hardDelete
      * @return bool
      */
-    public function delete($model)
+    public function delete($model, bool $hardDelete = false)
     {
-        if (property_exists($model, 'deleted_at')) {
+        if (property_exists($model, 'deleted_at') && !$hardDelete) {
             $model->deleted_at = date('Y-m-d H:i:s');
             return $this->save($model);
         }

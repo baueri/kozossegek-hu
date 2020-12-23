@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Mail;
-
 
 use App\Models\UserToken;
 use App\Models\User;

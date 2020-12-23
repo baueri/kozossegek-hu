@@ -1,6 +1,6 @@
-@header('')
-<script src="/assets/dropzone/dropzone.min.js"></script>
-<link rel="stylesheet" href="/assets/dropzone/dropzone.min.css"/>
+@header()
+    <script src="/assets/dropzone/dropzone.min.js"></script>
+    <link rel="stylesheet" href="/assets/dropzone/dropzone.min.css"/>
 @endheader
 @title('Feltöltések')
 @extends('admin')

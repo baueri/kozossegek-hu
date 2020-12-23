@@ -9,7 +9,7 @@
     <p><b>Lelkiségi mozgalom:</b> {{ $group->spiritual_movement ?: '-' }}</p>
     <p><b>Közösség jellemzői:</b> {{ $selected_tags }}</p>
     <hr>
-    <b>Leírás:</b>
+    <b>Bemutatkozás:</b>
     {{ $group->description }}
     <hr>
     <p><b>Közösségvezető(k):</b> {{ $group->group_leaders }}</p>

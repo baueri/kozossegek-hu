@@ -3,6 +3,7 @@
 @endsection
 @extends('portal')
 <div class="container p-4" id="create-group">
+    @message()
     <div class="row mt-5 mb-5" id="steps">
         @foreach($steps as $step_number => $step_data)
             <div class="col-md-4 @if(count($steps) == 2 && $step_number == 1) offset-2 @endif text-center step {{ $step_data[0] == $step ? 'active' : '' }}">
@@ -14,7 +15,7 @@
     <div>
         @yield('portal.group.create-steps.create-wrapper')
     </div>
-    
+
 </div>
 <style>
     #steps {
@@ -46,18 +47,18 @@
         line-height: 50px;
         font-size: 1.5rem;
     }
-    
+
     .step:not(.active) .step-number {
         filter: grayscale(.6);
     }
-    
+
     .step.active .step-number{
         background: #1c3c4b;
         box-shadow: 0 0 4px #000;
     }
-    
+
     .step.active .step-text{
         color: #000;
     }
-    
+
 </style>

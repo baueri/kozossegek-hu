@@ -2,7 +2,6 @@
 
 namespace App\Admin\Controllers;
 
-use App\Admin\Controllers\AdminController;
 use App\Admin\User\UserTable;
 use App\Auth\Auth;
 use App\Mail\RegistrationEmail;
@@ -11,8 +10,8 @@ use App\Repositories\UserTokens;
 use App\Repositories\Users;
 use Framework\Http\Message;
 use Framework\Http\Request;
-use Framework\Mail\Mailable;
 use Framework\Mail\Mailer;
+use Framework\Model\ModelNotFoundException;
 use Framework\Support\Password;
 
 class UserController extends AdminController
@@ -22,15 +21,20 @@ class UserController extends AdminController
     {
         return view('admin.user.list', compact('table'));
     }
-    
+
     public function create()
     {
         $user = new User();
         $action = route('admin.user.create');
-        
+
         return view('admin.user.create', compact('user', 'action'));
     }
-    
+
+    /**
+     * @param Request $request
+     * @param Users $repository
+     * @param UserTokens $passwordResetRepository
+     */
     public function doCreate(Request $request, Users $repository, UserTokens $passwordResetRepository)
     {
         $data = $request->only('username', 'name', 'email', 'user_group');
@@ -47,10 +51,16 @@ class UserController extends AdminController
         Mailer::make()->to($user->email)->send($mailable);
 
         Message::success('Sikeres létrehozás');
-        
+
         return redirect_route('admin.user.edit', $user);
     }
 
+    /**
+     * @param Request $request
+     * @param Users $repository
+     * @return string
+     * @throws ModelNotFoundException
+     */
     public function edit(Request $request, Users $repository)
     {
         $user = $repository->findOrFail($request['id']);
@@ -58,26 +68,32 @@ class UserController extends AdminController
         $action = route('admin.user.update', $user);
         return view('admin.user.edit', compact('user', 'my_profile', 'action'));
     }
-    
+
+    /**
+     * @param Request $request
+     * @param Users $repository
+     * @throws ModelNotFoundException
+     */
     public function update(Request $request, Users $repository)
     {
         /* @var $user User */
         $user = $repository->findOrFail($request['id']);
         $data = $request->only('name', 'email', 'user_group', 'username');
-        
+
         if ($password = $request['new_password']) {
             if ($password !== $request['new_password_again']) {
                 Message::danger('A két jelszó nem egyezik!');
-                return redirect_route('admin.user.edit', $user);
+                redirect_route('admin.user.edit', $user);
+                exit;
             }
-            
+
             $data['password'] = Password::hash($password);
         }
-        
+
         $user->update($data);
         $repository->save($user);
         Message::success('Sikeres mentés');
-        
+
         redirect_route('admin.user.edit', $user);
     }
 
@@ -127,14 +143,24 @@ class UserController extends AdminController
 
         return redirect_route('admin.user.profile');
     }
-    
+
+    /**
+     * @param Request $request
+     * @param Users $repository
+     * @throws ModelNotFoundException
+     */
     public function delete(Request $request, Users $repository)
     {
+        /* @var $user User */
         $user = $repository->findOrFail($request['id']);
+
+        $user->name .= "#{$user->email}";
+        $user->email = "";
+
         $repository->delete($user);
-        
+
         Message::warning('Felhasználó törölve');
-        
+
         return redirect_route('admin.user.list');
     }
 }

@@ -77,7 +77,7 @@
         </div>
     </div>
     <div class="step-container required">
-        <h4>Leírás</h4>
+        <h4>Bemutatkozás</h4>
         @alert('info')
             Írd le pár mondatban azt, hogy kik vagytok, milyen jellegű közösségi alkalmakat tartotok, illetve bármilyen információt, ami vonzóvá teszi a közösségeteket mások számára.
         @endalert
@@ -138,7 +138,7 @@
 </form>
 <script>
     $(() => {
-        
+
         var image_val;
 
         var upload = null;
@@ -158,7 +158,7 @@
                 }
             });
         }
-        
+
         $("#temp-image").on("load", function () {
             var newImg = $($(this).closest("div").html());
             $(".group-image").html(newImg);
@@ -174,7 +174,7 @@
                 });
             }
         });
-        
+
         $("[name=institute_id]").instituteSelect();
 
         $("[name=spiritual_movement_id]").select2({

@@ -1,21 +1,15 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 namespace App\Admin\Group\Services;
 
+use App\Helpers\GroupHelper;
 use App\Models\Group;
 use App\Repositories\Groups;
-use App\Repositories\GroupViews;
-use App\Repositories\Institutes;
 use App\Services\RebuildSearchEngine;
 use App\Storage\Base64Image;
 use Framework\File\File;
 use Framework\File\FileManager;
+use Framework\Traits\ManagesErrors;
 
 /**
  * Description of BaseGroupService
@@ -24,6 +18,7 @@ use Framework\File\FileManager;
  */
 abstract class BaseGroupService
 {
+    use ManagesErrors;
 
     /**
      * @var RebuildSearchEngine
@@ -52,45 +47,51 @@ abstract class BaseGroupService
         $this->searchEngineRebuilder = $searchEngineRebuilder;
         $this->fileManager = $fileManager;
     }
-    
+
     protected function updateSearchEngine(Group $group)
     {
         $this->searchEngineRebuilder->updateSearchEngine($group);
     }
-    
+
     protected function syncTags(Group $group, array $tags = [])
     {
-        $delete = builder('group_tags')->where('group_id', $id);
+        $delete = builder('group_tags')->where('group_id', $group->id);
 
         if ($tags) {
-            $delete->whereNotIn('tag', $tags ?: []);
+            $delete->whereNotIn('tag', $tags);
         }
 
         $delete->delete();
-        
-        foreach($tags as $tag) {
+
+        foreach ($tags as $tag) {
             db()->execute('replace into group_tags (group_id, tag) values (?, ?)', $group->id, $tag);
         }
     }
-    
+
     protected function syncImages(Group $group, $images)
     {
         $images = array_filter($images);
-        
+
         if (!$images) {
             return null;
         }
-        
-        foreach($images as $imageSource) {
+
+        foreach ($images as $imageSource) {
             $image = new Base64Image($imageSource);
             $image->saveImage($group->getStorageImageDir() . $group->id . '_1.jpg');
-            //$image->saveThumbnail($group->getStorageImageDir() . 'thumbnails' . DS . $group->id . '_1.jpg');
         }
     }
 
-    protected function uploadDocument(Group $group, ?File $document)
+    protected function uploadDocument(Group $group, ?array $document = null)
     {
-        dd("folyt köv: BaseGroupService");
+        if (!$document || isset($document['error'])) {
+            return null;
+        }
+
+        $file = $file = File::createFromFormData($document);
+        $extension = $file->getExtension();
+
+        $file->move(GroupHelper::getStoragePath($group->id), "igazolas.{$extension}");
     }
 
     /**
@@ -100,14 +101,23 @@ abstract class BaseGroupService
      */
     protected function validate(array $data): bool
     {
-        $requiredFields = ['name', 'denomination', 'institute_id', 'age_group', 'occasion_frequency', 'description', 'group_leaders', 'group_leader_email'];
-        
+        $requiredFields = [
+            'name',
+            'denomination',
+            'institute_id',
+            'age_group',
+            'occasion_frequency',
+            'description',
+            'group_leaders',
+            'group_leader_email'
+        ];
+
         foreach ($requiredFields as $field) {
-            if(!isset($data[$field]) || !$data[$field]) {
-                return false;
+            if (!isset($data[$field]) || !$data[$field]) {
+                $this->pushError($field, 'error.required');
             }
         }
-        
-        return true;
+
+        return !$this->hasErrors();
     }
 }
