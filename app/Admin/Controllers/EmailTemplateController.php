@@ -4,7 +4,7 @@
 namespace App\Admin\Controllers;
 
 use App\Mail\GroupContactMail;
-use App\Mail\RegistrationByGroupEmail;
+use App\Mail\RegistrationByGroupEmailForFirstUsers;
 use App\Mail\RegistrationEmail;
 use App\Mail\ResetPasswordEmail;
 use App\Models\GroupView;
@@ -22,17 +22,17 @@ class EmailTemplateController extends AdminController
 
         return view('admin.email_template', compact('mailable', 'title'));
     }
-    
+
     public function registrationByGroup(UserTokens $userTokens)
     {
         $user = new User(['name' => 'Minta János', 'email' => 'minta_janos@kozossegek.hu']);
-        
+
         $group = new GroupView();
         $group->name = 'Minta közösség';
         $group->city = 'Szeged';
-        
+
         $user_token = $userTokens->make($user, route('portal.user.activate'));
-        $mailable = RegistrationByGroupEmail::make($user, $user_token, $group);
+        $mailable = RegistrationByGroupEmailForFirstUsers::make($user, $user_token, $group);
         $title = 'Csoportadatok alapján létrehozott felhasználó regisztrációs sablonja';
 
         return view('admin.email_template', compact('mailable', 'title'));

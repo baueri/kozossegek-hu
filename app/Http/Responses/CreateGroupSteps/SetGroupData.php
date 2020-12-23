@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Responses\CreateGroupSteps;
 
 use App\Auth\Auth;
@@ -32,16 +33,23 @@ class SetGroupData extends AbstractGroupStep
         $this->institutes = $institutes;
         $this->spiritualMovements = $spiritualMovements;
         if ($this->request->isNotEmpty('next_step')) {
-            Session::set(static::SESSION_KEY, $this->request->all());
+            $data = $this->request->collect()->merge(Session::get(static::SESSION_KEY))->all();
+            Session::set(static::SESSION_KEY, $data);
         }
     }
-    
+
     protected function getModel()
     {
         $request = $this->request;
         /* @var $institute Institute */
         $requestData = collect(Session::get(static::SESSION_KEY))->merge($request->all());
-        $data = $requestData->only('occasion_frequency', 'institute_id', 'spiritual_movement_id', 'name', 'description');
+        $data = $requestData->only(
+            'occasion_frequency',
+            'institute_id',
+            'spiritual_movement_id',
+            'name',
+            'description'
+        );
         $institute = $this->institutes->find($data['institute_id']);
         $data['group_leaders'] = $requestData->get('group_leaders', $requestData['user_name']);
         $data['group_leader_email'] = $requestData->get('group_leader_email', $requestData['email']);
@@ -72,7 +80,7 @@ class SetGroupData extends AbstractGroupStep
             'group_days' => $requestData['on_days']
         ];
     }
-    
+
     protected function getView()
     {
         return 'portal.group.create-steps.group-data';

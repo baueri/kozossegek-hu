@@ -6,7 +6,7 @@ use Framework\Http\Request;
 
 abstract class AbstractGroupStep
 {
-    const SESSION_KEY = 'create_group_data';
+    public const SESSION_KEY = 'create_group_data';
 
     /**
      * @var Request
@@ -20,9 +20,9 @@ abstract class AbstractGroupStep
     {
         $this->request = $request;
     }
-    
+
     abstract protected function getView();
-    
+
     protected function getModel()
     {
         return [];

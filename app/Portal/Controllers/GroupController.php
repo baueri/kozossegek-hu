@@ -7,13 +7,18 @@ use App\Admin\Group\Services\UpdateGroup;
 use App\Auth\Auth;
 use App\Factories\CreateGroupStepFactory;
 use App\Helpers\GroupHelper;
+use App\Http\Responses\CreateGroupSteps\AbstractGroupStep;
 use App\Http\Responses\PortalEditGroupForm;
+use App\Models\Group;
 use App\Models\GroupView;
+use App\Portal\Services\CreateUser;
 use App\Portal\Services\GroupList;
+use App\Portal\Services\PortalCreateGroup;
 use App\Portal\Services\SendContactMessage;
 use App\Repositories\Groups;
 use App\Repositories\GroupViews;
 use App\Repositories\Institutes;
+use App\Services\CreateUserFromGroup;
 use Error;
 use ErrorException;
 use Exception;
@@ -23,6 +28,7 @@ use Framework\Http\Message;
 use Framework\Http\Request;
 use Framework\Http\Session;
 use Framework\Model\ModelNotFoundException;
+use Phinx\Console\Command\Create;
 use Throwable;
 
 /**
@@ -42,8 +48,11 @@ class GroupController extends Controller
         $user = Auth::user();
         $step = $request['next_step'] ?: 'login';
 
-        if ($user) {
+        $data = array_merge(Session::get(AbstractGroupStep::SESSION_KEY, []), $request->all());
 
+        Session::set(AbstractGroupStep::SESSION_KEY, $data);
+
+        if ($user) {
             if ($step === 'login') {
                 $step = 'group_data';
             }
@@ -61,8 +70,6 @@ class GroupController extends Controller
         }
 
         $service = $factory->getGroupStep($step);
-
-
 
         return (string) $service->render(compact('steps', 'step'));
     }
@@ -100,7 +107,7 @@ class GroupController extends Controller
         $_SESSION['honeypot_check_hash'] = $honeypot_check_hash = md5($checkTime);
         $slug = $group->slug();
         $metaKeywords = builder('search_engine')->where('group_id', $group->id)->first()['keywords'];
-        
+
         return view('portal.kozosseg', compact(
             'group',
             'institute',
@@ -133,7 +140,7 @@ class GroupController extends Controller
     {
         try {
             $service->send($repo->findOrFail($request['id']), $request->all());
-            
+
             return [
                 'success' => true,
                 'msg' => '<div class="alert alert-success">Köszönjük! Üzenetedet elküldtük a közösségvezető(k)nek!</div>'
@@ -142,70 +149,71 @@ class GroupController extends Controller
             return ['success' => false];
         }
     }
-    
+
     public function myGroups(GroupViews $groupRepo)
     {
         $user = Auth::user();
-        
-        $groups = $groupRepo->getGroupsByUser($user);
-        
+
+        $groups = $groupRepo->getNotDeletedGroupsByUser($user);
+
         return view('portal.group.my_groups', compact('groups'));
     }
-    
-    public function myGroup(Request $request, GroupViews $groups, PortalEditGroupForm $response)
+
+    public function editGroup(Request $request, GroupViews $groups, PortalEditGroupForm $response)
     {
         $user = Auth::user();
-        
+
         /* @var $group GroupView */
         $group = $groups->find($request['id']);
-        
-        if (!GroupHelper::isGroupEditableBy($group, $user)) {
-            
+
+        if (!$group || $group->isDeleted()) {
+            raise_404();
         }
-        
+
+        if (!$group->isEditableBy($user)) {
+            raise_500();
+        }
+
         return $response->getResponse($group);
     }
-    
-    public function createMyGroup(Request $request, CreateGroup $service, Groups $groups)
+
+    /**
+     * @param Request $request
+     * @param PortalCreateGroup $createGroupService
+     */
+    public function createGroup(Request $request, PortalCreateGroup $createGroupService)
     {
         try {
-            $data = collect(Session::get('create_group_data'))->only(
-                'status',
-                'name',
-                'denomination',
-                'institute_id',
-                'age_group',
-                'occasion_frequency',
-                'on_days',
-                'spiritual_movement',
-                'tags',
-                'group_leaders',
-                'group_leader_phone',
-                'group_leader_email',
-                'description',
-                'image'
+            $group = $createGroupService->createGroup(
+                collect(Session::get(AbstractGroupStep::SESSION_KEY)),
+                $request->files['document'],
+                $user = Auth::user()
             );
 
-            $data['user_id'] = Auth::user()->id;
+            if ($group) {
+                Session::forget(AbstractGroupStep::SESSION_KEY);
+                if ($user) {
+                    Message::success('Közösség sikeresen létrehozva!');
+                    redirect_route('portal.edit_group', $group);
+                } else {
+                    redirect_route('portal.group.create_group_success');
+                }
+            } else {
+                Message::danger('Kérjük ellenőrizd az adataidat!');
+                redirect_route('portal.register_group');
+            }
 
-            $file = File::createFromFormData($request->files['document']);
-
-            $service->create($data, $file);
-            
-            Message::success('Közösség sikeresen létrehozva!<br>Mielőtt még láthatóvá tennénk a közösségedet, átnézzük, hogy minden adatot rendben találunk-e. Köszönjük a türelmet!');
-            
-            redirect_route('portal.my_group');
-        } catch (Exception|Error|Throwable| ErrorException $ex) {
-            Message::danger('Közösség létrehozása nem sikerült, kérjük próbáld meg később!');
+        } catch (Exception | Error | Throwable | ErrorException $ex) {
+            Message::danger('Váratlan hiba történt a közösség létrehozásakor, kérjük próbáld meg később!');
+            redirect_route('portal.register_group');
         }
     }
-    
+
     public function updateMyGroup(Request $request, UpdateGroup $service, GroupViews $groups)
     {
         $group = $groups->findOrFail($request['id']);
-        
+
         try {
-            $user = Auth::user();
             $service->update($group->id, $request->only(
                 'status',
                 'name',
@@ -222,15 +230,36 @@ class GroupController extends Controller
                 'description',
                 'image'
             ));
-             
+
             Message::success('Sikeres mentés!');
-            redirect_route('portal.my_group', $group);
+            redirect_route('portal.edit_group', $group);
         } catch (ModelNotFoundException $e) {
             Message::danger('Nincs ilyen közösség!');
             redirect_route('portal.my_groups');
         } catch (Error $e) {
             Message::danger('Sikertelen mentés!');
-            redirect_route('portal.my_group', $group);
+            redirect_route('portal.edit_group', $group);
         }
+    }
+
+    /**
+     * @param Request $request
+     * @param Groups $groups
+     * @throws ModelNotFoundException
+     */
+    public function deleteGroup(Request $request, Groups $groups)
+    {
+        /* @var $group Group */
+        $group = $groups->findOrFail($request['id']);
+
+        if (!$group->isEditableBy(Auth::user())) {
+            raise_500();
+        }
+
+        $groups->delete($group);
+
+        Message::warning('Közösség törölve');
+
+        redirect_route('portal.my_groups');
     }
 }

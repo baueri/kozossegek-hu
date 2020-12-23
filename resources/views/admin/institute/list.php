@@ -1,5 +1,5 @@
 @title('Intézmények')
-@header('')
+@header()
     @include('asset_groups.select2')
 
     <style>

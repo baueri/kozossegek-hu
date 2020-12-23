@@ -46,9 +46,9 @@ class Group extends Model
     public $status;
 
     public $on_days;
-    
+
     public $user_id;
-    
+
     public $pending;
 
     /**
@@ -116,7 +116,7 @@ class Group extends Model
     {
         $dir = $this->getStorageImageDir();
 
-        $images = collect(glob("$dir*.jpg"))->map(function($image) {
+        $images = collect(glob("$dir*.jpg"))->map(function ($image) {
             return "/media/groups/images/" . basename($image);
         });
 
@@ -129,7 +129,6 @@ class Group extends Model
         }
 
         return ["/images/default_thumbnail.jpg"];
-
     }
 
     /**
@@ -160,22 +159,31 @@ class Group extends Model
     {
         return false;
     }
-    
+
     public function isVisibleBy(?User $user)
     {
         if ($user && ($user->isAdmin() || $this->user_id == $user->id)) {
             return true;
         }
-        
+
         if ($this->pending == 0 && $this->status == \App\Enums\GroupStatusEnum::ACTIVE) {
             return true;
         }
-        
+
         return false;
     }
-    
+
     public function getEditUrl()
     {
-        return route('portal.edit_my_group', $this);
+        return route('portal.edit_group', $this);
+    }
+
+    public function isEditableBy(?User $user)
+    {
+        if (!$user) {
+            return false;
+        }
+
+        return $user->isAdmin() || $user->id == $this->user_id;
     }
 }

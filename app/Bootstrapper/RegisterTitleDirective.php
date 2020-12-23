@@ -4,6 +4,7 @@ namespace App\Bootstrapper;
 
 use App\Directives\TitleDirective;
 use Framework\Bootstrapper;
+use Framework\Http\View\Directives\Directive;
 use Framework\Http\View\ViewParser;
 
 class RegisterTitleDirective implements Bootstrapper
@@ -15,7 +16,7 @@ class RegisterTitleDirective implements Bootstrapper
             ViewParser::registerDirective($name, $callback);
         }
 
-        ViewParser::registerDirective(new class() implements \Framework\Http\View\Directives\Directive{
+        ViewParser::registerDirective(new class () implements Directive{
             public function getPattern()
             {
                 return '/\@auth|\@endauth/';

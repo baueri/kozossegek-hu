@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Portal\Services;
+
 use App\Helpers\InstituteHelper;
 use Framework\Http\Request;
 use App\Helpers\GroupHelper;
@@ -20,10 +21,11 @@ class ImageService
                 $path = $this->getInstituteImagePath($image);
                 break;
         }
+
         header('Pragma: public');
         header('Cache-Control: max-age=86400');
-        return image_with_watermark($path);
 
+        return image_with_watermark($path);
     }
 
     private function getGroupImagePath($image)

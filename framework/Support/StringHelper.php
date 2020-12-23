@@ -93,16 +93,15 @@ class StringHelper
 
         return $text;
     }
-    
+
     /**
-     * 
+     *
      * @param string $string
      * @return string
      */
     public static function convertSpecialChars($string)
     {
         return preg_replace("/&([a-z])[a-z]+;/i", "$1", iconv('utf-8', 'us-ascii//TRANSLIT', $string));
-
     }
 
     /**
