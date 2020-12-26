@@ -13,6 +13,7 @@ use Framework\Http\Request;
 use Framework\Http\Response;
 use Framework\Http\Route\RouteInterface;
 use Framework\Http\Route\RouterInterface;
+use Framework\Http\View\View;
 use Framework\Http\View\ViewInterface;
 use Framework\Support\Collection;
 use Framework\Translator;
@@ -177,13 +178,17 @@ function _env($key, $default = null)
 }
 
 /**
- * @param string $view
+ * @param string|null $view
  * @param array $args
- * @return string
+ * @return string|View
  */
-function view(string $view, array $args = [])
+function view(string $view = null, array $args = [])
 {
-    return app()->make(ViewInterface::class)->view($view, $args);
+    if ($view) {
+        return app()->make(ViewInterface::class)->view($view, $args);
+    }
+
+    return app()->make(ViewInterface::class);
 }
 
 /**
@@ -295,4 +300,9 @@ function raise_500(string $message = '', string $message2 = 'Nincs jogosultsága
 function raise_404($message = 'A keresett oldal nem található', $message2 = '<i class="text-muted">De ne adjátok fel, keressetek és előbb vagy utóbb találtok ;-)</i>')
 {
     raise_error(404, $message, $message2);
+}
+
+function is_loggedin()
+{
+    return \App\Auth\Auth::loggedIn();
 }

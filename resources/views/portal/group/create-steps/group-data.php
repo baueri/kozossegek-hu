@@ -7,9 +7,34 @@
 @extends('portal.group.create-steps.create-wrapper')
 <h2>Közösség adatainak megadása</h2>
 @alert('warning')
-<i class="fa fa-exclamation-triangle"></i> Fontos számunkra, hogy az oldalon valóban keresztény értékeket közvetítő közösségeket hirdessünk. Mielőtt kitöltenéd a regisztrációs űrlapot, kérjük, hogy mindenképp olvasd el az <a href="">irányelveinket</a>.
+    <i class="fa fa-exclamation-triangle"></i> Fontos számunkra, hogy az oldalon valóban keresztény értékeket közvetítő közösségeket hirdessünk. Mielőtt kitöltenéd a regisztrációs űrlapot, kérjük, hogy mindenképp olvasd el az <a href="">irányelveinket</a>.
 @endalert
 <form method="post" id="group-form">
+    @if(!is_loggedin())
+        <div class="step-container">
+            <h4>Felhasználói adatok</h4>
+            <div class="form-group required">
+                <label>Neved:</label>
+                <input type="text" class="form-control form-control-sm" name="user_name" required value="{{ $user_name }}" data-describedby="validate_user_name">
+                <div id="validate_user_name" class="validate_message"></div>
+            </div>
+            <div class="form-group required">
+                <label>Email címed:</label>
+                <input type="email" class="form-control form-control-sm" name="email" value="{{ $email }}" required data-describedby="validate_email">
+                <div id="validate_email" class="validate_message"></div>
+            </div>
+            <div class="form-group required">
+                <label>Jelszó:</label>
+                <input type="password" name="password" class="form-control form-control-sm" required data-describedby="validate_password">
+                <div id="validate_password" class="validate_message"></div>
+            </div>
+            <div class="form-group required">
+                <label>Jelszó még egyszer:</label>
+                <input type="password" name="password_again" class="form-control form-control-sm" required data-describedby="validate_password_again">
+                <div id="validate_password_again" class="validate_message"></div>
+            </div>
+        </div>
+    @endif
     <div class="step-container">
         <h4>Általános adatok</h4>
         <input type="hidden" name="next_step" value="finish_registration">

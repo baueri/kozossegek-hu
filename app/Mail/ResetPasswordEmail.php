@@ -14,6 +14,6 @@ class ResetPasswordEmail extends Mailable
     {
         $this->subject('kozossegek.hu - elfelejtett jelszó')
             ->view('mail.forgot-password')
-            ->with(compact('user_token', 'user'));
+            ->with(['user_token' => $user_token->getUrl(), 'name' => $user->name]);
     }
 }

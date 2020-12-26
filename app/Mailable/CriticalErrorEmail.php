@@ -6,7 +6,7 @@ use Framework\Mail\Mailable;
 
 class CriticalErrorEmail extends Mailable
 {
-    protected $view = 'mail.critical_error';
+    protected string $view = 'mail.critical_error';
 
     private $exception;
 

@@ -10,6 +10,8 @@ use App\Mail\ResetPasswordEmail;
 use App\Models\GroupView;
 use App\Models\User;
 use App\Repositories\UserTokens;
+use Framework\Http\Request;
+use Framework\Http\Response;
 
 class EmailTemplateController extends AdminController
 {
@@ -63,5 +65,19 @@ class EmailTemplateController extends AdminController
         $title = 'Közösségvezetői kapcsolatfelvételi email sablon';
 
         return view('admin.email_template', compact('mailable', 'title'));
+    }
+
+    public function saveTemplate(Request $request)
+    {
+        Response::asJson();
+
+        $template = view()->getPath($request['template']);
+        $content = $request['content'];
+
+        file_put_contents($template, $content);
+
+        return [
+            'success' => true
+        ];
     }
 }

@@ -269,3 +269,7 @@ img {
 .uploads-modal .file-item {
     cursor: pointer;
 }
+
+ul#admin_menu li {
+    font-size: 14px;
+}
