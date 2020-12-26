@@ -63,7 +63,7 @@ class View implements ViewInterface
      * @return string
      *
      */
-    protected function getPath(string $view): string
+    public function getPath(string $view): string
     {
         $viewPath = str_replace('.', DS, $view);
 

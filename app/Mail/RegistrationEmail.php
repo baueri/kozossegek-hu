@@ -8,10 +8,10 @@ use Framework\Mail\Mailable;
 
 class RegistrationEmail extends Mailable
 {
-    public function __construct(User $user, UserToken $passwordReset, string $view = 'mail.register')
+    public function __construct(User $user, UserToken $userToken, string $view = 'mail.register')
     {
         $this->subject('kozossegek.hu - Sikeres regisztráció')
-            ->with(['user' => $user, 'password_reset' => $passwordReset])
+            ->with(['name' => $user->name, 'token_url' => $userToken->getUrl()])
             ->view($view);
     }
 }

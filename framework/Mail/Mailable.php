@@ -11,12 +11,12 @@ class Mailable
     /**
      * @var string[]
      */
-    public $from;
+    public array $from;
 
     /**
      * @var string
      */
-    protected $view;
+    protected string $view;
 
     /**
      * @var array
@@ -26,7 +26,7 @@ class Mailable
     /**
      * @var string
      */
-    public $subject;
+    public string $subject;
 
 
     /**
@@ -52,7 +52,8 @@ class Mailable
     }
 
     /**
-     * @param  string $from
+     * @param string $from
+     * @param string|null $name
      * @return static
      */
     final public function from(string $from, string $name = null)
@@ -69,7 +70,7 @@ class Mailable
         return $this;
     }
 
-    public function getBody():string
+    public function getBody(): string
     {
         return view($this->view, $this->viewData);
     }
@@ -77,6 +78,17 @@ class Mailable
     /**
      * @return void
      */
-    public function build(){}
+    public function build()
+    {
+    }
 
+    public function getView()
+    {
+        return $this->view;
+    }
+
+    public function getVariableNames()
+    {
+        return array_keys($this->viewData);
+    }
 }
