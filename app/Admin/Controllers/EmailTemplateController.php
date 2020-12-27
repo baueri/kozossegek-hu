@@ -71,7 +71,7 @@ class EmailTemplateController extends AdminController
     public function createdGroup()
     {
         $mailable = (new NewGroupEmail(new User(['name' => 'Minta János', 'email' => 'minta_janos@kozossegek.hu'])));
-        $title = 'Új közösség létrehozása (belépett fiókkal)';
+        $title = 'Új közösség létrehozása (létező fiókkal)';
         return view('admin.email_template', compact('mailable', 'title'));
     }
 
