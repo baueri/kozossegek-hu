@@ -5,13 +5,9 @@ namespace App\Admin\Group;
 use App\Admin\Components\AdminTable\AdminTable;
 use App\Admin\Components\AdminTable\Deletable;
 use App\Admin\Components\AdminTable\Editable;
-use App\Models\AgeGroup;
-use App\Models\Group;
 use App\Models\GroupStatus;
 use App\Models\GroupView;
-use App\Models\Institute;
 use App\Repositories\GroupViews;
-
 use App\Helpers\GroupHelper;
 use Framework\Database\PaginatedResultSetInterface;
 use Framework\Http\Request;
@@ -22,6 +18,7 @@ class GroupTable extends AdminTable implements Editable, Deletable
 
     protected $columns = [
         'id' => '#',
+        'image' => '<i class="fa fa-image" title="Fotó"></i>',
         'view' => '<i class="fa fa-eye" title="Megtekintés a honlapon"></i>',
         'name' => 'Közösség neve',
         'city' => 'Település',
@@ -104,6 +101,12 @@ class GroupTable extends AdminTable implements Editable, Deletable
     public function getEditUrl($model): string
     {
         return route('admin.group.edit', $model);
+    }
+
+    public function getImage($image, GroupView $group)
+    {
+        $imageUrl = $group->getFirstImage() . '?' . time();
+        return "<img src='$imageUrl' style='max-width: 25px; height: auto;' title='<img src=\"$imageUrl\">' data-html='true'/>";
     }
 
     public function getHasDocument($document, GroupView $model)
