@@ -24,11 +24,11 @@
         <td>Felhasználói oldalon, adott közösség adatlapján kitöltött kapcsolatfvelvevő űrlap alapján küljük ki a közösségvezetőnek.</td>
     </tr>
     <tr>
-        <td><a href="@route('admin.email_template.created_group')">Új közösség létrehozása (új fiókkal)</a></td>
+        <td><a href="@route('admin.email_template.created_group_with_new_user')">Új közösség létrehozása (új fiókkal)</a></td>
         <td>Felhasználói oldaon sikeres közösség regisztrálása után küldük ki akkor, ha a felhasználói fiók is akkor jött létre.</td>
     </tr>
     <tr>
-        <td><a href="@route('admin.email_template.created_group_with_new_user')">Új közösség létrehozása (létező fiókkal)</a></td>
+        <td><a href="@route('admin.email_template.created_group')">Új közösség létrehozása (létező fiókkal)</a></td>
         <td>Felhasználói oldalon a már regisztrált és belépett felhasználónak küldjük ki, amikor új közösséget regisztrál</td>
     </tr>
 </table>
