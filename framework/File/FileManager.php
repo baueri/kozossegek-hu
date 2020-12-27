@@ -46,7 +46,7 @@ class FileManager
      * @var array
      */
     protected $enabledTypes = [];
-    
+
     /**
      * @var bool
      */
@@ -59,7 +59,7 @@ class FileManager
     public function __construct($rootPath = '', array $enabledTypes = ['*'])
     {
         $this->rootPath = static::addDirectorySeparator($rootPath);
-        
+
         $this->setEnabledTypes($enabledTypes);
     }
 
@@ -78,11 +78,11 @@ class FileManager
         if ($this->createFolderIfMissing) {
             $this->createFolder($subDir);
         }
-        
+
         if (!$this->fileTypeEnabled($fileData['type'])) {
             throw new Exception('File Type not allowed');
         }
-        
+
         return $file->move($this->rootPath . $subDir);
     }
 
@@ -95,13 +95,13 @@ class FileManager
         if ($this->folderExists($folderName)) {
             return true;
         }
-        
+
         $ok = mkdir(rtrim($this->rootPath . $folderName, '/'), 0777, true);
-        
+
         if (!$ok) {
             $error = error_get_last();
         }
-        
+
         return $ok;
     }
 
@@ -156,17 +156,17 @@ class FileManager
         return $this->rootPath;
     }
 
-    
+
     public function getDirName()
     {
         return basename($this->rootPath);
     }
-    
+
     public function createSymLink($link)
     {
         return symlink($this->rootPath, $link);
     }
-    
+
     /**
      * @return File[]
      */

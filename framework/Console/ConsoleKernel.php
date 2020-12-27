@@ -1,37 +1,36 @@
 <?php
 
-
 namespace Framework\Console;
 
-
 use Framework\Application;
+use Framework\Console\BaseCommands\ClearCache;
 use Framework\Console\BaseCommands\ListCommands;
 use Framework\Console\BaseCommands\SiteUp;
 use Framework\Console\BaseCommands\SiteDown;
 use Framework\Console\Exception\CommandNotFoundException;
-use Framework\Console\Out;
 use Framework\Kernel;
 
 class ConsoleKernel implements Kernel
 {
     /**
-     * @var Command[]
+     * @var Command[]|string[]
      */
-    private $baseCommands = [
+    private array $baseCommands = [
         ListCommands::class,
         SiteUp::class,
         SiteDown::class,
+        ClearCache::class
     ];
 
     /**
-     * @var Command[]
+     * @var Command[]|string[]
      */
-    protected $commands = [];
+    protected array $commands = [];
 
     /**
      * @var Application
      */
-    private $application;
+    private Application $application;
 
     /**
      * ConsoleKernel constructor.
@@ -57,6 +56,10 @@ class ConsoleKernel implements Kernel
      */
     public function getCommand($signature)
     {
+        if (!$signature) {
+            return $this->application->make(ListCommands::class);
+        }
+
         foreach ($this->getCommands() as $command) {
             if ($command::signature() == $signature) {
                 return $this->application->make($command);
@@ -68,7 +71,7 @@ class ConsoleKernel implements Kernel
 
     public function handleError($error)
     {
-        Out::danger('HIBA');
-        Out::danger($error->getMessage());
+        Out::error('HIBA');
+        Out::error($error->getMessage());
     }
 }

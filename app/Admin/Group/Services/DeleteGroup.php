@@ -2,6 +2,7 @@
 
 namespace App\Admin\Group\Services;
 
+use App\Helpers\GroupHelper;
 use App\Repositories\Groups;
 use Framework\Http\Message;
 use Framework\Model\ModelNotFoundException;
@@ -32,6 +33,8 @@ class DeleteGroup
         $group = $this->repository->findOrFail($groupId);
 
         $this->repository->delete($group);
+
+        rrmdir(GroupHelper::getStoragePath($groupId));
 
         Message::warning('Közösség lomtárba helyezve.');
     }

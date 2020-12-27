@@ -89,9 +89,10 @@ class File
     /**
      * @param string $newPath
      * @param string|null $newFilename
+     * @param int|null $mode
      * @return static
      */
-    public function move(string $newPath, string $newFilename = null): self
+    public function move(string $newPath, string $newFilename = null, $mode = null): self
     {
         $newFilePath = $newPath . ($newFilename ?: $this->fileName);
 
@@ -99,6 +100,10 @@ class File
 
         if (!$ok) {
             throw new RuntimeException("Error while moving file {$this->filePath} to $newFilePath");
+        }
+
+        if ($mode) {
+            chmod($newFilePath, $mode);
         }
 
         $this->filePath = $newFilePath;

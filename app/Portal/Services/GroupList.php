@@ -76,7 +76,8 @@ class GroupList
             'filter' => $filter,
             'selected_tags' => explode(',', $filter['tags']),
             'tags' => builder('tags')->get(),
-            'template' => $template
+            'template' => $template,
+            'header_background' => '/images/search_bg.jpg'
         ];
 
         return view('portal.kozossegek', $model);

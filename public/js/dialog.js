@@ -104,3 +104,14 @@ const dialog = (function () {
 
     return this;
 })();
+
+$(() => {
+    $(".confirm-action").on("click", function (e) {
+        const action = $(this).attr("href");
+        e.preventDefault();
+        dialog.confirm("Biztos vagy benne?", function (dialog, confirmed) {
+
+        });
+    });
+
+});

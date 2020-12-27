@@ -10,7 +10,7 @@ use Framework\Console\ConsoleKernel as Kernel;
 
 class ConsoleKernel extends Kernel
 {
-    protected $commands = [
+    protected array $commands = [
         ClearUserSession::class,
         RebuildSearchEngineCommand::class,
         PublishApp::class

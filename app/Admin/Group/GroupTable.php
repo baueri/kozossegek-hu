@@ -30,7 +30,7 @@ class GroupTable extends AdminTable implements Editable, Deletable
         'age_group' => 'Korosztály',
         'status' => '<i class="fa fa-check-circle" title="Aktív"></i>',
         'pending' => '<i class="fa fa-thumbs-up" title="Jóváhagyva"></i>',
-        'has_document' => '<i class="fa fa-file-word" title="Van intézményvezetői igazolása"></i>',
+        'has_document' => '<i class="fa fa-file-word" title="Van feltöltött intézményvezetői igazolása"></i>',
         'created_at' => 'Létrehozva',
     ];
 
@@ -108,7 +108,7 @@ class GroupTable extends AdminTable implements Editable, Deletable
 
     public function getHasDocument($document, GroupView $model)
     {
-        if ($document && $model->hasDocument()) {
+        if ($model->hasDocument()) {
             return self::getCheckIcon('igen');
         }
 
