@@ -7,9 +7,10 @@
     <li>[NEW]: Admin oldalon az intézmények listázását kicsit átalalkítottam (előnézeti kép bekerült, plusz néhány oszlop szövege le lett vágva)</li>
     <li>[NEW]: Admin oldalon a közösségek listája bővült plusz infókkal
         <ul>
+            <li>Fénykép bélyeg</li>
             <li>Közösség adatlap megtekintése felhasználói oldalon (szem ikon)</li>
             <li>Jóváhagyva oszlopban a szöveg helyett ikon</li>
-            <li>Illetve azt is kiíratom, hogy az adott intézményhez van-e feltöltött igazolás (word doksi ikon)</li>
+            <li>van-e feltöltött igazolás (word doksi ikon) a közösséghez</li>
         </ul>
     </li>
     <li>[NEW]: Admin felületen az email-ek szövegét most már lehet szerkeszteni
