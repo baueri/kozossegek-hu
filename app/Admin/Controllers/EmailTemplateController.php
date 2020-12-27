@@ -81,7 +81,7 @@ class EmailTemplateController extends AdminController
         $token = $userTokens->make($user, route('portal.user.activate'));
         $mailable = (new NewGroupEmail($user))
             ->withNewUserMessage($token);
-        $title = 'Új közösség létrehozása (belépett fiókkal)';
+        $title = 'Új közösség létrehozása (új fiókkal)';
         return view('admin.email_template', compact('mailable', 'title'));
     }
 
