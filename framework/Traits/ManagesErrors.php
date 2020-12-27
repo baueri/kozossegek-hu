@@ -27,7 +27,7 @@ trait ManagesErrors
 
     public function hasErrors()
     {
-        return $this->get()->isEmpty();
+        return $this->get()->isNotEmpty();
     }
 
     public function getErrors()

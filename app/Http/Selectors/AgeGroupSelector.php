@@ -1,23 +1,20 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 namespace App\Http\Selectors;
+
+use App\Repositories\AgeGroups;
 
 /**
  * Description of AgeGroupSelector
  *
  * @author ivan
  */
-class AgeGroupSelector {
-    
-    public function render($age_group_array)
+class AgeGroupSelector
+{
+
+    public function render($age_group_array, array $data = [])
     {
-        $age_groups = (new \App\Repositories\AgeGroups())->all();
-        return view("partials.components.age_group_selector", array_merge(compact("age_groups", "age_group_array")));
+        $age_groups = (new AgeGroups())->all();
+        return view("partials.components.age_group_selector", array_merge($data, compact("age_groups", "age_group_array")));
     }
 }

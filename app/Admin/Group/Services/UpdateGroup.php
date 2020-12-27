@@ -20,9 +20,10 @@ class UpdateGroup extends BaseGroupService
      *
      * @param int $id
      * @param Request|Collection|array $request
+     * @param array|null $document
      * @throws ModelNotFoundException
      */
-    public function update($id, $request)
+    public function update($id, $request, ?array $document = [])
     {
         if (is_array($request)) {
             $request = collect($request);
@@ -49,6 +50,14 @@ class UpdateGroup extends BaseGroupService
             } else {
                 redirect_route('portal.edit_group', $group);
             }
+        }
+
+        $file = $this->uploadDocument($group, $document);
+
+        if ($file) {
+            $data['document'] = $file->getFileName();
+        } else {
+            $data['document'] = $group->document;
         }
 
         $this->syncTags($group, (array) $request['tags']);

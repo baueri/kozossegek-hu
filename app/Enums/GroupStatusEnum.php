@@ -17,7 +17,6 @@ use Framework\Support\Enum;
  */
 class GroupStatusEnum extends Enum
 {
-    //const PENDING = 'pending';
-    const ACTIVE = 'active';
-    const INACTIVE = 'inactive';
+    public const ACTIVE = 'active';
+    public const INACTIVE = 'inactive';
 }

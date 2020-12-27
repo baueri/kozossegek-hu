@@ -11,7 +11,7 @@ class Mailable
     /**
      * @var string[]
      */
-    public array $from;
+    public ?array $from = [];
 
     /**
      * @var string

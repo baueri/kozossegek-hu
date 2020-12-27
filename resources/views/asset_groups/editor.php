@@ -44,13 +44,13 @@
                 ['font', ['bold', 'underline', 'clear']],
                 ['color', ['color']],
                 ['para', ['ul', 'ol', 'paragraph']],
-                ['insert', ['link', 'picture']],
+                ['insert', ['link', 'picture', 'video']],
                 ['view', ['fullscreen', 'codeview', 'help']]
             ]
         }, options);
-        
+
         $(selector).summernote(options);
-        
+
         function sendFile(file, editor, welEditable) {
             data = new FormData();
             data.append("file", file);
@@ -66,6 +66,6 @@
                 }
             });
         }
-        
+
     }
 </script>

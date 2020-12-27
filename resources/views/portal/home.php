@@ -65,7 +65,5 @@
     </div>
 </div>
 <div class="container main-block text-center">
-    <h3>Mire jó egy keresztény közösség?</h3>
-    <p style="max-width: 560px; margin: auto;" class="mt-3 mb-3">Erre a kérdésre kapunk nagyszerű válaszokat a TVShoeShine által készített videóban. Halgassátok szeretettel!</p>
-    <iframe height="400" src="https://www.youtube-nocookie.com/embed/aqqz1mbeGTU" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width: 100%; max-width: 720px;"></iframe>
+    @widget('FOOLDAL_VIDEO')
 </div>

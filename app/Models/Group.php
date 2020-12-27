@@ -8,6 +8,7 @@ namespace App\Models;
  * and open the template in the editor.
  */
 
+use App\Enums\GroupStatusEnum;
 use Framework\Model\Model;
 use Framework\Model\TimeStamps;
 use Framework\Support\StringHelper;
@@ -23,33 +24,96 @@ class Group extends Model
 {
     use TimeStamps;
 
+    /**
+     * Közösség neve
+     * @var string
+     */
     public $name;
 
+    /**
+     * Bemutatkozás
+     * @var string
+     */
     public $description;
 
+    /**
+     * Felekezet
+     * @var string
+     */
     public $denomination;
 
+    /**
+     * Intézmény azonosító
+     * @var int
+     */
     public $institute_id;
 
+    /**
+     * Közösségvezetők
+     * @var string
+     */
     public $group_leaders;
 
+    /**
+     * Kapcsolattartó email címe
+     * @var string
+     */
     public $group_leader_email;
 
+    /**
+     * Kapcsolattartó telefonszáma
+     * @var string
+     */
     public $group_leader_phone;
 
+    /**
+     * Lelkiségi mozgalom azonosítója
+     * @var int
+     */
     public $spiritual_movement_id;
 
+    /**
+     * Korosztályok
+     * @var string
+     */
     public $age_group;
 
+    /**
+     * Alkalmak gyakorisága
+     * @var string
+     */
     public $occasion_frequency;
 
+    /**
+     * Megjelenési állapot
+     * @see GroupStatusEnum
+     * @var string
+     */
     public $status;
 
+    /**
+     * Mely napokon tartják az alkalmakat
+     * @var string
+     */
     public $on_days;
 
+    /**
+     * Karbantartó felhasználó azonosítója
+     * @var int
+     */
     public $user_id;
 
+    /**
+     * Függőben van-e (0,1)
+     * @var int
+     */
     public $pending;
+
+    /**
+     * Feltöltött dokumentum neve
+     * @var string
+     */
+    public $document;
 
     /**
      * @var Institute|null
@@ -166,7 +230,7 @@ class Group extends Model
             return true;
         }
 
-        if ($this->pending == 0 && $this->status == \App\Enums\GroupStatusEnum::ACTIVE) {
+        if ($this->pending == 0 && $this->status == GroupStatusEnum::ACTIVE) {
             return true;
         }
 
@@ -186,4 +250,20 @@ class Group extends Model
 
         return $user->isAdmin() || $user->id == $this->user_id;
     }
+
+    public function hasDocument()
+    {
+        return file_exists($this->getDocumentPath());
+    }
+
+    public function getDocumentPath()
+    {
+        return GroupHelper::getStoragePath($this->id) . $this->document;
+    }
+
+    public function getDocumentUrl()
+    {
+        return "/my-group/{$this->id}/download-document";
+    }
+
 }

@@ -1,21 +1,12 @@
 @section('header_content')
-    @featuredTitle('Közösséget hirdetek')
+    @featuredTitle('Új közösség regisztrálása')
 @endsection
 @extends('portal')
 <div class="container p-4" id="create-group">
     @message()
-    <div class="row mt-5 mb-5" id="steps">
-        @foreach($steps as $step_number => $step_data)
-            <div class="col-md-4 @if(count($steps) == 2 && $step_number == 1) offset-2 @endif text-center step {{ $step_data[0] == $step ? 'active' : '' }}">
-                <span class="step-number">{{ $step_number }}</span>
-                <span class="step-text">{{ $step_data[1] }}</span>
-            </div>
-        @endforeach
-    </div>
     <div>
         @yield('portal.group.create-steps.create-wrapper')
     </div>
-
 </div>
 <style>
     #steps {

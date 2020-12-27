@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Admin\Components\DebugBar;
-
 
 use Framework\Database\DatabaseHelper;
 use Framework\Database\QueryHistory;
@@ -32,8 +30,8 @@ class QueryHistoryTab extends DebugBarTab
 
     public function render()
     {
-        $time = round($this->queryHistory->getExecutionTime(), 2);
-        $queries = $this->queryHistory->getQueryHistory()->map(function($row){
+        $time = round($this->queryHistory->getExecutionTime(), 3);
+        $queries = $this->queryHistory->getQueryHistory()->map(function ($row) {
             $row[0] = DatabaseHelper::getQueryWithBindings($row[0], $row[1]);
             return $row;
         });

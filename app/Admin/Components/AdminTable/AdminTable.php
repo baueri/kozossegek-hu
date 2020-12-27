@@ -145,6 +145,16 @@ abstract class AdminTable
         return "<a href='$url' title='$title'><i class='fa fa-trash text-danger'></i></a>";
     }
 
+    protected static function getCheckIcon(?string $title)
+    {
+        return "<i class='fa fa-check-circle text-success' title='$title'></i>";
+    }
+
+    protected static function getBanIcon(?string $title)
+    {
+        return "<i class='fa fa-ban text-danger' title='$title'></i>";
+    }
+
     /**
      * @return string
      */

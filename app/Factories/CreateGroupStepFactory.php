@@ -6,7 +6,7 @@ namespace App\Factories;
 
 use App\Http\Responses\CreateGroupSteps\AbstractGroupStep;
 use App\Http\Responses\CreateGroupSteps\LoginOrRegister;
-use App\Http\Responses\CreateGroupSteps\SetGroupData;
+use App\Http\Responses\CreateGroupSteps\RegisterGroupForm;
 use App\Http\Responses\CreateGroupSteps\FinishRegistration;
 
 class CreateGroupStepFactory
@@ -22,7 +22,7 @@ class CreateGroupStepFactory
             default:
                 return app()->make(LoginOrRegister::class);
             case 'group_data':
-                return app()->make(SetGroupData::class);
+                return app()->make(RegisterGroupForm::class);
             case 'finish_registration':
                 return app()->make(FinishRegistration::class);
         }

@@ -2,6 +2,7 @@
 
 namespace App\Admin\Group\Services;
 
+use App\Helpers\FileHelper;
 use App\Helpers\GroupHelper;
 use App\Models\Group;
 use App\Repositories\Groups;
@@ -84,14 +85,18 @@ abstract class BaseGroupService
 
     protected function uploadDocument(Group $group, ?array $document = null)
     {
-        if (!$document || isset($document['error'])) {
+        if (!$document || (isset($document['error']) && $document['error'] > 0)) {
             return null;
         }
 
         $file = $file = File::createFromFormData($document);
-        $extension = $file->getExtension();
+        $extension = FileHelper::getExtension($document['name']);
 
-        $file->move(GroupHelper::getStoragePath($group->id), "igazolas.{$extension}");
+        $success = $file->move(GroupHelper::getStoragePath($group->id), "igazolas.{$extension}");
+
+        $file->setFileName($file->getFilePath());
+
+        return $success;
     }
 
     /**

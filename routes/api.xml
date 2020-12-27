@@ -10,6 +10,7 @@
             <!-- Foglalt email ellenőrzés -->
             <route method="post" uri="check-email" controller="ApiUserController" use="checkEmail" as="check-email"/>
         </route-group>
-
     </route-group>
+
+    <route method="post" uri="preview-group-register" controller="App\Portal\Controllers\Api\V1\ApiGroupController" use="previewGroup" as="preview_group_register" prefix="api/v1"/>
 </routes>

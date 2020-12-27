@@ -3,41 +3,37 @@
     @include('asset_groups.editor')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.css"/>
+    <script src="/js/dialog.js"></script>
 @endsection
 @extends('portal.group.create-steps.create-wrapper')
-<h2>Közösség adatainak megadása</h2>
 @alert('warning')
     <i class="fa fa-exclamation-triangle"></i> Fontos számunkra, hogy az oldalon valóban keresztény értékeket közvetítő közösségeket hirdessünk. Mielőtt kitöltenéd a regisztrációs űrlapot, kérjük, hogy mindenképp olvasd el az <a href="">irányelveinket</a>.
 @endalert
-<form method="post" id="group-form">
+<form method="post" id="group-form" enctype="multipart/form-data" action="@route('portal.my_group.create')">
     @if(!is_loggedin())
         <div class="step-container">
             <h4>Felhasználói adatok</h4>
-            <div class="form-group required">
-                <label>Neved:</label>
-                <input type="text" class="form-control form-control-sm" name="user_name" required value="{{ $user_name }}" data-describedby="validate_user_name">
-                <div id="validate_user_name" class="validate_message"></div>
-            </div>
-            <div class="form-group required">
-                <label>Email címed:</label>
-                <input type="email" class="form-control form-control-sm" name="email" value="{{ $email }}" required data-describedby="validate_email">
-                <div id="validate_email" class="validate_message"></div>
-            </div>
-            <div class="form-group required">
-                <label>Jelszó:</label>
-                <input type="password" name="password" class="form-control form-control-sm" required data-describedby="validate_password">
-                <div id="validate_password" class="validate_message"></div>
-            </div>
-            <div class="form-group required">
-                <label>Jelszó még egyszer:</label>
-                <input type="password" name="password_again" class="form-control form-control-sm" required data-describedby="validate_password_again">
-                <div id="validate_password_again" class="validate_message"></div>
+            @alert('info')
+                Az itt megadott email címeddel fogsz majd a sikeres regisztráció után belépni az oldalra.
+            @endalert
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group required">
+                        <label>Neved:</label>
+                        <input type="text" class="form-control" name="user_name" required value="{{ $user_name }}" data-describedby="validate_user_name">
+                        <div id="validate_user_name" class="validate_message"></div>
+                    </div>
+                    <div class="form-group required">
+                        <label>Email címed:</label>
+                        <input type="email" class="form-control" name="email" value="{{ $email }}" required data-describedby="validate_email">
+                        <div id="validate_email" class="validate_message"></div>
+                    </div>
+                </div>
             </div>
         </div>
     @endif
     <div class="step-container">
         <h4>Általános adatok</h4>
-        <input type="hidden" name="next_step" value="finish_registration">
         <div class="form-group required">
             <label for="name">Közösség neve</label>
             <input type="text" id="name" value='{{ $group->name }}' name="name" class="form-control" required="">
@@ -58,7 +54,7 @@
             <div class="col-md-4">
                 <div class="form-group required">
                     <label for="age_group">Korosztály <small>(legalább egyet adj meg)</small></label>
-                    @age_group_selector($age_group_array)
+                    @age_group_selector($age_group_array, ['required' => true])
 
                 </div>
             </div>
@@ -77,7 +73,7 @@
         </div>
         <div class="form-group">
             <label for="spiritual_movement_id">Lelkiségi mozgalom</label><br/>
-            <small>Ha egy nagyobb lelkiségi mozgalomhoz tartoztok, akkor azt adjátok meg itt, így nagyobb eséllyel találnak meg azok, akik ilyen mozgalom közösségeit keresik.</small>
+            <small>Ha egy nagyobb lelkiségi mozgalomhoz tartoztok, akkor azt adjátok meg itt, így nagyobb eséllyel találnak meg azok, akik ezen mozgalom közösségeit keresik.</small>
             @spiritual_movement_selector($group->spiritual_movement_id)
         </div>
     </div>
@@ -143,7 +139,7 @@
             <div class="col-md-12">
                 <div class="form-group">
                     @alert('info')
-                        Nem kötelező feltölteni képet, de jó benyomást tudtok kelteni ha vidám, hívogató fotót raktok fel magatokról. Ha nem választotok fotót, akkor az intézményetek fényképe jelenik meg.
+                        Nem kötelező feltölteni képet, de jó benyomást tudtok kelteni ha vidám, hívogató fotót raktok fel magatokról. Ha nem választotok fotót, akkor a kiválasztott intézmény fényképe jelenik meg.
                     @endalert
                     <div class="group-image">
                         <img src="{{ $image ? $image : ''}}" id="image" width="300">
@@ -157,14 +153,82 @@
                 </div>
             </div>
         </div>
-
-        @if(count($steps) == 3)<a href="" class="btn btn-default">Vissza</a>@endif <button type="submit" class="btn btn-darkblue">Tovább</button>
+    </div>
+    <div class="step-container">
+        <h4>Igazolás feltöltése</h4>
+        <div class="form-group">
+            @alert('info')
+                <p>Nem kötelező most azonnal feltölteni, később is megteheted, de kizárólag az intézményvezető által aláírt és lepecsételt igazolással tudjuk jóváhagyni a regisztrációs kérelmet és ezáltal láthatóvá tenni a közösséget.</p>
+                <p>Így tudjuk biztosítani azt, hogy a honlapunkon létező, aktív és a keresztény értékrenddel egyező közösségek legyenek.</p>
+                <p>Az igazolás mintát innen tudjátok letölteni: <a href="@upload('igazolas.pdf')" download><i class="fa fa-download"></i> Igazolás minta letöltése</a></p>
+            @endalert
+            <p class="mb-3">
+                <small>Microsoft office dokumentum (<b>doc, docx</b>) vagy <b>pdf</b> formátum</small><br/>
+                <input type="file" name="document">
+            </p>
+        </div>
+    </div>
+    <div class="text-center">
+        <button type="submit" id="preview-new-group" class="btn btn-lg btn-darkblue">Tovább</button>
     </div>
 </form>
 <script>
     $(() => {
 
-        var image_val;
+        const form = $("form#group-form");
+
+        function validateUserName()
+        {
+            return validateRequiredInput($("[name=user_name]", form));
+        }
+
+        function validateRequiredInput(selector) {
+
+            var classSelector = selector;
+
+            if (selector.next("span").hasClass("select2")) {
+                classSelector = selector.next("span");
+            }
+
+            classSelector.inputMessage("dismiss");
+            if (selector.val() !== "") {
+                classSelector.inputOk();
+                return true;
+            }
+
+            classSelector.inputError();
+            return false;
+        }
+
+        async function validateEmailAddress()
+        {
+            const item = $("[name=email]", form);
+
+            if(item.length === 0) {
+                return true;
+            }
+
+            if (item.val() === "") {
+                item.inputError("show");
+                return false;
+            } else if (!validate_email(item.val())) {
+                item.inputError("show", "Kérjük valós email címet adj meg.");
+                return false;
+            } else {
+                item.inputError("dismiss");
+                var response = await checkEmail(item);
+                if (!response.ok) {
+                    item.inputError("show", "Ez az email cím már foglalt!");
+                    return false
+                }
+                item.inputError("dismiss").inputOk();
+                return true;
+            }
+        }
+
+        function checkEmail(item) {
+            return $.post("@route('api.check-email')", {email: item.val()});
+        }
 
         var upload = null;
         function initCroppie()
@@ -191,16 +255,79 @@
             initCroppie();
         });
 
-        $("form#group-form").submit(function (e) {
+        function validateRequiredInputs()
+        {
+            var inputOk = true;
+
+            var toValidate = [
+                "[name=user_name]",
+                "[name=email]",
+                "[name=name]",
+                "[name=institute_id]",
+                "[name=age_group]",
+                "[name=occasion_frequency]",
+                "[name='tags[]']",
+                "[name=description]",
+                "[name=group_leader_names]",
+                "[name=group_leader_email]"
+            ];
+
+            $(toValidate.join(", "), $(".required", form)).each(function() {
+                if (!validateRequiredInput($(this))) {
+                    inputOk = false;
+                }
+            });
+
+            return inputOk;
+        }
+
+        async function setupImageData() {
             if (upload) {
                 upload.croppie("result", {type: "base64", format: "jpeg", size: {width: 510, height: 510}}).then(function (base64) {
-                    image_val = base64;
                     $("[name=image]").val(base64);
                 });
             }
+        }
+
+        $("input:not([name=email]), select, textarea", $(".required", form)).on("focusout input change", function() {
+            validateRequiredInput($(this));
         });
 
-        $("[name=institute_id]").instituteSelect();
+        form.submit(async function (e, data) {
+
+            if (typeof data === "undefined" || !data.send_request) {
+                e.preventDefault();
+                if(!validateRequiredInputs() || !validateUserName() || !await validateEmailAddress()) {
+                    return dialog.show("Ellenőrizd az adataidat!");
+                }
+
+                await setupImageData();
+
+                var formData = $("form#group-form").serialize();
+
+                $.post("@route('api.preview_group_register')", formData, (response) => {
+                    dialog.confirm({
+                        title: "Adatok ellenőrzése, regisztráció befejezése",
+                        message: response,
+                        cancelBtn: { text: "Adatok szerkesztése"},
+                        okBtn: { text: "Közösség regisztrálása"},
+                        cssClass: "group-register-preview"
+                    }, function (modal, confirm) {
+                        if (confirm) {
+
+                            if (!$("#adatvedelmi-tajekoztato").is(":checked") || !$("#iranyelvek").is(":checked")) {
+                                dialog.show("A regisztráció befejezéséhez először el kell fogadnod az adatvédelmi tájékoztatót és az irányelveinket!");
+                                return;
+                            }
+
+                            form.trigger("submit", [{send_request:true}]);
+                        } else {
+                            modal.modal("hide");
+                        }
+                    });
+                });
+            }
+        });
 
         $("[name=spiritual_movement_id]").select2({
             placeholder: "lelkiségi mozgalom",
@@ -217,6 +344,18 @@
                 ['insert', ['link']],
                 ['view', ['help']]
             ]
+        });
+
+        $("[name=user_name]").on("change, focusout", function () {
+            if (validateUserName($(this) && !$("#group_leaders", form).val())) {
+                $("#group_leaders").val($(this).val());
+            }
+        });
+
+        $("[name=email]", form).on("change focusout", function () {
+            if (validateEmailAddress($(this)) && !$("#group_leader_email", form).val()) {
+                $("#group_leader_email").val($(this).val());
+            }
         });
 
     });

@@ -1,9 +1,9 @@
 <?php
 
-
 namespace Framework\Database\PDO;
 
-
+use Closure;
+use Exception;
 use Framework\Database\Database;
 use Framework\Database\DatabaseConfiguration;
 use Framework\Database\Events\QueryRan;
@@ -17,12 +17,14 @@ class PDOMysqlDatabase implements Database
     /**
      * @var DatabaseConfiguration
      */
-    private $configuration;
+    private DatabaseConfiguration $configuration;
 
     /**
      * @var PDO
      */
-    private $pdo;
+    private PDO $pdo;
+
+    private int $transactionCounter = 0;
 
     /**
      * PDOMysqlDatabase constructor.
@@ -41,7 +43,13 @@ class PDOMysqlDatabase implements Database
 
     private function getDsn()
     {
-        return 'mysql:host=' . $this->configuration->host . ';dbname=' . $this->configuration->database . ';charset=' . $this->configuration->charset . ';port=' . $this->configuration->port;
+        return sprintf(
+            "mysql:host=%s;dbname=%s;charset=%s;port=%s",
+            $this->configuration->host,
+            $this->configuration->database,
+            $this->configuration->charset,
+            $this->configuration->port
+        );
     }
 
     /**
@@ -59,7 +67,7 @@ class PDOMysqlDatabase implements Database
      * @param mixed ...$bindings
      * @return ResultSet
      */
-    public function execute($query, ...$bindings): ResultSet
+    public function execute(string $query, ...$bindings): ResultSet
     {
         $start = microtime(true);
 
@@ -81,7 +89,51 @@ class PDOMysqlDatabase implements Database
      */
     public function select(string $query, $bindings = []): array
     {
-        return $this->execute($query, ...$bindings)->getRows();
+        return $this->execute($query, ...(array) $bindings)->getRows();
+    }
+
+    public function beginTransaction(): bool
+    {
+        if (!$this->transactionCounter++) {
+            return $this->pdo->beginTransaction();
+        }
+        $this->pdo->exec('SAVEPOINT trans' . $this->transactionCounter);
+        return $this->transactionCounter >= 0;
+    }
+
+    public function commit(): bool
+    {
+        if (!--$this->transactionCounter) {
+            return $this->pdo->commit();
+        }
+        return $this->transactionCounter >= 0;
+    }
+
+    public function rollback(): bool
+    {
+        if (--$this->transactionCounter) {
+            $this->pdo->exec('ROLLBACK TO trans' . ($this->transactionCounter + 1));
+            return true;
+        }
+
+        return $this->pdo->rollBack();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function transaction(Closure $callback)
+    {
+        $this->beginTransaction();
+
+        try {
+            $return = $callback();
+            $this->commit();
+            return $return;
+        } catch (Exception $e) {
+            $this->rollback();
+            throw $e;
+        }
     }
 
     /**
@@ -142,5 +194,4 @@ class PDOMysqlDatabase implements Database
 
         return true;
     }
-
 }
