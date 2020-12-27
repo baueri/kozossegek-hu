@@ -302,6 +302,11 @@ function raise_404($message = 'A keresett oldal nem található', $message2 = '<
     raise_error(404, $message, $message2);
 }
 
+function raise_403($message = '', $message2 = 'Nincs jogosultsága a tartalom megtekintéséhez!')
+{
+    raise_error(403, $message, $message2);
+}
+
 function is_loggedin()
 {
     return \App\Auth\Auth::loggedIn();

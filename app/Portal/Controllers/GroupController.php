@@ -2,33 +2,25 @@
 
 namespace App\Portal\Controllers;
 
-use App\Admin\Group\Services\CreateGroup;
 use App\Admin\Group\Services\UpdateGroup;
 use App\Auth\Auth;
-use App\Factories\CreateGroupStepFactory;
-use App\Helpers\GroupHelper;
-use App\Http\Responses\CreateGroupSteps\AbstractGroupStep;
+use App\Http\Responses\CreateGroupSteps\RegisterGroupForm;
 use App\Http\Responses\PortalEditGroupForm;
 use App\Models\Group;
 use App\Models\GroupView;
-use App\Portal\Services\CreateUser;
 use App\Portal\Services\GroupList;
 use App\Portal\Services\PortalCreateGroup;
 use App\Portal\Services\SendContactMessage;
 use App\Repositories\Groups;
 use App\Repositories\GroupViews;
 use App\Repositories\Institutes;
-use App\Services\CreateUserFromGroup;
 use Error;
 use ErrorException;
 use Exception;
-use Framework\File\File;
 use Framework\Http\Controller;
 use Framework\Http\Message;
 use Framework\Http\Request;
-use Framework\Http\Session;
 use Framework\Model\ModelNotFoundException;
-use Phinx\Console\Command\Create;
 use Throwable;
 
 /**
@@ -43,35 +35,9 @@ class GroupController extends Controller
         return $service->getHtml();
     }
 
-    public function kozossegRegisztracio(Request $request, CreateGroupStepFactory $factory)
+    public function kozossegRegisztracio(RegisterGroupForm $service)
     {
-        $user = Auth::user();
-        $step = $request['next_step'] ?: 'login';
-
-        $data = array_merge(Session::get(AbstractGroupStep::SESSION_KEY, []), $request->all());
-
-        Session::set(AbstractGroupStep::SESSION_KEY, $data);
-
-        if ($user) {
-            if ($step === 'login') {
-                $step = 'group_data';
-            }
-
-            $steps = [
-                1 => ['group_data', 'Közösség adatainak megadása'],
-                ['finish_registration', 'Regisztráció befejezése']
-            ];
-        } else {
-            $steps = [
-                1 => ['login', 'Közösség adatainak megadása'],
-                ['group_data', 'Regisztráció befejezése'],
-                ['finish_registration', 'Regisztráció befejezése']
-            ];
-        }
-
-        $service = $factory->getGroupStep($step);
-
-        return (string) $service->render(compact('steps', 'step'));
+        return (string) $service;
     }
 
     /**
@@ -180,32 +146,29 @@ class GroupController extends Controller
     /**
      * @param Request $request
      * @param PortalCreateGroup $createGroupService
+     * @param RegisterGroupForm $form
+     * @return string|void
      */
-    public function createGroup(Request $request, PortalCreateGroup $createGroupService)
+    public function createGroup(Request $request, PortalCreateGroup $createGroupService, RegisterGroupForm $form)
     {
         try {
-            $group = $createGroupService->createGroup(
-                collect(Session::get(AbstractGroupStep::SESSION_KEY)),
-                $request->files['document'],
-                $user = Auth::user()
-            );
+            $user = Auth::user();
+            $group = db()->transaction(fn () =>
+                $createGroupService->createGroup(
+                    $request->collect(),
+                    $request->files['document'],
+                    $user
+                ));
 
-            if ($group) {
-                Session::forget(AbstractGroupStep::SESSION_KEY);
-                if ($user) {
-                    Message::success('Közösség sikeresen létrehozva!');
-                    redirect_route('portal.edit_group', $group);
-                } else {
-                    redirect_route('portal.group.create_group_success');
-                }
+            if ($user) {
+                Message::success('Közösség sikeresen létrehozva!');
+                redirect_route('portal.edit_group', $group);
             } else {
-                Message::danger('Kérjük ellenőrizd az adataidat!');
-                redirect_route('portal.register_group');
+                redirect_route('portal.group.create_group_success');
             }
-
         } catch (Exception | Error | Throwable | ErrorException $ex) {
             Message::danger('Váratlan hiba történt a közösség létrehozásakor, kérjük próbáld meg később!');
-            redirect_route('portal.register_group');
+            return (string) $form;
         }
     }
 
@@ -229,7 +192,7 @@ class GroupController extends Controller
                 'group_leader_email',
                 'description',
                 'image'
-            ));
+            ), $request->files['document']);
 
             Message::success('Sikeres mentés!');
             redirect_route('portal.edit_group', $group);
@@ -261,5 +224,30 @@ class GroupController extends Controller
         Message::warning('Közösség törölve');
 
         redirect_route('portal.my_groups');
+    }
+
+    public function registrationSuccess()
+    {
+        return view('portal.group.create_group_success');
+    }
+
+    public function downloadDocument(Request $request, GroupViews $groups)
+    {
+        try {
+            /* @var $group GroupView */
+            $group = $groups->findOrFail($request['id']);
+
+            if (!$group->isEditableBy(Auth::user())) {
+                raise_403();
+            }
+
+            $file_url = $group->getDocumentPath();
+            header('Content-Type: application/octet-stream');
+            header("Content-Transfer-Encoding: Binary");
+            header("Content-disposition: attachment; filename=\"" . basename($file_url) . "\"");
+            readfile($file_url);
+        } catch (\Exception $e) {
+            dd($e);
+        }
     }
 }

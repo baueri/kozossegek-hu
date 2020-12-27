@@ -6,7 +6,7 @@
     <thead>
         <tr>
             @foreach($columns as $key => $column)
-                <th>{{ $column }}</th>
+                <th {{ in_array($key, $centered_columns) ? 'class="text-center"' : '' }}>{{ $column }}</th>
             @endforeach
         </tr>
     </thead>

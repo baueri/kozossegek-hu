@@ -10,7 +10,7 @@ use App\Repositories\SpiritualMovements;
 use Framework\Http\Request;
 use Framework\Http\Session;
 
-class SetGroupData extends AbstractGroupStep
+class RegisterGroupForm extends AbstractGroupStep
 {
     /**
      * @var Institutes
@@ -32,18 +32,13 @@ class SetGroupData extends AbstractGroupStep
         parent::__construct($request);
         $this->institutes = $institutes;
         $this->spiritualMovements = $spiritualMovements;
-        if ($this->request->isNotEmpty('next_step')) {
-            $data = $this->request->collect()->merge(Session::get(static::SESSION_KEY))->all();
-            Session::set(static::SESSION_KEY, $data);
-        }
     }
 
     protected function getModel()
     {
         $request = $this->request;
         /* @var $institute Institute */
-        $requestData = collect(Session::get(static::SESSION_KEY))->merge($request->all());
-        $data = $requestData->only(
+        $data = $request->only(
             'occasion_frequency',
             'institute_id',
             'spiritual_movement_id',
@@ -51,19 +46,19 @@ class SetGroupData extends AbstractGroupStep
             'description'
         );
         $institute = $this->institutes->find($data['institute_id']);
-        $data['group_leaders'] = $requestData->get('group_leaders', $requestData['user_name']);
-        $data['group_leader_email'] = $requestData->get('group_leader_email', $requestData['email']);
+        $data['group_leaders'] = $request->get('group_leaders', $request['user_name']);
+        $data['group_leader_email'] = $request->get('group_leader_email', $request['email']);
         $data['institute_name'] = $institute ? $institute->name : '';
         $data['city'] = $institute ? $institute->city : '';
         $data['district'] = $institute ? $institute->district : '';
-        $data['age_group'] = implode(',', $requestData['age_group']);
-        $data['on_days'] = implode(',', $requestData['on_days']);
-        $data['spiritual_movement'] = $this->spiritualMovements->find($requestData['spiritual_movement_id'])['name'];
+        $data['age_group'] = implode(',', $request['age_group']);
+        $data['on_days'] = implode(',', $request['on_days']);
+        $data['spiritual_movement'] = $this->spiritualMovements->find($request['spiritual_movement_id'])['name'];
 
         $group = new GroupView($data);
         $user = Auth::user();
 
-        $image = $requestData['image'];
+        $image = $request['image'];
 
         if (!$image && $institute && $institute->hasImage()) {
             $image = $institute->getImageRelPath();
@@ -72,12 +67,14 @@ class SetGroupData extends AbstractGroupStep
         return [
             'group' => $group,
             'user' => $user,
-            'age_group_array' => $requestData['age_group'],
+            'age_group_array' => $request['age_group'],
             'tags' => builder('tags')->get(),
             'image' => $image,
             'document' => $request->files['document']['name'],
-            'group_tags' => $requestData['tags'],
-            'group_days' => $requestData['on_days']
+            'group_tags' => $request['tags'],
+            'group_days' => $request['on_days'],
+            'user_name' => $request['user_name'],
+            'email' => $request['email'],
         ];
     }
 

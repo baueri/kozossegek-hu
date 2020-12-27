@@ -11,10 +11,11 @@ use Framework\Support\Collection;
  *
  * @author ivan
  */
-class FileHelper {
-    
+class FileHelper
+{
+
     /**
-     * 
+     *
      * @param Collection|File[] $files
      */
     public static function parseFilesToArray(Collection $files): array
@@ -32,11 +33,11 @@ class FileHelper {
             'mod_date' => $file->getModificationDate()
         ])->all();
     }
-    
+
     public function getIcon(File $file)
     {
         $type = $file->getMainType();
-        
+
         if ($type == FileType::IMAGE) {
             return 'fa fa-image';
         } elseif ($type == FileType::DOCUMENT) {
@@ -44,10 +45,12 @@ class FileHelper {
         } elseif ($type == FileType::PDF) {
             return 'fa fa-file-pdf';
         }
+
+        return '';
     }
-    
+
     /**
-     * 
+     *
      * @param File $file
      * @return string
      */
@@ -55,5 +58,10 @@ class FileHelper {
     {
         $path = $file->getFilePath();
         return str_replace(STORAGE_PATH . 'public', '/storage', $path);
+    }
+
+    public static function getExtension(string $fileName)
+    {
+        return pathinfo($fileName, PATHINFO_EXTENSION);
     }
 }

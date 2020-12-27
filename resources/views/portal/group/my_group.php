@@ -22,16 +22,17 @@
             </p>
             @endif
             <h3 class="h4 mt-3">Általános adatok</h3>
-            <form method="post" id="group-form" action="@route('portal.my_group.update', $group)">
+            <form method="post" id="group-form" action="@route('portal.my_group.update', $group)" enctype="multipart/form-data">
                 @if($group->pending)
-                        @alert('warning')
-                            A közösséged még függőben van, amíg nincs jóváhagyva, addig nem jelenítjük meg a közösségek között.
-                        @endalert
-                    @elseif($group->status == App\Enums\GroupStatusEnum::INACTIVE)
-                        @alert('warning')
-                            <b>A közösséged jelenleg inaktív.</b><br> Nem jelenik meg sem a keresési találatok közzött, illetve az adatlapját se lehet megtekinteni.
-                        @endalert
-                    @endif
+                @alert('warning')
+                A közösséged még függőben van, amíg nincs jóváhagyva, addig nem jelenítjük meg a közösségek között.
+                @endalert
+                @elseif($group->status == App\Enums\GroupStatusEnum::INACTIVE)
+                @alert('warning')
+                <b>A közösséged jelenleg inaktív.</b><br> Nem jelenik meg sem a keresési találatok közzött, illetve az
+                adatlapját se lehet megtekinteni.
+                @endalert
+                @endif
                 <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">
@@ -54,7 +55,7 @@
                             <label for="denomination">Felekezet</label>
                             <select class="form-control" name="denomination" required>
                                 @foreach($denominations as $denomination)
-                                <option value="{{ $denomination->name }}">{{ $denomination }}</option>
+                                    <option value="{{ $denomination->name }}">{{ $denomination }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -76,7 +77,9 @@
                             <label for="age_group">Korosztály <small>(legalább egyet adj meg)</small></label>
                             <select class="form-control" name="age_group[]" multiple="multiple" id="age_group" required>
                                 @foreach($age_groups as $age_group)
-                                <option value="{{ $age_group->name }}" @if(in_array($age_group->name, $age_group_array)) selected @endif>{{ $age_group }}</option>
+                                <option value="{{ $age_group->name }}" @if(in_array($age_group->name, $age_group_array)) selected @endif>
+                                    {{ $age_group }}
+                                </option>
                                 @endforeach
                             </select>
                         </div>
@@ -86,7 +89,9 @@
                             <label for="occasion_frequency">Alkalmak gyakorisága</label>
                             <select class="form-control" name="occasion_frequency" required>
                                 @foreach($occasion_frequencies as $occasion_frequency)
-                                <option value="{{ $occasion_frequency->name }}" @if($group->occasion_frequency == $occasion_frequency->name) selected @endif>{{ $occasion_frequency }}</option>
+                                <option value="{{ $occasion_frequency->name }}" @if($group->occasion_frequency == $occasion_frequency->name) selected @endif>
+                                    {{ $occasion_frequency }}
+                                </option>
                                 @endforeach
                             </select>
                         </div>
@@ -115,8 +120,8 @@
                         @endforeach
                     </select>
                 </div>
+                <h3 class="h4 mt-3">A közösség jellemzői</h3>
                 <div class="form-group">
-                    <label>A közösség jellemzői</label>
                     <div>
                         @foreach($tags as $tag)
                         <label class="mr-2" for="tag-{{ $tag['id'] }}">
@@ -125,14 +130,14 @@
                                    id="tag-{{$tag['id']}}"
                                    value="{{ $tag['slug'] }}"
                                    @if(in_array($tag['slug'], $group_tags)) checked @endif
-                                   > {{ $tag['tag'] }}
+                            > {{ $tag['tag'] }}
                         </label>
                         @endforeach
                     </div>
                 </div>
 
                 <div class="form-group required">
-                    <label for="description">Bemutatkozás</label>
+                    <h3 class="h4 mt-3">Bemutatkozás</h3>
                     <textarea name="description" id="description">{{ $group->description }}</textarea>
                 </div>
 
@@ -142,44 +147,63 @@
                     <div class="col-md-12">
                         <div class="form-group required">
                             <label for="group_leaders">Közösségvezető(k) neve(i)</label>
-                            <input type="text" name="group_leaders" id="group_leaders" class="form-control" value="{{ $group->group_leaders ?: $user->name }}" required>
+                            <input type="text" name="group_leaders" id="group_leaders" class="form-control"
+                                   value="{{ $group->group_leaders ?: $user->name }}" required>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="group_leader_phone">Elérhetőség (Telefon)</label>
-                            <input type="tel" name="group_leader_phone" id="group_leader_phone" value="{{ $group->group_leader_phone }}" class="form-control">
+                            <input type="tel" name="group_leader_phone" id="group_leader_phone"
+                                   value="{{ $group->group_leader_phone }}" class="form-control">
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group required">
                             <label for="group_leader_email">Elérhetőség (Email cím)</label>
-                            <input type="email" name="group_leader_email" id="group_leader_email" value="{{ $group->group_leader_email ?: $user->email }}" class="form-control">
+                            <input type="email" name="group_leader_email" id="group_leader_email"
+                                   value="{{ $group->group_leader_email ?: $user->email }}" class="form-control">
                         </div>
                     </div>
                 </div>
-                <div class="row group-images">
-                    <div class="col-md-12">
+                <div class="group-images">
                         <div class="form-group">
-                            <label>Fotó a közösségről <small>(Ha ezt nem adod meg, akkor az intézmény fotója jelenik meg)</small></label>
+                            <h3 class="h4 mt-3 mb-0">Fotó a közösségről</h3>
+                            <p><small>(Ha ezt nem adod meg, akkor az intézmény fotója jelenik meg)</small><br/></p>
                             <div class="group-image">
                                 <img src="{{ $images ? $images[0] . '?' . time() : '' }}" id="image" width="300">
                             </div>
                             <label for="image-upload" class="btn btn-primary">
                                 <i class="fa fa-upload"></i> Kép feltöltése
-                                <input type="file" onchange="loadFile(event, this);" data-target="temp-image" id="image-upload">
+                                <input type="file" onchange="loadFile(event, this);" data-target="temp-image"
+                                       id="image-upload">
                             </label>
-                            <div style="display: none"><img id="temp-image" /></div>
-                        <input type="hidden" name="image">
+                            <div style="display: none"><img id="temp-image"/></div>
+                            <input type="hidden" name="image">
+                        </div>
+                </div>
+                <div>
+                    <h3 class="h4 mt-3">Igazolás</h3>
+                    <p><b>Fájl:</b> @if($group->document)
+                        <a href="{{ $group->getDocumentUrl() }}" download><i class="fa fa-download"></i> {{ $group->document }}</a>
+                        @else
+                            Még nincs feltöltve
+                        @endif
+                    </p>
+                    <div class="form-group">
+                        <div class="mb-3">
+                            <h5 class="mb-0">Igazoló dokumentum lecserélése</h5>
+                            <p><small>Microsoft office dokumentum (<b>doc, docx</b>) vagy <b>pdf</b> formátum</small></p>
+                            <input type="file" name="document">
+                        </div>
                     </div>
                 </div>
+                <hr>
+                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Mentés</button>
+                <a href="" class="text-danger float-right">közösségem törlése</a>
+            </form>
         </div>
-
-        <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Mentés</button>
-        <a href="" class="text-danger float-right">közösségem törlése</a>
-        </form>
     </div>
-</div>
 </div>
 <script>
     $(() => {
@@ -187,8 +211,8 @@
         var image_val;
 
         var upload = null;
-        function initCroppie()
-        {
+
+        function initCroppie() {
             upload = $("#image").croppie({
                 enableExif: true,
                 mouseWheelZoom: false,
@@ -213,7 +237,11 @@
 
         $("form#group-form").submit(function (e) {
             if (upload) {
-                upload.croppie("result", {type: "base64", format: "jpeg", size: {width: 510, height: 510}}).then(function (base64) {
+                upload.croppie("result", {
+                    type: "base64",
+                    format: "jpeg",
+                    size: {width: 510, height: 510}
+                }).then(function (base64) {
                     image_val = base64;
                     $("[name=image]").val(base64);
                 });

@@ -3,6 +3,7 @@
 namespace App\Portal\Services;
 
 use App\Admin\Group\Services\CreateGroup;
+use App\Enums\DenominationEnum;
 use App\Mail\NewGroupEmail;
 use App\Models\Group;
 use App\Models\User;
@@ -56,7 +57,6 @@ class PortalCreateGroup
         $data = $requestData->only(
             'status',
             'name',
-            'denomination',
             'institute_id',
             'age_group',
             'occasion_frequency',
@@ -70,6 +70,8 @@ class PortalCreateGroup
             'image'
         );
 
+        $data['denomination'] = DenominationEnum::KATOLIKUS;
+
         $mailable = new NewGroupEmail();
 
         if (!$user) {
@@ -80,10 +82,12 @@ class PortalCreateGroup
             ]));
 
             $userToken = $this->userTokens->createUserToken($user, route('portal.user.activate'));
-            $mailable->with(['token' => $userToken]);
-            $mailable->view('mail.created_group_email.created_group_with_new_user');
+            $mailable->with(['token_url' => $userToken->getUrl()]);
+            $mailable->withNewUserMessage();
             $mailable->subject('kozossegek.hu - Regisztráció');
         }
+
+        $mailable->with(['user_name' => $user->name]);
 
         $data['user_id'] = $user->id;
 
@@ -98,6 +102,6 @@ class PortalCreateGroup
 
         $this->errors = $this->createGroup->getErrors();
 
-        return null;
+        throw new \Exception('Nem sikerült a csoport létrehozása');
     }
 }

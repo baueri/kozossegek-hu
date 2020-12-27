@@ -8,6 +8,7 @@ use App\Admin\Components\AdminTable\Editable;
 use App\Models\AgeGroup;
 use App\Models\Group;
 use App\Models\GroupStatus;
+use App\Models\GroupView;
 use App\Models\Institute;
 use App\Repositories\GroupViews;
 
@@ -21,17 +22,19 @@ class GroupTable extends AdminTable implements Editable, Deletable
 
     protected $columns = [
         'id' => '#',
+        'view' => '<i class="fa fa-eye" title="Megtekintés a honlapon"></i>',
         'name' => 'Közösség neve',
         'city' => 'Település',
         'institute_name' => 'Intézmény / plébánia',
         'group_leaders' => 'Közösség vezető(i)',
         'age_group' => 'Korosztály',
-        'status' => 'Státusz',
-        'pending' => 'Függőben',
+        'status' => '<i class="fa fa-check-circle" title="Aktív"></i>',
+        'pending' => '<i class="fa fa-thumbs-up" title="Jóváhagyva"></i>',
+        'has_document' => '<i class="fa fa-file-word" title="Van intézményvezetői igazolása"></i>',
         'created_at' => 'Létrehozva',
     ];
 
-    protected $centeredColumns = ['status'];
+    protected $centeredColumns = ['status', 'pending', 'has_document', 'view'];
     /**
      * @var GroupViews
      */
@@ -62,19 +65,19 @@ class GroupTable extends AdminTable implements Editable, Deletable
     {
         $status = new GroupStatus($status);
         $class = $status->getClass();
-        $text = $status->translate();
-        return "<i class='$class' title='$text'></i>";
+
+        return "<i class='$class'></i>";
     }
 
     public function getPending($pending)
     {
         if ($pending) {
-            return 'igen';
+            return static::getBanIcon('nem');
         }
-        
-        return 'nem';
+
+        return self::getCheckIcon('igen');
     }
-    
+
     public function getGroupLeaders($groupLeaders)
     {
         $shorten = StringHelper::shorten($groupLeaders, 15, '...');
@@ -103,8 +106,22 @@ class GroupTable extends AdminTable implements Editable, Deletable
         return route('admin.group.edit', $model);
     }
 
+    public function getHasDocument($document, GroupView $model)
+    {
+        if ($document && $model->hasDocument()) {
+            return self::getCheckIcon('igen');
+        }
+
+        return self::getBanIcon('nem');
+    }
+
     public function getEditColumn(): string
     {
         return 'name';
+    }
+
+    public function getView($null, GroupView $model)
+    {
+        return "<a href='{$model->url()}' target='_blank' title='megtekintés'><i class='fa fa-eye'></i></a>";
     }
 }

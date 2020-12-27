@@ -1,49 +1,30 @@
-@extends('portal.group.create-steps.create-wrapper')
-<div class="step-container">
-    <h4>Adatok ellenőrzése, regisztráció befejezése</h4>
-    <p><b>Közösség neve:</b> {{ $group->name }}</p>
-    <p><b>Intézmény:</b> {{ $group->institute_name }} ({{ $group->city, $group->district ? ", $group->district" : "" }})</p>
-    <p><b>Korosztály:</b> {{ $group->getAgeGroups()->implode(',') }}</p>
-    <p><b>Alkalmak gyakorisága:</b> {{ $group->occasionFrequency() }}</p>
-    <p><b>Mely napokon:</b> {{ $group->getDays()->implode(',') }}</p>
-    <p><b>Lelkiségi mozgalom:</b> {{ $group->spiritual_movement ?: '-' }}</p>
-    <p><b>Közösség jellemzői:</b> {{ $selected_tags }}</p>
+<div style="font-size: .9rem;">
+    <b>Közösség neve:</b> {{ $group->name }}<br/>
+    <b>Intézmény:</b> {{ $group->institute_name }} ({{ $group->city, $group->district ? ", $group->district" : "" }})<br/>
+    <b>Korosztály:</b> {{ $group->getAgeGroups()->implode(',') }}<br/>
+    <b>Alkalmak gyakorisága:</b> {{ $group->occasionFrequency() }}<br/>
+    <b>Mely napokon:</b> {{ $group->getDays()->implode(',') }}<br/>
+    <b>Lelkiségi mozgalom:</b> {{ $group->spiritual_movement ?: '-' }}<br/>
+    <b>Közösség jellemzői:</b> {{ $selected_tags }}<br/>
     <hr>
     <b>Bemutatkozás:</b>
     {{ $group->description }}
     <hr>
-    <p><b>Közösségvezető(k):</b> {{ $group->group_leaders }}</p>
-    <p><b>Elérhetőség (telefon):</b> {{ $group->group_leader_phone ?: '-' }}</p>
-    <p><b>Elérhetőség (email):</b> {{ $group->group_leader_email }}</p>
-    <hr>
-    <p><b>Fotó:</b><br>
-        <img src="{{ $image }}" style="width: 300px; height: auto"/>
-    </p>
-    <hr>
-    <form action="@route('portal.my_group.create')" method="post" enctype="multipart/form-data">
-        <div>
-            <div class="form-group">
-                <h4>Igazolás feltöltése</h4>
-                @alert('info')
-                <p>Nem kötelező most azonnal feltölteni, később is megteheted, de kizárólag az intézményvezető által aláírt és lepecsételt igazolással tudjuk jóváhagyni a regisztrációs kérelmet és ezáltal láthatóvá tenni a közösséget.</p>
-                <p>Így tudjuk biztosítani azt, hogy a honlapunkon létező, aktív és a keresztény értékrenddel egyező közösségek legyenek.</p>
-                <p>Az igazolás mintát innen tudjátok letölteni: <a href="@upload('igazolas.pdf')" download><i class="fa fa-download"></i> Igazolás minta letöltése</a></p>
-                @endalert
-                <p class="mb-3">
-                    <small>Microsoft office dokumentum (<b>doc, docx</b>) vagy <b>pdf</b> formátum</small><br/>
-                    <input type="file" name="document">
-                </p>
-
-            </div>
-        </div>
+    <b>Közösségvezető(k):</b> {{ $group->group_leaders }}<br/>
+    <b>Elérhetőség (telefon):</b> {{ $group->group_leader_phone ?: '-' }}<br/>
+    <b>Elérhetőség (email):</b> {{ $group->group_leader_email }}<br/>
+    @if($image)
         <hr>
-
-        <div class="">
-            <p>
-                <label><input type="checkbox" required=""> Az <a href="">adatvédelmi tájékoztatót</a> elolvastam és elfogadom</label><br/>
-                <label><input type="checkbox" required=""> A közösségem a <a href="">kereszténységgel egyező szellemiséget</a> képvisel</label>
-            </p>
-        </div>
-        <a href="@route('portal.register_group', ['next_step' => 'group_data'])" class="btn btn-default">Adatok szerkesztése</a> <button type="submit" class="btn btn-darkblue">Közösség regisztrálása</button>
-    </form>
+        <p><b>Fotó:</b><br>
+            <img src="{{ $image }}" style="width: 75px; height: auto" title="<img src='{{ $image }}' style='width:300px;'>" data-html="true" data-container='.group-register-preview' onload="$(this).tooltip()"/>
+        </p>
+    @endif
+    <hr>
+    <p class="text-right">
+        <label>Az <a href="">adatvédelmi tájékoztatót</a> elolvastam és elfogadom <input type="checkbox" required id="adatvedelmi-tajekoztato"></label><br/>
+        <label>A közösségem a <a href="">kereszténységgel egyező szellemiséget</a> képvisel <input type="checkbox" required id="iranyelvek"></label>
+    </p>
 </div>
+<style>
+    .group-register-preview .tooltip { opacity:1!important; }
+</style>

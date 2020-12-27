@@ -24,9 +24,9 @@ $(window).on("load scroll", () => {
     }
 });
 
-$.fn.instituteSelect = function () {
+$.fn.instituteSelect = function (options) {
     $(this).each(function () {
-        $(this).select2({
+        $(this).select2($.extend({
             placeholder: "intézmény",
             allowClear: true,
             ajax: {
@@ -38,7 +38,7 @@ $.fn.instituteSelect = function () {
                     return params;
                 }
             }
-        });
+        }, options));
     });
 
     return $(this);

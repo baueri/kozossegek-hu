@@ -11,6 +11,7 @@ use App\Repositories\UserTokens;
 use Framework\Mail\Mailer;
 use Framework\Support\Collection;
 use Framework\Support\Password;
+use Framework\Support\StringHelper;
 
 class CreateUser
 {
@@ -43,7 +44,7 @@ class CreateUser
     {
         $data = $data->only('name', 'email', 'password');
 
-        $data['password'] = Password::hash($data['password']);
+        $data['password'] = Password::hash(time());
 
         /* @var $user User */
         return $this->users->create($data);

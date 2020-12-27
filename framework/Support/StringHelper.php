@@ -29,13 +29,12 @@ class StringHelper
     }
 
     /**
-     *
      * @param string $text
      * @param int $numberOfCharacters
      * @param string $moreText
      * @return string
      */
-    public static function shorten($text, $numberOfCharacters, $moreText = '')
+    public static function shorten(string $text, int $numberOfCharacters, $moreText = '')
     {
         if (strlen($text) <= $numberOfCharacters) {
             return $text;

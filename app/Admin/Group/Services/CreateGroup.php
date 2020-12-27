@@ -32,6 +32,7 @@ class CreateGroup extends BaseGroupService
             return null;
         }
 
+        /* @var $group Group */
         $group = $this->repository->create($data);
 
         if ($group) {
@@ -41,7 +42,11 @@ class CreateGroup extends BaseGroupService
 
             $this->syncImages($group, [$request['image']]);
 
-            $this->uploadDocument($group, $document);
+            $file = $this->uploadDocument($group, $document);
+
+            $group->document = $file->getFileName();
+
+            $this->repository->save($group);
         }
 
         return $group;

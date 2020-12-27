@@ -155,7 +155,7 @@ class UserController extends AdminController
         $user = $repository->findOrFail($request['id']);
 
         $user->name .= "#{$user->email}";
-        $user->email = "";
+        $user->email = null;
 
         $repository->delete($user);
 

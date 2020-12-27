@@ -5,6 +5,7 @@ namespace App\Portal\Services;
 use App\Helpers\InstituteHelper;
 use Framework\Http\Request;
 use App\Helpers\GroupHelper;
+use Framework\Http\Response;
 
 class ImageService
 {
@@ -20,6 +21,11 @@ class ImageService
             case 'institutes':
                 $path = $this->getInstituteImagePath($image);
                 break;
+        }
+
+        if (!file_exists($path)) {
+            Response::setStatusCode('404');
+            return '';
         }
 
         header('Pragma: public');

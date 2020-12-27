@@ -28,8 +28,13 @@ abstract class AbstractGroupStep
         return [];
     }
 
-    public function render(array $data): string
+    public function __toString()
     {
-        return view($this->getView(), array_merge($data, $this->getModel()));
+        return $this->render();
+    }
+
+    public function render(): string
+    {
+        return view($this->getView(), $this->getModel());
     }
 }
