@@ -264,6 +264,10 @@ class Group extends Model
 
     public function getDocumentPath()
     {
+        if (!$this->document) {
+            return '';
+        }
+
         return GroupHelper::getStoragePath($this->id) . $this->document;
     }
 
