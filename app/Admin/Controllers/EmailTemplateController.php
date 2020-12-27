@@ -10,7 +10,6 @@ use App\Mail\RegistrationEmail;
 use App\Mail\ResetPasswordEmail;
 use App\Models\GroupView;
 use App\Models\User;
-use App\Models\UserToken;
 use App\Repositories\UserTokens;
 use Framework\Http\Request;
 use Framework\Http\Response;
@@ -71,7 +70,7 @@ class EmailTemplateController extends AdminController
 
     public function createdGroup()
     {
-        $mailable = (new NewGroupEmail())->with(['user_name' => 'Minta János']);
+        $mailable = (new NewGroupEmail(new User(['name' => 'Minta János', 'email' => 'minta_janos@kozossegek.hu'])));
         $title = 'Új közösség létrehozása (belépett fiókkal)';
         return view('admin.email_template', compact('mailable', 'title'));
     }
@@ -80,9 +79,8 @@ class EmailTemplateController extends AdminController
     {
         $user = new User(['name' => 'Minta János', 'email' => 'minta_janos@kozossegek.hu']);
         $token = $userTokens->make($user, route('portal.user.activate'));
-        $mailable = (new NewGroupEmail())
-            ->with(['token_url' => $token->getUrl(), 'user_name' => $user->name])
-            ->withNewUserMessage();
+        $mailable = (new NewGroupEmail($user))
+            ->withNewUserMessage($token);
         $title = 'Új közösség létrehozása (belépett fiókkal)';
         return view('admin.email_template', compact('mailable', 'title'));
     }

@@ -88,7 +88,7 @@ class InstituteAdminTable extends AdminTable implements Deletable, Editable
 
     public function getImage($img, Institute $institute)
     {
-        $imageUrl = $institute->hasImage() ? $institute->getImageRelPath() : '/images/default_thumbnail.jpg';
+        $imageUrl = $institute->hasImage() ? $institute->getImageRelPath() . '?' . time() : '/images/default_thumbnail.jpg';
         return "<img src='$imageUrl' style='max-width: 25px; height: auto;' title='<img src=\"$imageUrl\">' data-html='true'/>";
     }
 
@@ -100,6 +100,11 @@ class InstituteAdminTable extends AdminTable implements Deletable, Editable
     public function getEditColumn(): string
     {
         return 'name';
+    }
+
+    public function getAddress($address)
+    {
+        return static::excerpt($address);
     }
 
     public function getGroupCount($count)

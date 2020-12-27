@@ -35,7 +35,7 @@
     @endif
 </head>
 <body class="@if(!is_prod())demo@endif">
-    <div class="home">
+    <div class="home" style="background:url('{{ $header_background ?? '/images/img2.jpg' }}') no-repeat top center">
         <nav id="header" class="navbar navbar-expand-sm fixed-top">
             <div class="container">
                 <a href="/" class="navbar-brand ml-4 ml-sm-0 mt-0 mb-0 p-0 p-sm-1">

@@ -155,6 +155,13 @@ abstract class AdminTable
         return "<i class='fa fa-ban text-danger' title='$title'></i>";
     }
 
+    protected static function excerpt(string $text, $withTooltip = true)
+    {
+        $shorten = StringHelper::shorten($text, 20, '...');
+        $tooltip = $withTooltip ? $text : '';
+        return "<span title='$tooltip'>$shorten</span>";
+    }
+
     /**
      * @return string
      */

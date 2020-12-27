@@ -311,3 +311,22 @@ function is_loggedin()
 {
     return \App\Auth\Auth::loggedIn();
 }
+
+function rrmdir($dir)
+{
+    if (is_dir($dir)) {
+        $objects = scandir($dir);
+        foreach ($objects as $object) {
+            if ($object != "." && $object != "..") {
+                if (is_dir($dir . DS . $object) && !is_link($dir . "/" . $object)) {
+                    rrmdir($dir . DS . $object);
+                } else {
+                    unlink($dir . DS . $object);
+                }
+            }
+        }
+        return rmdir($dir);
+    }
+
+    throw new Exception('Nem könyvtár');
+}

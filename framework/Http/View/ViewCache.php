@@ -1,15 +1,13 @@
 <?php
 
-
 namespace Framework\Http\View;
-
 
 class ViewCache
 {
     /**
      * @var string
      */
-    protected static $cacheDir = CACHE . 'views' . DS;
+    protected static string $cacheDir = CACHE . 'views' . DS;
 
     /**
      * @param string $fileName
@@ -47,7 +45,7 @@ class ViewCache
     /**
      * @return bool
      */
-    public function shouldUpdateFile($fileName): bool
+    public function shouldUpdateFile(string $fileName): bool
     {
         $cacheFilePath = $this->getCacheFilename($fileName);
 

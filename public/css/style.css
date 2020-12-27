@@ -13,9 +13,8 @@ img {
 }
 
 .home {
-    background:url("/images/img2.jpg") no-repeat top center;
-    background-position: fixed;
-    background-size: cover;
+    background-position: fixed !important;
+    background-size: cover !important;
     padding-top: 58px;
 }
 .home #header {

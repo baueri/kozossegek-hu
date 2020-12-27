@@ -89,6 +89,10 @@ abstract class BaseGroupService
             return null;
         }
 
+        if ($group->hasDocument()) {
+            $group->getDocument()->delete();
+        }
+
         $file = $file = File::createFromFormData($document);
         $extension = FileHelper::getExtension($document['name']);
 

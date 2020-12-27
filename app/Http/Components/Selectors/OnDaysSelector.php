@@ -6,19 +6,21 @@
  * and open the template in the editor.
  */
 
-namespace App\Http\Selectors;
+namespace App\Http\Components\Selectors;
+
+use App\Enums\DayEnum;
 
 /**
  * Description of OnDaysSelector
  *
  * @author ivan
  */
-class OnDaysSelector {
-    
+class OnDaysSelector
+{
+
     public function render($group_days)
     {
-        $days = \App\Enums\DayEnum::all();
-        
+        $days = DayEnum::all();
         return view('partials.components.on_days_selector', compact('days', 'group_days'));
     }
 }

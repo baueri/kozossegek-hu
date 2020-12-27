@@ -1,5 +1,5 @@
 @extends('mail.wrapper')
-<h4>Kedves {{ $user_name }}</h4>
+<p><b>Kedves {{ $user_name }}</b>!</p>
 <p>
     Közösségedet sikeresen regisztráltuk a honlapunkon!
 </p>

@@ -9,6 +9,7 @@ namespace App\Models;
  */
 
 use App\Enums\GroupStatusEnum;
+use Framework\File\File;
 use Framework\Model\Model;
 use Framework\Model\TimeStamps;
 use Framework\Support\StringHelper;
@@ -256,6 +257,11 @@ class Group extends Model
         return file_exists($this->getDocumentPath());
     }
 
+    public function getDocument(): ?File
+    {
+        return new File($this->getDocumentPath());
+    }
+
     public function getDocumentPath()
     {
         return GroupHelper::getStoragePath($this->id) . $this->document;
@@ -265,5 +271,4 @@ class Group extends Model
     {
         return "/my-group/{$this->id}/download-document";
     }
-
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Selectors;
+namespace App\Http\Components\Selectors;
 
 use App\Repositories\AgeGroups;
 

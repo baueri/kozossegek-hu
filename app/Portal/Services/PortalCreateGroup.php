@@ -72,8 +72,6 @@ class PortalCreateGroup
 
         $data['denomination'] = DenominationEnum::KATOLIKUS;
 
-        $mailable = new NewGroupEmail();
-
         if (!$user) {
             $user = $this->createUser->create(collect([
                 'name' => $requestData['user_name'],
@@ -82,9 +80,12 @@ class PortalCreateGroup
             ]));
 
             $userToken = $this->userTokens->createUserToken($user, route('portal.user.activate'));
-            $mailable->with(['token_url' => $userToken->getUrl()]);
-            $mailable->withNewUserMessage();
+
+            $mailable = new NewGroupEmail($user);
+            $mailable->withNewUserMessage($userToken);
             $mailable->subject('kozossegek.hu - Regisztráció');
+        } else {
+            $mailable = new NewGroupEmail($user);
         }
 
         $mailable->with(['user_name' => $user->name]);
