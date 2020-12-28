@@ -3,9 +3,6 @@
 namespace App\Admin\Group\Services;
 
 use App\Models\Group;
-use Framework\File\File;
-use Framework\Http\Request;
-use App\Http\Exception\RequestParameterException;
 use Framework\Support\Collection;
 
 /**
@@ -36,7 +33,7 @@ class CreateGroup extends BaseGroupService
         $group = $this->repository->create($data);
 
         if ($group) {
-            $this->syncTags($group, $request['tags']);
+            $this->syncTags($group, (array) $request['tags']);
 
             $this->updateSearchEngine($group);
 
@@ -44,7 +41,9 @@ class CreateGroup extends BaseGroupService
 
             $file = $this->uploadDocument($group, $document);
 
-            $group->document = $file->getFileName();
+            if ($file) {
+                $group->document = $file->getFileName();
+            }
 
             $this->repository->save($group);
         }
