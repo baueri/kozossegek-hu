@@ -27,14 +27,21 @@ class View implements ViewInterface
     private $section;
 
     /**
+     * @var ViewParser
+     */
+    private ViewParser $parser;
+
+    /**
      * View constructor.
      * @param ViewCache $cacheDriver
      * @param Section $section
+     * @param ViewParser $parser
      */
-    public function __construct(ViewCache $cacheDriver, Section $section)
+    public function __construct(ViewCache $cacheDriver, Section $section, ViewParser $parser)
     {
         $this->cacheDriver = $cacheDriver;
         $this->section = $section;
+        $this->parser = $parser;
     }
 
 
@@ -87,7 +94,7 @@ class View implements ViewInterface
     protected function getContentAndDoCache($filePath, $args)
     {
         if ($this->cacheDriver->shouldUpdateFile($filePath)) {
-            $content = ViewParser::parse(file_get_contents($filePath));
+            $content = $this->parser->parse(file_get_contents($filePath));
             $this->cacheDriver->cache($filePath, $content);
         }
 

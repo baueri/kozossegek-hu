@@ -144,7 +144,7 @@
             </div>
             <div class="form-group">
                 <label for="on_days">Mely napo(ko)n</label>
-                <select class="form-control" name="on_days[]" multiple="multiple">
+                <select class="form-control" name="on_days[]" multiple="multiple" data-allow-clear="1" data-placeholder="Nincs megadva">
                     @foreach($days as $day)
                         <option value="{{ $day }}" @if(in_array($day, $group_days)) selected @endif>
                              @lang("day.$day")
@@ -153,8 +153,19 @@
                 </select>
             </div>
             <div class="form-group">
+                <label for="join_mode">Csatlakozás módja</label>
+                <select class="form-control" name="join_mode" data-allow-clear="1" data-placeholder="Nincs megadva">
+                    <option></option>
+                    @foreach($join_modes as $join_mode => $join_mode_name)
+                        <option value="{{ $join_mode }}" @if($group->join_mode==$join_mode) selected @endif>
+                            {{ $join_mode_name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="form-group">
                 <label for="spiritual_movement_id">Lelkiségi mozgalom</label>
-                <select id="spiritual_movement_id" name="spiritual_movement_id" class="form-control">
+                <select id="spiritual_movement_id" name="spiritual_movement_id" class="form-control" data-allow-clear="1" data-placeholder="Nincs megadva">
                     <option></option>
                     @foreach($spiritual_movements as $spiritual_movement)
                         <option value="{{ $spiritual_movement['id'] }}" @if($group->spiritual_movement_id == $spiritual_movement['id']) selected @endif>
@@ -224,16 +235,6 @@
             }
         });
 
-        $("[name=spiritual_movement_id]").select2({
-            placeholder: "lelkiségi mozgalom",
-            allowClear: true,
-        });
-
-        $("[name=on_days]").select2({
-            placeholder: "napok",
-            allowClear: true,
-        });
-
         $("[name=institute_id]").select2({
             placeholder: "intézmény",
             allowClear: true,
@@ -260,6 +261,11 @@
 
         initSummernote('[name=description]');
 
-        $(".group-side-content select:not(#spiritual_movement_id, #on_days)").select2();
+        $(".group-side-content select").each(function(){
+            $(this).select2({
+                allowClear: $(this).data("allow-clear") === "1",
+                placeholder: $(this).data("placeholder")
+            });
+        });
     });
 </script>

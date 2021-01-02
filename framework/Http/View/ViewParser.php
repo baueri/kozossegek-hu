@@ -20,7 +20,7 @@ class ViewParser
      * @return string|null
      * @throws Exception
      */
-    public static function parse(string $content)
+    public function parse(string $content)
     {
         foreach (static::$directives as $directive) {
             $content = preg_replace_callback($directive->getPattern(), [$directive, 'getReplacement'], $content);

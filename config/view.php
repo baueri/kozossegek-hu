@@ -31,6 +31,9 @@ return [
         'spiritual_movement_selector' => function ($matches) {
             return "<?php echo (new \App\Http\Components\Selectors\SpiritualMovementSelector)->render($matches[1]) ?>";
         },
+        'join_mode_selector' => function ($matches) {
+            return "<?php echo (new \App\Http\Components\Selectors\JoinModeSelector)->render($matches[1]) ?>";
+        },
         'alert' => function ($matches) {
 
             if (strpos($matches[0], '@alert') !== false) {

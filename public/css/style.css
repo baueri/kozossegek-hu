@@ -13,7 +13,7 @@ img {
 }
 
 .home {
-    background-position: fixed !important;
+    background-attachment: fixed !important;
     background-size: cover !important;
     padding-top: 58px;
 }
@@ -655,6 +655,7 @@ input[name=search]::placeholder {
 
 .group-tag + label {
     padding: 5px 15px !important;
+    box-shadow: 0 0 10px #000;
 }
 
 .group-tag:checked + label {

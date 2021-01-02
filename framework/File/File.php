@@ -96,6 +96,10 @@ class File
     {
         $newFilePath = $newPath . ($newFilename ?: $this->fileName);
 
+        if (!is_dir($newFilePath)) {
+            mkdir(dirname($newFilePath), 0777, true);
+        }
+
         $ok = move_uploaded_file($this->filePath, $newFilePath);
 
         if (!$ok) {
@@ -241,9 +245,14 @@ class File
         return 'unknown';
     }
 
-    public function is(string $fileType): bool
+    public function is($fileType)
     {
-        return $this->getMainType() === $fileType;
+        return in_array($this->fileType, (array) $fileType);
+    }
+
+    public function mainTypeIs($fileType): bool
+    {
+        return in_array($this->getMainType(), (array) $fileType);
     }
 
     public function touch(): bool
