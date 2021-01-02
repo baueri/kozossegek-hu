@@ -2,6 +2,11 @@
 
 namespace App\Admin\Group\Services;
 
+use App\Enums\JoinMode;
+use App\Repositories\AgeGroups;
+use App\Repositories\Denominations;
+use App\Repositories\GroupStatusRepository;
+use App\Repositories\OccasionFrequencies;
 use Framework\Http\Request;
 use App\Repositories\Groups;
 use App\Repositories\Institutes;
@@ -58,10 +63,10 @@ class BaseGroupForm
     public function show(Group $group)
     {
         $institute = $this->institutes->find($group->institute_id) ?: new Institute;
-        $denominations = (new \App\Repositories\Denominations)->all();
-        $statuses = (new \App\Repositories\GroupStatusRepository)->all();
-        $occasion_frequencies = (new \App\Repositories\OccasionFrequencies)->all();
-        $age_groups = (new \App\Repositories\AgeGroups)->all();
+        $denominations = (new Denominations)->all();
+        $statuses = (new GroupStatusRepository)->all();
+        $occasion_frequencies = (new OccasionFrequencies)->all();
+        $age_groups = (new AgeGroups)->all();
         $action = $this->getAction($group);
         $spiritual_movements = db()->select('select * from spiritual_movements order by name');
         $tags = builder('tags')->select('*')->get();
@@ -72,6 +77,7 @@ class BaseGroupForm
         $images = $group->getImages();
         $title = $group->exists() ? 'Közösség módosítása' : 'Új közösség létrehozása';
         $owner = $this->users->find($group->user_id);
+        $join_modes = JoinMode::getModesWithName();
 
         return view('admin.group.form', compact(
             'group',
@@ -89,7 +95,8 @@ class BaseGroupForm
             'group_days',
             'images',
             'title',
-            'owner'
+            'owner',
+            'join_modes'
         ));
     }
 

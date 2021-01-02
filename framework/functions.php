@@ -328,5 +328,5 @@ function rrmdir($dir)
         return rmdir($dir);
     }
 
-    throw new Exception('Nem könyvtár');
+    return true;
 }

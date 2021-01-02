@@ -87,7 +87,7 @@
                     <div class="col-md-4">
                         <div class="form-group required">
                             <label for="occasion_frequency">Alkalmak gyakorisága</label>
-                            <select class="form-control" name="occasion_frequency" required>
+                            <select class="form-control" id="occasion_frequency" name="occasion_frequency" required>
                                 @foreach($occasion_frequencies as $occasion_frequency)
                                 <option value="{{ $occasion_frequency->name }}" @if($group->occasion_frequency == $occasion_frequency->name) selected @endif>
                                     {{ $occasion_frequency }}
@@ -106,6 +106,16 @@
                                 </option>
                                 @endforeach
                             </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="on_days">Csatlakozási lehetőség módja <i class="fa fa-info-circle"
+                                 title="<b>Egyéni megbeszélés alapján:</b> Közösségvezetővel egyeztetve történik<br/><b>Folyamatos csatlakozási lehetőség:</b> Az év folyamán bármikor jöhetnek új tagok<br/><b>Időszakos csatlakozás:</b> pl.: Minden félév első hónapja, negyedévente stb"
+                                 data-html="true"></i></label>
+                            @join_mode_selector($group->join_mode)
                         </div>
                     </div>
                 </div>

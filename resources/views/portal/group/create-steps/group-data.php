@@ -7,7 +7,7 @@
 @endsection
 @extends('portal.group.create-steps.create-wrapper')
 @alert('warning')
-    <i class="fa fa-exclamation-triangle"></i> Fontos számunkra, hogy az oldalon valóban keresztény értékeket közvetítő közösségeket hirdessünk. Mielőtt kitöltenéd a regisztrációs űrlapot, kérjük, hogy mindenképp olvasd el az <a href="">irányelveinket</a>.
+    <i class="fa fa-exclamation-triangle"></i> Fontos számunkra, hogy az oldalon valóban keresztény értékeket közvetítő közösségeket hirdessünk. Mielőtt kitöltenéd a regisztrációs űrlapot, kérjük, hogy mindenképp olvasd el az <a href="/iranyelveink">irányelveinket</a>.
 @endalert
 <form method="post" id="group-form" enctype="multipart/form-data" action="@route('portal.my_group.create')">
     @if(!is_loggedin())
@@ -68,6 +68,16 @@
                 <div class="form-group">
                     <label for="on_days">Mely napo(ko)n</label>
                     @on_days_selector($group_days)
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="on_days">Csatlakozási lehetőség módja <i class="fa fa-info-circle"
+                        title="<b>Egyéni megbeszélés alapján:</b> Közösségvezetővel egyeztetve történik<br/><b>Folyamatos csatlakozási lehetőség:</b> Az év folyamán bármikor jöhetnek új tagok<br/><b>Időszakos csatlakozás:</b> pl.: Minden félév első hónapja, negyedévente stb"
+                        data-html="true"></i></label>
+                    @join_mode_selector($group->join_mode)
                 </div>
             </div>
         </div>
@@ -357,6 +367,5 @@
                 $("#group_leader_email").val($(this).val());
             }
         });
-
     });
 </script>

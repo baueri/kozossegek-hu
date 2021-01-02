@@ -8,6 +8,8 @@ use App\Models\Group;
 use App\Repositories\Groups;
 use App\Services\RebuildSearchEngine;
 use App\Storage\Base64Image;
+use Framework\Exception\FileTypeNotAllowedException;
+use Framework\File\Enums\FileType;
 use Framework\File\File;
 use Framework\File\FileManager;
 use Framework\Traits\ManagesErrors;
@@ -36,14 +38,11 @@ abstract class BaseGroupService
      */
     private FileManager $fileManager;
 
-    /**
-     *
-     * @param Groups $repository
-     * @param RebuildSearchEngine $searchEngineRebuilder
-     * @param FileManager $fileManager
-     */
-    public function __construct(Groups $repository, RebuildSearchEngine $searchEngineRebuilder, FileManager $fileManager)
-    {
+    public function __construct(
+        Groups $repository,
+        RebuildSearchEngine $searchEngineRebuilder,
+        FileManager $fileManager
+    ) {
         $this->repository = $repository;
         $this->searchEngineRebuilder = $searchEngineRebuilder;
         $this->fileManager = $fileManager;
@@ -89,11 +88,15 @@ abstract class BaseGroupService
             return null;
         }
 
+        $file = $file = File::createFromFormData($document);
+        if (!$file->mainTypeIs([FileType::DOCUMENT, FileType::PDF])) {
+            throw new FileTypeNotAllowedException();
+        }
+
         if ($group->hasDocument()) {
             $group->getDocument()->delete();
         }
 
-        $file = $file = File::createFromFormData($document);
         $extension = FileHelper::getExtension($document['name']);
 
         $success = $file->move(GroupHelper::getStoragePath($group->id), "igazolas.{$extension}");

@@ -121,6 +121,13 @@ class Group extends Model
      */
     public $institute;
 
+    /**
+     * Csatlakozás módja
+     *
+     * @var string
+     */
+    public $join_mode;
+
 
     /**
      * @return string

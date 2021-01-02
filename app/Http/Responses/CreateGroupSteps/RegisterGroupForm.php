@@ -43,7 +43,8 @@ class RegisterGroupForm extends AbstractGroupStep
             'institute_id',
             'spiritual_movement_id',
             'name',
-            'description'
+            'description',
+            'join_mode'
         );
         $institute = $this->institutes->find($data['institute_id']);
         $data['group_leaders'] = $request->get('group_leaders', $request['user_name']);

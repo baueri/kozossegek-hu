@@ -9,7 +9,8 @@
     "require": {
         "arrilot/dotenv-php": "^2.0",
         "phpmailer/phpmailer": "~6.1",
-        "robmorgan/phinx": "^0.12.4"
+        "robmorgan/phinx": "^0.12.4",
+        "google/apiclient": "^2.0"
     },
     "autoload": {
       "psr-4": {

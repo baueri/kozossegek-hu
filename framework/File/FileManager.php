@@ -3,6 +3,7 @@
 namespace Framework\File;
 
 use Exception;
+use Framework\Exception\FileTypeNotAllowedException;
 use Framework\File\Enums\FileType;
 
 class FileManager
@@ -67,20 +68,30 @@ class FileManager
      * Upload a file to the server
      *
      * @param array $fileData
-     * @param string $fileName
+     * @param null $fileName
+     * @param string $subDir
      * @return File
      * @throws Exception
      */
-    public function uploadFile(array $fileData, $fileName = null, $subDir = '')
+    public function uploadFileByFileData(array $fileData, $fileName = null, $subDir = '')
     {
         $file = new File($fileData['tmp_name']);
-        $file->setFileName($fileName ?: $fileData['name']);
+
+        return $this->uploadFile($file, $fileName ?: $fileData['name'], $subDir);
+    }
+
+    public function uploadFile(File $file, $fileName = '', $subDir = '')
+    {
         if ($this->createFolderIfMissing) {
             $this->createFolder($subDir);
         }
 
-        if (!$this->fileTypeEnabled($fileData['type'])) {
-            throw new Exception('File Type not allowed');
+        if ($fileName) {
+            $file->setFileName($fileName);
+        }
+
+        if (!$this->fileTypeEnabled($file->getFileType())) {
+            throw new FileTypeNotAllowedException();
         }
 
         return $file->move($this->rootPath . $subDir);
