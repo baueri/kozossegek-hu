@@ -1,0 +1,10 @@
+{
+    "name": "ivan/php_deploy",
+    "authors": [
+        {
+            "name": "Bauer Iván",
+            "email": "bauer.ivan@zengo.eu"
+        }
+    ],
+    "require": {}
+}
