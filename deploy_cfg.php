@@ -1,16 +1,21 @@
-<?php return [
+<?php
+
+return [
     'production' => [
         'host' => [
-            'domain' => 'ftp.nhely.hu',
-            'user' => 'user',
-            'password' => 'password'
+            'domain' => 'ftp.nethely.hu',
+            'user' => 'kozossegek_hu',
+            'password' => 'cheese90ny',
+            'cwd' => 'eles'
         ]
     ],
     'development' => [
         'host' => [
-            'domain' => 'ftp.nhely.hu',
-            'user' => 'user',
-            'password' => 'password'
+            'domain' => 'ftp.nethely.hu',
+            'port' => 22,
+            'user' => 'kozossegek_hu',
+            'password' => 'cheese90ny',
+            'cwd' => 'demo'
         ]
     ]
 ];

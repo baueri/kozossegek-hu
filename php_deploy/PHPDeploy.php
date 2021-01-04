@@ -1,39 +1,48 @@
 <?php
 
-include "FtpDeploy.php";
+include "SFtpDeploy.php";
 
-class PHPDeploy {
+class PHPDeploy
+{
 
-    private $env;
+    private string $env;
 
-    private $runnables = [
-        'ftp:touch' => ['ftp', 'touch']
+    private array $runnables = [
+        'sftp:touch' => ['sftp', 'touch']
     ];
 
-    private $tasks = [];
+    private array $tasks = [];
 
-    private $mode = 'verbose';
+    private string $mode = 'verbose';
 
     private $configuration = [];
 
-    private $ftp;
+    private SFtpDeploy $sftp;
 
-    public function __construct($env, $cwd = null) {
+    public function __construct(string $env, ?string $cwd = null)
+    {
         if ($cwd) {
             chdir($cwd);
         }
+
         $this->env = $env;
         $this->configuration = (include "deploy_cfg.php")[$env];
         if ($this->configuration['host']) {
-            $this->ftp = new FtpDeploy($this->configuration['host']);
+            $this->sftp = new SFtpDeploy($this->configuration['host']);
         }
     }
 
-    public function task($name, $callback = null, $args = null) {
+    public function task($name, $callback = null, $args = null)
+    {
         $this->tasks[$name] = [$callback, $args];
         return $this;
     }
 
+    /**
+     * @param string $mode
+     * @return bool
+     * @throws Throwable
+     */
     public function run($mode = 'verbose')
     {
         $this->mode = $mode;
@@ -49,7 +58,7 @@ class PHPDeploy {
                 } else {
                     $this->print_done();
                 }
-            } catch(\Throwable $e) {
+            } catch (\Throwable|\Error $e) {
                 $this->error("see error below\n\n" . static::color("↓↓↓↓↓↓↓↓↓↓", "1;31"));
                 throw $e;
             }
@@ -58,7 +67,8 @@ class PHPDeploy {
         return true;
     }
 
-    private function runTask($name, $task, $args = null) {
+    private function runTask($name, $task, $args = null)
+    {
 
         if (!$task) {
             exec($name, $output, $return);
@@ -66,7 +76,6 @@ class PHPDeploy {
         }
 
         if (is_string($task)) {
-
             if (isset($this->runnables[$task])) {
                 $task = $this->runnables[$task];
                 return call_user_func([$this->{$task[0]}, $task[1]], $args);
@@ -87,26 +96,31 @@ class PHPDeploy {
         }
     }
 
-    private function error($msg = '') {
+    private function error($msg = '')
+    {
         $msg = $msg ? ": $msg" : '';
         print(static::color("×", "0;31") . " task failed{$msg}\n\n");
     }
 
-    private function print_done() {
+    private function print_done()
+    {
         print(static::color("✔", "0;32") . " task done\n\n");
     }
 
-    private static function color($text, $color) {
+    private static function color($text, $color)
+    {
         return "\033[{$color}m{$text}\033[0m";
     }
 
-    public function log($message) {
+    public function log($message)
+    {
         if ($this->mode === 'verbose') {
             print("{$message}\n");
         }
     }
 }
 
-function php_deploy($env, $cwd = null) {
+function php_deploy($env, $cwd = null)
+{
     return new PHPDeploy($env, $cwd);
 }

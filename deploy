@@ -1,9 +1,14 @@
+#!/usr/bin/php
 <?php
 
-include "../php_deploy/PHPDeploy.php";
+global $argv;
 
-php_deploy('production')
-->task('composer install')
-->task('running migration', 'composer migrate')
-->task('maintenance on', 'ftp:touch', 'maintenance')
+include "php_deploy/PHPDeploy.php";
+
+$env = isset($argv[1]) ? $argv[1] : die("Nincs megadva a környezet\n\n");
+
+php_deploy($env)
+->task('installing composer dependencies...', 'composer install')
+->task('running migrations', 'composer migrate')
+->task('turn maintenance on', 'sftp:touch', 'maintenance')
 ->run();
