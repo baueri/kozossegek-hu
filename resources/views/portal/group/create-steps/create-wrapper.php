@@ -1,26 +1,12 @@
 @section('header_content')
-    @featuredTitle('Közösséget hirdetek')
+    @featuredTitle('Új közösség regisztrálása')
 @endsection
 @extends('portal')
-<div class="container p-4">
-    <div class="row mt-5 mb-5" id="steps">
-        <div class="col-md-4 text-center step {{ $step == 1 ? 'active' : '' }}">
-            <span class="step-number">1</span>
-            <span class="step-text">Felhasználói adatok</span>
-        </div>
-        <div class="col-md-4 text-center step {{ $step == 2 ? 'active' : '' }}">
-            <span class="step-number">2</span>
-            <span class="step-text">Közösség adatainak megadása</span>
-        </div>
-        <div class="col-md-4 text-center step {{ $step == 3 ? 'active' : '' }}">
-            <span class="step-number">3</span>
-            <span class="step-text">Regisztráció befejezése</span>
-        </div>
-    </div>
-    <div class="jumbotron">
+<div class="container p-4" id="create-group">
+    @message()
+    <div>
         @yield('portal.group.create-steps.create-wrapper')
     </div>
-    
 </div>
 <style>
     #steps {
@@ -52,18 +38,18 @@
         line-height: 50px;
         font-size: 1.5rem;
     }
-    
+
     .step:not(.active) .step-number {
         filter: grayscale(.6);
     }
-    
+
     .step.active .step-number{
         background: #1c3c4b;
         box-shadow: 0 0 4px #000;
     }
-    
+
     .step.active .step-text{
         color: #000;
     }
-    
+
 </style>

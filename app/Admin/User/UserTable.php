@@ -36,7 +36,7 @@ class UserTable extends AdminTable implements Deletable, Editable
     {
         return route('admin.user.delete', $model);
     }
-    
+
     protected function getDelete($t, $model) {
         return parent::getDelete($t, $model, 'törlés');
     }

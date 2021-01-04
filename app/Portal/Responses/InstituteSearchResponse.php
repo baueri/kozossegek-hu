@@ -16,7 +16,8 @@ class InstituteSearchResponse extends Select2Response
      */
     public function getText($institute)
     {
-        return $institute->name . ' (' . $institute->city . ')';
+        $cityAndDistrict = $institute->city . ($institute->district ? ", $institute->district" : '');
+        return "{$institute->name} ({$cityAndDistrict})";
     }
     
     public function getId($model) {

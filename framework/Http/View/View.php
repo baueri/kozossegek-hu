@@ -41,11 +41,11 @@ class View implements ViewInterface
     /**
      * @param string $view
      * @param array $args
+     * @param array $additional_args
      * @return string
      * @throws ViewNotFoundException
-     * @throws Exception
      */
-    public function view($view, array $args = [])
+    public function view($view, array $args = [], array $additional_args = [])
     {
         $filePath = $this->getPath($view);
 
@@ -55,7 +55,7 @@ class View implements ViewInterface
 
         EventDisptatcher::dispatch(new ViewLoaded($filePath));
 
-        return $this->getContentAndDoCache($filePath, $args);
+        return $this->getContentAndDoCache($filePath, array_merge($additional_args, $args));
     }
 
     /**
@@ -63,12 +63,12 @@ class View implements ViewInterface
      * @return string
      *
      */
-    protected function getPath(string $view): string
+    public function getPath(string $view): string
     {
         $viewPath = str_replace('.', DS, $view);
 
         if (strpos($view, '::') !== false) {
-            list($dirPath, $viewPath) = explode('::', $viewPath);
+            [$dirPath, $viewPath] = explode('::', $viewPath);
             $dirPath = APP . $dirPath . DS . 'Views' . DS;
 
         } else {

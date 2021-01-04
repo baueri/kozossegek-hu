@@ -80,7 +80,7 @@
                 </div>
             </div>
             <div class="form-group required">
-                <label for="description">Leírás</label>
+                <label for="description">Bemutatkozás</label>
                 <textarea name="description" id="description" required>{{ $group->description }}</textarea>
             </div>
             <div class="row group-images">
@@ -163,14 +163,25 @@
                     @endforeach
                 </select>
             </div>
-            <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Mentés</button>
-            @if($group->exists())
-                @if(!$group->deleted_at)
-                    <a href="#" onclick="deleteConfirm(() => { window.location.href = '@route("admin.group.delete", $group)' });" class="btn btn-danger"><i class="fa fa-trash"></i> törlés</a>
-                @else
-                    <a href="@route('admin.group.restore', $group)" class="btn btn-warning"><i class="fa fa-sync"></i> visszaállítás</a>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Mentés</button>
+                @if($group->exists())
+                    @if(!$group->deleted_at)
+                        <a href="#" onclick="deleteConfirm(() => { window.location.href = '@route("admin.group.delete", $group)' });" class="btn btn-danger"><i class="fa fa-trash"></i> törlés</a>
+                    @else
+                        <a href="@route('admin.group.restore', $group)" class="btn btn-warning"><i class="fa fa-sync"></i> visszaállítás</a>
+                    @endif
                 @endif
-            @endif
+            </div>
+            <div class="form-group">
+                <label>Felöltött igazolás</label><br/>
+                @if($group->exists() && $group->hasDocument())
+                    <p><a href="{{ $group->getDocumentUrl() }}"><i class="fa fa-download" download></i> Igazolás letöltése: {{ $group->document }}</a></p>
+                @else
+                    @alert('warning') nincs igazolás @endalert
+                @endif
+            </div>
+
         </div>
     </div>
 </form>

@@ -3,6 +3,7 @@
 namespace Framework\Mail;
 
 use Framework\Traits\Makeable;
+use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 
 class Mailer
@@ -12,11 +13,8 @@ class Mailer
     /**
      * @var PHPMailer
      */
-    private $phpMailer;
+    private PHPMailer $phpMailer;
 
-    /**
-     * @param PHPMailer $phpMailer
-     */
     public function __construct()
     {
         $phpMailer = new PHPMailer(true);
@@ -32,6 +30,11 @@ class Mailer
         $this->phpMailer = $phpMailer;
     }
 
+    /**
+     * @param string $to
+     * @return $this
+     * @throws Exception
+     */
     public function to(string $to)
     {
         $this->phpMailer->addAddress($to);
@@ -39,6 +42,10 @@ class Mailer
         return $this;
     }
 
+    /**
+     * @param Mailable $mailable
+     * @throws Exception
+     */
     public function send(Mailable $mailable)
     {
         if ($mailable->from) {

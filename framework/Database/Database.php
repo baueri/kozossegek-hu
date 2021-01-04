@@ -1,8 +1,9 @@
 <?php
 
-
 namespace Framework\Database;
 
+use Closure;
+use Exception;
 
 interface Database
 {
@@ -12,7 +13,7 @@ interface Database
      * @param mixed ...$bindings
      * @return ResultSet
      */
-    public function execute($query, ...$bindings): ResultSet;
+    public function execute(string $query, ...$bindings): ResultSet;
 
     /**
      *
@@ -33,7 +34,7 @@ interface Database
 
     public function insert($query, $params = []): int;
 
-    public function exists($query, $params = []) :bool;
+    public function exists($query, $params = []): bool;
 
     public function delete($query, $params = []);
 
@@ -41,4 +42,16 @@ interface Database
 
     public function lastInsertId(): ?int;
 
+    public function beginTransaction(): bool;
+
+    public function commit(): bool;
+
+    public function rollback(): bool;
+
+    /**
+     * @param Closure $callback
+     * @return mixed
+     * @throws Exception
+     */
+    public function transaction(Closure $callback);
 }

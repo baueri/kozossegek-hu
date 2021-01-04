@@ -7,7 +7,6 @@ use App\Repositories\AgeGroups;
 use App\Repositories\Cities;
 use App\Repositories\GroupStatusRepository;
 use App\Repositories\OccasionFrequencies;
-
 use App\Enums\GroupStatusEnum;
 use Framework\Http\Request;
 use ReflectionException;
@@ -19,31 +18,30 @@ use ReflectionException;
  */
 class ListGroups
 {
-
     /**
      * @var OccasionFrequencies
      */
-    private $OccasionFrequencies;
+    private OccasionFrequencies $OccasionFrequencies;
 
     /**
      * @var AgeGroups
      */
-    private $AgeGroups;
+    private AgeGroups $AgeGroups;
 
     /**
      * @var GroupTable
      */
-    private $table;
+    private GroupTable $table;
 
     /**
      * @var Cities
      */
-    private $Cities;
+    private Cities $cities;
 
     /**
      * @var Request
      */
-    private $request;
+    private Request $request;
 
     /**
      * @param Request $request
@@ -52,13 +50,17 @@ class ListGroups
      * @param OccasionFrequencies $OccasionFrequencies
      * @param Cities $Cities
      */
-    public function __construct(Request $request, GroupTable $table, AgeGroups $AgeGroups,
-                    OccasionFrequencies $OccasionFrequencies, Cities $Cities)
-    {
+    public function __construct(
+        Request $request,
+        GroupTable $table,
+        AgeGroups $AgeGroups,
+        OccasionFrequencies $OccasionFrequencies,
+        Cities $Cities
+    ) {
         $this->table = $table;
         $this->AgeGroups = $AgeGroups;
         $this->OccasionFrequencies = $OccasionFrequencies;
-        $this->Cities = $Cities;
+        $this->cities = $Cities;
         $this->request = $request;
     }
 
@@ -72,7 +74,7 @@ class ListGroups
         $occasion_frequencies = $this->OccasionFrequencies->all();
         $statuses = (new GroupStatusRepository())->all();
 
-        if($institute_id = $this->request['institute_id']) {
+        if ($institute_id = $this->request['institute_id']) {
             $institute = db()->fetchColumn("select name from institutes where id=?", [$institute_id]);
         }
 
@@ -81,8 +83,16 @@ class ListGroups
         $current_page = $this->getCurrentPage();
         $pending_groups = builder()->from('groups')->where('pending', 1)->notDeleted()->count();
 
-        return view('admin.group.list', compact('table', 'age_groups', 'occasion_frequencies', 'statuses',
-            'institute', 'filter', 'current_page', 'pending_groups'));
+        return view('admin.group.list', compact(
+            'table',
+            'age_groups',
+            'occasion_frequencies',
+            'statuses',
+            'institute',
+            'filter',
+            'current_page',
+            'pending_groups'
+        ));
     }
 
     private function getCurrentPage()
@@ -90,13 +100,11 @@ class ListGroups
         if ($this->request->route->getAs() == 'admin.group.trash') {
             return 'trash';
         }
-        
+
         if ($this->request['pending']) {
             return 'pending';
         }
 
         return $this->request['status'] ?: 'all';
-
     }
-
 }

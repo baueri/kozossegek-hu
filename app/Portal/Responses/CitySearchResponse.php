@@ -7,10 +7,9 @@ namespace App\Portal\Responses;
  *
  * @author ivan
  */
-class CitySearchResponse extends Select2Response {
-    //put your code here
+class CitySearchResponse extends Select2Response
+{
     public function getText($model) {
         return $model['city'];
     }
-
 }

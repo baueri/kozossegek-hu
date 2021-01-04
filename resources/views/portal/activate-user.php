@@ -3,7 +3,7 @@
 @endsection
 @extends('portal')
 <div class="container inner">
-    @include('admin.partials.message')
+    @message()
     <form method="post" class="row">
         <div class="col-md-4">
             <div class="form-group">

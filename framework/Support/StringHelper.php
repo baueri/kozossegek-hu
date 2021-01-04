@@ -29,13 +29,12 @@ class StringHelper
     }
 
     /**
-     *
      * @param string $text
      * @param int $numberOfCharacters
      * @param string $moreText
      * @return string
      */
-    public static function shorten($text, $numberOfCharacters, $moreText = '')
+    public static function shorten(string $text, int $numberOfCharacters, $moreText = '')
     {
         if (strlen($text) <= $numberOfCharacters) {
             return $text;
@@ -93,16 +92,15 @@ class StringHelper
 
         return $text;
     }
-    
+
     /**
-     * 
+     *
      * @param string $string
      * @return string
      */
     public static function convertSpecialChars($string)
     {
         return preg_replace("/&([a-z])[a-z]+;/i", "$1", iconv('utf-8', 'us-ascii//TRANSLIT', $string));
-
     }
 
     /**

@@ -76,9 +76,14 @@ abstract class Model
      * @param static $model
      * @return bool
      */
-    public function is($model)
+    public function is($model): bool
     {
         return $model instanceof $this && $this->getId() == $model->getId();
+    }
+
+    public function isDeleted(): bool
+    {
+        return property_exists($this, 'deleted_at') && (bool) $this->deleted_at;
     }
 
     /**

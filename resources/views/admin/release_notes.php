@@ -1,9 +1,38 @@
 @title('Verzióinformáció')
 @extends('admin')
 
+<h3>v0.3 pre-alpha</h3>
+<ul>
+    <li>[NEW]: Az admin oldali vizuális szerkesztő panelbe bekerült a youtube videó beágyazási lehetőség is</li>
+    <li>[NEW]: Admin oldalon az intézmények listázását kicsit átalalkítottam (előnézeti kép bekerült, plusz néhány oszlop szövege le lett vágva)</li>
+    <li>[NEW]: Admin oldalon a közösségek listája bővült plusz infókkal
+        <ul>
+            <li>Fénykép bélyeg</li>
+            <li>Közösség adatlap megtekintése felhasználói oldalon (szem ikon)</li>
+            <li>Jóváhagyva oszlopban a szöveg helyett ikon</li>
+            <li>van-e feltöltött igazolás (word doksi ikon) a közösséghez</li>
+        </ul>
+    </li>
+    <li>[NEW]: Admin felületen az email-ek szövegét most már lehet szerkeszteni
+        <ul>
+            <li>+1 a listába leírás is került, hogy tudjuk, hogy melyik levelet mikor küldjük ki</li>
+        </ul>
+    </li>
+    <li>[NEW]: Háló közösség logója bekerült a láblécbe</li>
+    <li>[NEW]: Látogatói oldalon a közösség regisztrációs felület elkészült</li>
+    <li>[NEW]: Látogatói oldalon egy felhasználó több közösséget is beregisztrálhat</li>
+    <li>[NEW]: Látogatói oldalon a közösség jellemzők ikonjainak cseréje, a keresődobozban ikonok levétele</li>
+    <li>[CHANGED]: Egy-két kép le lett cserélve a látogatói oldalon</li>
+    <li>[CHANGED]: 'Közösséget vezetek. Hogyan tudom itt hirdetni?' főoldali szekcióban lecseréltem a drive-os linket a 'Közösséget vezetek' oldalra mutató linkre</li>
+    <li>[CHANGED]: 'Mire jó egy keresztény közösség?' című főoldali szekció widget-be került</li>
+    <li>[FIXED]: Lábléc linkek javításra kerültek</li>
+    <li>[FIXED]: Folyamatos keretrendszer javítás, fejlesztés</li>
+</ul>
+
 <h3>v0.2 pre-alpha</h3>
 <ul>
     <li>[NEW]: Intézmény importálás (szinkronizálás)</li>
+    <li>[NEW]: Fájfeltöltés, képbeszúrás cikkbe</li>
     <li>[CHANGED]: 'Város' szöveget lecseréltem 'település'-re</li>
     <li>[FIXED]: 500-as hiba, ha olyan kulcsszavakra keresünk, amik közül egyik se címke</li>
     <li>[FIXED]: Közösség admin oldalon is kötelezővé tettem azokat a mezőket, amik az adatbázisban nem lehetnek érték nélküliek</li>

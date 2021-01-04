@@ -2,32 +2,40 @@
 
 namespace App\Admin\Group\Services;
 
-/**
- * Description of DeleteGroup
- *
- * @author ivan
- */
-class DeleteGroup {
+use App\Helpers\GroupHelper;
+use App\Repositories\Groups;
+use Framework\Http\Message;
+use Framework\Model\ModelNotFoundException;
+
+class DeleteGroup
+{
 
     /**
-     * @var \App\Repositories\Groups
+     * @var Groups
      */
-    private $repository;
+    private Groups $repository;
 
     /**
-     * 
-     * @param \App\Repositories\Groups $repository
+     *
+     * @param Groups $repository
      */
-    public function __construct(\App\Repositories\Groups $repository) {
+    public function __construct(Groups $repository)
+    {
         $this->repository = $repository;
     }
-    
-    public function delete($groupId)    
+
+    /**
+     * @param $groupId
+     * @throws ModelNotFoundException
+     */
+    public function delete($groupId)
     {
         $group = $this->repository->findOrFail($groupId);
-        
+
         $this->repository->delete($group);
-        
-        \Framework\Http\Message::warning('Közösség lomtárba helyezve.');
+
+        rrmdir(GroupHelper::getStoragePath($groupId));
+
+        Message::warning('Közösség lomtárba helyezve.');
     }
 }

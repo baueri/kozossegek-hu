@@ -48,23 +48,22 @@
             <a href="https://777blog.hu/2016/09/20/5-erv-hogy-elkezdj-kozossegbe-jarni/" target="_blank" class="btn btn-darkblue">A közösségről</a>
         </div>
         <div class="col-md-6">
-            <img src="/images/kez.jpg" alt="">
+            <img src="/images/people.jpg" alt="">
         </div>
     </div>
     </div>
 </div>
 <div class="container main-block">
     <div class="row">
-        <div class="col-md-7">
-            <img src="/images/group_illustration1_alt.png">
+        <div class="col-md-6">
+            <img src="/images/microphone.jpg">
         </div>
-        <div class="col-md-5 align-middle h-100">
+        <div class="col-md-6 align-middle h-100">
             @widget('KOZVEZ')
+            <p class="text-center"><a href="@route('portal.register_group')" class="btn btn-darkblue">Közösséget vezetek</a></p>
         </div>
     </div>
 </div>
 <div class="container main-block text-center">
-    <h3>Mire jó egy keresztény közösség?</h3>
-    <p style="max-width: 560px; margin: auto;" class="mt-3 mb-3">Ide jöhet szöveg arról, hogy nézzék meg a shoeshine tv által rendezett 'kerekasztal beszélgetést' arról, hogy miben segít az, ha közösséghez tartozunk.</p>
-    <iframe height="400" src="https://www.youtube-nocookie.com/embed/aqqz1mbeGTU" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width: 100%; max-width: 720px;"></iframe>
+    @widget('FOOLDAL_VIDEO')
 </div>

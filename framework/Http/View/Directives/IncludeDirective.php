@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Framework\Http\View\Directives;
-
 
 class IncludeDirective implements Directive
 {
@@ -18,8 +16,7 @@ class IncludeDirective implements Directive
     public function getReplacement(array $matches)
     {
         $arguments = $matches[1];
-        preg_match('/[\'\"], (.*)/', $arguments, $moreParams);
-        /* return '<?php echo $__env->view( ' . $matches[1] . ', array_merge($args' . ($moreParams ? ', ' . $moreParams[1] : '') . ')); ?>';*/
+        preg_match('/[\'\"], (.*)/', $arguments);
         return '<?php echo $__env->view( ' . $matches[1] . ', $args); ?>';
     }
 }

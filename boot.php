@@ -14,7 +14,7 @@ use Framework\Http\View\View;
 use Framework\Http\View\ViewInterface;
 use Framework\Support\Config\Config;
 
-if(!defined('DS')) {
+if (!defined('DS')) {
     define('DS', DIRECTORY_SEPARATOR);
 }
 
@@ -23,7 +23,7 @@ define('APP', ROOT . 'app' . DS);
 define('RESOURCES', ROOT . 'resources' . DS);
 define('CACHE', ROOT . 'cache' . DS);
 define('LANG', 'hu');
-define('APP_VERSION', 'v0.2 pre-alpha');
+define('APP_VERSION', 'v0.3 pre-alpha');
 define('STORAGE_PATH', ROOT . 'storage' . DS);
 
 include 'vendor/autoload.php';
@@ -43,7 +43,8 @@ $application->singleton(Config::class);
 $application->singleton(RouterInterface::class, XmlRouter::class);
 $application->singleton(Database::class, function (Application $app) {
     $settings = $app->config('db');
-    $databaseConfiguration = $app->make(DatabaseConfiguration::class,
+    $databaseConfiguration = $app->make(
+        DatabaseConfiguration::class,
         $settings['host'],
         $settings['user'],
         $settings['password'],
@@ -58,3 +59,4 @@ $application->boot(RegisterTitleDirective::class);
 $application->singleton(App\Repositories\Widgets::class);
 
 include APP . 'macros.php';
+

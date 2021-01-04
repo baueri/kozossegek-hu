@@ -142,4 +142,9 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
     {
         return $_SERVER['REQUEST_METHOD'] == 'POST';
     }
+
+    public function collect()
+    {
+        return $this->request->collect();
+    }
 }

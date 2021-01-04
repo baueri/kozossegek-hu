@@ -43,9 +43,6 @@ class HttpKernel extends \Framework\Http\HttpKernel
             $mailer->to(config('app.error_email'))->send($mail);
         }
 
-        $content = "<pre style='white-space:pre-line'><h3>Unexpected error (" . get_class($error) . ")</h3> {$error->getMessage()} in <b>{$error->getFile()}</b> on line <b>{$error->getLine()}</b> \n\n {$error->getTraceAsString()}</pre>";
-        debugbar()->tab(ErrorTab::class)->pushError($content);
-
         parent::handleError($error);
     }
 }

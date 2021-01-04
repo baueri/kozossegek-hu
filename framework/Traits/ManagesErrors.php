@@ -9,9 +9,9 @@ use Framework\Support\Collection;
 trait ManagesErrors
 {
     /**
-     * @var Collection
+     * @var Collection|null
      */
-    protected $errors;
+    protected ?Collection $errors = null;
 
     /**
      * ManagesErrors constructor.
@@ -27,7 +27,7 @@ trait ManagesErrors
 
     public function hasErrors()
     {
-        return $this->get()->isEmpty();
+        return $this->get()->isNotEmpty();
     }
 
     public function getErrors()
@@ -40,8 +40,13 @@ trait ManagesErrors
         return $this->get()->next();
     }
 
-    public function pushError($error, $key = null)
+    public function setError($error, $key = null)
     {
         $this->get()->set($key, $error);
+    }
+
+    public function pushError($error, $key = null)
+    {
+        $this->get()->push($error, $key);
     }
 }

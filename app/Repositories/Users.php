@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Repositories;
-
 
 use App\Models\User;
 use Framework\Repository;
@@ -29,7 +27,7 @@ class Users extends Repository
     }
 
     /**
-     * 
+     *
      * @param array $filter
      * @param int $limit
      * @return User[]|\Framework\Model\PaginatedModelCollection
@@ -80,19 +78,21 @@ class Users extends Repository
 
         return $this->getInstances($rows);
     }
-    
+
     /**
-     * @param string $email
+     * @param string|null $email
      * @return User
      */
-    public function getUserByEmail($email)
+    public function getUserByEmail(?string $email)
     {
-        $row = $this->getBuilder()->where('email', $email)->notDeleted()->first();
-        
+        $row = $this->getBuilder()
+            ->where('email', $email)
+            ->apply('notDeleted')->first();
+
         if ($row) {
             return $this->getInstance($row);
         }
-       
+
         return null;
     }
 
