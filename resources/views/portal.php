@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="/css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-    
+
 
     @if(is_prod())
         <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -35,7 +35,7 @@
     @endif
 </head>
 <body class="@if(!is_prod())demo@endif">
-    <div class="home">
+    <div class="home" style="background:url('{{ $header_background ?? '/images/img2.jpg' }}') no-repeat top center">
         <nav id="header" class="navbar navbar-expand-sm fixed-top">
             <div class="container">
                 <a href="/" class="navbar-brand ml-4 ml-sm-0 mt-0 mb-0 p-0 p-sm-1">
@@ -49,7 +49,7 @@
                     </li>
                     @if(!\App\Auth\Auth::loggedIn())
                         <li class="nav-item">
-                            <a href="@route('portal.register_group')" class="nav-link"><span>Közösséget hirdetek</span></a>
+                            <a href="@route('portal.register_group')" class="nav-link"><span>Közösséget vezetek</span></a>
                         </li>
                     @endif
                     <li class="nav-item">
@@ -102,9 +102,9 @@
                 </div>
                 <div class="col-md-4 col-sm-6 col-xs-12">
                     <ul class="navbar-nav">
-                        <li class="nav-item"><a href="" class="nav-link">Rólunk</a></li>
+                        <li class="nav-item"><a href="@route('portal.page', 'rolunk')" class="nav-link">Rólunk</a></li>
                         <!--<li class="nav-item"><a href="@route('portal.feedback')" class="nav-link">Visszajelzés küldése</a></li>-->
-                        <li class="nav-item"><a href="@route('portal.page', 'adatkezelesi-tajekoztato')" class="nav-link">Adatkezelési tájékoztató</a></li>
+                        <li class="nav-item"><a href="@route('portal.page', 'adatvedelmi-nyilatkozat')" class="nav-link">Adatvédelmi nyilatkozat</a></li>
                         <li class="nav-item"><a href="@route('portal.page', 'impresszum')" class="nav-link">Impresszum</a></li>
                     </ul>
                 </div>

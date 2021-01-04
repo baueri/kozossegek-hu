@@ -20,6 +20,7 @@
 
     @yield('header')
     <link rel="stylesheet" href="/css/admin.css">
+    <script src="/js/dialog.js"></script>
     <script src="/js/admin.js"></script>
     <script src="/assets/sidebar-09/js/main.js"></script>
 

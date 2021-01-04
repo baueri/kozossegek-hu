@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Portal\Responses;
+use Framework\Model\ModelCollection;
+
 /**
  * Description of Select2Response
  *
@@ -9,7 +11,7 @@ namespace App\Portal\Responses;
 abstract class Select2Response {
 
     /**
-     * @var \Framework\Model\ModelCollection
+     * @var ModelCollection
      */
     private $collection;
 

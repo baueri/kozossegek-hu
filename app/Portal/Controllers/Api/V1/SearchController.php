@@ -36,6 +36,7 @@ class SearchController
     /**
      *
      * @param Cities $repository
+     * @return CitySearchResponse
      */
     public function searchCity(Cities $repository)
     {

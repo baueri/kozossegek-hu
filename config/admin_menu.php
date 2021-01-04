@@ -104,7 +104,7 @@ return [
     ],
 
     [
-        'title' => 'Email sablon',
+        'title' => 'Email sablonok',
         'icon' => 'envelope',
         'as' => 'admin.email_template.list',
     ],

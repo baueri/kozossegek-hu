@@ -9,9 +9,11 @@ use Framework\Database\Builder;
 use Framework\Database\Database;
 use Framework\Dispatcher\Dispatcher;
 use Framework\Dispatcher\HttpDispatcher;
+use Framework\Http\Request;
 use Framework\Http\Response;
 use Framework\Http\Route\RouteInterface;
 use Framework\Http\Route\RouterInterface;
+use Framework\Http\View\View;
 use Framework\Http\View\ViewInterface;
 use Framework\Support\Collection;
 use Framework\Translator;
@@ -115,9 +117,10 @@ function db($connection = null)
 }
 
 /**
+ * @param string|null $table
  * @return Builder
  */
-function builder($table = null)
+function builder(?string $table = null)
 {
     return app()->make(Builder::class)->table($table);
 }
@@ -135,7 +138,7 @@ function route($route, $args = [])
 /**
  * @var string $uri
  */
-function redirect($uri)
+function redirect(string $uri)
 {
     header("Location: $uri");
     exit;
@@ -145,7 +148,7 @@ function redirect($uri)
  * @param string $route
  * @param array $args
  */
-function redirect_route($route, $args = [])
+function redirect_route(string $route, $args = [])
 {
     redirect(route($route, $args));
 }
@@ -154,7 +157,7 @@ function redirect_route($route, $args = [])
  * @param $values
  * @return Collection
  */
-function collect($values = [])
+function collect(?array $values = [])
 {
     return Collection::create($values);
 }
@@ -175,13 +178,17 @@ function _env($key, $default = null)
 }
 
 /**
- * @param string $view
+ * @param string|null $view
  * @param array $args
- * @return string
+ * @return string|View
  */
-function view($view, array $args = [])
+function view(string $view = null, array $args = [])
 {
-    return app()->make(ViewInterface::class)->view($view, $args);
+    if ($view) {
+        return app()->make(ViewInterface::class)->view($view, $args);
+    }
+
+    return app()->make(ViewInterface::class);
 }
 
 /**
@@ -240,7 +247,7 @@ function image_with_watermark($imgPath)
     imagejpeg($img);
 
     $mime_type = mime_content_type($imgPath);
-    header('Content-Type: '.$mime_type);
+    header("Content-Type: {$mime_type}");
 }
 
 function widget($uniqid)
@@ -264,10 +271,11 @@ function debugbar()
 
 function is_home()
 {
-    return !trim(app()->get(\Framework\Http\Request::class)->uri, '/');
+    return !trim(app()->get(Request::class)->uri, '/');
 }
 
-function is_admin() {
+function is_admin()
+{
     return in_array(AdminMiddleware::class, current_route()->getMiddleware());
 }
 
@@ -276,4 +284,49 @@ function mb_ucfirst($string, $encoding = 'utf-8')
     $firstChar = mb_substr($string, 0, 1, $encoding);
     $then = mb_substr($string, 1, null, $encoding);
     return mb_strtoupper($firstChar, $encoding) . $then;
+}
+
+function raise_error(int $code, string $message, string $message2)
+{
+    echo view('portal.error', compact('code', 'message', 'message2'));
+    exit();
+}
+
+function raise_500(string $message = '', string $message2 = 'Nincs jogosultsága az oldal megtekintéséhez')
+{
+    raise_error(500, $message, $message2);
+}
+
+function raise_404($message = 'A keresett oldal nem található', $message2 = '<i class="text-muted">De ne adjátok fel, keressetek és előbb vagy utóbb találtok ;-)</i>')
+{
+    raise_error(404, $message, $message2);
+}
+
+function raise_403($message = '', $message2 = 'Nincs jogosultsága a tartalom megtekintéséhez!')
+{
+    raise_error(403, $message, $message2);
+}
+
+function is_loggedin()
+{
+    return \App\Auth\Auth::loggedIn();
+}
+
+function rrmdir($dir)
+{
+    if (is_dir($dir)) {
+        $objects = scandir($dir);
+        foreach ($objects as $object) {
+            if ($object != "." && $object != "..") {
+                if (is_dir($dir . DS . $object) && !is_link($dir . "/" . $object)) {
+                    rrmdir($dir . DS . $object);
+                } else {
+                    unlink($dir . DS . $object);
+                }
+            }
+        }
+        return rmdir($dir);
+    }
+
+    throw new Exception('Nem könyvtár');
 }

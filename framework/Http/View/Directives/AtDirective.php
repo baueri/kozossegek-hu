@@ -13,7 +13,7 @@ abstract class AtDirective implements Directive
      */
     public function getPattern()
     {
-        return '/@' . $this->getName() . '\(\s*([^\)]+?)\s*\)|@end' . $this->getName() . '/';
+        return '/@' . $this->getName() . '\(?\s*([^\)]+?)\s*\)|@end' . $this->getName() . '/';
     }
 
 

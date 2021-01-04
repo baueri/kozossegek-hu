@@ -37,9 +37,9 @@
         <div class="form-group">
             <label>Fénykép</label>
             <div class="institute-image">
-                <img src="{{ $institute->hasImage() ? $institute->getImageRelPath() : '' }}" id="image" width="300">
+                <img src="{{ $institute->hasImage() ? $institute->getImageRelPath() . '?' . time() : '' }}" id="image" width="300">
             </div>
-            <input type="file" onchange="loadFile(event, this);" data-target="temp-image">
+            <input type="file" onchange="loadFile(e, this);" data-target="temp-image">
             <div style="display: none"/><img id="temp-image" /></div>
             <input type="hidden" name="image">
         </div>

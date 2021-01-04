@@ -1,8 +1,8 @@
 <?php
 
-
 namespace App\Admin\Components\DebugBar;
 
+use Framework\Support\StringHelper;
 
 class DebugBar
 {
@@ -11,12 +11,11 @@ class DebugBar
      */
     private $tabs = [];
 
-    public function __construct(QueryHistoryTab $queryHistoryTab, ErrorTab $errorTab, LoadedViewsTab $loadedViewsTab)
+    public function __construct(QueryHistoryTab $queryHistoryTab, LoadedViewsTab $loadedViewsTab)
     {
         $this->tabs = [
             $queryHistoryTab,
             $loadedViewsTab,
-            $errorTab,
         ];
     }
 
@@ -45,7 +44,6 @@ class DebugBar
             $tab_contents[$name] = $tab->render();
         }
 
-        return view('admin.partials.debugbar', compact('headers', 'tab_contents'));
+        return StringHelper::sanitize(view('admin.partials.debugbar', compact('headers', 'tab_contents')));
     }
-
 }

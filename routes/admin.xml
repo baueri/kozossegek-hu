@@ -21,7 +21,7 @@
             <route method="post" uri="{id}/update" use="update" as="update"/>
             <route method="get" uri="{id}/delete" use="delete" as="delete"/>
         </route-group>
-        
+
         <route-group prefix="content/uploads" controller="ContentUploadController" as="content.upload">
             <route method="get" uri="" use="list" as="list"/>
             <route method="post" uri="upload-file" use="uploadFile" as="upload_file"/>
@@ -32,7 +32,7 @@
             <route method="post" uri="generate-slug" use="generateSlug" as="generate_slug"/>
             <route method="post" uri="summernote-upload" />
         </route-group>
-        
+
         <route method="post" uri="api/uploads/get" controller="Api\UploadController" use="getUploads" />
 
 
@@ -49,7 +49,7 @@
 
             <route method="get" uri="trash" use="trash" as="trash"/>
             <route method="get" uri="{id}/restore" use="restore" as="restore"/>
-            
+
             <route method="get" uri="refresh-search-engine" use="rebuildSearchEngine" as="refresh_search_engine"/>
             <route method="get" uri="maintenance" use="maintenance" as="maintenance"/>
             <route method="post" uri="maintenance" use="createMissingUsers" as="create_missing_users"/>
@@ -65,7 +65,7 @@
             <route method="get" uri="{id}/edit" use="edit" as="edit"/>
             <route method="post" uri="{id}/update" use="update" as="update"/>
             <route method="get" uri="{id}/delete" use="delete" as="delete"/>
-            
+
             <route method="get" uri="import" use="import" as="import"/>
             <route method="post" uri="import" use="doImport" as="do_import"/>
         </route-group>
@@ -76,7 +76,7 @@
 
             <route method="get" uri="create" use="create" as="create"/>
             <route method="post" uri="create" use="doCreate" as="do_create"/>
-            
+
             <route method="get" uri="{id}/edit" use="edit" as="edit"/>
             <route method="post" uri="{id}/update" use="update" as="update"/>
             <route method="get" uri="{id}/delete" use="delete" as="delete"/>
@@ -120,6 +120,10 @@
             <route method="get" uri="email-template/reset-password" use="passwordReset" as="reset_password"/>
             <route method="get" uri="email-template/group-contact" use="groupContact" as="group_contact"/>
             <route method="get" uri="email-template/register-by-group" use="registrationByGroup" as="register_by_group"/>
+            <route method="get" uri="email-template/created-group" use="createdGroup" as="created_group"/>
+            <route method="get" uri="email-template/created-group-with-new-user" use="createdGroupWithNewUser" as="created_group_with_new_user"/>
+
+            <route method="post" uri="email-template/save" use="saveTemplate" as="save_template"/>
         </route-group>
 
         <route-group>

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Framework\Model;
-
 
 use Framework\Support\Collection;
 
@@ -21,12 +19,26 @@ class ModelCollection extends Collection
         if (!$relations) {
             return $this;
         }
-        
+
         foreach ($this->items as $item) {
             $found = static::getAttributeValues($relations, $target, $item->{$on});
             $item->{$toLoad} = $found[0] ?? null;
         }
-        
+
+        return $this;
+    }
+
+    public function withCount($relations, $toLoad, $on, $target = 'id')
+    {
+        if (!$relations) {
+            return $this;
+        }
+
+        foreach ($this->items as $item) {
+            $found = static::getAttributeValues($relations, $target, $item->{$on});
+            $item->{$toLoad} = $found[0]['cnt'] ?? null;
+        }
+
         return $this;
     }
 
@@ -42,9 +54,9 @@ class ModelCollection extends Collection
 
         return $this;
     }
-    
+
     /**
-     * 
+     *
      * @param mixed $relations
      * @param string $target
      * @param mixed $onValue
@@ -58,7 +70,7 @@ class ModelCollection extends Collection
                 if (isset($relation[$target]) && $relation[$target] == $onValue) {
                     $found[] = $relation;
                 }
-            } elseif(is_object($relation) && $relation->{$target} == $onValue) {
+            } elseif (is_object($relation) && $relation->{$target} == $onValue) {
                 $found[] = $relation;
             }
         }

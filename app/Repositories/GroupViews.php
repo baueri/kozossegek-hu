@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\Group;
 use App\Models\User;
 use Framework\Database\PaginatedResultSet;
 use Framework\Model\Model;
@@ -26,10 +27,10 @@ class GroupViews extends Repository
     public function getGroupByUser(User $user)
     {
         $row = $this->getBuilder()->where('user_id', $user->id)->first();
-        
+
         return $this->getInstance($row);
     }
-    
+
     /**
      * @param int $perPage
      * @return PaginatedModelCollection
@@ -51,7 +52,7 @@ class GroupViews extends Repository
         if (is_array($filter)) {
             $filter = collect($filter);
         }
-        
+
         $builder = builder()->select('*')->from('v_groups');
 
         if ($keyword = $filter['search']) {
@@ -85,7 +86,7 @@ class GroupViews extends Repository
         if ($intezmeny = $filter['institute_id']) {
             $builder->where('institute_id', $intezmeny);
         }
-        
+
         if ($filter->exists('pending')) {
             $builder->where('pending', $filter['pending']);
         }
@@ -107,26 +108,26 @@ class GroupViews extends Repository
         }
 
         $builder->orderBy($filter['order_by'] ?: 'name', $filter['order'] ?: 'asc');
-       
+
         return $this->getInstances($builder->paginate($perPage));
     }
 
     /**
      * @param string $slug
-     * @return Group
+     * @return GroupView
      */
     public function findBySlug($slug)
     {
         $id = substr($slug, strrpos($slug, '-')+1);
-        
+
         $builder = $this->getBuilder();
-        
+
         $row = $builder->where('id', $id)->notDeleted()->first();
-        
+
         if ($row) {
             return $this->getInstance($row);
         }
-        
+
         return null;
     }
 
@@ -144,7 +145,7 @@ class GroupViews extends Repository
 
         return $this->getInstances($builder->get());
     }
-    
+
     public function getGroupsWithoutUser()
     {
         $builder = $this->getBuilder()
@@ -152,14 +153,14 @@ class GroupViews extends Repository
             ->where('group_leaders', '<>', '')
             ->where('group_leader_email', '<>', '')
             ->apply('notDeleted');
-        
+
         return $this->getInstances($builder->get());
     }
 
-    public function getGroupsByUser($user)
+    public function getNotDeletedGroupsByUser($user)
     {
         return $this->getInstances(
-            $row = $this->getBuilder()->where('user_id', $user->id)->get()
+            $row = $this->getBuilder()->where('user_id', $user->id)->apply('notDeleted')->get()
         );
     }
 }

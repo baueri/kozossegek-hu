@@ -8,13 +8,13 @@ use RuntimeException;
 
 class File
 {
-    protected $fileName;
+    protected ?string $fileName = null;
 
-    protected $filePath;
+    protected ?string $filePath = null;
 
     protected $pathInfo;
 
-    protected $fileType;
+    protected ?string $fileType;
 
     public function __construct($filePath = '')
     {
@@ -37,7 +37,7 @@ class File
      * @param string $fileName
      * @return static
      */
-    public function setFileName($fileName)
+    public function setFileName(string $fileName): self
     {
         $this->fileName = basename($fileName);
         return $this;
@@ -78,7 +78,6 @@ class File
         $size = filesize($this->filePath);
 
         if ($unit !== SizeUnit::B) {
-            
             if (!SizeUnit::values()->contains($unit)) {
                 throw new InvalidArgumentException('Invalid size unit ' . $unit);
             }
@@ -89,17 +88,26 @@ class File
 
     /**
      * @param string $newPath
+     * @param string|null $newFilename
+     * @param int|null $mode
      * @return static
-     * @throws RuntimeException
      */
-    public function move($newPath)
+    public function move(string $newPath, string $newFilename = null, $mode = null): self
     {
-        $ok = move_uploaded_file($this->filePath, $newPath . $this->fileName);
-        
+        $newFilePath = $newPath . ($newFilename ?: $this->fileName);
+
+        $ok = move_uploaded_file($this->filePath, $newFilePath);
+
         if (!$ok) {
-            throw new RuntimeException('Error while moving file: ' . $this->filePath . ' to ' . $newPath . $this->fileName);
+            throw new RuntimeException("Error while moving file {$this->filePath} to $newFilePath");
         }
-        $this->filePath = $newPath . $this->fileName;
+
+        if ($mode) {
+            chmod($newFilePath, $mode);
+        }
+
+        $this->filePath = $newFilePath;
+
         return $this;
     }
 
@@ -170,7 +178,7 @@ class File
     }
 
     /**
-     * @param string $key
+     * @param null $key
      * @return mixed
      */
     public function getPathInfo($key = null)
@@ -212,7 +220,7 @@ class File
     {
         return dirname($this->filePath);
     }
-    
+
     /**
      * @param string $link
      * @return bool
@@ -220,5 +228,35 @@ class File
     public function createSymLink($link)
     {
         return symlink($this->filePath, $link);
+    }
+
+    public function getMainType(): string
+    {
+        foreach (FileManager::TYPES as $mainType => $types) {
+            if (in_array($this->fileType, $types)) {
+                return $mainType;
+            }
+        }
+
+        return 'unknown';
+    }
+
+    public function is(string $fileType): bool
+    {
+        return $this->getMainType() === $fileType;
+    }
+
+    public function touch(): bool
+    {
+        return touch($this->filePath);
+    }
+
+    public static function createFromFormData(?array $formData = null): ?File
+    {
+        if (!$formData) {
+            return null;
+        }
+
+        return new static($formData['tmp_name']);
     }
 }

@@ -1,3 +1,7 @@
+:root {
+    --darkblue: #3f91b0;
+}
+
 body {
     /*font-family: 'Ubuntu', sans-serif;*/
     color: #555;
@@ -9,9 +13,8 @@ img {
 }
 
 .home {
-    background:url("/images/img2.jpg") no-repeat top center;
-    background-position: fixed;
-    background-size: cover;
+    background-position: fixed !important;
+    background-size: cover !important;
     padding-top: 58px;
 }
 .home #header {
@@ -73,8 +76,8 @@ img {
 
 .btn-darkblue {
     color: #fff;
-    background-color: #3f91b0;
-    border: 1px solid #3f91b0;
+    background-color: var(--darkblue);
+    border: 1px solid var(--darkblue);
     border-radius: 0;
 }
 
@@ -84,18 +87,18 @@ img {
 }
 
 .btn-outline-darkblue {
-    color: #3f91b0;
-    border: 1px solid #3f91b0;
+    color: var(--darkblue);
+    border: 1px solid var(--darkblue);
 }
 
 .btn-outline-darkblue:hover {
-    background: #3f91b0;
+    background: var(--darkblue);
     color: #fff;
 }
 
 #main-finder button {
-    background: #3f91b0;
-    border: 1px solid #3f91b0;
+    background: var(--darkblue);
+    border: 1px solid var(--darkblue);
     transition: all ease-in .2s;
 }
 
@@ -650,11 +653,15 @@ input[name=search]::placeholder {
     padding: 5px 10px;
 }
 
+.group-tag + label {
+    padding: 5px 15px !important;
+}
+
 .group-tag:checked + label {
-    background: var(--teal);
+    background: var(--primary);
     color: #fff;
 }
-.required label:after {
+.required label:after, .required h4:after {
     content: "*";
     color: red;
 }
@@ -735,4 +742,31 @@ input[name=search]::placeholder {
 
 #kozossegek-list .card-img:hover div {
     opacity: 1;
+}
+
+#create-group .step-container {
+    border: 5px solid #bfdeff;
+    padding: 3em;
+    margin-bottom: 3em;
+}
+#create-group .step-container > h4 {
+    margin-bottom: 1em;
+}
+
+.btn {
+    border-radius: 0;
+}
+
+.select2-container--bootstrap .select2-selection--multiple .select2-selection__rendered {
+    width: auto !important;
+    float: left;
+}
+
+.select2.is-invalid .select2-selection {
+    border-color: #dc3545;
+    padding-right: calc(1.5em + .75rem);
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23dc3545' viewBox='0 0 12 12'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 25px center;
+    background-size: calc(.75em + .375rem) calc(.75em + .375rem);
 }

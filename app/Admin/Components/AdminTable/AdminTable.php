@@ -145,6 +145,23 @@ abstract class AdminTable
         return "<a href='$url' title='$title'><i class='fa fa-trash text-danger'></i></a>";
     }
 
+    protected static function getCheckIcon(?string $title)
+    {
+        return "<i class='fa fa-check-circle text-success' title='$title'></i>";
+    }
+
+    protected static function getBanIcon(?string $title)
+    {
+        return "<i class='fa fa-ban text-danger' title='$title'></i>";
+    }
+
+    protected static function excerpt(string $text, $withTooltip = true)
+    {
+        $shorten = StringHelper::shorten($text, 20, '...');
+        $tooltip = $withTooltip ? $text : '';
+        return "<span title='$tooltip'>$shorten</span>";
+    }
+
     /**
      * @return string
      */
