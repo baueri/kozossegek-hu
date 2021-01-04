@@ -7,30 +7,30 @@ class Out
     /**
      * pre registered colors for console output
      */
-    const COLOR_WHITE = '1;37';
-    const COLOR_BLACK = '0;30';
-    const COLOR_RED = '0;31';
-    const COLOR_LIGHT_RED = '1;31';
-    const COLOR_GREEN = '0;32';
-    const COLOR_BLUE = '0;34';
-    const COLOR_MAGENTA = '0;35';
-    const COLOR_YELLOW = '0;33';
-    const COLOR_CYAN = '0;36';
-    const COLOR_GRAY = '1;30';
-    const COLOR_LIGHT_GRAY = '0;37';
+    public const COLOR_WHITE = '1;37';
+    public const COLOR_BLACK = '0;30';
+    public const COLOR_RED = '0;31';
+    public const COLOR_LIGHT_RED = '1;31';
+    public const COLOR_GREEN = '0;32';
+    public const COLOR_BLUE = '0;34';
+    public const COLOR_MAGENTA = '0;35';
+    public const COLOR_YELLOW = '0;33';
+    public const COLOR_CYAN = '0;36';
+    public const COLOR_GRAY = '1;30';
+    public const COLOR_LIGHT_GRAY = '0;37';
 
     /**
      * Notification types
      */
-    const NOTIFICATION_TYPE_SUCCESS = 'SUCCESS';
-    const NOTIFICATION_TYPE_INFO = 'INFO';
-    const NOTIFICATION_TYPE_ERROR = 'ERROR';
-    const NOTIFICATION_TYPE_WARNING = 'WARNING';
+    public const NOTIFICATION_TYPE_SUCCESS = 'SUCCESS';
+    public const NOTIFICATION_TYPE_INFO = 'INFO';
+    public const NOTIFICATION_TYPE_ERROR = 'ERROR';
+    public const NOTIFICATION_TYPE_WARNING = 'WARNING';
 
     /**
      * Notification color
      */
-    const NOTIFICATION_COLORS = [
+    public const NOTIFICATION_COLORS = [
         self::NOTIFICATION_TYPE_SUCCESS => self::COLOR_GREEN,
         self::NOTIFICATION_TYPE_INFO => self::COLOR_BLUE,
         self::NOTIFICATION_TYPE_ERROR => self::COLOR_RED,
@@ -40,7 +40,6 @@ class Out
     public static function color($text, $color)
     {
         return "\033[" . $color . "m" . $text . "\033[0m";
-
     }
 
     /**
@@ -48,9 +47,8 @@ class Out
      *
      * @param string $format
      * @param mixed ...$params
-     *
      */
-    public static function write_f($format, ...$params)
+    public static function write_f(string $format, ...$params)
     {
         static::write(sprintf($format, ...$params));
     }
@@ -60,9 +58,8 @@ class Out
      *
      * @param string $text
      * @param string $color
-     *
      */
-    public static function write($text, $color = self::COLOR_WHITE)
+    public static function write(string $text, $color = self::COLOR_WHITE)
     {
         print("\033[" . $color . "m" . $text . "\033[0m");
     }
@@ -71,7 +68,7 @@ class Out
      * @param string $msg
      * @param string $borderColor
      */
-    public static function heading($msg, string $borderColor = self::COLOR_BLUE)
+    public static function heading(string $msg, string $borderColor = self::COLOR_BLUE)
     {
         static::writeln(str_repeat('-', strlen($msg) + 5), $borderColor);
         static::writeln($msg);
@@ -95,9 +92,8 @@ class Out
      * Success notification
      *
      * @param string $msg
-     *
      */
-    public static function success($msg)
+    public static function success(string $msg)
     {
         static::notify(self::NOTIFICATION_TYPE_SUCCESS, $msg);
     }
@@ -107,9 +103,8 @@ class Out
      *
      * @param string $type
      * @param string $message
-     *
      */
-    public static function notify($type, $message)
+    public static function notify(string $type, string $message)
     {
         static::write("[" . $type . "] ", self::NOTIFICATION_COLORS[$type]);
         static::writeln($message . "\n");
@@ -120,7 +115,7 @@ class Out
      *
      * @param string $msg
      */
-    public static function info($msg)
+    public static function info(string $msg)
     {
     }
 
@@ -128,7 +123,7 @@ class Out
      * Error notification and instantly ends process
      * @param string $msg
      */
-    public static function fatal($msg)
+    public static function fatal(string $msg)
     {
         static::error($msg);
         static::writeln('A kód nem futott végig', self::COLOR_RED);
@@ -139,17 +134,16 @@ class Out
      * Error notification
      *
      * @param string $msg
-     *
      */
-    public static function error($msg)
+    public static function error(string $msg)
     {
         static::notify(self::NOTIFICATION_TYPE_ERROR, $msg);
     }
 
     /**
-     * @param $msg
+     * @param string $msg
      */
-    public static function warning($msg)
+    public static function warning(string $msg)
     {
         static::notify(static::NOTIFICATION_TYPE_WARNING, $msg);
     }
@@ -157,7 +151,7 @@ class Out
     /**
      * Dumps the data with print_r function
      *
-     * @param string $data
+     * @param mixed $data
      *
      */
     public static function dump($data)

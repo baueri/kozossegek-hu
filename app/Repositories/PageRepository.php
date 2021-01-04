@@ -1,20 +1,17 @@
 <?php
 
-
 namespace App\Repositories;
 
-
 use App\Models\Page;
+use Framework\Database\PaginatedResultSet;
+use Framework\Model\Model;
+use Framework\Model\ModelCollection;
 use Framework\Repository;
 use Framework\Model\PaginatedModelCollection;
 
 class PageRepository extends Repository
 {
-    protected static $dbColumns = [
-        'id', 'title', 'content', 'user_id'
-    ];
-
-    public function findBySlug($slug):?Page
+    public function findBySlug($slug): ?Page
     {
         $row = $this->getBuilder()->where('slug', $slug)->first();
 
@@ -24,7 +21,7 @@ class PageRepository extends Repository
     /**
      *
      * @param array|Collection $filter
-     * @return \Framework\Model\ModelCollection|\Framework\Model\Model[]|\Framework\Database\PaginatedResultSet|PaginatedModelCollection
+     * @return ModelCollection|Model[]|PaginatedResultSet|PaginatedModelCollection
      */
     public function getPages($filter)
     {

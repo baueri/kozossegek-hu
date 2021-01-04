@@ -2,12 +2,10 @@
 
 namespace App\Admin\Controllers;
 
-use App\Admin\Controllers\AdminController;
 use App\Admin\Page\Services\PageListService;
 use Framework\Http\Message;
 use Framework\Http\Request;
 use App\Repositories\PageRepository;
-use Framework\Http\View\ViewInterface;
 use App\Auth\Auth;
 use App\Models\Page;
 use App\Repositories\AdminPageRepository;
@@ -29,7 +27,6 @@ class PageController extends AdminController
 
     /**
      *
-     * @param ViewInterface $view
      * @param Request $request
      * @param AdminPageRepository $repository
      */
@@ -69,9 +66,9 @@ class PageController extends AdminController
     {
         $data = $this->request->only('title', 'slug', 'content', 'status');
         $data['user_id'] = Auth::user()->id;
-        
+
         $hasUploadableImages = preg_match_all('/data\-filename="[a-zA-Z0-9\.\_]"/im', $data['content'], $images);
-        
+
         if ($hasUploadableImages) {
             dd($images);
         }
