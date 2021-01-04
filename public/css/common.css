@@ -1,0 +1,28 @@
+:root {
+    --darkblue: #3f91b0;
+}
+
+.btn-darkblue {
+    color: #fff;
+    background-color: var(--darkblue);
+    border: 1px solid var(--darkblue);
+}
+
+.radius-0 {
+    border-radius: 0 !important;
+}
+
+.btn-darkblue:hover {
+    background: #1C3C4B;
+    color: #fff;
+}
+
+.btn-outline-darkblue {
+    color: var(--darkblue);
+    border: 1px solid var(--darkblue);
+}
+
+.btn-outline-darkblue:hover {
+    background: var(--darkblue);
+    color: #fff;
+}

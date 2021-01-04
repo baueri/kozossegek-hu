@@ -1,4 +1,8 @@
-<?php use App\Auth\Auth; ?>
+<?php
+
+use App\Auth\Auth;
+
+?>
 <!DOCTYPE html>
 <html lang="hu">
 <head>
@@ -9,9 +13,9 @@
     <title>@yield('subtitle')kozossegek.hu</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital@0;1&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Crimson+Text|Work+Sans:400,700|Merriweather|Roboto+Condensed:wght@300;400" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="search" type="application/opensearchdescription+xml" title="kozossegek.hu" href="/opensearch.xml">
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
@@ -47,18 +51,16 @@
                     <li class="nav-item">
                         <a href="@route('portal.groups')" class="nav-link"><span>Közösséget keresek</span></a>
                     </li>
-                    @if(!\App\Auth\Auth::loggedIn())
-                        <li class="nav-item">
-                            <a href="@route('portal.register_group')" class="nav-link"><span>Közösséget vezetek</span></a>
-                        </li>
-                    @endif
                     <li class="nav-item">
-                        <a href="@route('portal.page', ['slug' => 'rolunk'])" class="nav-link"><span>Rólunk</span></a>
+                        <a href="@route('portal.register_group')" class="nav-link"><span>Közösséget vezetek</span></a>
                     </li>
                     <li class="nav-item">
                         <a href="@route('portal.page', ['slug' => 'a-kozosseg'])" class="nav-link">A közösségről</a>
                     </li>
-                    <?php if(Auth::loggedIn()): ?>
+                    <li class="nav-item">
+                        <a href="@route('portal.page', ['slug' => 'rolunk'])" class="nav-link"><span>Rólunk</span></a>
+                    </li>
+                    <?php if (Auth::loggedIn()) : ?>
                     <li class="nav-item">
                         <a href="@route('portal.my_profile')" class="nav-link user-menu text-danger"><i class="fa fa-user-circle" style="font-size: 18px;"></i></a>
                         <ul class="submenu">
@@ -68,7 +70,7 @@
                             <li class="nav-item">
                                 <a href="@route('portal.my_groups')" class="nav-link">Közösségeim</a>
                             </li>
-                            <?php if (Auth::user()->isAdmin()): ?>
+                            <?php if (Auth::user()->isAdmin()) : ?>
                                 <li class="nav-item">
                                     <a href="@route('admin.dashboard')" class="nav-link"><i class="fa fa-cog"></i> Admin</a>
                                 </li>
@@ -78,7 +80,7 @@
                             </li>
                         </ul>
                     </li>
-                    <?php else: ?>
+                    <?php else : ?>
                         <li class="nav-item">
                             <a href="@route('login')" class="nav-link"><i class="fa fa-user-circle" style="font-size: 18px;"></i></a>
                         </li>

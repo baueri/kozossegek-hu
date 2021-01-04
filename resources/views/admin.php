@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>kozossegek.hu - ADMIN</title>
 
+    <link href="https://fonts.googleapis.com/css?family=Crimson+Text|Work+Sans:400,700|Merriweather|Roboto+Condensed:wght@300;400" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
     <link rel="stylesheet" href="/assets/sidebar-09/css/style.css">

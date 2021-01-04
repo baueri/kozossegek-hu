@@ -31,7 +31,8 @@
                     </div>
                 </div>
                 <div class="form-group text-center mt-5">
-                    @foreach($tags as $tag)
+                    @foreach($tags as $i => $tag)
+                    @if($i > 0 && $i % 8 == 0) <br/> @endif
                     <input type="checkbox"
                            class="group-tag"
                            id="tag-{{ $tag['slug'] }}"
@@ -41,6 +42,7 @@
                     <label for="tag-{{ $tag['slug'] }}" class="mr-1 badge badge-pill badge-light group-tag-badge align-middle" title="{{ $tag['tag'] }}">
                         <span class="align-middle">{{ $tag['tag'] }}</span>
                     </label>
+
                     @endforeach
                     <input type="hidden" name="tags" value="{{ $filter['tags'] }}">
                 </div>

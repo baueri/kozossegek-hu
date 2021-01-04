@@ -1,5 +1,7 @@
-:root {
-    --darkblue: #3f91b0;
+@import "common.css";
+
+a {
+    color: var(--darkblue);
 }
 
 body {
@@ -74,28 +76,6 @@ img {
     min-height: calc(100vh - 321px);
 }
 
-.btn-darkblue {
-    color: #fff;
-    background-color: var(--darkblue);
-    border: 1px solid var(--darkblue);
-    border-radius: 0;
-}
-
-.btn-darkblue:hover {
-    background: #1C3C4B;
-    color: #fff;
-}
-
-.btn-outline-darkblue {
-    color: var(--darkblue);
-    border: 1px solid var(--darkblue);
-}
-
-.btn-outline-darkblue:hover {
-    background: var(--darkblue);
-    color: #fff;
-}
-
 #main-finder button {
     background: var(--darkblue);
     border: 1px solid var(--darkblue);
@@ -163,7 +143,7 @@ nav.navbar .nav-link {
 }
 
 nav.navbar .nav-link:hover {
-    color: var(--green);
+    color: var(--darkblue);
 }
 
 .featured {
