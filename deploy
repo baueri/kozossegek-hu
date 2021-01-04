@@ -1,0 +1,9 @@
+<?php
+
+include "../php_deploy/PHPDeploy.php";
+
+php_deploy('production')
+->task('composer install')
+->task('running migration', 'composer migrate')
+->task('maintenance on', 'ftp:touch', 'maintenance')
+->run();
