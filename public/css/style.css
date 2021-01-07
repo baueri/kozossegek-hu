@@ -735,7 +735,7 @@ input[name=search]::placeholder {
 }
 
 .btn {
-    border-radius: 0;
+    
 }
 
 .select2-container--bootstrap .select2-selection--multiple .select2-selection__rendered {

@@ -98,16 +98,14 @@ use App\Auth\Auth;
             <div class="row">
                 <div class="col-md-4 col-sm-6 col-xs-12">
                     @widget('LABA')
-<!--                    <div>-->
-<!--                        <a href="" class=""><img src="/images/fbook.png" style="width: 20px;"></a>-->
-<!--                    </div>-->
                 </div>
                 <div class="col-md-4 col-sm-6 col-xs-12">
                     <ul class="navbar-nav">
                         <li class="nav-item"><a href="@route('portal.page', 'rolunk')" class="nav-link">Rólunk</a></li>
                         <!--<li class="nav-item"><a href="@route('portal.feedback')" class="nav-link">Visszajelzés küldése</a></li>-->
-                        <li class="nav-item"><a href="@route('portal.page', 'adatvedelmi-nyilatkozat')" class="nav-link">Adatvédelmi nyilatkozat</a></li>
                         <li class="nav-item"><a href="@route('portal.page', 'impresszum')" class="nav-link">Impresszum</a></li>
+                        <li class="nav-item"><a href="@route('portal.page', 'adatvedelmi-nyilatkozat')" class="nav-link">Adatvédelmi nyilatkozat</a></li>
+                        <li class="nav-item"><a href="@route('portal.page', 'iranyelveink')" class="nav-link">Irányelveink</a></li>
                     </ul>
                 </div>
 
@@ -126,7 +124,7 @@ use App\Auth\Auth;
         </div>
         <div id="footer-bottom">
             <div class="container">
-                <small>© 2020 kozossegek.hu - Minden jog fenntartva!</small>
+                <small>© 2021 {{ date('Y') > 2021 ? ' - ' . date('Y') : '' }} kozossegek.hu - Minden jog fenntartva!</small>
             </div>
         </div>
     </footer>

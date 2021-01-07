@@ -18,5 +18,5 @@
 Érdeklődni szeretnék, hogy lehet-e csatlakozni a {{ $group->name }} közösségbe?</textarea>
 </div>
 <div class="text-right">
-    <p><label><input type="checkbox" required> Az <a href="">adatvédelmi tájékoztatót</a> elolvastam és elfogadom</label></p>
+    <p><label><input type="checkbox" required> Az <a href="/adatvedelmi-nyilatkozat" target="_blank">adatvédelmi tájékoztatót</a> elolvastam és elfogadom</label></p>
 </div>
