@@ -7,7 +7,7 @@
 @endsection
 @extends('portal.group.create-steps.create-wrapper')
 @alert('warning')
-    <i class="fa fa-exclamation-triangle"></i> Fontos számunkra, hogy az oldalon valóban keresztény értékeket közvetítő közösségeket hirdessünk. Mielőtt kitöltenéd a regisztrációs űrlapot, kérjük, hogy mindenképp olvasd el az <a href="/iranyelveink">irányelveinket</a>.
+    <i class="fa fa-exclamation-triangle"></i> Fontos számunkra, hogy az oldalon valóban keresztény értékeket közvetítő közösségeket hirdessünk. Mielőtt kitöltenéd a regisztrációs űrlapot, kérjük, hogy mindenképp olvasd el az <a href="/iranyelveink" target="_blank">irányelveinket</a>.
 @endalert
 <form method="post" id="group-form" enctype="multipart/form-data" action="@route('portal.my_group.create')">
     @if(!is_loggedin())
