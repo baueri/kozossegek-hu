@@ -9,20 +9,19 @@ class PublicStorage extends FileManager
 {
     public function __construct($storageDir = '', $enabledTypes = ['*'])
     {
-        parent::__construct(STORAGE_PATH . 'public' . DS . $storageDir, $enabledTypes);
-        
+        parent::__construct(_env('STORAGE_PATH') . 'public' . DS . $storageDir, $enabledTypes);
+
         if (!file_exists(ROOT . 'public/storage')) {
-            
-            if(!$this->createFolder('', $error)) {
+            if (!$this->createFolder('', $error)) {
                 throw new \Exception($error['message'], $error['type']);
             }
-            
-            if(!$this->createSymLink(ROOT . 'public/storage')) {
+
+            if (!$this->createSymLink(ROOT . 'public/storage')) {
                 throw new \Exception('Nem sikerült a szimbolikus link létrehozása');
             }
         }
     }
-    
+
     /**
      * @param File $file
      * @return string
@@ -33,12 +32,12 @@ class PublicStorage extends FileManager
     }
 
     /**
-     * @param File $file
-     * @return type
+     * @param $publicPath
+     * @return string
      */
     public function getStoragePath($publicPath)
     {
-        return STORAGE_PATH . preg_replace('/^\/storage/', 'public', $publicPath);
+        return _env('STORAGE_PATH') . preg_replace('/^\/storage/', 'public', $publicPath);
     }
 
     /**
