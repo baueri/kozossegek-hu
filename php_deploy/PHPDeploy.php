@@ -23,7 +23,7 @@ class PHPDeploy implements ArrayAccess
         'sftp:send' => ['sftp', 'send'],
         'site:up' => 'up',
         'site:down' => 'down'
-    ];
+    ]; 
 
     private array $tasks = [];
 

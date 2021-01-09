@@ -16,7 +16,7 @@ function rrmdir($dir)
     } elseif (file_exists($dir)) {
         unlink($dir);
     }
-}
+} 
 
 // copies files and non-empty directories
 function rcopy($src, $dst)
