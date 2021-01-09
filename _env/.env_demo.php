@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'STORAGE_PATH' => ROOT . '../storage/demo' . DS,
     'SITE_URL' => 'https://demo.kozossegek.hu',
     'ENVIRONMENT' => 'development',
     'DEBUG' => false,
