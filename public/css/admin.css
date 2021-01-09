@@ -275,3 +275,7 @@ img {
 ul#admin_menu li {
     font-size: 14px;
 }
+
+.note-editor [class^=col-] {
+    border: 1px dashed;
+}
