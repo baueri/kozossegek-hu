@@ -254,9 +254,9 @@ class PHPDeploy implements ArrayAccess
         return true;
     }
 
-    public function composerInstall()
+    public function composerInstall($options = '')
     {
-        exec("composer install -d {$this->temp_deploy_dir}", $out, $code);
+        exec("composer install -d {$this->temp_deploy_dir} {$options}", $out, $code);
 
         return $code == 0;
     }
