@@ -8,5 +8,4 @@ error.log
 /nbproject
 storage/
 public/media
-php_deploy
 tmp_deploy
