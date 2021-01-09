@@ -21,8 +21,8 @@
     @endif
     <hr>
     <p class="text-right">
-        <label>Az <a href="">adatvédelmi tájékoztatót</a> elolvastam és elfogadom <input type="checkbox" required id="adatvedelmi-tajekoztato"></label><br/>
-        <label>A közösségem a <a href="">kereszténységgel egyező szellemiséget</a> képvisel <input type="checkbox" required id="iranyelvek"></label>
+        <label>Az <a href="/adatvedelmi-nyilatkozat" target="_blank">adatvédelmi tájékoztatót</a> elolvastam és elfogadom <input type="checkbox" required id="adatvedelmi-tajekoztato"></label><br/>
+        <label>A közösségem a <a href="/iranyelveink" target="_blank">kereszténységgel egyező szellemiséget</a> képvisel <input type="checkbox" required id="iranyelvek"></label>
     </p>
 </div>
 <style>
