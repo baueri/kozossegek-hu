@@ -23,7 +23,7 @@ class PHPDeploy implements ArrayAccess
         'sftp:send' => ['sftp', 'send'],
         'site:up' => 'up',
         'site:down' => 'down'
-    ]; 
+    ];
 
     private array $tasks = [];
 
@@ -256,7 +256,7 @@ class PHPDeploy implements ArrayAccess
 
     public function composerInstall($options = '')
     {
-        exec("composer install -d {$this->temp_deploy_dir} {$options}", $out, $code);
+        exec("composer install {$options} -d {$this->temp_deploy_dir}", $out, $code);
 
         return $code == 0;
     }

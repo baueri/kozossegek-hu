@@ -8,6 +8,7 @@
 
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+<script src="/assets/summernote/grid.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/lang/summernote-hu-HU.min.js"></script>
 <script src="/assets/summernote/summernote-table-styles.js"></script>
 <script>
@@ -50,21 +51,29 @@
             fontNames: [
                 'Sans Serif', 'Sans', 'Arial', 'Courier',
                 'Courier New', 'Helvetica',
-                'Crimson Text', 'Work Sans', 'Merriweather', 'Roboto Condensed'
+                'Merriweather', 'Roboto Condensed'
             ],
             fontNamesIgnoreCheck: [
                 'Sans Serif', 'Sans', 'Arial', 'Courier',
                 'Courier New', 'Helvetica',
-                'Crimson Text', 'Work Sans', 'Merriweather', 'Roboto Condensed'
+                'Merriweather', 'Roboto Condensed'
             ],
             toolbar: [
                 ['style', ['style', 'fontsize', 'fontname']],
                 ['font', ['bold', 'underline', 'italic', 'clear']],
                 ['color', ['color']],
                 ['para', ['ul', 'ol', 'paragraph']],
-                ['insert', ['table', 'tableStyles', 'link', 'picture', 'video']],
+                ['insert', ['table', 'grid', 'tableStyles', 'link', 'picture', 'video']],
                 ['view', ['fullscreen', 'codeview', 'help']]
-            ]
+            ],
+            grid: {
+                columns: [
+                    "col-md-12",
+                    "col-md-6",
+                    "col-md-4 col-3",
+                    "col-md-3 col-6",
+                ]
+            },
         }, options);
 
         $(selector).summernote(options);
