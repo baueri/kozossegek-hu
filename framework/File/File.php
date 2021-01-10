@@ -14,7 +14,7 @@ class File
 
     protected $pathInfo;
 
-    protected ?string $fileType;
+    protected ?string $fileType = null;
 
     public function __construct($filePath = '')
     {

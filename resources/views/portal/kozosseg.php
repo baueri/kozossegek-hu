@@ -122,7 +122,7 @@
 
       </div>
       <div class="modal-footer">
-       <input type="text" name="website" id="{{ $nvr }}" value="{{ $honeypot_check_hash }}">
+        <input type="text" name="website" id="{{ $nvr }}" value="{{ $honeypot_check_hash }}">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Bezár</button>
         <button type="submit" class="btn btn-primary">Üzenet küldése</button>
       </div>

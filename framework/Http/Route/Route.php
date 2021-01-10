@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Framework\Http\Route;
-
 
 class Route implements RouteInterface
 {
@@ -125,11 +123,10 @@ class Route implements RouteInterface
                     unset($args[$key]);
                 }
             }
-        } elseif(is_string($args)) {
+        } elseif (is_string($args)) {
             $uri = preg_replace('/({\??[a-zA-Z\-\_]+})/', $args, $uri, 1);
             $args = '';
         }
-
         $uri = '/' . trim(preg_replace('/({\?[a-zA-Z\-\_]+})/', '', $uri), '/');
 
         if (!empty($args)) {

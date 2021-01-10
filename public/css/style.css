@@ -5,7 +5,7 @@ a {
 }
 
 body {
-    font: 400 1em/1.8em 'Roboto', Arial, Verdana, Tahoma, Sans-serif;
+    /*font: 500 16px Roboto,sans-serif;*/
     color: #555;
 }
 
@@ -25,6 +25,10 @@ img {
 .home #header.compact {
     background: #fff;
     font-size: 14px;
+}
+
+.home #header.compact .navbar-nav > li .nav-link {
+    padding: 4px 8px;
 }
 
 .home #header:not(.compact) .navbar-nav > li > .nav-link {
@@ -67,7 +71,7 @@ img {
 
 }
 .home #header.compact .navbar-brand {
-    /*transform: scale(.9);*/
+    padding: 0 !important;
 }
 .home #header.compact .navbar-brand > div {
     background: url("/images/logo_sm_2.png") no-repeat center;
@@ -81,18 +85,23 @@ img {
     min-height: calc(100vh - 321px);
 }
 
+#main-finder img {
+    max-width: 240px;
+    filter: brightness(0) invert(1);
+}
+
 #main-finder button {
-    background: var(--darkblue);
-    border: 3px solid var(--darkblue);
     transition: all ease-in .12s;
     text-transform: uppercase;
     font-family: 'Roboto Condensed', sans-serif;
     display: block;
     margin: 1em auto;
+    border-radius: .2rem;
 }
 
 #main-finder button:hover {
-    background: #1C3C4B;
+    background: #cc3e48;
+    color: #fff;
 }
 
 nav.navbar .nav-link i {
@@ -351,6 +360,17 @@ input[name=search]::placeholder {
     right: 0;
     z-index: 2;
 }
+#toggle_main_menu:checked~.navbar-nav .nav-item-profile::before {
+    border-top: 1px solid #ccc;
+    content: " ";
+    display: block;
+}
+#toggle_main_menu:checked~.navbar-nav .nav-item-profile .submenu {
+    padding: 0;
+}
+#toggle_main_menu:checked~.navbar-nav .user-menu {
+    display: none;
+}
 #toggle_main_menu:checked~.navbar-nav .submenu {
     display: block;
     position: relative;
@@ -497,6 +517,9 @@ input[name=search]::placeholder {
 }
 
 @media (max-width: 768px) {
+    #instructions::before {
+        display: none;
+    }
     .navbar-brand {
         width: 55px;
     }
@@ -518,27 +541,6 @@ input[name=search]::placeholder {
 
     #finder .select2-selection {
         border-radius: 4px;
-    }
-}
-@media (max-width: 425px) {
-    .navbar-brand {
-        width: 40px;
-    }
-}
-
-@media (max-width: 1199px) {
-    .card-deck {
-        margin-left: auto;
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 2fr));
-        grid-gap: .5rem;
-    }
-}
-
-@media (min-width: 1200px) {
-
-    .p-lg-6 {
-        padding: calc(1rem * 10) !important;
     }
 }
 
@@ -587,6 +589,8 @@ input[name=search]::placeholder {
     margin-bottom: 3em;
 }
 
+.jumbotron.main-block { border-radius: 0;}
+
 #main-finder [name=search] {
     display: block;
     margin: auto;
@@ -609,8 +613,6 @@ input[name=search]::placeholder {
 
 #instructions img {
     border: 5px solid #fff;
-    border-radius: 50%;
-    /*box-shadow: 0 0 10px #fff;*/
 }
 
 #instructions {
@@ -787,4 +789,49 @@ input[name=search]::placeholder {
 .cookiealert .acceptcookies {
     margin-left: 10px;
     vertical-align: baseline;
+}
+
+.kozosseghez-tartozni {
+    background-size: cover !important;
+    color: #fff;
+    background: url("/images/praise.jpg") no-repeat fixed center;
+}
+
+.shadowed {
+    padding: 1rem;
+    margin-bottom: 5rem;
+    margin-top: 4rem;
+    background: rgba(0,0,0,0.5);
+    border-radius: 5px;
+}
+
+@media (max-width: 425px) {
+    #instructions p {
+        margin-bottom: 2rem;
+    }
+    #main-finder h1 {
+        font-size: 2rem;
+    }
+    #main-finder img {
+        max-width: 150px;
+    }
+    .navbar-brand {
+        width: 40px;
+    }
+}
+
+@media (max-width: 1199px) {
+    .card-deck {
+        margin-left: auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 2fr));
+        grid-gap: .5rem;
+    }
+}
+
+@media (min-width: 1200px) {
+
+    .p-lg-6 {
+        padding: calc(1rem * 10) !important;
+    }
 }

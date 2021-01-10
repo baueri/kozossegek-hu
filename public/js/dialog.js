@@ -22,6 +22,27 @@ const dialog = (function () {
         $(".modal").modal("hide");
     }
 
+    this.alertMessage = function (type, options, callback) {
+        if (typeof options === "string") {
+            return this.show({
+                type: type,
+                message: options
+            }, callback);
+        }
+
+        this.show($.extend({
+            type: type
+        }, options), callback);
+    }
+
+    this.danger = function (options, callback) {
+        this.alertMessage("danger", options, callback);
+    }
+
+    this.success = function (options, callback) {
+        this.alertMessage("success", options, callback)
+    }
+
     this.confirm = function (options, callback) {
         this.show($.extend({
             title: "Biztos vagy benne?",
@@ -39,6 +60,8 @@ const dialog = (function () {
 
         if (typeof options === "string") {
             options = { message: options, callback: callback };
+        } else if (typeof options.callback === "undefined" && typeof callback !== "undefined") {
+            options.callback = callback;
         }
 
         options = $.extend({
@@ -50,11 +73,19 @@ const dialog = (function () {
             },
             size: "lg",
             cssClass: "",
-            onShown: null
+            onShown: null,
+            type: null
         }, options);
+
+        let headerCssClass = "";
+
+        if (options.type) {
+            headerCssClass = " bg-" + options.type + " text-light";
+        }
+
         var dialog = $("<div class='modal-dialog modal-" + options.size + " " + options.cssClass + "'></div>");
         var content = $("<div class='modal-content'></div>");
-        var header = $("<div class='modal-header'><h5 class='modal-title'>" + options.title + "</h5><button type='button' class='close' data-dismiss='modal' aria-label='bezár'><span aria-hidden='true'>&times;</span></button></div>");
+        var header = $("<div class='modal-header" + headerCssClass + "'><h5 class='modal-title'>" + options.title + "</h5><button type='button' class='close' data-dismiss='modal' aria-label='bezár'><span aria-hidden='true'>&times;</span></button></div>");
         var body = $("<div class='modal-body'></div>");
 
         body.append(options.message);
