@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Portal\Responses;
+
 use Framework\Model\ModelCollection;
 
 /**
@@ -8,18 +9,20 @@ use Framework\Model\ModelCollection;
  *
  * @author ivan
  */
-abstract class Select2Response {
+abstract class Select2Response
+{
 
     /**
      * @var ModelCollection
      */
     private $collection;
 
-    public function __construct($collection) {
+    public function __construct($collection)
+    {
         if (is_array($collection)) {
             $collection = collect($collection);
         }
-        
+
         $this->collection = $collection;
     }
 
@@ -38,7 +41,7 @@ abstract class Select2Response {
 
     public function getResponse()
     {
-        return ['results' => $this->collection->map(function($model){
+        return ['results' => $this->collection->map(function ($model) {
             return ['id' => $this->getId($model), 'text' => $this->getText($model)];
         })->toArray()];
     }

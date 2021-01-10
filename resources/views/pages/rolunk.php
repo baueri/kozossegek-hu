@@ -21,7 +21,13 @@
 <div class="jumbotron main-block mt-0 mb-0">
     <div class="container">
         <div class="row">
-            <div class="col-md-4">
+
+            <div class="col-md-5 offset-2lehet
+
+">
+                <img src="/images/csoportkep.jpg" style="filter: grayscale(1); width: 100%;"/>
+            </div>
+            <div class="col-md-5">
                 <h4>Írj nekünk!</h4>
                 <form method="post" id="send-message" action="@route('api.portal.contact_us')">
                     <div class="form-group required">
@@ -39,9 +45,6 @@
                     @honeypot()
                     <button type="submit" name="send" class="btn btn-primary btn-sm"><i class="fa fa-paper-plane mr-2"></i> Üzenet elküldése</button>
                 </form>
-            </div>
-            <div class="col-md-8">
-                <img src="/images/csoportkep.jpg" style="filter: grayscale(1)"/>
             </div>
         </div>
     </div>
