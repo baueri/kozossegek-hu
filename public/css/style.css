@@ -24,7 +24,6 @@ img {
 }
 .home #header.compact {
     background: #fff;
-    font-size: 14px;
 }
 
 .home #header.compact .navbar-nav > li .nav-link {
@@ -33,6 +32,10 @@ img {
 
 .home #header:not(.compact) .navbar-nav > li > .nav-link {
     color: #fff;
+    padding-top: 1.3rem;
+    padding-bottom: 1.3rem;
+}
+.home #header:not(.compact) .navbar-nav > li > .nav-link:hover {
 }
 
 .home #header:not(.compact) .user-menu {
@@ -44,17 +47,17 @@ img {
 }
 
 .demo .navbar-brand:after {
-    position: absolute;
-    content: "demo";
-    color: red;
-    top: 13px;
-    left: 0;
-    font-weight: bold;
-    transform: rotate(19deg);
-    border: 2px solid red;
-    background: rgba(255, 255, 255, 0.7);
-    padding: 5px;
-    font-size: 15px;
+    /*position: absolute;*/
+    /*content: "demo";*/
+    /*color: red;*/
+    /*top: 13px;*/
+    /*left: 0;*/
+    /*font-weight: bold;*/
+    /*transform: rotate(19deg);*/
+    /*border: 2px solid red;*/
+    /*background: rgba(255, 255, 255, 0.7);*/
+    /*padding: 5px;*/
+    /*font-size: 15px;*/
 }
 
 .navbar-brand > div:first-child {
@@ -236,7 +239,6 @@ nav.navbar .nav-link:hover {
     text-decoration: none !important;
     transition: all linear .1s;
     position: relative;
-    color: var(--gray-dark);
     overflow: hidden;
 }
 
@@ -336,8 +338,8 @@ input[name=search]::placeholder {
 }
 
 #main-finder #finder button {
-    padding-left: 2em;
-    padding-right: 2em;
+    padding-left: 1em;
+    padding-right: 1em;
 }
 
 #finder .group-tag:checked + label span:first-child {

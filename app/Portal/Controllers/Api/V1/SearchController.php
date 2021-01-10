@@ -13,8 +13,6 @@ use App\Portal\Responses\InstituteSearchResponse;
 use App\Portal\Responses\UserResponse;
 
 /**
- * Description of CitySearchController
- *
  * @author ivan
  */
 class SearchController
@@ -29,7 +27,8 @@ class SearchController
      *
      * @param Request $request
      */
-    public function __construct(Request $request) {
+    public function __construct(Request $request)
+    {
         $this->request = $request;
     }
 
