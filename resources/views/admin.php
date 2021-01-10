@@ -30,7 +30,7 @@
 <nav id="top_menu" class="navbar navbar-expand navbar-dark bg-dark fixed-top">
     <ul class="navbar-nav mr-auto">
         <li class="nav-item" id="mobile_menu_toggle">
-            <a class="nav-link"><i class="fa fa-bars"></i>
+            <a class="nav-link"><i class="fa fa-bars"></i></a>
         </li>
         @if(isset($current_menu_item['submenu']))
             @foreach($current_menu_item['submenu'] as $submenuItem)

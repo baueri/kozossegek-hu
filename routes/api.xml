@@ -6,7 +6,7 @@
             <route method="all" controller="SearchController" uri="search-institute" use="searchInstitute" as="search-institute"/>
             <route method="all" controller="SearchController" uri="search-district" use="searchDistrict" as="search-district"/>
             <route method="all" controller="SearchController" uri="search-user" use="searchUser" as="search-user" middleware="App\Middleware\AdminMiddleware"/>
-
+            <route method="post" uri="send-message" as="portal.contact_us" controller="ContactController" use="send"/>
             <!-- Foglalt email ellenőrzés -->
             <route method="post" uri="check-email" controller="ApiUserController" use="checkEmail" as="check-email"/>
         </route-group>

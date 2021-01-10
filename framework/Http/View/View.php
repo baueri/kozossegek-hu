@@ -65,6 +65,11 @@ class View implements ViewInterface
         return $this->getContentAndDoCache($filePath, array_merge($additional_args, $args));
     }
 
+    public function exists(string $view): bool
+    {
+        return file_exists($this->getPath($view));
+    }
+
     /**
      * @param string $view
      * @return string

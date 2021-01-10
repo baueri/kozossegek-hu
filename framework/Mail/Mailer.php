@@ -44,9 +44,10 @@ class Mailer
 
     /**
      * @param Mailable $mailable
+     * @return bool
      * @throws Exception
      */
-    public function send(Mailable $mailable)
+    public function send(Mailable $mailable): bool
     {
         if ($mailable->from) {
             $this->phpMailer->setFrom(...$mailable->from);
@@ -55,6 +56,6 @@ class Mailer
         }
         $this->phpMailer->Subject = $mailable->subject;
         $this->phpMailer->Body = $mailable->getBody();
-        $this->phpMailer->send();
+        return $this->phpMailer->send();
     }
 }

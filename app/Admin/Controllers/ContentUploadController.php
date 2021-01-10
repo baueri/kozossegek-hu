@@ -2,8 +2,12 @@
 
 namespace App\Admin\Controllers;
 
+use App\Helpers\FileHelper;
+use Exception;
 use Framework\File\File;
+use Framework\Http\Message;
 use Framework\Http\Request;
+use Framework\Http\Response;
 use Framework\Storage\PublicStorage;
 
 /**
@@ -36,7 +40,7 @@ class ContentUploadController
         }));
 
         $files = collect($this->storage->getFiles("uploads/$dir"));
-        $uploads = \App\Helpers\FileHelper::parseFilesToArray($files);
+        $uploads = FileHelper::parseFilesToArray($files);
 
         return view('admin.uploads.list', compact('uploads', 'breadCrumbs', 'dir'));
     }
@@ -47,8 +51,8 @@ class ContentUploadController
             $dir = $request['dir'];
             $file = $this->storage->uploadFileByFileData($request->files['file'], null, "uploads/$dir");
             return $this->storage->getPublicPathFor($file);
-        } catch (\Exception $e) {
-            \Framework\Http\Response::setStatusCode(500);
+        } catch (Exception $e) {
+            Response::setStatusCode(500);
             return 'Nem lehet feltölteni a fájlt!';
         }
     }
@@ -59,7 +63,7 @@ class ContentUploadController
 
         $file->delete();
 
-        \Framework\Http\Message::warning('Fájl törölve');
+        Message::warning('Fájl törölve');
 
         redirect_route('admin.content.upload.list');
     }

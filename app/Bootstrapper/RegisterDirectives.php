@@ -7,7 +7,7 @@ use Framework\Bootstrapper;
 use Framework\Http\View\Directives\Directive;
 use Framework\Http\View\ViewParser;
 
-class RegisterTitleDirective implements Bootstrapper
+class RegisterDirectives implements Bootstrapper
 {
     public function boot()
     {

@@ -48,6 +48,11 @@ return [
         },
         'message' => function ($matches) {
             return "<?php echo view('admin.partials.message') ?>";
+        },
+        'honeypot' => function () {
+            $nvr = 'a_' . substr(md5(time()), 0, 5);
+            $hash = \App\Helpers\HoneyPot::getHash(request()->uri);
+            return '<input type="text" name="website" id="' . $nvr . '" value="' . $hash . '" style="width: 0px;padding: 0;border: 0;margin: 0;">';
         }
     ]
 ];

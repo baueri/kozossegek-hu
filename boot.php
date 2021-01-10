@@ -1,6 +1,6 @@
 <?php
 
-use App\Bootstrapper\RegisterTitleDirective;
+use App\Bootstrapper\RegisterDirectives;
 use Arrilot\DotEnv\DotEnv;
 use Framework\Application;
 use Framework\Database\Database;
@@ -55,7 +55,7 @@ $application->singleton(Database::class, function (Application $app) {
     return $app->make(PDOMysqlDatabase::class, $databaseConfiguration);
 });
 
-$application->boot(RegisterTitleDirective::class);
+$application->boot(RegisterDirectives::class);
 $application->singleton(App\Repositories\Widgets::class);
 
 include APP . 'macros.php';

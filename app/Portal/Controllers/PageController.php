@@ -19,6 +19,12 @@ class PageController extends Controller
             throw new PageNotFoundException('page not found');
         }
 
-        return view('portal.page', compact('page'));
+        $page_title = $page->pageTitle();
+
+        if (view()->exists($view = "pages.{$request['slug']}")) {
+            return view($view, compact('page', 'page_title'));
+        }
+
+        return view('portal.page', compact('page', 'page_title'));
     }
 }

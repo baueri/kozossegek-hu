@@ -61,7 +61,7 @@ use App\Auth\Auth;
                         <a href="@route('portal.page', ['slug' => 'rolunk'])" class="nav-link"><span>Rólunk</span></a>
                     </li>
                     <?php if (Auth::loggedIn()) : ?>
-                    <li class="nav-item">
+                    <li class="nav-item nav-item-profile">
                         <a href="@route('portal.my_profile')" class="nav-link user-menu text-danger"><i class="fa fa-user-circle" style="font-size: 18px;"></i></a>
                         <ul class="submenu">
                             <li class="nav-item">
@@ -85,7 +85,6 @@ use App\Auth\Auth;
                             <a href="@route('login')" class="nav-link"><i class="fa fa-user-circle" style="font-size: 18px;"></i></a>
                         </li>
                     <?php endif; ?>
-
                 </ul>
                 <label class="mobile-menu-toggle float-right mr-4 mr-sm-0 mb-0" for="toggle_main_menu"><i class="fa fa-bars"></i></label>
             </div>

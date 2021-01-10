@@ -54,7 +54,8 @@ class GroupList
      */
     public function getHtml()
     {
-        $filter = $this->request->only('varos', 'search', 'korosztaly', 'rendszeresseg', 'tags');
+        $filter = $this->request->only('search', 'korosztaly', 'rendszeresseg', 'tags');
+        $filter['varos'] = $this->request['varos'];
         $filter['order_by'] = ['city', 'district'];
         $filter['pending'] = 0;
         $filter['status'] = GroupStatusEnum::ACTIVE;

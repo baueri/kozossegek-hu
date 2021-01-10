@@ -1,12 +1,11 @@
 <?php
 
-
 namespace Framework\Http;
-
 
 use ArrayAccess;
 use Countable;
 use Framework\Support\Collection;
+use InvalidArgumentException;
 use IteratorAggregate;
 
 /**
@@ -50,7 +49,7 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
     public function __construct()
     {
 
-        $this->request = (new Collection($_REQUEST))->each(function($item, $key, $collection){
+        $this->request = (new Collection($_REQUEST))->each(function ($item, $key, $collection) {
             if ($item == "true" || $item == "false") {
                 $collection[$key] = filter_var($item, FILTER_VALIDATE_BOOLEAN);
             }
@@ -79,7 +78,6 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
     public function getUriValues()
     {
         if (is_null($this->uriValues)) {
-
             $uriParts = explode('/', trim($this->uri, '/'));
             $uriParts2 = explode('/', trim($this->route->getUriMask(), '/'));
             $this->uriValues = [];
@@ -92,7 +90,6 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
         }
 
         return $this->uriValues;
-
     }
 
     /**
@@ -137,7 +134,7 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
     {
         $this->request->offsetUnset($offset);
     }
-    
+
     public function postRequestSent()
     {
         return $_SERVER['REQUEST_METHOD'] == 'POST';
@@ -146,5 +143,23 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
     public function collect()
     {
         return $this->request->collect();
+    }
+
+    public function stripTags()
+    {
+        foreach ($this->request as $key => $value) {
+            $this->request[$key] = strip_tags($value);
+        }
+
+        return $this;
+    }
+
+    public function validate(...$requestParams)
+    {
+        foreach ($requestParams as $requestParam) {
+            if (!$this->request[$requestParam]) {
+                throw new InvalidArgumentException('Missing request value');
+            }
+        }
     }
 }

@@ -1,5 +1,6 @@
 :root {
     --darkblue: #3f91b0;
+    --light-red: #F06A73;
 }
 
 .btn-darkblue {
@@ -24,5 +25,10 @@
 
 .btn-outline-darkblue:hover {
     background: var(--darkblue);
+    color: #fff;
+}
+
+.btn-lightred {
+    background-color: var(--light-red);
     color: #fff;
 }

@@ -9,6 +9,7 @@ use Framework\Database\Builder;
 use Framework\Database\Database;
 use Framework\Dispatcher\Dispatcher;
 use Framework\Dispatcher\HttpDispatcher;
+use Framework\Http\ApiResponse;
 use Framework\Http\Request;
 use Framework\Http\Response;
 use Framework\Http\Route\RouteInterface;
@@ -274,6 +275,11 @@ function is_home()
     return !trim(app()->get(Request::class)->uri, '/');
 }
 
+function request(): Request
+{
+    return app()->get(Request::class);
+}
+
 function is_admin()
 {
     return in_array(AdminMiddleware::class, current_route()->getMiddleware());
@@ -329,4 +335,9 @@ function rrmdir($dir)
     }
 
     return true;
+}
+
+function api(): ApiResponse
+{
+    return new ApiResponse();
 }

@@ -1,7 +1,6 @@
 <?php
 
 namespace Framework\Http\View\Directives;
-use Framework\Http\View\Directives\AtDirective;
 
 class RegisterableDirective extends AtDirective
 {
