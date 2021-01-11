@@ -103,6 +103,7 @@ use App\Auth\Auth;
                         <li class="nav-item"><a href="@route('portal.page', 'impresszum')" class="nav-link">Impresszum</a></li>
                         <li class="nav-item"><a href="@route('portal.page', 'adatvedelmi-nyilatkozat')" class="nav-link">Adatvédelmi nyilatkozat</a></li>
                         <li class="nav-item"><a href="@route('portal.page', 'iranyelveink')" class="nav-link">Irányelveink</a></li>
+                        <li class="nav-item"><a href="@route('portal.page', 'rolunk')" class="nav-link">Kapcsolat</a></li>
                     </ul>
                 </div>
 
