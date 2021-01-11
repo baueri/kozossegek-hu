@@ -1,5 +1,14 @@
 @title('Verzióinformáció')
 @extends('admin')
+<h3>v0.4 beta</h3>
+<ul>
+    <li>[NEW]: Teszt üzemmód bekapcsolása</li>
+    <li>[NEW]: Süti tájékoztató</li>
+    <li>[NEW]: Kapcsolatfelvételi űrlap</li>
+    <li>[NEW]: Felhasználói oldalon adott aloldal szerkesztése, ha az admin be van lépve</li>
+    <li>[CHANGED]: Nagyobb arculati ráncfelvarrások, simítások</li>
+    <li>[CHANGED]: Mappaszerkezet átalakítása</li>
+</ul>
 
 <h3>v0.3 pre-alpha</h3>
 <ul>
