@@ -3,12 +3,18 @@
 
 global $argv;
 
-include "php_deploy/PHPDeploy.php";
+include "php_deploy/vendor/autoload.php";
 
 $env = isset($argv[1]) ? $argv[1] : die("Nincs megadva a környezet\n\n");
 
-php_deploy($env)
-->task('installing composer dependencies...', 'composer install')
-->task('running migrations', 'composer migrate')
-->task('turn maintenance on', 'sftp:touch', 'maintenance')
-->run();
+$deploy = php_deploy($env, __DIR__);
+
+$deploy
+    ->task('prepare:files', ['app', 'config', 'framework', 'public', 'resources', 'routes', 'boot.php', 'composer.json'])
+    ->task('deploy:composer-install')
+//    ->task('site:down')
+    ->task('deploy:migrate')
+    ->task('deploy:composer-install', '--no-dev')
+    ->task('deploy:files')
+    ->task('site:up')
+    ->run();

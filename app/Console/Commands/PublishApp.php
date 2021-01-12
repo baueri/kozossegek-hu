@@ -15,11 +15,11 @@ namespace App\Console\Commands;
  */
 class PublishApp implements \Framework\Console\Command
 {
-    
+
     public function handle()
     {
-        $fileManager = new \Framework\File\FileManager(STORAGE_PATH . 'public');
-        
+        $fileManager = new \Framework\File\FileManager(_env('STORAGE_PATH') . 'public');
+
         if (!file_exists(ROOT . 'public/uploads')) {
             $fileManager->createFolder('uploads');
             $ok = $fileManager->createSymLink(ROOT . 'public/storage');

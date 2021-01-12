@@ -13,7 +13,7 @@ use App\Auth\Auth;
     <title>@yield('subtitle')kozossegek.hu</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css?family=Crimson+Text|Work+Sans:400,700|Merriweather|Roboto+Condensed:wght@300;400" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:wght@200|Work+Sans:400,700|Merriweather|Roboto+Condensed:wght@300;400|" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="search" type="application/opensearchdescription+xml" title="kozossegek.hu" href="/opensearch.xml">
 
@@ -97,19 +97,17 @@ use App\Auth\Auth;
         <div class="container" id="footer-top">
             <div class="row">
                 <div class="col-md-4 col-sm-6 col-xs-12">
-                    @widget('LABA')
-                </div>
-                <div class="col-md-4 col-sm-6 col-xs-12">
                     <ul class="navbar-nav">
                         <li class="nav-item"><a href="@route('portal.page', 'rolunk')" class="nav-link">Rólunk</a></li>
                         <!--<li class="nav-item"><a href="@route('portal.feedback')" class="nav-link">Visszajelzés küldése</a></li>-->
                         <li class="nav-item"><a href="@route('portal.page', 'impresszum')" class="nav-link">Impresszum</a></li>
                         <li class="nav-item"><a href="@route('portal.page', 'adatvedelmi-nyilatkozat')" class="nav-link">Adatvédelmi nyilatkozat</a></li>
                         <li class="nav-item"><a href="@route('portal.page', 'iranyelveink')" class="nav-link">Irányelveink</a></li>
+                        <li class="nav-item"><a href="@route('portal.page', 'rolunk')" class="nav-link">Kapcsolat</a></li>
                     </ul>
                 </div>
 
-                <div class="col-md-4 col-sm-6 col-xs-12">
+                <div class="col-md-4 offset-4 col-sm-6 col-xs-12">
                     <h5>Partnereink</h5>
                     <div class="partnereink">
                         <a href="https://pasztoralis.hu/" title="Pasztorális helynökség Szeged" target="_blank" rel="noopener noreferrer">
@@ -133,6 +131,12 @@ use App\Auth\Auth;
     @if($show_debugbar)
     {{ debugbar()->render() }}
     @endif
+    <div class="alert text-center cookiealert" role="alert">
+        <b>Kedves látogató!</b> &#x1F36A; A honlapon a felhasználói élmény fokozásának érdekében cookie-kat használunk. <a href="/cookie-tajekoztato" target="_blank">További információ</a>
+        <button type="button" class="btn btn-primary btn-sm acceptcookies">
+            Rendben
+        </button>
+    </div>
     <script src="/js/scripts.js"></script>
 </body>
 </html>
