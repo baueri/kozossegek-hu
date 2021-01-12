@@ -2,9 +2,20 @@
     "name": "ivan/php_deploy",
     "authors": [
         {
-            "name": "Bauer Iván",
-            "email": "bauer.ivan@zengo.eu"
+            "name": "Iván",
+            "email": "birkaivan@gmail.com"
         }
     ],
-    "require": {}
+    "autoload": {
+        "psr-4": {
+            "PHPDeploy\\": "/"
+        },
+        "files": [
+            "./functions.php"
+        ]
+    },
+    "require": {
+        "phpseclib/phpseclib": "~3.0"
+    }
 }
+ 

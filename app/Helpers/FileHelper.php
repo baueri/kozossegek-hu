@@ -57,7 +57,7 @@ class FileHelper
     public static function getPublicPathFor(File $file): string
     {
         $path = $file->getFilePath();
-        return str_replace(STORAGE_PATH . 'public', '/storage', $path);
+        return str_replace(_env('STORAGE_PATH') . 'public', '/storage', $path);
     }
 
     public static function getExtension(string $fileName)

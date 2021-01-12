@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Framework\Console\BaseCommands;
-
 
 use Framework\Console\Command;
 use Framework\Console\ConsoleKernel;
@@ -14,12 +12,12 @@ class ListCommands implements Command
     /**
      * @var ConsoleKernel
      */
-    private $kernel;
+    private ConsoleKernel $kernel;
 
     /**
      * @var Out
      */
-    private $out;
+    private Out $out;
 
     /**
      * ListCommands constructor.

@@ -6,7 +6,7 @@
                 <div>megnézem</div>
             </a>
             <div class="card-body">
-                <p class="text-center">
+                <p class="text-center mb-1">
                     @foreach($group->tags as $tag)
                         <span class="tag-img" title="{{ $tag['tag_name'] }}" style="background: url('/images/tag/{{ $tag['tag'] }}.png'); background-size: cover;"></span>
                     @endforeach

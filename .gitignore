@@ -8,3 +8,4 @@ error.log
 /nbproject
 storage/
 public/media
+tmp_deploy

@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'STORAGE_PATH' => ROOT . '../storage/eles' . DS,
     'SITE_URL' => 'https://demo.kozossegek.hu',
     'ENVIRONMENT' => 'production',
     'DEBUG' => false,

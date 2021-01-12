@@ -27,7 +27,6 @@
                             @endforeach
                         </select>
                         <input type="text" name="search" value="{{ $filter['search'] }}" class="form-control" placeholder="keresés kulcsszavak alapján...">
-                        <button type="submit" class="btn btn-darkblue">keresés indítása</button>
                     </div>
                 </div>
                 <div class="form-group text-center mt-5">
@@ -46,6 +45,9 @@
                     @endforeach
                     <input type="hidden" name="tags" value="{{ $filter['tags'] }}">
                 </div>
+                <p class="text-center">
+                    <button type="submit" class="btn btn-darkblue">keresés indítása</button>
+                </p>
                 <p class="mt-2 text-right">
                     <a href="/kozossegek" class="text-light">Szűrés törlése</a>
                 </p>
