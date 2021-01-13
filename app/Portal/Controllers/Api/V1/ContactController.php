@@ -7,7 +7,6 @@ use Framework\Exception\UnauthorizedException;
 use Framework\Http\Request;
 use Framework\Mail\Mailable;
 use Framework\Mail\Mailer;
-use Framework\Support\StringHelper;
 use InvalidArgumentException;
 
 class ContactController
@@ -28,9 +27,9 @@ class ContactController
             $mailable = Mailable::make()
                 ->subject('kozossegek.hu - új üzenet')
                 ->with($request->only('name', 'email', 'message'))
-                ->view('mail.contact_us');
+                ->view('email_templates:contact_us');
 
-            if ($mailer->to('birkaivan@gmail.com')->send($mailable)) {
+            if ($mailer->to('info@kozossegek.hu')->send($mailable)) {
                 return api()->ok('Köszönjük! Üzenetedet elküldtük.');
             }
 

@@ -8,7 +8,7 @@ use Framework\Mail\Mailable;
 
 class NewGroupEmail extends Mailable
 {
-    protected string $view = 'mail.created_group_email.created_group';
+    protected string $view = 'email_templates:created_group_email.created_group';
 
     public string $subject = 'kozossegek.hu - Új csoport';
 
@@ -30,6 +30,6 @@ class NewGroupEmail extends Mailable
     public function withNewUserMessage(UserToken $token)
     {
         $this->withToken($token);
-        return $this->view('mail.created_group_email.created_group_with_new_user');
+        return $this->view('email_templates:created_group_email.created_group_with_new_user');
     }
 }

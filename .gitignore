@@ -9,3 +9,4 @@ error.log
 storage/
 public/media
 tmp_deploy
+email_templates/

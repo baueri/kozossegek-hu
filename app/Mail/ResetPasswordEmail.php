@@ -13,7 +13,7 @@ class ResetPasswordEmail extends Mailable
     public function __construct(User $user, UserToken $user_token)
     {
         $this->subject('kozossegek.hu - elfelejtett jelszó')
-            ->view('mail.forgot-password')
+            ->view('email_templates:forgot-password')
             ->with(['user_token' => $user_token->getUrl(), 'name' => $user->name]);
     }
 }

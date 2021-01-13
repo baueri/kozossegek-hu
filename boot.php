@@ -33,6 +33,10 @@ DotEnv::load(ROOT . '.env.php');
 if (!_env('DEBUG')) {
     ini_set("log_errors", 1);
     ini_set("error_log", ROOT . "error.log");
+} else {
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
 }
 
 $application = new Application();
@@ -59,4 +63,3 @@ $application->boot(RegisterDirectives::class);
 $application->singleton(App\Repositories\Widgets::class);
 
 include APP . 'macros.php';
-

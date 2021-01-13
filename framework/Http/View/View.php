@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Framework\Http\View;
-
 
 use Exception;
 use Framework\Event\EventDisptatcher;
@@ -14,17 +12,17 @@ class View implements ViewInterface
     /**
      * @var array
      */
-    protected static $envVariables = [];
+    protected static array $envVariables = [];
 
     /**
      * @var ViewCache
      */
-    private $cacheDriver;
+    private ViewCache $cacheDriver;
 
     /**
      * @var Section
      */
-    private $section;
+    private Section $section;
 
     /**
      * @var ViewParser
@@ -51,8 +49,9 @@ class View implements ViewInterface
      * @param array $additional_args
      * @return string
      * @throws ViewNotFoundException
+     * @throws Exception
      */
-    public function view($view, array $args = [], array $additional_args = [])
+    public function view(string $view, array $args = [], array $additional_args = [])
     {
         $filePath = $this->getPath($view);
 
@@ -79,10 +78,9 @@ class View implements ViewInterface
     {
         $viewPath = str_replace('.', DS, $view);
 
-        if (strpos($view, '::') !== false) {
-            [$dirPath, $viewPath] = explode('::', $viewPath);
-            $dirPath = APP . $dirPath . DS . 'Views' . DS;
-
+        if (strpos($view, ':') !== false) {
+            [$dirPath, $viewPath] = explode(':', $viewPath);
+            $dirPath = rtrim(config("view.view_sources.{$dirPath}"), DS) . DS;
         } else {
             $dirPath = config('app.views_dir', RESOURCES . 'views' . DS);
         }

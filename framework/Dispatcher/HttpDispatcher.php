@@ -56,7 +56,6 @@ class HttpDispatcher implements Dispatcher
     public function dispatch(): void
     {
 //        header('Accept-Encoding: gzip, deflate');
-
         $route = $this->getCurrentRoute();
 
         if (!$route->getView() && $route->getController() && !class_exists($route->getController())) {

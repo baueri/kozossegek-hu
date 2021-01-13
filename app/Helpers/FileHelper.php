@@ -34,7 +34,7 @@ class FileHelper
         ])->all();
     }
 
-    public function getIcon(File $file)
+    public static function getIcon(File $file)
     {
         $type = $file->getMainType();
 

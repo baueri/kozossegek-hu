@@ -7,11 +7,11 @@ namespace Framework\Http\View;
 interface ViewInterface
 {
     /**
-     * @param $view
+     * @param string $view
      * @param array $args
      * @return string
      */
-    public function view($view, array $args = []);
+    public function view(string $view, array $args = []);
 
     /**
      * @return Section

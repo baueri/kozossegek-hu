@@ -599,6 +599,8 @@ input[name=search]::placeholder {
     padding: 1em 2em;
     width: 100%;
     max-width: 350px;
+    border: 0;
+    border-radius: .2rem;
 }
 #instructions i {
     color: #555;

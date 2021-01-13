@@ -18,6 +18,7 @@ use Framework\Http\View\View;
 use Framework\Http\View\ViewInterface;
 use Framework\Support\Collection;
 use Framework\Translator;
+use PHPDeploy\PHPDeploy;
 
 /**
  * @return Application|null
@@ -340,4 +341,38 @@ function rrmdir($dir)
 function api(): ApiResponse
 {
     return new ApiResponse();
+}
+
+// copies files and non-empty directories
+function rcopy($src, $dst, $excludeSymlinks = false)
+{
+    if ($excludeSymlinks && is_link($src)) {
+        return null;
+    }
+
+    if (file_exists($dst)) {
+        rrmdir($dst);
+    }
+    if (is_dir($src)) {
+        mkdir($dst, 0777, true);
+        $files = scandir($src);
+        foreach ($files as $file) {
+            if ($file != "." && $file != "..") {
+                rcopy("$src/$file", "$dst/$file");
+            }
+        }
+    } elseif (file_exists($src)) {
+        return copy($src, $dst);
+    }
+}
+
+/**
+ * @param $env
+ * @param null $cwd
+ * @return PHPDeploy
+ * @throws Exception
+ */
+function php_deploy($env, $cwd = null)
+{
+    return new PHPDeploy($env, $cwd);
 }

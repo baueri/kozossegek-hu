@@ -1,6 +1,5 @@
 <?php
 
-
 use Framework\Support\Password;
 use Phinx\Seed\AbstractSeed;
 
