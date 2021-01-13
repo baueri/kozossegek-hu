@@ -24,6 +24,8 @@ img {
 }
 .home #header.compact {
     background: #fff;
+    box-shadow: 0 0 6px 0;
+    font-size: 14px;
 }
 
 .home #header.compact .navbar-nav > li .nav-link {
