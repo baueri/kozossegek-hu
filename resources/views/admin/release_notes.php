@@ -1,6 +1,9 @@
 @title('Verzióinformáció')
 @extends('admin')
-
+<h3>v0.4 beta</h3>
+<ul>
+    <li></li>
+</ul>
 <h3>v0.3 pre-alpha</h3>
 <ul>
     <li>[NEW]: Az admin oldali vizuális szerkesztő panelbe bekerült a youtube videó beágyazási lehetőség is</li>

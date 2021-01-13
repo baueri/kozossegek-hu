@@ -22,10 +22,8 @@
     <div class="container">
         <div class="row">
 
-            <div class="col-md-5 offset-2lehet
-
-">
-                <img src="/images/csoportkep.jpg" style="filter: grayscale(1); width: 100%;"/>
+            <div class="col-md-5 offset-2lehet">
+                <img src="/images/csoportkep_contact.jpg"/>
             </div>
             <div class="col-md-5">
                 <h4>Írj nekünk!</h4>

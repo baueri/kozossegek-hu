@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Framework;
 
 use Framework\Container\Container;
@@ -9,7 +8,6 @@ use Framework\Database\QueryHistory;
 use Framework\Dispatcher\Dispatcher;
 use Framework\Http\View\Bootstrappers\BootDirectives;
 use Framework\Support\Config\Config;
-
 
 class Application extends Container
 {
@@ -33,7 +31,7 @@ class Application extends Container
      */
     public function __construct()
     {
-        $this->singleton(static::class, function() {
+        $this->singleton(static::class, function () {
             return static::getInstance();
         });
 

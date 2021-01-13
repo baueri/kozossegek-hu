@@ -11,7 +11,7 @@ class GroupContactMail extends Mailable
     public function __construct($data)
     {
         $this->subject('kozossegek.hu - Új érdeklődő szeretné felvenni a kapcsolatot a közösséggel')
-            ->view('mail.group-contact')
+            ->view('email_templates:group-contact')
             ->with([
                 'name' => strip_tags($data['name']),
                 'email' => strip_tags($data['email']),

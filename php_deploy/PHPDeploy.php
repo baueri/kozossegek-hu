@@ -5,6 +5,7 @@ namespace PHPDeploy;
 use ArrayAccess;
 use Error;
 use Exception;
+use Framework\Console\In;
 use phpseclib3\Net\SFTP;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -22,7 +23,8 @@ class PHPDeploy implements ArrayAccess
         'deploy:files' => 'fileDeploy',
         'sftp:send' => ['sftp', 'send'],
         'site:up' => 'up',
-        'site:down' => 'down'
+        'site:down' => 'down',
+        'deploy:remove-old-deploy' => 'removeOldDeploy'
     ];
 
     private array $tasks = [];
@@ -53,18 +55,20 @@ class PHPDeploy implements ArrayAccess
 
         $this->env = $env;
         $this->configuration = (include "deploy_cfg.php")[$env];
+
         if ($this->configuration['host']) {
             $this->sftp = (new SftpBuilder())->build($this->configuration['host']);
         }
     }
 
+    public function getTargetEnvDirName()
+    {
+        return $this->configuration['host']['cwd'];
+    }
+
     public function task($callback = null, ...$args)
     {
-        if (is_string($callback)) {
-            $this->tasks[$callback] = [$callback , $args];
-        } else {
-            $this->tasks[] = [$callback, $args];
-        }
+        $this->tasks[] = [$callback, $args];
 
         return $this;
     }
@@ -75,14 +79,18 @@ class PHPDeploy implements ArrayAccess
      */
     public function run($mode = 'verbose')
     {
+        if ($this->isProd() && !(new In())->confirm('Biztos indítsunk deploy-t az élesre?')) {
+            $this->log('megszakítva');
+            return false;
+        }
         $this->mode = $mode;
 
         $logCnt = 0;
-        foreach ($this->tasks as $name => [$task, $args]) {
+        foreach ($this->tasks as [$task, $args]) {
             $logCnt++;
-            $this->log("➤ [#{$logCnt}] Executing: {$name}");
+            $this->log("➤ [#{$logCnt}] Executing: {$task}");
             try {
-                if (!$this->runTask($name, $task, ...$args)) {
+                if (!$this->runTask($task, ...$args)) {
                     $this->error();
                     exit(1);
                 } else {
@@ -102,15 +110,12 @@ class PHPDeploy implements ArrayAccess
         if ($this->mode === 'verbose') {
             print("{$message}\n");
         }
+
+        return $this;
     }
 
-    private function runTask($name, $task, ...$args)
+    private function runTask($task, ...$args)
     {
-        $this->sftp->exec('');
-        if (!$task) {
-            $task = $name;
-        }
-
         if (is_string($task)) {
             if (isset($this->shortcuts[$task])) {
                 $task = $this->shortcuts[$task];
@@ -171,8 +176,10 @@ class PHPDeploy implements ArrayAccess
         copy($this['env_file'], "{$this->temp_deploy_dir}/.env.php");
 
         foreach ($files as $file) {
-            rcopy($file, "{$this->temp_deploy_dir}/$file");
+            rcopy($file, "{$this->temp_deploy_dir}/$file", true);
         }
+
+        rrmdir($this->temp_deploy_dir . '/public' . DS . 'storage');
 
         return true;
     }
@@ -232,23 +239,29 @@ class PHPDeploy implements ArrayAccess
         unset($this->configuration[$offset]);
     }
 
-    public function macro($name, $callback)
-    {
-        $this->shortcuts[$name] = $callback;
-
-        return $this;
-    }
-
     public function up()
     {
-        $this->sftp->delete($this['host']['cwd']);
-        return $this->sftp->symlink($this->getDeployDir(), $this['host']['cwd']);
+        $newName = "__old_" . $this->getTargetEnvDirName() . '_' . time();
+        $oldFileRenamed = $this->sftp->rename($this->getTargetEnvDirName(), $newName);
+
+        if (!$oldFileRenamed) {
+            return false;
+        }
+
+        $publicPath = "/storage/{$this->getTargetEnvDirName()}/public";
+        $targetPublicPath = $this->getDeployDir() . '/public/storage';
+
+        $pubSymlinkCreated = $this->sftp->symlink($publicPath, $targetPublicPath);
+
+        $deployDirRenamed = $this->sftp->rename($this->getDeployDir(), $this->getTargetEnvDirName());
+
+        return $deployDirRenamed && $pubSymlinkCreated;
     }
 
     public function down()
     {
-        if ($this->sftp->is_dir($this['host']['cwd'])) {
-            $this->sftp->touch("{$this['host']['cwd']}/.maintenance");
+        if ($this->sftp->is_dir($this->getTargetEnvDirName())) {
+            $this->sftp->touch("{$this->getTargetEnvDirName()}/.maintenance");
         }
 
         return true;
@@ -275,6 +288,29 @@ class PHPDeploy implements ArrayAccess
 
     private function getDeployDir()
     {
-        return "{$this['host']['cwd']}_{$this->time}";
+        return "{$this->getTargetEnvDirName()}_{$this->time}";
+    }
+
+    public function removeOldDeploy()
+    {
+        $deployDirs = $this->getDeployDirs();
+
+        if (($c = $deployDirs->count()) > 2) {
+            for ($i = 0; $i < $c - 2; $i++) {
+                $this->sftp->delete($deployDirs[$i], true);
+            }
+        }
+
+        return true;
+    }
+
+    private function getDeployDirs()
+    {
+        $folders = $this->sftp->nlist();
+        $targetDir = $this->getTargetEnvDirName() . '_';
+        $pattern = "/__old_{$targetDir}[0-9]+/";
+        return collect($folders)
+            ->filter(fn($file) => (bool) preg_match($pattern, $file))
+            ->sort();
     }
 }
