@@ -4,6 +4,7 @@ namespace App\Portal\Controllers;
 
 use App\Admin\Group\Services\UpdateGroup;
 use App\Auth\Auth;
+use App\Exception\EmailTakenException;
 use App\Http\Responses\CreateGroupSteps\RegisterGroupForm;
 use App\Http\Responses\PortalEditGroupForm;
 use App\Models\Group;
@@ -17,6 +18,7 @@ use App\Repositories\Institutes;
 use Error;
 use ErrorException;
 use Exception;
+use Framework\Exception\FileTypeNotAllowedException;
 use Framework\Http\Controller;
 use Framework\Http\Message;
 use Framework\Http\Request;
@@ -37,6 +39,7 @@ class GroupController extends Controller
 
     public function kozossegRegisztracio(RegisterGroupForm $service)
     {
+        set_header_bg('/images/kozosseget_vezetek.jpg');
         return (string) $service;
     }
 
@@ -72,7 +75,7 @@ class GroupController extends Controller
         $_SESSION['honepot_check_time'] = $checkTime = time();
         $_SESSION['honeypot_check_hash'] = $honeypot_check_hash = md5($checkTime);
         $slug = $group->slug();
-        $metaKeywords = builder('search_engine')->where('group_id', $group->id)->first()['keywords'];
+        $keywords = builder('search_engine')->where('group_id', $group->id)->first()['keywords'];
 
         return view('portal.kozosseg', compact(
             'group',
@@ -166,7 +169,14 @@ class GroupController extends Controller
             } else {
                 redirect_route('portal.group.create_group_success');
             }
-        } catch (Exception | Error | Throwable | ErrorException $ex) {
+        } catch (FileTypeNotAllowedException $e) {
+            Message::danger('Csak <b>word</b> és <b>pdf</b> dokumentumot fogadunk el igazolásként!');
+            return (string) $form;
+        } catch (EmailTakenException $e) {
+            Message::danger('Ez az email cím már foglalt');
+            return (string) $form;
+        } catch (Exception | Error | Throwable | ErrorException $e) {
+            process_error($e);
             Message::danger('Váratlan hiba történt a közösség létrehozásakor, kérjük próbáld meg később!');
             return (string) $form;
         }

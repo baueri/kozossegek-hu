@@ -4,6 +4,7 @@ namespace App\Portal\Services;
 
 use App\Admin\Group\Services\CreateGroup;
 use App\Enums\DenominationEnum;
+use App\Exception\EmailTakenException;
 use App\Mail\NewGroupEmail;
 use App\Models\Group;
 use App\Models\User;
@@ -51,6 +52,7 @@ class PortalCreateGroup
      * @param User|null $user
      * @return Group|null
      * @throws Exception
+     * @throws EmailTakenException
      */
     public function createGroup(Collection $requestData, ?array $fileData, ?User $user): ?Group
     {
@@ -58,6 +60,7 @@ class PortalCreateGroup
             'status',
             'name',
             'institute_id',
+            'institute',
             'age_group',
             'occasion_frequency',
             'on_days',
@@ -95,14 +98,11 @@ class PortalCreateGroup
         $group = $this->createGroup->create(collect($data), $fileData);
 
         if ($group) {
-            $mailable->with(['group' => $group]);
-            Mailer::make()->to($user->email)->send($mailable);
-
             return $group;
         }
 
         $this->errors = $this->createGroup->getErrors();
 
-        throw new \Exception('Nem sikerült a csoport létrehozása');
+        throw new Exception('Nem sikerült a csoport létrehozása');
     }
 }

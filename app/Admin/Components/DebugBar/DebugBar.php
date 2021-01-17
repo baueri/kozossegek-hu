@@ -11,9 +11,10 @@ class DebugBar
      */
     private $tabs = [];
 
-    public function __construct(QueryHistoryTab $queryHistoryTab, LoadedViewsTab $loadedViewsTab)
+    public function __construct(FrameworkInfoTab $frameworkInfoTab, QueryHistoryTab $queryHistoryTab, LoadedViewsTab $loadedViewsTab)
     {
         $this->tabs = [
+            $frameworkInfoTab,
             $queryHistoryTab,
             $loadedViewsTab,
         ];
@@ -39,7 +40,7 @@ class DebugBar
         $headers = [];
         $tab_contents = [];
         foreach ($this->tabs as $tab) {
-            $name = get_class($tab);
+            $name = get_class_name($tab);
             $headers[$name] = $tab->getName();
             $tab_contents[$name] = $tab->render();
         }

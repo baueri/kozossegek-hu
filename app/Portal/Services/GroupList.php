@@ -74,8 +74,8 @@ class GroupList
             'page' => $groups->page(),
             'total' => $groups->total(),
             'perpage' => $groups->perpage(),
-            'filter' => $filter,
-            'selected_tags' => explode(',', $filter['tags']),
+            'filter' => collect($filter),
+            'selected_tags' => explode(',', $filter['tags'] ?? ''),
             'tags' => builder('tags')->get(),
             'template' => $template,
             'header_background' => '/images/search_bg.jpg'

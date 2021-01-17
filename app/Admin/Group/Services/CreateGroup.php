@@ -21,11 +21,26 @@ class CreateGroup extends BaseGroupService
      */
     public function create(Collection $request, ?array $document = null): ?Group
     {
-        $data = $request->except('files', 'image', 'tags')->all();
+        $data = $request->except('files', 'image', 'tags', 'institute')->all();
 
         $data['age_group'] = implode(',', $data['age_group'] ?? []);
+        $data['on_days'] = implode(',', $data['on_days'] ?? []);
 
         if (!$this->validate($data)) {
+            return null;
+        }
+
+        $instituteId = null;
+
+        if ($institute = $request['institute']) {
+            $institute['approved'] = 0;
+            $institute['user_id'] = $data['user_id'];
+            $instituteId = $this->institutes->create($institute)->id;
+            $data['institute_id'] = $instituteId;
+        };
+
+        if (!$request['institute_id'] && !$instituteId) {
+            $this->pushError('Nincs intézmény megadva');
             return null;
         }
 

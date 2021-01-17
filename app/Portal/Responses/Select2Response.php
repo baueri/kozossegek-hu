@@ -26,6 +26,10 @@ abstract class Select2Response
         $this->collection = $collection;
     }
 
+    /**
+     * @param mixed $model
+     * @return mixed
+     */
     abstract public function getText($model);
 
     public function getId($model)

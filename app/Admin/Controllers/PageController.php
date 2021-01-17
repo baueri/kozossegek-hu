@@ -91,7 +91,7 @@ class PageController extends AdminController
     {
         $post = $this->repository->find($this->request['id']);
 
-        $post->update($this->request->only('title', 'slug', 'content', 'status'));
+        $post->update($this->request->only('title', 'slug', 'content', 'status', 'header_image'));
 
         $this->repository->save($post);
 

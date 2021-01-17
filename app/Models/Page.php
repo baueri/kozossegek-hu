@@ -22,6 +22,8 @@ class Page extends Model
 
     public $slug;
 
+    public $header_image;
+
     /**
      * @var User
      */

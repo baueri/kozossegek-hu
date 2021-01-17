@@ -1,9 +1,8 @@
 <?php
 
-
 namespace App\Portal\Services;
 
-
+use App\Exception\EmailTakenException;
 use App\Mail\RegistrationEmail;
 use App\Models\User;
 use App\Repositories\Users;
@@ -42,6 +41,10 @@ class CreateUser
      */
     public function create(Collection $data): User
     {
+        if ($this->users->getUserByEmail($data['email'])) {
+            throw new EmailTakenException();
+        }
+
         $data = $data->only('name', 'email', 'password');
 
         $data['password'] = Password::hash(time());

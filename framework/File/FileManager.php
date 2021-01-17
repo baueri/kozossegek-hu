@@ -16,7 +16,9 @@ class FileManager
         'application/msword',
         'application/vnd.oasis.opendocument.text',
         'application/octet-stream',
-        'application/wps-office.doc'
+        'application/wps-office.doc',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.template'
     ];
 
     const TYPES_EXCEL = [

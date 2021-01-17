@@ -22,3 +22,5 @@ builder('v_groups')->macro('whereGroupTag', function ($builder, array $tags) {
 builder('group_tags')->macro('whereGroupId', function ($builder, $groupId) {
     $builder->where('group_id', $groupId);
 });
+
+builder('institutes')->macro('approved', fn($builder) => $builder->where('approved', 1));

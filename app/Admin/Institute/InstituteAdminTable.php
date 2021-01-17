@@ -34,17 +34,17 @@ class InstituteAdminTable extends AdminTable implements Deletable, Editable
         'user' => 'Létrehozta'
     ];
 
-    protected $centeredColumns = ['image', 'group_count'];
+    protected array $centeredColumns = ['image', 'group_count'];
 
     /**
      * @var Institutes
      */
-    private $repository;
+    private Institutes $repository;
 
     /**
      * @var Users
      */
-    private $userRepository;
+    private Users $userRepository;
 
     /**
      * InstituteAdminTable constructor.
@@ -84,6 +84,12 @@ class InstituteAdminTable extends AdminTable implements Deletable, Editable
     public function getUser($user)
     {
         return $user->name;
+    }
+
+    public function getName($value, Institute $institute)
+    {
+        $warning = !$institute->approved ? '<i class="fa fa-exclamation-circle text-danger" title="még nem jóváhagyott intézmény"></i> ' : '';
+        return $warning . $this->getEdit($value, $institute);
     }
 
     public function getImage($img, Institute $institute)

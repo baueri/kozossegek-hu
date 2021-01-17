@@ -21,6 +21,9 @@
                         <select name="institute_id" style="width:100%" class="form-control" required>
                             <option value="{{ $group->institute_id }}">
                                 {{ $group->institute_id ? $institute->name . ' (' . $institute->city . ')' : 'intézmény' }}
+                                @if($institute && $institute->approved == 0)
+                                - függőben levő intézmény
+                                @endif
                             </option>
                         </select>
                     </div>

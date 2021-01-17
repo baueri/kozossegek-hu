@@ -7,6 +7,7 @@ use App\Auth\Auth;
 <html lang="hu">
 <head>
     <meta charset="utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -39,7 +40,7 @@ use App\Auth\Auth;
     @endif
 </head>
 <body class="@if(!is_prod())demo@endif">
-    <div class="home" style="background:url('{{ $header_background ?? '/images/img2.jpg' }}') no-repeat top center">
+    <div class="home" style="background:url('{{ $header_background ?? '/images/main.jpg' }}') no-repeat top center">
         <nav id="header" class="navbar navbar-expand-sm fixed-top">
             <div class="container">
                 <a href="/" class="navbar-brand ml-4 ml-sm-0 mt-0 mb-0 p-0 p-sm-1">
@@ -102,7 +103,7 @@ use App\Auth\Auth;
                         <li class="nav-item"><a href="@route('portal.page', 'impresszum')" class="nav-link">Impresszum</a></li>
                         <li class="nav-item"><a href="@route('portal.page', 'adatvedelmi-nyilatkozat')" class="nav-link">Adatvédelmi nyilatkozat</a></li>
                         <li class="nav-item"><a href="@route('portal.page', 'iranyelveink')" class="nav-link">Irányelveink</a></li>
-                        <li class="nav-item"><a href="@route('portal.page', 'rolunk')" class="nav-link">Kapcsolat</a></li>
+                        <li class="nav-item"><a href="@route('portal.page', 'rolunk')#contact" class="nav-link">Kapcsolat</a></li>
                     </ul>
                 </div>
 

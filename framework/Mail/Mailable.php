@@ -14,9 +14,9 @@ class Mailable
     public ?array $from = [];
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected string $view;
+    protected ?string $view = null;
 
     /**
      * @var array
@@ -27,6 +27,11 @@ class Mailable
      * @var string
      */
     public string $subject;
+
+    /**
+     * @var string|null
+     */
+    public ?string $message = null;
 
 
     /**
@@ -72,7 +77,11 @@ class Mailable
 
     public function getBody(): string
     {
-        return view($this->view, $this->viewData);
+        if ($this->view) {
+            return view($this->view, $this->viewData);
+        }
+
+        return $this->message;
     }
 
     /**
@@ -90,5 +99,12 @@ class Mailable
     public function getVariableNames()
     {
         return array_keys($this->viewData);
+    }
+
+    public function setMessage(string $message)
+    {
+        $this->message = $message;
+
+        return $this;
     }
 }

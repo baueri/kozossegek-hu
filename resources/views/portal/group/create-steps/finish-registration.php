@@ -1,18 +1,19 @@
-<div style="font-size: .9rem;">
-    <b>Közösség neve:</b> {{ $group->name }}<br/>
-    <b>Intézmény:</b> {{ $group->institute_name }} ({{ $group->city, $group->district ? ", $group->district" : "" }})<br/>
-    <b>Korosztály:</b> {{ $group->getAgeGroups()->implode(',') }}<br/>
-    <b>Alkalmak gyakorisága:</b> {{ $group->occasionFrequency() }}<br/>
-    <b>Mely napokon:</b> {{ $group->getDays()->implode(',') }}<br/>
-    <b>Lelkiségi mozgalom:</b> {{ $group->spiritual_movement ?: '-' }}<br/>
-    <b>Közösség jellemzői:</b> {{ $selected_tags }}<br/>
-    <hr>
-    <b>Bemutatkozás:</b>
-    {{ $group->description }}
-    <hr>
-    <b>Közösségvezető(k):</b> {{ $group->group_leaders }}<br/>
-    <b>Elérhetőség (telefon):</b> {{ $group->group_leader_phone ?: '-' }}<br/>
-    <b>Elérhetőség (email):</b> {{ $group->group_leader_email }}<br/>
+<div style="font-size: .9rem;" id="group-preview">
+    <table style="width: 100%;">
+        <tr><th>Közösség neve</th><td>{{ $group->name }}</td></tr>
+        <tr><th>Intézmény</th><td> {{ $group->institute_name }} ({{ $group->city, $group->district ? ", $group->district" : "" }})</td></tr>
+        <tr><th>Korosztály</th><td>{{ $group->getAgeGroups()->implode(',') }}</td></tr>
+        <tr><th>Alkalmak gyakorisága</th><td>{{ $group->occasionFrequency() }}<br/></td></tr>
+        <tr><th>Mely napokon</th><td> {{ $group->getDays()->implode(',') }}<br/></td></tr>
+        <tr><th>Lelkiségi mozgalom</th><td> {{ $group->spiritual_movement ?: '-' }}<br/></td></tr>
+        <tr><th>Közösség jellemzői</th><td> {{ $selected_tags }}</td></tr>
+        <tr><td colspan="2"><hr></td></tr>
+        <tr><th>Bemutatkozás</th><td>{{ $group->description }}</td></tr>
+        <tr><td colspan="2"><hr></td></tr>
+        <tr><th>Közösségvezető(k)</th><td> {{ $group->group_leaders }}</td></tr>
+        <tr><th>Elérhetőség (telefon)</th><td> {{ $group->group_leader_phone ?: '-' }}</td></tr>
+        <tr><th>Elérhetőség (email)</th><td> {{ $group->group_leader_email }}</td></tr>
+    </table>
     @if($image)
         <hr>
         <p><b>Fotó:</b><br>
@@ -27,4 +28,18 @@
 </div>
 <style>
     .group-register-preview .tooltip { opacity:1!important; }
+    #group-preview {
+
+    }
+    #group-preview th {
+        text-align: right;
+        font-weight: bold;
+        padding-right: 15px;
+        width: 1px;
+        white-space: nowrap;
+    }
+    #group-preview th, #group-preview td {
+        vertical-align: top;
+        padding-bottom: 10px;
+    }
 </style>

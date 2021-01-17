@@ -8,12 +8,12 @@ use Framework\Support\Enum;
 
 class FileType extends Enum
 {
-    const IMAGE = 'image';
-    const DOCUMENT = 'document';
-    const FOLDER = 'folder';
-    const PDF = 'pdf';
-    const VIDEO = 'video';
-    const ZIP = 'zip';
-    const SOUND = 'sound';
-    const EXCEL = 'excel';
+    public const IMAGE = 'image';
+    public const DOCUMENT = 'document';
+    public const FOLDER = 'folder';
+    public const PDF = 'pdf';
+    public const VIDEO = 'video';
+    public const ZIP = 'zip';
+    public const SOUND = 'sound';
+    public const EXCEL = 'excel';
 }

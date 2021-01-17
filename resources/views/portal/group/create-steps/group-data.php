@@ -20,12 +20,12 @@
                 <div class="col-md-4">
                     <div class="form-group required">
                         <label>Neved:</label>
-                        <input type="text" class="form-control" name="user_name" required value="{{ $user_name }}" data-describedby="validate_user_name">
+                        <input type="text" class="form-control" name="user_name"  value="{{ $user_name }}" data-describedby="validate_user_name">
                         <div id="validate_user_name" class="validate_message"></div>
                     </div>
                     <div class="form-group required">
                         <label>Email címed:</label>
-                        <input type="email" class="form-control" name="email" value="{{ $email }}" required data-describedby="validate_email">
+                        <input type="email" class="form-control" name="email" value="{{ $email }}"  data-describedby="validate_email">
                         <div id="validate_email" class="validate_message"></div>
                     </div>
                 </div>
@@ -42,11 +42,54 @@
             <div class="col-md-12">
                 <div class="form-group required">
                     <label for="institute_id">Intézmény / plébánia</label>
-                    <select name="institute_id" style="width:100%" class="form-control" required>
+                    <select name="institute_id" style="width:100%" class="form-control" >
                         <option value="{{ $group->institute_id }}">
                             {{ $group->institute_id ? $group->institute_name . ' (' . $group->city . ')' : 'intézmény' }}
                         </option>
                     </select>
+                    <small><b><a href="#" onclick="toggleInstituteBox(); return false;">+ nem találom a listában</a></b></small>
+                    <div style="display: none;" id="new-institute">
+                        <div class="row">
+                            <div class="col-lg-10 col-md-12">
+                                <div class="p-3 mb-3" style="background: #eee; border: 1px solid #ccc;">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group required">
+                                                <label>Plébánia / intézmény neve:</label>
+                                                <input class="form-control form-control-sm institute-data" type="text" name="institute[name]">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group required">
+                                                <label>Plébános / intézményvezető neve:</label>
+                                                <input class="form-control form-control-sm institute-data" type="text" name="institute[leader_name]">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group required">
+                                                <label>Település</label>
+                                                <input type="text" class="form-control form-control-sm institute-data" name="institute[city]">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Városrész</label>
+                                                <input type="text" class="form-control form-control-sm institute-data" name="institute[district]">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Cím</label>
+                                                <input class="form-control form-control-sm institute-data" type="text" name="institute[address]">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -126,7 +169,7 @@
             <div class="col-md-12">
                 <div class="form-group required">
                     <label for="group_leaders">Közösségvezető(k) neve(i)</label>
-                    <input type="text" name="group_leaders" id="group_leaders" class="form-control" value="{{ $group->group_leaders ?: $user->name }}" required>
+                    <input type="text" name="group_leaders" id="group_leaders" class="form-control" value="{{ $group->group_leaders ?: $user->name ?? '' }}" >
                 </div>
             </div>
             <div class="col-md-6">
@@ -138,7 +181,7 @@
             <div class="col-md-6">
                 <div class="form-group required">
                     <label for="group_leader_email">Elérhetőség (Email cím)</label>
-                    <input type="email" name="group_leader_email" id="group_leader_email" value="{{ $group->group_leader_email ?: $user->email }}" class="form-control">
+                    <input type="email" name="group_leader_email" id="group_leader_email" value="{{ $group->group_leader_email ?: $user->email ?? '' }}" class="form-control">
                 </div>
             </div>
         </div>
@@ -265,15 +308,36 @@
             initCroppie();
         });
 
+        function validateInstitute()
+        {
+            if ($("#new-institute").is(":visible")) {
+                let ok = true;
+                let toValidate = [
+                    "[name='institute[name]']",
+                    "[name='institute[city]']",
+                ];
+                $(toValidate.join(", "), $(".required", form)).each(function() {
+                    if (!validateRequiredInput($(this))) {
+                        ok = false;
+                    }
+                });
+
+                return ok;
+            }
+
+            const selector = $("[name=institute_id]");
+
+            return validateRequiredInput(selector)
+        }
+
         function validateRequiredInputs()
         {
-            var inputOk = true;
+            let inputOk = true;
 
-            var toValidate = [
+            let toValidate = [
                 "[name=user_name]",
                 "[name=email]",
                 "[name=name]",
-                "[name=institute_id]",
                 "[name=age_group]",
                 "[name=occasion_frequency]",
                 "[name='tags[]']",
@@ -299,7 +363,7 @@
             }
         }
 
-        $("input:not([name=email]), select, textarea", $(".required", form)).on("focusout input change", function() {
+        $("input:not([name=email]):not(.institute-data), select:not([name=institute_id]), textarea", $(".required", form)).on("focusout input change", function() {
             validateRequiredInput($(this));
         });
 
@@ -307,8 +371,8 @@
 
             if (typeof data === "undefined" || !data.send_request) {
                 e.preventDefault();
-                if(!validateRequiredInputs() || !validateUserName() || !await validateEmailAddress()) {
-                    return dialog.show("Ellenőrizd az adataidat!");
+                if(!validateRequiredInputs() || !validateUserName() || !await validateEmailAddress() || !validateInstitute()) {
+                    return dialog.danger("Kérjük ellenőrizd az adataidat! A csillaggal jelölt mezők kitöltése kötelező!");
                 }
 
                 await setupImageData();
@@ -352,7 +416,6 @@
                 ['font', ['bold', 'underline', 'clear']],
                 ['para', ['ul', 'ol', 'paragraph']],
                 ['insert', ['link']],
-                ['view', ['help']]
             ]
         });
 
@@ -368,4 +431,10 @@
             }
         });
     });
+
+    function toggleInstituteBox()
+    {
+        $("#new-institute").slideToggle();
+        $("[name=institute_id]").val(null).trigger("change");
+    }
 </script>
