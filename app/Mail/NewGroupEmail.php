@@ -8,7 +8,7 @@ use Framework\Mail\Mailable;
 
 class NewGroupEmail extends Mailable
 {
-    protected string $view = 'email_templates:created_group_email.created_group';
+    protected ?string $view = 'email_templates:created_group_email.created_group';
 
     public string $subject = 'kozossegek.hu - Új csoport';
 

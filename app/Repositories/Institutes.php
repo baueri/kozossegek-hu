@@ -20,7 +20,7 @@ class Institutes extends \Framework\Repository
      */
     public function search($keyword, $city = null)
     {
-        $builder =  $this->getBuilder()->apply('notDeleted');
+        $builder =  $this->getBuilder()->apply(['notDeleted', 'approved']);
 
         if ($city) {
             $builder->where('city', $city);

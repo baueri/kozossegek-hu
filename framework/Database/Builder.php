@@ -404,6 +404,14 @@ class Builder
 
     public function apply($macro, ...$args)
     {
+        if (is_array($macro)) {
+            foreach ($macro as $m) {
+                $this->__call($m, $args);
+            }
+
+            return $this;
+        }
+
         return $this->__call($macro, $args);
     }
 

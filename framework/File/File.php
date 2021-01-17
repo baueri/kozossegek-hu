@@ -96,7 +96,7 @@ class File
     {
         $newFilePath = $newPath . ($newFilename ?: $this->fileName);
 
-        if (!is_dir($newFilePath)) {
+        if (!is_dir(dirname($newFilePath))) {
             mkdir(dirname($newFilePath), 0777, true);
         }
 

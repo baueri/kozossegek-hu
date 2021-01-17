@@ -19,7 +19,7 @@ abstract class AdminTable
     /**
      * @var array
      */
-    protected $centeredColumns = [];
+    protected array $centeredColumns = [];
 
     /**
      * @var Request

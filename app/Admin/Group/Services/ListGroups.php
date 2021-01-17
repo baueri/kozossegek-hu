@@ -74,6 +74,8 @@ class ListGroups
         $occasion_frequencies = $this->OccasionFrequencies->all();
         $statuses = (new GroupStatusRepository())->all();
 
+        $institute = null;
+
         if ($institute_id = $this->request['institute_id']) {
             $institute = db()->fetchColumn("select name from institutes where id=?", [$institute_id]);
         }

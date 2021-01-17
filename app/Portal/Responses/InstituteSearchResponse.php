@@ -2,6 +2,8 @@
 
 namespace App\Portal\Responses;
 
+use App\Models\Institute;
+
 /**
  * Description of InstituteSearchResponse
  *
@@ -10,8 +12,8 @@ namespace App\Portal\Responses;
 class InstituteSearchResponse extends Select2Response
 {
     /**
-     * 
-     * @param \App\Models\Institute $institute
+     *
+     * @param Institute $institute
      * @return string
      */
     public function getText($institute)
@@ -19,9 +21,9 @@ class InstituteSearchResponse extends Select2Response
         $cityAndDistrict = $institute->city . ($institute->district ? ", $institute->district" : '');
         return "{$institute->name} ({$cityAndDistrict})";
     }
-    
-    public function getId($model) {
+
+    public function getId($model)
+    {
         return $model->id;
     }
-
 }

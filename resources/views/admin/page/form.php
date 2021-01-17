@@ -27,6 +27,11 @@
                     <option value="DRAFT" {{ $page->status == "DRAFT" ? "selected" : "" }}>Piszkozat</option>
                 </select>
             </div>
+
+            <div class="form-group">
+                <label>Fejléc háttérkép</label>
+                <input type="text" class="form-control" name="header_image" value="{{ $page->header_image }}"/>
+            </div>
             @if($page)
                 <p>
                     <a href="{{ $page->getUrl() }}" target="_blank"><i class="fa fa-eye"></i> megtekintés</a>

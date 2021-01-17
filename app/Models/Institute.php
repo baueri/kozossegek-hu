@@ -29,6 +29,8 @@ class Institute extends \Framework\Model\Model
 
     public $image;
 
+    public $approved;
+
     public function getImageRelPath()
     {
         return \App\Helpers\InstituteHelper::getImageRelPath($this->id);

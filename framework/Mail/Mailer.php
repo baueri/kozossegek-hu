@@ -43,6 +43,18 @@ class Mailer
     }
 
     /**
+     * @param string $to
+     * @return $this
+     * @throws Exception
+     */
+    public function cc(string $to)
+    {
+        $this->phpMailer->addCC($to);
+
+        return $this;
+    }
+
+    /**
      * @param Mailable $mailable
      * @return bool
      * @throws Exception

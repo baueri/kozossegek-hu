@@ -26,7 +26,7 @@ class PDOResultSet implements ResultSet
 
     public function fetchRow($fetchStyle = self::FETCH_STYLE)
     {
-        return $this->statement->fetch($fetchStyle);
+        return $this->statement->fetch($fetchStyle) ?: null;
     }
 
     public function getRows($fetchStyle = self::FETCH_STYLE)

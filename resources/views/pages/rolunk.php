@@ -4,9 +4,6 @@
         #send-message label {
             margin-bottom: .2rem;
         }
-        #send-message .form-group {
-            /*margin-bottom: .3rem;*/
-        }
     </style>
 @endheader
 @section('header_content')
@@ -16,12 +13,12 @@
 <div class="container p-4 page">
     <div>
         {{ $page->content }}
+        <span id="contact"></span>
     </div>
 </div>
 <div class="jumbotron main-block mt-0 mb-0">
     <div class="container">
         <div class="row">
-
             <div class="col-md-5 offset-2lehet">
                 <img src="/images/csoportkep_contact.jpg"/>
             </div>

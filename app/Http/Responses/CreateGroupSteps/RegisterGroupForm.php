@@ -38,25 +38,28 @@ class RegisterGroupForm extends AbstractGroupStep
     {
         $request = $this->request;
         /* @var $institute Institute */
-        $data = $request->only(
+        $data = collect($request->only(
             'occasion_frequency',
             'institute_id',
             'spiritual_movement_id',
             'name',
             'description',
             'join_mode'
-        );
+        ));
         $institute = $this->institutes->find($data['institute_id']);
         $data['group_leaders'] = $request->get('group_leaders', $request['user_name']);
         $data['group_leader_email'] = $request->get('group_leader_email', $request['email']);
         $data['institute_name'] = $institute ? $institute->name : '';
         $data['city'] = $institute ? $institute->city : '';
         $data['district'] = $institute ? $institute->district : '';
-        $data['age_group'] = implode(',', $request['age_group']);
-        $data['on_days'] = implode(',', $request['on_days']);
-        $data['spiritual_movement'] = $this->spiritualMovements->find($request['spiritual_movement_id'])['name'];
+        $data['age_group'] = implode(',', $request['age_group'] ?? []);
+        $data['on_days'] = implode(',', $request['on_days'] ?? []);
+        $data['spiritual_movement'] = '';
+        if ($request['spiritual_movement_id'] && $movement = $this->spiritualMovements->find($request['spiritual_movement_id'])) {
+            $data['spiritual_movement'] = $movement['name'];
+        }
 
-        $group = new GroupView($data);
+        $group = new GroupView($data->all());
         $user = Auth::user();
 
         $image = $request['image'];
@@ -68,12 +71,12 @@ class RegisterGroupForm extends AbstractGroupStep
         return [
             'group' => $group,
             'user' => $user,
-            'age_group_array' => $request['age_group'],
+            'age_group_array' => $request['age_group'] ?? [],
             'tags' => builder('tags')->get(),
             'image' => $image,
-            'document' => $request->files['document']['name'],
-            'group_tags' => $request['tags'],
-            'group_days' => $request['on_days'],
+            'document' => $request->files['document']['name'] ?? null,
+            'group_tags' => $request['tags'] ?? [],
+            'group_days' => $request['on_days'] ?? [],
             'user_name' => $request['user_name'],
             'email' => $request['email'],
         ];

@@ -260,7 +260,7 @@ function widget($uniqid)
 
 function is_prod()
 {
-    return config('app.environment') === 'production';
+    return app()->envIs('production');
 }
 
 /**
@@ -293,7 +293,7 @@ function mb_ucfirst($string, $encoding = 'utf-8')
     return mb_strtoupper($firstChar, $encoding) . $then;
 }
 
-function raise_error(int $code, string $message, string $message2)
+function raise_error_page(int $code, string $message, string $message2)
 {
     echo view('portal.error', compact('code', 'message', 'message2'));
     exit();
@@ -301,17 +301,22 @@ function raise_error(int $code, string $message, string $message2)
 
 function raise_500(string $message = '', string $message2 = 'Nincs jogosultsága az oldal megtekintéséhez')
 {
-    raise_error(500, $message, $message2);
+    raise_error_page(500, $message, $message2);
 }
 
 function raise_404($message = 'A keresett oldal nem található', $message2 = '<i class="text-muted">De ne adjátok fel, keressetek és előbb vagy utóbb találtok ;-)</i>')
 {
-    raise_error(404, $message, $message2);
+    raise_error_page(404, $message, $message2);
 }
 
 function raise_403($message = '', $message2 = 'Nincs jogosultsága a tartalom megtekintéséhez!')
 {
-    raise_error(403, $message, $message2);
+    raise_error_page(403, $message, $message2);
+}
+
+function process_error($e)
+{
+    app()->get(Dispatcher::class)->handleError($e);
 }
 
 function is_loggedin()
@@ -375,4 +380,24 @@ function rcopy($src, $dst, $excludeSymlinks = false)
 function php_deploy($env, $cwd = null)
 {
     return new PHPDeploy($env, $cwd);
+}
+
+function set_header_bg(string $bg)
+{
+    View::addVariable('header_background', $bg);
+}
+
+/**
+ * @param string|object $class
+ * @return mixed|string
+ */
+function get_class_name($class)
+{
+    if (is_object($class)) {
+        $path = explode('\\', get_class($class));
+    } else {
+        $path = explode('\\', $class);
+    }
+
+    return array_pop($path);
 }

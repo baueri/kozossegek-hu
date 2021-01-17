@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Repositories\AgeGroups;
 use App\Repositories\Denominations;
 use App\Repositories\GroupStatusRepository;
+use App\Repositories\Institutes;
 use App\Repositories\OccasionFrequencies;
 
 /**
@@ -17,6 +18,16 @@ use App\Repositories\OccasionFrequencies;
  */
 class PortalEditGroupForm
 {
+    /**
+     * @var Institutes
+     */
+    private Institutes $institutes;
+
+    public function __construct(Institutes $institutes)
+    {
+        $this->institutes = $institutes;
+    }
+
     public function getResponse(GroupView $group)
     {
         $statuses = (new GroupStatusRepository())->all();
@@ -33,7 +44,7 @@ class PortalEditGroupForm
         $group_days = explode(',', $group->on_days);
         $view = 'portal.group.edit_my_group';
         $action = route('portal.my_group.update');
-
+        $institute = $this->institutes->find($group->institute_id);
 
         return view($view, compact(
             'group',

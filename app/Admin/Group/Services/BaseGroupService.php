@@ -6,6 +6,7 @@ use App\Helpers\FileHelper;
 use App\Helpers\GroupHelper;
 use App\Models\Group;
 use App\Repositories\Groups;
+use App\Repositories\Institutes;
 use App\Services\RebuildSearchEngine;
 use App\Storage\Base64Image;
 use Framework\Exception\FileTypeNotAllowedException;
@@ -38,14 +39,21 @@ abstract class BaseGroupService
      */
     private FileManager $fileManager;
 
+    /**
+     * @var Institutes
+     */
+    protected Institutes $institutes;
+
     public function __construct(
         Groups $repository,
         RebuildSearchEngine $searchEngineRebuilder,
-        FileManager $fileManager
+        FileManager $fileManager,
+        Institutes $institutes
     ) {
         $this->repository = $repository;
         $this->searchEngineRebuilder = $searchEngineRebuilder;
         $this->fileManager = $fileManager;
+        $this->institutes = $institutes;
     }
 
     protected function updateSearchEngine(Group $group)
@@ -116,7 +124,6 @@ abstract class BaseGroupService
         $requiredFields = [
             'name',
             'denomination',
-            'institute_id',
             'age_group',
             'occasion_frequency',
             'description',

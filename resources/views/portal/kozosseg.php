@@ -159,6 +159,7 @@
                 website: $("[name=website]").val()
             }
             $.post("@route('portal.contact-group', $group)", data, function(response) {
+                console.log(response);
                 if (response.success) {
                     $("#contact-modal .modal-body").html(response.msg);
                     $("#contact-modal [type=submit]").remove();

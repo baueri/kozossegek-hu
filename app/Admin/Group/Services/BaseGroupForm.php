@@ -53,8 +53,7 @@ class BaseGroupForm
         Request $request,
         Institutes $institutes,
         Users $users
-    )
-    {
+    ) {
         $this->request = $request;
         $this->institutes = $institutes;
         $this->users = $users;
@@ -62,11 +61,11 @@ class BaseGroupForm
 
     public function show(Group $group)
     {
-        $institute = $this->institutes->find($group->institute_id) ?: new Institute;
-        $denominations = (new Denominations)->all();
-        $statuses = (new GroupStatusRepository)->all();
-        $occasion_frequencies = (new OccasionFrequencies)->all();
-        $age_groups = (new AgeGroups)->all();
+        $institute = $this->institutes->find($group->institute_id) ?: new Institute();
+        $denominations = (new Denominations())->all();
+        $statuses = (new GroupStatusRepository())->all();
+        $occasion_frequencies = (new OccasionFrequencies())->all();
+        $age_groups = (new AgeGroups())->all();
         $action = $this->getAction($group);
         $spiritual_movements = db()->select('select * from spiritual_movements order by name');
         $tags = builder('tags')->select('*')->get();
