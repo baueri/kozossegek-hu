@@ -14,6 +14,9 @@
                         <select name="varos" style="width:150px !important;" class="form-control">
                             <option value="{{ $filter['varos'] }}">{{ $filter['varos'] }}</option>
                         </select>
+                        <div class="tag-dropdown">
+                            <button type="button" onclick="$('.tag-dropdown-menu').slideToggle();"  class="form-control">Jellemzők <i class="fa fa-caret-down ml-2" style="font-size: 12px;"></i> </button>
+                        </div>
                         <select class="form-control" id="korosztaly" name="korosztaly">
                             <option></option>
                             @foreach($age_groups as $age_group)
@@ -29,24 +32,23 @@
                         <input type="text" name="search" value="{{ $filter['search'] }}" class="form-control" placeholder="keresés kulcsszavak alapján...">
                     </div>
                 </div>
-                <div class="form-group text-center mt-5">
+                <div class="tag-dropdown-menu text-center" @if($selected_tags) style="display: block;" @endif>
                     @foreach($tags as $i => $tag)
                     @if($i > 0 && $i % 8 == 0) <br/> @endif
                     <input type="checkbox"
                            class="group-tag"
                            id="tag-{{ $tag['slug'] }}"
                            value="{{ $tag['slug'] }}"
-                           <?php if (in_array($tag['slug'], $selected_tags)): ?> checked <?php endif; ?>
+                        <?php if (in_array($tag['slug'], $selected_tags)): ?> checked <?php endif; ?>
                            style="display: none;">
                     <label for="tag-{{ $tag['slug'] }}" class="mr-1 badge badge-pill badge-light group-tag-badge align-middle" title="{{ $tag['tag'] }}">
                         <span class="align-middle">{{ $tag['tag'] }}</span>
                     </label>
-
                     @endforeach
                     <input type="hidden" name="tags" value="{{ $filter['tags'] }}">
                 </div>
                 <p class="text-center">
-                    <button type="submit" class="btn btn-darkblue">keresés indítása</button>
+                    <button type="submit" class="btn btn-lightred" style="box-shadow: 0 0 10px #000;"><i class="fa fa-search mr-2"></i> keresés indítása</button>
                 </p>
                 <p class="mt-2 text-right">
                     <a href="/kozossegek" class="text-light">Szűrés törlése</a>

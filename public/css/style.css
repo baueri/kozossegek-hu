@@ -13,6 +13,19 @@ img {
     max-width: 100%;
     height: auto;
 }
+.tag-dropdown button {
+    border-radius: 0;
+    color: #999;
+    font-size: 14px;
+    height: 38px;
+}
+.tag-dropdown-menu {
+    width: 100%;
+    display: none;
+    background: rgba(0, 0, 0, .5);
+    padding: 1em;
+    margin-bottom: 2em;
+}
 
 .home {
     background-attachment: fixed !important;
