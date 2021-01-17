@@ -4,7 +4,7 @@
 
 @section('header_content')
     @featuredTitle('Közösséget keresek')
-    <div class="pt-4 pb-4 mb-0">
+    <div class="pb-3 mb-0">
         <div class="container">
             @widget('KOKE')
             <form method="get" id="finder" action="@route('portal.groups')">
@@ -47,7 +47,7 @@
                     @endforeach
                     <input type="hidden" name="tags" value="{{ $filter['tags'] }}">
                 </div>
-                <p class="text-center">
+                <p class="text-center mt-5">
                     <button type="submit" class="btn btn-lightred" style="box-shadow: 0 0 10px #000;"><i class="fa fa-search mr-2"></i> keresés indítása</button>
                 </p>
                 <p class="mt-2 text-right">
