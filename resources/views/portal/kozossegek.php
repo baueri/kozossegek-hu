@@ -41,17 +41,17 @@
                            value="{{ $tag['slug'] }}"
                         <?php if (in_array($tag['slug'], $selected_tags)): ?> checked <?php endif; ?>
                            style="display: none;">
-                    <label for="tag-{{ $tag['slug'] }}" class="mr-1 badge badge-pill badge-light group-tag-badge align-middle" title="{{ $tag['tag'] }}">
+                    <label for="tag-{{ $tag['slug'] }}" class="mr-1 badge badge-pill badge-light group-tag-badge align-middle">
                         <span class="align-middle">{{ $tag['tag'] }}</span>
                     </label>
                     @endforeach
                     <input type="hidden" name="tags" value="{{ $filter['tags'] }}">
                 </div>
                 <p class="text-center mt-5">
-                    <button type="submit" class="btn btn-lightred" style="box-shadow: 0 0 10px #000;"><i class="fa fa-search mr-2"></i> keresés indítása</button>
+                    <button type="submit" class="btn btn-lightred" style="box-shadow: 0 0 5px #333;"><i class="fa fa-search mr-2"></i> keresés indítása</button>
                 </p>
                 <p class="mt-2 text-right">
-                    <a href="/kozossegek" class="text-light">Szűrés törlése</a>
+                    <a href="/kozossegek" class="text-light text-shadowed">Szűrés törlése</a>
                 </p>
             </form>
         </div>
@@ -60,10 +60,14 @@
 
 @extends('portal')
     <div class="container inner">
-<!--    <div class="row row-cols-xxs-1 row-cols-2 row-cols-md-2 row-cols-lg-3 row-cols-xl-4" style="padding-top:2em">-->
-    @include('portal.partials.kozossegek-view2')
-    @include('partials.simple-pager', ['route' => 'portal.groups.page','total' => $total,'page' => $page,'perpage' => $perpage,'routeparams' => $filter])
-</div>
+        @if($total)
+            @include('portal.partials.kozossegek-view2')
+            @include('partials.simple-pager', ['route' => 'portal.groups.page','total' => $total,'page' => $page,'perpage' => $perpage,'routeparams' => $filter])
+        @else
+        <h5 class="text-center text-muted"><i>Sajnos nem találtunk ilyen közösséget.</i></h5>
+        <h6 class="text-center text-muted"><i>Próbáld meg más keresési feltételekkel.</i></h6>
+        @endif
+    </div>
 <script>
 $(() => {
     $("[name=varos]").select2({

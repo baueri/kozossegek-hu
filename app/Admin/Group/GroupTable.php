@@ -31,7 +31,7 @@ class GroupTable extends AdminTable implements Editable, Deletable
         'created_at' => 'Létrehozva',
     ];
 
-    protected $centeredColumns = ['status', 'pending', 'has_document', 'view'];
+    protected array $centeredColumns = ['status', 'pending', 'has_document', 'view'];
     /**
      * @var GroupViews
      */
