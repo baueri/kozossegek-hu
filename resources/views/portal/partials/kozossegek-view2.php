@@ -1,3 +1,6 @@
+<p>
+    Összes találat: {{ $total }}
+</p>
 <div class="row" id="kozossegek-list">
     @foreach($groups as $i => $group)
     <div class="{{ $grid_class ?? 'col-md-4' }} mb-3">
