@@ -823,18 +823,6 @@ input[name=search]::placeholder {
     background: url("/images/praise.jpg") no-repeat fixed center;
 }
 
-.shadowed {
-    padding: 1rem;
-    margin-bottom: 5rem;
-    margin-top: 4rem;
-    background: rgba(0,0,0,0.5);
-    border-radius: 5px;
-}
-
-.text-shadowed {
-    text-shadow: 0 0 5px #000;
-}
-
 @media (max-width: 425px) {
     #instructions p {
         margin-bottom: 2rem;
