@@ -1,5 +1,4 @@
 @header()
-    <script src="/js/dialog.js"></script>
     <style>
         #send-message label {
             margin-bottom: .2rem;

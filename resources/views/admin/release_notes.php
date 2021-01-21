@@ -1,5 +1,25 @@
 @title('Verzióinformáció')
 @extends('admin')
+<h3>V0.5 beta</h3>
+<ul>
+    <li>[NEW]: Közösség regisztrációs oldalon bejelentkzési lehetőség</li>
+    <li>[NEW]: Fiók törlése gomb + funkció látogatiói oldalon</li>
+    <li>[NEW]: Törölt oldal visszaállítása</li>
+    <li>[NEW]: Belépésnél request paraméterben megadható, hogy sikeres belépés után hova irányítson át az oldal</li>
+    <li>[NEW]: Adminisztrációs oldalon figyelmeztető szövegek törölt sorok (közösségek, oldalak) szerkesztő oldalán</li>
+    <li>[CHANGED]: Fiók törlésekor a hozzá tartozó közösség(ek) törlése.</li>
+    <li>[CHANGED]: Sikeres fiókaktiválás után automatikus beléptetés</li>
+    <li>[CHANGED]: Egy-két helyen szövegcsere</li>
+    <li>[CHANGED]: Kódformázások</li>
+    <li>[CHANGED]: Keretrendszer fejlesztés, javítás</li>
+    <li>[CHANGED]: Profil oldali kisebb igazítások, javítások</li>
+    <li>[FIXED]: Igazolás feltöltés nem történt meg regisztrációkor</li>
+    <li>[FIXED]: Nem lett email kiküldve sikeres regisztráció esetén</li>
+    <li>[FIXED]: Regisztrációnál függőben levő intézmény nem került rögzítésre</li>
+    <li>[FIXED]: Közösség frissítésénél nem mentődött el a csatlakozás módja</li>
+    <li>[FIXED]: Belépésnél nem volt ellenőrizve, hogy a belépni kívánó felhasználó törölve van-e az adatbázisban</li>
+    <li></li>
+</ul>
 <h3>v0.4 beta</h3>
 <ul>
     <li>[NEW]: Teszt üzemmód bekapcsolása</li>

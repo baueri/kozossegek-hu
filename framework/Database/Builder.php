@@ -3,29 +3,30 @@
 namespace Framework\Database;
 
 use Framework\Http\Request;
+use InvalidArgumentException;
 
 class Builder
 {
     /**
      * @var Database
      */
-    private $db;
+    private Database $db;
 
-    private $select = [];
+    private array $select = [];
 
-    private $table = [];
+    private array $table = [];
 
-    private $where = [];
+    private array $where = [];
 
-    private $orderBy = [];
+    private array $orderBy = [];
 
-    private $limit;
+    private string $limit = '';
 
-    private $distinct = false;
+    private bool $distinct = false;
 
-    private $selectBindings = [];
+    private array $selectBindings = [];
 
-    protected static $macros = [];
+    protected static array $macros = [];
 
     /**
      * Builder constructor.
@@ -293,7 +294,7 @@ class Builder
 
     public function orWhereInSet($column, $value)
     {
-        return $this->whereInSet($columnt, $value, 'or');
+        return $this->whereInSet($column, $value, 'or');
     }
 
     public function update(array $values)
@@ -303,26 +304,20 @@ class Builder
         }, array_keys($values)));
 
         [$query, $bindings] = $this->build();
-
-        $base = sprintf(
-            'update %s set %s',
-            implode(', ', $this->table),
-            $set
-        );
-
-        return $this->db->update($base . $query, ...array_merge(array_values($values), $bindings));
+        $table = implode(', ', $this->table);
+        $allBindings = array_merge(array_values($values), $bindings);
+        return $this->db->update("update $table set $set, $query", ...$allBindings);
     }
 
     public function insert(array $values)
     {
         $bindings = array_values($values);
 
-        $query = sprintf(
-            'insert into %s (%s) values (%s)',
-            implode(', ', $this->table),
-            implode(',', array_keys($values)),
-            implode(',', array_fill(0, count($values), '?'))
-        );
+        $table = implode(', ', $this->table);
+        $columns = implode(',', array_keys($values));
+        $values = implode(',', array_fill(0, count($values), '?'));
+
+        $query = "insert into $table ($columns) values($values)";
 
         return $this->db->insert($query, $bindings);
     }
@@ -339,13 +334,7 @@ class Builder
         $onDuplicate = implode(',', $onDuplicateArr);
         [$table] = $this->table;
         $whereValues = implode(',', array_fill(0, count($allColumns), '?'));
-        $query = sprintf(
-            'insert into %s (%s) values(%s) on duplicate key update %s',
-            $table,
-            $columns,
-            $whereValues,
-            $onDuplicate
-        );
+        $query = "insert into $table ($columns) values($whereValues) on duplicate key update $onDuplicate";
 
         $bindings = array_merge(array_values($allColumns), array_values($values));
 
@@ -356,9 +345,9 @@ class Builder
     {
         [$query, $bindings] = $this->build();
 
-        $base = sprintf('delete from %s', implode(', ', $this->table));
+        $tables = implode(', ', $this->table);
 
-        return $this->db->delete($base . $query, $bindings);
+        return $this->db->delete("delete from {$tables} {$query}", $bindings);
     }
 
     public function exists()

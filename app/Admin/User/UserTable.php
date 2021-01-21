@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Admin\User;
+
 use Framework\Database\PaginatedResultSetInterface;
 use App\Repositories\Users;
 use Framework\Http\Request;
@@ -20,11 +21,11 @@ class UserTable extends AdminTable implements Deletable, Editable
     /**
      * @var Users
      */
-    private $repository;
+    private Users $repository;
 
     /**
      * @param Users $repository
-     * @param \App\Admin\User\Request $request
+     * @param $request
      */
     public function __construct(Users $repository, Request $request)
     {
@@ -32,13 +33,9 @@ class UserTable extends AdminTable implements Deletable, Editable
         parent::__construct($request);
     }
 
-    public function getDeleteUrl($model):string
+    public function getDeleteUrl($model): string
     {
         return route('admin.user.delete', $model);
-    }
-
-    protected function getDelete($t, $model) {
-        return parent::getDelete($t, $model, 'törlés');
     }
 
     public function getEditUrl($model): string
@@ -53,7 +50,7 @@ class UserTable extends AdminTable implements Deletable, Editable
 
     public function getData(): PaginatedResultSetInterface
     {
-        $filter = $this->request->only('deleted');
+        $filter = collect($this->request->only('deleted'));
         return $this->repository->getUsers($filter);
     }
 }

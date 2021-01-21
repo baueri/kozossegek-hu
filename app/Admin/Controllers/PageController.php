@@ -103,10 +103,32 @@ class PageController extends AdminController
 
     public function delete()
     {
-        $this->repository->delete($this->repository->findOrFail($this->request['id']));
+        $this->repository->deleteById($this->request['id']);
 
         Message::warning('Oldal lomtárba helyezve');
 
         return redirect_route('admin.page.list');
+    }
+
+    public function forceDelete()
+    {
+        $this->repository->deleteById($this->request['id'], true);
+
+        Message::warning('Oldal véglegesen törölve');
+
+        return redirect_route('admin.page.trash');
+    }
+
+    public function restore(Request $request, PageRepository $repository)
+    {
+        try {
+            $repository->restorePageById($request['id']);
+            Message::success('Sikeres visszaállítás');
+        } catch (\Exception $e) {
+            Message::danger('Sikertelen visszaállítás');
+        } finally {
+            redirect_route('admin.page.trash');
+        }
+
     }
 }

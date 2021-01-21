@@ -201,7 +201,8 @@ class GroupController extends Controller
                 'group_leader_phone',
                 'group_leader_email',
                 'description',
-                'image'
+                'image',
+                'join_mode'
             ), $request->files['document']);
 
             Message::success('Sikeres mentés!');
@@ -209,7 +210,10 @@ class GroupController extends Controller
         } catch (ModelNotFoundException $e) {
             Message::danger('Nincs ilyen közösség!');
             redirect_route('portal.my_groups');
-        } catch (Error $e) {
+        } catch (FileTypeNotAllowedException $e) {
+            Message::danger('<b>A dokumentum fájltípusa érvénytelen!</b> Az alábbi fájltípusokat fogadjuk el: doc, docx, pdf');
+            redirect_route('portal.edit_group', $group);
+        } catch (Error|Throwable $e) {
             Message::danger('Sikertelen mentés!');
             redirect_route('portal.edit_group', $group);
         }

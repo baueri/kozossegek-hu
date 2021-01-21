@@ -1,6 +1,7 @@
 <?php
 
 use App\Admin\Components\DebugBar\DebugBar;
+use App\Auth\Auth;
 use App\Middleware\AdminMiddleware;
 use App\Repositories\Widgets;
 use Arrilot\DotEnv\DotEnv;
@@ -16,6 +17,7 @@ use Framework\Http\Route\RouteInterface;
 use Framework\Http\Route\RouterInterface;
 use Framework\Http\View\View;
 use Framework\Http\View\ViewInterface;
+use Framework\Model\Model;
 use Framework\Support\Collection;
 use Framework\Translator;
 use PHPDeploy\PHPDeploy;
@@ -129,7 +131,7 @@ function builder(?string $table = null)
 
 /**
  * @param $route
- * @param array|string $args
+ * @param array|string|Model $args
  * @return string
  */
 function route($route, $args = [])
@@ -321,7 +323,7 @@ function process_error($e)
 
 function is_loggedin()
 {
-    return \App\Auth\Auth::loggedIn();
+    return Auth::loggedIn();
 }
 
 function rrmdir($dir)

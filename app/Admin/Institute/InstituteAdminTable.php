@@ -46,11 +46,6 @@ class InstituteAdminTable extends AdminTable implements Deletable, Editable
      */
     private Users $userRepository;
 
-    /**
-     * InstituteAdminTable constructor.
-     * @param Request $request
-     * @param Institutes $repository
-     */
     public function __construct(Request $request, Institutes $repository, Users $userRepository)
     {
         parent::__construct($request);

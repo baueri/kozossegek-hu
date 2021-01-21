@@ -176,3 +176,25 @@ function validate_email(mail)
         return "";
     }
 })();
+
+
+function showLoginModal(redirectUrlAfterLogin)
+{
+    $.post("/login-modal", {redirect: redirectUrlAfterLogin}, html => {
+        dialog.show({
+            size: "md",
+            type: "info",
+            title: "Belépés",
+            message: html,
+            buttons: [
+                {
+                    text: "Bezár",
+                    cssClass: "btn btn-default",
+                    action(dialog) {
+                        dialog.close();
+                    }
+                }
+            ]
+        });
+    });
+}

@@ -35,14 +35,14 @@
 
             <route method="get" uri="my-group/{id}/delete" as="portal.delete_group" controller="GroupController" use="deleteGroup"/>
             <route method="post" uri="my-group/{id}/update" as="portal.my_group.update" controller="GroupController" use="updateMyGroup"/>
-
-
         </route-group>
 
         <route method="get" uri="sikeres-regisztracio" as="portal.group.create_group_success" controller="GroupController" use="registrationSuccess"/>
 
         <route method="post" uri="create-group" as="portal.my_group.create" controller="GroupController" use="createGroup"/>
     </route-group>
+
+    <route method="post" uri="login-modal" as="portal.login_modal" view="portal.partials.login_modal"/>
 
     <!-- BELÉPÉS -->
     <route method="get" uri="login" controller="App\Portal\Controllers\LoginController" use="login" as="login"/>

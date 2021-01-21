@@ -56,7 +56,7 @@ const dialog = (function () {
 
     this.show = function (options, callback) {
 
-        var outer = $("<div class='modal fade' tabindex='-1'></div>");
+        let outer = $("<div class='modal fade' tabindex='-1'></div>");
 
         if (typeof options === "string") {
             options = { message: options, callback: callback };
@@ -69,7 +69,7 @@ const dialog = (function () {
             message: "",
             buttons: [okBtn()],
             callback: function (dialog) {
-                dialog.modal("hide");
+                dialog.close();
             },
             size: "lg",
             cssClass: "",
@@ -83,19 +83,19 @@ const dialog = (function () {
             headerCssClass = " bg-" + options.type + " text-light";
         }
 
-        var dialog = $("<div class='modal-dialog modal-" + options.size + " " + options.cssClass + "'></div>");
-        var content = $("<div class='modal-content'></div>");
-        var header = $("<div class='modal-header" + headerCssClass + "'><h5 class='modal-title'>" + options.title + "</h5><button type='button' class='close' data-dismiss='modal' aria-label='bezár'><span aria-hidden='true'>&times;</span></button></div>");
-        var body = $("<div class='modal-body'></div>");
+        let dialog = $("<div class='modal-dialog modal-" + options.size + " " + options.cssClass + "'></div>");
+        let content = $("<div class='modal-content'></div>");
+        let header = $("<div class='modal-header" + headerCssClass + "'><h5 class='modal-title'>" + options.title + "</h5><button type='button' class='close' data-dismiss='modal' aria-label='bezár'><span aria-hidden='true'>&times;</span></button></div>");
+        let body = $("<div class='modal-body'></div>");
 
         body.append(options.message);
 
         var footer = $("<div class='modal-footer'></div>");
 
         if (options.buttons) {
-            for (var i in options.buttons) {
+            for (let i in options.buttons) {
                 let button = options.buttons[i];
-                var btnDOM = $('<button type="button" class="' + button.cssClass + '">' + button.text + '</button>');
+                let btnDOM = $('<button type="button" class="' + button.cssClass + '">' + button.text + '</button>');
                 btnDOM.click(function () {
                     options.callback(outer, button.action(outer));
                 });
@@ -131,18 +131,60 @@ const dialog = (function () {
         $("body").append(outer);
 
         outer.modal('show');
+
+        outer.close = function () {
+            $(this).modal("hide");
+        }
     };
 
     return this;
 })();
 
 $(() => {
-    $(".confirm-action").on("click", function (e) {
+    $(document).on("click", ".confirm-action", function (e) {
         const action = $(this).attr("href");
+        let message = $(this).data("message");
+
+        if (!message) {
+            message = "Biztos vagy benne?";
+        }
+
         e.preventDefault();
-        dialog.confirm("Biztos vagy benne?", function (dialog, confirmed) {
+        dialog.confirm(message, function (dialog, confirmed) {
 
         });
     });
 
 });
+
+$.fn.confirm = function (options) {
+    options = $.extend({
+        title: "Biztos vagy benne?",
+        message: "",
+        isAjax: false,
+        afterResponse(response) {  }
+    }, options);
+
+    $(this).each(function () {
+        $(this).click(function (e) {
+            let action = $(this).attr("href");
+            let onConfirm;
+            if (options.isAjax) {
+                onConfirm = () => {
+                    $.post(action, options.afterResponse);
+                }
+            } else {
+                onConfirm = () => { window.location.href = action };
+            }
+
+            e.preventDefault();
+            dialog.confirm(options, function (d, confirmed) {
+                if (confirmed) {
+                    onConfirm();
+                } else {
+                    d.close();
+                }
+            });
+        });
+    });
+}

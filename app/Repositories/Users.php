@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\User;
+use Framework\Model\PaginatedModelCollection;
 use Framework\Repository;
 use Framework\Support\StringHelper;
 
@@ -30,7 +31,7 @@ class Users extends Repository
      *
      * @param array $filter
      * @param int $limit
-     * @return User[]|\Framework\Model\PaginatedModelCollection
+     * @return User[]|PaginatedModelCollection
      */
     public function getUsers($filter = [], $limit = 30)
     {
@@ -53,7 +54,13 @@ class Users extends Repository
      */
     public function findByAuth($auth)
     {
+        if (!$auth) {
+            return null;
+        }
+
         $builder = $this->getBuilder();
+
+        $builder->apply('notDeleted');
 
         if (StringHelper::isEmail($auth)) {
             $builder->where('email', $auth);

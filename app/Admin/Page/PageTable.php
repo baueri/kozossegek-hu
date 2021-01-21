@@ -85,12 +85,12 @@ class PageTable extends AdminTable implements Deletable, Editable
 
     public function getDeleteUrl($model): string
     {
-        return route('admin.page.delete', ['id' => $model->id]);
+        return route('admin.page.delete', $model);
     }
 
     public function getEditUrl($model): string
     {
-        return route('admin.page.edit', ['id' => $model->id]);
+        return route('admin.page.edit', $model);
     }
 
     public function getEditColumn(): string

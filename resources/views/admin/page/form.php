@@ -1,8 +1,12 @@
 @section('header')
     @include('asset_groups.editor')
 @endsection
-
 @extends('admin')
+@if($page->deleted_at)
+    @alert('danger')
+        <b>Töröl oldal!</b>
+    @endalert
+@endif
 <form method="post" action="{{ $action }}">
     <div class="row">
         <div class="col-md-9">

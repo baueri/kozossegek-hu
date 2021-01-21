@@ -6,8 +6,10 @@ use App\Admin\User\UserTable;
 use App\Auth\Auth;
 use App\Mail\RegistrationEmail;
 use App\Models\User;
+use App\Repositories\Groups;
 use App\Repositories\UserTokens;
 use App\Repositories\Users;
+use App\Services\DeleteUser;
 use Framework\Http\Message;
 use Framework\Http\Request;
 use Framework\Mail\Mailer;
@@ -147,17 +149,16 @@ class UserController extends AdminController
     /**
      * @param Request $request
      * @param Users $repository
+     * @param Groups $groups
+     * @return void
      * @throws ModelNotFoundException
      */
-    public function delete(Request $request, Users $repository)
+    public function delete(Request $request, Users $repository, DeleteUser $service)
     {
         /* @var $user User */
         $user = $repository->findOrFail($request['id']);
 
-        $user->name .= "#{$user->email}";
-        $user->email = null;
-
-        $repository->delete($user);
+        $service->softDelete($user);
 
         Message::warning('Felhasználó törölve');
 

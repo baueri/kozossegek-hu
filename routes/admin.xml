@@ -12,14 +12,15 @@
             <route method="get" uri="list" use="list" as="list"/>
             <route method="get" uri="trash" use="trash" as="trash"/>
             <route method="get" uri="empty-trash" use="emptyTrash" as="empty_trash"/>
-            <route method="get" uri="restore" use="restore" as="restore"/>
 
             <route method="get" uri="create" use="create" as="create"/>
             <route method="post" uri="create" use="doCreate" as="do_create"/>
 
             <route method="get" uri="{id}/edit" use="edit" as="edit"/>
             <route method="post" uri="{id}/update" use="update" as="update"/>
+            <route method="get" uri="{id}/restore" use="restore" as="restore"/>
             <route method="get" uri="{id}/delete" use="delete" as="delete"/>
+            <route method="get" uri="{id}/force-delete" use="forceDelete" as="force_delete"/>
         </route-group>
 
         <route-group prefix="content/uploads" controller="ContentUploadController" as="content.upload">

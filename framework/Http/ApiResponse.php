@@ -25,11 +25,14 @@ class ApiResponse
     }
 
 
-    public function response($data, bool $success)
+    public function response($data, ?bool $success = null)
     {
         Response::asJson();
 
-        if (is_string($data)) {
+        if (is_bool($data)) {
+            $success = $data;
+            $data = [];
+        } elseif (is_string($data)) {
             $data = ['msg' => $data];
         }
 

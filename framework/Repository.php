@@ -8,6 +8,8 @@ use Framework\Model\ModelCollection;
 use Framework\Model\Model;
 use Framework\Model\PaginatedModelCollection;
 use Framework\Model\ModelNotFoundException;
+use Framework\Support\Collection;
+use Framework\Support\DataSet;
 
 abstract class Repository
 {
@@ -61,10 +63,10 @@ abstract class Repository
     abstract public static function getModelClass(): string;
 
     /**
-     * @param array $values
+     * @param array|null $values
      * @return Model|mixed
      */
-    public function getInstance($values = null)
+    public function getInstance(?array $values = null)
     {
         if (!$values) {
             return null;
@@ -141,6 +143,7 @@ abstract class Repository
 
     /**
      * @param Model $model
+     * @param array $data
      * @return bool
      */
     public function update(Model $model, $data = [])
@@ -173,6 +176,7 @@ abstract class Repository
     {
         $original = $model->getOriginalValues();
         $newValues = $this->valuesToArray($model);
+
         $changes = [];
         foreach ($newValues as $key => $value) {
             if ($value != $original[$key]) {
@@ -218,6 +222,43 @@ abstract class Repository
         Event\EventDisptatcher::dispatch(new Database\Repository\Events\ModelDeleted($model));
 
         return $deleted;
+    }
+
+    /**
+     * @param $id
+     * @param false $forceDelete
+     * @return bool
+     * @throws ModelNotFoundException
+     */
+    public function deleteById($id, $forceDelete = false): bool
+    {
+        return $this->delete($this->findOrFail($id), $forceDelete);
+    }
+
+    public function forceDelete($model)
+    {
+        return $this->delete($model, true);
+    }
+
+    /**
+     * @param Model[]|Collection $models
+     * @param bool $forceDelete
+     */
+    public function deleteMultiple($models, $forceDelete = false)
+    {
+        DataSet::each($models, fn($model) => $this->delete($model, $forceDelete));
+    }
+
+    public function deleteMultipleByIds($ids, $forceDelete)
+    {
+        $this->deleteMultiple(
+            $this->getInstances(
+                $this->getBuilder()
+                    ->whereIn(self::getPrimaryCol(), $ids)
+                    ->get()
+            ),
+            $forceDelete
+        );
     }
 
     public function updateOrCreate(array $where, array $data)

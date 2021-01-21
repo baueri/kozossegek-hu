@@ -5,6 +5,8 @@ namespace App\Portal\Controllers;
 use App\Auth\Auth;
 use App\Auth\Authenticate;
 use Framework\Exception\UnauthorizedException;
+use Framework\Http\Controller;
+use Framework\Http\Cookie;
 use Framework\Http\Request;
 use Framework\Http\Message;
 use Framework\Http\Session;
@@ -14,7 +16,7 @@ use Framework\Http\Session;
  *
  * @author ivan
  */
-class LoginController extends \Framework\Http\Controller
+class LoginController extends Controller
 {
     public function login()
     {
@@ -28,22 +30,22 @@ class LoginController extends \Framework\Http\Controller
     public function doLogin(Request $request, Authenticate $service)
     {
         try {
-
-            if (!\Framework\Http\Cookie::enabled()) {
+            if (!Cookie::enabled()) {
                 Message::danger('A belépéshez engedélyezd a cookie-kat a böngésződben!');
                 return redirect_route('login');
             }
-                
-            /* @var $user \App\Models\User */
+
             $user = $service->authenticate($request['username'], $request['password']);
 
             Auth::login($user);
-             
-            $route = $user->isAdmin() ? route('admin.dashboard') : route('home');
-            redirect(Session::flash('last_visited', $route));
-            
-        } catch (UnauthorizedException $e) {
 
+            $route = $request['redirect'];
+            if (!$route) {
+                $route = $user->isAdmin() ? route('admin.dashboard') : route('home');
+            }
+            redirect(Session::flash('last_visited', $route));
+            exit;
+        } catch (UnauthorizedException $e) {
             Message::danger('Hibás felhasználónév vagy jelszó');
 
             return view('portal.login');

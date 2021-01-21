@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Framework\Http;
-
 
 class Response
 {
@@ -18,11 +16,9 @@ class Response
             [$key, $value] = explode(': ', $row);
             unset($headers[$i]);
             $headers[$key] = $value;
-
         }
 
         return $headers;
-
     }
 
     public static function setHeader($name, $value)
@@ -34,7 +30,7 @@ class Response
     {
         http_response_code((int) $code);
     }
-    
+
     public static function getHeader($name)
     {
         return static::headers()[$name] ?? null;

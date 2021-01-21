@@ -13,7 +13,7 @@ use Framework\Http\View\View;
 
 class AdminMiddleware implements Middleware
 {
-    private $maintenance;
+    private Maintenance $maintenance;
 
     public function __construct(Maintenance $maintenance)
     {
@@ -28,7 +28,7 @@ class AdminMiddleware implements Middleware
             Message::danger('Nem vagy belépve!');
             redirect_route('login');
         }
-        
+
         if (!Auth::user()->hasUserGroup('SUPER_ADMIN')) {
             throw new UnauthorizedException();
         }
