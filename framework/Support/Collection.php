@@ -177,7 +177,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
      */
     public function random()
     {
-        return $this->items[array_rand($this->items)];
+        return DataSet::random($this->items);
     }
 
     /**
@@ -188,11 +188,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
      */
     public function each(Closure $func): self
     {
-        foreach ($this->items as $key => $item) {
-            if ($func($item, $key, $this) === false) {
-                break;
-            }
-        }
+        DataSet::each($this->items, $func, $this);
 
         return $this;
     }
@@ -430,12 +426,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
      */
     public function pluck($key)
     {
-        return $this->map(function ($item) use ($key) {
-            if (is_object($item)) {
-                return $item->{$key};
-            }
-            return $item[$key];
-        });
+        return new self(DataSet::pluck($this->items, $key));
     }
 
     /**
@@ -447,17 +438,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
      */
     public function map(Closure $func, bool $keepKeys = false)
     {
-        $result = [];
-
-        foreach ($this->items as $key => $item) {
-            if (!$keepKeys) {
-                $result[] = $func($item, $key);
-            } else {
-                $result[$key] = $func($item, $key);
-            }
-        }
-
-        return new self($result);
+        return new self(DataSet::map($this->items, $func, $keepKeys));
     }
 
     /**

@@ -11,18 +11,14 @@ use App\Services\UpdateUser;
 use Framework\Http\Message;
 use Framework\Http\Session;
 use Framework\Mail\Mailer;
+use PHPMailer\PHPMailer\Exception;
 
-/**
- * Description of UserController
- *
- * @author ivan
- */
 class UserController
 {
 
     public function profile()
     {
-        $user = \App\Auth\Auth::user();
+        $user = Auth::user();
 
         return view('portal.profile', compact('user'));
     }
@@ -30,14 +26,24 @@ class UserController
     public function update(Request $request, UpdateUser $service)
     {
         $user = Auth::user();
+        $changes = $request->only('name', 'email');
 
-        if($service->update($user, $request->only('name', 'email'), $request->only('old_password', 'new_password', 'new_password_again'))) {
+        $passwordChange = $request->only('old_password', 'new_password', 'new_password_again');
+
+        if ($service->update($user, $changes, $passwordChange)) {
             Message::success('Sikeres mentés.');
         }
 
         redirect_route('portal.my_profile');
     }
 
+    /**
+     * @param Request $request
+     * @param Users $users
+     * @param Mailer $mailer
+     * @param UserTokens $userTokens
+     * @throws Exception
+     */
     public function resetPassword(Request $request, Users $users, Mailer $mailer, UserTokens $userTokens)
     {
         $user = $users->getUserByEmail($request['email']);
@@ -73,7 +79,7 @@ class UserController
             $ok = $service->changePassword($user, $request->only('new_password', 'new_password_again'));
             if ($ok) {
                 $userTokens->delete($token);
-                Message::success('Sikeres jelszócsere!');
+                Message::success('<b>Sikeres jelszócsere!</b> Most már be tudsz lépni az új jelszavaddal.');
                 Session::forget('last_visited');
                 redirect_route('login');
             }
@@ -85,6 +91,8 @@ class UserController
 
         return view('portal.password-reset', compact('user'));
     }
+
+
     public function activateUser(Request $request, Users $users, UpdateUser $service, UserTokens $userTokens)
     {
         $token = $userTokens->getByToken($request['token']);
@@ -104,9 +112,11 @@ class UserController
             $ok = $service->changePassword($user, $request->only('new_password', 'new_password_again'));
             if ($ok) {
                 $userTokens->delete($token);
+                Auth::logout();
+                Auth::login($user);
                 Message::success('Sikeres regisztráció!');
                 Session::forget('last_visited');
-                redirect_route('login');
+                redirect_route('portal.my_groups');
             }
         }
 

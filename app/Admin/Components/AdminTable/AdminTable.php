@@ -142,6 +142,11 @@ abstract class AdminTable
     {
         $url = $this->getDeleteUrl($model);
 
+        return $this->getDeleteColumn($url, $title);
+    }
+
+    protected function getDeleteColumn(string $url, string $title)
+    {
         return "<a href='$url' title='$title'><i class='fa fa-trash text-danger'></i></a>";
     }
 

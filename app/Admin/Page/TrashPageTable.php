@@ -23,15 +23,15 @@ class TrashPageTable extends PageTable
     {
         [,$page] = $params;
 
-        $url = route('admin.page.restore', ['id' => $page->id]);
+        $url = route('admin.page.restore', $page);
 
         return "<a href='$url' title='visszaállítás'><i class='fa fa-trash-restore text-success'></a>";
     }
 
-    public function getDelete($t, $page) {
+    public function getDelete($t, $page, $title = 'végleges törlés')
+    {
+        $url = route('admin.page.force_delete', $page) ;
 
-        $url = route('admin.page.delete', ['id' => $page->id]) ;
-        return "<a href='$url' title='végleges törlés'><i class='fa fa-trash text-danger'></i></a>";
+        return $this->getDeleteColumn($url, $title);
     }
-
 }

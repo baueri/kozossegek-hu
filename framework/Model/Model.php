@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Framework\Model;
-
 
 abstract class Model
 {
@@ -14,12 +12,12 @@ abstract class Model
     /**
      * @var string
      */
-    protected static $primaryCol = 'id';
+    protected static string $primaryCol = 'id';
 
     /**
      * @var mixed[]
      */
-    protected $originalValues = [];
+    protected array $originalValues = [];
 
     /**
      * Model constructor.
@@ -73,7 +71,7 @@ abstract class Model
     }
 
     /**
-     * @param static $model
+     * @param mixed $model
      * @return bool
      */
     public function is($model): bool

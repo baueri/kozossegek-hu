@@ -3,6 +3,7 @@
 namespace App\Admin\Group\Services;
 
 use App\Models\Group;
+use Framework\Exception\FileTypeNotAllowedException;
 use Framework\Support\Collection;
 
 /**
@@ -18,6 +19,7 @@ class CreateGroup extends BaseGroupService
      * @param Collection $request
      * @param array|null $document
      * @return Group|null
+     * @throws FileTypeNotAllowedException
      */
     public function create(Collection $request, ?array $document = null): ?Group
     {
@@ -25,21 +27,22 @@ class CreateGroup extends BaseGroupService
 
         $data['age_group'] = implode(',', $data['age_group'] ?? []);
         $data['on_days'] = implode(',', $data['on_days'] ?? []);
+        $data['document'] = '';
 
         if (!$this->validate($data)) {
             return null;
         }
 
-        $instituteId = null;
+        $instituteId = $request['institute_id'];
 
-        if ($institute = $request['institute']) {
+        if (($institute = $request['institute']) && !$instituteId) {
             $institute['approved'] = 0;
             $institute['user_id'] = $data['user_id'];
             $instituteId = $this->institutes->create($institute)->id;
             $data['institute_id'] = $instituteId;
         };
 
-        if (!$request['institute_id'] && !$instituteId) {
+        if (!$instituteId) {
             $this->pushError('Nincs intézmény megadva');
             return null;
         }

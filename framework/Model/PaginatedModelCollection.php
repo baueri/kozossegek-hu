@@ -1,10 +1,7 @@
 <?php
 
-
 namespace Framework\Model;
 
-
-use Framework\Database\PaginatedResultSet;
 use Framework\Database\PaginatedResultSetInterface;
 
 class PaginatedModelCollection extends ModelCollection implements PaginatedResultSetInterface

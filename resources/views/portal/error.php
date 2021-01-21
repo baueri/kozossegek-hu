@@ -2,13 +2,17 @@
 <div class="container text-center">
     <div id="error-pg">
         <div class="error-pg">
-            @if($code)
+            @if(isset($code))
                 <div class="error-pg-404">
                     <h1>{{ $code}}</h1>
                 </div>
             @endif
-            <h2>{{ $message }}</h2>
-            @if($message2)
+
+            @if(isset($message))
+                <h2>{{ $message }}</h2>
+            @endif
+
+            @if(isset($message2))
                 <p>{{ $message2 }}</p>
             @endif
             <p><a href="@route('home')">Vissza a főoldalra</a></p>

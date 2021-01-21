@@ -90,6 +90,12 @@ abstract class BaseGroupService
         }
     }
 
+    /**
+     * @param Group $group
+     * @param array|null $document
+     * @return File|null
+     * @throws FileTypeNotAllowedException
+     */
     protected function uploadDocument(Group $group, ?array $document = null)
     {
         if (!$document || (isset($document['error']) && $document['error'] > 0)) {
@@ -97,6 +103,7 @@ abstract class BaseGroupService
         }
 
         $file = $file = File::createFromFormData($document);
+
         if (!$file->mainTypeIs([FileType::DOCUMENT, FileType::PDF])) {
             throw new FileTypeNotAllowedException();
         }
@@ -107,11 +114,11 @@ abstract class BaseGroupService
 
         $extension = FileHelper::getExtension($document['name']);
 
-        $success = $file->move(GroupHelper::getStoragePath($group->id), "igazolas.{$extension}");
+        $file->move(GroupHelper::getStoragePath($group->id), "igazolas.{$extension}");
 
         $file->setFileName($file->getFilePath());
 
-        return $success;
+        return $file;
     }
 
     /**

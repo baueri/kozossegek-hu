@@ -6,8 +6,10 @@ use App\Models\Page;
 use Framework\Database\PaginatedResultSet;
 use Framework\Model\Model;
 use Framework\Model\ModelCollection;
+use Framework\Model\ModelNotFoundException;
 use Framework\Repository;
 use Framework\Model\PaginatedModelCollection;
+use Framework\Support\Collection;
 
 class PageRepository extends Repository
 {
@@ -28,6 +30,16 @@ class PageRepository extends Repository
         $builder = $this->getBuilder();
 
         return $this->getInstances($builder->paginate(30));
+    }
+
+    /**
+     * @param $id
+     * @return bool
+     * @throws ModelNotFoundException
+     */
+    public function restorePageById($id): bool
+    {
+        return $this->update($this->findOrFail($id), ['deleted_at' => null]);
     }
 
     public static function getModelClass(): string

@@ -6,6 +6,11 @@
 @endsection
 @title($title)
 @extends('admin')
+@if($group->deleted_at)
+    @alert('danger')
+        <b>Törölt közösség!</b> A visszállításához kattints a <b>visszaállítás</b> gombra a jobb oldali sáv alján.
+    @endalert
+@endif
 <form method="post" id="group-form" action="{{ $action }}">
     <div class="row">
         <div class="col-md-9">

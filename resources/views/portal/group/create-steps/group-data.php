@@ -3,7 +3,6 @@
     @include('asset_groups.editor')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.css"/>
-    <script src="/js/dialog.js"></script>
 @endsection
 @extends('portal.group.create-steps.create-wrapper')
 @alert('warning')
@@ -18,25 +17,32 @@
             @endalert
             <div class="row">
                 <div class="col-md-4">
+
+                    <p>
+                        <a href="#" id="login-existing-user" onclick="showLoginModal('{{ request()->uri }}'); return false;"><b>
+                            <i class="fa fa-key"></i> van már fiókom, belépek
+                        </b></a>
+                    </p>
                     <div class="form-group required">
-                        <label>Neved:</label>
+                        <label>Neved</label>
                         <input type="text" class="form-control" name="user_name"  value="{{ $user_name }}" data-describedby="validate_user_name">
                         <div id="validate_user_name" class="validate_message"></div>
                     </div>
                     <div class="form-group required">
-                        <label>Email címed:</label>
+                        <label>Email címed</label>
                         <input type="email" class="form-control" name="email" value="{{ $email }}"  data-describedby="validate_email">
                         <div id="validate_email" class="validate_message"></div>
                     </div>
                 </div>
             </div>
+
         </div>
     @endif
     <div class="step-container">
         <h4>Általános adatok</h4>
         <div class="form-group required">
             <label for="name">Közösség neve</label>
-            <input type="text" id="name" value='{{ $group->name }}' name="name" class="form-control" required="">
+            <input type="text" id="name" value='{{ $group->name }}' name="name" class="form-control">
         </div>
         <div class="row">
             <div class="col-md-12">
@@ -97,8 +103,7 @@
             <div class="col-md-4">
                 <div class="form-group required">
                     <label for="age_group">Korosztály <small>(legalább egyet adj meg)</small></label>
-                    @age_group_selector($age_group_array, ['required' => true])
-
+                    @age_group_selector($age_group_array)
                 </div>
             </div>
             <div class="col-md-4">
@@ -139,12 +144,7 @@
             <div>
                 @foreach($tags as $tag)
                 <label class="mr-2" for="tag-{{ $tag['id'] }}">
-                    <input type="checkbox"
-                           name="tags[]"
-                           id="tag-{{$tag['id']}}"
-                           value="{{ $tag['slug'] }}"
-                           @if(in_array($tag['slug'], $group_tags)) checked @endif
-                           > {{ $tag['tag'] }}
+                    <input type="checkbox" name="tags[]" id="tag-{{$tag['id']}}" value="{{ $tag['slug'] }}" @if(in_array($tag['slug'], $group_tags)) checked @endif> {{ $tag['tag'] }}
                 </label>
                 @endforeach
             </div>
@@ -192,7 +192,7 @@
             <div class="col-md-12">
                 <div class="form-group">
                     @alert('info')
-                        Nem kötelező feltölteni képet, de jó benyomást tudtok kelteni ha vidám, hívogató fotót raktok fel magatokról. Ha nem választotok fotót, akkor a kiválasztott intézmény fényképe jelenik meg.
+                        <b>Tölts fel egy képet a közösségedről!</b> Alapértelmezett esetben a kiválasztott intézmény fényképe jelenik meg.
                     @endalert
                     <div class="group-image">
                         <img src="{{ $image ? $image : ''}}" id="image" width="300">
@@ -377,7 +377,7 @@
 
                 await setupImageData();
 
-                var formData = $("form#group-form").serialize();
+                const formData = $("form#group-form").serialize();
 
                 $.post("@route('api.preview_group_register')", formData, (response) => {
                     dialog.confirm({
@@ -437,4 +437,5 @@
         $("#new-institute").slideToggle();
         $("[name=institute_id]").val(null).trigger("change");
     }
+
 </script>

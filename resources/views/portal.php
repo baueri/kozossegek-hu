@@ -138,5 +138,7 @@ use App\Auth\Auth;
         </button>
     </div>
     <script src="/js/scripts.js"></script>
+    <script src="/js/dialog.js"></script>
+    @yield('scripts')
 </body>
 </html>

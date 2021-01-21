@@ -1,3 +1,8 @@
+@if($user->deleted_at)
+    @alert('danger')
+        <b>Törölt fiók!</b>
+    @endalert
+@endif
 <form method="post" action="{{ $action }}" class="mb-4">
     <div class="row">
         <div class="col-sm-4 col-lg-3">

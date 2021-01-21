@@ -1,15 +1,15 @@
 @extends('portal')
 <div class="container inner">
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-lg-3 col-md-6 mb-3 mb-md-0">
             @include('portal.partials.user-sidemenu')
         </div>
-        <div class="col-md-9">
+        <div class="col-lg-9 col-md-6">
             @include('admin.partials.message')
             <h1 class="h3">Profilom</h1>
             <form method="post" action="@route('portal.profile.update')" class="mb-4">
                 <div class="row">
-                    <div class="col-md-5">
+                    <div class="col-lg-5 col-md-12">
                         <div class="form-group">
                             <label>E-mail cím</label>
                             <input type="email" name="email" value="{{ $user->email }}" class="form-control"/>
@@ -30,10 +30,34 @@
                             <label>Jelszó még egyszer</label>
                             <input type="password" name="new_password_again" id="new_password_again" class="form-control" autocomplete="new-password"/>
                         </div>
-                        <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Mentés</button>
                     </div>
                 </div>
+                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Mentés</button>
+                <a href="@route('api.portal.profile.delete')" id="delete-profile" class="text-danger float-right"><i class="fa fa-trash-alt"></i> Fiókom törlése</a>
             </form>
         </div>
     </div>
 </div>
+@section('scripts')
+    <script>
+        $(() => {
+            $("#delete-profile").confirm({
+                type: "danger",
+                message: "<b>Figyelem!</b><p>A fiókod törlésével a közösségeidet is törölni fogjuk, arra a továbbiakban nem fognak tudni rákeresni.</p>",
+                isAjax: true,
+                afterResponse(response) {
+                    if(response.success) {
+                        dialog.show("Sikeres fióktörlés!", () => {
+                            window.location.href = "@route('home')"
+                        })
+                    } else {
+                        response.danger({
+                            title: "Sikertelen művelet!",
+                            message: "Váratlan hiba történt."
+                        });
+                    }
+                }
+            });
+        })
+    </script>
+@endsection

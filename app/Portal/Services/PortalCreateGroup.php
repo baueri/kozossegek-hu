@@ -9,6 +9,7 @@ use App\Mail\NewGroupEmail;
 use App\Models\Group;
 use App\Models\User;
 use App\Repositories\UserTokens;
+use Framework\Exception\FileTypeNotAllowedException;
 use Framework\Mail\Mailer;
 use Framework\Support\Collection;
 use Framework\Traits\ManagesErrors;
@@ -52,7 +53,7 @@ class PortalCreateGroup
      * @param User|null $user
      * @return Group|null
      * @throws Exception
-     * @throws EmailTakenException
+     * @throws EmailTakenException|FileTypeNotAllowedException
      */
     public function createGroup(Collection $requestData, ?array $fileData, ?User $user): ?Group
     {
@@ -93,11 +94,13 @@ class PortalCreateGroup
 
         $mailable->with(['user_name' => $user->name]);
 
+
         $data['user_id'] = $user->id;
 
         $group = $this->createGroup->create(collect($data), $fileData);
 
         if ($group) {
+            (new Mailer())->to($user->email)->send($mailable);
             return $group;
         }
 

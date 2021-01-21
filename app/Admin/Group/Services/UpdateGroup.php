@@ -3,6 +3,7 @@
 namespace App\Admin\Group\Services;
 
 use App\Models\Group;
+use Framework\Exception\FileTypeNotAllowedException;
 use Framework\Http\Message;
 use Framework\Http\Request;
 use Framework\Model\ModelNotFoundException;
@@ -21,9 +22,9 @@ class UpdateGroup extends BaseGroupService
      * @param int $id
      * @param Request|Collection|array $request
      * @param array|null $document
-     * @throws ModelNotFoundException
+     * @throws ModelNotFoundException|FileTypeNotAllowedException
      */
-    public function update($id, $request, ?array $document = [])
+    public function update(int $id, $request, ?array $document = [])
     {
         if (is_array($request)) {
             $request = collect($request);
@@ -41,7 +42,7 @@ class UpdateGroup extends BaseGroupService
         $data['group_leader_email'] = strip_tags($data['group_leader_email']);
         $data['group_leader_phone'] = strip_tags($data['group_leader_phone']);
         $data['age_group'] = implode(',', $data['age_group']);
-        $data['on_days'] = implode(',', $data['on_days']);
+        $data['on_days'] = implode(',', $data['on_days'] ?? []);
 
         if (!$this->validate($data)) {
             Message::danger('A csillaggal jelölt mezők kitöltése kötelező!');

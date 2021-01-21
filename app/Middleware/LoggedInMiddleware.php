@@ -3,7 +3,6 @@
 namespace App\Middleware;
 
 use App\Auth\Auth;
-use Framework\Middleware\Middleware;
 use Framework\Http\Message;
 use Framework\Http\Session;
 
@@ -16,6 +15,5 @@ class LoggedInMiddleware
             Message::danger('Nem vagy belépve!');
             redirect_route('login');
         }
-
     }
 }

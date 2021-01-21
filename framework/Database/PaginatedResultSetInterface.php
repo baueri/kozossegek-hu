@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Framework\Database;
-
 
 use ArrayAccess;
 use Countable;
@@ -11,7 +9,7 @@ use IteratorAggregate;
 interface PaginatedResultSetInterface extends ArrayAccess, Countable, IteratorAggregate
 {
     /**
-     * @return ArrayAccess|Countable|IteratorAggregate|[]|array
+     * @return array
      */
     public function rows();
 

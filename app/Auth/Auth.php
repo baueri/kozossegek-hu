@@ -9,9 +9,9 @@ use App\Models\User;
 class Auth
 {
     /**
-     * @var User
+     * @var User|null
      */
-    protected static $user;
+    protected static ?User $user = null;
 
     /**
      * @param User $user
@@ -22,7 +22,7 @@ class Auth
     }
 
     /**
-     * 
+     *
      * @param User $user
      */
     public static function login(User $user)
@@ -37,6 +37,8 @@ class Auth
     {
         db()->execute('delete from user_sessions where unique_id=?', session_id());
 
+        session_destroy();
+
         static::$user = null;
     }
 
@@ -49,7 +51,7 @@ class Auth
     }
 
     /**
-     * 
+     *
      * @return User
      */
     public static function user()
