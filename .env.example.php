@@ -19,4 +19,6 @@ return [
     'EMAIL_ADDRESS' => 'please_set',
     'EMAIL_PASSWORD' => 'please_set',
     'EMAIL_SSL' => 'STARTTLS',
+
+    'CACHE_PAGES' => false
 ];

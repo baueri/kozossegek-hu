@@ -2,7 +2,7 @@
 
 return [
     [
-        'title' => 'Vezérlőpult',
+        'title' => 'Áttekintés',
         'icon' => 'home',
         'as' => 'admin.dashboard'
     ],

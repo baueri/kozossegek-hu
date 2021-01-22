@@ -2,15 +2,16 @@
 
 namespace App\Admin\Controllers;
 
+use App\Admin\Page\PageTable;
 use App\Admin\Page\Services\PageListService;
-use Framework\Http\Message;
-use Framework\Http\Request;
-use App\Repositories\PageRepository;
+use App\Admin\Page\TrashPageTable;
 use App\Auth\Auth;
 use App\Models\Page;
+use App\Portal\Services\PageRenderService;
 use App\Repositories\AdminPageRepository;
-use App\Admin\Page\PageTable;
-use App\Admin\Page\TrashPageTable;
+use App\Repositories\PageRepository;
+use Framework\Http\Message;
+use Framework\Http\Request;
 
 class PageController extends AdminController
 {
@@ -23,7 +24,12 @@ class PageController extends AdminController
     /**
      * @var Request
      */
-    private $request;
+    private Request $request;
+
+    /**
+     * @var PageRenderService
+     */
+    private PageRenderService $pageRenderService;
 
     /**
      *
@@ -67,12 +73,6 @@ class PageController extends AdminController
         $data = $this->request->only('title', 'slug', 'content', 'status');
         $data['user_id'] = Auth::user()->id;
 
-        $hasUploadableImages = preg_match_all('/data\-filename="[a-zA-Z0-9\.\_]"/im', $data['content'], $images);
-
-        if ($hasUploadableImages) {
-            dd($images);
-        }
-
         $page = $this->repository->create($data);
 
         Message::success('Oldal létrehozva');
@@ -89,16 +89,15 @@ class PageController extends AdminController
 
     public function update()
     {
-        $post = $this->repository->find($this->request['id']);
+        $page = $this->repository->find($this->request['id']);
 
-        $post->update($this->request->only('title', 'slug', 'content', 'status', 'header_image'));
+        $page->update($this->request->only('title', 'slug', 'content', 'status', 'header_image'));
 
-        $this->repository->save($post);
+        $this->repository->save($page);
 
         Message::success('Oldal frissítve');
 
-        return redirect_route('admin.page.edit', ['id' => $this->request['id']]);
-
+        redirect_route('admin.page.edit', $page);
     }
 
     public function delete()
@@ -107,7 +106,7 @@ class PageController extends AdminController
 
         Message::warning('Oldal lomtárba helyezve');
 
-        return redirect_route('admin.page.list');
+        redirect_route('admin.page.list');
     }
 
     public function forceDelete()
@@ -116,7 +115,7 @@ class PageController extends AdminController
 
         Message::warning('Oldal véglegesen törölve');
 
-        return redirect_route('admin.page.trash');
+        redirect_route('admin.page.trash');
     }
 
     public function restore(Request $request, PageRepository $repository)

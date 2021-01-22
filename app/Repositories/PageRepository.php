@@ -7,13 +7,13 @@ use Framework\Database\PaginatedResultSet;
 use Framework\Model\Model;
 use Framework\Model\ModelCollection;
 use Framework\Model\ModelNotFoundException;
-use Framework\Repository;
 use Framework\Model\PaginatedModelCollection;
+use Framework\Repository;
 use Framework\Support\Collection;
 
 class PageRepository extends Repository
 {
-    public function findBySlug($slug): ?Page
+    public function findBySlug(string $slug): ?Page
     {
         $row = $this->getBuilder()->where('slug', $slug)->first();
 
