@@ -28,46 +28,43 @@
         <div class="col-md-8 pt-4 pt-md-0">
             <div class="title">
                 @if($backUrl)
-                    <div class="float-right">
-                        <a href="{{ $backUrl }}"><i class="fa fa-angle-double-left"></i> vissza</a>
-                    </div>
+<!--                    <div class="float-right">-->
+<!--                        <a href="{{ $backUrl }}"><i class="fa fa-angle-double-left"></i> vissza</a>-->
+<!--                    </div>-->
                 @endif
-                <h1 class="primary-title h2">
-                    {{ $group->name }}
-                    @if($user->id == $group->user_id)
-                        <a href="{{ $group->getEditUrl() }}" title="szerkesztés"><i class="fa fa-edit" style="font-size: 18px;"></i></a>
-                    @endif
-                </h1>
-                <h2 class="subtitle h5">{{  $group->city . ($group->district ? ', ' . $group->district : '')  }}</h2>
+                <div class="float-left">
+                    <h1 class="primary-title h2">
+                        {{ $group->name }}
+                        @if($user && $user->id == $group->user_id)
+                            <a href="{{ $group->getEditUrl() }}" title="szerkesztés"><i class="fa fa-edit" style="font-size: 18px;"></i></a>
+                        @endif
+                    </h1>
+                    <h2 class="subtitle h5">{{  $group->city . ($group->district ? ', ' . $group->district : '')  }}</h2>
+                </div>
+                <div class="float-right" id="tags">
+                    @foreach($tag_names as $tag)
+                    <span class="tag-img" title="{{ $tag['tag_name'] }}" style="background: url('/images/tag/{{ $tag['tag'] }}.png'); background-size: cover;"></span>
+                    @endforeach
+                </div>
             </div>
             <p class="kozi-tulajdonsag">
-                <label>Helyszín:</label> {{ $institute->city }}, {{ $institute->name }}
+                <label>Helyszín</label><br/> {{ $institute->city }}, {{ $institute->name }}
             </p>
             @if($group->spiritual_movement)
-                <p class="kozi-tulajdonsag">
-                    <label>Lelkiségi mozgalom:</label> {{ $group->spiritual_movement }}
+                < class="kozi-tulajdonsag">
+                    <label>Lelkiségi mozgalom</label><br/> {{ $group->spiritual_movement }}
                 </p>
             @endif
             <p class="kozi-tulajdonsag">
-                <label>Alkalmak gyakorisága:</label> {{ $group->occasionFrequency() }}
+                <label>Alkalmak gyakorisága</label><br/> {{ $group->occasionFrequency() }}
             </p>
             <p class="kozi-tulajdonsag">
-                <label>Korcsoport:</label> {{ $group->ageGroup() }}
+                <label>Korcsoport</label><br/> {{ $group->ageGroup() }}
             </p>
-
             <p class="kozi-tulajdonsag">
-                <label>Közösségvezető(k):</label> {{ $group->group_leaders }}
+                <label>Közösségvezető(k)</label><br/> {{ $group->group_leaders }}
             </p>
-            @if($tag_names)
-                <p class="kozi-tulajdonsag">
-                    <label>Címkék</label><br>
-                    @foreach($tag_names as $tag)
-                        <a  href="@route('portal.groups', ['tags' => $tag['tag']])" for="tag-{{ $tag['slug'] }}" class="mb-1 mr-1 badge badge-pill badge-primary group-tag-badge align-middle">
-                            <span class="align-middle">{{ $tag['tag_name'] }}</span>
-                        </a>
-                    @endforeach
-                </p>
-            @endif
+            <b>Bemutatkozás</b><br/>
             {{ $group->description }}
             <p class="mt-4">
                 <span class="btn btn-outline-primary open-contact-modal"><i class="fas fa-envelope"></i> Érdekel!</span>

@@ -4,10 +4,10 @@ namespace Framework;
 
 use Framework\Database\PaginatedResultSet;
 use Framework\Database\PaginatedResultSetInterface;
-use Framework\Model\ModelCollection;
 use Framework\Model\Model;
-use Framework\Model\PaginatedModelCollection;
+use Framework\Model\ModelCollection;
 use Framework\Model\ModelNotFoundException;
+use Framework\Model\PaginatedModelCollection;
 use Framework\Support\Collection;
 use Framework\Support\DataSet;
 

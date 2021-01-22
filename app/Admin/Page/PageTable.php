@@ -7,18 +7,17 @@ namespace App\Admin\Page;
 use App\Admin\Components\AdminTable\AdminTable;
 use App\Admin\Components\AdminTable\Deletable;
 use App\Admin\Components\AdminTable\Editable;
-use App\Models\Page;
 use App\Models\PageStatus;
+use App\Repositories\AdminPageRepository;
 use App\Repositories\PageRepository;
+use App\Repositories\Users;
 use Framework\Database\PaginatedResultSetInterface;
 use Framework\Http\Request;
-use App\Repositories\Users;
-use App\Repositories\AdminPageRepository;
 
 class PageTable extends AdminTable implements Deletable, Editable
 {
     /**
-     * @var PageRepository
+     * @var \App\Repositories\PageRepository\\App\Repositories\PageRepository
      */
     private $repository;
 

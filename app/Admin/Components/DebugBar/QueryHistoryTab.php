@@ -10,7 +10,7 @@ class QueryHistoryTab extends DebugBarTab
     /**
      * @var QueryHistory
      */
-    private $queryHistory;
+    public QueryHistory $queryHistory;
 
     /**
      * QueryHistoryTab constructor.
@@ -18,7 +18,6 @@ class QueryHistoryTab extends DebugBarTab
      */
     public function __construct(QueryHistory $queryHistory)
     {
-
         $this->queryHistory = $queryHistory;
     }
 

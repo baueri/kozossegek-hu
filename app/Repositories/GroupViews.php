@@ -143,7 +143,12 @@ class GroupViews extends Repository
             $builder->whereGroupTag(collect($tags)->pluck('tag')->all());
         }
 
-        return $this->getInstances($builder->get());
+        $groups = $this->getInstances($builder->get());
+
+        $group_tags = builder('group_tags')->whereIn('group_id', $groups->pluck('id')->toArray())->get();
+        
+
+        return $groups;
     }
 
     public function getGroupsWithoutUser()

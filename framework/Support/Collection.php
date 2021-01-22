@@ -159,7 +159,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
      */
     public function slice(int $length, $offset = 0, $preserve_keys = false)
     {
-        return static::create(array_slice($this->items, $offset, $length, $preserve_keys));
+        return self::create(array_slice($this->items, $offset, $length, $preserve_keys));
     }
 
     /**
@@ -201,7 +201,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
      */
     public function chunk(int $size, $preserve_keys = false): self
     {
-        return new static(array_chunk($this->items, $size, $preserve_keys));
+        return new self(array_chunk($this->items, $size, $preserve_keys));
     }
 
     /**
@@ -212,7 +212,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
      */
     public function diff(array $array)
     {
-        return new static(array_diff($this->items, $array));
+        return new self(array_diff($this->items, $array));
     }
 
     /**
@@ -223,18 +223,10 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     public function filter($func = null): self
     {
         if (!$func) {
-            return new static(array_filter($this->items));
+            return new self(array_filter($this->items));
         }
 
-        $result = [];
-
-        foreach ($this->items as $key => $item) {
-            if ($func($item, $key)) {
-                $result[$key] = $item;
-            }
-        }
-
-        return new static($result);
+        return new self(DataSet::filter($this->items, $func));
     }
 
     /**
@@ -373,7 +365,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     /**
      * Accumulates the collection into string or integer
      * @param callable $func
-     * @param string|int $initial
+     * @param mixed $initial
      * @return mixed
      */
     public function reduce($func, $initial)
@@ -405,13 +397,13 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
      */
     public function reverse($preserve_keys = true): self
     {
-        return new static(array_reverse($this->items, $preserve_keys));
+        return new self(array_reverse($this->items, $preserve_keys));
     }
 
     /**
      * Returns the collection values
      *
-     * @return static
+     * @return self
      */
     public function values(): self
     {
@@ -440,6 +432,26 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     {
         return new self(DataSet::map($this->items, $func, $keepKeys));
     }
+
+    public function unique($key = null)
+    {
+        if (!$key) {
+            return new self(array_unique($this->items));
+        }
+
+        return $this->reduce(function($filtered, $item) use($key) {
+                if (!DataSet::has($filtered, $key, $item)) {
+                    $filtered[] = DataSet::getItemValue($item, $key);
+                }
+                return $filtered;
+        }, new self());
+    }
+
+    public function distinct($key = null)
+    {
+        return $this->unique($key)->pluck($key);
+    }
+
 
     /**
      * @param array $array
@@ -703,14 +715,6 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         });
     }
 
-    /**
-     * @return static
-     */
-    public function unique()
-    {
-        return new static(array_unique($this->items));
-    }
-
     public function make($abstraction = null)
     {
         return $this->map(function ($item) use ($abstraction) {
@@ -735,6 +739,11 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
 
     public function collect()
     {
-        return new static($this->items);
+        return new self($this->items);
+    }
+
+    public function has($key, $value)
+    {
+        return DataSet::has($this->items, $key, $value);
     }
 }

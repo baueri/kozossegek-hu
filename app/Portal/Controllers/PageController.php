@@ -1,22 +1,26 @@
 <?php
 
-
 namespace App\Portal\Controllers;
-
 
 use App\Repositories\PageRepository;
 use Framework\Http\Controller;
 use Framework\Http\Request;
 use Framework\Http\Exception\PageNotFoundException;
+use Framework\Http\View\View;
 
 class PageController extends Controller
 {
+    /**
+     * @param Request $request
+     * @param PageRepository $repository
+     * @return View|string
+     */
     public function page(Request $request, PageRepository $repository)
     {
         $page = $repository->findBySlug($request['slug']);
 
         if (!$page) {
-            throw new PageNotFoundException('page not found');
+            raise_404();
         }
 
         $page_title = $page->pageTitle();
