@@ -26,13 +26,13 @@
             @endif
         </div>
         <div class="col-md-8 pt-4 pt-md-0">
-            <div class="title">
+            <div class="title d-lg-flex">
                 @if($backUrl)
 <!--                    <div class="float-right">-->
 <!--                        <a href="{{ $backUrl }}"><i class="fa fa-angle-double-left"></i> vissza</a>-->
 <!--                    </div>-->
                 @endif
-                <div class="float-left">
+                <div>
                     <h1 class="primary-title h2">
                         {{ $group->name }}
                         @if($user && $user->id == $group->user_id)
@@ -41,19 +41,19 @@
                     </h1>
                     <h2 class="subtitle h5">{{  $group->city . ($group->district ? ', ' . $group->district : '')  }}</h2>
                 </div>
-                <div class="float-right group-tags">
+                <div class="group-tags text-lg-right text-sm-left" style="white-space: nowrap">
                     @foreach($tag_names as $tag)
-                    <a href="@route('portal.groups', ['tags' => $tag['tag']])" class="tag">
+                    <a href="@route('portal.groups', ['tags' => $tag['tag']])" class="tag align-bottom">
                         <span class="tag-img" title="{{ $tag['tag_name'] }}" style="background: url('/images/tag/{{ $tag['tag'] }}.png'); background-size: cover;"></span>
                     </a>
                     @endforeach
                 </div>
             </div>
             <p class="kozi-tulajdonsag">
-                <label>Helyszín</label><br/> {{ $institute->city }}, {{ $institute->name }}
+                <label>Helyszín</label><br/> @if($institute) {{ $institute->city }}, {{ $institute->name }} @endif
             </p>
             @if($group->spiritual_movement)
-                < class="kozi-tulajdonsag">
+                <p class="kozi-tulajdonsag">
                     <label>Lelkiségi mozgalom</label><br/> {{ $group->spiritual_movement }}
                 </p>
             @endif

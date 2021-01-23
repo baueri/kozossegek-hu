@@ -11,6 +11,7 @@ use Framework\Model\PaginatedModelCollection;
 use Framework\Repository;
 use App\Models\GroupView;
 use Framework\Support\Collection;
+use Framework\Support\StringHelper;
 
 class GroupViews extends Repository
 {
@@ -56,9 +57,10 @@ class GroupViews extends Repository
         $builder = builder()->select('*')->from('v_groups');
 
         if ($keyword = $filter['search']) {
-            $keywords = '+'.str_replace(' ', '* +', trim($keyword, ' ')) . '*';
-            /* @var $found PaginatedResultSet */
+            $keyword = StringHelper::sanitize(str_replace('-', ' ', $keyword));
+            $keywords = '+' . str_replace(' ', '* +', trim($keyword, ' ')) . '*';
 
+            /* @var $found PaginatedResultSet */
             $found = db()->select('select group_id
                 from search_engine 
                 where MATCH(keywords) AGAINST (? IN BOOLEAN MODE)', [$keywords]);
@@ -75,7 +77,7 @@ class GroupViews extends Repository
         }
 
         if ($korosztaly = $filter['korosztaly']) {
-            $builder->whereAgeGroup($korosztaly);
+            $builder->apply('whereAgeGroup', $korosztaly);
             // $builder->whereInSet('age_group', $korosztaly);
         }
 
@@ -109,6 +111,7 @@ class GroupViews extends Repository
 
         $builder->orderBy($filter['order_by'] ?: 'name', $filter['order'] ?: 'asc');
 
+
         return $this->getInstances($builder->paginate($perPage));
     }
 
@@ -118,7 +121,7 @@ class GroupViews extends Repository
      */
     public function findBySlug($slug)
     {
-        $id = substr($slug, strrpos($slug, '-')+1);
+        $id = substr($slug, strrpos($slug, '-') + 1);
 
         $builder = $this->getBuilder();
 
@@ -133,6 +136,7 @@ class GroupViews extends Repository
 
     public function findSimilarGroups(GroupView $group, $tags, int $take = 4)
     {
+
         $builder = $this->getBuilder()
             ->where('id', '<>', $group->id)
             ->where('city', $group->city)
@@ -143,14 +147,20 @@ class GroupViews extends Repository
             $builder->whereGroupTag(collect($tags)->pluck('tag')->all());
         }
 
+
         $groups = $this->getInstances($builder->get());
+
         $groupids = $groups->pluck('id');
 
-        $group_tags = builder('v_group_tags')
-            ->whereIn('group_id', $groupids->toArray())
-            ->get();
-        $groups->withMany($group_tags, 'tags', 'id', 'group_id');
-//        dd($groups);
+        if ($groupids->isNotEmpty()) {
+            $group_tags = builder('v_group_tags')
+                ->whereIn('group_id', $groupids->toArray())
+                ->get();
+
+            if ($group_tags) {
+                $groups->withMany($group_tags, 'tags', 'id', 'group_id');
+            }
+        }
 
         return $groups;
     }

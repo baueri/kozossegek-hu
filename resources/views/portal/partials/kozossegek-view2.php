@@ -10,9 +10,11 @@
             </a>
             <div class="card-body">
                 <p class="text-center mb-1">
-                    @foreach($group->tags as $tag)
-                        <span class="tag-img" title="{{ $tag['tag_name'] }}" style="background: url('/images/tag/{{ $tag['tag'] }}.png'); background-size: cover;"></span>
-                    @endforeach
+                    @if($group->tags)
+                        @foreach($group->tags as $tag)
+                            <span class="tag-img" title="{{ $tag['tag_name'] }}" style="background: url('/images/tag/{{ $tag['tag'] }}.png'); background-size: cover;"></span>
+                        @endforeach
+                    @endif
                 </p>
                 <h5 class="card-title">{{ $group->name }}</h5>
                 <h6 style="color: #aaa;">

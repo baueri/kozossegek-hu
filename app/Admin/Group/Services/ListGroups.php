@@ -83,7 +83,7 @@ class ListGroups
         $filter = $this->request;
         $table = $this->table;
         $current_page = $this->getCurrentPage();
-        $pending_groups = builder()->from('church_groups')->where('pending', 1)->notDeleted()->count();
+        $pending_groups = builder()->from('church_groups')->where('pending', 1)->apply('notDeleted')->count();
 
         return view('admin.group.list', compact(
             'table',
