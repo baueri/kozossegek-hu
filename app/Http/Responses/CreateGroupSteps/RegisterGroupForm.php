@@ -8,7 +8,6 @@ use App\Models\Institute;
 use App\Repositories\Institutes;
 use App\Repositories\SpiritualMovements;
 use Framework\Http\Request;
-use Framework\Http\Session;
 
 class RegisterGroupForm extends AbstractGroupStep
 {

@@ -24,6 +24,6 @@ class Groups extends Repository
 
     public static function getTable(): string
     {
-        return 'groups';
+        return 'church_groups';
     }
 }

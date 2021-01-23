@@ -144,9 +144,13 @@ class GroupViews extends Repository
         }
 
         $groups = $this->getInstances($builder->get());
+        $groupids = $groups->pluck('id');
 
-        $group_tags = builder('group_tags')->whereIn('group_id', $groups->pluck('id')->toArray())->get();
-        
+        $group_tags = builder('v_group_tags')
+            ->whereIn('group_id', $groupids->toArray())
+            ->get();
+        $groups->withMany($group_tags, 'tags', 'id', 'group_id');
+//        dd($groups);
 
         return $groups;
     }

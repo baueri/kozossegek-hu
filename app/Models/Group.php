@@ -128,6 +128,8 @@ class Group extends Model
      */
     public $join_mode;
 
+    public $tags;
+
 
     /**
      * @return string

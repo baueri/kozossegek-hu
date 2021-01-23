@@ -36,6 +36,7 @@ class PDOMysqlDatabase implements Database
 
         $this->pdo = new PDO($this->getDsn(), $this->configuration->user, $this->configuration->password, [
             PDO::ATTR_PERSISTENT => true,
+
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"
         ]);

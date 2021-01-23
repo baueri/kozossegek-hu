@@ -1,5 +1,13 @@
 <?php
 
+use App\Http\Components\FeaturedTitle;
+use App\Http\Components\Selectors\AgeGroupSelector;
+use App\Http\Components\Selectors\JoinModeSelector;
+use App\Http\Components\Selectors\OccasionFrequencySelector;
+use App\Http\Components\Selectors\OnDaysSelector;
+use App\Http\Components\Selectors\SpiritualMovementSelector;
+use Framework\Http\View\View;
+
 return [
     'view_sources' => [
         'email_templates' => _env('STORAGE_PATH') . 'email_templates'
@@ -20,22 +28,22 @@ return [
             return '<?php $__env->getSection()->add("footer", function($args) { extract($args); ?> ';
         },
         'featuredTitle' =>  function ($matches) {
-            return "<?php echo (new \App\Http\Components\FeaturedTitle)->render($matches[1]) ?>";
+            return View::component(FeaturedTitle::class, $matches[1]);
         },
         'age_group_selector' => function ($matches) {
-            return "<?php echo (new \App\Http\Components\Selectors\AgeGroupSelector)->render($matches[1]) ?>";
+            return View::component(AgeGroupSelector::class, $matches[1]);
         },
         'occasion_frequency_selector' => function ($matches) {
-            return "<?php echo (new \App\Http\Components\Selectors\OccasionFrequencySelector)->render($matches[1]) ?>";
+            return View::component(OccasionFrequencySelector::class, $matches[1]);
         },
         'on_days_selector' => function ($matches) {
-            return "<?php echo (new \App\Http\Components\Selectors\OnDaysSelector)->render($matches[1]) ?>";
+            return View::component(OnDaysSelector::class, $matches[1]);
         },
         'spiritual_movement_selector' => function ($matches) {
-            return "<?php echo (new \App\Http\Components\Selectors\SpiritualMovementSelector)->render($matches[1]) ?>";
+            return View::component(SpiritualMovementSelector::class, $matches[1]);
         },
         'join_mode_selector' => function ($matches) {
-            return "<?php echo (new \App\Http\Components\Selectors\JoinModeSelector)->render($matches[1]) ?>";
+            return View::component(JoinModeSelector::class, $matches[1]);
         },
         'alert' => function ($matches) {
 
