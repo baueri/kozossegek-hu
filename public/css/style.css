@@ -254,6 +254,15 @@ nav.navbar .nav-link:hover {
     --webkit-line-clamp: 2;
 }
 
+.kozi-adatlap .group-tags a {
+    text-decoration: none;
+}
+
+.kozi-adatlap #kozossegek-list .tag-img {
+    width: 25px;
+    height: 25px;
+}
+
 .kozi-box {
     margin-bottom: 30px !important;
     text-decoration: none !important;
@@ -689,7 +698,6 @@ input[name=search]::placeholder {
     display: inline-block;
     width: 35px;
     height: 35px;
-    background: #eaeaea;
     margin: 0 5px;
 }
 

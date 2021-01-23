@@ -41,9 +41,11 @@
                     </h1>
                     <h2 class="subtitle h5">{{  $group->city . ($group->district ? ', ' . $group->district : '')  }}</h2>
                 </div>
-                <div class="float-right" id="tags">
+                <div class="float-right group-tags">
                     @foreach($tag_names as $tag)
-                    <span class="tag-img" title="{{ $tag['tag_name'] }}" style="background: url('/images/tag/{{ $tag['tag'] }}.png'); background-size: cover;"></span>
+                    <a href="@route('portal.groups', ['tags' => $tag['tag']])" class="tag">
+                        <span class="tag-img" title="{{ $tag['tag_name'] }}" style="background: url('/images/tag/{{ $tag['tag'] }}.png'); background-size: cover;"></span>
+                    </a>
                     @endforeach
                 </div>
             </div>
@@ -73,7 +75,7 @@
         </div>
     </div>
     @if($similar_groups)
-        <h5 class="mt-4">Hasonló közösségek</h5>
+        <h5 class="mt-4" style="border-bottom: 1px solid;margin-bottom: 1em;padding-bottom: 0.3em;">Hasonló közösségek</h5>
         <div class="row" id="kozossegek-list">
             @foreach($similar_groups as $i => $group)
             <div class="col-md-3 mb-3">

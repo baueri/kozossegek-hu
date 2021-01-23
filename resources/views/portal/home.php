@@ -9,7 +9,7 @@
                 <img src="/images/logo_only_md.png" class="mb-4"/>
                 <h1>TALÁLD MEG A KÖZÖSSÉGED!</h1>
             </div>
-            <form method="get" id="finder" class="mt-5" action="@route('portal.groups')">
+            <form method="get" id="finder" class="mt-5 text-center" action="@route('portal.groups')">
                 <input type="text" name="search" class="mb-5" placeholder="pl.: Budapest antiochia egyetemista">
                 <button type="submit" class="btn btn-lightred btn-lg"><i class="fa fa-search mr-2"></i> Keresés</button>
             </form>

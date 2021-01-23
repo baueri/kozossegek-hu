@@ -116,6 +116,6 @@ class InstituteAdminTable extends AdminTable implements Deletable, Editable
     private function getNumberOfGroups(Collection $institutes)
     {
         $ids = $institutes->pluck('id')->implode(',');
-        return db()->select("select count(*) as cnt, institute_id from groups where institute_id in ($ids) and deleted_at is null group by institute_id");
+        return db()->select("select count(*) as cnt, institute_id from church_groups where institute_id in ($ids) and deleted_at is null group by institute_id");
     }
 }

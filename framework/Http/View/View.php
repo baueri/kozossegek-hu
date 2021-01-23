@@ -130,4 +130,9 @@ class View implements ViewInterface
     {
         static::$envVariables[$key] = $value;
     }
+
+    public static function component($component, $expression)
+    {
+        return "<?php echo app()->make({$component}::class)->render($expression); ?>";
+    }
 }
