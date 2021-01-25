@@ -1,4 +1,5 @@
 $(() => {
+
     $(".img-big").on("load", function () {
         $(this).css("opacity", "1");
     });
@@ -14,6 +15,17 @@ $(() => {
     $("[title]").tooltip();
 });
 
+$(window).scroll(function (e) {
+    // const scrollTop = $(window).scrollTop();
+    // const docHeight = $(document).height();
+    // const winHeight = $(window).height();
+    //
+    // const featuredH = $(".featured").height();
+    // const scrollPercent = (scrollTop) / (docHeight - winHeight - featuredH);
+    // const scrollPercentRounded = scrollPercent * 100;
+    //
+    // $(".featured-bg").css("background-position", 'center ' + (-scrollPercentRounded * 5) + 'px');
+});
 
 $(window).on("load scroll", () => {
     if ($(window).scrollTop() > 0 || typeof window.orientation !== 'undefined') {
@@ -121,7 +133,7 @@ function readURL(input)
 
 function validate_email(mail)
 {
-    return /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(mail);
+    return /  ^ [a - zA - Z0 - 9.!#$ % & ' * + /= ? ^ _`{ | }~ - ] + @[a - zA - Z0 - 9 - ] + ( ?: \.[a - zA - Z0 - 9 - ] + ) * $ / .test(mail);
 }
 
 //cookie
@@ -153,14 +165,16 @@ function validate_email(mail)
     });
 
     // Cookie functions from w3schools
-    function setCookie(cname, cvalue, exdays) {
+    function setCookie(cname, cvalue, exdays)
+    {
         var d = new Date();
         d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
         var expires = "expires=" + d.toUTCString();
         document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
     }
 
-    function getCookie(cname) {
+    function getCookie(cname)
+    {
         var name = cname + "=";
         var decodedCookie = decodeURIComponent(document.cookie);
         var ca = decodedCookie.split(';');
@@ -193,7 +207,7 @@ function showLoginModal(redirectUrlAfterLogin)
                     action(dialog) {
                         dialog.close();
                     }
-                }
+            }
             ]
         });
     });

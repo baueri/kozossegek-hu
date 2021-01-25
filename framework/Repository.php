@@ -169,7 +169,11 @@ abstract class Repository
 
         $query = sprintf('UPDATE %s SET %s WHERE %s=?', $table, $set, $primaryCol);
 
-        return (bool)db()->update($query, ...array_merge($values, [$id]));
+        $updated = (bool) db()->update($query, ...array_merge($values, [$id]));
+
+        Event\EventDisptatcher::dispatch(new Database\Repository\Events\ModelUpdated($model));
+
+        return $updated;
     }
 
     public function getChanges(Model $model)

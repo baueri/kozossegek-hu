@@ -25,14 +25,16 @@ class InstituteAdminTable extends AdminTable implements Deletable, Editable
         'id' => '<i class="fa fa-hashtag"></i>',
         'image' => '<i class="fa fa-image" title="Kép"></i>',
         'name' => 'Intézmény / plébánia neve',
-        'leader_name' => 'Plébános / intézményvezető',
-        'group_count' => '<i class="fa fa-comments" title="Közösségek"></i>',
+        'leader_name' => 'Intézményvezető',
+        'group_count' => '<i class="fa fa-comments" title="Közösségek száma"></i>',
         'city' => 'Település',
         'district' => 'Városrész',
         'address' => 'Cím',
-        'updated_at' => 'Utoljára módosítva',
+        'updated_at' => 'Módosítva',
         'user' => 'Létrehozta'
     ];
+
+    protected array $sortableColumns = ['id', 'updated_at', 'group_count'];
 
     protected array $centeredColumns = ['image', 'group_count'];
 
@@ -46,6 +48,12 @@ class InstituteAdminTable extends AdminTable implements Deletable, Editable
      */
     private Users $userRepository;
 
+    /**
+     * InstituteAdminTable constructor.
+     * @param Request $request
+     * @param Institutes $repository
+     * @param Users $userRepository
+     */
     public function __construct(Request $request, Institutes $repository, Users $userRepository)
     {
         parent::__construct($request);
@@ -60,7 +68,8 @@ class InstituteAdminTable extends AdminTable implements Deletable, Editable
 
     protected function getData(): PaginatedResultSetInterface
     {
-        $institutes = $this->repository->getInstitutesForAdmin($this->request);
+        $filter = $this->request;
+        $institutes = $this->repository->getInstitutesForAdmin($filter);
         $userIds = $institutes->pluck('user_id');
         $users = $this->userRepository->getUsersByIds($userIds->unique()->all());
         $groupsCount = $this->getNumberOfGroups($institutes);
@@ -84,7 +93,7 @@ class InstituteAdminTable extends AdminTable implements Deletable, Editable
     public function getName($value, Institute $institute)
     {
         $warning = !$institute->approved ? '<i class="fa fa-exclamation-circle text-danger" title="még nem jóváhagyott intézmény"></i> ' : '';
-        return $warning . $this->getEdit($value, $institute);
+        return $warning . $this->getEdit($value, $institute, 40);
     }
 
     public function getImage($img, Institute $institute)

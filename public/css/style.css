@@ -5,9 +5,14 @@ a {
 }
 
 body {
-    /*font: 500 16px Roboto,sans-serif;*/
+    font-family: "Open Sans", sans-serif;
     color: #555;
 }
+
+body:not(.home) {
+    background: #fafafa;
+}
+
 
 img {
     max-width: 100%;
@@ -27,34 +32,51 @@ img {
     margin-bottom: 2em;
 }
 
-.home {
+.featured-header {
+    overflow: hidden;
+    padding: 66px 0 2rem;
+    position: relative;
+}
+
+body:not(.home) .featured-header {
+    padding: 7rem 0 4rem;
+}
+
+.featured-bg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
     background-attachment: fixed !important;
     background-size: cover !important;
-    padding-top: 66px;
+    z-index: -1;
+    transform: translateZ(-1px) scale(1.1);
 }
-.home #header {
+
+.featured-header #header {
     transition: background-color ease-in .2s;
     background: rgba(0,0,0,0.5);
 }
-.home #header.compact {
+.featured-header #header.compact {
     background: #fff;
     box-shadow: 0 0 6px 0;
     font-size: 14px;
 }
 
-.home #header.compact .navbar-nav > li .nav-link {
+.featured-header #header.compact .navbar-nav > li .nav-link {
     padding: 4px 8px;
 }
 
-.home #header:not(.compact) .navbar-nav > li > .nav-link {
+.featured-header #header:not(.compact) .navbar-nav > li > .nav-link {
     color: #fff;
     padding-top: 1.3rem;
     padding-bottom: 1.3rem;
 }
-.home #header:not(.compact) .navbar-nav > li > .nav-link:hover {
+.featured-header #header:not(.compact) .navbar-nav > li > .nav-link:hover {
 }
 
-.home #header:not(.compact) .user-menu {
+.featured-header #header:not(.compact) .user-menu {
     color:#fff !important;
 }
 
@@ -85,14 +107,14 @@ img {
     transition: all ease-in .1s;
 }
 
-.home .navbar-brand > div:first-child {
+.featured-header .navbar-brand > div:first-child {
     filter: brightness(0) invert(1);
 
 }
-.home #header.compact .navbar-brand {
+.featured-header #header.compact .navbar-brand {
     padding: 0 !important;
 }
-.home #header.compact .navbar-brand > div {
+.featured-header #header.compact .navbar-brand > div {
     background: url("/images/logo_sm_2.png") no-repeat center;
     background-size: 100%;
     width: 180px;
@@ -215,6 +237,7 @@ nav.navbar .nav-link:hover {
 .inner {
     padding-top: 2em;
     padding-bottom: 4em;
+    background-color: #fff;;
 }
 
 #footer {
@@ -337,7 +360,7 @@ nav.navbar .nav-link:hover {
     margin-top: 0;
     font-size: 14px;
     color: #555;
-    /* text-transform: uppercase; */
+    margin-bottom: 1rem;
 }
 
 .req label::after {
@@ -434,9 +457,34 @@ input[name=search]::placeholder {
     visibility: hidden;
 }
 
+.profile-images {
+    max-width: 600px;
+    margin: 0 auto;
+}
 
+.profile-images img {
+    border-radius: 50%;
+}
+
+.edit-page {
+    font-size: 20px;
+    text-shadow: none;
+}
 
 @media (max-width: 991px) {
+    .featured-header #header {
+        background: #fff;
+    }
+
+    .featured-header .navbar-brand > div:first-child {
+        filter: initial;
+    }
+    #header .nav-link {
+        color:#000 !important;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+    }
+
     #header .navbar-nav {
         display: block;
         position: fixed;
@@ -654,7 +702,7 @@ input[name=search]::placeholder {
 }
 
 #instructions img {
-    border: 5px solid #fff;
+    /*border: 5px solid #fff;*/
 }
 
 #instructions {
@@ -833,9 +881,22 @@ input[name=search]::placeholder {
 }
 
 .kozosseghez-tartozni {
+    position: relative;
+}
+
+.kozosseghez-tartozni > * {
+    position: relative;
+}
+
+.kozosseghez-tartozni:before {
+    content: " ";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     background-size: cover !important;
     color: #fff;
-    /*background: url("/images/kozosseghez_tartozni.jpg") no-repeat fixed center;*/
     background: url("/images/praise.jpg") no-repeat fixed center;
 }
 

@@ -29,8 +29,12 @@ class PageController extends Controller
             return view($view, compact('page', 'page_title'));
         }
 
-        $header_background = $page->header_image ?: null;
+        $model = compact('page', 'page_title');
 
-        return view('portal.page', compact('page', 'page_title', 'header_background'));
+        if ($page->header_image) {
+            $model['header_background'] = $page->header_image;
+        }
+
+        return view('portal.page', $model);
     }
 }

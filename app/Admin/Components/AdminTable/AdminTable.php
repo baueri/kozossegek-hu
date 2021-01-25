@@ -16,10 +16,14 @@ abstract class AdminTable
      */
     protected $columns = [];
 
+    protected array $order = ['id', 'desc'];
+
     /**
      * @var array
      */
     protected array $centeredColumns = [];
+
+    protected array $sortableColumns = ['id'];
 
     /**
      * @var Request
@@ -41,6 +45,8 @@ abstract class AdminTable
             throw new InvalidArgumentException('missing columns for ' . static::class);
         }
 
+        $this->order = [$request->get('order_by', 'id'), $request->get('sort', 'desc')];
+
         $this->request = $request;
     }
 
@@ -58,7 +64,10 @@ abstract class AdminTable
 
         $model = [
             'columns' => $this->getColumns(),
+            'order' => $this->order,
+            'sort_order' => $this->order[1] == 'asc' || $this->order[0] ? 'desc' : 'asc',
             'centered_columns' => $this->centeredColumns,
+            'sortable_columns' => $this->sortableColumns,
             'rows' => $this->transformData($data->rows()),
             'adminTable' => $this,
             'total' => $data->total(),
@@ -131,11 +140,17 @@ abstract class AdminTable
         return call_user_func_array([$this, $method], [$value, $row]);
     }
 
-    protected function getEdit($value, $model)
+    protected function getEdit($value, $model, $excerpt = null)
     {
         $url = $this->getEditUrl($model);
 
-        return "<a href='$url' title='szerkesztés'>$value</a>";
+        $text = $value;
+
+        if ($excerpt) {
+            $text = StringHelper::shorten($value, $excerpt, '...');
+        }
+
+        return "<a href='$url' title='{$value}'>$text</a>";
     }
 
     protected function getDelete($t, $model, $title = 'lomtárba')

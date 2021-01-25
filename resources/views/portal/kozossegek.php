@@ -15,7 +15,7 @@
                             <option value="{{ $filter['varos'] }}">{{ $filter['varos'] }}</option>
                         </select>
                         <div class="tag-dropdown">
-                            <button type="button" onclick="$('.tag-dropdown-menu').slideToggle();"  class="form-control">Jellemzők <i class="fa fa-caret-down ml-2" style="font-size: 12px;"></i> </button>
+                            <button type="button" onclick="$('.tag-dropdown-menu').slideToggle();"  class="form-control text-left">Jellemzők <i class="fa fa-caret-down ml-2" style="font-size: 12px;"></i> </button>
                         </div>
                         <select class="form-control" id="korosztaly" name="korosztaly">
                             <option></option>
