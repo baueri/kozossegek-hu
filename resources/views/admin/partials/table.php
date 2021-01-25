@@ -6,7 +6,19 @@
     <thead>
         <tr>
             @foreach($columns as $key => $column)
-                <th {{ in_array($key, $centered_columns) ? 'class="text-center"' : '' }}>{{ $column }}</th>
+                <th {{ in_array($key, $centered_columns) ? 'class="text-center"' : '' }}>
+                    @if($order[0] == $key || in_array($key, $sortable_columns))
+                        <?php $sort_order = $key != $order[0] || $order[1] == 'asc' ? 'desc' : 'asc'; ?>
+                        <a href="?{{ http_build_query(array_merge($_REQUEST, ['sort' => $sort_order, 'order_by' => $key])) }}" style="white-space: nowrap">
+                            {{ $column }}
+                            @if($key == $order[0])
+                                <i class="fa fa-{{ $order[1] == 'asc' ? 'sort-alpha-down' : 'sort-alpha-up' }}" style="font-size: 16px;"></i>
+                            @endif
+                        </a>
+                    @else
+                            {{ $column }}
+                    @endif
+                </th>
             @endforeach
         </tr>
     </thead>

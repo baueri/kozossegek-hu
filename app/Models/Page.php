@@ -39,7 +39,7 @@ class Page extends Model
         $link = '';
         if (Auth::loggedIn() && Auth::user()->isAdmin()) {
             $route = route('admin.page.edit', $this);
-            $link = "<a href='{$route}' target='_blank' title='Szerkesztés' style='font-size: 16px;'><i class='fa fa-edit'></i></a>";
+            $link = "<a href='{$route}' target='_blank' title='Szerkesztés' class='edit-page'><i class='fa fa-pencil-alt'></i></a>";
         }
 
         return "{$this->title} {$link}";

@@ -14,7 +14,7 @@ use App\Auth\Auth;
     <title>@yield('subtitle')kozossegek.hu</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:wght@200|Work+Sans:400,700|Merriweather|Roboto+Condensed:wght@300;400|" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:wght@200|Open+Sans:400,700|Work+Sans:400,700|Merriweather|Roboto+Condensed:wght@300;400|" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="search" type="application/opensearchdescription+xml" title="kozossegek.hu" href="/opensearch.xml">
 
@@ -39,8 +39,8 @@ use App\Auth\Auth;
         </script>
     @endif
 </head>
-<body class="@if(!is_prod())demo@endif">
-    <div class="home" style="background:url('{{ $header_background ?? '/images/main.jpg' }}') no-repeat top center">
+<body class="{{ $is_prod ? 'demo' : '' }} {{ $is_home ? 'home' : '' }}">
+    <div class="featured-header">
         <nav id="header" class="navbar navbar-expand-sm fixed-top">
             <div class="container">
                 <a href="/" class="navbar-brand ml-4 ml-sm-0 mt-0 mb-0 p-0 p-sm-1">
@@ -90,6 +90,7 @@ use App\Auth\Auth;
                 <label class="mobile-menu-toggle float-right mr-4 mr-sm-0 mb-0" for="toggle_main_menu"><i class="fa fa-bars"></i></label>
             </div>
         </nav>
+        <div class="featured-bg" style="background:url('{{ $header_background }}') no-repeat top center"></div>
         @yield('header_content')
     </div>
     @yield('portal')

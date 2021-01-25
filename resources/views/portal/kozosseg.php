@@ -26,22 +26,22 @@
             @endif
         </div>
         <div class="col-md-8 pt-4 pt-md-0">
-            <div class="title d-lg-flex">
+            <div class="title">
                 @if($backUrl)
 <!--                    <div class="float-right">-->
 <!--                        <a href="{{ $backUrl }}"><i class="fa fa-angle-double-left"></i> vissza</a>-->
 <!--                    </div>-->
                 @endif
-                <div>
-                    <h1 class="primary-title h2">
-                        {{ $group->name }}
-                        @if($user && $user->id == $group->user_id)
-                            <a href="{{ $group->getEditUrl() }}" title="szerkesztés"><i class="fa fa-edit" style="font-size: 18px;"></i></a>
-                        @endif
-                    </h1>
-                    <h2 class="subtitle h5">{{  $group->city . ($group->district ? ', ' . $group->district : '')  }}</h2>
-                </div>
-                <div class="group-tags text-lg-right text-sm-left" style="white-space: nowrap">
+                <h1 class="primary-title h2">
+                    {{ $group->name }}
+                    @if($user && $user->id == $group->user_id)
+                        <a href="{{ $group->getEditUrl() }}" title="szerkesztés">
+                            <i class="fa fa-edit" style="font-size: 18px;"></i>
+                        </a>
+                    @endif
+                </h1>
+                <h2 class="subtitle h5">{{  $group->city . ($group->district ? ', ' . $group->district : '')  }}</h2>
+                <div class="group-tags">
                     @foreach($tag_names as $tag)
                     <a href="@route('portal.groups', ['tags' => $tag['tag']])" class="tag align-bottom">
                         <span class="tag-img" title="{{ $tag['tag_name'] }}" style="background: url('/images/tag/{{ $tag['tag'] }}.png'); background-size: cover;"></span>

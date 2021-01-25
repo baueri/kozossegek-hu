@@ -11,7 +11,7 @@ use Framework\Middleware\TranslationRoute;
 use Framework\Middleware\AuthMiddleware;
 use Framework\Mail\Mailer;
 use App\Mailable\CriticalErrorEmail;
-use App\Components\Widget\WidgetServiceProvider;
+use App\Components\Widget\AppServiceProvider;
 use Framework\Middleware\CheckMaintenance;
 
 class HttpKernel extends \Framework\Http\HttpKernel
@@ -23,13 +23,15 @@ class HttpKernel extends \Framework\Http\HttpKernel
         TranslationRoute::class,
         CheckMaintenance::class,
         AuthMiddleware::class,
-        WidgetServiceProvider::class,
+        AppServiceProvider::class,
     ];
 
     public function handleMaintenance()
     {
         echo view('maintenance');
     }
+
+
 
     public function handleError($error)
     {

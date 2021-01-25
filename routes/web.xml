@@ -50,7 +50,7 @@
     <route method="get" uri="logout" controller="App\Portal\Controllers\LoginController" use="logout" as="logout"/>
 
     <!-- VÍZJELES KÉPGENERÁLÁS -->
-    <route method="get" uri="/media/{entity_type}/images/{image}" as="watermark_image" controller="App\Portal\Controllers\ImageController" use="getImageWithWatermark"/>
+    <route method="get" uri="/media/{entity_type}/images/{image}" as="watermark_image" controller="App\Portal\Controllers\ImageController" use="getImage"/>
 
     <!-- Adatbázisban tárolt statikus oldalak. FIGYELEM!!!! EZ ALÁ MÁR NE KERÜLJÖN ROUTE!!! -->
     <route method="get" uri="{slug}" controller="App\Portal\Controllers\PageController" use="page" as="portal.page" middleware="App\Middleware\ComingSoon"/>

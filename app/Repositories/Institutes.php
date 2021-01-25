@@ -43,7 +43,7 @@ class Institutes extends \Framework\Repository
 
     public function getInstitutesForAdmin($filter = [])
     {
-        $builder = $this->getBuilder()->orderBy('id', 'desc')->whereNull('deleted_at');
+        $builder = $this->getBuilder()->whereNull('deleted_at');
 
         if ($city = $filter['city']) {
             $builder->where('city', $city);
@@ -51,6 +51,17 @@ class Institutes extends \Framework\Repository
 
         if ($name = $filter['search']) {
             $builder->where('name', 'like', "%$name%");
+        }
+
+        if ($filter['sort']) {
+            $orderBy = $filter['order_by'] ?: self::getPrimaryCol();
+            if ($orderBy == 'group_count') {
+
+            } else {
+                $builder->orderBy($orderBy, $filter['sort']);
+            }
+        } else {
+            $builder->orderBy('id', 'desc');
         }
 
         return $this->getInstances($builder->paginate(30));
