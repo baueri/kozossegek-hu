@@ -306,7 +306,7 @@ function raise_500(string $message = '', string $message2 = 'Nincs jogosultsága
     raise_error_page(500, $message, $message2);
 }
 
-function raise_404($message = 'A keresett oldal nem található', $message2 = '<i class="text-muted">De ne adjátok fel, keressetek és előbb vagy utóbb találtok ;-)</i>')
+function raise_404($message = 'A keresett oldal nem található', $message2 = '<i class="text-muted">De azért ne adjátok fel.<br/> Keressetek, és előbb, vagy utóbb találtok ;-)</i>')
 {
     raise_error_page(404, $message, $message2);
 }
