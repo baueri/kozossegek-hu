@@ -23,8 +23,8 @@ class AppServiceProvider implements Middleware
             return "<?php echo widget({$matches[1]})->render(); ?>";
         });
 
-        View::addVariable('is_home', is_home());
-        View::addVariable('is_prod', is_prod());
-        View::addVariable('header_background', '/images/main.jpg');
+        View::setVariable('is_home', is_home());
+        View::setVariable('is_prod', is_prod());
+        View::setVariable('header_background', '');
     }
 }

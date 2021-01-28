@@ -10,13 +10,20 @@
 <form method="post" action="{{ $action }}">
     <div class="row">
         <div class="col-md-9">
-            <div class="form-group">
-                <label>Oldal címe</label>
-                <input type="text" class="form-control" name="title" value="{{ $page->title }}">
-            </div>
-            <div class="form-group">
-                <label>(Szép) url</label>
-                <input type="text" class="form-control" name="slug" value="{{ $page->slug }}">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <label>Oldal címe</label>
+                        <input type="text" class="form-control" name="title" value="{{ $page->title }}">
+                    </div>
+                </div>
+                <div class="col-md-4">
+
+                    <div class="form-group">
+                        <label>(Szép) url</label>
+                        <input type="text" class="form-control" name="slug" value="{{ $page->slug }}">
+                    </div>
+                </div>
             </div>
             <div class="form-group">
                 <label>Tartalom</label>

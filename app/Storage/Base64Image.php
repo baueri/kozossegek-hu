@@ -2,47 +2,71 @@
 
 namespace App\Storage;
 
+use Exception;
+use InvalidArgumentException;
+
 class Base64Image
 {
-    private $imageSource = '';
-    
+    private string $imageSource = '';
+
     /**
-     *
      * @param string $imageData
      */
     public function __construct(string $imageData)
     {
-        $this->imageSource = base64_decode(substr($imageData, strpos($imageData, ',')));
+        $source = base64_decode(substr($imageData, strpos($imageData, ',')));
+
+        if (preg_match('/(eval\(|base64_encode|base64_decode|#!\/bin\/)/', $source)) {
+            throw new InvalidArgumentException('érvénytelen kép tartalom');
+        }
+
+        $this->imageSource = $source;
     }
-    
+
+    /**
+     * @param string $path
+     * @return false|int
+     * @throws Exception
+     */
     public function saveImage(string $path)
     {
         $this->createDirIfMissing($path);
-        
+
         return file_put_contents($path, $this->imageSource);
     }
-    
-    public function saveThumbnail(string $path, $width = 350, $height = 250)
+
+    /**
+     * @param string $path
+     * @throws Exception
+     */
+    public function saveThumbnail(string $path)
     {
         $this->createDirIfMissing($path);
-        
-        $thumbnail = imagecrop(imagecreatefromstring($this->imageSource), ['x' => 0, 'y' => 350, 'width' => 400, 'height' => 250]);
-        
+
+        $thumbnail = imagecrop(
+            imagecreatefromstring($this->imageSource),
+            ['x' => 0, 'y' => 350, 'width' => 400, 'height' => 250]
+        );
+
         ob_start();
         imagejpeg($thumbnail);
-        
+
         $thumnailSource = ob_get_clean();
-        
+
         file_put_contents($path, $thumnailSource);
     }
-    
+
+    /**
+     * @param $path
+     * @throws Exception
+     */
     protected function createDirIfMissing($path)
     {
         $dirname = dirname($path);
-        
+
         if (!is_dir($dirname) && !file_exists($dirname)) {
             if (!mkdir($dirname, 0775, true)) {
-                throw new \Exception("Cannot create image dir: $dirname");
+                throw new Exception("Cannot create image dir: $dirname");
             }
         }
     }

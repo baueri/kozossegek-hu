@@ -9,6 +9,7 @@ namespace App\Models;
  */
 
 use App\Enums\GroupStatusEnum;
+use App\Enums\JoinMode;
 use Framework\File\File;
 use Framework\Model\Model;
 use Framework\Model\TimeStamps;
@@ -128,6 +129,9 @@ class Group extends Model
      */
     public $join_mode;
 
+    /**
+     * @var string
+     */
     public $tags;
 
 
@@ -224,6 +228,11 @@ class Group extends Model
         return GroupHelper::getStoragePath($this->id);
     }
 
+
+    public function joinMode(): string
+    {
+        return JoinMode::getText($this->join_mode) ?? '';
+    }
 
     /**
      * @todo képmentést megoldani!!!

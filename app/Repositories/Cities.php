@@ -2,18 +2,26 @@
 
 namespace App\Repositories;
 
+use App\Models\City;
+use Framework\Database\PaginatedResultSet;
+use Framework\Model\Model;
+use Framework\Model\ModelCollection;
+use Framework\Model\PaginatedModelCollection;
+use Framework\Repository;
+
 /**
  * Description of Cities
  *
  * @author ivan
  */
-class Cities extends \Framework\Repository {
+class Cities extends Repository
+{
 
     /**
      *
-     * @param strgin $keyword
+     * @param string $keyword
      * @param int $limit
-     * @return ModelCollection
+     * @return PaginatedResultSet|Model[]|ModelCollection|PaginatedModelCollection
      */
     public function search($keyword, $limit = 10)
     {
@@ -37,15 +45,15 @@ class Cities extends \Framework\Repository {
             ->orderBy('name', 'asc')
             ->limit($limit)
             ->get();
-
     }
 
-    public static function getModelClass(): string {
-        return \App\Models\City::class;
+    public static function getModelClass(): string
+    {
+        return City::class;
     }
 
-    public static function getTable(): string {
+    public static function getTable(): string
+    {
         return 'cities';
     }
-
 }

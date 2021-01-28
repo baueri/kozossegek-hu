@@ -21,7 +21,7 @@ class SearchController
     /**
      * @var Request
      */
-    private $request;
+    private Request $request;
 
     /**
      *

@@ -1,15 +1,20 @@
 @header()
+    <link rel="canonical" href="@route('portal.page', ['slug' => 'rolunk'])" />
+    <meta name="description" content="Közösség rólunk, bemutatkozás" />
     <style>
         #send-message label {
             margin-bottom: .2rem;
         }
     </style>
 @endheader
-@section('header_content')
-    @featuredTitle($page_title)
-@endsection
+    @section('header_content')
+        @if($header_background)
+            @featuredTitle($page_title)
+        @endif
+    @endsection
 @extends('portal')
 <div class="container inner p-4 page">
+    @if(!$header_background)<h1>{{ $page_title }}</h1>@endif
     <div>
         {{ $page->content }}
         <span id="contact"></span>
@@ -37,7 +42,7 @@
                         <textarea class="noresize form-control form-control-sm" name="message" rows="4" required onresize id="mail_msg"></textarea>
                     </div>
                     @honeypot()
-                    <button type="submit" name="send" class="btn btn-primary btn-sm"><i class="fa fa-paper-plane mr-2"></i> Üzenet elküldése</button>
+                    <button type="submit" name="send" class="btn btn-darkblue btn-sm"><i class="fa fa-paper-plane mr-2"></i> Üzenet elküldése</button>
                 </form>
             </div>
         </div>

@@ -56,7 +56,7 @@ class Institutes extends \Framework\Repository
         if ($filter['sort']) {
             $orderBy = $filter['order_by'] ?: self::getPrimaryCol();
             if ($orderBy == 'group_count') {
-
+                //todo
             } else {
                 $builder->orderBy($orderBy, $filter['sort']);
             }
@@ -69,11 +69,13 @@ class Institutes extends \Framework\Repository
 
 
     //put your code here
-    public static function getModelClass(): string {
+    public static function getModelClass(): string
+    {
         return Institute::class;
     }
 
-    public static function getTable(): string {
+    public static function getTable(): string
+    {
         return 'institutes';
     }
 
@@ -84,5 +86,4 @@ class Institutes extends \Framework\Repository
         }
         return $this->getInstances($this->getBuilder()->whereIn('id', $instituteIds)->get());
     }
-
 }

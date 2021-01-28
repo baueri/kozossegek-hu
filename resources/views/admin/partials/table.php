@@ -16,7 +16,7 @@
                             @endif
                         </a>
                     @else
-                            {{ $column }}
+                        {{ $column }}
                     @endif
                 </th>
             @endforeach

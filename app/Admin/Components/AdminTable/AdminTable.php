@@ -23,7 +23,7 @@ abstract class AdminTable
      */
     protected array $centeredColumns = [];
 
-    protected array $sortableColumns = ['id'];
+    protected array $sortableColumns = [];
 
     /**
      * @var Request

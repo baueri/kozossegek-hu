@@ -1,5 +1,21 @@
 @title('Verzióinformáció')
 @extends('admin')
+<h3>v0.6 beta</h3>
+<ul>
+    <li>[NEW]: Facebook megosztási gomb a közösség adatlapján</li>
+    <li>[NEW]: Közösség adatlapján a csatlakozás módja is ki van íratva</li>
+    <li>
+        [NEW]: SEO optimalizálások
+        <ul>
+            <li>sitemap.xml és robots.txt bekötése</li>
+            <li>meta tag-ek beszúrása aloldalakra és közösségi adatlapokra</li>
+        </ul>
+    </li>
+    <li>[NEW]: Admin oldalon közösségek listázásánál sordbarendezési lehetőségek</li>
+    <li>[NEW]: Közösség és intézmény képfeltöltésnél kártékony kód ellenőrzés</li>
+    <li>[CHANGED]: Közösség adatlap elrendezés módosítása</li>
+    <li>[FIXED]: Template directive felismerés javítása</li>
+</ul>
 <h3>V0.5 beta</h3>
 <ul>
     <li>[NEW]: Közösség regisztrációs oldalon bejelentkzési lehetőség</li>

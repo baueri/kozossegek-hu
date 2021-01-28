@@ -10,7 +10,7 @@
         options = $.extend({
             lang: 'hu-HU',
             tabsize: 2,
-            height: 300,
+            height: 450,
             disableDragAndDrop:true,
             codemirror: { theme: 'monokai', lineWrapping: true, mode: 'text/html', htmlMode: true},
             callbacks: {
@@ -19,8 +19,8 @@
                 },
                 onDialogShown: function() {
                     if ($(".summernote-select-from-library").length === 0) {
-                        var mediaLibraryBox = $("<div class='mb-3'><label>Médiatárból</label><br/></div>");
-                        var mediaLibButton = $("<button class='btn btn-primary summernote-select-from-library' type='button'>Médiatár</button>");
+                        let mediaLibraryBox = $("<div class='mb-3'><label>Médiatárból</label><br/></div>");
+                        let mediaLibButton = $("<button class='btn btn-primary summernote-select-from-library' type='button'>Médiatár</button>");
                         mediaLibraryBox.append(mediaLibButton);
                         mediaLibButton.click(function () {
                             selectImageFromMediaLibrary({

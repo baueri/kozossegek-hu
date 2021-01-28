@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Auth\Auth;
 use Framework\Model\Model;
 use Framework\Model\TimeStamps;
+use Framework\Support\StringHelper;
 
 class Page extends Model
 {
@@ -32,6 +33,11 @@ class Page extends Model
     public function getUrl()
     {
         return config('app.site_url') . '/' . $this->slug;
+    }
+
+    public function excerpt($numberOfWords = 20)
+    {
+        return StringHelper::more($this->content, $numberOfWords);
     }
 
     public function pageTitle()

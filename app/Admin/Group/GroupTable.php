@@ -15,7 +15,6 @@ use Framework\Support\StringHelper;
 
 class GroupTable extends AdminTable implements Editable, Deletable
 {
-
     protected $columns = [
         'id' => '#',
         'image' => '<i class="fa fa-image" title="Fotó"></i>',
@@ -27,11 +26,13 @@ class GroupTable extends AdminTable implements Editable, Deletable
         'age_group' => 'Korosztály',
         'status' => '<i class="fa fa-check-circle" title="Aktív"></i>',
         'pending' => '<i class="fa fa-thumbs-up" title="Jóváhagyva"></i>',
-        'has_document' => '<i class="fa fa-file-word" title="Van feltöltött intézményvezetői igazolása"></i>',
+        'document' => '<i class="fa fa-file-word" title="Van feltöltött intézményvezetői igazolása"></i>',
         'created_at' => 'Létrehozva',
     ];
 
-    protected array $centeredColumns = ['status', 'pending', 'has_document', 'view'];
+    protected array $centeredColumns = ['status', 'pending', 'document', 'view'];
+
+    protected array $sortableColumns = ['id', 'status', 'pending', 'document', 'created_at'];
     /**
      * @var GroupViews
      */
@@ -66,6 +67,18 @@ class GroupTable extends AdminTable implements Editable, Deletable
         return "<i class='$class'></i>";
     }
 
+    public function getInstituteName($instituteName, GroupView $group)
+    {
+        $url = route('admin.group.list', ['institute_id' => $group->institute_id]);
+        return "<a href='{$url}' title='szűrés erre az intézményre'>{$instituteName}</a>";
+    }
+
+    public function getCity($cityName)
+    {
+        $url = route('admin.group.list', ['varos' => $cityName]);
+        return "<a href='{$url}'>{$cityName}</a>";
+    }
+
     public function getPending($pending)
     {
         if ($pending) {
@@ -87,8 +100,6 @@ class GroupTable extends AdminTable implements Editable, Deletable
     protected function getData(): PaginatedResultSetInterface
     {
         return $this->repository->search($this->request->merge([
-            'order_by' => 'id',
-            'order' => 'desc',
             'deleted' => $this->request->route->getAs() == 'admin.group.trash'
         ]));
     }
@@ -109,7 +120,7 @@ class GroupTable extends AdminTable implements Editable, Deletable
         return "<img src='$imageUrl' style='max-width: 25px; height: auto;' title='<img src=\"$imageUrl\">' data-html='true'/>";
     }
 
-    public function getHasDocument($document, GroupView $model)
+    public function getDocument($document, GroupView $model)
     {
         if ($model->hasDocument()) {
             return self::getCheckIcon('igen');
