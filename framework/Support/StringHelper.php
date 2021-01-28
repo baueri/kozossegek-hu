@@ -19,6 +19,7 @@ class StringHelper
      */
     public static function more($text, $numberOfWords, $moreText = '')
     {
+        $text = strip_tags($text);
         if (str_word_count($text, 0) > $numberOfWords) {
             $words = str_word_count($text, 2);
             $pos = array_keys($words);
