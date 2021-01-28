@@ -10,7 +10,7 @@
                 <a href="@route('portal.groups')" class="nav-link"><span>Közösséget keresek</span></a>
             </li>
             <li class="nav-item">
-                <a href="@route('portal.register_group')" class="nav-link"><span>Közösséget vezetek</span></a>
+                <a href="@route('portal.register_group')" class="nav-link"><span>Közösséget vezetek</span> <i class="fa fa-angle-down"></i></a>
                 <ul class="submenu" style="left: 0; right: auto">
                     <li class="nav-item">
                         <a href="/hogyan-alakitsunk-kiskozosseget" class="nav-link">Új kisközösség kialakítása</a>
