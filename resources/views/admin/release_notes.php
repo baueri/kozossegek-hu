@@ -4,6 +4,7 @@
 <ul>
     <li>[NEW]: Facebook megosztási gomb a közösség adatlapján</li>
     <li>[NEW]: Közösség adatlapján a csatlakozás módja is ki van íratva</li>
+    <li>[NEW]: Új kisközösség kialakítása aloldal, hozzá az almenü az "A közösségről" alá</li>
     <li>
         [NEW]: SEO optimalizálások
         <ul>
