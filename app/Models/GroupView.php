@@ -34,6 +34,9 @@ class GroupView extends Group
 
         $intezmeny = StringHelper::slugify($this->institute_name);
         $varos = StringHelper::slugify($this->city);
-        return $this->cachedUrl = route('kozosseg', ['varos' => $varos, 'intezmeny' => $intezmeny, 'kozosseg' => $this->slug()]);
+
+        $data = ['varos' => $varos, 'intezmeny' => $intezmeny, 'kozosseg' => $this->slug()];
+
+        return $this->cachedUrl = get_site_url() . route('kozosseg', $data);
     }
 }

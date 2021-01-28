@@ -5,7 +5,7 @@
     <meta property="og:type"          content="website" />
     <meta property="og:title"         content="kozossegek.hu - {{ $group->name }}" />
     <meta property="og:description"   content="{{ $group->excerpt(20) }}" />
-    <meta property="og:image"         content="{{ $images[0] }}" />
+    <meta property="og:image"         content="{{ get_site_url() . $images[0] }}" />
     <meta property="og:locale"         content="hu_HU" />
     <link rel="canonical" href="{{ $group->url() }}" />
 @endsection
