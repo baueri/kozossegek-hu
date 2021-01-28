@@ -63,18 +63,22 @@ class DataSet
         return $result;
     }
 
-    public static function get($item, $key)
+    public static function get($item, $key, $default = null)
     {
         if (is_array($item) && isset($item[$key])) {
             return $item[$key];
         }
 
-        return $item->{$key};
+        return $item->{$key} ?? $default;
     }
 
-    public static function has($items, $key, $value)
+    public static function has($items, $key, $value = null)
     {
-        if($items instanceof Collection) {
+        if (is_null($value)) {
+            return array_key_exists($key, $items);
+        }
+
+        if ($items instanceof Collection) {
             return $items->has($key, static::getItemValue($value, $key));
         }
 

@@ -34,15 +34,15 @@ class AdminMiddleware implements Middleware
         }
 
         $currentRoute = current_route();
-        View::addVariable('current_route', $currentRoute);
+        View::setVariable('current_route', $currentRoute);
         $admin_menu = AdminMenu::getMenu();
-        View::addVariable('admin_menu', $admin_menu);
-        View::addVariable('current_menu_item', $admin_menu->first('active'));
+        View::setVariable('admin_menu', $admin_menu);
+        View::setVariable('current_menu_item', $admin_menu->first('active'));
 
         if ($this->maintenance->isMaintenanceOn() && \App\Auth\Auth::loggedIn()) {
-            View::addVariable('is_maintenance_on', true);
+            View::setVariable('is_maintenance_on', true);
         } else {
-            View::addVariable('is_maintenance_on', false);
+            View::setVariable('is_maintenance_on', false);
         }
     }
 }

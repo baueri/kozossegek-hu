@@ -17,6 +17,8 @@ class PageController extends Controller
      */
     public function page(Request $request, PageRepository $repository)
     {
+        use_default_header_bg();
+
         $page = $repository->findBySlug($request['slug']);
 
         if (!$page) {

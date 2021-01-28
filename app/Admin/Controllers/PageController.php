@@ -7,7 +7,6 @@ use App\Admin\Page\Services\PageListService;
 use App\Admin\Page\TrashPageTable;
 use App\Auth\Auth;
 use App\Models\Page;
-use App\Portal\Services\PageRenderService;
 use App\Repositories\AdminPageRepository;
 use App\Repositories\PageRepository;
 use Framework\Http\Message;
@@ -25,11 +24,6 @@ class PageController extends AdminController
      * @var Request
      */
     private Request $request;
-
-    /**
-     * @var PageRenderService
-     */
-    private PageRenderService $pageRenderService;
 
     /**
      *
@@ -128,6 +122,5 @@ class PageController extends AdminController
         } finally {
             redirect_route('admin.page.trash');
         }
-
     }
 }

@@ -23,6 +23,7 @@ use Framework\Http\Controller;
 use Framework\Http\Message;
 use Framework\Http\Request;
 use Framework\Model\ModelNotFoundException;
+use Framework\Support\DataSet;
 use Throwable;
 
 /**
@@ -53,10 +54,11 @@ class GroupController extends Controller
      */
     public function kozosseg(Request $request, GroupViews $repo, Institutes $instituteRepo)
     {
+        use_default_header_bg();
         $backUrl = null;
         $user = Auth::user();
 
-        if (strpos($_SERVER['HTTP_REFERER'], route('portal.groups')) !== false) {
+        if (strpos(DataSet::get($_SERVER, 'HTTP_REFERER'), route('portal.groups')) !== false) {
             $backUrl = $_SERVER['HTTP_REFERER'];
         }
 
@@ -76,7 +78,6 @@ class GroupController extends Controller
         $_SESSION['honeypot_check_hash'] = $honeypot_check_hash = md5($checkTime);
         $slug = $group->slug();
         $keywords = builder('search_engine')->where('group_id', $group->id)->first()['keywords'];
-
         return view('portal.kozosseg', compact(
             'group',
             'institute',
@@ -87,7 +88,7 @@ class GroupController extends Controller
             'honeypot_check_hash',
             'slug',
             'keywords',
-            'user'
+            'user',
         ));
     }
 

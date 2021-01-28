@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Components\FacebookShareButton;
 use App\Http\Components\FeaturedTitle;
 use App\Http\Components\Selectors\AgeGroupSelector;
 use App\Http\Components\Selectors\JoinModeSelector;
@@ -45,6 +46,7 @@ return [
         'join_mode_selector' => function ($matches) {
             return View::component(JoinModeSelector::class, $matches[1]);
         },
+        'facebook_share_button' => fn($matches) => View::component(FacebookShareButton::class, $matches[1]),
         'alert' => function ($matches) {
 
             if (strpos($matches[0], '@alert') !== false) {
@@ -52,6 +54,14 @@ return [
             }
 
             return '</div>';
+        },
+        'admin' => function ($matches) {
+
+            if ($matches[0] == '@endadmin') {
+                return '<?php endif; ?>';
+            }
+
+            return '<?php if(\App\Auth\Auth::user()->isAdmin()): ?>';
         },
         'upload' => function ($matches) {
             $file = str_replace("'", "", $matches[1]);

@@ -11,7 +11,7 @@
             </div>
             <form method="get" id="finder" class="mt-5 text-center" action="@route('portal.groups')">
                 <input type="text" name="search" class="mb-5" placeholder="pl.: Budapest antiochia egyetemista">
-                <button type="submit" class="btn btn-lightred btn-lg"><i class="fa fa-search mr-2"></i> Keresés</button>
+                <button type="submit" class="btn btn-darkblue btn-lg"><i class="fa fa-search mr-2"></i> Keresés</button>
             </form>
         </div>
     </div>

@@ -21,13 +21,19 @@ class GroupView extends Group
 
     public $district;
 
+    private ?string $cachedUrl = null;
+
     /**
      * @return string
      */
     public function url(): string
     {
+        if ($this->cachedUrl) {
+            return $this->cachedUrl;
+        }
+
         $intezmeny = StringHelper::slugify($this->institute_name);
         $varos = StringHelper::slugify($this->city);
-        return route('kozosseg', ['varos' => $varos, 'intezmeny' => $intezmeny, 'kozosseg' => $this->slug()]);
+        return $this->cachedUrl = route('kozosseg', ['varos' => $varos, 'intezmeny' => $intezmeny, 'kozosseg' => $this->slug()]);
     }
 }

@@ -1,4 +1,6 @@
 @section('header')
+    <link rel="canonical" href="@route('portal.groups')" />
+    <meta name="description" content="Közösséget keresek, keresés, jellemzők, katolikus" />
     @include('asset_groups.select2')
 @endsection
 
@@ -39,7 +41,7 @@
                            class="group-tag"
                            id="tag-{{ $tag['slug'] }}"
                            value="{{ $tag['slug'] }}"
-                        <?php if (in_array($tag['slug'], $selected_tags)): ?> checked <?php endif; ?>
+                        @if(in_array($tag['slug'], $selected_tags)) checked @endif
                            style="display: none;">
                     <label for="tag-{{ $tag['slug'] }}" class="mr-1 badge badge-pill badge-light group-tag-badge align-middle">
                         <span class="align-middle">{{ $tag['tag'] }}</span>
@@ -48,7 +50,7 @@
                     <input type="hidden" name="tags" value="{{ $filter['tags'] }}">
                 </div>
                 <p class="text-center mt-5">
-                    <button type="submit" class="btn btn-lightred" style="box-shadow: 0 0 5px #333;"><i class="fa fa-search mr-2"></i> keresés indítása</button>
+                    <button type="submit" class="btn btn-darkblue" style="box-shadow: 0 0 5px #333;"><i class="fa fa-search mr-2"></i> keresés indítása</button>
                 </p>
                 <p class="mt-2 text-right">
                     <a href="/kozossegek" class="text-light text-shadowed">Szűrés törlése</a>

@@ -1,12 +1,11 @@
 <?php
 
-
 namespace App\Enums;
 
-
+use Framework\Support\DataSet;
 use Framework\Support\Enum;
 
-class JoinMode extends Enum
+final class JoinMode extends Enum
 {
     public const EGYENI_MEGBESZELES = 'egyeni';
 
@@ -14,7 +13,12 @@ class JoinMode extends Enum
 
     public const IDOSZAKOS = 'idoszakos';
 
-    public static function getModesWithName()
+    final public static function getText(?string $joinMode): ?string
+    {
+        return DataSet::get(self::getModesWithName(), $joinMode);
+    }
+
+    final public static function getModesWithName(): array
     {
         return [
             self::EGYENI_MEGBESZELES => 'Egyéni megbeszélés alapján',

@@ -126,7 +126,7 @@ class View implements ViewInterface
      * @param $key
      * @param $value
      */
-    public static function addVariable($key, $value)
+    public static function setVariable($key, $value)
     {
         static::$envVariables[$key] = $value;
     }

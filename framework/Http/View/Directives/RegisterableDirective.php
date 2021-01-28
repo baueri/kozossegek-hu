@@ -4,20 +4,20 @@ namespace Framework\Http\View\Directives;
 
 class RegisterableDirective extends AtDirective
 {
-    private $name;
+    private string $name;
 
-    private $replacementCallback;
-
-   /**
-    * @param string $name
-    * @param Closure|string $replacementCallback
-    */
-    public function __construct($name, $replacementCallback)
+    /**
+     * @param string $name
+     * @param callable|string $replacementCallback
+     */
+    public function __construct(string $name, $replacementCallback)
     {
         $this->name = $name;
 
         $this->replacementCallback = $replacementCallback;
     }
+
+    private $replacementCallback;
 
     public function getName()
     {

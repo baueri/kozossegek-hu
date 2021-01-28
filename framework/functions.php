@@ -216,7 +216,7 @@ function dispatcher()
  */
 function get_site_url()
 {
-    return $_SERVER['HTTP_HOST'];
+    return config('app.site_url');
 }
 
 /**
@@ -386,7 +386,12 @@ function php_deploy($env, $cwd = null)
 
 function set_header_bg(string $bg)
 {
-    View::addVariable('header_background', $bg);
+    View::setVariable('header_background', $bg);
+}
+
+function use_default_header_bg()
+{
+    set_header_bg('/images/main.jpg');
 }
 
 /**

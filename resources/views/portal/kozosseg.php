@@ -1,7 +1,13 @@
 @section('header')
-<meta name="keywords" content="{{ $keywords }}" />
-<meta name="description" content="{{ $group->name }}" />
-<link rel="canonical" href="https://<?php echo get_site_url() . $group->url(); ?>" />
+    <meta name="keywords" content="{{ $keywords }}" />
+    <meta name="description" content="{{ $group->name }}" />
+    <meta property="og:url"           content="{{ $group->url() }}" />
+    <meta property="og:type"          content="website" />
+    <meta property="og:title"         content="kozossegek.hu - {{ $group->name }}" />
+    <meta property="og:description"   content="{{ $group->excerpt(20) }}" />
+    <meta property="og:image"         content="{{ $images[0] }}" />
+    <meta property="og:locale"         content="hu_HU" />
+    <link rel="canonical" href="{{ $group->url() }}" />
 @endsection
 @extends('portal')
 <?php $nvr = 'a_' . substr(md5(time()), 0, 5); ?>
@@ -15,7 +21,7 @@
         @endalert
     @endif
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-lg-4 d-md-none d-lg-block">
             <img class="img-big" src="{{ $images[0] }}" alt="{{ $group->name }}">
             @if(count($images) > 1)
                 <div class="kozi-kiskepek row m-0">
@@ -25,12 +31,13 @@
                 </div>
             @endif
         </div>
-        <div class="col-md-8 pt-4 pt-md-0">
+        <div class="col-lg-8 col-md-12 pt-4 pt-md-0">
             <div class="title">
+                <img class="img-big img-sm d-none d-md-block d-lg-none" src="{{ $images[0] }}" alt="{{ $group->name }}">
                 @if($backUrl)
-<!--                    <div class="float-right">-->
-<!--                        <a href="{{ $backUrl }}"><i class="fa fa-angle-double-left"></i> vissza</a>-->
-<!--                    </div>-->
+                    <div class="float-right">
+                        <a href="{{ $backUrl }}"><i class="fa fa-angle-double-left"></i> vissza</a>
+                    </div>
                 @endif
                 <h1 class="primary-title h2">
                     {{ $group->name }}
@@ -41,36 +48,45 @@
                     @endif
                 </h1>
                 <h2 class="subtitle h5">{{  $group->city . ($group->district ? ', ' . $group->district : '')  }}</h2>
-                <div class="group-tags">
+                <div class="group-tags float-left">
                     @foreach($tag_names as $tag)
                     <a href="@route('portal.groups', ['tags' => $tag['tag']])" class="tag align-bottom">
                         <span class="tag-img" title="{{ $tag['tag_name'] }}" style="background: url('/images/tag/{{ $tag['tag'] }}.png'); background-size: cover;"></span>
                     </a>
                     @endforeach
                 </div>
+                <div class="float-right mb-2">@facebook_share_button($group->url())</div>
             </div>
             <p class="kozi-tulajdonsag">
-                <label>Helyszín</label><br/> @if($institute) {{ $institute->city }}, {{ $institute->name }} @endif
+                <strong>Helyszín</strong><br/> @if($institute) {{ $institute->city }}, {{ $institute->name }} @endif
             </p>
             @if($group->spiritual_movement)
                 <p class="kozi-tulajdonsag">
-                    <label>Lelkiségi mozgalom</label><br/> {{ $group->spiritual_movement }}
+                    <strong>Lelkiségi mozgalom</strong><br/> {{ $group->spiritual_movement }}
                 </p>
             @endif
+            <div class="row" style="margin-bottom: .5em;">
+                <div class="col-lg-4 col-md-12 mb-md-2">
+                    <strong>Alkalmak gyakorisága</strong><br/>{{ $group->occasionFrequency() }}
+                </div>
+                <div class="col-lg-3 col-md-12 mb-md-2">
+                    <strong>Korcsoport</strong><br/> {{ $group->ageGroup() }}
+                </div>
+                @if($group->join_mode)
+                    <div class="col-lg-5 col-md-12 mb-md-2">
+                        <strong>Csatlakozási lehetőség módja</strong><br/> {{ $group->joinMode() }}
+                    </div>
+                @endif
+            </div>
             <p class="kozi-tulajdonsag">
-                <label>Alkalmak gyakorisága</label><br/> {{ $group->occasionFrequency() }}
+                <strong>Közösségvezető(k)</strong><br/> {{ $group->group_leaders }}
             </p>
-            <p class="kozi-tulajdonsag">
-                <label>Korcsoport</label><br/> {{ $group->ageGroup() }}
-            </p>
-            <p class="kozi-tulajdonsag">
-                <label>Közösségvezető(k)</label><br/> {{ $group->group_leaders }}
-            </p>
-            <b>Bemutatkozás</b><br/>
-            {{ $group->description }}
+            @if($group->description)
+                <b>Bemutatkozás</b><br/>
+                {{ $group->description }}
+            @endif
             <p class="mt-4">
-                <span class="btn btn-outline-primary open-contact-modal"><i class="fas fa-envelope"></i> Érdekel!</span>
-                <!--<a href="#" class="text-danger float-right"><i class="fas fa-exclamation-triangle"></i> Jelentem</a>-->
+                <span class="btn btn-outline-darkblue open-contact-modal"><i class="fas fa-envelope"></i> Érdekel!</span>
             </p>
         </div>
     </div>
@@ -107,11 +123,11 @@
 </div>
 
 
-<div class="modal fade" id="contact-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="contact-modal" tabindex="-1" role="dialog" aria-labelledby="contact-group" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Vedd fel a kapcsolatot a közzösségvezetővel!</h5>
+        <h5 class="modal-title" id="contact-group">Vedd fel a kapcsolatot a közzösségvezetővel!</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>

@@ -109,7 +109,7 @@ class GroupViews extends Repository
             $builder->notDeleted();
         }
 
-        $builder->orderBy($filter['order_by'] ?: 'name', $filter['order'] ?: 'asc');
+        $builder->orderBy($filter['order_by'] ?: 'name', $filter['sort'] ?: 'asc');
 
 
         return $this->getInstances($builder->paginate($perPage));
