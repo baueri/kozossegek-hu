@@ -62,7 +62,7 @@ class Builder
     /**
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         $oldSelect = $this->select;
 
@@ -76,7 +76,7 @@ class Builder
         $this->select = $oldSelect;
         $this->selectBindings = $oldSelectBindings;
 
-        return $count;
+        return (int) $count;
     }
 
     protected function getBaseSelect()
