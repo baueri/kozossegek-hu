@@ -167,12 +167,17 @@ abstract class AdminTable
 
     protected static function getCheckIcon(?string $title)
     {
-        return "<i class='fa fa-check-circle text-success' title='$title'></i>";
+        return static::getIcon('fa fa-check-circle text-success', $title);
     }
 
     protected static function getBanIcon(?string $title)
     {
-        return "<i class='fa fa-ban text-danger' title='$title'></i>";
+        return static::getIcon('fa fa-ban text-danger', $title);
+    }
+
+    protected static function getIcon(string $class, ?string $title)
+    {
+        return "<i class='{$class}' title='$title'></i>";
     }
 
     protected static function excerpt(string $text, $withTooltip = true)
@@ -180,6 +185,12 @@ abstract class AdminTable
         $shorten = StringHelper::shorten($text, 20, '...');
         $tooltip = $withTooltip ? $text : '';
         return "<span title='$tooltip'>$shorten</span>";
+    }
+
+    protected function getLink(string $url, ?string $text, string $title = ''): string
+    {
+        $titleAttr = $title ? " title='{$title}'" : '';
+        return "<a href='{$url}'{$titleAttr}>$text</a>";
     }
 
     /**

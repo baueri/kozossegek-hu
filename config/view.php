@@ -2,6 +2,7 @@
 
 use App\Http\Components\FacebookShareButton;
 use App\Http\Components\FeaturedTitle;
+use App\Http\Components\FontawesomeIcon;
 use App\Http\Components\Selectors\AgeGroupSelector;
 use App\Http\Components\Selectors\JoinModeSelector;
 use App\Http\Components\Selectors\OccasionFrequencySelector;
@@ -74,6 +75,7 @@ return [
             $nvr = 'a_' . substr(md5(time()), 0, 5);
             $hash = \App\Helpers\HoneyPot::getHash(request()->uri);
             return '<input type="text" name="website" id="' . $nvr . '" value="' . $hash . '" style="width: 0px;padding: 0;border: 0;margin: 0;">';
-        }
+        },
+        'icon' => fn($matches) => View::component(FontawesomeIcon::class, $matches[1]),
     ]
 ];

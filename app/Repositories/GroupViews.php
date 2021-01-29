@@ -2,7 +2,6 @@
 
 namespace App\Repositories;
 
-use App\Models\Group;
 use App\Models\User;
 use Framework\Database\PaginatedResultSet;
 use Framework\Model\Model;
@@ -45,10 +44,10 @@ class GroupViews extends Repository
 
     /**
      * @param Collection|array $filter
-     * @param int $perPage
+     * @param int|null $perPage
      * @return PaginatedResultSet|Model[]|ModelCollection|PaginatedModelCollection []
      */
-    public function search($filter = [], $perPage = 30)
+    public function search($filter = [], ?int $perPage = 30)
     {
         if (is_array($filter)) {
             $filter = collect($filter);
@@ -60,7 +59,6 @@ class GroupViews extends Repository
             $keyword = StringHelper::sanitize(str_replace('-', ' ', $keyword));
             $keywords = '+' . str_replace(' ', '* +', trim($keyword, ' ')) . '*';
 
-            /* @var $found PaginatedResultSet */
             $found = db()->select('select group_id
                 from search_engine 
                 where MATCH(keywords) AGAINST (? IN BOOLEAN MODE)', [$keywords]);
@@ -103,14 +101,21 @@ class GroupViews extends Repository
             $builder->apply('whereGroupTag', $tags);
         }
 
-        if ($filter['deleted']) {
-            $builder->deleted();
-        } else {
-            $builder->notDeleted();
+        if ($institute_name = $filter['intezmeny']) {
+            $builder->where('institute_name', 'like', "%$institute_name%");
         }
 
-        $builder->orderBy($filter['order_by'] ?: 'name', $filter['sort'] ?: 'asc');
+        if ($filter['deleted']) {
+            $builder->apply('deleted');
+        } else {
+            $builder->apply('notDeleted');
+        }
 
+        $builder->orderBy($filter['order_by'] ?: 'id', $filter['sort'] ?: 'desc');
+
+        if ($perPage == -1) {
+            return $this->getInstances($builder->get());
+        }
 
         return $this->getInstances($builder->paginate($perPage));
     }
@@ -119,13 +124,13 @@ class GroupViews extends Repository
      * @param string $slug
      * @return GroupView
      */
-    public function findBySlug($slug)
+    public function findBySlug(string $slug)
     {
         $id = substr($slug, strrpos($slug, '-') + 1);
 
         $builder = $this->getBuilder();
 
-        $row = $builder->where('id', $id)->notDeleted()->first();
+        $row = $builder->where('id', $id)->apply('notDeleted')->first();
 
         if ($row) {
             return $this->getInstance($row);
@@ -144,7 +149,7 @@ class GroupViews extends Repository
             ->limit($take);
 
         if ($tags) {
-            $builder->whereGroupTag(collect($tags)->pluck('tag')->all());
+            $builder->apply('whereGroupTag', collect($tags)->pluck('tag')->all());
         }
 
 

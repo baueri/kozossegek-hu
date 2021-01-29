@@ -326,6 +326,11 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         return json_encode($this->items, $options, $depth);
     }
 
+    public function prettyJson()
+    {
+        return $this->toJson(JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+    }
+
     /**
      * Applies sort on collection
      */
@@ -439,10 +444,10 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
             return new self(array_unique($this->items));
         }
 
-        return $this->reduce(function($filtered, $item) use($key) {
-                if (!DataSet::has($filtered, $key, $item)) {
-                    $filtered[] = DataSet::getItemValue($item, $key);
-                }
+        return $this->reduce(function ($filtered, $item) use ($key) {
+            if (!DataSet::has($filtered, $key, $item)) {
+                $filtered[] = DataSet::getItemValue($item, $key);
+            }
                 return $filtered;
         }, new self());
     }
@@ -660,7 +665,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
      */
     public function __toString(): string
     {
-        return json_encode($this->items, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        return $this->toJson(JSON_UNESCAPED_UNICODE);
     }
 
     public function toArray()

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Admin\Page;
-
 
 use App\Admin\Components\AdminTable\AdminTable;
 use App\Admin\Components\AdminTable\Deletable;
@@ -17,9 +15,9 @@ use Framework\Http\Request;
 class PageTable extends AdminTable implements Deletable, Editable
 {
     /**
-     * @var \App\Repositories\PageRepository\\App\Repositories\PageRepository
+     * @var AdminPageRepository
      */
-    private $repository;
+    private AdminPageRepository $repository;
 
     /**
      * @var Users
@@ -68,7 +66,7 @@ class PageTable extends AdminTable implements Deletable, Editable
 
     protected function getData(): PaginatedResultSetInterface
     {
-        $filter = $this->request;
+        $filter = $this->request->collect();
         if ($this->request->route->getAs() == 'admin.page.trash') {
             $filter['deleted'] = true;
         }

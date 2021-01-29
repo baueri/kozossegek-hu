@@ -14,6 +14,8 @@
             <!-- Fiók törlése -->
             <route method="post" middleware="App\Middleware\LoggedInMiddleware" uri="profile/delete" as="portal.profile.delete" controller="ApiUserController" use="delete"/>
 
+            <!-- Közösségek API szolgáltatás -->
+            <route method="all" uri="kozossegek" as="portal.kozossegek" controller="ApiGroupController" use="list"/>
         </route-group>
     </route-group>
 

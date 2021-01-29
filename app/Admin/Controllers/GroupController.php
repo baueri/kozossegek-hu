@@ -9,8 +9,10 @@ use App\Admin\Group\Services\DeleteGroup;
 use App\Admin\Group\Services\EditGroup;
 use App\Admin\Group\Services\ListGroups;
 use App\Admin\Group\Services\UpdateGroup;
+use App\Admin\Group\Services\ValidateGroupForm;
 use App\Http\Exception\RequestParameterException;
 use App\Models\Group;
+use App\Models\GroupView;
 use App\Repositories\Groups;
 use App\Repositories\GroupViews;
 use App\Services\CreateUserFromGroup;
@@ -37,7 +39,7 @@ class GroupController extends AdminController
      */
     public function create(BaseGroupForm $service): string
     {
-        return $service->show(new Group());
+        return $service->render(new Group());
     }
 
     public function doCreate(Request $request, CreateGroup $service, BaseGroupForm $form)
@@ -51,13 +53,13 @@ class GroupController extends AdminController
 
         } catch (RequestParameterException $e) {
             Message::danger($e->getMessage());
-            return $form->show(new Group($request->all()));
+            return $form->render(new Group($request->all()));
         }
     }
 
     public function edit(Request $request, EditGroup $service, GroupViews $repository)
     {
-        return $service->show($repository->findOrFail($request['id']));
+        return $service->render($repository->findOrFail($request['id']));
     }
 
     public function update(Request $request, UpdateGroup $service)
@@ -105,9 +107,10 @@ class GroupController extends AdminController
 
     public function createUserFromGroup(Request $request, Groups $groups, CreateUserFromGroup $service)
     {
-        $group = $groups->findOrFail($request['id']);
-
-        $user = $service->createUserAndAddToGroup($group);
+        return 'majd';
+//        $group = $groups->findOrFail($request['id']);
+//
+//        $user = $service->createUserAndAddToGroup($group);
     }
 
     public function createMissingUsers(Request $request, GroupViews $groupRepository, CreateUserFromGroup $service)
@@ -130,5 +133,26 @@ class GroupController extends AdminController
         $groups = $groupRepository->getGroupsWithoutUser();
 
         return view('admin.group.maintenance', compact('groups'));
+    }
+
+    public function validate(Request $request, GroupViews $groupViews, ValidateGroupForm $form)
+    {
+        /* @var $group GroupView */
+        $group = $groupViews->findOrFail($request['id']);
+
+        return $form->render($group);
+    }
+
+    public function getRejectModal(Request $request, GroupViews $groupViews)
+    {
+        /* @var $group GroupView */
+        $group = $groupViews->findOrFail($request['id']);
+        $message = <<<EOT
+        Kedves {$group->group_leaders}!
+        
+        A közösséged adatlapja javításra szorul! Kérjük ellenőrizd az adatokat!
+        EOT;
+
+        return view('admin.group.reject-form', compact('group', 'message'));
     }
 }

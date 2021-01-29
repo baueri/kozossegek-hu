@@ -7,7 +7,7 @@ namespace App\Repositories;
  *
  * @author ivan
  */
-class AdminPageRepository extends \App\Repositories\PageRepository
+class AdminPageRepository extends PageRepository
 {
 
     public function getPages($filter)
@@ -28,6 +28,8 @@ class AdminPageRepository extends \App\Repositories\PageRepository
         if ($search = $filter['search']) {
             $builder->where('title', 'like', "%$search%");
         }
+
+        $builder->orderByFromRequest();
 
         return $this->getInstances($builder->paginate(30));
     }

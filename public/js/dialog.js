@@ -188,3 +188,4 @@ $.fn.confirm = function (options) {
         });
     });
 }
+

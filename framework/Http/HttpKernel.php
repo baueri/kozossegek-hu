@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Framework\Http;
 
 use Framework\Http\Exception\PageNotFoundException;
@@ -56,12 +55,10 @@ class HttpKernel implements Kernel
                 'message' => 'A keresett oldal nem található',
                 'message2' => 'Az oldal, amit keresel lehet, hogy törölve lett vagy ideiglenesen nem elérhető.']));
         } catch (UnauthorizedException $exception) {
-            error_log($exception);
-
             return print(view('portal.error', [
                 'code' => $exception->getCode(),
                 'message2' => 'Nincs jogosultsága az oldal megtekintéséhez']));
-        } catch (\Error|\Exception $exception) {
+        } catch (\Error | \Exception $exception) {
             error_log($exception);
 
             return print(view('portal.error', [
