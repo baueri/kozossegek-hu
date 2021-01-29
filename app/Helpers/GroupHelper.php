@@ -14,7 +14,7 @@ class GroupHelper
      * @param string $ageGroup
      * @return string
      */
-    public static function parseAgeGroup($ageGroup)
+    public static function parseAgeGroup(?string $ageGroup)
     {
         $ageGroups = static::getAgeGroups($ageGroup);
 

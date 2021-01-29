@@ -17,6 +17,7 @@ class GroupTable extends AdminTable implements Editable, Deletable
 {
     protected $columns = [
         'id' => '#',
+        'pending' => '<i class="fa fa-thumbs-up" title="Jóváhagyva"></i>',
         'image' => '<i class="fa fa-image" title="Fotó"></i>',
         'view' => '<i class="fa fa-eye" title="Megtekintés a honlapon"></i>',
         'name' => 'Közösség neve',
@@ -25,7 +26,6 @@ class GroupTable extends AdminTable implements Editable, Deletable
         'group_leaders' => 'Közösség vezető(i)',
         'age_group' => 'Korosztály',
         'status' => '<i class="fa fa-check-circle" title="Aktív"></i>',
-        'pending' => '<i class="fa fa-thumbs-up" title="Jóváhagyva"></i>',
         'document' => '<i class="fa fa-file-word" title="Van feltöltött intézményvezetői igazolása"></i>',
         'created_at' => 'Létrehozva',
     ];
@@ -51,7 +51,14 @@ class GroupTable extends AdminTable implements Editable, Deletable
 
     public function getAgeGroup($ageGroup)
     {
-        return GroupHelper::parseAgeGroup($ageGroup);
+        $ageGroups = GroupHelper::getAgeGroups($ageGroup);
+
+        return $ageGroups->map(fn($name, $key) =>
+            $this->getLink(
+                $this->getListUrl(['korosztaly' => $key]),
+                $name,
+                'szűrés erre'
+            ))->implode(', ');
     }
 
     public function getCreatedAt($createdAt)
@@ -69,23 +76,29 @@ class GroupTable extends AdminTable implements Editable, Deletable
 
     public function getInstituteName($instituteName, GroupView $group)
     {
-        $url = route('admin.group.list', ['institute_id' => $group->institute_id]);
-        return "<a href='{$url}' title='szűrés erre az intézményre'>{$instituteName}</a>";
+        return $this->getLink(
+            $this->getListUrl(['institute_id' => $group->institute_id]),
+            $instituteName,
+            'szűrés erre az intézményre'
+        );
     }
 
-    public function getCity($cityName)
+    public function getCity($cityName, $m)
     {
-        $url = route('admin.group.list', ['varos' => $cityName]);
-        return "<a href='{$url}'>{$cityName}</a>";
+        return $this->getLink($this->getListUrl(['varos' => $cityName]), $cityName, 'keresés erre a városra');
     }
 
-    public function getPending($pending)
+    public function getPending($pending, $group)
     {
-        if ($pending) {
-            return static::getBanIcon('nem');
+        if ($pending == 1) {
+            $icon = static::getIcon('fa fa-sync text-warning', 'megnyitás jóváhagyásra');
+
+            return $this->getLink(route('admin.group.validate', $group), $icon);
+        } elseif ($pending == -1) {
+            return static::getBanIcon('jóváhagyás visszautasítva');
         }
 
-        return self::getCheckIcon('igen');
+        return self::getCheckIcon('jóváhagyva');
     }
 
     public function getGroupLeaders($groupLeaders)
@@ -137,5 +150,10 @@ class GroupTable extends AdminTable implements Editable, Deletable
     public function getView($null, GroupView $model)
     {
         return "<a href='{$model->url()}' target='_blank' title='megtekintés'><i class='fa fa-eye'></i></a>";
+    }
+
+    private function getListUrl(array $params = [])
+    {
+        return route('admin.group.list', $params);
     }
 }

@@ -408,3 +408,8 @@ function get_class_name($class)
 
     return array_pop($path);
 }
+
+function site_has_error_logs(): bool
+{
+    return file_exists(ROOT . 'error.log') && filesize(ROOT . 'error.log');
+}

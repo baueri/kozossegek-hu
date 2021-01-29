@@ -59,8 +59,6 @@ class View implements ViewInterface
             throw new ViewNotFoundException('view file not found: ' . $filePath);
         }
 
-        EventDisptatcher::dispatch(new ViewLoaded($filePath));
-
         return $this->getContentAndDoCache($filePath, array_merge($additional_args, $args));
     }
 
@@ -109,7 +107,9 @@ class View implements ViewInterface
 
         ob_start();
 
-        include $this->cacheDriver->getCacheFilename($filePath);
+        include $cachedFilename = $this->cacheDriver->getCacheFilename($filePath);
+
+        EventDisptatcher::dispatch(new ViewLoaded($filePath, $cachedFilename));
 
         return ob_get_clean();
     }

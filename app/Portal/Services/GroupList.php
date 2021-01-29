@@ -56,7 +56,8 @@ class GroupList
     {
         $filter = $this->request->only('search', 'korosztaly', 'rendszeresseg', 'tags');
         $filter['varos'] = $this->request['varos'];
-        $filter['order_by'] = ['city', 'district'];
+//        $filter['order_by'] = ['city', 'district'];
+//        $filter['sort'] = 'asc';
         $filter['pending'] = 0;
         $filter['status'] = GroupStatusEnum::ACTIVE;
         $groups = $this->service->search($filter, 18);

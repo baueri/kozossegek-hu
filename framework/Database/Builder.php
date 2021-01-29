@@ -297,6 +297,11 @@ class Builder
         return $this->whereInSet($column, $value, 'or');
     }
 
+    public function orderByFromRequest()
+    {
+        return $this->orderBy(request()->get('order_by', 'id'), request()->get('sort', 'desc'));
+    }
+
     public function update(array $values)
     {
         $set = implode(', ', array_map(function ($column) {

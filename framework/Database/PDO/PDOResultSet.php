@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Framework\Database\PDO;
-
 
 use Framework\Database\ResultSet;
 use PDO;
@@ -11,16 +9,15 @@ use PDOStatement;
 class PDOResultSet implements ResultSet
 {
 
-    const FETCH_STYLE = PDO::FETCH_ASSOC;
+    public const FETCH_STYLE = PDO::FETCH_ASSOC;
 
     /**
      * @var PDOStatement
      */
-    private $statement;
+    private PDOStatement $statement;
 
     public function __construct(PDOStatement $statement)
     {
-
         $this->statement = $statement;
     }
 

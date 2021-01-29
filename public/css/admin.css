@@ -23,7 +23,10 @@ img {
     min-height: calc(100vh - 41px);
     position: relative;
     padding-bottom: 57px;
-    /*background: #eaeaea;*/
+}
+
+body.has-debugbar #content {
+    min-height: calc(100vh - (41px + 32px));
 }
 
 #sidebar ul li a {

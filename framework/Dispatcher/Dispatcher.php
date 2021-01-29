@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Framework\Dispatcher;
 
 interface Dispatcher
@@ -8,7 +7,7 @@ interface Dispatcher
     /**
      * @return void
      */
-    public function dispatch() : void ;
+    public function dispatch(): void;
 
     public function handleError($e);
 }

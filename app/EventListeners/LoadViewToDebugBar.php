@@ -16,7 +16,7 @@ class LoadViewToDebugBar implements EventListener
     public function trigger($event)
     {
         if ($event->filePath) {
-            LoadedViewsTab::addView($event->filePath);
+            LoadedViewsTab::addView($event->filePath, $event->cachedFilePath);
         }
     }
 }
