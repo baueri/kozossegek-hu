@@ -15,22 +15,22 @@ use Framework\Support\StringHelper;
  *
  * @author ivan
  */
-class WidgetHelper {
-    
+class WidgetHelper
+{
+
     /**
-     * 
+     *
      * @param string $name
      * @return string
      */
     public static function generateUniqId($name)
     {
-        
+
         [$word1, $word2] = explode(' ', StringHelper::convertSpecialChars($name));
         if (!$word2) {
             return strtoupper(substr($word1, 0, 4));
         }
-        
+
         return strtoupper(substr($word1, 0, 2) . substr($word2, 0, 2));
-        
     }
 }
