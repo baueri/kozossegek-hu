@@ -258,7 +258,7 @@ class Group extends Model
 
     public function getEditUrl()
     {
-        return route('portal.edit_group', $this);
+        return get_site_url() . route('portal.edit_group', $this);
     }
 
     public function isEditableBy(?User $user)

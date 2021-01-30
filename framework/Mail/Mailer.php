@@ -32,12 +32,13 @@ class Mailer
 
     /**
      * @param string $to
+     * @param string|null $name
      * @return $this
      * @throws Exception
      */
-    public function to(string $to)
+    public function to(string $to, ?string $name = '')
     {
-        $this->phpMailer->addAddress($to);
+        $this->phpMailer->addAddress($to, $name);
 
         return $this;
     }

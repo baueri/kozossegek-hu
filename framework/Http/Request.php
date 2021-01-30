@@ -2,6 +2,7 @@
 
 namespace Framework\Http;
 
+use App\Http\Exception\RequestParameterException;
 use ArrayAccess;
 use Countable;
 use Framework\Support\Collection;
@@ -158,7 +159,7 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
     {
         foreach ($requestParams as $requestParam) {
             if (!$this->request[$requestParam]) {
-                throw new InvalidArgumentException('Missing request value');
+                throw new RequestParameterException('Missing request value');
             }
         }
     }

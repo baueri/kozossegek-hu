@@ -20,6 +20,8 @@ class LoginController extends Controller
 {
     public function login()
     {
+        use_default_header_bg();
+
         if (Auth::loggedIn()) {
             redirect_route('admin.dashboard');
         }

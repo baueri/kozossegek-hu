@@ -117,7 +117,7 @@ class View implements ViewInterface
     /**
      * @return Section
      */
-    public function getSection()
+    public function getSection(): Section
     {
         return $this->section;
     }

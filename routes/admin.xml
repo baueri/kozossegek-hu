@@ -40,6 +40,7 @@
         <!-- KÖZÖSSÉGEK -->
         <route-group prefix="group" as="group" controller="GroupController">
             <route method="get" uri="list" use="list" as="list"/>
+            <route method="get" uri="list/pending/" use="list" as="list.pending"/>
 
             <route method="get" uri="create" use="create" as="create"/>
             <route method="post" uri="create" use="doCreate" as="do_create"/>

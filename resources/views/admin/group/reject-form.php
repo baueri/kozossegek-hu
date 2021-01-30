@@ -1,4 +1,9 @@
 <div class="row">
+    <div class="col-md-12">
+        @alert('info')
+            A közösségvezető sikeres művelet esetén az alábbi email címen értesítve lesz arról, hogy a közössége visszautasításra került.
+        @endalert
+    </div>
     <div class="col-md-6">
         <div class="form-group">
             <label>Címzett neve</label>

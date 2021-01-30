@@ -3,29 +3,49 @@
 @section('title')
     <div class="btn-group btn-group-sm btn-shadow ml-4">
         <a class="btn {{ $current_page == 'all' ? 'active btn-primary' : 'btn-default' }}" href="@route('admin.group.list')">Összes</a>
-        <a class="btn {{ $current_page == 'pending' ? 'active btn-primary' : 'btn-default' }}" href="@route('admin.group.list', ['pending' => '1'])">
-            Jóváhagyás @if($pending_groups)
-             ({{ $pending_groups }})
-             @endif
-        </a>
         <a class="btn {{ $current_page == 'inactive' ? 'active btn-primary' : 'btn-default' }}" href="@route('admin.group.list', ['status' => 'inactive'])">Inaktív</a>
         <a class="btn {{ $current_page == 'trash' ? 'active btn-primary' : 'btn-default' }}" href="@route('admin.group.trash')">Lomtár</a>
     </div>
+
 @endsection
 @section('header')@include('asset_groups.select2')@endsection
 @extends('admin')
-
-<div class="form-group">
-    <a href="@route('admin.group.refresh_search_engine')" class="btn btn-sm btn-primary"><i class="fa fa-search-plus"></i> Keresőmotor frissítése</a>
-</div>
-<form method="get" id="finder">
+@if($pending_groups)
+    @alert('warning')
+        Vannak jóváhagyásra váró közösségek <b>({{ $pending_groups }})</b>
+        <a href="@route('admin.group.list', ['pending' => '1'])" class="">
+            Jóváhagyásra váró közösségek
+        </a>
+    @endalert
+@endif
+<form method="get" id="finder" class="jumbotron p-3">
     <div class="row">
         <div class="col-md-3">
             <div class="form-group">
                 <input type="text" name="search" value="{{ $filter['search'] }}" class="form-control" placeholder="keresés névre, leírásra...">
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
+            <div class="form-group">
+                <select class="form-control" id="pending" name="pending" data-placeholder="jóváhagyás állapota">
+                    <option></option>
+                    <option value="0" @if($filter['pending'] === '0') selected @endif>jóváhagyva</option>
+                    <option value="1" @if($filter['pending'] === '1') selected @endif>jóhávagyásra vár</option>
+                    <option value="-1" @if($filter['pending'] === '-1') selected @endif>visszautasítva</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <select id="status" name="status" class="form-control" data-placeholder="Állapot">
+                <option></option>
+                @foreach($statuses as $status)
+                    <option value="{{ $status->name }}" {{ $filter['status'] == $status->name ? 'selected' : '' }}>{{ $status }}</option>
+                @endforeach
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
             <div class="form-group">
                 <select name="varos" id="varos" class="form-control">
                     <option value="{{ $filter['varos'] }}">{{ $filter['varos'] ?: 'város' }}</option>
@@ -96,6 +116,10 @@
                     return params;
                 }
             }
+        });
+        $("#pending, #status").select2({
+            allowClear: true,
+            placeholder: $(this).data("placeholder")
         });
     });
 </script>
