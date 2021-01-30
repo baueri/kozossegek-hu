@@ -68,7 +68,7 @@ body:not(.home) .featured-header {
     padding: 4px 8px;
 }
 
-.header-outer.featured-header #header .navbar-nav > li > .nav-link {
+.header-outer.featured-header #header:not(.compact) .navbar-nav > li > .nav-link {
     color: #fff;
 }
 
