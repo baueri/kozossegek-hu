@@ -37,7 +37,7 @@ class StringHelper
      */
     public static function shorten(string $text, int $numberOfCharacters, $moreText = '')
     {
-        if (strlen($text) <= $numberOfCharacters) {
+        if (mb_strlen($text) <= $numberOfCharacters) {
             return $text;
         }
 
