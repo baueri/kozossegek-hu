@@ -11,6 +11,7 @@ use App\Models\Group;
 use App\Models\GroupView;
 use App\Portal\Services\GroupList;
 use App\Portal\Services\PortalCreateGroup;
+use App\Portal\Services\PortalUpdateGroup;
 use App\Portal\Services\SendContactMessage;
 use App\Repositories\Groups;
 use App\Repositories\GroupViews;
@@ -183,12 +184,18 @@ class GroupController extends Controller
         }
     }
 
-    public function updateMyGroup(Request $request, UpdateGroup $service, GroupViews $groups)
+    /**
+     * @param Request $request
+     * @param PortalUpdateGroup $service
+     * @param Groups $groups
+     */
+    public function updateMyGroup(Request $request, PortalUpdateGroup $service, Groups $groups)
     {
-        $group = $groups->findOrFail($request['id']);
 
         try {
-            $service->update($group->id, $request->only(
+            /* @var $group Group */
+            $group = $groups->findOrFail($request['id']);
+            $service->update($group, $request->only(
                 'status',
                 'name',
                 'denomination',
@@ -214,7 +221,7 @@ class GroupController extends Controller
         } catch (FileTypeNotAllowedException $e) {
             Message::danger('<b>A dokumentum fájltípusa érvénytelen!</b> Az alábbi fájltípusokat fogadjuk el: doc, docx, pdf');
             redirect_route('portal.edit_group', $group);
-        } catch (Error|Throwable $e) {
+        } catch (Error | Throwable $e) {
             Message::danger('Sikertelen mentés!');
             redirect_route('portal.edit_group', $group);
         }

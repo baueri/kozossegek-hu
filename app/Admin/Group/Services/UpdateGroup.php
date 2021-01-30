@@ -16,22 +16,19 @@ use Framework\Support\Collection;
  */
 class UpdateGroup extends BaseGroupService
 {
-
     /**
      *
-     * @param int $id
+     * @param Group $group
      * @param Request|Collection|array $request
      * @param array|null $document
-     * @throws ModelNotFoundException|FileTypeNotAllowedException
+     * @return Group
+     * @throws FileTypeNotAllowedException
      */
-    public function update(int $id, $request, ?array $document = [])
+    public function update(Group $group, $request, ?array $document = [])
     {
         if (is_array($request)) {
             $request = collect($request);
         }
-
-        /* @var $group Group */
-        $group = $this->repository->findOrFail($id);
 
         $data = $request->except('id', 'tags')->all();
 
@@ -72,5 +69,7 @@ class UpdateGroup extends BaseGroupService
         $this->syncImages($group, [$request['image']]);
 
         Message::success('Sikeres mentés.');
+
+        return $group;
     }
 }

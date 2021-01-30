@@ -97,12 +97,15 @@ class GroupController extends AdminController
 
     /**
      * @param UpdateGroup $service
-     * @throws ModelNotFoundException
+     * @param Groups $groups
      * @throws FileTypeNotAllowedException
+     * @throws ModelNotFoundException
      */
-    public function update(UpdateGroup $service)
+    public function update(UpdateGroup $service, Groups $groups)
     {
-        $service->update($this->request['id'], $this->request);
+        /* @var $group Group */
+        $group = $groups->findOrFail($this->request['id']);
+        $service->update($group, $this->request);
 
         redirect_route('admin.group.edit', ['id' => $this->request['id']]);
     }

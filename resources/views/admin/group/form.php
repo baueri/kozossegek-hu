@@ -110,13 +110,13 @@
         </div>
         <div class="col-md-3 group-side-content">
             <div class="form-group">
-                <label>Jóváhagyva</label>
-                <div class="switch yesno" style="width:100px;">
-                    <input type="radio" id="pending-0" name="pending" value="0" @if(!$group->pending) checked @endif>
-                    <input type="radio" id="pending-1" name="pending" value="1" @if($group->pending) checked @endif>
-                    <label for="pending-1">igen</label>
-                    <label for="pending-0">nem</label>
-                </div>
+                <label for="pending">Jóváhagyva</label>
+                <select class="form-control" id="pending" name="pending" data-placeholder="jóváhagyás állapota">
+                    <option></option>
+                    <option value="0" @if($group->pending === '0') selected @endif>jóváhagyva</option>
+                    <option value="1" @if($group->pending === '1') selected @endif>jóhávagyásra vár</option>
+                    <option value="-1" @if($group->pending === '-1') selected @endif>visszautasítva</option>
+                </select>
             </div>
             <div class="form-group">
                 <label for="status">Állapot</label>

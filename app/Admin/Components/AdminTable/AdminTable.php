@@ -150,7 +150,9 @@ abstract class AdminTable
             $text = StringHelper::shorten($value, $excerpt, '...');
         }
 
-        return "<a href='$url' title='{$value}'>$text</a>";
+        $icon = self::getIcon('fa fa-edit');
+
+        return "<a href='{$url}' title='{$value}'>{$icon} {$text}</a>";
     }
 
     protected function getDelete($t, $model, $title = 'lomtárba')
@@ -175,7 +177,7 @@ abstract class AdminTable
         return static::getIcon('fa fa-ban text-danger', $title);
     }
 
-    protected static function getIcon(string $class, ?string $title)
+    protected static function getIcon(string $class, string $title = '')
     {
         return "<i class='{$class}' title='$title'></i>";
     }

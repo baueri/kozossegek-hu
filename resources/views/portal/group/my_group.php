@@ -23,15 +23,19 @@
             @endif
             <h3 class="h4 mt-3">Általános adatok</h3>
             <form method="post" id="group-form" action="@route('portal.my_group.update', $group)" enctype="multipart/form-data">
-                @if($group->pending)
-                @alert('warning')
-                A közösséged még függőben van, amíg nincs jóváhagyva, addig nem jelenítjük meg a közösségek között.
-                @endalert
+                @if($group->pending == 1)
+                    @alert('warning')
+                        <b>A közösséged még függőben van.</b> Amíg nincs jóváhagyva, addig nem jelenítjük meg a közösségek között.
+                    @endalert
+                @elseif($group->isRejected())
+                    @alert('warning')
+                        <b>A közösséged vissza lett dobva.</b><br/> Nézd meg az adataidat, hogy minden rendben van-e, majd kattints a mentés gombra.
+                    @endalert
                 @elseif($group->status == App\Enums\GroupStatusEnum::INACTIVE)
-                @alert('warning')
-                <b>A közösséged jelenleg inaktív.</b><br> Nem jelenik meg sem a keresési találatok közzött, illetve az
-                adatlapját se lehet megtekinteni.
-                @endalert
+                    @alert('warning')
+                        <b>A közösséged jelenleg inaktív.</b><br> Nem jelenik meg sem a keresési találatok közzött, illetve az
+                        adatlapját se lehet megtekinteni.
+                    @endalert
                 @endif
                 <div class="row">
                     <div class="col-md-3">
