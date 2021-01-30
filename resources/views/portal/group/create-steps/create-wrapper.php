@@ -2,7 +2,7 @@
     @featuredTitle('Új közösség regisztrálása')
 @endsection
 @extends('portal')
-<div class="container pt-4 pb-4" id="create-group">
+<div class="container inner pt-4 pb-4" id="create-group">
     @message()
     <div>
         @yield('portal.group.create-steps.create-wrapper')

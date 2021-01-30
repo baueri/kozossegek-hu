@@ -145,7 +145,7 @@ abstract class Repository
             return $this->update($model);
         }
 
-        $id = $this->insert(array_filter($this->valuesToArray($model)));
+        $id = $this->insert(array_filter($model->valuesToArray()));
         $model->setId($id);
         return (bool) $id;
     }
@@ -161,7 +161,7 @@ abstract class Repository
             $model->update($data);
         }
 
-        $changes = $this->getChanges($model);
+        $changes = $model->getChanges();
 
         if (!$changes) {
             return false;
@@ -183,37 +183,6 @@ abstract class Repository
         Event\EventDisptatcher::dispatch(new Database\Repository\Events\ModelUpdated($model));
 
         return $updated;
-    }
-
-    public function getChanges(Model $model)
-    {
-        $original = $model->getOriginalValues();
-        $newValues = $this->valuesToArray($model);
-
-        $changes = [];
-        foreach ($newValues as $key => $value) {
-            if ($value != $original[$key]) {
-                $changes[$key] = $value;
-            }
-        }
-        return $changes;
-    }
-
-    /**
-     * @param Model $model
-     * @return array
-     */
-    public function valuesToArray(Model $model)
-    {
-        $values = [];
-
-        foreach (array_keys($model->getOriginalValues()) as $column) {
-            if (property_exists($model, $column)) {
-                $values[$column] = $model->{$column};
-            }
-        }
-
-        return $values;
     }
 
     abstract public static function getTable(): string;

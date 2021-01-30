@@ -108,4 +108,39 @@ abstract class Model
 
         return $this;
     }
+
+    /**
+     * @return array
+     */
+    public function valuesToArray()
+    {
+        $values = [];
+
+        foreach (array_keys($this->getOriginalValues()) as $column) {
+            if (property_exists($this, $column)) {
+                $values[$column] = $this->{$column};
+            }
+        }
+
+        return $values;
+    }
+
+    public function getChanges()
+    {
+        $original = $this->getOriginalValues();
+        $newValues = $this->valuesToArray();
+
+        $changes = [];
+        foreach ($newValues as $key => $value) {
+            if ($value != $original[$key]) {
+                $changes[$key] = $value;
+            }
+        }
+        return $changes;
+    }
+
+    public function hasChanges(): bool
+    {
+        return !empty($this->getChanges());
+    }
 }

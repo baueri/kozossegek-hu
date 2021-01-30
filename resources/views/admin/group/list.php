@@ -14,7 +14,7 @@
     @alert('warning')
         Vannak jóváhagyásra váró közösségek <b>({{ $pending_groups }})</b>
         <a href="@route('admin.group.list', ['pending' => '1'])" class="">
-            Jóváhagyásra váró közösségek
+            <b>megnézem</b>
         </a>
     @endalert
 @endif

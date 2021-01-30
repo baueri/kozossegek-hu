@@ -51,12 +51,7 @@ class GroupTable extends AdminTable implements Editable, Deletable
     {
         $ageGroups = GroupHelper::getAgeGroups($ageGroup);
 
-        return $ageGroups->map(fn($name, $key) =>
-            $this->getLink(
-                $this->getListUrl(['korosztaly' => $key]),
-                $name,
-                'szűrés erre'
-            ))->implode(', ');
+        return $ageGroups->implode(', ');
     }
 
     public function getCreatedAt($createdAt)
@@ -81,15 +76,15 @@ class GroupTable extends AdminTable implements Editable, Deletable
         );
     }
 
-    public function getCity($cityName, $m)
+    public function getCity($cityName)
     {
-        return $this->getLink($this->getListUrl(['varos' => $cityName]), $cityName, 'keresés erre a városra');
+        return $cityName;
     }
 
     public function getPending($pending, $group)
     {
         if ($pending == 1) {
-            $icon = static::getIcon('fa fa-sync text-warning', 'megnyitás jóváhagyásra');
+            $icon = static::getIcon('fa fa-sync text-warning', 'jóváhagyásra vár');
         } elseif ($pending == -1) {
             $icon = static::getBanIcon('jóváhagyás visszautasítva');
         } else {
@@ -118,6 +113,11 @@ class GroupTable extends AdminTable implements Editable, Deletable
     public function getDeleteUrl($model): string
     {
         return route('admin.group.delete', $model);
+    }
+
+    public function getName($name, $model)
+    {
+        return $this->getEdit($name, $model, 25);
     }
 
     public function getEditUrl($model): string
