@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Models\User;
 use Framework\Model\PaginatedModelCollection;
 use Framework\Repository;
+use Framework\Support\Collection;
 use Framework\Support\StringHelper;
 
 class Users extends Repository
@@ -29,11 +30,11 @@ class Users extends Repository
 
     /**
      *
-     * @param array $filter
+     * @param Collection $filter
      * @param int $limit
      * @return User[]|PaginatedModelCollection
      */
-    public function getUsers($filter = [], $limit = 30)
+    public function getUsers(Collection $filter, $limit = 30)
     {
         $builder = $this->getBuilder();
 
@@ -41,6 +42,10 @@ class Users extends Repository
             $builder->whereNotNull('deleted_at');
         } else {
             $builder->whereNull('deleted_at');
+        }
+
+        if ($filter['order_by']) {
+            $builder->orderBy($filter['order_by'], $filter['sort']);
         }
 
         $rows = $builder->paginate($limit);

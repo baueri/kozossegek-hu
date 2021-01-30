@@ -26,13 +26,14 @@ class Mailable
     /**
      * @var string
      */
-    public string $subject;
+    public string $subject = '';
 
     /**
      * @var string|null
      */
     public ?string $message = null;
 
+    protected bool $useDefaultTemplate = false;
 
     /**
      * @param  string $view
@@ -81,7 +82,13 @@ class Mailable
             return view($this->view, $this->viewData);
         }
 
-        return $this->message;
+        $message = str_replace("\n", "<br/>", $this->message);
+
+        if ($this->useDefaultTemplate) {
+            return view('mail.default_template', ['message' => $message]);
+        }
+
+        return $message;
     }
 
     /**
@@ -106,5 +113,10 @@ class Mailable
         $this->message = $message;
 
         return $this;
+    }
+
+    public function usingDefaultTemplate()
+    {
+        $this->useDefaultTemplate = true;
     }
 }

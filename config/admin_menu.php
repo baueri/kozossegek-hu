@@ -37,7 +37,7 @@ return [
                 'title' => 'Közösségek',
                 'icon' => 'comments',
                 'as' => 'admin.group.list',
-                'similars' => ['admin.group.edit', 'admin.group.trash', 'admin.group.validate'],
+                'similars' => ['admin.group.edit', 'admin.group.trash', 'admin.group.validate', 'admin.group.list.pending'],
             ],
             [
                 'title' => 'Új közösség',

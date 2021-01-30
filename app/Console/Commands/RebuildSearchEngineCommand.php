@@ -21,10 +21,10 @@ class RebuildSearchEngineCommand implements Command {
     public function __construct(RebuildSearchEngine $service) {
         $this->service = $service;
     }
-    
+
     public function handle() {
         Out::writeln('rebuilding search engine rows...');
-        $this->service->updateAll();
+        $this->service->rebuild();
         Out::success('done.');
     }
 

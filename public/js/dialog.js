@@ -1,12 +1,12 @@
 const dialog = (function () {
 
+    let thisDialog = this;
+
     let okBtn = function () {
         return {
             text: "Ok",
             cssClass: "btn btn-primary",
-            action: (outer) => {
-                return true;
-            }
+            action(modal, callback) { callback(modal, true); }
         }
     };
 
@@ -14,7 +14,7 @@ const dialog = (function () {
         return {
             text: "Mégse",
             cssClass: "btn btn-default",
-            action: (outer) => { return false; }
+            action(modal, callback) { callback(modal, false); }
         }
     };
 
@@ -44,11 +44,15 @@ const dialog = (function () {
     }
 
     this.confirm = function (options, callback) {
+
+        let ok = okBtn();
+        let cancel = cancelBtn();
+
         this.show($.extend({
             title: "Biztos vagy benne?",
             buttons: [
-                $.extend(okBtn(), options.okBtn),
-                $.extend(cancelBtn(), options.cancelBtn)
+                ok,
+                cancel
             ],
             callback: callback
         }, options));
@@ -68,13 +72,14 @@ const dialog = (function () {
             title: "Információ",
             message: "",
             buttons: [okBtn()],
-            callback: function (dialog) {
-                dialog.close();
+            callback: function (modal) {
+                modal.close();
             },
             size: "lg",
             cssClass: "",
             onShown: null,
-            type: null
+            type: null,
+            draggable: false
         }, options);
 
         let headerCssClass = "";
@@ -88,16 +93,20 @@ const dialog = (function () {
         let header = $("<div class='modal-header" + headerCssClass + "'><h5 class='modal-title'>" + options.title + "</h5><button type='button' class='close' data-dismiss='modal' aria-label='bezár'><span aria-hidden='true'>&times;</span></button></div>");
         let body = $("<div class='modal-body'></div>");
 
+        if (options.draggable) {
+            content.draggable({handle:header});
+        }
+
         body.append(options.message);
 
-        var footer = $("<div class='modal-footer'></div>");
+        let footer = $("<div class='modal-footer'></div>");
 
         if (options.buttons) {
             for (let i in options.buttons) {
                 let button = options.buttons[i];
                 let btnDOM = $('<button type="button" class="' + button.cssClass + '">' + button.text + '</button>');
                 btnDOM.click(function () {
-                    options.callback(outer, button.action(outer));
+                    button.action(outer, options.callback);
                 });
                 footer.append(btnDOM);
             }
@@ -134,6 +143,10 @@ const dialog = (function () {
 
         outer.close = function () {
             $(this).modal("hide");
+        }
+
+        outer.closeAll = function () {
+            thisDialog.closeAll();
         }
     };
 

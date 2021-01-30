@@ -69,10 +69,13 @@ use App\Auth\Auth;
                     <h5>Partnereink</h5>
                     <div class="partnereink">
                         <a href="https://pasztoralis.hu/" title="Pasztorális helynökség Szeged" target="_blank" rel="noopener noreferrer">
-                            <img src="/images/szcsem_szines_latin.png" alt="Pasztorális helynökség Szeged">
+                            <img src="/images/partnerek/szcsem_szines_latin.png" alt="Pasztorális helynökség Szeged">
                         </a>
                         <a href="https://halo.hu/" title="Háló Közösségi és Kulturális Központ" target="_blank" rel="noopener noreferrer">
-                            <img src="/images/halo-logo.png" alt="Háló Közösségi és Kulturális Központ">
+                            <img src="/images/partnerek/halo-logo.png" alt="Háló Közösségi és Kulturális Központ">
+                        </a>
+                        <a href="https://fbe.hu/" title="Felebarátok egyesület" target="_blank" rel="noopener noreferrer">
+                            <img src="/images/partnerek/felebaratok_egyesulet.png" alt="Háló Közösségi és Kulturális Központ">
                         </a>
                     </div>
                 </div>

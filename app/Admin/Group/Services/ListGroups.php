@@ -83,6 +83,11 @@ class ListGroups
         $filter = $this->request;
         $table = $this->table;
         $current_page = $this->getCurrentPage();
+
+        if ($current_page === 'pending') {
+            $filter['pending'] = 1;
+        }
+
         $pending_groups = builder()->from('church_groups')->where('pending', 1)->apply('notDeleted')->count();
 
         return view('admin.group.list', compact(
@@ -103,7 +108,7 @@ class ListGroups
             return 'trash';
         }
 
-        if ($this->request['pending']) {
+        if ($this->request->route->getAs() == 'admin.group.list.pending') {
             return 'pending';
         }
 

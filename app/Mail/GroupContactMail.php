@@ -3,7 +3,6 @@
 namespace App\Mail;
 
 use Framework\Mail\Mailable;
-use App\Models\Group;
 
 class GroupContactMail extends Mailable
 {

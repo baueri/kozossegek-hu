@@ -11,6 +11,10 @@ use Framework\Model\PaginatedModelCollection;
 use Framework\Support\Collection;
 use Framework\Support\DataSet;
 
+/**
+ * Class Repository
+ * @package Framework
+ */
 abstract class Repository
 {
     /**
@@ -31,6 +35,11 @@ abstract class Repository
         return $this->getInstance($row);
     }
 
+    /**
+     * @param $id
+     * @return Model|null
+     * @throws ModelNotFoundException
+     */
     public function findOrFail($id)
     {
         if ($model = $this->find($id)) {

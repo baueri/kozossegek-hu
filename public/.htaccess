@@ -1,5 +1,6 @@
 <IfModule mod_rewrite.c>
     Options +FollowSymLinks
+    Options -Indexes
     RewriteEngine On
 </IfModule>
 

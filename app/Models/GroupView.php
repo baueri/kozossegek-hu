@@ -11,15 +11,37 @@ use Framework\Support\StringHelper;
  */
 class GroupView extends Group
 {
-    public $institute_name;
+    /**
+     * Intézmény neve
+     * @var string|null
+     */
+    public ?string $institute_name;
 
-    public $leader_name;
+    /**
+     * Intézményvezető neve
+     *
+     * @var string|null
+     */
+    public ?string $leader_name;
 
-    public $spiritual_movement;
+    /**
+     * Lelkiségi mozgalom
+     *
+     * @var string|null
+     */
+    public ?string $spiritual_movement;
 
-    public $city;
+    /**
+     * Város
+     * @var string|null
+     */
+    public ?string $city;
 
-    public $district;
+    /**
+     * Városrész
+     * @var string|null
+     */
+    public ?string $district;
 
     private ?string $cachedUrl = null;
 

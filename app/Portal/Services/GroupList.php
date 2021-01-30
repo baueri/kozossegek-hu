@@ -4,6 +4,7 @@ namespace App\Portal\Services;
 
 use App\Enums\GroupStatusEnum;
 use App\Repositories\AgeGroups;
+use App\Repositories\GroupStatusRepository;
 use App\Repositories\OccasionFrequencies;
 use Framework\Http\Request;
 use ReflectionException;
@@ -61,6 +62,7 @@ class GroupList
         $filter['pending'] = 0;
         $filter['status'] = GroupStatusEnum::ACTIVE;
         $groups = $this->service->search($filter, 18);
+        $statuses = (new GroupStatusRepository())->all();
 
         if ($groupIds = $groups->pluck('id')->all()) {
             $group_tags = builder('v_group_tags')->whereIn('group_id', $groupIds)->get();
@@ -79,7 +81,8 @@ class GroupList
             'selected_tags' => array_filter(explode(',', $filter['tags'] ?? '')),
             'tags' => builder('tags')->get(),
             'template' => $template,
-            'header_background' => '/images/kozosseget_keresek.jpg'
+            'header_background' => '/images/kozosseget_keresek.jpg',
+            'statuses' => $statuses,
         ];
 
         return view('portal.kozossegek', $model);
