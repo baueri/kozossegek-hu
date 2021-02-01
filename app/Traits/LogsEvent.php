@@ -6,7 +6,7 @@ use App\Repositories\EventLogRepository;
 
 trait LogsEvent
 {
-    private ?EventLogRepository $eventLogRepository;
+    private ?EventLogRepository $eventLogRepository = null;
 
     protected function getEventLogger()
     {

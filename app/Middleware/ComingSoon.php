@@ -9,7 +9,7 @@ class ComingSoon implements Middleware
 {
     public function handle()
     {
-        if (array_key_exists('teszter-vagyok', $_REQUEST)) {
+        if (array_key_exists('29Y1L', $_REQUEST)) {
             $_SESSION['test_mode'] = true;
         }
 

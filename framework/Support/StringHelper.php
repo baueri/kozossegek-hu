@@ -130,4 +130,21 @@ class StringHelper
     {
         return (bool) filter_var($string, FILTER_VALIDATE_EMAIL);
     }
+
+    /**
+     * @param string $charList
+     * @param int $numberOfCharactersToTake
+     * @return string
+     */
+    public static function generateRandomStringFrom(string $charList, $numberOfCharactersToTake = 1): string
+    {
+        $text = '';
+
+        for ($i = 0; $i < $numberOfCharactersToTake; $i++) {
+            $text .= DataSet::random(mb_str_split($charList));
+        }
+
+        return $text;
+    }
+
 }
