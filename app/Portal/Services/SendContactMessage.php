@@ -6,7 +6,6 @@ use App\Mail\GroupContactMail;
 use App\Models\Group;
 use Framework\Application;
 use Framework\Exception\UnauthorizedException;
-use Framework\Mail\Mailable;
 use Framework\Mail\Mailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -50,24 +49,8 @@ class SendContactMessage
             throw new UnauthorizedException();
         }
 
-        if ($this->app->envIs('test')) {
-            $mail = Mailable::make()
-                ->subject('kozossegek.hu (TESZT) - Közösségvezetői válasz')
-                ->setMessage(
-                    <<<EOT
-                        <b>TESZT VÁLASZÜZENET</b><br>
-                        Kedves $data[name]!<br/><br/>
-                        
-                        Ez egy automatikus teszt válaszüzenet a közösségvezetővel való kapcsolatfelvétel tesztelésére
-                    EOT
-                );
-            return $this->mailer->to($data['email'])
-                ->cc($data['email'])
-                ->send($mail);
-        } else {
-            $mail = new GroupContactMail($data);
+        $mail = new GroupContactMail($data);
 
-            return $this->mailer->to($group->group_leader_email)->send($mail);
-        }
+        return $this->mailer->to($group->group_leader_email)->send($mail);
     }
 }

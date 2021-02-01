@@ -95,6 +95,8 @@ class UserController
 
     public function activateUser(Request $request, Users $users, UpdateUser $service, UserTokens $userTokens)
     {
+        use_default_header_bg();
+
         $token = $userTokens->getByToken($request['token']);
 
         if (!$token) {

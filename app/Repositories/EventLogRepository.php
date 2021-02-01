@@ -2,20 +2,35 @@
 
 namespace App\Repositories;
 
-/**
- * Description of EventLogRepository
- *
- * @author ivan
- */
-class EventLogRepository extends \Framework\Repository
+use App\Models\EventLog;
+use App\Models\User;
+use Framework\Model\Model;
+use Framework\Repository;
+
+class EventLogRepository extends Repository
 {
-    //put your code here
-    public static function getModelClass(): string {
-        return \App\Models\EventLog::class;
+    /**
+     * @param string $type
+     * @param array $data
+     * @param User|null $user
+     * @return EventLog|Model|null
+     */
+    public function logEvent(string $type, array $data = [], ?User $user = null): ?EventLog
+    {
+        return $this->create([
+            'type' => $type,
+            'data' => json_encode($data),
+            'user_id' => $user ? $user->id : 0
+        ]);
     }
 
-    public static function getTable(): string {
+    public static function getModelClass(): string
+    {
+        return EventLog::class;
+    }
+
+    public static function getTable(): string
+    {
         return 'event_logs';
     }
-
 }

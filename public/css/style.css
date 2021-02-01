@@ -202,7 +202,7 @@ nav.navbar .submenu a {
 
 nav.navbar {
     padding: 0;
-    border-bottom: 1px solid #dadada;
+    border-bottom: 3px solid #dadada;
 }
 
 nav.navbar .nav-link {
@@ -913,6 +913,20 @@ input[name=search]::placeholder {
     background-size: cover !important;
     color: #fff;
     background: url("/images/praise.jpg") no-repeat fixed center;
+}
+
+.partner-header-link img {
+    width: 22px;
+}
+
+#header:not(.compact) img {
+    filter: brightness(0) invert(1);
+}
+
+.divider-before a:before {
+    content: " ";
+    margin-right: 16px;
+    border-left: 1px solid rgba(255, 255, 255, 0.5);
 }
 
 @media (max-width: 425px) {
