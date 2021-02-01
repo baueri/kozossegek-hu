@@ -31,8 +31,6 @@ class HttpKernel extends \Framework\Http\HttpKernel
         echo view('maintenance');
     }
 
-
-
     public function handleError($error)
     {
         if ($error->getCode() != '404' && is_prod()) {

@@ -3,31 +3,13 @@
 namespace Framework\Database;
 
 use Closure;
-use Exception;
 
 interface Database
 {
-    /**
-     *
-     * @param string $query
-     * @param mixed ...$bindings
-     * @return ResultSet
-     */
     public function execute(string $query, ...$bindings): ResultSet;
 
-    /**
-     *
-     * @param string $query
-     * @param array $bindings
-     * @return array []
-     */
-    public function select(string $query, $bindings = []): array;
+    public function select(string $query, array $bindings = []): array;
 
-    /**
-     * @param string $query
-     * @param array $bindings
-     * @return mixed
-     */
     public function first(string $query, $bindings = []);
 
     public function update($query, ...$params): int;
@@ -36,7 +18,12 @@ interface Database
 
     public function exists($query, $params = []): bool;
 
-    public function delete($query, $params = []);
+    /**
+     * @param $query
+     * @param array $params
+     * @return int number of affected rows
+     */
+    public function delete($query, $params = []): int;
 
     public function fetchColumn($query, $params = []);
 
@@ -48,10 +35,5 @@ interface Database
 
     public function rollback(): bool;
 
-    /**
-     * @param Closure $callback
-     * @return mixed
-     * @throws Exception
-     */
     public function transaction(Closure $callback);
 }

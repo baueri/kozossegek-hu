@@ -136,7 +136,7 @@ class GroupController extends AdminController
      */
     public function rebuildSearchEngine(RebuildSearchEngine $service)
     {
-        $service->rebuild();
+        $service->run();
 
         Message::success('Sikeres keresőmotor frissítés');
 
@@ -271,8 +271,7 @@ class GroupController extends AdminController
 
         $mailable = new GroupAcceptedEmail($group);
 
-        $mailer
-            ->to($group->group_leader_email, $group->group_leaders)
+        $mailer->to($group->group_leader_email, $group->group_leaders)
             ->send($mailable);
 
         return api()->ok();

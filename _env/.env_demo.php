@@ -20,6 +20,7 @@ return [
     'EMAIL_PASSWORD' => '***REMOVED***',
     'EMAIL_SSL' => 'STARTTLS',
 
+    'CONTACT_EMAIL' => 'birkaivan@gmail.com',
     'ERROR_EMAIL' => 'error@kozossegek.hu'
 
 ];

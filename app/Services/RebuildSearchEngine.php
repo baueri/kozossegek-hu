@@ -29,7 +29,7 @@ class RebuildSearchEngine
         $this->groupViews = $groupViews;
     }
 
-    public function rebuild()
+    public function run()
     {
         db()->execute('delete search_engine from search_engine
             left join church_groups cg on search_engine.group_id = cg.id

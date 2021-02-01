@@ -2,10 +2,11 @@
 
 namespace App\Console\Commands;
 
+use App\Services\SystemAdministration\ClearUserSession;
 use Framework\Console\Command;
 use Framework\Console\Out;
 
-class ClearUserSession implements Command
+class ClearUserSessionCommand implements Command
 {
     public static function signature()
     {
@@ -14,13 +15,12 @@ class ClearUserSession implements Command
 
     public function handle()
     {
-        $ok = db()->execute('delete from user_sessions where created_at < DATE_SUB(NOW(), INTERVAL 1 DAY)');
+        $ok = (new ClearUserSession())->run();
 
         if ($ok) {
             Out::success('user session cleared');
         } else {
-            Out::danger('user session clear failed');
+            Out::error('user session clear failed');
         }
-
     }
 }

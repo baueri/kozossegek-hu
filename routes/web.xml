@@ -2,7 +2,7 @@
 <routes>
     <route-group namespace="App\Portal\Controllers\">
         <middleware name="App\Middleware\ComingSoon"/>
-        <route method="get" uri="test" as="test" controller="TestController" use="testEmail"/>
+        <route method="get" uri="test" as="test" controller="TestController" use="test"/>
 
         <route method="get" uri="" as="home" controller="HomeController" use="home"/>
 
@@ -48,6 +48,7 @@
     <route method="get" uri="login" controller="App\Portal\Controllers\LoginController" use="login" as="login"/>
     <route method="post" uri="login" controller="App\Portal\Controllers\LoginController" use="doLogin"/>
     <route method="get" uri="logout" controller="App\Portal\Controllers\LoginController" use="logout" as="logout"/>
+    <route method="post" uri="resend-activation" controller="App\Portal\Controllers\LoginController" use="resendActivationEmail" as="resend_activation"/>
 
     <!-- VÍZJELES KÉPGENERÁLÁS -->
     <route method="get" uri="/media/{entity_type}/images/{image}" as="watermark_image" controller="App\Portal\Controllers\ImageController" use="getImage"/>

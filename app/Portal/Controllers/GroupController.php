@@ -5,17 +5,21 @@ namespace App\Portal\Controllers;
 use App\Admin\Group\Services\UpdateGroup;
 use App\Auth\Auth;
 use App\Exception\EmailTakenException;
+use App\Helpers\HoneyPot;
 use App\Http\Responses\CreateGroupSteps\RegisterGroupForm;
 use App\Http\Responses\PortalEditGroupForm;
+use App\Models\EventLog;
 use App\Models\Group;
 use App\Models\GroupView;
 use App\Portal\Services\GroupList;
 use App\Portal\Services\PortalCreateGroup;
 use App\Portal\Services\PortalUpdateGroup;
 use App\Portal\Services\SendContactMessage;
+use App\Repositories\EventLogRepository;
 use App\Repositories\Groups;
 use App\Repositories\GroupViews;
 use App\Repositories\Institutes;
+use App\Traits\LogsEvent;
 use Error;
 use ErrorException;
 use Exception;
@@ -27,13 +31,11 @@ use Framework\Model\ModelNotFoundException;
 use Framework\Support\DataSet;
 use Throwable;
 
-/**
- * Description of GroupController
- *
- * @author ivan
- */
 class GroupController extends Controller
 {
+
+    use LogsEvent;
+
     public function kozossegek(GroupList $service)
     {
         return $service->getHtml();
@@ -79,6 +81,9 @@ class GroupController extends Controller
         $_SESSION['honeypot_check_hash'] = $honeypot_check_hash = md5($checkTime);
         $slug = $group->slug();
         $keywords = builder('search_engine')->where('group_id', $group->id)->first()['keywords'];
+
+        $this->getEventLogger()->logEvent('group_profile_opened');
+
         return view('portal.kozosseg', compact(
             'group',
             'institute',

@@ -74,9 +74,6 @@ use App\Auth\Auth;
                         <a href="https://halo.hu/" title="Háló Közösségi és Kulturális Központ" target="_blank" rel="noopener noreferrer">
                             <img src="/images/partnerek/halo-logo.png" alt="Háló Közösségi és Kulturális Központ">
                         </a>
-                        <a href="https://fbe.hu/" title="Felebarátok egyesület" target="_blank" rel="noopener noreferrer">
-                            <img src="/images/partnerek/felebaratok_egyesulet.png" alt="Háló Közösségi és Kulturális Központ">
-                        </a>
                     </div>
                 </div>
             </div>

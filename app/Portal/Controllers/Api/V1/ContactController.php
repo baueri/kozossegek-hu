@@ -29,13 +29,11 @@ class ContactController
                 ->with($request->only('name', 'email', 'message'))
                 ->view('email_templates:contact_us');
 
-            if ($mailer->to('info@kozossegek.hu')->send($mailable)) {
+            if ($mailer->to(config('app.contact_email'))->send($mailable)) {
                 return api()->ok('Köszönjük! Üzenetedet elküldtük.');
             }
 
             return api()->error('Nem sikerült elküldeni az email-t. Kérjük próbáld meg később.');
-
-
         } catch (InvalidArgumentException $e) {
             return api()->error('Minden mező kitöltése kötelező!');
         } catch (\Exception $e) {

@@ -121,7 +121,9 @@ class PDOMysqlDatabase implements Database
     }
 
     /**
-     * @inheritDoc
+     * @param Closure $callback
+     * @return mixed
+     * @throws Exception
      */
     public function transaction(Closure $callback)
     {
@@ -137,39 +139,21 @@ class PDOMysqlDatabase implements Database
         }
     }
 
-    /**
-     * @param $query
-     * @param array $params
-     * @return int
-     */
     public function update($query, ...$params): int
     {
         return $this->execute($query, ...$params)->rowCount();
     }
 
-    /**
-     * @return int|null
-     */
     public function lastInsertId(): ?int
     {
         return $this->pdo->lastInsertId();
     }
 
-    /**
-     * @param $query
-     * @param mixed ...$bindings
-     * @return array
-     */
     public function first(string $query, $bindings = [])
     {
         return $this->execute($query, ...$bindings)->fetchRow();
     }
 
-    /**
-     * @param $query
-     * @param mixed ...$params
-     * @return int
-     */
     public function insert($query, $params = []): int
     {
         $this->execute($query, ...$params);
@@ -189,10 +173,8 @@ class PDOMysqlDatabase implements Database
         return array_shift($row);
     }
 
-    public function delete($query, $params = [])
+    public function delete($query, $params = []): int
     {
-        $this->execute($query, ...$params);
-
-        return true;
+        return $this->execute($query, ...$params)->rowCount();
     }
 }

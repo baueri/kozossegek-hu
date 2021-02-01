@@ -2,6 +2,8 @@
 
 namespace App\Events;
 
+use App\EventListeners\LogSearch;
+
 /**
  * Description of SearchTriggered
  *
@@ -10,7 +12,7 @@ namespace App\Events;
 class SearchTriggered extends BaseLogEvent
 {
     protected static $listeners = [
-        \App\EventListeners\LogSearch::class
+        LogSearch::class
     ];
 }
 

@@ -212,3 +212,20 @@ function showLoginModal(redirectUrlAfterLogin)
         });
     });
 }
+
+function resendActivationEmail(emailAddress)
+{
+    $.post("/resend-activation", {email: emailAddress}, response => {
+        if (response.success) {
+            dialog.success({
+                size: "md",
+                message: "Az aktivációs email sikeresen elküldve"
+            });
+        } else {
+            dialog.danger({
+                size: "md",
+                message: response.msg ? response.msg : "Váratlan hiba történt"
+            });
+        }
+    });
+}

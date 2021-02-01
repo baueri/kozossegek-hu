@@ -40,6 +40,10 @@ class Auth
         session_destroy();
 
         static::$user = null;
+
+        session_start();
+
+        session_id(session_create_id());
     }
 
     /**

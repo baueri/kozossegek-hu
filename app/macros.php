@@ -4,6 +4,8 @@ builder()->macro('deleted', function ($builder) {
     $builder->whereNotNull('deleted_at');
 })->macro('notDeleted', function ($builder) {
     $builder->whereNull('deleted_at');
+})->macro('deletedEarlierThan', function ($builder, string $date) {
+    $builder->whereRaw("DATE(deleted_at) < DATE('{$date}')");
 });
 
 builder('v_groups')->macro('whereGroupTag', function ($builder, array $tags) {

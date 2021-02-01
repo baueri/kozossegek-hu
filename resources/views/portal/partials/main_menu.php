@@ -48,6 +48,12 @@
                     <a href="@route('login')" class="nav-link"><i class="fa fa-user-circle" style="font-size: 18px;"></i></a>
                 </li>
             @endauth
+            <li class="nav-item divider-before">
+                <a href="https://vp2.hu/" class="nav-link partner-header-link" title="Virtuális plébánia" target="_blank" rel="noopener noreferrer"><img src="/images/ikon-vp2.png"/></a>
+            </li>
+            <li class="nav-item">
+                <a href="https://miserend.hu/" class="nav-link partner-header-link" title="miserend.hu" target="_blank" rel="noopener noreferrer"><img src="/images/ikon-miserend.png"/></a>
+            </li>
         </ul>
         <label class="mobile-menu-toggle float-right mr-4 mr-sm-0 mb-0" for="toggle_main_menu"><i class="fa fa-bars"></i></label>
     </div>

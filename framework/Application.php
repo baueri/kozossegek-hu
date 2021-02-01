@@ -111,4 +111,9 @@ class Application extends Container
     {
         return config('app.environment');
     }
+
+    public function isTest(): bool
+    {
+        return $this->envIs('test');
+    }
 }

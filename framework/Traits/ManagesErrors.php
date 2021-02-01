@@ -40,6 +40,11 @@ trait ManagesErrors
         return $this->get()->next();
     }
 
+    public function firstError()
+    {
+        return $this->get()->first();
+    }
+
     public function setError($error, $key = null)
     {
         $this->get()->set($key, $error);

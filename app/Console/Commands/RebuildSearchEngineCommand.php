@@ -24,7 +24,7 @@ class RebuildSearchEngineCommand implements Command {
 
     public function handle() {
         Out::writeln('rebuilding search engine rows...');
-        $this->service->rebuild();
+        $this->service->run();
         Out::success('done.');
     }
 
