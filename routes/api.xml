@@ -11,6 +11,9 @@
             <!-- Foglalt email ellenőrzés -->
             <route method="post" uri="check-email" controller="ApiUserController" use="checkEmail" as="check-email"/>
 
+            <!-- Fiók törlése MODAL -->
+            <route method="all" middleware="App\Middleware\LoggedInMiddleware" uri="profile/delete-modal" as="portal.profile.delete_modal" view="portal.partials.delete_modal"/>
+
             <!-- Fiók törlése -->
             <route method="post" middleware="App\Middleware\LoggedInMiddleware" uri="profile/delete" as="portal.profile.delete" controller="ApiUserController" use="delete"/>
 

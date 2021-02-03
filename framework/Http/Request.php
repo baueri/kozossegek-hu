@@ -60,7 +60,7 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
 
         $this->requestMethod = $_SERVER['REQUEST_METHOD'];
 
-        $this->uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        $this->uri = urldecode(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
     }
 
     /**

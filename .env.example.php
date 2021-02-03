@@ -1,7 +1,8 @@
 <?php
 
 return [
-    'SITE_URL' => 'http://kozossegek.local',
+    'SITE_URL' => 'https://kozossegek.hu',
+    'SITE_NAME' => 'kozossegek.hu',
     'ENVIRONMENT' => 'development',
     'DEBUG' => true,
     'DB_HOST' => 'localhost',

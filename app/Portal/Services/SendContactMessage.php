@@ -2,6 +2,7 @@
 
 namespace App\Portal\Services;
 
+use App\Helpers\HoneyPot;
 use App\Mail\GroupContactMail;
 use App\Models\Group;
 use Framework\Application;

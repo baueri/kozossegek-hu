@@ -9,7 +9,6 @@
     <div class="pb-3 mb-0">
         <div class="container">
             <form method="get" id="finder" action="@route('portal.groups')">
-                <input type="hidden" name="view" value="{{ $template }}">
                 <div class="form-group">
                     <div class="input-group">
                         <select name="varos" style="width:150px !important;" class="form-control">

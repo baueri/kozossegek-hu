@@ -424,6 +424,9 @@ input[name=search]::placeholder {
     display: none;
 }
 
+#toggle_main_menu:checked~.navbar-nav .fa-angle-down {
+    display: none;
+}
 #toggle_main_menu:checked~.navbar-nav {
     display: block;
     right: 0;
@@ -476,53 +479,6 @@ input[name=search]::placeholder {
 .edit-page {
     font-size: 20px;
     text-shadow: none;
-}
-
-@media (max-width: 991px) {
-    .header-outer #header {
-        background: #fff;
-    }
-
-    .header-outer .navbar-brand > div:first-child {
-        filter: initial;
-    }
-    #header .nav-link {
-        color:#000 !important;
-        padding-top: .8rem !important;
-        padding-bottom: .8rem !important;
-    }
-
-    #header .navbar-nav {
-        display: block;
-        position: fixed;
-        width: 250px;
-        right: -250px;
-        top: 0;
-        height: 100vh;
-        padding: 1em;
-        background-color: #f8f9fa;
-        transition: right .17s ease-in;
-    }
-
-    .mobile-menu-toggle {
-        display: block;
-    }
-
-    #finder .input-group > *, #finder [name=korosztaly]+span, #finder [name=rendszeresseg]+span {
-        display: block !important;
-        width: 100% !important;
-        margin-bottom: 1em !important;
-        border-radius: 4px !important;
-    }
-
-    #finder .select2-selection {
-        border-radius: 4px;
-    }
-
-    .navbar-nav {
-        font-size: .9rem;
-    }
-
 }
 
 .img-big {
@@ -618,33 +574,6 @@ input[name=search]::placeholder {
 .btn-group.btn-shadow .btn-default:active, .btn-group.btn-shadow .btn-default:focus {
     box-shadow: none;
     background: linear-gradient(to bottom, #dee5f2 0%, #ffffff 100%);
-}
-
-@media (max-width: 425px) {
-    .col-xxs-12 {
-        -ms-flex: 0 0 100%;
-        flex: 0 0 100%;
-        max-width: 100%;
-    }
-
-    .row-cols-xxs-1 > * {
-        -ms-flex: 0 0 100%;
-        flex: 0 0 100%;
-        max-width: 100%;
-    }
-}
-
-@media (max-width: 768px) {
-    #instructions::before {
-        display: none;
-    }
-    .navbar-brand {
-        width: 55px;
-    }
-    .navbar-brand .logo-lg {display: none;}
-    .navbar-brand .logo-sm {
-        display: block !important;
-    }
 }
 
 .text-gray {
@@ -764,14 +693,14 @@ input[name=search]::placeholder {
     margin: 0 5px;
 }
 
-#kozossegek-list > div {
-    padding-left: 1.3em;
-    padding-right: 1.3em;
-}
-#kozossegek-list {
-    margin-left: -1.3em;
-    margin-right: -1.3em;
-}
+/*#kozossegek-list > div {*/
+/*    padding-left: 1.3em;*/
+/*    padding-right: 1.3em;*/
+/*}*/
+/*#kozossegek-list {*/
+/*    margin-left: -1.3em;*/
+/*    margin-right: -1.3em;*/
+/*}*/
 #kozossegek-list .card-text {
     font-size: .9rem;
 }
@@ -912,14 +841,14 @@ input[name=search]::placeholder {
     height: 100%;
     background-size: cover !important;
     color: #fff;
-    background: url("/images/praise.jpg") no-repeat fixed center;
+    background: url("/images/kozosseg4.jpg") no-repeat fixed center;
 }
 
 .partner-header-link img {
     width: 22px;
 }
 
-#header:not(.compact) img {
+#header:not(.compact) #toggle_main_menu:not(:checked)~.navbar-nav img {
     filter: brightness(0) invert(1);
 }
 
@@ -929,7 +858,94 @@ input[name=search]::placeholder {
     border-left: 1px solid rgba(255, 255, 255, 0.5);
 }
 
+@media (max-width: 991px) {
+
+    .divider-before a:before {
+        margin-right: 0;
+        border-left: 0;
+        border-top: 1px solid #eaeaea;
+        width: 100%;
+        display: block;
+        margin-bottom: 28px;
+    }
+    .header-outer #header {
+        background: #fff;
+    }
+
+    .header-outer .navbar-brand > div:first-child {
+        filter: initial;
+    }
+    #header .nav-link {
+        color:#000 !important;
+        padding-top: .8rem !important;
+        padding-bottom: .8rem !important;
+    }
+
+    #header .navbar-nav {
+        display: block;
+        position: fixed;
+        width: 250px;
+        right: -250px;
+        top: 0;
+        height: 100vh;
+        padding: 1em;
+        background-color: #f8f9fa;
+        transition: right .17s ease-in;
+    }
+
+    .mobile-menu-toggle {
+        display: block;
+    }
+
+    #finder .input-group > *, #finder [name=korosztaly]+span, #finder [name=rendszeresseg]+span {
+        display: block !important;
+        width: 100% !important;
+        margin-bottom: 1em !important;
+        border-radius: 4px !important;
+    }
+
+    #finder .select2-selection {
+        border-radius: 4px;
+    }
+
+    .navbar-nav {
+        font-size: .9rem;
+    }
+
+}
+
+@media (max-width: 768px) {
+    .featured h1 {
+        padding: 1em 0;
+    }
+    body:not(.home) .featured-header {
+        padding: 4rem 0 1rem;
+    }
+    #instructions::before {
+        display: none;
+    }
+    .navbar-brand {
+        width: 55px;
+    }
+    .navbar-brand .logo-lg {display: none;}
+    .navbar-brand .logo-sm {
+        display: block !important;
+    }
+}
+
 @media (max-width: 425px) {
+    .col-xxs-12 {
+        -ms-flex: 0 0 100%;
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+
+    .row-cols-xxs-1 > * {
+        -ms-flex: 0 0 100%;
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+
     #instructions p {
         margin-bottom: 2rem;
     }

@@ -2,7 +2,8 @@
 
 return [
     'STORAGE_PATH' => ROOT . '../storage/eles' . DS,
-    'SITE_URL' => 'https://demo.kozossegek.hu',
+    'SITE_URL' => 'https://kozossegek.hu',
+    'SITE_NAME' => 'kozossegek.hu',
     'ENVIRONMENT' => 'production',
     'DEBUG' => false,
 

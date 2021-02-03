@@ -71,11 +71,11 @@ class Mailer
 
     private function setMailableForTest(Mailable $mailable)
     {
-        $this->phpMailer->setFrom($this->phpMailer->Username, 'kozossegek.hu');
+        $this->phpMailer->setFrom($this->phpMailer->Username, site_name());
         $originalAddressee = key($this->phpMailer->getAllRecipientAddresses());
         $this->phpMailer->clearAddresses();
         $this->phpMailer->addAddress('birkaivan@gmail.com');
-        $this->phpMailer->Subject = 'kozossegek.hu (TESZT)';
+        $this->phpMailer->Subject = site_name() . ' (TESZT)';
         $body = $mailable->getBody();
         $this->phpMailer->Body = <<<EOT
             <b style="color: red">FIGYELEM! EZ EGY TESZT VÁLASZÜZENET A LENTI EMAIL-RE.</b><br>

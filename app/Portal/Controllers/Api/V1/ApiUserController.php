@@ -7,6 +7,7 @@ use App\Repositories\Users;
 use App\Services\DeleteUser;
 use Framework\Http\Controller;
 use Framework\Http\Request;
+use Framework\Support\Password;
 
 class ApiUserController extends Controller
 {
@@ -17,9 +18,14 @@ class ApiUserController extends Controller
         return ['ok' => !$user];
     }
 
-    public function delete(DeleteUser $service)
+    public function delete(Request $request, DeleteUser $service)
     {
-        $deleted = $service->softDelete(Auth::user());
+        $user = Auth::user();
+        if (!Password::verify($request['password'], $user->password)) {
+            return api()->error('Hibás jelszó!');
+        }
+
+        $deleted = $service->softDelete($user);
 
         Auth::logout();
 
