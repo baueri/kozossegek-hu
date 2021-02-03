@@ -2,7 +2,7 @@
 <div class="form">
     <form class="login-form" method="post" action="@route('login', ['redirect' => $redirect])">
         <div class="row">
-            <div class="col-md-6 offset-3">
+            <div class="col-md-6 offset-md-3 offset-0">
                 @include('admin.partials.message')
                 <div class="form-group">
                     <input type="text" name="username" placeholder="email cím" autofocus class="form-control"/>

@@ -42,8 +42,10 @@
     <script>
         $(() => {
             $("#delete-profile").confirm({
-                type: "danger",
-                message: "<b>Figyelem!</b><p>A fiókod törlésével a közösségeidet is törölni fogjuk, arra a továbbiakban nem fognak tudni rákeresni.</p>",
+                type: "warning",
+                message: function() {
+                    return $("<div></div>").load("@route('api.portal.profile.delete_modal')");
+                },
                 isAjax: true,
                 afterResponse(response) {
                     if(response.success) {
@@ -51,9 +53,10 @@
                             window.location.href = "@route('home')"
                         })
                     } else {
-                        response.danger({
+                        dialog.danger({
+                            size: "sm",
                             title: "Sikertelen művelet!",
-                            message: "Váratlan hiba történt."
+                            message: response.msg ? response.msg : "Váratlan hiba történt!"
                         });
                     }
                 }

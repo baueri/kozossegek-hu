@@ -133,7 +133,7 @@ function readURL(input)
 
 function validate_email(mail)
 {
-    return /  ^ [a - zA - Z0 - 9.!#$ % & ' * + /= ? ^ _`{ | }~ - ] + @[a - zA - Z0 - 9 - ] + ( ?: \.[a - zA - Z0 - 9 - ] + ) * $ / .test(mail);
+    return /^[a-zA-Z0-9.!#$ %&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(mail);
 }
 
 //cookie

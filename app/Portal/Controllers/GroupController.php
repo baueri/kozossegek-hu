@@ -119,7 +119,7 @@ class GroupController extends Controller
 
             return [
                 'success' => true,
-                'msg' => '<div class="alert alert-success">Köszönjük! Üzenetedet elküldtük a közösségvezető(k)nek!</div>'
+                'msg' => '<div class="alert alert-success text-center">Köszönjük! Üzenetedet elküldtük a közösségvezető(k)nek!</div>'
             ];
         } catch (Exception $e) {
             return ['success' => false];

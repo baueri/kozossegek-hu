@@ -57,6 +57,7 @@ class GroupList
     {
         $filter = $this->request->only('search', 'korosztaly', 'rendszeresseg', 'tags');
         $filter['varos'] = $this->request['varos'];
+
 //        $filter['order_by'] = ['city', 'district'];
 //        $filter['sort'] = 'asc';
         $filter['pending'] = 0;
@@ -69,7 +70,6 @@ class GroupList
             $groups->withMany($group_tags, 'tags', 'id', 'group_id');
         }
 
-        $template = $this->request['view'] ?: 'grid2';
         $model = [
             'groups' => $groups,
             'occasion_frequencies' => $this->occasionFrequencies->all(),
@@ -80,7 +80,6 @@ class GroupList
             'filter' => collect($filter),
             'selected_tags' => array_filter(explode(',', $filter['tags'] ?? '')),
             'tags' => builder('tags')->get(),
-            'template' => $template,
             'header_background' => '/images/kozosseget_keresek.jpg',
             'statuses' => $statuses,
         ];

@@ -58,12 +58,10 @@
                     if (!response.success) {
                         dialog.danger(response.msg);
                     } else {
-
-                        window.onbeforeunload = function () {
-                            window.scrollTo(0, 0);
-                        }
-
-                        dialog.success(response.msg, () => { window.location.href; })
+                        dialog.success({
+                            message: response.msg,
+                            size: "md"
+                        }, (dialog) => { $("form").trigger("reset"); dialog.close() })
                     }
                 });
             });

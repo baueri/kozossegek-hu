@@ -264,6 +264,7 @@
             if (item.val() === "") {
                 item.inputError("show");
                 return false;
+
             } else if (!validate_email(item.val())) {
                 item.inputError("show", "Kérjük valós email címet adj meg.");
                 return false;
