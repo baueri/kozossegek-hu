@@ -25,7 +25,7 @@
 @if($my_profile)
     <form method="post" id="change_password" action="@route('admin.user.profile.change_password')"  autocomplete="off">
         <div class="row"><div class="col-md-3">
-            <h5>Jelszócsere</h6>
+            <h5>Jelszócsere</h5>
             <hr>
             <div class="form-group">
                 <label>Régi jelszó</label>

@@ -4,6 +4,7 @@
         <route-group  namespace="App\Admin\Controllers">
             <route method="post" uri="{id}/reject-group" controller="GroupController" as="group.reject_group" use="rejectGroup"/>
             <route method="post" uri="{id}/approve" controller="GroupController" use="approveGroup" as="group.approve"/>
+            <route method="post" uri="{id}/delete-by-validation" controller="GroupController" use="deleteByValidation" as="group.delete_by_validation"/>
         </route-group>
     </route-group>
 </routes>

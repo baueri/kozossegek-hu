@@ -472,10 +472,6 @@ input[name=search]::placeholder {
     margin: 0 auto;
 }
 
-.profile-images img {
-    border-radius: 50%;
-}
-
 .edit-page {
     font-size: 20px;
     text-shadow: none;
@@ -841,7 +837,7 @@ input[name=search]::placeholder {
     height: 100%;
     background-size: cover !important;
     color: #fff;
-    background: url("/images/kozosseg4.jpg") no-repeat fixed center;
+    background: url("/images/kozossegek5.jpg") no-repeat center;
 }
 
 .partner-header-link img {
