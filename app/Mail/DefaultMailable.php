@@ -4,7 +4,7 @@ namespace App\Mail;
 
 use Framework\Mail\Mailable;
 
-class GroupRejectEmail extends Mailable
+class DefaultMailable extends Mailable
 {
     protected bool $useDefaultTemplate = true;
 }

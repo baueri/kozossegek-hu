@@ -48,7 +48,7 @@
         <h5>Válassz egyet az alábbi műveletek közül</h5>
         <a href="" onclick="approveGroup(); return false;"  class="btn btn-success" title="Az adatokkal minden rendben van">@icon('check') Jóváhagyás</a>
         <a href="#" onclick="showRejectModal(); return false;" class="btn btn-warning" title="Hiányos / nem megfelelő adatok">@icon('times') Visszautasítás</a>
-        <a href="" class="btn btn-danger" title="Irányelveknek nem megfelelő közösség ">@icon('ban') Törlés</a>
+        <a href="" onclick="showDeleteModal(); return false;" class="btn btn-danger" title="Irányelveknek nem megfelelő közösség ">@icon('trash-alt') Törlés</a>
     </div>
     <div class="col-md-6">
         @if($image)
@@ -140,6 +140,36 @@
                 ]
             });
         });
+    }
 
+    function showDeleteModal()
+    {
+        dialog.confirm({
+            title: "Közösség törlése",
+            message() {
+                return $("<div></div>").load("@route('admin.group.delete_modal', $group)")
+            },
+            type: "danger",
+        }, function(modal, confirm){
+            if (confirm) {
+                $.post("@route('admin.api.group.delete_by_validation', $group)", {
+                    name: $("[name=name]", modal).val(),
+                    email: $("[name=email]", modal).val(),
+                    message: $("[name=message]", modal).val(),
+                    subject: $("[name=subject]", modal).val(),
+                }, response => {
+                    if (response.success) {
+                        dialog.success({
+                            size: "sm",
+                            message: "A közösség törölve lett, a közösségvezetőnek kiküldtük az értesítést."
+                        }, () => {
+                            window.location.href="@route('admin.group.list', ['pending' => 1])";
+                        });
+                    } else {
+                        dialog.danger(response.msg);
+                    }
+                })
+            }
+        })
     }
 </script>

@@ -4,7 +4,6 @@ namespace App\Auth;
 
 use App\Models\User;
 use App\Repositories\Users;
-use Framework\Exception\UnauthorizedException;
 use Framework\Support\Password;
 use Framework\Traits\ManagesErrors;
 
@@ -44,9 +43,11 @@ class Authenticate
         }
 
         if (!$user->isActive()) {
-            $this->pushError(
-                "A fiókod még nincs aktiválva. <a href='#' onclick='resendActivationEmail(\"{$user->email}\"); return false;'><br/><b>Aktivációs email újraküldése</b></a>"
-            );
+            $this->pushError(<<<EOT
+                A fiókod még nincs aktiválva.
+                <a href='#' onclick='resendActivationEmail("{$user->email}"); return false;'><br/>
+                <b>Aktivációs email újraküldése</b></a>
+            EOT);
             return null;
         }
 

@@ -47,12 +47,10 @@ class LoginController extends Controller
 
             Auth::login($user);
 
-            $route = $request['redirect'];
+            $route = $request['redirect'] ?? route('home');
 
-            if (!$route) {
-                $route = $user->isAdmin() ? route('admin.dashboard') : route('home');
-            }
             redirect(Session::flash('last_visited', $route));
+
             exit;
         } catch (Exception $e) {
             Message::danger('Váratlan hiba történt.');

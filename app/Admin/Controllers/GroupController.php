@@ -11,7 +11,7 @@ use App\Admin\Group\Services\UpdateGroup;
 use App\Admin\Group\Services\ValidateGroupForm;
 use App\Http\Exception\RequestParameterException;
 use App\Mail\GroupAcceptedEmail;
-use App\Mail\GroupRejectEmail;
+use App\Mail\DefaultMailable;
 use App\Models\Group;
 use App\Models\GroupView;
 use App\Repositories\Groups;
@@ -242,7 +242,7 @@ class GroupController extends AdminController
 
             $groups->update($group, ['pending' => -1]);
 
-            $mailable = GroupRejectEmail::make()
+            $mailable = DefaultMailable::make()
                 ->setMessage($this->request['message'])
                 ->subject("kozossegek.hu - {$this->request['subject']}");
 
@@ -259,6 +259,7 @@ class GroupController extends AdminController
     /**
      * @param Groups $groups
      * @param Mailer $mailer
+     * @return array
      * @throws ModelNotFoundException
      * @throws \PHPMailer\PHPMailer\Exception
      */
@@ -275,6 +276,44 @@ class GroupController extends AdminController
             ->send($mailable);
 
         return api()->ok();
+    }
+
+    /**
+     * @throws ModelNotFoundException
+     */
+    public function getDeleteModal()
+    {
+        $group = $this->findOrFailById();
+
+        $message = view('mail.templates.delete-group', [
+            'name' => $group->group_leaders,
+            'group_name' => $group->name
+        ]);
+
+        return view('admin.group.partials.delete_modal', compact('group', 'message'));
+    }
+
+    public function deleteByValidation(Groups $groups, Mailer $mailer)
+    {
+        try {
+            $this->request->validate('message', 'subject', 'email', 'name');
+
+            $group = $this->findOrFailById();
+
+            $groups->delete($group);
+
+            $mailable = DefaultMailable::make()
+                ->setMessage($this->request['message'])
+                ->subject("kozossegek.hu - {$this->request['subject']}");
+
+            $mailer->to($this->request['email'], $this->request['name'])->send($mailable);
+
+            return api()->ok();
+        } catch (RequestParameterException $e) {
+            return api()->error('Minden mező kötelező!');
+        } catch (Exception $e) {
+            return api()->error('Váratlan hiba történt!');
+        }
     }
 
     /**

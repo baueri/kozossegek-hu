@@ -1,7 +1,8 @@
 <div class="row">
     <div class="col-md-12">
         @alert('info')
-            A közösségvezető a sikeres művelet esetén az alábbi email címen értesítve lesz arról, hogy a közössége visszautasításra került.
+        A közösségvezető a sikeres művelet esetén az alábbi email címen értesítve lesz arról, hogy a közössége törlésre került összeférhetetlenség miatt.
+        További indoklást javasolt az üzenethez írni.
         @endalert
     </div>
     <div class="col-md-6">
@@ -21,7 +22,7 @@
     <div class="col-md-12">
         <div class="form-group">
             <label>Üzenet tárgya</label>
-            <input type="text" name="subject" class="form-control" value="Közösség adatai javításra szorulnak">
+            <input type="text" name="subject" class="form-control" value="Közösség adatlapja törlésre került">
         </div>
     </div>
 

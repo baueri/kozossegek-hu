@@ -34,7 +34,7 @@
             <route method="post" uri="summernote-upload" />
         </route-group>
 
-        <route method="post" uri="api/uploads/get" controller="Api\UploadController" use="getUploads" />
+        <route method="post" uri="api/uploads/get" as="api.uploads" controller="Api\UploadController" use="getUploads" />
 
 
         <!-- KÖZÖSSÉGEK -->
@@ -58,6 +58,7 @@
             <route method="post" uri="maintenance" use="createMissingUsers" as="create_missing_users"/>
 
             <route method="post" uri="{id}/reject-modal" as="reject_modal" use="getRejectModal"/>
+            <route method="all" uri="{id}/delete-modal" as="delete_modal" use="getDeleteModal"/>
         </route-group>
 
         <!-- Intézmények -->
@@ -106,8 +107,6 @@
             <route method="post" middleware="Framework\Middleware\JsonApi" uri="api/spiritual-movements/save" use="update" as="spiritual_movements.save"/>
             <route method="post" middleware="Framework\Middleware\JsonApi" uri="api/spiritual-movements/delete" use="delete" as="spiritual_movements.delete"/>
         </route-group>
-
-        <route method="get" uri="porfile" controller="UserController" use="profile"/>
 
         <route method="get" uri="" controller="DashboardController" use="dashboard" as="dashboard"/>
 
