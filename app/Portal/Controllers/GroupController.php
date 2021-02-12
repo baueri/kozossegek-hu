@@ -15,7 +15,6 @@ use App\Portal\Services\GroupList;
 use App\Portal\Services\PortalCreateGroup;
 use App\Portal\Services\PortalUpdateGroup;
 use App\Portal\Services\SendContactMessage;
-use App\Repositories\EventLogRepository;
 use App\Repositories\Groups;
 use App\Repositories\GroupViews;
 use App\Repositories\Institutes;
@@ -33,12 +32,19 @@ use Throwable;
 
 class GroupController extends Controller
 {
-
     use LogsEvent;
 
-    public function kozossegek(GroupList $service)
+    public function kozossegek(Request $request, GroupList $service)
     {
-        return $service->getHtml();
+        return $service->getHtml($request->collect());
+    }
+
+    public function groupsByCity(Request $request, GroupList $service)
+    {
+        $data = [
+            'varos' => trim($request->uri, '/')
+        ];
+        return $service->getHtml(collect($data));
     }
 
     public function kozossegRegisztracio(RegisterGroupForm $service)

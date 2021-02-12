@@ -7,6 +7,7 @@ use App\Repositories\AgeGroups;
 use App\Repositories\GroupStatusRepository;
 use App\Repositories\OccasionFrequencies;
 use Framework\Http\Request;
+use Framework\Support\Collection;
 use ReflectionException;
 
 /**
@@ -23,11 +24,6 @@ class GroupList
     private SearchGroupService $service;
 
     /**
-     * @var Request
-     */
-    private Request $request;
-
-    /**
      * @var AgeGroups
      */
     private AgeGroups $ageGroups;
@@ -38,25 +34,24 @@ class GroupList
     private OccasionFrequencies $occasionFrequencies;
 
     public function __construct(
-        Request $request,
         SearchGroupService $service,
         OccasionFrequencies $occasionFrequencies,
         AgeGroups $ageGroups
     ) {
         $this->occasionFrequencies = $occasionFrequencies;
         $this->ageGroups = $ageGroups;
-        $this->request = $request;
         $this->service = $service;
     }
 
     /**
+     * @param Collection $request
      * @return string
      * @throws ReflectionException
      */
-    public function getHtml()
+    public function getHtml(Collection $request)
     {
-        $filter = $this->request->only('search', 'korosztaly', 'rendszeresseg', 'tags');
-        $filter['varos'] = $this->request['varos'];
+        $filter = $request->only('search', 'korosztaly', 'rendszeresseg', 'tags');
+        $filter['varos'] = $request['varos'];
 
 //        $filter['order_by'] = ['city', 'district'];
 //        $filter['sort'] = 'asc';
