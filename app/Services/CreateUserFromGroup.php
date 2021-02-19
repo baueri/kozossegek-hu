@@ -86,7 +86,6 @@ class CreateUserFromGroup
 
         $this->groups->save($group);
 
-
         return $user;
     }
 

@@ -68,7 +68,7 @@
                 <div class="col-md-4">
                     <div class="form-group required">
                         <label for="group_leader_email">Email cím</label>
-                        <input type="email" name="group_leader_email" id="group_leader_email" value="{{ $group->group_leader_email }}" class="form-control" required>
+                        <input name="group_leader_email" id="group_leader_email" value="{{ $group->group_leader_email }}" class="form-control" required>
                     </div>
                 </div>
             </div>
