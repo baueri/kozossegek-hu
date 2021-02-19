@@ -22,8 +22,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.9/js/bootstrap-dialog.min.js"></script>
 
     @yield('header')
-    <script src="/assets/jquery-ui/jquery-ui.min.js"></script>
-    <link rel="stylesheet" href="/assets/jquery-ui/jquery-ui.min.css">
+<!--    <script src="/assets/jquery-ui/jquery-ui.min.js"></script>-->
+<!--    <link rel="stylesheet" href="/assets/jquery-ui/jquery-ui.min.css">-->
     <link rel="stylesheet" href="/css/admin.css">
     <script src="/js/dialog.js"></script>
     <script src="/js/admin.js"></script>

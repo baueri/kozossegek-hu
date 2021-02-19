@@ -87,13 +87,13 @@ class InstituteAdminTable extends AdminTable implements Deletable, Editable
 
     public function getUser($user)
     {
-        return $user->name;
+        return $user ? $user->name : '';
     }
 
     public function getName($value, Institute $institute)
     {
         $warning = !$institute->approved ? '<i class="fa fa-exclamation-circle text-danger" title="még nem jóváhagyott intézmény"></i> ' : '';
-        return $warning . $this->getEdit($value, $institute, 40);
+        return $warning . $this->getEdit($value, $institute, 40) . "<br/><span style='font-size: 10px; color: #555'>{$institute->name2}</span>";
     }
 
     public function getImage($img, Institute $institute)
@@ -124,6 +124,9 @@ class InstituteAdminTable extends AdminTable implements Deletable, Editable
 
     private function getNumberOfGroups(Collection $institutes)
     {
+        if ($institutes->isEmpty()) {
+            return [];
+        }
         $ids = $institutes->pluck('id')->implode(',');
         return db()->select("select count(*) as cnt, institute_id from church_groups where institute_id in ($ids) and deleted_at is null group by institute_id");
     }

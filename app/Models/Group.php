@@ -128,6 +128,8 @@ class Group extends Model
      */
     public $tags;
 
+    public $image_url;
+
 
     /**
      * @return string
@@ -201,20 +203,6 @@ class Group extends Model
         }
 
         return ["/images/default_thumbnail.jpg"];
-    }
-
-    /**
-     * @todo !!!
-     * @return string
-     */
-    public function getThumbnail()
-    {
-        return $this->getFirstImage();
-    }
-
-    public function getFirstImage()
-    {
-        return $this->getImages()[0];
     }
 
     public function getStorageImageDir()

@@ -30,15 +30,15 @@ class StringHelper
     }
 
     /**
-     * @param string $text
+     * @param string|null $text
      * @param int $numberOfCharacters
      * @param string $moreText
      * @return string
      */
-    public static function shorten(string $text, int $numberOfCharacters, $moreText = '')
+    public static function shorten(?string $text, int $numberOfCharacters, $moreText = ''): string
     {
         if (mb_strlen($text) <= $numberOfCharacters) {
-            return $text;
+            return (string) $text;
         }
 
         return mb_substr($text, 0, $numberOfCharacters) . $moreText;

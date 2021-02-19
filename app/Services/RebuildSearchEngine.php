@@ -53,7 +53,8 @@ class RebuildSearchEngine
             ->push($groupView->city)
             ->push(str_replace('atya', '', $groupView->leader_name))
             ->push($groupView->group_leaders)
-            ->push($groupView->institute_name);
+            ->push($groupView->institute_name)
+            ->push($groupView->institute_name2);
 
         if ($groupView->spiritual_movement) {
             $keywords->push($groupView->spiritual_movement);

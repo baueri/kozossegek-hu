@@ -292,6 +292,11 @@ class Builder
         return $this->where($column, $operator, $value, 'or');
     }
 
+    public function orWhereRaw($where, $bindings = [])
+    {
+        return $this->whereRaw($where, $bindings, 'or');
+    }
+
     public function orWhereInSet($column, $value)
     {
         return $this->whereInSet($column, $value, 'or');

@@ -6,11 +6,6 @@ use App\Models\Group;
 use Framework\Exception\FileTypeNotAllowedException;
 use Framework\Support\Collection;
 
-/**
- * Description of CreateGrooup
- *
- * @author ivan
- */
 class CreateGroup extends BaseGroupService
 {
 
@@ -23,8 +18,7 @@ class CreateGroup extends BaseGroupService
      */
     public function create(Collection $request, ?array $document = null): ?Group
     {
-        $data = $request->except('files', 'image', 'tags', 'institute')->all();
-
+        $data = $request->filter()->except('files', 'image', 'tags', 'institute')->all();
         $data['age_group'] = implode(',', $data['age_group'] ?? []);
         $data['on_days'] = implode(',', $data['on_days'] ?? []);
         $data['document'] = '';

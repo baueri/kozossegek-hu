@@ -17,7 +17,6 @@
             @endalert
             <div class="row">
                 <div class="col-md-4">
-
                     <p>
                         <a href="#" id="login-existing-user" onclick="showLoginModal('{{ request()->uri }}'); return false;"><b>
                             <i class="fa fa-key"></i> van már fiókom, belépek
@@ -32,6 +31,16 @@
                         <label>Email címed</label>
                         <input type="email" class="form-control" name="email" value="{{ $email }}"  data-describedby="validate_email">
                         <div id="validate_email" class="validate_message"></div>
+                    </div>
+                    <div class="form-group required">
+                        <label>Jelszó <small>(min. 8 karakter)</small></label>
+                        <input type="password" class="form-control" name="password" data-describedby="validate_password">
+                        <div id="validate_password" class="validate_message"></div>
+                    </div>
+                    <div class="form-group required">
+                        <label>Jelszó még egyszer</label>
+                        <input type="password" class="form-control" name="password_again" data-describedby="validate_password_again">
+                        <div id="validate_password_again" class="validate_message"></div>
                     </div>
                 </div>
             </div>
@@ -136,7 +145,7 @@
         </div>
     </div>
     <div class="step-container">
-        <h4>A közösség jellemzői</h4>
+        <h4>A közösség jellemzői<small style="color: red">*</small></h4>
         @alert('info')
             Válassz ki legalább egy, de legfeljebb öt tulajdonságot, ami a közösségedet a legjobban jellemzi.
         @endalert
@@ -331,6 +340,37 @@
             return validateRequiredInput(selector)
         }
 
+        function validatePassword()
+        {
+            const pw1 = $("[name=password]");
+            const pw2 = $("[name=password_again]");
+
+            if (pw1.length === 0 && pw2.length === 0) {
+                return true;
+            }
+
+            pw1.inputError("dismiss");
+            pw2.inputError("dismiss");
+
+            const pw1V = pw1.val();
+            const pw2V = pw2.val();
+
+            if (!pw1V) {
+                pw1.inputError("show", "Nem adtál meg jelszót!");
+            } else if (pw1V.length < 8) {
+                pw1.inputError("show", "Túl rövid jelszó!");
+            } else if (pw1V !== pw2V) {
+                pw1.inputError("show");
+                pw2.inputError("show", "A két jelszó nem egyezik!");
+            } else {
+                pw1.inputOk();
+                pw2.inputOk();
+                return true;
+            }
+
+            return false;
+        }
+
         function validateRequiredInputs()
         {
             let inputOk = true;
@@ -364,7 +404,7 @@
             }
         }
 
-        $("input:not([name=email]):not(.institute-data), select:not([name=institute_id]), textarea", $(".required", form)).on("focusout input change", function() {
+        $("input:not([name=email]):not(.institute-data):not([type=password]), select:not([name=institute_id]), textarea", $(".required", form)).on("focusout input change", function() {
             validateRequiredInput($(this));
         });
 
@@ -372,7 +412,8 @@
 
             if (typeof data === "undefined" || !data.send_request) {
                 e.preventDefault();
-                if(!validateRequiredInputs() || !validateUserName() || !await validateEmailAddress() || !validateInstitute()) {
+                console.log(validateRequiredInputs(),validateUserName(),await validateEmailAddress(),validateInstitute(),validatePassword());
+                if(!validateRequiredInputs() || !validateUserName() || !await validateEmailAddress() || !validateInstitute() || !validatePassword()) {
                     return dialog.danger("Kérjük ellenőrizd az adataidat! A csillaggal jelölt mezők kitöltése kötelező!");
                 }
 
@@ -431,6 +472,11 @@
                 $("#group_leader_email").val($(this).val());
             }
         });
+
+        $("[type=password]").on("change focusout", function(){
+            validatePassword();
+        });
+
     });
 
     function toggleInstituteBox()

@@ -50,7 +50,7 @@ class GroupList
      */
     public function getHtml(Collection $request)
     {
-        $filter = $request->only('search', 'korosztaly', 'rendszeresseg', 'tags');
+        $filter = $request->only('search', 'korosztaly', 'rendszeresseg', 'tags', 'institute_id');
         $filter['varos'] = $request['varos'];
 
 //        $filter['order_by'] = ['city', 'district'];

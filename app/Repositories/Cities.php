@@ -42,7 +42,7 @@ class Cities extends Repository
             ->distinct()
             ->select('city')
             ->where('city', 'like', "%$keyword%")
-            ->orderBy('name', 'asc')
+            ->orderBy('city', 'asc')
             ->limit($limit)
             ->get();
     }

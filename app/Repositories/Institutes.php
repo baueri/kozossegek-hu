@@ -4,13 +4,14 @@ namespace App\Repositories;
 
 use App\Models\Institute;
 use Framework\Database\PaginatedResultSet;
+use Framework\Repository;
 
 /**
  * Description of Institutes
  *
  * @author ivan
  */
-class Institutes extends \Framework\Repository
+class Institutes extends Repository
 {
     /**
      *
@@ -28,7 +29,10 @@ class Institutes extends \Framework\Repository
 
         if ($keyword) {
             $keyword = trim($keyword, ' ');
-            $builder->whereRaw('MATCH (name, city, district) AGAINST (? IN BOOLEAN MODE)', [$keyword ? '+' . str_replace(' ', '* +', $keyword) . '*' : '']);
+            $builder->whereRaw(
+                'MATCH (name, name2, city, district) AGAINST (? IN BOOLEAN MODE)',
+                [$keyword ? '+' . str_replace(' ', '* +', $keyword) . '*' : '']
+            );
         }
 
         $rows = $builder->orderBy('name', 'asc')->paginate(15);
@@ -50,7 +54,7 @@ class Institutes extends \Framework\Repository
         }
 
         if ($name = $filter['search']) {
-            $builder->where('name', 'like', "%$name%");
+            $builder->whereRaw("(name like ? or name2 like ?)", ["%$name%", "%$name%"]);
         }
 
         if ($filter['sort']) {
@@ -85,5 +89,16 @@ class Institutes extends \Framework\Repository
             return $this->getInstances([]);
         }
         return $this->getInstances($this->getBuilder()->whereIn('id', $instituteIds)->get());
+    }
+
+    public function searchByCityAndInstituteName(string $city, string $institute): ?Institute
+    {
+        $builder = $this->getBuilder()
+            ->whereRaw("MATCH(city) AGAINST(? IN BOOLEAN MODE)", [$city])
+            ->whereRaw("MATCH(name) AGAINST(? IN BOOLEAN MODE)", [$institute]);
+
+        $row = $builder->first();
+
+        return $this->getInstance($row);
     }
 }

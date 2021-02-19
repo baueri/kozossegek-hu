@@ -5,7 +5,7 @@
     <meta property="og:type"          content="website" />
     <meta property="og:title"         content="kozossegek.hu - {{ $group->name }}" />
     <meta property="og:description"   content="{{ $group->excerpt(20) }}" />
-    <meta property="og:image"         content="{{ get_site_url() . $images[0] }}" />
+    <meta property="og:image"         content="{{ $group->getThumbnail() }}" />
     <meta property="og:locale"         content="hu_HU" />
     <link rel="canonical" href="{{ $group->url() }}" />
 @endsection
@@ -22,24 +22,17 @@
     @endif
     <div class="row">
         <div class="col-lg-4 d-md-none d-lg-block">
-            <img class="img-big" src="{{ $images[0] }}" alt="{{ $group->name }}">
-            @if(count($images) > 1)
-                <div class="kozi-kiskepek row m-0">
-                    @foreach($images as $i => $image)
-                        <div class="col-lg-3 col-md-6 col-6 p-0"><img @if($i == 0) class="active" @endif src="{{ $image }}"/></div>
-                    @endforeach
-                </div>
-            @endif
+            <div><img class="img-big" src="{{ $group->getThumbnail() }}" alt="{{ $group->name }}"></div>
         </div>
         <div class="col-lg-8 col-md-12 pt-4 pt-md-0">
             <div class="title">
-                <img class="img-big img-sm d-none d-md-block d-lg-none" src="{{ $images[0] }}" alt="{{ $group->name }}">
+                <img class="img-big img-sm d-none d-md-block d-lg-none" src="{{ $group->getThumbnail() }}" alt="{{ $group->name }}">
                 @if($backUrl)
                     <div class="float-right">
                         <a href="{{ $backUrl }}"><i class="fa fa-angle-double-left"></i> vissza</a>
                     </div>
                 @endif
-                <h1 class="primary-title h2">
+                <h1 class="primary-title h2 mb-2">
                     {{ $group->name }}
                     @if($user && $user->id == $group->user_id)
                         <a href="{{ $group->getEditUrl() }}" title="szerkesztés">
@@ -47,7 +40,7 @@
                         </a>
                     @endif
                 </h1>
-                <h2 class="subtitle h5">{{  $group->city . ($group->district ? ', ' . $group->district : '')  }}</h2>
+<!--                <h2 class="subtitle h5">{{  $group->city . ($group->district ? ', ' . $group->district : '')  }}</h2>-->
                 <div class="group-tags float-left">
                     @foreach($tag_names as $tag)
                     <a href="@route('portal.groups', ['tags' => $tag['tag']])" class="tag align-bottom">
@@ -58,7 +51,13 @@
                 <div class="float-right mb-2">@facebook_share_button($group->url())</div>
             </div>
             <p class="kozi-tulajdonsag">
-                <strong>Helyszín</strong><br/> @if($institute) {{ $institute->city }}, {{ $institute->name }} @endif
+                @if($institute)
+                    <strong>Helyszín</strong><br/>
+                    {{ $institute->name }} ({{ $institute->city }})<br/>
+                    @if($institute->name2)
+                        <span style="font-size: 13px">({{ $institute->name2 }})</span>
+                    @endif
+                @endif
             </p>
             @if($group->spiritual_movement)
                 <p class="kozi-tulajdonsag">

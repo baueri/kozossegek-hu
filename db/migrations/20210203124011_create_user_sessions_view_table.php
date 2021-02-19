@@ -5,7 +5,7 @@ use Phinx\Migration\AbstractMigration;
 
 final class CreateUserSessionsViewTable extends AbstractMigration
 {
-    public function change(): void
+    public function up(): void
     {
         $this->execute('CREATE OR REPLACE VIEW v_user_sessions AS
             SELECT users.*, user_sessions.unique_id FROM user_sessions, users where user_sessions.user_id=users.id

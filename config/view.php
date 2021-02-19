@@ -1,8 +1,10 @@
 <?php
 
+use App\Helpers\HoneyPot;
 use App\Http\Components\FacebookShareButton;
 use App\Http\Components\FeaturedTitle;
 use App\Http\Components\FontawesomeIcon;
+use App\Http\Components\HoneyPotComponent;
 use App\Http\Components\Selectors\AgeGroupSelector;
 use App\Http\Components\Selectors\JoinModeSelector;
 use App\Http\Components\Selectors\OccasionFrequencySelector;
@@ -72,9 +74,7 @@ return [
             return "<?php echo view('admin.partials.message') ?>";
         },
         'honeypot' => function () {
-            $nvr = 'a_' . substr(md5(time()), 0, 5);
-            $hash = \App\Helpers\HoneyPot::getHash(request()->uri);
-            return '<input type="text" name="website" id="' . $nvr . '" value="' . $hash . '" style="width: 0px;padding: 0;border: 0;margin: 0;">';
+            return View::component(HoneyPotComponent::class);
         },
         'icon' => fn($matches) => View::component(FontawesomeIcon::class, $matches[1]),
     ]

@@ -41,4 +41,9 @@ class Session
     {
         return session_id();
     }
+
+    public static function all()
+    {
+        return $_SESSION;
+    }
 }

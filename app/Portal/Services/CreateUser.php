@@ -38,6 +38,7 @@ class CreateUser
     /**
      * @param Collection $data
      * @return User
+     * @throws EmailTakenException
      */
     public function create(Collection $data): User
     {
@@ -46,8 +47,7 @@ class CreateUser
         }
 
         $data = $data->only('name', 'email', 'password');
-
-        $data['password'] = Password::hash(time());
+        $data['password'] = Password::hash($data['password']);
 
         /* @var $user User */
         return $this->users->create($data);

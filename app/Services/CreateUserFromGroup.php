@@ -5,15 +5,19 @@ namespace App\Services;
 use App\Mail\RegistrationByGroupEmailForFirstUsers;
 use App\Mail\RegistrationEmail;
 use App\Models\Group;
+use App\Models\GroupView;
 use App\Models\User;
 use App\Models\UserToken;
 use App\Repositories\Groups;
+use App\Repositories\GroupViews;
 use App\Repositories\Users;
 use App\Repositories\UserTokens;
 use Exception;
 use Framework\Mail\Mailable;
 use Framework\Mail\Mailer;
+use Framework\PasswordGenerator;
 use Framework\Support\Password;
+use InvalidArgumentException;
 
 /**
  * Description of CreateUserFromGroup
@@ -58,17 +62,22 @@ class CreateUserFromGroup
         $user = $this->userRepository->getUserByEmail($group->group_leader_email);
 
         if (!$user) {
+            $password = (new PasswordGenerator(6))
+                ->useLower(false)
+                ->generate();
             $userData = [
                 'name' => static::getUserName($group),
                 'email' => $group->group_leader_email,
-                'password' => Password::hash(md5(time()))
+                'password' => Password::hash($password)
             ];
 
             $user = $this->userRepository->create($userData);
 
             $token = $this->userTokenRepository->createUserToken($user, route('portal.user.activate'));
 
-            $mailable = $this->getMailable($emailTemplate, $user, $token, $group);
+            $groupView = app()->make(GroupViews::class)->find($group->id);
+
+            $mailable = $this->getMailable($emailTemplate, $user, $token, $groupView, $password);
 
             Mailer::make()->to($user->email)->send($mailable);
         }
@@ -85,18 +94,21 @@ class CreateUserFromGroup
      * @param string $template
      * @param User $user
      * @param UserToken $token
-     * @param Group $group
+     * @param GroupView $group
+     * @param string $password
      * @return Mailable
      */
-    private function getMailable(string $template, User $user, UserToken $token, Group $group)
+    private function getMailable(string $template, User $user, UserToken $token, GroupView $group, string $password)
     {
         if ($template == 'register_by_group') {
-            return RegistrationByGroupEmailForFirstUsers::make($user, $token, $group);
+            return new RegistrationByGroupEmailForFirstUsers($user, $password, $token, $group);
         }
 
         if ($template == 'register') {
             return RegistrationEmail::make($user, $token);
         }
+
+        throw new InvalidArgumentException('Hibás email sablon!');
     }
 
     private function validate(Group $group)

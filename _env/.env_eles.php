@@ -23,7 +23,7 @@ return [
     'EMAIL_PASSWORD' => '***REMOVED***',
     'EMAIL_SSL' => 'STARTTLS',
 
-    'CONTACT_EMAIL' => 'info@kozossegek.hu',
-    'ERROR_EMAIL' => 'error@kozossegek.hu'
+    'CONTACT_EMAIL' => 'kozossegek.szeged@gmail.com',
+    'ERROR_EMAIL' => 'birkaivan@gmail.com'
 
 ];

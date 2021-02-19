@@ -11,6 +11,8 @@ use App\Models\Institute;
  */
 class InstituteSearchResponse extends Select2Response
 {
+    private $admin = false;
+
     /**
      *
      * @param Institute $institute
@@ -18,12 +20,19 @@ class InstituteSearchResponse extends Select2Response
      */
     public function getText($institute)
     {
+        $miserend_info = $this->admin && $institute->miserend_id ? ' (miserend.hu)' : '';
         $cityAndDistrict = $institute->city . ($institute->district ? ", $institute->district" : '');
-        return "{$institute->name} ({$cityAndDistrict})";
+        return "{$institute->name} ({$cityAndDistrict}){$miserend_info}";
     }
 
     public function getId($model)
     {
         return $model->id;
+    }
+
+    public function asAdmin(bool $asAdmin)
+    {
+        $this->admin = $asAdmin;
+        return $this;
     }
 }

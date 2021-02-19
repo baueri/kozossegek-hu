@@ -16,7 +16,7 @@ class ValidateGroupForm
         $model = [
             'group' => $group,
             'selected_tags' => $tags['names'],
-            'image' => $group->getFirstImage(),
+            'image' => $group->getThumbnail(),
             'document' => $group->getDocumentUrl(),
             'has_document' => $group->hasDocument()
         ];

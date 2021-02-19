@@ -2,6 +2,7 @@
 
 use App\Admin\Components\DebugBar\DebugBar;
 use App\Auth\Auth;
+use App\Mailable\CriticalErrorEmail;
 use App\Middleware\AdminMiddleware;
 use App\Repositories\Widgets;
 use Arrilot\DotEnv\DotEnv;
@@ -17,6 +18,7 @@ use Framework\Http\Route\RouteInterface;
 use Framework\Http\Route\RouterInterface;
 use Framework\Http\View\View;
 use Framework\Http\View\ViewInterface;
+use Framework\Mail\Mailer;
 use Framework\Model\Model;
 use Framework\Support\Collection;
 use Framework\Translator;
@@ -54,8 +56,13 @@ function d(...$data)
         }
         print("\n");
     }
-    $bt = debug_backtrace()[0];
-    print("\ndumped at: " . $bt['file'] . ' on line ' . $bt['line']);
+    $bt = debug_backtrace();
+    if (isset($bt[1]) && $bt[1]['function'] === 'dd') {
+        $trace = $bt[1];
+    } else {
+        $trace = $bt[0];
+    }
+    print("\ndumped at: {$trace['file']} on line {$trace['line']}");
     print("\n----------------------------------------------------");
     if (!Response::contentTypeIsJson() && !is_cli()) {
         print "</pre>";
@@ -318,7 +325,12 @@ function raise_403($message = '', $message2 = 'Nincs jogosultsága a tartalom me
 
 function process_error($e)
 {
-    app()->get(Dispatcher::class)->handleError($e);
+    if (!_env('DEBUG')) {
+        $errorEmail = new CriticalErrorEmail($e);
+        (new Mailer())->to(config('app.error_email'))->send($errorEmail);
+    } else {
+        dd($e);
+    }
 }
 
 function is_loggedin()

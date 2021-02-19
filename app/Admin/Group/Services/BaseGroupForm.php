@@ -76,13 +76,12 @@ class BaseGroupForm
         $action = $this->getAction($group);
         $spiritual_movements = db()->select('select * from spiritual_movements order by name');
         $tags = builder('tags')->select('*')->get();
-        $age_group_array = array_filter(explode(',', $group->age_group));
+        $age_group_array = is_array($group->age_group) ? $group->age_group : array_filter(explode(',', $group->age_group));
         $group_tags = collect(builder('v_group_tags')
             ->apply('whereGroupId', $group->id)->get())
             ->pluck('tag')->all();
         $days = DayEnum::all();
         $group_days = explode(',', $group->on_days);
-        $images = $group->getImages();
         $title = $group->exists() ? 'Közösség módosítása' : 'Új közösség létrehozása';
         $owner = $this->users->find($group->user_id);
         $join_modes = JoinMode::getModesWithName();
@@ -101,7 +100,6 @@ class BaseGroupForm
             'group_tags',
             'days',
             'group_days',
-            'images',
             'title',
             'owner',
             'join_modes'

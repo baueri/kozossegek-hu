@@ -5,6 +5,11 @@
 @endsection
 @extends('admin')
 <form method="post" id="institute-form" action="{{ $action }}">
+    @if($institute->isFromMiserend())
+        @alert('warning')
+            <b>Ez az intézmény a miserend.hu adatbázisból lett importálva.</b>
+        @endalert
+    @endif
     <div class="form-group">
         <label>Jóváhagyva</label>
         <div class="switch yesno" style="width:100px;">
@@ -19,6 +24,10 @@
             <div class="form-group">
                 <label>Intézmény / plébánia neve</label>
                 <input type="text" name="name" class="form-control" value="{{ $institute->name }}">
+            </div>
+            <div class="form-group">
+                <label>Alternatív név</label>
+                <input type="text" name="name2" class="form-control" value="{{ $institute->name2 }}">
             </div>
             <div class="form-group">
                 <label>Település</label>
@@ -40,6 +49,10 @@
                 <label>Intézményvezető / plébános neve</label>
                 <input type="text" name="leader_name" class="form-control" value="{{ $institute->leader_name }}">
             </div>
+            <div class="form-group">
+                <label>Weboldal</label>
+                <input type="text" name="website" class="form-control" value="{{ $institute->website }}">
+            </div>
 
             <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Mentés</button>
         </div>
@@ -52,6 +65,17 @@
                 <input type="file" onchange="loadFile(event, this);" data-target="temp-image">
                 <div style="display: none"><img id="temp-image" /></div>
                 <input type="hidden" name="image">
+            </div>
+            <div class="form-group" id="chosable_images">
+                @if($images)
+                    <h4>Kép választása (miserend.hu-ról)</h4>
+                    @foreach($images as $i => $chosable)
+                    <input type="radio" name="image_url" value="{{ $chosable }}" id="{{ 'chosable_img_' . $i }}" @if($chosable === $institute->image_url) checked @endif style="display:none"/>
+                    <label for="{{ 'chosable_img_' . $i }}">
+                        <img src="{{ $chosable }}" style="width: 150px; height: auto"/>
+                    </label>
+                    @endforeach
+                @endif
             </div>
         </div>
     </div>

@@ -71,7 +71,8 @@ class PortalCreateGroup
             'group_leader_phone',
             'group_leader_email',
             'description',
-            'image'
+            'image',
+            'join_mode'
         );
 
         $data['denomination'] = DenominationEnum::KATOLIKUS;
@@ -93,7 +94,6 @@ class PortalCreateGroup
         }
 
         $mailable->with(['user_name' => $user->name]);
-
 
         $data['user_id'] = $user->id;
 
