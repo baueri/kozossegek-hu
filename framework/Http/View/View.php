@@ -107,9 +107,10 @@ class View implements ViewInterface
 
         ob_start();
 
-        include $cachedFilename = $this->cacheDriver->getCacheFilename($filePath);
-
+        $cachedFilename = $this->cacheDriver->getCacheFilename($filePath);
         EventDisptatcher::dispatch(new ViewLoaded($filePath, $cachedFilename));
+
+        include $cachedFilename;
 
         return ob_get_clean();
     }
@@ -131,8 +132,8 @@ class View implements ViewInterface
         static::$envVariables[$key] = $value;
     }
 
-    public static function component($component, $expression)
+    public static function component($component, $expression = null)
     {
-        return "<?php echo app()->make({$component}::class)->render($expression); ?>";
+        return "<?php echo app()->make({$component}::class)->render({$expression}); ?>";
     }
 }

@@ -32,17 +32,6 @@ class GroupViews extends Repository
     }
 
     /**
-     * @param int $perPage
-     * @return PaginatedModelCollection
-     */
-    public function all($perPage = 30)
-    {
-        $result = $this->getBuilder()->paginate($perPage);
-
-        return $this->getInstances($result);
-    }
-
-    /**
      * @param Collection|array $filter
      * @param int|null $perPage
      * @return PaginatedResultSet|Model[]|ModelCollection|PaginatedModelCollection []
@@ -173,7 +162,7 @@ class GroupViews extends Repository
     public function getGroupsWithoutUser()
     {
         $builder = $this->getBuilder()
-            ->where('user_id', '0')
+            ->whereRaw('user_id=0 or user_id is null')
             ->where('group_leaders', '<>', '')
             ->where('group_leader_email', '<>', '')
             ->apply('notDeleted');

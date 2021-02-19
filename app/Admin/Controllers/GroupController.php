@@ -80,7 +80,8 @@ class GroupController extends AdminController
             redirect_route('admin.group.edit', ['id' => $group->id]);
             exit;
         } catch (Exception $e) {
-            Message::danger($e->getMessage());
+            process_error($e->getMessage());
+            Message::danger('Váratlan hiba történt!');
             return $form->render(new Group($this->request->all()));
         }
     }

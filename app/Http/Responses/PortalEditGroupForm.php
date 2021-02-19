@@ -40,7 +40,6 @@ class PortalEditGroupForm
 
         $group_tags = collect(builder('group_tags')->whereGroupId($group->id)->get())->pluck('tag')->all();
         $age_group_array = array_filter(explode(',', $group->age_group));
-        $images = $group->getImages();
         $group_days = explode(',', $group->on_days);
         $view = 'portal.group.edit_my_group';
         $action = route('portal.my_group.update');
@@ -60,7 +59,6 @@ class PortalEditGroupForm
             'group_tags',
             'days',
             'group_days',
-            'images',
             'group_tags'
         ));
     }

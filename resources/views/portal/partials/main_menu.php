@@ -7,10 +7,10 @@
         <input type="checkbox" style="display: none" id="toggle_main_menu" name="toggle_main_menu">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a href="@route('portal.groups')" class="nav-link"><span>Közösséget keresek</span></a>
+                <a href="@route('portal.page', ['slug' => 'rolunk'])" class="nav-link"><span>Rólunk</span></a>
             </li>
             <li class="nav-item">
-                <a href="@route('portal.register_group')" class="nav-link"><span>Közösséget vezetek</span></a>
+                <a href="@route('portal.groups')" class="nav-link"><span>Közösséget keresek</span></a>
             </li>
             <li class="nav-item">
                 <a href="@route('portal.page', ['slug' => 'a-kozosseg'])" class="nav-link">A közösségről @icon('angle-down')</a>
@@ -20,8 +20,8 @@
                     </li>
                 </ul>
             </li>
-            <li class="nav-item">
-                <a href="@route('portal.page', ['slug' => 'rolunk'])" class="nav-link"><span>Rólunk</span></a>
+            <li class="nav-item divider-before">
+                <a href="@route('portal.register_group')" class="nav-link"><span>Közösséget vezetek</span></a>
             </li>
             @auth
                 <li class="nav-item nav-item-profile">

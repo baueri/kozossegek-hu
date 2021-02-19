@@ -2,13 +2,10 @@
 
 namespace App\Portal\Controllers;
 
-use App\Admin\Group\Services\UpdateGroup;
 use App\Auth\Auth;
 use App\Exception\EmailTakenException;
-use App\Helpers\HoneyPot;
 use App\Http\Responses\CreateGroupSteps\RegisterGroupForm;
 use App\Http\Responses\PortalEditGroupForm;
-use App\Models\EventLog;
 use App\Models\Group;
 use App\Models\GroupView;
 use App\Portal\Services\GroupList;
@@ -37,6 +34,17 @@ class GroupController extends Controller
     public function kozossegek(Request $request, GroupList $service)
     {
         return $service->getHtml($request->collect());
+    }
+
+    public function intezmenyKozossegek(Request $request, GroupList $service, Institutes $institutes)
+    {
+        $city = str_replace('-', ' ', $request['varos']);
+        $instituteName = str_replace('-', ' ', $request['intezmeny']);
+        $institute = $institutes->searchByCityAndInstituteName($city, $instituteName);
+
+        return $service->getHtml(collect([
+            'institute_id' => $institute->id
+        ]));
     }
 
     public function groupsByCity(Request $request, GroupList $service)
@@ -82,7 +90,6 @@ class GroupController extends Controller
 
         $tag_names = builder('v_group_tags')->where('group_id', $group->id)->get();
         $similar_groups = $repo->findSimilarGroups($group, $tag_names)->all();
-        $images = $group->getImages();
         $_SESSION['honepot_check_time'] = $checkTime = time();
         $_SESSION['honeypot_check_hash'] = $honeypot_check_hash = md5($checkTime);
         $slug = $group->slug();
@@ -96,7 +103,6 @@ class GroupController extends Controller
             'backUrl',
             'tag_names',
             'similar_groups',
-            'images',
             'honeypot_check_hash',
             'slug',
             'keywords',

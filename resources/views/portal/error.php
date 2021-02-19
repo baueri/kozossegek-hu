@@ -27,7 +27,7 @@
         width: 100%;
         line-height: 1.4;
         text-align: center;
-        padding: 15px;
+        padding: 8em;
     }
 
     .error-pg .error-pg-404 {

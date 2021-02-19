@@ -13,6 +13,7 @@ use App\Models\User;
 use App\Repositories\UserTokens;
 use Framework\Http\Request;
 use Framework\Http\Response;
+use Framework\PasswordGenerator;
 
 class EmailTemplateController extends AdminController
 {
@@ -29,13 +30,14 @@ class EmailTemplateController extends AdminController
     public function registrationByGroup(UserTokens $userTokens)
     {
         $user = new User(['name' => 'Minta János', 'email' => 'minta_janos@kozossegek.hu']);
+        $password = (new PasswordGenerator(6))->setOpt(PasswordGenerator::OPTION_LOWER, false)->generate();
 
         $group = new GroupView();
         $group->name = 'Minta közösség';
         $group->city = 'Szeged';
 
         $user_token = $userTokens->make($user, route('portal.user.activate'));
-        $mailable = RegistrationByGroupEmailForFirstUsers::make($user, $user_token, $group);
+        $mailable = RegistrationByGroupEmailForFirstUsers::make($user, $password, $user_token, $group);
         $title = 'Csoportadatok alapján létrehozott felhasználó regisztrációs sablonja';
 
         return view('admin.email_template', compact('mailable', 'title'));

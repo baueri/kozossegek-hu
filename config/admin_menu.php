@@ -31,7 +31,7 @@ return [
         'title' => 'Közösségek',
         'icon' => 'comments',
         'as' => 'admin.group.list',
-        'similars' => ['admin.group.create'],
+        'similars' => ['admin.group.create', 'admin.group.do_create'],
         'submenu' => [
             [
                 'title' => 'Közösségek',

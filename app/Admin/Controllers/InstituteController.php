@@ -2,6 +2,7 @@
 
 namespace App\Admin\Controllers;
 
+use App\Helpers\InstituteHelper;
 use App\Repositories\Institutes;
 use App\Models\Institute;
 use Framework\Http\Request;
@@ -31,7 +32,10 @@ class InstituteController extends AdminController
 
     public function edit(Request $request, Institutes $repository)
     {
+        /* @var $institute Institute */
         $institute = $repository->find($request['id']);
+        $images = collect(builder('miserend_photos')->where('church_id', $institute->miserend_id)->get())
+            ->map(fn($row) => InstituteHelper::getMiserendImagePath($institute, $row['filename']));
 
         if (!$institute) {
             Message::danger('A keresett intézmény nem található');
@@ -41,19 +45,31 @@ class InstituteController extends AdminController
 
         $action = route('admin.institute.update', $institute);
 
-        return view('admin.institute.edit', compact('institute', 'action'));
+        return view('admin.institute.edit', compact('institute', 'action', 'images'));
     }
 
     public function update(Request $request, Institutes $repository)
     {
+        /* @var $institute Institute */
         $institute = $repository->findOrFail($request['id']);
 
         if ($imageSource = $request['image']) {
             $image = new Base64Image($imageSource);
             $image->saveImage($institute->getImageStoragePath());
+            $institute->image_url = InstituteHelper::getImageRelPath($institute->id);
         }
-//dd($request->all());
-        $institute->update($request->only('name', 'city', 'district', 'address', 'leader_name', 'approved'));
+
+        $institute->update($request->only(
+            'name',
+            'name2',
+            'city',
+            'district',
+            'address',
+            'leader_name',
+            'approved',
+            'image_url',
+            'website'
+        ));
 
         $repository->save($institute);
 

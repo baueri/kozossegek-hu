@@ -55,6 +55,6 @@ class User extends Model
 
     public function isActive()
     {
-        return $this->activated_at !== '0000-00-00 00:00:00';
+        return $this->activated_at !== '0000-00-00 00:00:00' && !is_null($this->activated_at);
     }
 }

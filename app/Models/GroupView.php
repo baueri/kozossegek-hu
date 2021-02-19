@@ -15,7 +15,13 @@ class GroupView extends Group
      * Intézmény neve
      * @var string|null
      */
-    public ?string $institute_name;
+    public $institute_name;
+
+    /**
+     * Intézmény alternatív neve
+     * @var string
+     */
+    public $institute_name2;
 
     /**
      * Intézményvezető neve
@@ -43,6 +49,14 @@ class GroupView extends Group
      */
     public ?string $district;
 
+    /**
+     * @var string
+     */
+    public $institute_image;
+
+    /**
+     * @var string|null
+     */
     private ?string $cachedUrl = null;
 
     /**
@@ -60,5 +74,17 @@ class GroupView extends Group
         $data = ['varos' => $varos, 'intezmeny' => $intezmeny, 'kozosseg' => $this->slug()];
 
         return $this->cachedUrl = get_site_url() . route('kozosseg', $data);
+    }
+
+    /**
+     * @return string
+     */
+    public function getThumbnail()
+    {
+        if ($this->image_url) {
+            return $this->image_url;
+        }
+
+        return $this->institute_image ?: '/images/default_thumbnail.jpg';
     }
 }

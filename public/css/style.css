@@ -851,7 +851,7 @@ input[name=search]::placeholder {
 .divider-before a:before {
     content: " ";
     margin-right: 16px;
-    border-left: 1px solid rgba(255, 255, 255, 0.5);
+    border-left: 1px solid rgba(255, 255, 255, 0.25);
 }
 
 @media (max-width: 991px) {

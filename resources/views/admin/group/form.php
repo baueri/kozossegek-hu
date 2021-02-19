@@ -96,7 +96,7 @@
                     <div class="form-group">
                         <label>Fényképek</label>
                         <div class="group-image">
-                            <img src="{{ $images ? $images[0] : '' }}" id="image" width="300">
+                            <img src="{{ $group->getThumbnail() }}" id="image" width="300">
                         </div>
                         <label for="image-upload" class="btn btn-primary">
                             <i class="fa fa-upload"></i> Kép feltöltése

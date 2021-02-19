@@ -127,7 +127,7 @@ class GroupTable extends AdminTable implements Editable, Deletable
 
     public function getImage($image, GroupView $group)
     {
-        $imageUrl = $group->getFirstImage() . '?' . time();
+        $imageUrl = $group->getThumbnail() . '?' . time();
         return "<img src='$imageUrl' style='max-width: 25px; height: auto;' title='<img src=\"$imageUrl\">' data-html='true'/>";
     }
 

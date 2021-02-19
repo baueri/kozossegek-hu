@@ -2,6 +2,7 @@
 
 namespace App\Portal\Controllers\Api\V1;
 
+use App\Auth\Auth;
 use Framework\Http\Request;
 use App\Repositories\Cities;
 use App\Repositories\Districts;
@@ -49,7 +50,8 @@ class SearchController
 
     public function searchInstitute(Institutes $repository)
     {
-        return new InstituteSearchResponse($repository->search($this->request['term'], $this->request['city']));
+        $response = new InstituteSearchResponse($repository->search($this->request['term'], $this->request['city']));
+        return $response->asAdmin(Auth::user()->isAdmin());
     }
 
     public function searchDistrict(Districts $repository)
