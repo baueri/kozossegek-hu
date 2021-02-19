@@ -12,16 +12,13 @@ use Framework\Support\Collection;
 
 class SetImageUrlForMissingGroups
 {
-    /**
-     * @var Groups
-     */
-    private Groups $groups;
+    private GroupViews $groups;
     /**
      * @var Institutes
      */
     private Institutes $institutes;
 
-    public function __construct(Groups $groups, Institutes $institutes)
+    public function __construct(GroupViews $groups, Institutes $institutes)
     {
         $this->groups = $groups;
         $this->institutes = $institutes;
@@ -34,13 +31,13 @@ class SetImageUrlForMissingGroups
         foreach ($groups as $group) {
             /* @var $institute Institute */
             $institute = $this->institutes->find($group->institute_id);
-            $image = preg_replace('#^http://kozossegek.local#', '', $group->getFirstImage());
+            $image = $group->getThumbnail();
 
             if ($image === '/images/default_thumbnail.jpg' && $institute->hasImage()) {
                 $image = $institute->getImageRelPath();
             }
             $group->image_url = $image;
-            $this->groups->update($group);
+            (app()->make(Groups::class))->update($group);
         }
     }
 }

@@ -162,7 +162,7 @@ class GroupViews extends Repository
     public function getGroupsWithoutUser()
     {
         $builder = $this->getBuilder()
-            ->whereRaw('user_id=0 or user_id is null')
+            ->whereRaw('(user_id=0 or user_id is null)')
             ->where('group_leaders', '<>', '')
             ->where('group_leader_email', '<>', '')
             ->apply('notDeleted');

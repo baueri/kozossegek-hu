@@ -133,5 +133,7 @@
         <route-group>
             <route method="get" uri="appearance" as="appearance" view="admin"/>
         </route-group>
+
+        <route method="get" uri="fix-images" controller="SettingsController" use="setGroupImages"/>
     </route-group>
 </routes>

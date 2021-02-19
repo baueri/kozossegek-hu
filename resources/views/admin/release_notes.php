@@ -1,5 +1,22 @@
 @title('Verzióinformáció')
 @extends('admin')
+<h3>v0.7 beta</h3>
+<ul>
+    <li>[NEW]: Miserend.hu templomok integrálása a rendszerbe
+        <ul>
+            <li>miserend.hu-ról integrált intézményeknek lehet képet választani</li>
+            <li>webcím, alternatív név megadása</li>
+        </ul>
+    </li>
+    <li>[CHANGED]: Regisztrációs email-be ideiglenes jelszó generálása (fiók aktiválásból jelszó megadás kiszedése)</li>
+    <li>[CHANGED]: Tábla indexek beállítása gyorsításhoz</li>
+    <li>[CHANGED]: Látogatói oldai átalakítások</li>
+    <li>[CHANGED]: Látogatói oldai menü elemek sorrendjének módosítása</li>
+    <li>[CHANGED]: Közösség regisztrációnál jelszó bekérése új fiók esetén</li>
+    <li>[FIXED]: html template meghívás esemény regisztrálás javítás</li>
+    <li>[FIXED]: Keretrendszer javítások, fejlesztések</li>
+    <li>[FIXED]: Közösségvezetői email küldés javítás</li>
+</ul>
 <h3>v0.6 beta</h3>
 <ul>
     <li>[NEW]: Facebook megosztási gomb a közösség adatlapján</li>

@@ -50,7 +50,7 @@ class Institutes extends Repository
         $builder = $this->getBuilder()->whereNull('deleted_at');
 
         if ($city = $filter['city']) {
-            $builder->where('city', $city);
+            $builder->select('institutes.*')->where('city', $city);
         }
 
         if ($name = $filter['search']) {
