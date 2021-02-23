@@ -71,6 +71,7 @@ class ListGroups
     public function show()
     {
         $age_groups = $this->AgeGroups->all();
+
         $occasion_frequencies = $this->OccasionFrequencies->all();
         $statuses = (new GroupStatusRepository())->all();
 

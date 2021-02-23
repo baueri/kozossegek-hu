@@ -65,7 +65,6 @@ class GroupViews extends Repository
 
         if ($korosztaly = $filter['korosztaly']) {
             $builder->apply('whereAgeGroup', $korosztaly);
-            // $builder->whereInSet('age_group', $korosztaly);
         }
 
         if ($rendszeresseg = $filter['rendszeresseg']) {

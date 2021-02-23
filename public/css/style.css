@@ -479,6 +479,7 @@ input[name=search]::placeholder {
 
 .img-big {
     transition: ease-in opacity .2s;
+    width: 100%;
 }
 
 .img-sm {

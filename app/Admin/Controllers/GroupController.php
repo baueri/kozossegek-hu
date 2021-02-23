@@ -9,6 +9,7 @@ use App\Admin\Group\Services\EditGroup;
 use App\Admin\Group\Services\ListGroups;
 use App\Admin\Group\Services\UpdateGroup;
 use App\Admin\Group\Services\ValidateGroupForm;
+use App\Exception\EmailTakenException;
 use App\Http\Exception\RequestParameterException;
 use App\Mail\GroupAcceptedEmail;
 use App\Mail\DefaultMailable;
@@ -48,7 +49,7 @@ class GroupController extends AdminController
     /**
      * @param ListGroups $service
      * @return string
-     * @throws ReflectionException
+     * @throws Exception
      */
     public function list(ListGroups $service)
     {

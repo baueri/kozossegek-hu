@@ -329,7 +329,7 @@ function process_error($e)
         $errorEmail = new CriticalErrorEmail($e);
         (new Mailer())->to(config('app.error_email'))->send($errorEmail);
     } else {
-        dd($e);
+        dd($e, request()->all(), request()->route);
     }
 }
 

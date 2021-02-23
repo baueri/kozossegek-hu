@@ -43,7 +43,7 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
     public $route;
 
     /**
-     * @var []
+     * @var array
      */
     protected $uriValues;
 
@@ -74,7 +74,7 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
     }
 
     /**
-     * @return []
+     * @return array
      */
     public function getUriValues()
     {
