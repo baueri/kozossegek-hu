@@ -3,6 +3,7 @@
 namespace Framework\Database;
 
 use Framework\Http\Request;
+use Framework\Support\DataSet;
 use InvalidArgumentException;
 
 class Builder
@@ -70,12 +71,21 @@ class Builder
         $oldSelectBindings = $this->selectBindings;
         $this->selectBindings = [];
 
+        $oldOrders = $this->orderBy;
+        $this->orderBy = [];
+
         $this->select = ['count(*) as cnt'];
 
-        $count = $this->db->first(...$this->getBaseSelect())['cnt'];
+        if ($this->groupBy) {
+            $results = $this->db->select(...$this->getBaseSelect());
+            $count = count($results);
+        } else {
+            $count = $this->db->first(...$this->getBaseSelect())['cnt'];
+        }
 
         $this->select = $oldSelect;
         $this->selectBindings = $oldSelectBindings;
+        $this->orderBy = $oldOrders;
 
         return (int) $count;
     }

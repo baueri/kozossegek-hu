@@ -1,9 +1,7 @@
 <?php
 
-
 namespace App;
 
-use App\Admin\Components\DebugBar\ErrorTab;
 use App\Middleware\DebugBarMiddleware;
 use App\Middleware\ListenViewLoading;
 use Framework\Middleware\BaseAuthMiddleware;
@@ -33,7 +31,7 @@ class HttpKernel extends \Framework\Http\HttpKernel
 
     public function handleError($error)
     {
-        if ($error->getCode() != '404' && is_prod()) {
+        if ($error->getCode() != '404') {
             $mail = (new CriticalErrorEmail($error));
 
             $mail->build();
