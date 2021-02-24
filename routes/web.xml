@@ -4,7 +4,7 @@
         <middleware name="App\Middleware\ComingSoon"/>
         <route method="get" uri="test" as="test" controller="TestController" use="test"/>
 
-        <route method="get" uri="" as="home" controller="HomeController" use="home"/>
+        <route method="all" uri="" as="home" controller="HomeController" use="home"/>
 
 
         <route method="all" uri="kozossegek" as="portal.groups" controller="GroupController" use="kozossegek"/>
@@ -25,7 +25,6 @@
         <route method="get" uri="forgot-password" as="portal.forgot_password" view="portal.forgot-password"/>
         <route method="post" uri="reset-password" as="portal.reset_password" controller="UserController" use="resetPassword"/>
         <route method="all" uri="recover-password" as="portal.recover_password" controller="UserController" use="recoverPassword"/>
-        <route method="all" uri="/user/activate" as="portal.user.activate" controller="UserController" use="activateUser"/>
 
         <route-group middleware="App\Middleware\LoggedInMiddleware">
             <route method="get" uri="profile" as="portal.my_profile" controller="UserController" use="profile"/>
@@ -44,6 +43,7 @@
         <route method="post" uri="create-group" as="portal.my_group.create" controller="GroupController" use="createGroup"/>
     </route-group>
 
+    <route method="all" uri="/user/activate" as="portal.user.activate" controller="App\Portal\Controllers\UserController" use="activateUser"/>
     <route method="post" uri="login-modal" as="portal.login_modal" view="portal.partials.login_modal"/>
 
     <!-- BELÉPÉS -->

@@ -188,7 +188,7 @@
                             <h3 class="h4 mt-3 mb-0">Fotó a közösségről</h3>
                             <p><small>(Ha ezt nem adod meg, akkor az intézmény fotója jelenik meg)</small><br/></p>
                             <div class="group-image">
-                                <img src="{{ $group->getThumbnail() . '?' . time() : '' }}" id="image" width="300">
+                                <img src="{{ $group->getThumbnail() . '?' . time() }}" id="image" width="300">
                             </div>
                             <label for="image-upload" class="btn btn-primary">
                                 <i class="fa fa-upload"></i> Kép feltöltése

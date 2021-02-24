@@ -65,7 +65,6 @@ class GroupViews extends Repository
 
         if ($korosztaly = $filter['korosztaly']) {
             $builder->apply('whereAgeGroup', $korosztaly);
-            // $builder->whereInSet('age_group', $korosztaly);
         }
 
         if ($rendszeresseg = $filter['rendszeresseg']) {
@@ -162,7 +161,7 @@ class GroupViews extends Repository
     public function getGroupsWithoutUser()
     {
         $builder = $this->getBuilder()
-            ->whereRaw('user_id=0 or user_id is null')
+            ->whereRaw('(user_id=0 or user_id is null)')
             ->where('group_leaders', '<>', '')
             ->where('group_leader_email', '<>', '')
             ->apply('notDeleted');

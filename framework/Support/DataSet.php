@@ -133,4 +133,18 @@ class DataSet
 
         return $item;
     }
+
+    public static function sum(array $results, string $column = null)
+    {
+        if (is_numeric(DataSet::first($results))) {
+            return array_sum($results);
+        }
+
+        return static::sum(static::pluck($results, $column));
+    }
+
+    private static function first(array $results)
+    {
+        return $results[key($results)];
+    }
 }

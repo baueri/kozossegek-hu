@@ -47,10 +47,13 @@ class Institutes extends Repository
 
     public function getInstitutesForAdmin($filter = [])
     {
-        $builder = $this->getBuilder()->whereNull('deleted_at');
+        $builder = $this->getBuilder()->whereNull('institutes.deleted_at')
+            ->select('institutes.*, count(church_groups.id) as cnt')
+            ->leftJoin('church_groups', 'institutes.id = church_groups.institute_id')
+            ->groupBy('institutes.id');
 
         if ($city = $filter['city']) {
-            $builder->where('city', $city);
+            $builder->addSelect('institutes.*')->where('city', $city);
         }
 
         if ($name = $filter['search']) {
@@ -60,12 +63,12 @@ class Institutes extends Repository
         if ($filter['sort']) {
             $orderBy = $filter['order_by'] ?: self::getPrimaryCol();
             if ($orderBy == 'group_count') {
-                //todo
+                $builder->orderBy('count(church_groups.id)', $filter['sort']);
             } else {
                 $builder->orderBy($orderBy, $filter['sort']);
             }
         } else {
-            $builder->orderBy('id', 'desc');
+            $builder->orderBy('institutes.id', 'desc');
         }
 
         return $this->getInstances($builder->paginate(30));
