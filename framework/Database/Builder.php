@@ -3,13 +3,11 @@
 namespace Framework\Database;
 
 use Framework\Http\Request;
+use Framework\Support\DataSet;
 use InvalidArgumentException;
 
 class Builder
 {
-    /**
-     * @var Database
-     */
     private Database $db;
 
     private array $select = [];
@@ -18,7 +16,11 @@ class Builder
 
     private array $where = [];
 
+    private array $join = [];
+
     private array $orderBy = [];
+
+    private array $groupBy = [];
 
     private string $limit = '';
 
@@ -69,12 +71,21 @@ class Builder
         $oldSelectBindings = $this->selectBindings;
         $this->selectBindings = [];
 
+        $oldOrders = $this->orderBy;
+        $this->orderBy = [];
+
         $this->select = ['count(*) as cnt'];
 
-        $count = $this->db->first(...$this->getBaseSelect())['cnt'];
+        if ($this->groupBy) {
+            $results = $this->db->select(...$this->getBaseSelect());
+            $count = count($results);
+        } else {
+            $count = $this->db->first(...$this->getBaseSelect())['cnt'];
+        }
 
         $this->select = $oldSelect;
         $this->selectBindings = $oldSelectBindings;
+        $this->orderBy = $oldOrders;
 
         return (int) $count;
     }
@@ -101,8 +112,16 @@ class Builder
 
         $query = '';
 
+        if ($this->join) {
+            $query .= ' ' . implode(' ', $this->join);
+        }
+
         if ($this->where) {
             $query .= ' where ' . $this->buildWhere($bindings);
+        }
+
+        if ($this->groupBy) {
+            $query .= ' group by ' . implode(', ', $this->groupBy);
         }
 
         if ($this->orderBy) {
@@ -199,6 +218,12 @@ class Builder
             $this->orderBy[] = $column . ($order ? ' ' . $order : '');
         }
 
+        return $this;
+    }
+
+    public function groupBy($groupBy)
+    {
+        $this->groupBy[] = $groupBy;
         return $this;
     }
 
@@ -302,6 +327,32 @@ class Builder
         return $this->whereInSet($column, $value, 'or');
     }
 
+    public function join(string $table, string $on, string $joinMode = '')
+    {
+        return $this->joinRaw("{$joinMode} join {$table} on {$on}");
+    }
+
+    public function leftJoin(string $table, string $on)
+    {
+        return $this->join($table, $on, 'left');
+    }
+
+    public function rightJoin(string $table, string $on)
+    {
+        return $this->join($table, $on, 'right');
+    }
+
+    public function innerJoin(string $table, string $on)
+    {
+        return $this->join($table, $on, 'inner');
+    }
+
+    public function joinRaw(string $join)
+    {
+        $this->join[] = $join;
+        return $this;
+    }
+
     public function orderByFromRequest()
     {
         return $this->orderBy(request()->get('order_by', 'id'), request()->get('sort', 'desc'));
@@ -316,7 +367,7 @@ class Builder
         [$query, $bindings] = $this->build();
         $table = implode(', ', $this->table);
         $allBindings = array_merge(array_values($values), $bindings);
-        return $this->db->update("update $table set $set, $query", ...$allBindings);
+        return $this->db->update("update {$table} set {$set}, {$query}", ...$allBindings);
     }
 
     public function insert(array $values)

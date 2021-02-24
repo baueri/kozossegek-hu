@@ -92,27 +92,27 @@
     @if($similar_groups)
         <h5 class="mt-4" style="border-bottom: 1px solid;margin-bottom: 1em;padding-bottom: 0.3em;">Hasonló közösségek</h5>
         <div class="row" id="kozossegek-list">
-            @foreach($similar_groups as $i => $group)
+            @foreach($similar_groups as $i => $similarGroup)
             <div class="col-md-3 mb-3">
                 <div class="card kozi-box h-100 p-0">
-                    <a href="{{ $group->url() }}" style="background: url({{ $group->getThumbnail() }}) no-repeat bottom 0 center;background-size: cover; height: 185px" class="card-img">
+                    <a href="{{ $similarGroup->url() }}" style="background: url({{ $similarGroup->getThumbnail() }}) no-repeat bottom 0 center;background-size: cover; height: 185px" class="card-img">
                         <div>megnézem</div>
                     </a>
                     <div class="card-body">
                         <p class="text-center">
-                            @foreach($group->tags as $tag)
+                            @foreach($similarGroup->tags as $tag)
                                 <span class="tag-img" title="{{ $tag['tag_name'] }}" style="background: url('/images/tag/{{ $tag['tag'] }}.png'); background-size: cover;"></span>
                             @endforeach
                         </p>
-                        <div>{{ $group->name }}</div>
+                        <div>{{ $similarGroup->name }}</div>
                         <div class="city">
-                            {{ $group->city . ($group->district ? ', ' . $group->district : '')  }}
+                            {{ $similarGroup->city . ($similarGroup->district ? ', ' . $similarGroup->district : '')  }}
                         </div>
                         <p class="card-text mb-0">
-                            <strong>korosztály:</strong> <span>{{ $group->ageGroup() }}</span><br>
-                            <strong>alkalmak:</strong> <span>{{ $group->occasionFrequency() }}</span><br>
+                            <strong>korosztály:</strong> <span>{{ $similarGroup->ageGroup() }}</span><br>
+                            <strong>alkalmak:</strong> <span>{{ $similarGroup->occasionFrequency() }}</span><br>
                         </p>
-                        <a href="{{ $group->url() }}" class="btn btn-outline-success btn-sm kozi-more-info">Megnézem</a>
+                        <a href="{{ $similarGroup->url() }}" class="btn btn-outline-success btn-sm kozi-more-info">Megnézem</a>
                     </div>
                 </div>
             </div>

@@ -117,9 +117,12 @@ class InstituteAdminTable extends AdminTable implements Deletable, Editable
         return static::excerpt($address);
     }
 
-    public function getGroupCount($count)
+    public function getGroupCount($count, Institute $institute)
     {
-        return $count ?: 0;
+        $count = $count ?: 0;
+        $url = route('admin.group.list', ['institute_id' => $institute->id]);
+
+        return "<a href='$url' title='közösségek mutatása'>{$count}</a>";
     }
 
     private function getNumberOfGroups(Collection $institutes)
