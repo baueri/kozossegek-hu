@@ -75,7 +75,7 @@ class UserController
 
         $user = $users->getUserByEmail($token->email);
 
-        if ($request->postRequestSent()) {
+        if ($request->isPostRequestSent()) {
             $ok = $service->changePassword($user, $request->only('new_password', 'new_password_again'));
             if ($ok) {
                 $userTokens->delete($token);

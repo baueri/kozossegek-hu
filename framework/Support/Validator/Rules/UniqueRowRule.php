@@ -53,6 +53,6 @@ class UniqueRowRule implements Rule
             $errors["taken_value"] = lang_f('errors.taken_input', $field);
         }
 
-        return $exists;
+        return !$exists;
     }
 }

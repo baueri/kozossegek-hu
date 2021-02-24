@@ -44,7 +44,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
     @endif
     <div class="step-container">
@@ -118,7 +117,7 @@
             <div class="col-md-4">
                 <div class="form-group required">
                     <label for="occasion_frequency">Alkalmak gyakorisága</label>
-                    @occasion_frequency_selector($group->occasion_frequency)
+                    @occasion_frequency_selector($group->occasion_frequency ?: 'hetente')
                 </div>
             </div>
             <div class="col-md-4">

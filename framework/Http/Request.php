@@ -136,7 +136,7 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
         $this->request->offsetUnset($offset);
     }
 
-    public function postRequestSent()
+    public function isPostRequestSent()
     {
         return $_SERVER['REQUEST_METHOD'] == 'POST';
     }

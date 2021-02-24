@@ -26,6 +26,6 @@ class CriticalErrorEmail extends Mailable
     public function build()
     {
         $this->with(['exception' => $this->exception, 'request' => $this->request])
-            ->subject('kozossegek.hu HIBA: ' . $this->exception->getMessage());
+            ->subject(get_site_url() . ' HIBA: ' . $this->exception->getMessage());
     }
 }

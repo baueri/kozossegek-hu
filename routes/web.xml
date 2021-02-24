@@ -6,6 +6,7 @@
 
         <route method="all" uri="" as="home" controller="HomeController" use="home"/>
 
+        <route method="all" uri="regisztracio" controller="LoginController" use="register" as="portal.register"/>
 
         <route method="all" uri="kozossegek" as="portal.groups" controller="GroupController" use="kozossegek"/>
         <route method="all" uri="kozosseg-regisztracio" as="portal.register_group" controller="GroupController" use="kozossegRegisztracio"/>
