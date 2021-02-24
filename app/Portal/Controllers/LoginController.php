@@ -4,7 +4,11 @@ namespace App\Portal\Controllers;
 
 use App\Auth\Auth;
 use App\Auth\Authenticate;
+use App\Exception\EmailTakenException;
+use App\Helpers\HoneyPot;
+use App\Http\Validators\UserRegisterValidator;
 use App\Mail\RegistrationEmail;
+use App\Portal\Services\CreateUser;
 use App\Repositories\Users;
 use App\Repositories\UserTokens;
 use Exception;
@@ -13,7 +17,9 @@ use Framework\Http\Cookie;
 use Framework\Http\Request;
 use Framework\Http\Message;
 use Framework\Http\Session;
+use Framework\Mail\Mailable;
 use Framework\Mail\Mailer;
+use Framework\Support\Validator;
 
 class LoginController extends Controller
 {
@@ -67,6 +73,36 @@ class LoginController extends Controller
         redirect_route('login');
     }
 
+    public function register(Request $request, CreateUser $service, UserTokens $tokens, Mailer $mailer, UserRegisterValidator $validator)
+    {
+        use_default_header_bg();
+
+        $model = [
+            'name' => $request['name'],
+            'email' => $request['email'],
+        ];
+        try {
+            if ($request->isPostRequestSent()) {
+                if (!$request['password'] || $request['password'] !== $request['password_again']) {
+                    Message::danger('A két jelszó nem egyezik!');
+                } else {
+                    $user = $service->create($request->collect());
+                    if ($user) {
+                        $token = $tokens->createActivationToken($user);
+                        $message = new RegistrationEmail($user, $token);
+                        $mailer->to($request['email'])->send($message);
+                        Message::success('Sikeres regisztráció! Az aktiváló linket elküldtük az email címedre.');
+                        redirect_route('login');
+                    }
+                }
+            }
+            return view('portal.register', $model);
+        } catch (EmailTakenException $e) {
+            Message::danger('Ez az email cím már foglalt!');
+            return view('portal.register', $model);
+        }
+    }
+
     /**
      * @param Request $request
      * @param Mailer $mailer
@@ -88,7 +124,7 @@ class LoginController extends Controller
             return api()->error('Ez a felhasználó korábban már aktiválva lett!');
         }
 
-        $token = $userTokens->createUserToken($user, route('portal.user.activate'));
+        $token = $userTokens->createActivationToken($user);
         $mailable = new RegistrationEmail($user, $token);
 
         $ok = $mailer->to($user->email)->send($mailable);

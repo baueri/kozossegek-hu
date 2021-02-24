@@ -143,7 +143,7 @@ class DataSet
         return static::sum(static::pluck($results, $column));
     }
 
-    private static function first(array $results)
+    public static function first(array $results)
     {
         return $results[key($results)];
     }

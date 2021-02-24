@@ -73,7 +73,7 @@ class CreateUserFromGroup
 
             $user = $this->userRepository->create($userData);
 
-            $token = $this->userTokenRepository->createUserToken($user, route('portal.user.activate'));
+            $token = $this->userTokenRepository->createActivationToken($user);
 
             $groupView = app()->make(GroupViews::class)->find($group->id);
 

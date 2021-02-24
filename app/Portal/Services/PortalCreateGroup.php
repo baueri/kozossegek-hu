@@ -84,7 +84,7 @@ class PortalCreateGroup
                 'password' => $requestData['password']
             ]));
 
-            $userToken = $this->userTokens->createUserToken($user, route('portal.user.activate'));
+            $userToken = $this->userTokens->createActivationToken($user);
 
             $mailable = new NewGroupEmail($user);
             $mailable->withNewUserMessage($userToken);

@@ -1,6 +1,5 @@
 <?php
 
-use App\Helpers\HoneyPot;
 use App\Http\Components\FacebookShareButton;
 use App\Http\Components\FeaturedTitle;
 use App\Http\Components\FontawesomeIcon;
@@ -70,7 +69,7 @@ return [
             $file = str_replace("'", "", $matches[1]);
             return "/storage/uploads/$file";
         },
-        'message' => function ($matches) {
+        'message' => function () {
             return "<?php echo view('admin.partials.message') ?>";
         },
         'honeypot' => function () {

@@ -46,7 +46,7 @@ class UserController extends AdminController
         /* @var $user User */
         $user = $repository->create($data);
 
-        $passwordReset = $passwordResetRepository->createUserToken($user, route('portal.user.activate'));
+        $passwordReset = $passwordResetRepository->createActivationToken($user);
 
         $mailable = RegistrationEmail::make($user, $passwordReset);
 

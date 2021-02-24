@@ -32,6 +32,11 @@ class UserTokens extends Repository
         return $instance;
     }
 
+    public function createActivationToken(User $user)
+    {
+        return $this->createUserToken($user, route('portal.user.activate'));
+    }
+
     /**
      * @param User $user
      * @param string $page

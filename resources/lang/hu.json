@@ -25,5 +25,9 @@
     "day.csut": "csütörtök",
     "day.pe": "péntek",
     "day.szo": "szombat",
-    "day.vas": "vasárnap"
+    "day.vas": "vasárnap",
+
+    "errors.field_is_required": "Kötelező mező",
+    "errors.taken_input": "Létező",
+    "errors.password_mismatch": "A két jelszó nem egyezik!"
 }

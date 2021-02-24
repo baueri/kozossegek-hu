@@ -33,7 +33,7 @@
                         <li class="nav-item">
                             <a href="@route('portal.my_groups')" class="nav-link">Közösségeim</a>
                         </li>
-                        @admin('')
+                        @admin()
                             <li class="nav-item">
                                 <a href="@route('admin.dashboard')" class="nav-link">@icon('cog') Admin</a>
                             </li>
@@ -45,10 +45,19 @@
                 </li>
             @else
                 <li class="nav-item">
-                    <a href="@route('login')" class="nav-link">
+                    <a href="@route('login')" class="nav-link d-none d-lg-block">
                         <i class="far fa-user-circle" style="font-size: 18px;"></i>
-                        <span class="d-lg-none d-inline-block">Belépés</span>
                     </a>
+                    <ul class="submenu">
+                        <li class="nav-item">
+                            <a href="@route('login')" class="nav-link">
+                                Belépés
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@route('portal.register')" class="nav-link">Regisztráció</a>
+                        </li>
+                    </ul>
                 </li>
             @endauth
             <li class="nav-item divider-before">
