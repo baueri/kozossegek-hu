@@ -20,6 +20,11 @@ class Section
         static::$sections[$name][] = $content;
     }
 
+    public static function set($name, $content)
+    {
+        static::$sections[$name] = [$content];
+    }
+
     /**
      * @param string $name
      * @param array $args
