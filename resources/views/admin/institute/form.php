@@ -4,44 +4,79 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.css"/>
 @endsection
 @extends('admin')
-<form method="post" id="institute-form" class="row" action="{{ $action }}">
-    <div class="col-md-4">
-        <div class="form-group">
-            <label>Intézmény / plébánia neve</label>
-            <input type="text" name="name" class="form-control" value="{{ $institute->name }}">
+<form method="post" id="institute-form" action="{{ $action }}">
+    @if($institute->isFromMiserend())
+        @alert('warning')
+            <b>Ez az intézmény a miserend.hu adatbázisból lett importálva.</b>
+        @endalert
+    @endif
+    <div class="form-group">
+        <label>Jóváhagyva</label>
+        <div class="switch yesno" style="width:100px;">
+            <input type="radio" id="approved-0" name="approved" value="1" @if($institute->approved) checked @endif>
+            <input type="radio" id="approved-1" name="approved" value="0" @if(!$institute->approved) checked @endif>
+            <label for="approved-1">igen</label>
+            <label for="approved-0">nem</label>
         </div>
-        <div class="form-group">
-            <label>Település</label>
-            <select name="city" class="form-control">
-                <option value="{{ $institute->city }}">{{ $institute->city }}</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label>Városrész</label>
-            <select name="district" class="form-control">
-                <option value="{{ $institute->district }}">{{ $institute->district }}</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label>Cím</label>
-            <input type="text" name="address" class="form-control" value="{{ $institute->address }}">
-        </div>
-        <div class="form-group">
-            <label>Intézményvezető / plébános neve</label>
-            <input type="text" name="leader_name" class="form-control" value="{{ $institute->leader_name }}">
-        </div>
-
-        <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Mentés</button>
     </div>
-    <div class="col-md-6">
-        <div class="form-group">
-            <label>Fénykép</label>
-            <div class="institute-image">
-                <img src="{{ $institute->hasImage() ? $institute->getImageRelPath() : '' }}" id="image" width="300">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label>Intézmény / plébánia neve</label>
+                <input type="text" name="name" class="form-control" value="{{ $institute->name }}">
             </div>
-            <input type="file" onchange="loadFile(event, this);" data-target="temp-image">
-            <div style="display: none"/><img id="temp-image" /></div>
-            <input type="hidden" name="image">
+            <div class="form-group">
+                <label>Alternatív név</label>
+                <input type="text" name="name2" class="form-control" value="{{ $institute->name2 }}">
+            </div>
+            <div class="form-group">
+                <label>Település</label>
+                <select name="city" class="form-control">
+                    <option value="{{ $institute->city }}">{{ $institute->city }}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Városrész</label>
+                <select name="district" class="form-control">
+                    <option value="{{ $institute->district }}">{{ $institute->district }}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Cím</label>
+                <input type="text" name="address" class="form-control" value="{{ $institute->address }}">
+            </div>
+            <div class="form-group">
+                <label>Intézményvezető / plébános neve</label>
+                <input type="text" name="leader_name" class="form-control" value="{{ $institute->leader_name }}">
+            </div>
+            <div class="form-group">
+                <label>Weboldal</label>
+                <input type="text" name="website" class="form-control" value="{{ $institute->website }}">
+            </div>
+
+            <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Mentés</button>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Fénykép</label>
+                <div class="institute-image">
+                    <img src="{{ $institute->hasImage() ? $institute->getImageRelPath() . '?' . time() : '' }}" id="image" width="300">
+                </div>
+                <input type="file" onchange="loadFile(event, this);" data-target="temp-image">
+                <div style="display: none"><img id="temp-image" /></div>
+                <input type="hidden" name="image">
+            </div>
+            <div class="form-group" id="chosable_images">
+                @if($images)
+                    <h4>Kép választása (miserend.hu-ról)</h4>
+                    @foreach($images as $i => $chosable)
+                    <input type="radio" name="image_url" value="{{ $chosable }}" id="{{ 'chosable_img_' . $i }}" @if($chosable === $institute->image_url) checked @endif style="display:none"/>
+                    <label for="{{ 'chosable_img_' . $i }}">
+                        <img src="{{ $chosable }}" style="width: 150px; height: auto"/>
+                    </label>
+                    @endforeach
+                @endif
+            </div>
         </div>
     </div>
 </form>

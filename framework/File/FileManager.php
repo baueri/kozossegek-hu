@@ -3,6 +3,7 @@
 namespace Framework\File;
 
 use Exception;
+use Framework\Exception\FileTypeNotAllowedException;
 use Framework\File\Enums\FileType;
 
 class FileManager
@@ -15,7 +16,9 @@ class FileManager
         'application/msword',
         'application/vnd.oasis.opendocument.text',
         'application/octet-stream',
-        'application/wps-office.doc'
+        'application/wps-office.doc',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.template'
     ];
 
     const TYPES_EXCEL = [
@@ -46,7 +49,7 @@ class FileManager
      * @var array
      */
     protected $enabledTypes = [];
-    
+
     /**
      * @var bool
      */
@@ -59,7 +62,7 @@ class FileManager
     public function __construct($rootPath = '', array $enabledTypes = ['*'])
     {
         $this->rootPath = static::addDirectorySeparator($rootPath);
-        
+
         $this->setEnabledTypes($enabledTypes);
     }
 
@@ -67,22 +70,32 @@ class FileManager
      * Upload a file to the server
      *
      * @param array $fileData
-     * @param string $fileName
+     * @param null $fileName
+     * @param string $subDir
      * @return File
      * @throws Exception
      */
-    public function uploadFile(array $fileData, $fileName = null, $subDir = '')
+    public function uploadFileByFileData(array $fileData, $fileName = null, $subDir = '')
     {
         $file = new File($fileData['tmp_name']);
-        $file->setFileName($fileName ?: $fileData['name']);
+
+        return $this->uploadFile($file, $fileName ?: $fileData['name'], $subDir);
+    }
+
+    public function uploadFile(File $file, $fileName = '', $subDir = '')
+    {
         if ($this->createFolderIfMissing) {
             $this->createFolder($subDir);
         }
-        
-        if (!$this->fileTypeEnabled($fileData['type'])) {
-            throw new Exception('File Type not allowed');
+
+        if ($fileName) {
+            $file->setFileName($fileName);
         }
-        
+
+        if (!$this->fileTypeEnabled($file->getFileType())) {
+            throw new FileTypeNotAllowedException();
+        }
+
         return $file->move($this->rootPath . $subDir);
     }
 
@@ -95,13 +108,13 @@ class FileManager
         if ($this->folderExists($folderName)) {
             return true;
         }
-        
+
         $ok = mkdir(rtrim($this->rootPath . $folderName, '/'), 0777, true);
-        
+
         if (!$ok) {
             $error = error_get_last();
         }
-        
+
         return $ok;
     }
 
@@ -156,17 +169,17 @@ class FileManager
         return $this->rootPath;
     }
 
-    
+
     public function getDirName()
     {
         return basename($this->rootPath);
     }
-    
+
     public function createSymLink($link)
     {
         return symlink($this->rootPath, $link);
     }
-    
+
     /**
      * @return File[]
      */

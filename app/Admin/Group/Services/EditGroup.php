@@ -9,10 +9,11 @@ use App\Models\Group;
  *
  * @author ivan
  */
-class EditGroup extends BaseGroupForm {
+class EditGroup extends BaseGroupForm
+{
 
-    protected function getAction(Group $group) {
+    protected function getAction(Group $group)
+    {
         return route('admin.group.update', ['id' => $group->id]);
     }
-
 }

@@ -1,26 +1,23 @@
 <?php
 
-
 namespace App\Admin\Page;
-
 
 use App\Admin\Components\AdminTable\AdminTable;
 use App\Admin\Components\AdminTable\Deletable;
 use App\Admin\Components\AdminTable\Editable;
-use App\Models\Page;
 use App\Models\PageStatus;
+use App\Repositories\AdminPageRepository;
 use App\Repositories\PageRepository;
+use App\Repositories\Users;
 use Framework\Database\PaginatedResultSetInterface;
 use Framework\Http\Request;
-use App\Repositories\Users;
-use App\Repositories\AdminPageRepository;
 
 class PageTable extends AdminTable implements Deletable, Editable
 {
     /**
-     * @var PageRepository
+     * @var AdminPageRepository
      */
-    private $repository;
+    private AdminPageRepository $repository;
 
     /**
      * @var Users
@@ -69,7 +66,7 @@ class PageTable extends AdminTable implements Deletable, Editable
 
     protected function getData(): PaginatedResultSetInterface
     {
-        $filter = $this->request;
+        $filter = $this->request->collect();
         if ($this->request->route->getAs() == 'admin.page.trash') {
             $filter['deleted'] = true;
         }
@@ -85,12 +82,12 @@ class PageTable extends AdminTable implements Deletable, Editable
 
     public function getDeleteUrl($model): string
     {
-        return route('admin.page.delete', ['id' => $model->id]);
+        return route('admin.page.delete', $model);
     }
 
     public function getEditUrl($model): string
     {
-        return route('admin.page.edit', ['id' => $model->id]);
+        return route('admin.page.edit', $model);
     }
 
     public function getEditColumn(): string

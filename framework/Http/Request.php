@@ -1,12 +1,12 @@
 <?php
 
-
 namespace Framework\Http;
 
-
+use App\Http\Exception\RequestParameterException;
 use ArrayAccess;
 use Countable;
 use Framework\Support\Collection;
+use InvalidArgumentException;
 use IteratorAggregate;
 
 /**
@@ -43,14 +43,14 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
     public $route;
 
     /**
-     * @var []
+     * @var array
      */
     protected $uriValues;
 
     public function __construct()
     {
 
-        $this->request = (new Collection($_REQUEST))->each(function($item, $key, $collection){
+        $this->request = (new Collection($_REQUEST))->each(function ($item, $key, $collection) {
             if ($item == "true" || $item == "false") {
                 $collection[$key] = filter_var($item, FILTER_VALIDATE_BOOLEAN);
             }
@@ -60,7 +60,7 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
 
         $this->requestMethod = $_SERVER['REQUEST_METHOD'];
 
-        $this->uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        $this->uri = urldecode(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
     }
 
     /**
@@ -74,12 +74,11 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
     }
 
     /**
-     * @return []
+     * @return array
      */
     public function getUriValues()
     {
         if (is_null($this->uriValues)) {
-
             $uriParts = explode('/', trim($this->uri, '/'));
             $uriParts2 = explode('/', trim($this->route->getUriMask(), '/'));
             $this->uriValues = [];
@@ -92,7 +91,6 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
         }
 
         return $this->uriValues;
-
     }
 
     /**
@@ -137,9 +135,32 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
     {
         $this->request->offsetUnset($offset);
     }
-    
-    public function postRequestSent()
+
+    public function isPostRequestSent()
     {
         return $_SERVER['REQUEST_METHOD'] == 'POST';
+    }
+
+    public function collect()
+    {
+        return $this->request->collect();
+    }
+
+    public function stripTags()
+    {
+        foreach ($this->request as $key => $value) {
+            $this->request[$key] = strip_tags($value);
+        }
+
+        return $this;
+    }
+
+    public function validate(...$requestParams)
+    {
+        foreach ($requestParams as $requestParam) {
+            if (!$this->request[$requestParam]) {
+                throw new RequestParameterException('Missing request value');
+            }
+        }
     }
 }

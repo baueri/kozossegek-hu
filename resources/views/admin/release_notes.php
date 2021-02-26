@@ -1,9 +1,108 @@
 @title('Verzióinformáció')
 @extends('admin')
+<h3>v1.0</h3>
+<ul>
+    <li>[NEW]: Sima fiók regisztráció</li>
+    <li>[CHANGED]: Csoport létrehozása űrlapon a gyakoriság alapértelmezetten "hetente"</li>
+    <li>[CHANGED]: Admin felhasználók listázás átalakítása</li>
+    <li>[CHANGED]: Részletesebb hibaüzenetek küldése emailben</li>
+</ul>
+<h3>v0.7 beta</h3>
+<ul>
+    <li>[NEW]: Miserend.hu templomok integrálása a rendszerbe
+        <ul>
+            <li>miserend.hu-ról integrált intézményeknek lehet képet választani</li>
+            <li>webcím, alternatív név megadása</li>
+        </ul>
+    </li>
+    <li>[CHANGED]: Regisztrációs email-be ideiglenes jelszó generálása (fiók aktiválásból jelszó megadás kiszedése)</li>
+    <li>[CHANGED]: Tábla indexek beállítása gyorsításhoz</li>
+    <li>[CHANGED]: Látogatói oldai átalakítások</li>
+    <li>[CHANGED]: Látogatói oldai menü elemek sorrendjének módosítása</li>
+    <li>[CHANGED]: Közösség regisztrációnál jelszó bekérése új fiók esetén</li>
+    <li>[FIXED]: html template meghívás esemény regisztrálás javítás</li>
+    <li>[FIXED]: Keretrendszer javítások, fejlesztések</li>
+    <li>[FIXED]: Közösségvezetői email küldés javítás</li>
+</ul>
+<h3>v0.6 beta</h3>
+<ul>
+    <li>[NEW]: Facebook megosztási gomb a közösség adatlapján</li>
+    <li>[NEW]: Közösség adatlapján a csatlakozás módja is ki van íratva</li>
+    <li>[NEW]: Új kisközösség kialakítása aloldal, hozzá az almenü az "A közösségről" alá</li>
+    <li>
+        [NEW]: SEO optimalizálások
+        <ul>
+            <li>sitemap.xml és robots.txt bekötése</li>
+            <li>meta tag-ek beszúrása aloldalakra és közösségi adatlapokra</li>
+        </ul>
+    </li>
+    <li>[NEW]: Admin oldalon közösségek listázásánál sordbarendezési lehetőségek</li>
+    <li>[NEW]: Közösség és intézmény képfeltöltésnél kártékony kód ellenőrzés</li>
+    <li>[CHANGED]: Közösség adatlap elrendezés módosítása</li>
+    <li>[FIXED]: Template directive felismerés javítása</li>
+</ul>
+<h3>V0.5 beta</h3>
+<ul>
+    <li>[NEW]: Közösség regisztrációs oldalon bejelentkzési lehetőség</li>
+    <li>[NEW]: Fiók törlése gomb + funkció látogatiói oldalon</li>
+    <li>[NEW]: Törölt oldal visszaállítása</li>
+    <li>[NEW]: Belépésnél request paraméterben megadható, hogy sikeres belépés után hova irányítson át az oldal</li>
+    <li>[NEW]: Adminisztrációs oldalon figyelmeztető szövegek törölt sorok (közösségek, oldalak) szerkesztő oldalán</li>
+    <li>[CHANGED]: Fiók törlésekor a hozzá tartozó közösség(ek) törlése.</li>
+    <li>[CHANGED]: Sikeres fiókaktiválás után automatikus beléptetés</li>
+    <li>[CHANGED]: Egy-két helyen szövegcsere</li>
+    <li>[CHANGED]: Kódformázások</li>
+    <li>[CHANGED]: Keretrendszer fejlesztés, javítás</li>
+    <li>[CHANGED]: Profil oldali kisebb igazítások, javítások</li>
+    <li>[FIXED]: Igazolás feltöltés nem történt meg regisztrációkor</li>
+    <li>[FIXED]: Nem lett email kiküldve sikeres regisztráció esetén</li>
+    <li>[FIXED]: Regisztrációnál függőben levő intézmény nem került rögzítésre</li>
+    <li>[FIXED]: Közösség frissítésénél nem mentődött el a csatlakozás módja</li>
+    <li>[FIXED]: Belépésnél nem volt ellenőrizve, hogy a belépni kívánó felhasználó törölve van-e az adatbázisban</li>
+    <li></li>
+</ul>
+<h3>v0.4 beta</h3>
+<ul>
+    <li>[NEW]: Teszt üzemmód bekapcsolása</li>
+    <li>[NEW]: Süti tájékoztató</li>
+    <li>[NEW]: Kapcsolatfelvételi űrlap</li>
+    <li>[NEW]: Felhasználói oldalon adott aloldal szerkesztése, ha az admin be van lépve</li>
+    <li>[CHANGED]: Nagyobb arculati ráncfelvarrások, simítások</li>
+    <li>[CHANGED]: Mappaszerkezet átalakítása</li>
+</ul>
+
+<h3>v0.3 pre-alpha</h3>
+<ul>
+    <li>[NEW]: Az admin oldali vizuális szerkesztő panelbe bekerült a youtube videó beágyazási lehetőség is</li>
+    <li>[NEW]: Admin oldalon az intézmények listázását kicsit átalalkítottam (előnézeti kép bekerült, plusz néhány oszlop szövege le lett vágva)</li>
+    <li>[NEW]: Admin oldalon a közösségek listája bővült plusz infókkal
+        <ul>
+            <li>Fénykép bélyeg</li>
+            <li>Közösség adatlap megtekintése felhasználói oldalon (szem ikon)</li>
+            <li>Jóváhagyva oszlopban a szöveg helyett ikon</li>
+            <li>van-e feltöltött igazolás (word doksi ikon) a közösséghez</li>
+        </ul>
+    </li>
+    <li>[NEW]: Admin felületen az email-ek szövegét most már lehet szerkeszteni
+        <ul>
+            <li>+1 a listába leírás is került, hogy tudjuk, hogy melyik levelet mikor küldjük ki</li>
+        </ul>
+    </li>
+    <li>[NEW]: Háló közösség logója bekerült a láblécbe</li>
+    <li>[NEW]: Látogatói oldalon a közösség regisztrációs felület elkészült</li>
+    <li>[NEW]: Látogatói oldalon egy felhasználó több közösséget is beregisztrálhat</li>
+    <li>[NEW]: Látogatói oldalon a közösség jellemzők ikonjainak cseréje, a keresődobozban ikonok levétele</li>
+    <li>[CHANGED]: Egy-két kép le lett cserélve a látogatói oldalon</li>
+    <li>[CHANGED]: 'Közösséget vezetek. Hogyan tudom itt hirdetni?' főoldali szekcióban lecseréltem a drive-os linket a 'Közösséget vezetek' oldalra mutató linkre</li>
+    <li>[CHANGED]: 'Mire jó egy keresztény közösség?' című főoldali szekció widget-be került</li>
+    <li>[FIXED]: Lábléc linkek javításra kerültek</li>
+    <li>[FIXED]: Folyamatos keretrendszer javítás, fejlesztés</li>
+</ul>
 
 <h3>v0.2 pre-alpha</h3>
 <ul>
     <li>[NEW]: Intézmény importálás (szinkronizálás)</li>
+    <li>[NEW]: Fájfeltöltés, képbeszúrás cikkbe</li>
     <li>[CHANGED]: 'Város' szöveget lecseréltem 'település'-re</li>
     <li>[FIXED]: 500-as hiba, ha olyan kulcsszavakra keresünk, amik közül egyik se címke</li>
     <li>[FIXED]: Közösség admin oldalon is kötelezővé tettem azokat a mezőket, amik az adatbázisban nem lehetnek érték nélküliek</li>

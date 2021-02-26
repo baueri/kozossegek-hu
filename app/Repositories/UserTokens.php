@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Repositories;
-
 
 use App\Models\UserToken;
 use App\Models\User;
@@ -23,20 +21,27 @@ class UserTokens extends Repository
      * @param User $user
      * @param string $page
      * @return UserToken
+     * @throws \Exception
      */
     public function createUserToken(User $user, string $page)
     {
-        $instance = $this->make($user,$page);
+        $instance = $this->make($user, $page);
 
         $this->save($instance);
 
         return $instance;
     }
 
+    public function createActivationToken(User $user)
+    {
+        return $this->createUserToken($user, route('portal.user.activate'));
+    }
+
     /**
      * @param User $user
      * @param string $page
      * @return UserToken
+     * @throws \Exception
      */
     public function make(User $user, string $page)
     {

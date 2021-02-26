@@ -1,14 +1,18 @@
 <?php
 
-
 namespace App\Portal\Controllers;
+
 use Framework\Http\Request;
 use App\Portal\Services\ImageService;
 
 class ImageController
 {
-    public function getImageWithWatermark(Request $request, ImageService $image)
+    public function getImage(Request $request, ImageService $image)
     {
-        return $image->getImageWithWatermark($request);
+        if ($request['entity_type'] == 'institutes') {
+            $image->getInstituteImage($request['image']);
+        } else {
+            $image->getGroupImage($request['image']);
+        }
     }
 }

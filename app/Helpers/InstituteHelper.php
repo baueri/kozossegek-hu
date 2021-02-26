@@ -2,10 +2,12 @@
 
 namespace App\Helpers;
 
+use App\Models\Institute;
+
 class InstituteHelper
 {
 
-    const STORAGE_DIR = STORAGE_PATH . 'institutes/images/';
+    public const INSTITUTE_DIR = 'institutes/images/';
 
     public static function getImageRelPath($instituteId)
     {
@@ -14,7 +16,11 @@ class InstituteHelper
 
     public static function getImageStoragePath($instituteId)
     {
-        return self::STORAGE_DIR . "/inst_$instituteId.jpg";
+        return _env('STORAGE_PATH') . self::INSTITUTE_DIR . "/inst_$instituteId.jpg";
     }
 
+    public static function getMiserendImagePath(Institute $institute, string $filename)
+    {
+        return "https://miserend.hu/kepek/templomok/{$institute->miserend_id}/{$filename}";
+    }
 }

@@ -12,7 +12,11 @@ class EventDisptatcher
     public static function dispatch(Event $event)
     {
         foreach ($event::getListeners() as $listener) {
-            app()->make($listener)->trigger($event);
+            if (is_callable($listener)) {
+                $listener($event);
+            } else {
+                app()->make($listener)->trigger($event);
+            }
         }
     }
 }

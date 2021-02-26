@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Framework\Database;
-
 
 use Framework\Support\Collection;
 
@@ -41,10 +39,6 @@ class QueryHistory
 
     public function getExecutionTime()
     {
-        return $this->queryHistory->reduce(function($time, $row){
-            $time += $row[2];
-            return $time;
-        }, 0);
-
+        return $this->queryHistory->reduce(fn($time, $row) => $time += $row[2], 0);
     }
 }

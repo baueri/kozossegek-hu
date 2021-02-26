@@ -1,11 +1,11 @@
 <?php
 
-
 namespace App\Repositories;
 
-
 use App\Models\User;
+use Framework\Model\PaginatedModelCollection;
 use Framework\Repository;
+use Framework\Support\Collection;
 use Framework\Support\StringHelper;
 
 class Users extends Repository
@@ -17,6 +17,7 @@ class Users extends Repository
         }
 
         $builder = $this->getBuilder()
+            ->apply('notDeleted')
             ->limit(20);
 
         if (filter_var($keyword, FILTER_VALIDATE_EMAIL)) {
@@ -29,12 +30,12 @@ class Users extends Repository
     }
 
     /**
-     * 
-     * @param array $filter
+     *
+     * @param Collection $filter
      * @param int $limit
-     * @return User[]|\Framework\Model\PaginatedModelCollection
+     * @return User[]|PaginatedModelCollection
      */
-    public function getUsers($filter = [], $limit = 30)
+    public function getUsers(Collection $filter, $limit = 30)
     {
         $builder = $this->getBuilder();
 
@@ -42,6 +43,10 @@ class Users extends Repository
             $builder->whereNotNull('deleted_at');
         } else {
             $builder->whereNull('deleted_at');
+        }
+
+        if ($filter['order_by']) {
+            $builder->orderBy($filter['order_by'], $filter['sort']);
         }
 
         $rows = $builder->paginate($limit);
@@ -55,7 +60,13 @@ class Users extends Repository
      */
     public function findByAuth($auth)
     {
+        if (!$auth) {
+            return null;
+        }
+
         $builder = $this->getBuilder();
+
+        $builder->apply('notDeleted');
 
         if (StringHelper::isEmail($auth)) {
             $builder->where('email', $auth);
@@ -80,19 +91,21 @@ class Users extends Repository
 
         return $this->getInstances($rows);
     }
-    
+
     /**
-     * @param string $email
+     * @param string|null $email
      * @return User
      */
-    public function getUserByEmail($email)
+    public function getUserByEmail(?string $email)
     {
-        $row = $this->getBuilder()->where('email', $email)->notDeleted()->first();
-        
+        $row = $this->getBuilder()
+            ->where('email', $email)
+            ->apply('notDeleted')->first();
+
         if ($row) {
             return $this->getInstance($row);
         }
-       
+
         return null;
     }
 

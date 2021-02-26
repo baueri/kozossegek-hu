@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Helpers\InstituteHelper;
+
 /**
  * Description of Institute
  *
@@ -15,6 +17,8 @@ class Institute extends \Framework\Model\Model
 
     public $name;
 
+    public $name2;
+
     public $city;
 
     public $district;
@@ -27,20 +31,35 @@ class Institute extends \Framework\Model\Model
 
     public $user;
 
-    public $image;
+    public $approved;
+
+    public $miserend_id;
+
+    public $image_url;
+
+    public $website;
 
     public function getImageRelPath()
     {
-        return \App\Helpers\InstituteHelper::getImageRelPath($this->id);
+        if ($this->image_url) {
+            return $this->image_url;
+        }
+
+        return InstituteHelper::getImageRelPath($this->id);
+    }
+
+    public function isFromMiserend()
+    {
+        return !is_null($this->miserend_id);
     }
 
     public function getImageStoragePath()
     {
-        return \App\Helpers\InstituteHelper::getImageStoragePath($this->id);
+        return InstituteHelper::getImageStoragePath($this->id);
     }
 
     public function hasImage()
     {
-        return file_exists($this->getImageStoragePath());
+        return !is_null($this->image_url) || file_exists($this->getImageStoragePath());
     }
 }

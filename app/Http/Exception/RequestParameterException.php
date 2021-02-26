@@ -1,21 +1,19 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 namespace App\Http\Exception;
 
-use Exception;
+use InvalidArgumentException;
+use Throwable;
 
 /**
  * Description of RequestParameterExceptio
  *
  * @author ivan
  */
-class RequestParameterException extends Exception
+class RequestParameterException extends InvalidArgumentException
 {
-    //put your code here
+    public function __construct($message = "", $code = 500, Throwable $previous = null)
+    {
+        parent::__construct($message, $code, $previous);
+    }
 }

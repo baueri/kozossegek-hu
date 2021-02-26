@@ -3,16 +3,20 @@
 
 namespace App\Console;
 
-use App\Console\Commands\ClearUserSession;
+use App\Console\Commands\ClearUserSessionCommand;
+use App\Console\Commands\DailyCron;
 use App\Console\Commands\PublishApp;
 use App\Console\Commands\RebuildSearchEngineCommand;
+use App\Console\Commands\SetImageUrlForMissingGroupsCommand;
 use Framework\Console\ConsoleKernel as Kernel;
 
 class ConsoleKernel extends Kernel
 {
-    protected $commands = [
-        ClearUserSession::class,
+    protected array $commands = [
+        DailyCron::class,
+        ClearUserSessionCommand::class,
         RebuildSearchEngineCommand::class,
-        PublishApp::class
+        PublishApp::class,
+        SetImageUrlForMissingGroupsCommand::class,
     ];
 }

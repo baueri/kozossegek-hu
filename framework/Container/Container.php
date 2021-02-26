@@ -1,11 +1,9 @@
 <?php
 
-
 namespace Framework\Container;
 
 use Framework\Container\Exceptions\AbstractionAlreadySharedException;
 use Framework\Container\Exceptions\AlreadyBoundException;
-use Framework\Model\Model;
 use InvalidArgumentException;
 use Psr\Container\ContainerInterface;
 use ReflectionException;
@@ -41,7 +39,6 @@ class Container implements ContainerInterface
         $this->bind($abstraction, $concrete);
 
         $this->singletons[] = $abstraction;
-
     }
 
     private function isSingletonRegistered($abstraction)

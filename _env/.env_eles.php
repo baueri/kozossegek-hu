@@ -1,7 +1,9 @@
 <?php
 
 return [
-    'SITE_URL' => 'https://demo.kozossegek.hu',
+    'STORAGE_PATH' => ROOT . '../storage/eles' . DS,
+    'SITE_URL' => 'https://kozossegek.hu',
+    'SITE_NAME' => 'kozossegek.hu',
     'ENVIRONMENT' => 'production',
     'DEBUG' => false,
 
@@ -21,6 +23,7 @@ return [
     'EMAIL_PASSWORD' => '***REMOVED***',
     'EMAIL_SSL' => 'STARTTLS',
 
-    'ERROR_EMAIL' => 'error@kozossegek.hu'
+    'CONTACT_EMAIL' => 'kozossegek.szeged@gmail.com',
+    'ERROR_EMAIL' => 'birkaivan@gmail.com'
 
 ];

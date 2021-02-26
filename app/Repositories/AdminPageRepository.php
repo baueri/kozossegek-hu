@@ -2,8 +2,6 @@
 
 namespace App\Repositories;
 
-use App\Repositories\PageRepository;
-
 /**
  * Description of AdminPageRepository
  *
@@ -30,6 +28,8 @@ class AdminPageRepository extends PageRepository
         if ($search = $filter['search']) {
             $builder->where('title', 'like', "%$search%");
         }
+
+        $builder->orderByFromRequest();
 
         return $this->getInstances($builder->paginate(30));
     }

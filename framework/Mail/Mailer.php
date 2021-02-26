@@ -3,6 +3,7 @@
 namespace Framework\Mail;
 
 use Framework\Traits\Makeable;
+use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 
 class Mailer
@@ -12,12 +13,9 @@ class Mailer
     /**
      * @var PHPMailer
      */
-    private $phpMailer;
+    private PHPMailer $phpMailer;
 
-    /**
-     * @param PHPMailer $phpMailer
-     */
-    public function __construct()
+    public function __construct(string $to = '', string $name = '')
     {
         $phpMailer = new PHPMailer(true);
         $phpMailer->isSMTP();
@@ -30,24 +28,59 @@ class Mailer
         $phpMailer->isHTML(true);
         $phpMailer->CharSet = 'UTF-8';
         $this->phpMailer = $phpMailer;
+
+        if ($to) {
+            $this->to($to, $name);
+        }
     }
 
-    public function to(string $to)
+    /**
+     * @param string $to
+     * @param string|null $name
+     * @return $this
+     * @throws Exception
+     */
+    public function to(string $to, string $name = '')
     {
-        $this->phpMailer->addAddress($to);
+        $this->phpMailer->addAddress($to, $name);
 
         return $this;
     }
 
-    public function send(Mailable $mailable)
+    /**
+     * @param Mailable $mailable
+     * @return bool
+     * @throws Exception
+     */
+    public function send(Mailable $mailable): bool
     {
-        if ($mailable->from) {
-            $this->phpMailer->setFrom(...$mailable->from);
+        if (app()->envIs('test')) {
+            $this->setMailableForTest($mailable);
         } else {
-            $this->phpMailer->setFrom($this->phpMailer->Username, 'kozossegek.hu');
+            if ($mailable->from) {
+                $this->phpMailer->setFrom(...$mailable->from);
+            } else {
+                $this->phpMailer->setFrom($this->phpMailer->Username, 'kozossegek.hu');
+            }
+            $this->phpMailer->Subject = $mailable->subject;
+            $this->phpMailer->Body = $mailable->getBody();
         }
-        $this->phpMailer->Subject = $mailable->subject;
-        $this->phpMailer->Body = $mailable->getBody();
-        $this->phpMailer->send();
+
+        return $this->phpMailer->send();
+    }
+
+    private function setMailableForTest(Mailable $mailable)
+    {
+        $this->phpMailer->setFrom($this->phpMailer->Username, site_name());
+        $originalAddressee = key($this->phpMailer->getAllRecipientAddresses());
+        $this->phpMailer->clearAddresses();
+        $this->phpMailer->addAddress('birkaivan@gmail.com');
+        $this->phpMailer->Subject = site_name() . ' (TESZT)';
+        $body = $mailable->getBody();
+        $this->phpMailer->Body = <<<EOT
+            <b style="color: red">FIGYELEM! EZ EGY TESZT VÁLASZÜZENET A LENTI EMAIL-RE.</b><br>
+            <b style="color: red">EREDETI CÍMZETT: {$originalAddressee} </b><br>
+            {$body}
+        EOT;
     }
 }

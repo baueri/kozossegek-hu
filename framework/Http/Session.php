@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Framework\Http;
-
 
 class Session
 {
@@ -42,5 +40,10 @@ class Session
     public static function id()
     {
         return session_id();
+    }
+
+    public static function all()
+    {
+        return $_SESSION;
     }
 }

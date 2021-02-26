@@ -5,12 +5,9 @@ namespace App\Admin\Group;
 use App\Admin\Components\AdminTable\AdminTable;
 use App\Admin\Components\AdminTable\Deletable;
 use App\Admin\Components\AdminTable\Editable;
-use App\Models\AgeGroup;
-use App\Models\Group;
 use App\Models\GroupStatus;
-use App\Models\Institute;
+use App\Models\GroupView;
 use App\Repositories\GroupViews;
-
 use App\Helpers\GroupHelper;
 use Framework\Database\PaginatedResultSetInterface;
 use Framework\Http\Request;
@@ -18,24 +15,26 @@ use Framework\Support\StringHelper;
 
 class GroupTable extends AdminTable implements Editable, Deletable
 {
-
     protected $columns = [
         'id' => '#',
+        'image' => '<i class="fa fa-image" title="Fotó"></i>',
+        'view' => '<i class="fa fa-eye" title="Megtekintés a honlapon"></i>',
         'name' => 'Közösség neve',
+        'pending' => '<i class="fa fa-thumbs-up" title="Jóváhagyva"></i>',
+        'status' => '<i class="fa fa-check-circle" title="Aktív"></i>',
+        'document' => '<i class="fa fa-file-word" title="Van feltöltött intézményvezetői igazolása"></i>',
         'city' => 'Település',
         'institute_name' => 'Intézmény / plébánia',
         'group_leaders' => 'Közösség vezető(i)',
         'age_group' => 'Korosztály',
-        'status' => 'Státusz',
-        'pending' => 'Függőben',
         'created_at' => 'Létrehozva',
     ];
 
-    protected $centeredColumns = ['status'];
-    /**
-     * @var GroupViews
-     */
-    private $repository;
+    protected array $centeredColumns = ['status', 'pending', 'document', 'view', 'image'];
+
+    protected array $sortableColumns = ['id', 'status', 'pending', 'document', 'created_at'];
+
+    private GroupViews $repository;
 
     /**
      * GroupTable constructor.
@@ -50,7 +49,9 @@ class GroupTable extends AdminTable implements Editable, Deletable
 
     public function getAgeGroup($ageGroup)
     {
-        return GroupHelper::parseAgeGroup($ageGroup);
+        $ageGroups = GroupHelper::getAgeGroups($ageGroup);
+
+        return $ageGroups->implode(', ');
     }
 
     public function getCreatedAt($createdAt)
@@ -62,19 +63,37 @@ class GroupTable extends AdminTable implements Editable, Deletable
     {
         $status = new GroupStatus($status);
         $class = $status->getClass();
-        $text = $status->translate();
-        return "<i class='$class' title='$text'></i>";
+
+        return "<i class='$class'></i>";
     }
 
-    public function getPending($pending)
+    public function getInstituteName($instituteName, GroupView $group)
     {
-        if ($pending) {
-            return 'igen';
-        }
-        
-        return 'nem';
+        return $this->getLink(
+            $this->getListUrl(['institute_id' => $group->institute_id]),
+            $instituteName,
+            'szűrés erre az intézményre'
+        );
     }
-    
+
+    public function getCity($cityName)
+    {
+        return $cityName;
+    }
+
+    public function getPending($pending, $group)
+    {
+        if ($pending == 1) {
+            $icon = static::getIcon('fa fa-sync text-warning', 'jóváhagyásra vár');
+        } elseif ($pending == -1) {
+            $icon = static::getBanIcon('jóváhagyás visszautasítva');
+        } else {
+            $icon = self::getCheckIcon('jóváhagyva');
+        }
+
+        return $this->getLink(route('admin.group.validate', $group), $icon);
+    }
+
     public function getGroupLeaders($groupLeaders)
     {
         $shorten = StringHelper::shorten($groupLeaders, 15, '...');
@@ -87,8 +106,6 @@ class GroupTable extends AdminTable implements Editable, Deletable
     protected function getData(): PaginatedResultSetInterface
     {
         return $this->repository->search($this->request->merge([
-            'order_by' => 'id',
-            'order' => 'desc',
             'deleted' => $this->request->route->getAs() == 'admin.group.trash'
         ]));
     }
@@ -98,13 +115,43 @@ class GroupTable extends AdminTable implements Editable, Deletable
         return route('admin.group.delete', $model);
     }
 
+    public function getName($name, $model)
+    {
+        return $this->getEdit($name, $model, 25);
+    }
+
     public function getEditUrl($model): string
     {
         return route('admin.group.edit', $model);
     }
 
+    public function getImage($image, GroupView $group)
+    {
+        $imageUrl = $group->getThumbnail() . '?' . time();
+        return "<img src='$imageUrl' style='max-width: 25px; height: auto;' title='<img src=\"$imageUrl\">' data-html='true'/>";
+    }
+
+    public function getDocument($document, GroupView $model)
+    {
+        if ($model->hasDocument()) {
+            return self::getCheckIcon('van');
+        }
+
+        return self::getBanIcon('nincs');
+    }
+
     public function getEditColumn(): string
     {
         return 'name';
+    }
+
+    public function getView($null, GroupView $model)
+    {
+        return "<a href='{$model->url()}' target='_blank' title='megtekintés'><i class='fa fa-eye'></i></a>";
+    }
+
+    private function getListUrl(array $params = [])
+    {
+        return route('admin.group.list', $params);
     }
 }

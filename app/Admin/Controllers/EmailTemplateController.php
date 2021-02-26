@@ -4,12 +4,16 @@
 namespace App\Admin\Controllers;
 
 use App\Mail\GroupContactMail;
-use App\Mail\RegistrationByGroupEmail;
+use App\Mail\NewGroupEmail;
+use App\Mail\RegistrationByGroupEmailForFirstUsers;
 use App\Mail\RegistrationEmail;
 use App\Mail\ResetPasswordEmail;
 use App\Models\GroupView;
 use App\Models\User;
 use App\Repositories\UserTokens;
+use Framework\Http\Request;
+use Framework\Http\Response;
+use Framework\PasswordGenerator;
 
 class EmailTemplateController extends AdminController
 {
@@ -22,17 +26,18 @@ class EmailTemplateController extends AdminController
 
         return view('admin.email_template', compact('mailable', 'title'));
     }
-    
+
     public function registrationByGroup(UserTokens $userTokens)
     {
         $user = new User(['name' => 'Minta János', 'email' => 'minta_janos@kozossegek.hu']);
-        
+        $password = (new PasswordGenerator(6))->setOpt(PasswordGenerator::OPTION_LOWER, false)->generate();
+
         $group = new GroupView();
         $group->name = 'Minta közösség';
         $group->city = 'Szeged';
-        
+
         $user_token = $userTokens->make($user, route('portal.user.activate'));
-        $mailable = RegistrationByGroupEmail::make($user, $user_token, $group);
+        $mailable = RegistrationByGroupEmailForFirstUsers::make($user, $password, $user_token, $group);
         $title = 'Csoportadatok alapján létrehozott felhasználó regisztrációs sablonja';
 
         return view('admin.email_template', compact('mailable', 'title'));
@@ -63,5 +68,36 @@ class EmailTemplateController extends AdminController
         $title = 'Közösségvezetői kapcsolatfelvételi email sablon';
 
         return view('admin.email_template', compact('mailable', 'title'));
+    }
+
+    public function createdGroup()
+    {
+        $mailable = (new NewGroupEmail(new User(['name' => 'Minta János', 'email' => 'minta_janos@kozossegek.hu'])));
+        $title = 'Új közösség létrehozása (létező fiókkal)';
+        return view('admin.email_template', compact('mailable', 'title'));
+    }
+
+    public function createdGroupWithNewUser(UserTokens $userTokens)
+    {
+        $user = new User(['name' => 'Minta János', 'email' => 'minta_janos@kozossegek.hu']);
+        $token = $userTokens->make($user, route('portal.user.activate'));
+        $mailable = (new NewGroupEmail($user))
+            ->withNewUserMessage($token);
+        $title = 'Új közösség létrehozása (új fiókkal)';
+        return view('admin.email_template', compact('mailable', 'title'));
+    }
+
+    public function saveTemplate(Request $request)
+    {
+        Response::asJson();
+
+        $template = view()->getPath($request['template']);
+        $content = $request['content'];
+
+        file_put_contents($template, $content);
+
+        return [
+            'success' => true
+        ];
     }
 }

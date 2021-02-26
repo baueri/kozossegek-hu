@@ -2,11 +2,12 @@
 
 namespace App\Admin\Controllers;
 
-use App\Admin\Controllers\AdminController;
+use App\Services\SystemAdministration\SetImageUrlForMissingGroups;
+use Framework\Http\Message;
+use Framework\Http\View\Section;
 use Framework\Maintenance;
 use Framework\Http\Request;
 use App\Admin\Settings\Services\ErrorLogParser;
-
 
 class SettingsController extends AdminController
 {
@@ -22,9 +23,8 @@ class SettingsController extends AdminController
         $errors = $parser->getErrors();
 
         if ($level = $request['level']) {
-            $errors = $errors->filter(function($error) use ($level){
-                return $error['severity'] == $level || ($level == 'FATAL' && in_array($error['severity'], ['FATAL', 'EXCEPTION', 'SYNTAX_ERROR']));
-            });
+            $errors = $errors->filter(fn($error) =>
+                $error['severity'] == $level || ($level == 'FATAL' && in_array($error['severity'], ['FATAL', 'EXCEPTION', 'SYNTAX_ERROR'])));
         }
 
         return view('admin.settings.error-log', compact('errors', 'level'));
@@ -34,15 +34,22 @@ class SettingsController extends AdminController
     {
         unlink(ROOT . 'error.log');
 
-        \Framework\Http\Message::warning('Hibanapló ürítve');
+        Message::warning('Hibanapló ürítve');
 
         return redirect_route('admin.error_log');
     }
 
     public function eventLog()
     {
-        \Framework\Http\View\Section::add('title', 'Eseménynapló');
+        Section::add('title', 'Eseménynapló');
 
         return view('admin');
+    }
+
+    public function setGroupImages(SetImageUrlForMissingGroups $service)
+    {
+        $service->run();
+
+        return "<h1>Siker</h1>";
     }
 }

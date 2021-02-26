@@ -5,12 +5,12 @@ namespace Framework\Http;
 class Message
 {
 
-    const MSG_SUCCESS = 'success';
-    const MSG_WARNING = 'warning';
-    const MSG_INFO    = 'info';
-    const MSG_DANGER  = 'danger';
+    public const MSG_SUCCESS = 'success';
+    public const MSG_WARNING = 'warning';
+    public const MSG_INFO    = 'info';
+    public const MSG_DANGER  = 'danger';
 
-    const SESSION_KEY_NAME = 'system_message';
+    public const SESSION_KEY_NAME = 'system_message';
 
     public static function set($message, $type, $list = null)
     {
@@ -45,9 +45,10 @@ class Message
      *
      * @return array|null
      */
-    public static function get()
+    public static function flash()
     {
         return Session::flash(self::SESSION_KEY_NAME);
     }
 
 }
+

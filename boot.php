@@ -1,6 +1,6 @@
 <?php
 
-use App\Bootstrapper\RegisterTitleDirective;
+use App\Bootstrapper\RegisterDirectives;
 use Arrilot\DotEnv\DotEnv;
 use Framework\Application;
 use Framework\Database\Database;
@@ -14,7 +14,7 @@ use Framework\Http\View\View;
 use Framework\Http\View\ViewInterface;
 use Framework\Support\Config\Config;
 
-if(!defined('DS')) {
+if (!defined('DS')) {
     define('DS', DIRECTORY_SEPARATOR);
 }
 
@@ -23,7 +23,7 @@ define('APP', ROOT . 'app' . DS);
 define('RESOURCES', ROOT . 'resources' . DS);
 define('CACHE', ROOT . 'cache' . DS);
 define('LANG', 'hu');
-define('APP_VERSION', 'v0.2 pre-alpha');
+define('APP_VERSION', 'v0.7 beta');
 define('STORAGE_PATH', ROOT . 'storage' . DS);
 
 include 'vendor/autoload.php';
@@ -33,6 +33,10 @@ DotEnv::load(ROOT . '.env.php');
 if (!_env('DEBUG')) {
     ini_set("log_errors", 1);
     ini_set("error_log", ROOT . "error.log");
+} else {
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
 }
 
 $application = new Application();
@@ -43,7 +47,8 @@ $application->singleton(Config::class);
 $application->singleton(RouterInterface::class, XmlRouter::class);
 $application->singleton(Database::class, function (Application $app) {
     $settings = $app->config('db');
-    $databaseConfiguration = $app->make(DatabaseConfiguration::class,
+    $databaseConfiguration = $app->make(
+        DatabaseConfiguration::class,
         $settings['host'],
         $settings['user'],
         $settings['password'],
@@ -54,7 +59,7 @@ $application->singleton(Database::class, function (Application $app) {
     return $app->make(PDOMysqlDatabase::class, $databaseConfiguration);
 });
 
-$application->boot(RegisterTitleDirective::class);
+$application->boot(RegisterDirectives::class);
 $application->singleton(App\Repositories\Widgets::class);
 
 include APP . 'macros.php';

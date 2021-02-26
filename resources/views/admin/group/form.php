@@ -6,6 +6,11 @@
 @endsection
 @title($title)
 @extends('admin')
+@if($group->deleted_at)
+    @alert('danger')
+        <b>Törölt közösség!</b> A visszállításához kattints a <b>visszaállítás</b> gombra a jobb oldali sáv alján.
+    @endalert
+@endif
 <form method="post" id="group-form" action="{{ $action }}">
     <div class="row">
         <div class="col-md-9">
@@ -21,6 +26,9 @@
                         <select name="institute_id" style="width:100%" class="form-control" required>
                             <option value="{{ $group->institute_id }}">
                                 {{ $group->institute_id ? $institute->name . ' (' . $institute->city . ')' : 'intézmény' }}
+                                @if($institute && $institute->approved == 0)
+                                - függőben levő intézmény
+                                @endif
                             </option>
                         </select>
                     </div>
@@ -60,7 +68,7 @@
                 <div class="col-md-4">
                     <div class="form-group required">
                         <label for="group_leader_email">Email cím</label>
-                        <input type="email" name="group_leader_email" id="group_leader_email" value="{{ $group->group_leader_email }}" class="form-control" required>
+                        <input name="group_leader_email" id="group_leader_email" value="{{ $group->group_leader_email }}" class="form-control" required>
                     </div>
                 </div>
             </div>
@@ -80,7 +88,7 @@
                 </div>
             </div>
             <div class="form-group required">
-                <label for="description">Leírás</label>
+                <label for="description">Bemutatkozás</label>
                 <textarea name="description" id="description" required>{{ $group->description }}</textarea>
             </div>
             <div class="row group-images">
@@ -88,7 +96,7 @@
                     <div class="form-group">
                         <label>Fényképek</label>
                         <div class="group-image">
-                            <img src="{{ $images ? $images[0] : '' }}" id="image" width="300">
+                            <img src="{{ $group->getThumbnail() }}" id="image" width="300">
                         </div>
                         <label for="image-upload" class="btn btn-primary">
                             <i class="fa fa-upload"></i> Kép feltöltése
@@ -102,13 +110,13 @@
         </div>
         <div class="col-md-3 group-side-content">
             <div class="form-group">
-                <label>Jóváhagyva</label>
-                <div class="switch yesno" style="width:100px;">
-                    <input type="radio" id="pending-0" name="pending" value="0" @if(!$group->pending) checked @endif>
-                    <input type="radio" id="pending-1" name="pending" value="1" @if($group->pending) checked @endif>
-                    <label for="pending-1">igen</label>
-                    <label for="pending-0">nem</label>
-                </div>
+                <label for="pending">Jóváhagyva</label>
+                <select class="form-control" id="pending" name="pending" data-placeholder="jóváhagyás állapota">
+                    <option></option>
+                    <option value="0" @if($group->pending === '0') selected @endif>jóváhagyva</option>
+                    <option value="1" @if($group->pending === '1') selected @endif>jóhávagyásra vár</option>
+                    <option value="-1" @if($group->pending === '-1') selected @endif>visszautasítva</option>
+                </select>
             </div>
             <div class="form-group">
                 <label for="status">Állapot</label>
@@ -144,7 +152,7 @@
             </div>
             <div class="form-group">
                 <label for="on_days">Mely napo(ko)n</label>
-                <select class="form-control" name="on_days[]" multiple="multiple">
+                <select class="form-control" name="on_days[]" multiple="multiple" data-allow-clear="1" data-placeholder="Nincs megadva">
                     @foreach($days as $day)
                         <option value="{{ $day }}" @if(in_array($day, $group_days)) selected @endif>
                              @lang("day.$day")
@@ -153,8 +161,19 @@
                 </select>
             </div>
             <div class="form-group">
+                <label for="join_mode">Csatlakozás módja</label>
+                <select class="form-control" name="join_mode" data-allow-clear="1" data-placeholder="Nincs megadva">
+                    <option></option>
+                    @foreach($join_modes as $join_mode => $join_mode_name)
+                        <option value="{{ $join_mode }}" @if($group->join_mode==$join_mode) selected @endif>
+                            {{ $join_mode_name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="form-group">
                 <label for="spiritual_movement_id">Lelkiségi mozgalom</label>
-                <select id="spiritual_movement_id" name="spiritual_movement_id" class="form-control">
+                <select id="spiritual_movement_id" name="spiritual_movement_id" class="form-control" data-allow-clear="1" data-placeholder="Nincs megadva">
                     <option></option>
                     @foreach($spiritual_movements as $spiritual_movement)
                         <option value="{{ $spiritual_movement['id'] }}" @if($group->spiritual_movement_id == $spiritual_movement['id']) selected @endif>
@@ -163,14 +182,25 @@
                     @endforeach
                 </select>
             </div>
-            <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Mentés</button>
-            @if($group->exists())
-                @if(!$group->deleted_at)
-                    <a href="#" onclick="deleteConfirm(() => { window.location.href = '@route("admin.group.delete", $group)' });" class="btn btn-danger"><i class="fa fa-trash"></i> törlés</a>
-                @else
-                    <a href="@route('admin.group.restore', $group)" class="btn btn-warning"><i class="fa fa-sync"></i> visszaállítás</a>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Mentés</button>
+                @if($group->exists())
+                    @if(!$group->deleted_at)
+                        <a href="#" onclick="deleteConfirm(() => { window.location.href = '@route("admin.group.delete", $group)' });" class="btn btn-danger"><i class="fa fa-trash"></i> törlés</a>
+                    @else
+                        <a href="@route('admin.group.restore', $group)" class="btn btn-warning"><i class="fa fa-sync"></i> visszaállítás</a>
+                    @endif
                 @endif
-            @endif
+            </div>
+            <div class="form-group">
+                <label>Felöltött igazolás</label><br/>
+                @if($group->exists() && $group->hasDocument())
+                    <p><a href="{{ $group->getDocumentUrl() }}"><i class="fa fa-download" download></i> Igazolás letöltése: {{ $group->document }}</a></p>
+                @else
+                    @alert('warning') nincs igazolás @endalert
+                @endif
+            </div>
+
         </div>
     </div>
 </form>
@@ -213,16 +243,6 @@
             }
         });
 
-        $("[name=spiritual_movement_id]").select2({
-            placeholder: "lelkiségi mozgalom",
-            allowClear: true,
-        });
-
-        $("[name=on_days]").select2({
-            placeholder: "napok",
-            allowClear: true,
-        });
-
         $("[name=institute_id]").select2({
             placeholder: "intézmény",
             allowClear: true,
@@ -249,6 +269,11 @@
 
         initSummernote('[name=description]');
 
-        $(".group-side-content select:not(#spiritual_movement_id, #on_days)").select2();
+        $(".group-side-content select").each(function(){
+            $(this).select2({
+                allowClear: $(this).data("allow-clear") === "1",
+                placeholder: $(this).data("placeholder")
+            });
+        });
     });
 </script>

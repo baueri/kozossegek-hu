@@ -1,29 +1,42 @@
 <?php
 
 namespace App\Portal\Services;
+
 use App\Helpers\InstituteHelper;
 use Framework\Http\Request;
 use App\Helpers\GroupHelper;
+use Framework\Http\Response;
 
 class ImageService
 {
-    public function getImageWithWatermark(Request $request)
+    public function getGroupImage(string $image)
     {
-        $entityType = $request['entity_type'];
-        $image = $request['image'];
 
-        switch ($entityType) {
-            case 'groups':
-                $path = $this->getGroupImagePath($image);
-                break;
-            case 'institutes':
-                $path = $this->getInstituteImagePath($image);
-                break;
+        $path = $this->getGroupImagePath($image);
+
+        if (!file_exists($path)) {
+            Response::setStatusCode('404');
+            return;
         }
+
         header('Pragma: public');
         header('Cache-Control: max-age=86400');
-        return image_with_watermark($path);
 
+        image_with_watermark($path);
+    }
+
+    public function getInstituteImage(string $image)
+    {
+        $imgPath = $this->getInstituteImagePath($image);
+
+        header('Pragma: public');
+        header('Cache-Control: max-age=86400');
+
+        $mime_type = mime_content_type($imgPath);
+        header("Content-Type: {$mime_type}");
+
+        $im = imagecreatefromjpeg($imgPath);
+        imagejpeg($im);
     }
 
     private function getGroupImagePath($image)

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Framework\Model;
-
 
 abstract class Model
 {
@@ -14,12 +12,12 @@ abstract class Model
     /**
      * @var string
      */
-    protected static $primaryCol = 'id';
+    protected static string $primaryCol = 'id';
 
     /**
      * @var mixed[]
      */
-    protected $originalValues = [];
+    protected array $originalValues = [];
 
     /**
      * Model constructor.
@@ -73,12 +71,17 @@ abstract class Model
     }
 
     /**
-     * @param static $model
+     * @param mixed $model
      * @return bool
      */
-    public function is($model)
+    public function is($model): bool
     {
         return $model instanceof $this && $this->getId() == $model->getId();
+    }
+
+    public function isDeleted(): bool
+    {
+        return property_exists($this, 'deleted_at') && (bool) $this->deleted_at;
     }
 
     /**
@@ -104,5 +107,40 @@ abstract class Model
         }
 
         return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function valuesToArray()
+    {
+        $values = [];
+
+        foreach (array_keys($this->getOriginalValues()) as $column) {
+            if (property_exists($this, $column)) {
+                $values[$column] = $this->{$column};
+            }
+        }
+
+        return $values;
+    }
+
+    public function getChanges()
+    {
+        $original = $this->getOriginalValues();
+        $newValues = $this->valuesToArray();
+
+        $changes = [];
+        foreach ($newValues as $key => $value) {
+            if ($value != $original[$key]) {
+                $changes[$key] = $value;
+            }
+        }
+        return $changes;
+    }
+
+    public function hasChanges(): bool
+    {
+        return !empty($this->getChanges());
     }
 }

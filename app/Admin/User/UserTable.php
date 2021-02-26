@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Admin\User;
+
+use App\Models\User;
 use Framework\Database\PaginatedResultSetInterface;
 use App\Repositories\Users;
 use Framework\Http\Request;
@@ -12,19 +14,22 @@ class UserTable extends AdminTable implements Deletable, Editable
 {
     protected $columns = [
         'id' => '#',
+        'groups' => '<i class="fa fa-comments"></i>',
         'name' => 'Név',
         'username' => 'Felhasználónév',
         'email' => 'Email',
+        'activated_at' => 'Aktiválva',
+        'created_at' => 'Regisztráció',
     ];
 
     /**
      * @var Users
      */
-    private $repository;
+    private Users $repository;
 
     /**
      * @param Users $repository
-     * @param \App\Admin\User\Request $request
+     * @param $request
      */
     public function __construct(Users $repository, Request $request)
     {
@@ -32,13 +37,9 @@ class UserTable extends AdminTable implements Deletable, Editable
         parent::__construct($request);
     }
 
-    public function getDeleteUrl($model):string
+    public function getDeleteUrl($model): string
     {
         return route('admin.user.delete', $model);
-    }
-    
-    protected function getDelete($t, $model) {
-        return parent::getDelete($t, $model, 'törlés');
     }
 
     public function getEditUrl($model): string
@@ -51,9 +52,36 @@ class UserTable extends AdminTable implements Deletable, Editable
         return 'name';
     }
 
+    public function getActivatedAt($activatedAt)
+    {
+        if ($activatedAt) {
+            return static::getCheckIcon();
+        }
+
+        return static::getBanIcon();
+    }
+
+    public function getCreatedAt($date)
+    {
+        return date('Y.m.d', strtotime($date));
+    }
+
+    public function getGroups($g, User $user)
+    {
+        $icon = static::getIcon('fa fa-comments');
+        $route = route('admin.group.list', ['user_id' => $user->id]);
+        return static::getLink(
+            $route,
+            $icon,
+            "karbantartott közösség(ek)"
+        );
+    }
+
     public function getData(): PaginatedResultSetInterface
     {
-        $filter = $this->request->only('deleted');
+        $filter = collect($this->request->only('deleted'));
+        $filter['sort'] = $this->request['sort'] ?: 'desc';
+        $filter['order_by'] = $this->request['order_by'] ?: 'id';
         return $this->repository->getUsers($filter);
     }
 }

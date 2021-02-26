@@ -10,6 +10,7 @@ use Framework\Model\PaginatedModelCollection;
 use Framework\Repository;
 use App\Models\GroupView;
 use Framework\Support\Collection;
+use Framework\Support\StringHelper;
 
 class GroupViews extends Repository
 {
@@ -26,37 +27,26 @@ class GroupViews extends Repository
     public function getGroupByUser(User $user)
     {
         $row = $this->getBuilder()->where('user_id', $user->id)->first();
-        
-        return $this->getInstance($row);
-    }
-    
-    /**
-     * @param int $perPage
-     * @return PaginatedModelCollection
-     */
-    public function all($perPage = 30)
-    {
-        $result = $this->getBuilder()->paginate($perPage);
 
-        return $this->getInstances($result);
+        return $this->getInstance($row);
     }
 
     /**
      * @param Collection|array $filter
-     * @param int $perPage
+     * @param int|null $perPage
      * @return PaginatedResultSet|Model[]|ModelCollection|PaginatedModelCollection []
      */
-    public function search($filter = [], $perPage = 30)
+    public function search($filter = [], ?int $perPage = 30)
     {
         if (is_array($filter)) {
             $filter = collect($filter);
         }
-        
+
         $builder = builder()->select('*')->from('v_groups');
 
         if ($keyword = $filter['search']) {
-            $keywords = '+'.str_replace(' ', '* +', trim($keyword, ' ')) . '*';
-            /* @var $found PaginatedResultSet */
+            $keyword = StringHelper::sanitize(str_replace('-', ' ', $keyword));
+            $keywords = '+' . str_replace(' ', '* +', trim($keyword, ' ')) . '*';
 
             $found = db()->select('select group_id
                 from search_engine 
@@ -65,17 +55,21 @@ class GroupViews extends Repository
             if ($found) {
                 $builder->whereIn('id', collect($found)->pluck('group_id')->all());
             } else {
-                $builder->where('name', 'like', "%$keyword%");
+                $builder->where('name', 'like', "%{$keyword}%");
             }
         }
 
         if ($varos = $filter['varos']) {
-            $builder->where('city', $varos);
+            if ($varos === 'Budapest') {
+                $builder->where('city', 'like', "{$varos}%");
+            } else {
+                $builder->where('city', $varos);
+            }
+
         }
 
         if ($korosztaly = $filter['korosztaly']) {
-            $builder->whereAgeGroup($korosztaly);
-            // $builder->whereInSet('age_group', $korosztaly);
+            $builder->apply('whereAgeGroup', $korosztaly);
         }
 
         if ($rendszeresseg = $filter['rendszeresseg']) {
@@ -85,7 +79,7 @@ class GroupViews extends Repository
         if ($intezmeny = $filter['institute_id']) {
             $builder->where('institute_id', $intezmeny);
         }
-        
+
         if ($filter->exists('pending')) {
             $builder->where('pending', $filter['pending']);
         }
@@ -100,38 +94,51 @@ class GroupViews extends Repository
             $builder->apply('whereGroupTag', $tags);
         }
 
-        if ($filter['deleted']) {
-            $builder->deleted();
-        } else {
-            $builder->notDeleted();
+        if ($institute_name = $filter['intezmeny']) {
+            $builder->where('institute_name', 'like', "%$institute_name%");
         }
 
-        $builder->orderBy($filter['order_by'] ?: 'name', $filter['order'] ?: 'asc');
-       
+        if ($userId = $filter['user_id']) {
+            $builder->where('user_id', $userId);
+        }
+
+        if ($filter['deleted']) {
+            $builder->apply('deleted');
+        } else {
+            $builder->apply('notDeleted');
+        }
+
+        $builder->orderBy($filter['order_by'] ?: 'id', $filter['sort'] ?: 'desc');
+
+        if ($perPage == -1) {
+            return $this->getInstances($builder->get());
+        }
+
         return $this->getInstances($builder->paginate($perPage));
     }
 
     /**
      * @param string $slug
-     * @return Group
+     * @return GroupView
      */
-    public function findBySlug($slug)
+    public function findBySlug(string $slug)
     {
-        $id = substr($slug, strrpos($slug, '-')+1);
-        
+        $id = substr($slug, strrpos($slug, '-') + 1);
+
         $builder = $this->getBuilder();
-        
-        $row = $builder->where('id', $id)->notDeleted()->first();
-        
+
+        $row = $builder->where('id', $id)->apply('notDeleted')->first();
+
         if ($row) {
             return $this->getInstance($row);
         }
-        
+
         return null;
     }
 
     public function findSimilarGroups(GroupView $group, $tags, int $take = 4)
     {
+
         $builder = $this->getBuilder()
             ->where('id', '<>', $group->id)
             ->where('city', $group->city)
@@ -139,27 +146,42 @@ class GroupViews extends Repository
             ->limit($take);
 
         if ($tags) {
-            $builder->whereGroupTag(collect($tags)->pluck('tag')->all());
+            $builder->apply('whereGroupTag', collect($tags)->pluck('tag')->all());
         }
 
-        return $this->getInstances($builder->get());
+
+        $groups = $this->getInstances($builder->get());
+
+        $groupids = $groups->pluck('id');
+
+        if ($groupids->isNotEmpty()) {
+            $group_tags = builder('v_group_tags')
+                ->whereIn('group_id', $groupids->toArray())
+                ->get();
+
+            if ($group_tags) {
+                $groups->withMany($group_tags, 'tags', 'id', 'group_id');
+            }
+        }
+
+        return $groups;
     }
-    
+
     public function getGroupsWithoutUser()
     {
         $builder = $this->getBuilder()
-            ->where('user_id', '0')
+            ->whereRaw('(user_id=0 or user_id is null)')
             ->where('group_leaders', '<>', '')
             ->where('group_leader_email', '<>', '')
             ->apply('notDeleted');
-        
+
         return $this->getInstances($builder->get());
     }
 
-    public function getGroupsByUser($user)
+    public function getNotDeletedGroupsByUser($user)
     {
         return $this->getInstances(
-            $row = $this->getBuilder()->where('user_id', $user->id)->get()
+            $row = $this->getBuilder()->where('user_id', $user->id)->apply('notDeleted')->get()
         );
     }
 }

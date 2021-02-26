@@ -1,7 +1,13 @@
 @section('header')
-<meta name="keywords" content="{{ $keywords }}" />
-<meta name="description" content="{{ $group->name }}" />
-<link rel="canonical" href="https://<?php echo get_site_url() . $group->url(); ?>" />
+    <meta name="keywords" content="{{ $keywords }}" />
+    <meta name="description" content="{{ $group->name }}" />
+    <meta property="og:url"           content="{{ $group->url() }}" />
+    <meta property="og:type"          content="website" />
+    <meta property="og:title"         content="kozossegek.hu - {{ $group->name }}" />
+    <meta property="og:description"   content="{{ $group->excerpt(20) }}" />
+    <meta property="og:image"         content="{{ $group->getThumbnail() }}" />
+    <meta property="og:locale"         content="hu_HU" />
+    <link rel="canonical" href="{{ $group->url() }}" />
 @endsection
 @extends('portal')
 <?php $nvr = 'a_' . substr(md5(time()), 0, 5); ?>
@@ -15,90 +21,98 @@
         @endalert
     @endif
     <div class="row">
-        <div class="col-md-4">
-            <img class="img-big" src="{{ $images[0] }}" alt="{{ $group->name }}">
-            @if(count($images) > 1)
-                <div class="kozi-kiskepek row m-0">
-                    @foreach($images as $i => $image)
-                        <div class="col-lg-3 col-md-6 col-6 p-0"><img @if($i == 0) class="active" @endif src="{{ $image }}"/></div>
-                    @endforeach
-                </div>
-            @endif
+        <div class="col-lg-4 d-md-none d-lg-block">
+            <div><img class="img-big" src="{{ $group->getThumbnail() }}" alt="{{ $group->name }}"></div>
         </div>
-        <div class="col-md-8 pt-4 pt-md-0">
+        <div class="col-lg-8 col-md-12 pt-4 pt-md-0">
             <div class="title">
+                <img class="img-big img-sm d-none d-md-block d-lg-none" src="{{ $group->getThumbnail() }}" alt="{{ $group->name }}">
                 @if($backUrl)
                     <div class="float-right">
                         <a href="{{ $backUrl }}"><i class="fa fa-angle-double-left"></i> vissza</a>
                     </div>
                 @endif
-                <h1 class="primary-title h2">
+                <h1 class="primary-title h2 mb-2">
                     {{ $group->name }}
-                    @if($user->id == $group->user_id)
-                        <a href="{{ $group->getEditUrl() }}" title="szerkesztés"><i class="fa fa-edit" style="font-size: 18px;"></i></a>
+                    @if($user && $user->id == $group->user_id)
+                        <a href="{{ $group->getEditUrl() }}" title="szerkesztés">
+                            <i class="fa fa-edit" style="font-size: 18px;"></i>
+                        </a>
                     @endif
                 </h1>
-                <h2 class="subtitle h5">{{  $group->city . ($group->district ? ', ' . $group->district : '')  }}</h2>
+<!--                <h2 class="subtitle h5">{{  $group->city . ($group->district ? ', ' . $group->district : '')  }}</h2>-->
+                <div class="group-tags float-left">
+                    @foreach($tag_names as $tag)
+                    <a href="@route('portal.groups', ['tags' => $tag['tag']])" class="tag align-bottom">
+                        <span class="tag-img" title="{{ $tag['tag_name'] }}" style="background: url('/images/tag/{{ $tag['tag'] }}.png'); background-size: cover;"></span>
+                    </a>
+                    @endforeach
+                </div>
+                <div class="float-right mb-2">@facebook_share_button($group->url())</div>
             </div>
             <p class="kozi-tulajdonsag">
-                <label>Helyszín:</label> {{ $institute->city }}, {{ $institute->name }}
+                @if($institute)
+                    <strong>Helyszín</strong><br/>
+                    {{ $institute->name }} ({{ $institute->city }})<br/>
+                    @if($institute->name2)
+                        <span style="font-size: 13px">({{ $institute->name2 }})</span>
+                    @endif
+                @endif
             </p>
             @if($group->spiritual_movement)
                 <p class="kozi-tulajdonsag">
-                    <label>Lelkiségi mozgalom:</label> {{ $group->spiritual_movement }}
+                    <strong>Lelkiségi mozgalom</strong><br/> {{ $group->spiritual_movement }}
                 </p>
             @endif
+            <div class="row" style="margin-bottom: .5em;">
+                <div class="col-lg-4 col-md-12 mb-md-2">
+                    <strong>Alkalmak gyakorisága</strong><br/>{{ $group->occasionFrequency() }}
+                </div>
+                <div class="col-lg-3 col-md-12 mb-md-2">
+                    <strong>Korcsoport</strong><br/> {{ $group->ageGroup() }}
+                </div>
+                @if($group->join_mode)
+                    <div class="col-lg-5 col-md-12 mb-md-2">
+                        <strong>Csatlakozási lehetőség módja</strong><br/> {{ $group->joinMode() }}
+                    </div>
+                @endif
+            </div>
             <p class="kozi-tulajdonsag">
-                <label>Alkalmak gyakorisága:</label> {{ $group->occasionFrequency() }}
+                <strong>Közösségvezető(k)</strong><br/> {{ $group->group_leaders }}
             </p>
-            <p class="kozi-tulajdonsag">
-                <label>Korcsoport:</label> {{ $group->ageGroup() }}
-            </p>
-
-            <p class="kozi-tulajdonsag">
-                <label>Közösségvezető(k):</label> {{ $group->group_leaders }}
-            </p>
-            @if($tag_names)
-                <p class="kozi-tulajdonsag">
-                    <label>Címkék</label><br>
-                    @foreach($tag_names as $tag)
-                        <a  href="@route('portal.groups', ['tags' => $tag['tag']])" for="tag-{{ $tag['slug'] }}" class="mr-1 badge badge-pill badge-primary group-tag-badge align-middle">
-                            <span class="align-middle">{{ $tag['tag_name'] }}</span>
-                        </a>
-                    @endforeach
-                </p>
+            @if($group->description)
+                <b>Bemutatkozás</b><br/>
+                {{ $group->description }}
             @endif
-            {{ $group->description }}
             <p class="mt-4">
-                <span class="btn btn-outline-primary open-contact-modal"><i class="fas fa-envelope"></i> Érdekel!</span>
-                <!--<a href="#" class="text-danger float-right"><i class="fas fa-exclamation-triangle"></i> Jelentem</a>-->
+                <span class="btn btn-outline-darkblue open-contact-modal"><i class="fas fa-envelope"></i> Érdekel!</span>
             </p>
         </div>
     </div>
     @if($similar_groups)
-        <h5 class="mt-4">Hasonló közösségek</h5>
+        <h5 class="mt-4" style="border-bottom: 1px solid;margin-bottom: 1em;padding-bottom: 0.3em;">Hasonló közösségek</h5>
         <div class="row" id="kozossegek-list">
-            @foreach($similar_groups as $i => $group)
+            @foreach($similar_groups as $i => $similarGroup)
             <div class="col-md-3 mb-3">
                 <div class="card kozi-box h-100 p-0">
-                    <a href="{{ $group->url() }}" style="background: url({{ $group->getThumbnail() }}) no-repeat bottom 0 center;background-size: cover; height: 185px" class="card-img">
+                    <a href="{{ $similarGroup->url() }}" style="background: url({{ $similarGroup->getThumbnail() }}) no-repeat bottom 0 center;background-size: cover; height: 185px" class="card-img">
                         <div>megnézem</div>
                     </a>
                     <div class="card-body">
                         <p class="text-center">
-                            @foreach($group->tags as $tag)
+                            @foreach($similarGroup->tags as $tag)
                                 <span class="tag-img" title="{{ $tag['tag_name'] }}" style="background: url('/images/tag/{{ $tag['tag'] }}.png'); background-size: cover;"></span>
                             @endforeach
                         </p>
-                        <div>{{ $group->name }}</div>
+                        <div>{{ $similarGroup->name }}</div>
                         <div class="city">
-                            {{ $group->city . ($group->district ? ', ' . $group->district : '')  }}
+                            {{ $similarGroup->city . ($similarGroup->district ? ', ' . $similarGroup->district : '')  }}
                         </div>
                         <p class="card-text mb-0">
-                            <strong>korosztály:</strong> <span>{{ $group->ageGroup() }}</span><br>
-                            <strong>alkalmak:</strong> <span>{{ $group->occasionFrequency() }}</span><br>
+                            <strong>korosztály:</strong> <span>{{ $similarGroup->ageGroup() }}</span><br>
+                            <strong>alkalmak:</strong> <span>{{ $similarGroup->occasionFrequency() }}</span><br>
                         </p>
-                        <a href="{{ $group->url() }}" class="btn btn-outline-success btn-sm kozi-more-info">Megnézem</a>
+                        <a href="{{ $similarGroup->url() }}" class="btn btn-outline-success btn-sm kozi-more-info">Megnézem</a>
                     </div>
                 </div>
             </div>
@@ -108,11 +122,11 @@
 </div>
 
 
-<div class="modal fade" id="contact-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="contact-modal" tabindex="-1" role="dialog" aria-labelledby="contact-group" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Vedd fel a kapcsolatot a közzösségvezetővel!</h5>
+        <h5 class="modal-title" id="contact-group">Vedd fel a kapcsolatot a közzösségvezetővel!</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -122,7 +136,7 @@
 
       </div>
       <div class="modal-footer">
-       <input type="text" name="website" id="{{ $nvr }}" value="{{ $honeypot_check_hash }}">
+        <input type="text" name="website" id="{{ $nvr }}" value="{{ $honeypot_check_hash }}">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Bezár</button>
         <button type="submit" class="btn btn-primary">Üzenet küldése</button>
       </div>
@@ -159,6 +173,7 @@
                 website: $("[name=website]").val()
             }
             $.post("@route('portal.contact-group', $group)", data, function(response) {
+                console.log(response);
                 if (response.success) {
                     $("#contact-modal .modal-body").html(response.msg);
                     $("#contact-modal [type=submit]").remove();

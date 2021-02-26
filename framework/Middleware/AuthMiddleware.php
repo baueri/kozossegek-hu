@@ -1,19 +1,16 @@
 <?php
 
-
 namespace Framework\Middleware;
 
-
 use App\Auth\Authenticate;
-use Framework\Http\View\View;
 
 class AuthMiddleware implements Middleware
 {
     /**
      * @var Authenticate
      */
-    private $service;
-    
+    private Authenticate $service;
+
     /**
      * @param Authenticate $service
      */

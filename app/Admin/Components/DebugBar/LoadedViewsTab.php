@@ -1,16 +1,14 @@
 <?php
 
-
 namespace App\Admin\Components\DebugBar;
-
 
 class LoadedViewsTab extends DebugBarTab
 {
     protected static $loadedViews = [];
 
-    public static function addView($filePath)
+    public static function addView(string $filePath, string $cachedFilePath)
     {
-        static::$loadedViews[] = substr($filePath, strlen(ROOT));
+        static::$loadedViews[] = [substr($filePath, strlen(ROOT)), basename($cachedFilePath)];
     }
 
     public function getName()
@@ -20,7 +18,9 @@ class LoadedViewsTab extends DebugBarTab
 
     public function render()
     {
-        $views = '<li>' . collect(static::$loadedViews)->implode('<li></li>') . '</li>';
+        $views = '<li>' . collect(static::$loadedViews)
+                ->map(fn(array $row) => "{$row[0]} --> {$row[1]}")
+                ->implode('<li></li>') . '</li>';
         return "<ul style='list-style: none;'>$views</ul>";
     }
 }

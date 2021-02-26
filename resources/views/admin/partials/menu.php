@@ -1,4 +1,4 @@
-<ul class="list-unstyled components mb-5">
+<ul class="list-unstyled components mb-5" id="admin_menu">
     @foreach($admin_menu as $menu_item)
     <li {{ $menu_item['active'] ? 'class="active"' : '' }}>
         <a href="{{ $menu_item['uri'] }}" class="{{ isset($menu_item['link_class']) ? $menu_item['link_class'] : '' }}">

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Framework\Http\View\Directives;
-
 
 class SectionDirective extends AtDirective
 {

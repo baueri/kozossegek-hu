@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Framework\Http\View;
-
 
 use Closure;
 
@@ -11,7 +9,7 @@ class Section
     /**
      * @var mixed[]
      */
-    protected static $sections = [];
+    protected static array $sections = [];
 
     /**
      * @param $name
@@ -20,6 +18,11 @@ class Section
     public static function add($name, $content)
     {
         static::$sections[$name][] = $content;
+    }
+
+    public static function set($name, $content)
+    {
+        static::$sections[$name] = [$content];
     }
 
     /**
@@ -38,7 +41,6 @@ class Section
         $out = '';
 
         foreach ($closures as $content) {
-
             $out .= static::parseContent($content, $args);
         }
 
@@ -57,6 +59,7 @@ class Section
 
     /**
      * @param string|Closure $content
+     * @param array $args
      * @return Closure|false|string
      */
     private static function parseContent($content, array $args)

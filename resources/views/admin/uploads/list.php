@@ -1,6 +1,6 @@
-@header('')
-<script src="/assets/dropzone/dropzone.min.js"></script>
-<link rel="stylesheet" href="/assets/dropzone/dropzone.min.css"/>
+@header()
+    <script src="/assets/dropzone/dropzone.min.js"></script>
+    <link rel="stylesheet" href="/assets/dropzone/dropzone.min.css"/>
 @endheader
 @title('Feltöltések')
 @extends('admin')
@@ -22,11 +22,34 @@
     <h4 class="dz-message">Húzd ide a fájlt a feltöltéshez, vagy kattints ide.</h4>
 </form>
 @if($uploads)
-<div class="row">
+<table class="table table-condensed table-striped">
+    <thead>
+        <tr>
+            <th>Fájlnév</th>
+            <th>Típus</th>
+            <th>Méret</th>
+            <th>Létrehozás dátuma</th>
+            <th>Utolsó módosítás</th>
+            <th>Teljes útvonal</th>
+            <th class="text-center"><i class="fa fa-trash-alt text-danger"></i></th>
+        </tr>
+    </thead>
     @foreach($uploads as $upload)
-    <div class="col-md-3 col-sm-3">
-        <div class="p-3 pb-5" style="position: relative;">
-            <div class="file-item">
+    <tr>
+        <td>
+            <a href="{{ $upload['path'] }}" target="_blank"><i class="{{ $upload['icon'] }}"></i> {{ $upload['name'] }}</a>
+        </td>
+        <td>{{ $upload['main_type'] }}</td>
+        <td>
+            {{ $upload['size'] }} MB
+        </td>
+        <td>{{ $upload['upload_date'] }}</td>
+        <td>{{ $upload['mod_date'] }}</td>
+        <td>{{ $upload['path'] }}</td>
+        <td class="text-center">
+            <a href="@route('admin.content.upload.delete_file', ['file' => $upload['path']])" class="text-danger" title="törlés"><i class="fa fa-trash-alt"></i></a>
+        </td>
+<!--            <div class="file-item">
                 @if($upload['is_dir'])
                 <a href="@route('admin.content.upload.list', ['dir' => $upload['name']])">
                     <div class="text-center"><img src="/images/folder.png" style="width: 100%; max-width: 200px;"></div>
@@ -40,9 +63,8 @@
                 <span><b>Fájl típusa:</b> {{ $upload['type'] }}</span><br/>
                 <span><b>Fájlméret:</b> {{ $upload['size'] }} MB</span><br/>
                 @endif
-            </div>
-        </div>
-    </div>
+            </div>-->
+    </tr>
     @endforeach
-</div>
+</table>
 @endif

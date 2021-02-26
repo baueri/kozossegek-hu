@@ -14,11 +14,11 @@ class WidgetAdminTable extends AdminTable implements Deletable, Editable
         'type' => 'Típus',
         'uniqid' => 'Kód',
     ];
-    
+
     protected function getData(): \Framework\Database\PaginatedResultSetInterface
     {
         $rows =  builder('widgets')->paginate();
-        
+
         return app()->make(\App\Repositories\Widgets::class)->getInstances($rows);
     }
 

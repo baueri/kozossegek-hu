@@ -22,12 +22,8 @@ try {
     $application->singleton(Dispatcher::class, HttpDispatcher::class);
     $application->singleton(DebugBar::class);
 
-    /* @var $request Request */
-    $request = $application->get(Request::class);
-
     $application->run($application->get(Dispatcher::class));
-
-} catch (Error|\Exception|\Throwable $e) {
+} catch (Error | \Exception | \Throwable $e) {
     ob_get_clean();
     $application->handleError($e);
 }

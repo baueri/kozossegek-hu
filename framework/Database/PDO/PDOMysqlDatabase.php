@@ -1,9 +1,9 @@
 <?php
 
-
 namespace Framework\Database\PDO;
 
-
+use Closure;
+use Exception;
 use Framework\Database\Database;
 use Framework\Database\DatabaseConfiguration;
 use Framework\Database\Events\QueryRan;
@@ -17,12 +17,14 @@ class PDOMysqlDatabase implements Database
     /**
      * @var DatabaseConfiguration
      */
-    private $configuration;
+    private DatabaseConfiguration $configuration;
 
     /**
      * @var PDO
      */
-    private $pdo;
+    private PDO $pdo;
+
+    private int $transactionCounter = 0;
 
     /**
      * PDOMysqlDatabase constructor.
@@ -34,6 +36,7 @@ class PDOMysqlDatabase implements Database
 
         $this->pdo = new PDO($this->getDsn(), $this->configuration->user, $this->configuration->password, [
             PDO::ATTR_PERSISTENT => true,
+
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"
         ]);
@@ -41,7 +44,13 @@ class PDOMysqlDatabase implements Database
 
     private function getDsn()
     {
-        return 'mysql:host=' . $this->configuration->host . ';dbname=' . $this->configuration->database . ';charset=' . $this->configuration->charset . ';port=' . $this->configuration->port;
+        return sprintf(
+            "mysql:host=%s;dbname=%s;charset=%s;port=%s",
+            $this->configuration->host,
+            $this->configuration->database,
+            $this->configuration->charset,
+            $this->configuration->port
+        );
     }
 
     /**
@@ -59,7 +68,7 @@ class PDOMysqlDatabase implements Database
      * @param mixed ...$bindings
      * @return ResultSet
      */
-    public function execute($query, ...$bindings): ResultSet
+    public function execute(string $query, ...$bindings): ResultSet
     {
         $start = microtime(true);
 
@@ -81,42 +90,70 @@ class PDOMysqlDatabase implements Database
      */
     public function select(string $query, $bindings = []): array
     {
-        return $this->execute($query, ...$bindings)->getRows();
+        return $this->execute($query, ...(array) $bindings)->getRows();
+    }
+
+    public function beginTransaction(): bool
+    {
+        if (!$this->transactionCounter++) {
+            return $this->pdo->beginTransaction();
+        }
+        $this->pdo->exec('SAVEPOINT trans' . $this->transactionCounter);
+        return $this->transactionCounter >= 0;
+    }
+
+    public function commit(): bool
+    {
+        if (!--$this->transactionCounter) {
+            return $this->pdo->commit();
+        }
+        return $this->transactionCounter >= 0;
+    }
+
+    public function rollback(): bool
+    {
+        if (--$this->transactionCounter) {
+            $this->pdo->exec('ROLLBACK TO trans' . ($this->transactionCounter + 1));
+            return true;
+        }
+
+        return $this->pdo->rollBack();
     }
 
     /**
-     * @param $query
-     * @param array $params
-     * @return int
+     * @param Closure $callback
+     * @return mixed
+     * @throws Exception
      */
+    public function transaction(Closure $callback)
+    {
+        $this->beginTransaction();
+
+        try {
+            $return = $callback();
+            $this->commit();
+            return $return;
+        } catch (Exception $e) {
+            $this->rollback();
+            throw $e;
+        }
+    }
+
     public function update($query, ...$params): int
     {
         return $this->execute($query, ...$params)->rowCount();
     }
 
-    /**
-     * @return int|null
-     */
     public function lastInsertId(): ?int
     {
         return $this->pdo->lastInsertId();
     }
 
-    /**
-     * @param $query
-     * @param mixed ...$bindings
-     * @return array
-     */
     public function first(string $query, $bindings = [])
     {
         return $this->execute($query, ...$bindings)->fetchRow();
     }
 
-    /**
-     * @param $query
-     * @param mixed ...$params
-     * @return int
-     */
     public function insert($query, $params = []): int
     {
         $this->execute($query, ...$params);
@@ -136,11 +173,8 @@ class PDOMysqlDatabase implements Database
         return array_shift($row);
     }
 
-    public function delete($query, $params = [])
+    public function delete($query, $params = []): int
     {
-        $this->execute($query, ...$params);
-
-        return true;
+        return $this->execute($query, ...$params)->rowCount();
     }
-
 }
