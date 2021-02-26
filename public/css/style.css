@@ -19,6 +19,8 @@ img {
     height: auto;
 }
 .tag-dropdown button {
+    box-shadow: inset 0 1px 1px rgb(0 0 0 / 8%);
+    border: 1px solid #ccc;
     border-radius: 0;
     color: #999;
     font-size: 14px;
@@ -116,8 +118,8 @@ body:not(.home) .featured-header {
 
 .header-outer.featured-header .navbar-brand > div:first-child {
     filter: brightness(0) invert(1);
-
 }
+
 .header-outer #header.compact .navbar-brand {
     padding: 0 !important;
 }
@@ -845,7 +847,7 @@ input[name=search]::placeholder {
     width: 22px;
 }
 
-#header:not(.compact) #toggle_main_menu:not(:checked)~.navbar-nav img {
+.header-outer.featured-header #header:not(.compact) #toggle_main_menu:not(:checked)~.navbar-nav img {
     filter: brightness(0) invert(1);
 }
 
@@ -856,7 +858,13 @@ input[name=search]::placeholder {
 }
 
 @media (max-width: 991px) {
-
+    .tag-dropdown button {
+        border-radius: 4px;
+    }
+    .tag-dropdown button i {
+        float: right;
+        margin-top: 5px;
+    }
     .divider-before a:before {
         margin-right: 0;
         border-left: 0;

@@ -17,6 +17,7 @@ class Users extends Repository
         }
 
         $builder = $this->getBuilder()
+            ->apply('notDeleted')
             ->limit(20);
 
         if (filter_var($keyword, FILTER_VALIDATE_EMAIL)) {

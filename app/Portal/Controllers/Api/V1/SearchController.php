@@ -45,7 +45,7 @@ class SearchController
 
     public function searchCitiesByExistingInstitutes(Cities $repository)
     {
-        return new CitySearchResponse($repository->searchCitiesByExistingInstitutes($this->request['term']));
+        return new CitySearchResponse($repository->search($this->request['term']));
     }
 
     public function searchInstitute(Institutes $repository)

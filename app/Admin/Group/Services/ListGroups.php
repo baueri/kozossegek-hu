@@ -8,6 +8,7 @@ use App\Repositories\Cities;
 use App\Repositories\GroupStatusRepository;
 use App\Repositories\OccasionFrequencies;
 use App\Enums\GroupStatusEnum;
+use App\Repositories\Users;
 use Framework\Http\Request;
 use ReflectionException;
 
@@ -84,6 +85,10 @@ class ListGroups
         $filter = $this->request;
         $table = $this->table;
         $current_page = $this->getCurrentPage();
+        $karbantarto = null;
+        if ($filter['user_id']) {
+            $karbantarto = app()->make(Users::class)->find($filter['user_id'])->name;
+        }
 
         if ($current_page === 'pending') {
             $filter['pending'] = 1;
@@ -99,7 +104,8 @@ class ListGroups
             'institute',
             'filter',
             'current_page',
-            'pending_groups'
+            'pending_groups',
+            'karbantarto',
         ));
     }
 

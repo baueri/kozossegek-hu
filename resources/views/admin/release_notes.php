@@ -1,5 +1,12 @@
 @title('Verzióinformáció')
 @extends('admin')
+<h3>v1.0</h3>
+<ul>
+    <li>[NEW]: Sima fiók regisztráció</li>
+    <li>[CHANGED]: Csoport létrehozása űrlapon a gyakoriság alapértelmezetten "hetente"</li>
+    <li>[CHANGED]: Admin felhasználók listázás átalakítása</li>
+    <li>[CHANGED]: Részletesebb hibaüzenetek küldése emailben</li>
+</ul>
 <h3>v0.7 beta</h3>
 <ul>
     <li>[NEW]: Miserend.hu templomok integrálása a rendszerbe

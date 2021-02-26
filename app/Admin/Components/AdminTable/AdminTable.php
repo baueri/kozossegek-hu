@@ -167,12 +167,12 @@ abstract class AdminTable
         return "<a href='$url' title='$title'><i class='fa fa-trash text-danger'></i></a>";
     }
 
-    protected static function getCheckIcon(?string $title)
+    protected static function getCheckIcon(string $title = '')
     {
         return static::getIcon('fa fa-check-circle text-success', $title);
     }
 
-    protected static function getBanIcon(?string $title)
+    protected static function getBanIcon(string $title = '')
     {
         return static::getIcon('fa fa-ban text-danger', $title);
     }

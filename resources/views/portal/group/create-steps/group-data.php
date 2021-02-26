@@ -29,7 +29,7 @@
                     </div>
                     <div class="form-group required">
                         <label>Email címed</label>
-                        <input type="email" class="form-control" name="email" value="{{ $email }}"  data-describedby="validate_email">
+                        <input type="email" class="form-control" name="email" value="{{ $email }}" data-describedby="validate_email">
                         <div id="validate_email" class="validate_message"></div>
                     </div>
                     <div class="form-group required">
@@ -189,7 +189,8 @@
             <div class="col-md-6">
                 <div class="form-group required">
                     <label for="group_leader_email">Elérhetőség (Email cím)</label>
-                    <input type="email" name="group_leader_email" id="group_leader_email" value="{{ $group->group_leader_email ?: $user->email ?? '' }}" class="form-control">
+                    <input type="email" name="group_leader_email" id="group_leader_email" value="{{ $group->group_leader_email ?: $user->email ?? '' }}" class="form-control" data-describedby="validate_group_leader_email">
+                    <div id="validate_group_leader_email" class="validate_message"></div>
                 </div>
             </div>
         </div>
@@ -261,9 +262,11 @@
             return false;
         }
 
-        async function validateEmailAddress()
+        async function validateEmailAddress(item, checkUnique)
         {
-            const item = $("[name=email]", form);
+            if (typeof checkUnique === "undefined") {
+                checkUnique = true;
+            }
 
             if(item.length === 0) {
                 return true;
@@ -276,13 +279,16 @@
             } else if (!validate_email(item.val())) {
                 item.inputError("show", "Kérjük valós email címet adj meg.");
                 return false;
-            } else {
+            } else if(checkUnique) {
                 item.inputError("dismiss");
                 var response = await checkEmail(item);
                 if (!response.ok) {
                     item.inputError("show", "Ez az email cím már foglalt!");
                     return false
                 }
+                item.inputError("dismiss").inputOk();
+                return true;
+            } else {
                 item.inputError("dismiss").inputOk();
                 return true;
             }
@@ -403,7 +409,7 @@
             }
         }
 
-        $("input:not([name=email]):not(.institute-data):not([type=password]), select:not([name=institute_id]), textarea", $(".required", form)).on("focusout input change", function() {
+        $("input:not([name=email]):not(.institute-data):not([type=password]):not([name=group_leader_email]), select:not([name=institute_id]), textarea", $(".required", form)).on("focusout input change", function() {
             validateRequiredInput($(this));
         });
 
@@ -411,8 +417,12 @@
 
             if (typeof data === "undefined" || !data.send_request) {
                 e.preventDefault();
-                console.log(validateRequiredInputs(),validateUserName(),await validateEmailAddress(),validateInstitute(),validatePassword());
-                if(!validateRequiredInputs() || !validateUserName() || !await validateEmailAddress() || !validateInstitute() || !validatePassword()) {
+                if(!validateRequiredInputs()
+                    || !validateUserName()
+                    || !await validateEmailAddress($("[name=email]", form))
+                    || !await validateEmailAddress($("[name=group_leader_email]", form), false)
+                    || !validateInstitute()
+                    || !validatePassword()) {
                     return dialog.danger("Kérjük ellenőrizd az adataidat! A csillaggal jelölt mezők kitöltése kötelező!");
                 }
 
@@ -466,10 +476,14 @@
             }
         });
 
-        $("[name=email]", form).on("change focusout", function () {
-            if (validateEmailAddress($(this)) && !$("#group_leader_email", form).val()) {
+        $("[name=email]", form).on("change focusout", async function () {
+            if (await validateEmailAddress($(this)) && !$("#group_leader_email", form).val()) {
                 $("#group_leader_email").val($(this).val());
             }
+        });
+
+        $("[name=group_leader_email]", form).on("change focusout", function () {
+            validateEmailAddress($(this), false);
         });
 
         $("[type=password]").on("change focusout", function(){

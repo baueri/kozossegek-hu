@@ -83,6 +83,7 @@ class LoginController extends Controller
         ];
         try {
             if ($request->isPostRequestSent()) {
+                HoneyPot::validate('regisztracio');
                 if (!$request['password'] || $request['password'] !== $request['password_again']) {
                     Message::danger('A két jelszó nem egyezik!');
                 } else {
