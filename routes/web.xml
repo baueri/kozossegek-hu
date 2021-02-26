@@ -2,46 +2,60 @@
 <routes>
     <route-group namespace="App\Portal\Controllers\">
         <middleware name="App\Middleware\ComingSoon"/>
+        <route method="get" uri="test" as="test" controller="TestController" use="test"/>
 
-        <route method="get" uri="test" as="test" controller="TestController" use="testEmail"/>
+        <route method="all" uri="" as="home" controller="HomeController" use="home"/>
 
-        <route method="get" uri="" as="home" controller="HomeController" use="home"/>
+        <route method="all" uri="regisztracio" controller="LoginController" use="register" as="portal.register"/>
 
-        <route method="get" uri="kozossegek" as="portal.groups" controller="GroupController" use="kozossegek"/>
+        <route method="all" uri="kozossegek" as="portal.groups" controller="GroupController" use="kozossegek"/>
         <route method="all" uri="kozosseg-regisztracio" as="portal.register_group" controller="GroupController" use="kozossegRegisztracio"/>
+
+        <route method="all" uri="[A-Z][a-z]+" as="portal.groups.in_city" controller="GroupController" use="kozossegek"/>
         <route method="get" uri="kozossegek/page/{page}/" as="portal.groups.page" controller="GroupController" use="kozossegek"/>
         <route method="get" uri="kozosseg/{varos}/{intezmeny}/{kozosseg}" as="kozosseg" controller="GroupController" use="kozosseg"/>
+        <route method="get" uri="kozosseg/{varos}/{intezmeny}" as="portal.institute_groups" controller="GroupController" use="intezmenyKozossegek"/>
+<!--        <route method="get" uri="kozosseg/{varos}/{intezmeny}/{kozosseg}" as="kozosseg" controller="GroupController" use="kozosseg"/>-->
+
         <route method="get" uri="feedback" as="portal.feedback" view="portal.feedback"/>
 
         <!-- Közösség kapcsolatfelvételi űrlap -->
         <route method="post" uri="group-contact-form" as="portal.group-contact-form" controller="GroupController" use="groupContactForm"/>
-        <route method="post" uri="send-contact-message" as="portal.contact-group" controller="GroupController" use="sendContactMessage"/>
+        <route method="post" uri="send-contact-message" as="portal.contact-group" controller="GroupController" use="sendContactMessage" middleware="Framework\Middleware\JsonApi"/>
 
         <route method="get" uri="forgot-password" as="portal.forgot_password" view="portal.forgot-password"/>
         <route method="post" uri="reset-password" as="portal.reset_password" controller="UserController" use="resetPassword"/>
         <route method="all" uri="recover-password" as="portal.recover_password" controller="UserController" use="recoverPassword"/>
-        <route method="all" uri="/user/activate" as="portal.user.activate" controller="UserController" use="activateUser"/>
 
         <route-group middleware="App\Middleware\LoggedInMiddleware">
             <route method="get" uri="profile" as="portal.my_profile" controller="UserController" use="profile"/>
             <route method="post" uri="profile/update" as="portal.profile.update" controller="UserController" use="update"/>
-            
-            <route method="get" uri="my-group" as="portal.my_group" controller="GroupController" use="myGroup"/>
-            <route method="get" uri="my-group/{id}/edit" as="portal.edit_my_group" controller="GroupController" use="myGroup"/>
+
+            <route method="get" uri="my-group/{id}/edit" as="portal.edit_group" controller="GroupController" use="editGroup"/>
+            <route method="get" uri="my-group/{id}/download-document" as="portal.download_document" controller="GroupController" use="downloadDocument"/>
             <route method="get" uri="my-groups" as="portal.my_groups" controller="GroupController" use="myGroups"/>
+
+            <route method="get" uri="my-group/{id}/delete" as="portal.delete_group" controller="GroupController" use="deleteGroup"/>
             <route method="post" uri="my-group/{id}/update" as="portal.my_group.update" controller="GroupController" use="updateMyGroup"/>
-            <route method="post" uri="create-group" as="portal.my_group.create" controller="GroupController" use="createMyGroup"/>
         </route-group>
+
+        <route method="get" uri="sikeres-regisztracio" as="portal.group.create_group_success" controller="GroupController" use="registrationSuccess"/>
+
+        <route method="post" uri="create-group" as="portal.my_group.create" controller="GroupController" use="createGroup"/>
     </route-group>
+
+    <route method="all" uri="/user/activate" as="portal.user.activate" controller="App\Portal\Controllers\UserController" use="activateUser"/>
+    <route method="post" uri="login-modal" as="portal.login_modal" view="portal.partials.login_modal"/>
 
     <!-- BELÉPÉS -->
     <route method="get" uri="login" controller="App\Portal\Controllers\LoginController" use="login" as="login"/>
     <route method="post" uri="login" controller="App\Portal\Controllers\LoginController" use="doLogin"/>
     <route method="get" uri="logout" controller="App\Portal\Controllers\LoginController" use="logout" as="logout"/>
+    <route method="post" uri="resend-activation" controller="App\Portal\Controllers\LoginController" use="resendActivationEmail" as="resend_activation"/>
 
     <!-- VÍZJELES KÉPGENERÁLÁS -->
-    <route method="get" uri="/media/{entity_type}/images/{image}" as="watermark_image" controller="App\Portal\Controllers\ImageController" use="getImageWithWatermark"/>
-    
+    <route method="get" uri="/media/{entity_type}/images/{image}" as="watermark_image" controller="App\Portal\Controllers\ImageController" use="getImage"/>
+
     <!-- Adatbázisban tárolt statikus oldalak. FIGYELEM!!!! EZ ALÁ MÁR NE KERÜLJÖN ROUTE!!! -->
     <route method="get" uri="{slug}" controller="App\Portal\Controllers\PageController" use="page" as="portal.page" middleware="App\Middleware\ComingSoon"/>
 </routes>

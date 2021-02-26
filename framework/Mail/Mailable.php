@@ -11,12 +11,12 @@ class Mailable
     /**
      * @var string[]
      */
-    public $from;
+    public ?array $from = [];
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $view;
+    protected ?string $view = null;
 
     /**
      * @var array
@@ -26,8 +26,14 @@ class Mailable
     /**
      * @var string
      */
-    public $subject;
+    public string $subject = '';
 
+    /**
+     * @var string|null
+     */
+    public ?string $message = null;
+
+    protected bool $useDefaultTemplate = false;
 
     /**
      * @param  string $view
@@ -52,7 +58,8 @@ class Mailable
     }
 
     /**
-     * @param  string $from
+     * @param string $from
+     * @param string|null $name
      * @return static
      */
     final public function from(string $from, string $name = null)
@@ -69,14 +76,47 @@ class Mailable
         return $this;
     }
 
-    public function getBody():string
+    public function getBody(): string
     {
-        return view($this->view, $this->viewData);
+        if ($this->view) {
+            return view($this->view, $this->viewData);
+        }
+
+        $message = str_replace("\n", "<br/>", $this->message);
+
+        if ($this->useDefaultTemplate) {
+            return view('mail.default_template', ['message' => $message]);
+        }
+
+        return $message;
     }
 
     /**
      * @return void
      */
-    public function build(){}
+    public function build()
+    {
+    }
 
+    public function getView()
+    {
+        return $this->view;
+    }
+
+    public function getVariableNames()
+    {
+        return array_keys($this->viewData);
+    }
+
+    public function setMessage(string $message)
+    {
+        $this->message = $message;
+
+        return $this;
+    }
+
+    public function usingDefaultTemplate()
+    {
+        $this->useDefaultTemplate = true;
+    }
 }

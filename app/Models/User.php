@@ -25,7 +25,7 @@ class User extends Model
     public $email;
 
     public $last_login;
-    
+
     public $user_group;
 
     public $activated_at;
@@ -42,14 +42,19 @@ class User extends Model
     {
         return $this->hasUserGroup('SUPER_ADMIN');
     }
-    
+
     public function hasUserGroup($group)
     {
         return $this->user_group == $group;
     }
-    
+
     public function firstName()
     {
         return substr($this->name, strpos($this->name, ' '));
+    }
+
+    public function isActive()
+    {
+        return $this->activated_at !== '0000-00-00 00:00:00' && !is_null($this->activated_at);
     }
 }

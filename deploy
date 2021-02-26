@@ -1,0 +1,44 @@
+#!/usr/bin/php
+<?php
+
+global $argv;
+
+include "vendor/autoload.php";
+
+define('ROOT', __DIR__ . DS);
+
+$env = isset($argv[1]) ? $argv[1] : die("Nincs megadva a környezet\n\n");
+
+in_array($env, ['development', 'production']) or die("Nincs ilyen környezet!\n\n");
+
+$deploy = php_deploy($env, __DIR__);
+
+function full(\PHPDeploy\PHPDeploy $deploy)
+{
+    $deploy->log('running full deploy...')
+        ->task('prepare:files', ['app', 'config', 'framework', 'public', 'resources', 'routes', 'boot.php', 'composer.json'])
+        ->task('deploy:composer-install')
+        ->task('deploy:migrate')
+        ->task('deploy:composer-install', '--no-dev')
+        ->task('deploy:files')
+        ->task('site:up')
+        ->task('deploy:remove-old-deploy')
+        ->run();
+}
+
+function files_only(\PHPDeploy\PHPDeploy $deploy)
+{
+    $deploy->log('deploying files only...')
+        ->task('prepare:files', ['app', 'config', 'framework', 'public', 'resources', 'routes', 'boot.php', 'composer.json'])
+        ->task('deploy:composer-install', '--no-dev')
+        ->task('deploy:files')
+        ->task('site:up')
+        ->task('deploy:remove-old-deploy')
+        ->run();
+}
+
+if (in_array('--files-only', $argv)) {
+    files_only($deploy);
+} else {
+    full($deploy);
+}

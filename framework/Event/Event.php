@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Framework\Event;
-
 
 abstract class Event
 {
@@ -10,7 +8,7 @@ abstract class Event
      * @var EventListener[]
      */
     protected static $listeners = [];
-    
+
     /*
      * @return EventListener[]
      */
@@ -18,10 +16,9 @@ abstract class Event
     {
         return static::$listeners;
     }
-    
-    public static function listen(string $listenerClassName)
+
+    public static function listen($listenerClassName)
     {
         static::$listeners[] = $listenerClassName;
     }
-    
 }

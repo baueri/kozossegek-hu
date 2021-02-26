@@ -2,6 +2,10 @@
 
 namespace App\Admin\Controllers\Api;
 
+use App\Repositories\PageRepository;
+use Framework\Http\Request;
+use Framework\Support\StringHelper;
+
 /**
  * Description of ApiPageController
  *
@@ -10,16 +14,16 @@ namespace App\Admin\Controllers\Api;
 class ApiPageController
 {
 
-    public function generateSlug(\Framework\Http\Request $request, \App\Repositories\PageRepository $repository)
+    public function generateSlug(Request $request, PageRepository $repository)
     {
         $title = $request['title'];
 
-        $slug = $originalSlug = \Framework\Support\StringHelper::slugify($title);
+        $slug = $originalSlug = StringHelper::slugify($title);
 
         while ($repository->findBySlug($slug)) {
             preg_match('/-([0-9]+)$/', $slug, $matches);
 
-            $number = isset($matches[1]) ? $matches[1]+1 : 1;
+            $number = isset($matches[1]) ? $matches[1] + 1 : 1;
 
             $slug = "$originalSlug-$number";
         }

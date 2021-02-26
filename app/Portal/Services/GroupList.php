@@ -1,17 +1,13 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 namespace App\Portal\Services;
 
 use App\Enums\GroupStatusEnum;
 use App\Repositories\AgeGroups;
+use App\Repositories\GroupStatusRepository;
 use App\Repositories\OccasionFrequencies;
-use Framework\Http\Request;
+use Framework\Support\Collection;
+use ReflectionException;
 
 /**
  * Description of GroupList
@@ -24,50 +20,50 @@ class GroupList
     /**
      * @var SearchGroupService
      */
-    private $service;
-
-    /**
-     * @var Request
-     */
-    private $request;
+    private SearchGroupService $service;
 
     /**
      * @var AgeGroups
      */
-    private $ageGroups;
+    private AgeGroups $ageGroups;
 
     /**
      * @var OccasionFrequencies
      */
-    private $occasionFrequencies;
+    private OccasionFrequencies $occasionFrequencies;
 
     public function __construct(
-        Request $request,
         SearchGroupService $service,
         OccasionFrequencies $occasionFrequencies,
         AgeGroups $ageGroups
-    )
-    {
+    ) {
         $this->occasionFrequencies = $occasionFrequencies;
         $this->ageGroups = $ageGroups;
-        $this->request = $request;
         $this->service = $service;
     }
-    
-    public function getHtml()
+
+    /**
+     * @param Collection $request
+     * @return string
+     * @throws ReflectionException
+     */
+    public function getHtml(Collection $request)
     {
-        $filter = $this->request->only('varos', 'search', 'korosztaly', 'rendszeresseg', 'tags');
-        $filter['order_by'] = ['city', 'district'];
+        $filter = $request->only('search', 'korosztaly', 'rendszeresseg', 'tags', 'institute_id');
+        $filter['varos'] = $request['varos'];
+
+//        $filter['order_by'] = ['city', 'district'];
+//        $filter['sort'] = 'asc';
         $filter['pending'] = 0;
         $filter['status'] = GroupStatusEnum::ACTIVE;
         $groups = $this->service->search($filter, 18);
-        
+        $statuses = (new GroupStatusRepository())->all();
+
         if ($groupIds = $groups->pluck('id')->all()) {
             $group_tags = builder('v_group_tags')->whereIn('group_id', $groupIds)->get();
+            $groups->withMany($group_tags, 'tags', 'id', 'group_id');
         }
-        
-        $groups->withMany($group_tags, 'tags', 'id', 'group_id');
-        $template = $this->request['view'] ?: 'grid2';
+
         $model = [
             'groups' => $groups,
             'occasion_frequencies' => $this->occasionFrequencies->all(),
@@ -75,10 +71,11 @@ class GroupList
             'page' => $groups->page(),
             'total' => $groups->total(),
             'perpage' => $groups->perpage(),
-            'filter' => $filter,
-            'selected_tags' => explode(',', $filter['tags']),
+            'filter' => collect($filter),
+            'selected_tags' => array_filter(explode(',', $filter['tags'] ?? '')),
             'tags' => builder('tags')->get(),
-            'template' => $template
+            'header_background' => '/images/kozosseget_keresek.jpg',
+            'statuses' => $statuses,
         ];
 
         return view('portal.kozossegek', $model);

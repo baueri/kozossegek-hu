@@ -2,13 +2,13 @@
 @extends('admin')
 <form method="post" action="{{ $action }}">
     <div class="row">
-        <div class="col-lg-3">
+        <div class="col-lg-5">
             <div class="form-group">
                 <label>Név</label>
                 <input type="text" name="name" class="form-control" value="{{ $widget->name }}">
             </div>
         </div>
-        <div class="col-lg-2 col-md-3">
+        <div class="col-lg-3 col-md-4">
             <div class="form-group">
                 <label>Egyedi azonosító</label>
                 <input type="text" name="uniqid" class="form-control" value="{{ $widget->uniqid }}">

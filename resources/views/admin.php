@@ -5,8 +5,11 @@
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name='robots' content='noindex,noarchive' />
+
     <title>kozossegek.hu - ADMIN</title>
 
+    <link href="https://fonts.googleapis.com/css?family=Montserrat|Work+Sans:400,700|Merriweather|Roboto+Condensed:wght@300;400" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
     <link rel="stylesheet" href="/assets/sidebar-09/css/style.css">
@@ -19,16 +22,19 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.9/js/bootstrap-dialog.min.js"></script>
 
     @yield('header')
+<!--    <script src="/assets/jquery-ui/jquery-ui.min.js"></script>-->
+<!--    <link rel="stylesheet" href="/assets/jquery-ui/jquery-ui.min.css">-->
     <link rel="stylesheet" href="/css/admin.css">
+    <script src="/js/dialog.js"></script>
     <script src="/js/admin.js"></script>
     <script src="/assets/sidebar-09/js/main.js"></script>
 
 </head>
-<body>
+<body @if($show_debugbar)class="has-debugbar"@endif>
 <nav id="top_menu" class="navbar navbar-expand navbar-dark bg-dark fixed-top">
     <ul class="navbar-nav mr-auto">
         <li class="nav-item" id="mobile_menu_toggle">
-            <a class="nav-link"><i class="fa fa-bars"></i>
+            <a class="nav-link"><i class="fa fa-bars"></i></a>
         </li>
         @if(isset($current_menu_item['submenu']))
             @foreach($current_menu_item['submenu'] as $submenuItem)

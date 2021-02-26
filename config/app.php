@@ -1,6 +1,8 @@
 <?php
+
 return [
     'site_url' => _env('SITE_URL', 'http://kozossegek.local'),
+    'site_name' => _env('SITE_NAME', 'kozossegek.local'),
     'environment' => _env('ENVIRONMENT', 'development'),
     'base_auth' => _env('BASE_AUTH', false),
     'base_auth.user' => 'kozossegek',
@@ -16,6 +18,7 @@ return [
     'email_port' => _env('EMAIL_PORT'),
     'email_ssl' => _env('EMAIL_SSL'),
 
+    'contact_email' => _env('CONTACT_EMAIL', 'birkaivan@gmail.com'),
     'error_email' => _env('ERROR_EMAIL', 'birkaivan@gmail.com'),
 
     'providers' => [

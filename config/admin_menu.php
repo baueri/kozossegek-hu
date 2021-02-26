@@ -1,10 +1,10 @@
- <?php
+<?php
 
 return [
     [
-        'title' => 'Vezérlőpult',
+        'title' => 'Áttekintés',
         'icon' => 'home',
-        'as' => 'admin.dashboard'
+        'as' => 'admin.dashboard',
     ],
     [
         'title' => 'Tartalom',
@@ -15,7 +15,7 @@ return [
                 'title' => 'Oldalak',
                 'icon' => 'file',
                 'as' => 'admin.page.list',
-                'similars' => ['admin.page.edit', 'admin.page.trash']
+                'similars' => ['admin.page.edit', 'admin.page.trash'],
             ], [
                 'title' => 'Új oldal',
                 'icon' => 'plus',
@@ -23,21 +23,21 @@ return [
             ], [
                 'title' => 'Feltöltések',
                 'icon' => 'images',
-                'as' => 'admin.content.upload.list'
-            ]
-        ]
+                'as' => 'admin.content.upload.list',
+            ],
+        ],
     ],
     [
         'title' => 'Közösségek',
         'icon' => 'comments',
         'as' => 'admin.group.list',
-        'similars' => ['admin.group.create'],
+        'similars' => ['admin.group.create', 'admin.group.do_create'],
         'submenu' => [
             [
                 'title' => 'Közösségek',
                 'icon' => 'comments',
                 'as' => 'admin.group.list',
-                'similars' => ['admin.group.edit']
+                'similars' => ['admin.group.edit', 'admin.group.trash', 'admin.group.validate', 'admin.group.list.pending'],
             ],
             [
                 'title' => 'Új közösség',
@@ -52,14 +52,14 @@ return [
             [
                 'title' => 'Címkék',
                 'icon' => 'tags',
-                'as' => 'admin.tags.list'
+                'as' => 'admin.tags.list',
             ],
             [
                 'title' => 'Karbantartás',
                 'icon' => 'exclamation-triangle',
-                'as' => 'admin.group.maintenance'
+                'as' => 'admin.group.maintenance',
             ],
-        ]
+        ],
     ],
     [
         'title' => 'Intézmények',
@@ -70,7 +70,7 @@ return [
                 'title' => 'Intézmények',
                 'icon' => 'church',
                 'as' => 'admin.institute.list',
-                'similars' => ['admin.institute.edit']
+                'similars' => ['admin.institute.edit'],
             ],
             [
                 'title' => 'Új intézmény',
@@ -80,9 +80,9 @@ return [
             [
                 'title' => 'Importálás',
                 'icon' => 'cloud-upload-alt',
-                'as' => 'admin.institute.import'
-            ]
-        ]
+                'as' => 'admin.institute.import',
+            ],
+        ],
     ],
     [
         'title' => 'Felhasználók',
@@ -98,28 +98,15 @@ return [
             [
                 'title' => 'Új felhasználó',
                 'icon' => 'plus',
-                'as' => 'admin.user.create'
-            ]
-        ]
+                'as' => 'admin.user.create',
+            ],
+        ],
     ],
 
     [
-        'title' => 'Email sablon',
+        'title' => 'Email sablonok',
         'icon' => 'envelope',
         'as' => 'admin.email_template.list',
-    ],
-    [
-        'title' => 'Widgetek',
-        'icon' => 'layer-group',
-        'as' => 'admin.widget.list',
-        'similars' => ['admin.widget.create', 'admin.widget.edit'],
-        'submenu' => [
-            [
-                'title' => 'Widgetek',
-                'icon' => 'layer-group',
-                'as' => 'admin.widget.list',
-            ]
-        ]
     ],
     [
         'title' => 'Gépház',
@@ -138,20 +125,20 @@ return [
             ],
             [
                 'title' => 'Hibanapló',
-                'icon' => 'exclamation-circle ' . (file_exists(ROOT . 'error.log') && filesize(ROOT . 'error.log') ? 'text-danger' : ''),
+                'icon' => 'exclamation-circle ' . (site_has_error_logs() ? 'text-danger' : ''),
                 'as' => 'admin.error_log',
             ],
             [
                 'title' => 'Verzióinformáció',
                 'icon' => 'info-circle',
-                'as' => 'admin.release_notes'
-            ]
-        ]
+                'as' => 'admin.release_notes',
+            ],
+        ],
     ],
     [
         'title' => 'Kilépés',
         'link_class' => 'text-danger',
         'icon' => 'sign-out-alt',
-        'as' => 'logout'
+        'as' => 'logout',
     ],
 ];

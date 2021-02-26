@@ -1,9 +1,7 @@
 <?php
 
-
 namespace App;
 
-use App\Admin\Components\DebugBar\ErrorTab;
 use App\Middleware\DebugBarMiddleware;
 use App\Middleware\ListenViewLoading;
 use Framework\Middleware\BaseAuthMiddleware;
@@ -11,7 +9,7 @@ use Framework\Middleware\TranslationRoute;
 use Framework\Middleware\AuthMiddleware;
 use Framework\Mail\Mailer;
 use App\Mailable\CriticalErrorEmail;
-use App\Components\Widget\WidgetServiceProvider;
+use App\Components\Widget\AppServiceProvider;
 use Framework\Middleware\CheckMaintenance;
 
 class HttpKernel extends \Framework\Http\HttpKernel
@@ -23,7 +21,7 @@ class HttpKernel extends \Framework\Http\HttpKernel
         TranslationRoute::class,
         CheckMaintenance::class,
         AuthMiddleware::class,
-        WidgetServiceProvider::class,
+        AppServiceProvider::class,
     ];
 
     public function handleMaintenance()
@@ -33,7 +31,7 @@ class HttpKernel extends \Framework\Http\HttpKernel
 
     public function handleError($error)
     {
-        if ($error->getCode() != '404' && is_prod()) {
+        if ($error->getCode() != '404') {
             $mail = (new CriticalErrorEmail($error));
 
             $mail->build();
@@ -42,9 +40,6 @@ class HttpKernel extends \Framework\Http\HttpKernel
 
             $mailer->to(config('app.error_email'))->send($mail);
         }
-
-        $content = "<pre style='white-space:pre-line'><h3>Unexpected error (" . get_class($error) . ")</h3> {$error->getMessage()} in <b>{$error->getFile()}</b> on line <b>{$error->getLine()}</b> \n\n {$error->getTraceAsString()}</pre>";
-        debugbar()->tab(ErrorTab::class)->pushError($content);
 
         parent::handleError($error);
     }

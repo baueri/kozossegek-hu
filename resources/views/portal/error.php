@@ -2,13 +2,17 @@
 <div class="container text-center">
     <div id="error-pg">
         <div class="error-pg">
-            @if($code)
+            @if(isset($code))
                 <div class="error-pg-404">
                     <h1>{{ $code}}</h1>
                 </div>
             @endif
-            <h2>{{ $message }}</h2>
-            @if($message2)
+
+            @if(isset($message))
+                <h2>{{ $message }}</h2>
+            @endif
+
+            @if(isset($message2))
                 <p>{{ $message2 }}</p>
             @endif
             <p><a href="@route('home')">Vissza a főoldalra</a></p>
@@ -23,7 +27,7 @@
         width: 100%;
         line-height: 1.4;
         text-align: center;
-        padding: 15px;
+        padding: 8em;
     }
 
     .error-pg .error-pg-404 {

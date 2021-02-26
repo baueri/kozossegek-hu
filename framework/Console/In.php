@@ -55,6 +55,15 @@ class In
         }
     }
 
+    public function confirm(string $question, $accept = 'y')
+    {
+        Out::writeln("$question [y/n]:");
+
+        $this->read("%s", $answer);
+
+        return $answer === $accept;
+    }
+
     public function read($format = null, &...$args)
     {
         $input = null;

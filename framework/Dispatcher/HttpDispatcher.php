@@ -4,6 +4,7 @@ namespace Framework\Dispatcher;
 
 use Exception;
 use Framework\Application;
+use Framework\Http\Cookie;
 use Framework\Http\HttpKernel;
 use Framework\Http\Request;
 use Framework\Http\Route\RouteInterface;
@@ -13,28 +14,15 @@ use Framework\Http\Exception\PageNotFoundException;
 
 class HttpDispatcher implements Dispatcher
 {
-    /**
-     * @var Application
-     */
-    private $app;
+    private Application $app;
+
+    private RouterInterface $router;
+
+    private Request $request;
+
+    private HttpKernel $kernel;
 
     /**
-     * @var RouterInterface
-     */
-    private $router;
-
-    /**
-     * @var Request
-     */
-    private $request;
-
-    /**
-     * @var HttpKernel
-     */
-    private $kernel;
-
-    /**
-     * HttpDispatcher constructor.
      * @param Application $app
      * @param Request $request
      * @param RouterInterface $router
@@ -47,7 +35,7 @@ class HttpDispatcher implements Dispatcher
         $this->request = $request;
         $this->kernel = $kernel;
 
-        \Framework\Http\Cookie::setTestCookie();
+        Cookie::setTestCookie();
     }
 
     /**
@@ -55,8 +43,6 @@ class HttpDispatcher implements Dispatcher
      */
     public function dispatch(): void
     {
-//        header('Accept-Encoding: gzip, deflate');
-
         $route = $this->getCurrentRoute();
 
         if (!$route->getView() && $route->getController() && !class_exists($route->getController())) {
@@ -91,7 +77,6 @@ class HttpDispatcher implements Dispatcher
      */
     private function resolveRoute(RouteInterface $route)
     {
-
         if ($route->getView()) {
             return $this->resolveView();
         }

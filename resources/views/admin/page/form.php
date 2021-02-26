@@ -1,18 +1,29 @@
 @section('header')
     @include('asset_groups.editor')
 @endsection
-
 @extends('admin')
+@if($page->deleted_at)
+    @alert('danger')
+        <b>Töröl oldal!</b>
+    @endalert
+@endif
 <form method="post" action="{{ $action }}">
     <div class="row">
         <div class="col-md-9">
-            <div class="form-group">
-                <label>Oldal címe</label>
-                <input type="text" class="form-control" name="title" value="{{ $page->title }}">
-            </div>
-            <div class="form-group">
-                <label>(Szép) url</label>
-                <input type="text" class="form-control" name="slug" value="{{ $page->slug }}">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <label>Oldal címe</label>
+                        <input type="text" class="form-control" name="title" value="{{ $page->title }}">
+                    </div>
+                </div>
+                <div class="col-md-4">
+
+                    <div class="form-group">
+                        <label>(Szép) url</label>
+                        <input type="text" class="form-control" name="slug" value="{{ $page->slug }}">
+                    </div>
+                </div>
             </div>
             <div class="form-group">
                 <label>Tartalom</label>
@@ -26,6 +37,11 @@
                     <option value="PUBLISHED" {{ $page->status == "PUBLISHED" ? "selected" : "" }}>Közzétéve</option>
                     <option value="DRAFT" {{ $page->status == "DRAFT" ? "selected" : "" }}>Piszkozat</option>
                 </select>
+            </div>
+
+            <div class="form-group">
+                <label>Fejléc háttérkép</label>
+                <input type="text" class="form-control" name="header_image" value="{{ $page->header_image }}"/>
             </div>
             @if($page)
                 <p>

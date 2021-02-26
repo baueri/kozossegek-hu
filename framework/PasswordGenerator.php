@@ -8,31 +8,27 @@ use InvalidArgumentException;
 
 class PasswordGenerator
 {
-    const LETTERS = 'abcdefghijklmnopqrstuvwxyz';
-    const NUMBERS = '0123456789';
+    public const LETTERS = 'abcdefghijklmnopqrstuvwxyz';
+    public const NUMBERS = '0123456789';
 
-    const OPTION_LOWER = 'LOWER';
-    const OPTION_UPPER = 'UPPER';
-    const OPTION_NUMBERS = 'NUMBER';
+    public const OPTION_LOWER = 'LOWER';
+    public const OPTION_UPPER = 'UPPER';
+    public const OPTION_NUMBERS = 'NUMBER';
 
-    private $settings = [
+    private array $settings = [
         self::OPTION_LOWER => true,
         self::OPTION_UPPER => true,
         self::OPTION_NUMBERS => true,
     ];
 
-    private $length;
+    private int $length;
 
-    /**
-     * PasswordGenerator constructor.
-     * @param int $length
-     */
-    public function __construct($length = 8)
+    public function __construct(int $length = 8)
     {
         $this->length = $length;
     }
 
-    public function generate()
+    public function generate(): string
     {
         $pattern = $this->settings[self::OPTION_LOWER] ? self::LETTERS : '';
         if ($this->settings[self::OPTION_UPPER]) {
@@ -50,7 +46,7 @@ class PasswordGenerator
         return $pwd;
     }
 
-    public function setOpt($option, $value)
+    public function setOpt($option, $value): PasswordGenerator
     {
         if (!isset($this->settings[$option])) {
             throw new InvalidArgumentException('Invalid password option: ' . $option);
@@ -60,6 +56,24 @@ class PasswordGenerator
         }
 
         $this->settings[$option] = $value;
+        return $this;
+    }
+
+    public function useLower(bool $use): PasswordGenerator
+    {
+        $this->setOpt(self::OPTION_LOWER, $use);
+        return $this;
+    }
+
+    public function useUpper(bool $use): PasswordGenerator
+    {
+        $this->setOpt(self::OPTION_UPPER, $use);
+        return $this;
+    }
+
+    public function useNumbers(bool $use): PasswordGenerator
+    {
+        $this->setOpt(self::OPTION_NUMBERS, $use);
         return $this;
     }
 

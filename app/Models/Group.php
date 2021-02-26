@@ -2,12 +2,9 @@
 
 namespace App\Models;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
+use App\Enums\GroupStatusEnum;
+use App\Enums\JoinMode;
+use Framework\File\File;
 use Framework\Model\Model;
 use Framework\Model\TimeStamps;
 use Framework\Support\StringHelper;
@@ -23,38 +20,115 @@ class Group extends Model
 {
     use TimeStamps;
 
+    /**
+     * Közösség neve
+     * @var string
+     */
     public $name;
 
+    /**
+     * Bemutatkozás
+     * @var string
+     */
     public $description;
 
+    /**
+     * Felekezet
+     * @var string
+     */
     public $denomination;
 
+    /**
+     * Intézmény azonosító
+     * @var int
+     */
     public $institute_id;
 
+    /**
+     * Közösségvezetők
+     * @var string
+     */
     public $group_leaders;
 
+    /**
+     * Kapcsolattartó email címe
+     * @var string
+     */
     public $group_leader_email;
 
+    /**
+     * Kapcsolattartó telefonszáma
+     * @var string
+     */
     public $group_leader_phone;
 
+    /**
+     * Lelkiségi mozgalom azonosítója
+     * @var int
+     */
     public $spiritual_movement_id;
 
+    /**
+     * Korosztályok
+     * @var string
+     */
     public $age_group;
 
+    /**
+     * Alkalmak gyakorisága
+     * @var string
+     */
     public $occasion_frequency;
 
+    /**
+     * Megjelenési állapot
+     * @see GroupStatusEnum
+     * @var string
+     */
     public $status;
 
+    /**
+     * Mely napokon tartják az alkalmakat
+     * @var string
+     */
     public $on_days;
-    
+
+    /**
+     * Karbantartó felhasználó azonosítója
+     * @var int
+     */
     public $user_id;
-    
+
+    /**
+     * Függőben van-e (0,1)
+     * @var int
+     */
     public $pending;
+
+    /**
+     * Feltöltött dokumentum neve
+     * @var string
+     */
+    public $document;
 
     /**
      * @var Institute|null
      */
     public $institute;
+
+    /**
+     * Csatlakozás módja
+     *
+     * @var string
+     */
+    public $join_mode;
+
+    /**
+     * @var string
+     */
+    public $tags;
+
+    public $image_url;
 
 
     /**
@@ -84,7 +158,7 @@ class Group extends Model
             $daysTranslated[$day] = lang("day.$day");
         }
 
-        return $daysTranslated;
+        return collect($daysTranslated);
     }
 
     /**
@@ -116,7 +190,7 @@ class Group extends Model
     {
         $dir = $this->getStorageImageDir();
 
-        $images = collect(glob("$dir*.jpg"))->map(function($image) {
+        $images = collect(glob("$dir*.jpg"))->map(function ($image) {
             return "/media/groups/images/" . basename($image);
         });
 
@@ -129,21 +203,6 @@ class Group extends Model
         }
 
         return ["/images/default_thumbnail.jpg"];
-
-    }
-
-    /**
-     * @todo !!!
-     * @return string
-     */
-    public function getThumbnail()
-    {
-        return $this->getFirstImage();
-    }
-
-    public function getFirstImage()
-    {
-        return $this->getImages()[0];
     }
 
     public function getStorageImageDir()
@@ -151,6 +210,11 @@ class Group extends Model
         return GroupHelper::getStoragePath($this->id);
     }
 
+
+    public function joinMode(): string
+    {
+        return JoinMode::getText($this->join_mode) ?? '';
+    }
 
     /**
      * @todo képmentést megoldani!!!
@@ -160,22 +224,66 @@ class Group extends Model
     {
         return false;
     }
-    
+
     public function isVisibleBy(?User $user)
     {
         if ($user && ($user->isAdmin() || $this->user_id == $user->id)) {
             return true;
         }
-        
-        if ($this->pending == 0 && $this->status == \App\Enums\GroupStatusEnum::ACTIVE) {
+
+        if ($this->pending == 0 && $this->status == GroupStatusEnum::ACTIVE) {
             return true;
         }
-        
+
         return false;
     }
-    
+
     public function getEditUrl()
     {
-        return route('portal.edit_my_group', $this);
+        return get_site_url() . route('portal.edit_group', $this);
+    }
+
+    public function isEditableBy(?User $user)
+    {
+        if (!$user) {
+            return false;
+        }
+
+        return $user->isAdmin() || $user->id == $this->user_id;
+    }
+
+    public function hasDocument()
+    {
+        return file_exists($this->getDocumentPath());
+    }
+
+    public function getDocument(): ?File
+    {
+        return new File($this->getDocumentPath());
+    }
+
+    public function getDocumentPath()
+    {
+        if (!$this->document) {
+            return '';
+        }
+
+        return GroupHelper::getStoragePath($this->id) . $this->document;
+    }
+
+    public function getDocumentUrl()
+    {
+        return "/my-group/{$this->id}/download-document";
+    }
+
+    public function isRejected()
+    {
+        return $this->pending == -1;
+    }
+
+    public function setToPending()
+    {
+        $this->pending = 1;
+        return $this;
     }
 }

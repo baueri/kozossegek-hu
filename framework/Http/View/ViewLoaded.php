@@ -1,17 +1,20 @@
 <?php
 
-
 namespace Framework\Http\View;
-
 
 use Framework\Event\Event;
 
 class ViewLoaded extends Event
 {
-    public $filePath;
+    protected static $listeners = [];
 
-    public function __construct($filePath)
+    public string $filePath;
+
+    public string $cachedFilePath;
+
+    public function __construct(string $filePath, string $cachedFilePath)
     {
         $this->filePath = $filePath;
+        $this->cachedFilePath = $cachedFilePath;
     }
 }

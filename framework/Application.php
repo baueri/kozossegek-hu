@@ -1,27 +1,28 @@
 <?php
 
-
 namespace Framework;
 
+use Error;
+use Exception;
 use Framework\Container\Container;
 use Framework\Database\BootListeners;
 use Framework\Database\QueryHistory;
 use Framework\Dispatcher\Dispatcher;
 use Framework\Http\View\Bootstrappers\BootDirectives;
 use Framework\Support\Config\Config;
-
+use Throwable;
 
 class Application extends Container
 {
     /**
-     * @var static
+     * @var Application|null
      */
-    protected static $singleton = null;
+    protected static ?Application $singleton = null;
 
     /**
-     * @var Bootstrapper[]
+     * @var Bootstrapper[]|string[]
      */
-    protected $bootstrappers = [
+    protected array $bootstrappers = [
         BootDirectives::class,
         BootListeners::class,
     ];
@@ -30,10 +31,11 @@ class Application extends Container
 
     /**
      * Application constructor.
+     * @throws Exception
      */
     public function __construct()
     {
-        $this->singleton(static::class, function() {
+        $this->singleton(static::class, function () {
             return static::getInstance();
         });
 
@@ -64,7 +66,7 @@ class Application extends Container
     }
 
     /**
-     * @param string $key
+     * @param string|null $key
      * @param mixed $default
      * @return Config|mixed
      */
@@ -78,7 +80,7 @@ class Application extends Container
     }
 
     /**
-     * @param \Error|\Exception|\Throwable $e
+     * @param Error|Exception|Throwable $e
      */
     public function handleError($e)
     {
@@ -98,5 +100,20 @@ class Application extends Container
     public function setLocale($lang)
     {
         $this->locale = $lang;
+    }
+
+    public function envIs(string $env): bool
+    {
+        return $this->getEnvironment() === $env;
+    }
+
+    public function getEnvironment(): string
+    {
+        return config('app.environment');
+    }
+
+    public function isTest(): bool
+    {
+        return $this->envIs('test');
     }
 }

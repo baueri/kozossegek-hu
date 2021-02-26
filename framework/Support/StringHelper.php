@@ -19,6 +19,7 @@ class StringHelper
      */
     public static function more($text, $numberOfWords, $moreText = '')
     {
+        $text = strip_tags($text);
         if (str_word_count($text, 0) > $numberOfWords) {
             $words = str_word_count($text, 2);
             $pos = array_keys($words);
@@ -29,16 +30,15 @@ class StringHelper
     }
 
     /**
-     *
-     * @param string $text
+     * @param string|null $text
      * @param int $numberOfCharacters
      * @param string $moreText
      * @return string
      */
-    public static function shorten($text, $numberOfCharacters, $moreText = '')
+    public static function shorten(?string $text, int $numberOfCharacters, $moreText = ''): string
     {
-        if (strlen($text) <= $numberOfCharacters) {
-            return $text;
+        if (mb_strlen($text) <= $numberOfCharacters) {
+            return (string) $text;
         }
 
         return mb_substr($text, 0, $numberOfCharacters) . $moreText;
@@ -93,16 +93,15 @@ class StringHelper
 
         return $text;
     }
-    
+
     /**
-     * 
+     *
      * @param string $string
      * @return string
      */
     public static function convertSpecialChars($string)
     {
         return preg_replace("/&([a-z])[a-z]+;/i", "$1", iconv('utf-8', 'us-ascii//TRANSLIT', $string));
-
     }
 
     /**
@@ -131,4 +130,21 @@ class StringHelper
     {
         return (bool) filter_var($string, FILTER_VALIDATE_EMAIL);
     }
+
+    /**
+     * @param string $charList
+     * @param int $numberOfCharactersToTake
+     * @return string
+     */
+    public static function generateRandomStringFrom(string $charList, $numberOfCharactersToTake = 1): string
+    {
+        $text = '';
+
+        for ($i = 0; $i < $numberOfCharactersToTake; $i++) {
+            $text .= DataSet::random(mb_str_split($charList));
+        }
+
+        return $text;
+    }
+
 }

@@ -1,26 +1,35 @@
 <?php
 
 namespace App\Portal\Responses;
+
+use Framework\Model\ModelCollection;
+
 /**
  * Description of Select2Response
  *
  * @author ivan
  */
-abstract class Select2Response {
+abstract class Select2Response
+{
 
     /**
-     * @var \Framework\Model\ModelCollection
+     * @var ModelCollection
      */
     private $collection;
 
-    public function __construct($collection) {
+    public function __construct($collection)
+    {
         if (is_array($collection)) {
             $collection = collect($collection);
         }
-        
+
         $this->collection = $collection;
     }
 
+    /**
+     * @param mixed $model
+     * @return mixed
+     */
     abstract public function getText($model);
 
     public function getId($model)
@@ -36,7 +45,7 @@ abstract class Select2Response {
 
     public function getResponse()
     {
-        return ['results' => $this->collection->map(function($model){
+        return ['results' => $this->collection->map(function ($model) {
             return ['id' => $this->getId($model), 'text' => $this->getText($model)];
         })->toArray()];
     }

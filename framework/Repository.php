@@ -4,11 +4,17 @@ namespace Framework;
 
 use Framework\Database\PaginatedResultSet;
 use Framework\Database\PaginatedResultSetInterface;
-use Framework\Model\ModelCollection;
 use Framework\Model\Model;
-use Framework\Model\PaginatedModelCollection;
+use Framework\Model\ModelCollection;
 use Framework\Model\ModelNotFoundException;
+use Framework\Model\PaginatedModelCollection;
+use Framework\Support\Collection;
+use Framework\Support\DataSet;
 
+/**
+ * Class Repository
+ * @package Framework
+ */
 abstract class Repository
 {
     /**
@@ -29,6 +35,11 @@ abstract class Repository
         return $this->getInstance($row);
     }
 
+    /**
+     * @param $id
+     * @return Model|null
+     * @throws ModelNotFoundException
+     */
     public function findOrFail($id)
     {
         if ($model = $this->find($id)) {
@@ -61,10 +72,10 @@ abstract class Repository
     abstract public static function getModelClass(): string;
 
     /**
-     * @param array $values
+     * @param array|null $values
      * @return Model|mixed
      */
-    public function getInstance($values = null)
+    public function getInstance(?array $values = null)
     {
         if (!$values) {
             return null;
@@ -134,13 +145,14 @@ abstract class Repository
             return $this->update($model);
         }
 
-        $id = $this->insert(array_filter($this->valuesToArray($model)));
+        $id = $this->insert(array_filter($model->valuesToArray()));
         $model->setId($id);
         return (bool) $id;
     }
 
     /**
      * @param Model $model
+     * @param array $data
      * @return bool
      */
     public function update(Model $model, $data = [])
@@ -148,8 +160,8 @@ abstract class Repository
         if ($data) {
             $model->update($data);
         }
-        
-        $changes = $this->getChanges($model);
+
+        $changes = $model->getChanges();
 
         if (!$changes) {
             return false;
@@ -165,49 +177,24 @@ abstract class Repository
         }, $dbColumns));
 
         $query = sprintf('UPDATE %s SET %s WHERE %s=?', $table, $set, $primaryCol);
-        
-        return (bool)db()->update($query, ...array_merge($values, [$id]));
-    }
 
-    public function getChanges(Model $model)
-    {
-        $original = $model->getOriginalValues();
-        $newValues = $this->valuesToArray($model);
-        $changes = [];
-        foreach ($newValues as $key => $value) {
-            if ($value != $original[$key]) {
-                $changes[$key] = $value;
-            }
-        }
-        return $changes;
-    }
+        $updated = (bool) db()->update($query, ...array_merge($values, [$id]));
 
-    /**
-     * @param Model $model
-     * @return array
-     */
-    public function valuesToArray(Model $model)
-    {
-        $values = [];
+        Event\EventDisptatcher::dispatch(new Database\Repository\Events\ModelUpdated($model));
 
-        foreach (array_keys($model->getOriginalValues()) as $column) {
-            if (property_exists($model, $column)) {
-                $values[$column] = $model->{$column};
-            }
-        }
-
-        return $values;
+        return $updated;
     }
 
     abstract public static function getTable(): string;
 
     /**
      * @param Model|int $model
+     * @param bool $hardDelete
      * @return bool
      */
-    public function delete($model)
+    public function delete($model, bool $hardDelete = false)
     {
-        if (property_exists($model, 'deleted_at')) {
+        if (property_exists($model, 'deleted_at') && !$hardDelete) {
             $model->deleted_at = date('Y-m-d H:i:s');
             return $this->save($model);
         }
@@ -217,6 +204,43 @@ abstract class Repository
         Event\EventDisptatcher::dispatch(new Database\Repository\Events\ModelDeleted($model));
 
         return $deleted;
+    }
+
+    /**
+     * @param $id
+     * @param false $forceDelete
+     * @return bool
+     * @throws ModelNotFoundException
+     */
+    public function deleteById($id, $forceDelete = false): bool
+    {
+        return $this->delete($this->findOrFail($id), $forceDelete);
+    }
+
+    public function forceDelete($model)
+    {
+        return $this->delete($model, true);
+    }
+
+    /**
+     * @param Model[]|Collection $models
+     * @param bool $forceDelete
+     */
+    public function deleteMultiple($models, $forceDelete = false)
+    {
+        DataSet::each($models, fn($model) => $this->delete($model, $forceDelete));
+    }
+
+    public function deleteMultipleByIds($ids, $forceDelete)
+    {
+        $this->deleteMultiple(
+            $this->getInstances(
+                $this->getBuilder()
+                    ->whereIn(self::getPrimaryCol(), $ids)
+                    ->get()
+            ),
+            $forceDelete
+        );
     }
 
     public function updateOrCreate(array $where, array $data)

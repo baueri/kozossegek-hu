@@ -1,33 +1,34 @@
 <?php
 
-
 namespace Framework\Database;
 
 use Framework\Http\Request;
-use Framework\Exception\MethodNotFoundException;
+use Framework\Support\DataSet;
+use InvalidArgumentException;
 
 class Builder
 {
-    /**
-     * @var Database
-     */
-    private $db;
+    private Database $db;
 
-    private $select = [];
+    private array $select = [];
 
-    private $table = [];
+    private array $table = [];
 
-    private $where = [];
+    private array $where = [];
 
-    private $orderBy = [];
+    private array $join = [];
 
-    private $limit;
+    private array $orderBy = [];
 
-    private $distinct = false;
-    
-    private $selectBindings = [];
+    private array $groupBy = [];
 
-    protected static $macros = [];
+    private string $limit = '';
+
+    private bool $distinct = false;
+
+    private array $selectBindings = [];
+
+    protected static array $macros = [];
 
     /**
      * Builder constructor.
@@ -63,28 +64,37 @@ class Builder
     /**
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         $oldSelect = $this->select;
-        
+
         $oldSelectBindings = $this->selectBindings;
         $this->selectBindings = [];
 
+        $oldOrders = $this->orderBy;
+        $this->orderBy = [];
+
         $this->select = ['count(*) as cnt'];
 
-        $count = $this->db->first(...$this->getBaseSelect())['cnt'];
+        if ($this->groupBy) {
+            $results = $this->db->select(...$this->getBaseSelect());
+            $count = count($results);
+        } else {
+            $count = $this->db->first(...$this->getBaseSelect())['cnt'];
+        }
 
         $this->select = $oldSelect;
         $this->selectBindings = $oldSelectBindings;
+        $this->orderBy = $oldOrders;
 
-        return $count;
+        return (int) $count;
     }
 
     protected function getBaseSelect()
     {
         [$query, $bindings] = $this->build();
         $bindings = array_merge($this->selectBindings, $bindings);
-        
+
         $distinct = $this->distinct ? 'DISTINCT ' : '';
         $base = sprintf(
             'select %s%s from %s ',
@@ -92,7 +102,7 @@ class Builder
             implode(', ', $this->select ?: ['*']),
             implode(', ', $this->table)
         );
-        
+
         return [$base . $query, $bindings];
     }
 
@@ -102,8 +112,16 @@ class Builder
 
         $query = '';
 
+        if ($this->join) {
+            $query .= ' ' . implode(' ', $this->join);
+        }
+
         if ($this->where) {
             $query .= ' where ' . $this->buildWhere($bindings);
+        }
+
+        if ($this->groupBy) {
+            $query .= ' group by ' . implode(', ', $this->groupBy);
         }
 
         if ($this->orderBy) {
@@ -189,7 +207,7 @@ class Builder
 
         $total = $this->count();
 
-        $rows = $this->limit(($page-1) * $limit . ', ' . $limit)->get();
+        $rows = $this->limit(($page - 1) * $limit . ', ' . $limit)->get();
 
         return new PaginatedResultSet($rows, $limit, $page, $total);
     }
@@ -200,6 +218,12 @@ class Builder
             $this->orderBy[] = $column . ($order ? ' ' . $order : '');
         }
 
+        return $this;
+    }
+
+    public function groupBy($groupBy)
+    {
+        $this->groupBy[] = $groupBy;
         return $this;
     }
 
@@ -219,7 +243,7 @@ class Builder
     {
         $this->select = [$select];
         $this->selectBindings = array_merge($this->selectBindings, $bindings);
-        
+
         return $this;
     }
 
@@ -233,7 +257,7 @@ class Builder
     {
         $this->select[] = $select;
         $this->selectBindings = array_merge($this->selectBindings, $bindings);
-        
+
         return $this;
     }
 
@@ -293,9 +317,45 @@ class Builder
         return $this->where($column, $operator, $value, 'or');
     }
 
+    public function orWhereRaw($where, $bindings = [])
+    {
+        return $this->whereRaw($where, $bindings, 'or');
+    }
+
     public function orWhereInSet($column, $value)
     {
-        return $this->whereInSet($columnt, $value, 'or');
+        return $this->whereInSet($column, $value, 'or');
+    }
+
+    public function join(string $table, string $on, string $joinMode = '')
+    {
+        return $this->joinRaw("{$joinMode} join {$table} on {$on}");
+    }
+
+    public function leftJoin(string $table, string $on)
+    {
+        return $this->join($table, $on, 'left');
+    }
+
+    public function rightJoin(string $table, string $on)
+    {
+        return $this->join($table, $on, 'right');
+    }
+
+    public function innerJoin(string $table, string $on)
+    {
+        return $this->join($table, $on, 'inner');
+    }
+
+    public function joinRaw(string $join)
+    {
+        $this->join[] = $join;
+        return $this;
+    }
+
+    public function orderByFromRequest()
+    {
+        return $this->orderBy(request()->get('order_by', 'id'), request()->get('sort', 'desc'));
     }
 
     public function update(array $values)
@@ -305,26 +365,20 @@ class Builder
         }, array_keys($values)));
 
         [$query, $bindings] = $this->build();
-
-        $base = sprintf(
-            'update %s set %s',
-            implode(', ', $this->table),
-            $set
-        );
-
-        return $this->db->update($base . $query, ...array_merge(array_values($values), $bindings));
+        $table = implode(', ', $this->table);
+        $allBindings = array_merge(array_values($values), $bindings);
+        return $this->db->update("update {$table} set {$set}, {$query}", ...$allBindings);
     }
 
     public function insert(array $values)
     {
         $bindings = array_values($values);
 
-        $query = sprintf(
-            'insert into %s (%s) values (%s)',
-            implode(', ', $this->table),
-            implode(',', array_keys($values)),
-            implode(',', array_fill(0, count($values), '?'))
-        );
+        $table = implode(', ', $this->table);
+        $columns = implode(',', array_keys($values));
+        $values = implode(',', array_fill(0, count($values), '?'));
+
+        $query = "insert into $table ($columns) values($values)";
 
         return $this->db->insert($query, $bindings);
     }
@@ -341,13 +395,7 @@ class Builder
         $onDuplicate = implode(',', $onDuplicateArr);
         [$table] = $this->table;
         $whereValues = implode(',', array_fill(0, count($allColumns), '?'));
-        $query = sprintf(
-            'insert into %s (%s) values(%s) on duplicate key update %s',
-            $table,
-            $columns,
-            $whereValues,
-            $onDuplicate
-        );
+        $query = "insert into $table ($columns) values($whereValues) on duplicate key update $onDuplicate";
 
         $bindings = array_merge(array_values($allColumns), array_values($values));
 
@@ -358,9 +406,9 @@ class Builder
     {
         [$query, $bindings] = $this->build();
 
-        $base = sprintf('delete from %s', implode(', ', $this->table));
+        $tables = implode(', ', $this->table);
 
-        return $this->db->delete($base . $query, $bindings);
+        return $this->db->delete("delete from {$tables} {$query}", $bindings);
     }
 
     public function exists()
@@ -389,7 +437,7 @@ class Builder
     public function __call($method, $args)
     {
         $macro = $this->getMacro($method);
-        
+
         $macro($this, ...$args);
 
         return $this;
@@ -398,7 +446,7 @@ class Builder
     public function macro($macroName, $callback)
     {
         $key = !$this->getTable() ? 'global' : $this->getTable();
-        
+
         static::$macros[$key][$macroName] = $callback;
 
         return $this;
@@ -406,6 +454,14 @@ class Builder
 
     public function apply($macro, ...$args)
     {
+        if (is_array($macro)) {
+            foreach ($macro as $m) {
+                $this->__call($m, $args);
+            }
+
+            return $this;
+        }
+
         return $this->__call($macro, $args);
     }
 

@@ -12,16 +12,17 @@
             <route method="get" uri="list" use="list" as="list"/>
             <route method="get" uri="trash" use="trash" as="trash"/>
             <route method="get" uri="empty-trash" use="emptyTrash" as="empty_trash"/>
-            <route method="get" uri="restore" use="restore" as="restore"/>
 
             <route method="get" uri="create" use="create" as="create"/>
             <route method="post" uri="create" use="doCreate" as="do_create"/>
 
             <route method="get" uri="{id}/edit" use="edit" as="edit"/>
             <route method="post" uri="{id}/update" use="update" as="update"/>
+            <route method="get" uri="{id}/restore" use="restore" as="restore"/>
             <route method="get" uri="{id}/delete" use="delete" as="delete"/>
+            <route method="get" uri="{id}/force-delete" use="forceDelete" as="force_delete"/>
         </route-group>
-        
+
         <route-group prefix="content/uploads" controller="ContentUploadController" as="content.upload">
             <route method="get" uri="" use="list" as="list"/>
             <route method="post" uri="upload-file" use="uploadFile" as="upload_file"/>
@@ -32,13 +33,14 @@
             <route method="post" uri="generate-slug" use="generateSlug" as="generate_slug"/>
             <route method="post" uri="summernote-upload" />
         </route-group>
-        
-        <route method="post" uri="api/uploads/get" controller="Api\UploadController" use="getUploads" />
+
+        <route method="post" uri="api/uploads/get" as="api.uploads" controller="Api\UploadController" use="getUploads" />
 
 
         <!-- KÖZÖSSÉGEK -->
         <route-group prefix="group" as="group" controller="GroupController">
             <route method="get" uri="list" use="list" as="list"/>
+            <route method="get" uri="list/pending/" use="list" as="list.pending"/>
 
             <route method="get" uri="create" use="create" as="create"/>
             <route method="post" uri="create" use="doCreate" as="do_create"/>
@@ -46,13 +48,17 @@
             <route method="get" uri="{id}/edit" use="edit" as="edit"/>
             <route method="post" uri="{id}/update" use="update" as="update"/>
             <route method="get" uri="{id}/delete" use="delete" as="delete"/>
+            <route method="get" uri="{id}/validate" use="validate" as="validate"/>
 
             <route method="get" uri="trash" use="trash" as="trash"/>
             <route method="get" uri="{id}/restore" use="restore" as="restore"/>
-            
+
             <route method="get" uri="refresh-search-engine" use="rebuildSearchEngine" as="refresh_search_engine"/>
             <route method="get" uri="maintenance" use="maintenance" as="maintenance"/>
             <route method="post" uri="maintenance" use="createMissingUsers" as="create_missing_users"/>
+
+            <route method="post" uri="{id}/reject-modal" as="reject_modal" use="getRejectModal"/>
+            <route method="all" uri="{id}/delete-modal" as="delete_modal" use="getDeleteModal"/>
         </route-group>
 
         <!-- Intézmények -->
@@ -65,7 +71,7 @@
             <route method="get" uri="{id}/edit" use="edit" as="edit"/>
             <route method="post" uri="{id}/update" use="update" as="update"/>
             <route method="get" uri="{id}/delete" use="delete" as="delete"/>
-            
+
             <route method="get" uri="import" use="import" as="import"/>
             <route method="post" uri="import" use="doImport" as="do_import"/>
         </route-group>
@@ -76,7 +82,7 @@
 
             <route method="get" uri="create" use="create" as="create"/>
             <route method="post" uri="create" use="doCreate" as="do_create"/>
-            
+
             <route method="get" uri="{id}/edit" use="edit" as="edit"/>
             <route method="post" uri="{id}/update" use="update" as="update"/>
             <route method="get" uri="{id}/delete" use="delete" as="delete"/>
@@ -102,8 +108,6 @@
             <route method="post" middleware="Framework\Middleware\JsonApi" uri="api/spiritual-movements/delete" use="delete" as="spiritual_movements.delete"/>
         </route-group>
 
-        <route method="get" uri="porfile" controller="UserController" use="profile"/>
-
         <route method="get" uri="" controller="DashboardController" use="dashboard" as="dashboard"/>
 
         <!-- GÉPHÁZ, BEÁLLÍTÁSOK -->
@@ -120,10 +124,16 @@
             <route method="get" uri="email-template/reset-password" use="passwordReset" as="reset_password"/>
             <route method="get" uri="email-template/group-contact" use="groupContact" as="group_contact"/>
             <route method="get" uri="email-template/register-by-group" use="registrationByGroup" as="register_by_group"/>
+            <route method="get" uri="email-template/created-group" use="createdGroup" as="created_group"/>
+            <route method="get" uri="email-template/created-group-with-new-user" use="createdGroupWithNewUser" as="created_group_with_new_user"/>
+
+            <route method="post" uri="email-template/save" use="saveTemplate" as="save_template"/>
         </route-group>
 
         <route-group>
             <route method="get" uri="appearance" as="appearance" view="admin"/>
         </route-group>
+
+        <route method="get" uri="fix-images" controller="SettingsController" use="setGroupImages"/>
     </route-group>
 </routes>

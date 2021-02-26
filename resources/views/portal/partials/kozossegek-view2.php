@@ -1,3 +1,6 @@
+<p>
+    Összes találat: {{ $total }}
+</p>
 <div class="row" id="kozossegek-list">
     @foreach($groups as $i => $group)
     <div class="{{ $grid_class ?? 'col-md-4' }} mb-3">
@@ -6,10 +9,12 @@
                 <div>megnézem</div>
             </a>
             <div class="card-body">
-                <p class="text-center">
-                    @foreach($group->tags as $tag)
-                        <span class="tag-img" title="{{ $tag['tag_name'] }}" style="background: url('/images/tag/{{ $tag['tag'] }}.png'); background-size: cover;"></span>
-                    @endforeach
+                <p class="text-center mb-1">
+                    @if($group->tags)
+                        @foreach($group->tags as $tag)
+                            <span class="tag-img" title="{{ $tag['tag_name'] }}" style="background: url('/images/tag/{{ $tag['tag'] }}.png'); background-size: cover;"></span>
+                        @endforeach
+                    @endif
                 </p>
                 <h5 class="card-title">{{ $group->name }}</h5>
                 <h6 style="color: #aaa;">

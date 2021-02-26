@@ -16,10 +16,14 @@ abstract class AdminTable
      */
     protected $columns = [];
 
+    protected array $order = ['id', 'desc'];
+
     /**
      * @var array
      */
-    protected $centeredColumns = [];
+    protected array $centeredColumns = [];
+
+    protected array $sortableColumns = [];
 
     /**
      * @var Request
@@ -41,6 +45,8 @@ abstract class AdminTable
             throw new InvalidArgumentException('missing columns for ' . static::class);
         }
 
+        $this->order = [$request->get('order_by', 'id'), $request->get('sort', 'desc')];
+
         $this->request = $request;
     }
 
@@ -58,7 +64,10 @@ abstract class AdminTable
 
         $model = [
             'columns' => $this->getColumns(),
+            'order' => $this->order,
+            'sort_order' => $this->order[1] == 'asc' || $this->order[0] ? 'desc' : 'asc',
             'centered_columns' => $this->centeredColumns,
+            'sortable_columns' => $this->sortableColumns,
             'rows' => $this->transformData($data->rows()),
             'adminTable' => $this,
             'total' => $data->total(),
@@ -131,18 +140,59 @@ abstract class AdminTable
         return call_user_func_array([$this, $method], [$value, $row]);
     }
 
-    protected function getEdit($value, $model)
+    protected function getEdit($value, $model, $excerpt = null)
     {
         $url = $this->getEditUrl($model);
 
-        return "<a href='$url' title='szerkesztés'>$value</a>";
+        $text = $value;
+
+        if ($excerpt) {
+            $text = StringHelper::shorten($value, $excerpt, '...');
+        }
+
+        $icon = self::getIcon('fa fa-edit');
+
+        return "<a href='{$url}' title='{$value}'>{$icon} {$text}</a>";
     }
 
     protected function getDelete($t, $model, $title = 'lomtárba')
     {
         $url = $this->getDeleteUrl($model);
 
+        return $this->getDeleteColumn($url, $title);
+    }
+
+    protected function getDeleteColumn(string $url, string $title)
+    {
         return "<a href='$url' title='$title'><i class='fa fa-trash text-danger'></i></a>";
+    }
+
+    protected static function getCheckIcon(string $title = '')
+    {
+        return static::getIcon('fa fa-check-circle text-success', $title);
+    }
+
+    protected static function getBanIcon(string $title = '')
+    {
+        return static::getIcon('fa fa-ban text-danger', $title);
+    }
+
+    protected static function getIcon(string $class, string $title = '')
+    {
+        return "<i class='{$class}' title='$title'></i>";
+    }
+
+    protected static function excerpt(string $text, $withTooltip = true)
+    {
+        $shorten = StringHelper::shorten($text, 20, '...');
+        $tooltip = $withTooltip ? $text : '';
+        return "<span title='$tooltip'>$shorten</span>";
+    }
+
+    protected function getLink(string $url, ?string $text, string $title = ''): string
+    {
+        $titleAttr = $title ? " title='{$title}'" : '';
+        return "<a href='{$url}'{$titleAttr}>$text</a>";
     }
 
     /**

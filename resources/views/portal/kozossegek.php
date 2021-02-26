@@ -1,19 +1,22 @@
 @section('header')
+    <link rel="canonical" href="@route('portal.groups')" />
+    <meta name="description" content="Közösséget keresek, keresés, jellemzők, katolikus" />
     @include('asset_groups.select2')
 @endsection
 
 @section('header_content')
     @featuredTitle('Közösséget keresek')
-    <div class="pt-4 pb-4 mb-0">
+    <div class="pb-3 mb-0">
         <div class="container">
-            @widget('KOKE')
             <form method="get" id="finder" action="@route('portal.groups')">
-                <input type="hidden" name="view" value="{{ $template }}">
                 <div class="form-group">
                     <div class="input-group">
                         <select name="varos" style="width:150px !important;" class="form-control">
                             <option value="{{ $filter['varos'] }}">{{ $filter['varos'] }}</option>
                         </select>
+                        <div class="tag-dropdown">
+                            <button type="button" onclick="$('.tag-dropdown-menu').slideToggle();"  class="form-control text-left">Jellemzők <i class="fa fa-caret-down ml-2" style="font-size: 12px;"></i> </button>
+                        </div>
                         <select class="form-control" id="korosztaly" name="korosztaly">
                             <option></option>
                             @foreach($age_groups as $age_group)
@@ -27,26 +30,28 @@
                             @endforeach
                         </select>
                         <input type="text" name="search" value="{{ $filter['search'] }}" class="form-control" placeholder="keresés kulcsszavak alapján...">
-                        <button type="submit" class="btn btn-darkblue">keresés indítása</button>
                     </div>
                 </div>
-                <div class="form-group text-center mt-5">
-                    @foreach($tags as $tag)
+                <div class="tag-dropdown-menu text-center" @if($selected_tags) style="display: block;" @endif>
+                    @foreach($tags as $i => $tag)
+                    @if($i > 0 && $i % 8 == 0) <br/> @endif
                     <input type="checkbox"
                            class="group-tag"
                            id="tag-{{ $tag['slug'] }}"
                            value="{{ $tag['slug'] }}"
-                           <?php if (in_array($tag['slug'], $selected_tags)): ?> checked <?php endif; ?>
+                        @if(in_array($tag['slug'], $selected_tags)) checked @endif
                            style="display: none;">
-                    <label for="tag-{{ $tag['slug'] }}" class="mr-1 badge badge-pill badge-light group-tag-badge align-middle" title="{{ $tag['tag'] }}">
-                        <span class="align-middle mr-2" style="background: url('/images/tag/{{ $tag['slug'] }}.png'); background-size: cover; width: 24px; height: 24px; display: inline-block;"></span>
+                    <label for="tag-{{ $tag['slug'] }}" class="mr-1 badge badge-pill badge-light group-tag-badge align-middle">
                         <span class="align-middle">{{ $tag['tag'] }}</span>
                     </label>
                     @endforeach
                     <input type="hidden" name="tags" value="{{ $filter['tags'] }}">
                 </div>
+                <p class="text-center mt-5">
+                    <button type="submit" class="btn btn-darkblue" style="box-shadow: 0 0 5px #333;"><i class="fa fa-search mr-2"></i> keresés indítása</button>
+                </p>
                 <p class="mt-2 text-right">
-                    <a href="/kozossegek">Szűrés törlése</a>
+                    <a href="/kozossegek" class="text-light text-shadowed">Szűrés törlése</a>
                 </p>
             </form>
         </div>
@@ -55,10 +60,14 @@
 
 @extends('portal')
     <div class="container inner">
-<!--    <div class="row row-cols-xxs-1 row-cols-2 row-cols-md-2 row-cols-lg-3 row-cols-xl-4" style="padding-top:2em">-->
-    @include('portal.partials.kozossegek-view2')
-    @include('partials.simple-pager', ['route' => 'portal.groups.page','total' => $total,'page' => $page,'perpage' => $perpage,'routeparams' => $filter])
-</div>
+        @if($total)
+            @include('portal.partials.kozossegek-view2')
+            @include('partials.simple-pager', ['route' => 'portal.groups.page','total' => $total,'page' => $page,'perpage' => $perpage,'routeparams' => $filter])
+        @else
+        <h5 class="text-center text-muted"><i>Sajnos nem találtunk ilyen közösséget.</i></h5>
+        <h6 class="text-center text-muted"><i>Próbáld meg más keresési feltételekkel.</i></h6>
+        @endif
+    </div>
 <script>
 $(() => {
     $("[name=varos]").select2({

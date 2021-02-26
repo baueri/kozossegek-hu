@@ -1,0 +1,2 @@
+@extends('mail.wrapper')
+{{ $message }}

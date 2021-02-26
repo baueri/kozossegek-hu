@@ -1,14 +1,11 @@
 <?php
 
-
 namespace Framework\Http\Route;
-
 
 use Framework\Application;
 use Framework\Http\Request;
 use Framework\Misc\XmlObject;
 use Framework\Support\Collection;
-
 use Framework\Model\Model;
 use Framework\Http\Exception\RouteNotFoundException;
 
@@ -27,17 +24,17 @@ class XmlRouter implements RouterInterface
     /**
      * @var Request
      */
-    protected $request;
+    protected Request $request;
 
     /**
      * @var Application
      */
-    private $application;
+    private Application $application;
 
     /**
      * @var array
      */
-    protected static $globalArgs = [];
+    protected static array $globalArgs = [];
 
     /**
      * XmlRouter constructor.
@@ -50,7 +47,6 @@ class XmlRouter implements RouterInterface
         $this->application = $application;
 
         $this->load();
-
     }
 
     private function load()
@@ -69,11 +65,9 @@ class XmlRouter implements RouterInterface
     private function parseRoutes($elements)
     {
         if ($elements->getName() === 'route') {
-
             $route = $this->buildRoute($elements);
 
             $this->routes->push($route);
-
         } elseif ($elements->getName() === 'route-group') {
             foreach ($elements as $element) {
                 $this->parseRoutes($element);
@@ -95,7 +89,6 @@ class XmlRouter implements RouterInterface
      * @param $uri
      * @param array $options
      * @return RouteInterface
-     * @throws \ReflectionException
      */
     public function get($uri, array $options)
     {
@@ -152,7 +145,6 @@ class XmlRouter implements RouterInterface
                 if ($method == $route->requestMethodIs($method)) {
                     return $route;
                 }
-
             }
             if ($route->matches($trimmed) && !$hasStrictMatch && $route->requestMethodIs($method)) {
                 return $route;
@@ -162,16 +154,18 @@ class XmlRouter implements RouterInterface
         throw new RouteNotFoundException($uri);
     }
 
-   /**
-    * @param string $name
-    * @param array|string $args
-    */
+    /**
+     * @param string $name
+     * @param array|string $args
+     * @return string
+     * @throws RouteNotFoundException
+     */
     public function route(string $name, $args = [])
     {
         if ($args instanceof Model) {
             $args = ['id' => $args->getId()];
         }
-        
+
         if (is_array($args)) {
             $args = array_merge(static::$globalArgs, $args);
         }

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Framework\Http\View;
-
 
 use Exception;
 use Framework\Event\EventDisptatcher;
@@ -14,38 +12,46 @@ class View implements ViewInterface
     /**
      * @var array
      */
-    protected static $envVariables = [];
+    protected static array $envVariables = [];
 
     /**
      * @var ViewCache
      */
-    private $cacheDriver;
+    private ViewCache $cacheDriver;
 
     /**
      * @var Section
      */
-    private $section;
+    private Section $section;
+
+    /**
+     * @var ViewParser
+     */
+    private ViewParser $parser;
 
     /**
      * View constructor.
      * @param ViewCache $cacheDriver
      * @param Section $section
+     * @param ViewParser $parser
      */
-    public function __construct(ViewCache $cacheDriver, Section $section)
+    public function __construct(ViewCache $cacheDriver, Section $section, ViewParser $parser)
     {
         $this->cacheDriver = $cacheDriver;
         $this->section = $section;
+        $this->parser = $parser;
     }
 
 
     /**
      * @param string $view
      * @param array $args
+     * @param array $additional_args
      * @return string
      * @throws ViewNotFoundException
      * @throws Exception
      */
-    public function view($view, array $args = [])
+    public function view(string $view, array $args = [], array $additional_args = [])
     {
         $filePath = $this->getPath($view);
 
@@ -53,9 +59,12 @@ class View implements ViewInterface
             throw new ViewNotFoundException('view file not found: ' . $filePath);
         }
 
-        EventDisptatcher::dispatch(new ViewLoaded($filePath));
+        return $this->getContentAndDoCache($filePath, array_merge($additional_args, $args));
+    }
 
-        return $this->getContentAndDoCache($filePath, $args);
+    public function exists(string $view): bool
+    {
+        return file_exists($this->getPath($view));
     }
 
     /**
@@ -63,14 +72,13 @@ class View implements ViewInterface
      * @return string
      *
      */
-    protected function getPath(string $view): string
+    public function getPath(string $view): string
     {
         $viewPath = str_replace('.', DS, $view);
 
-        if (strpos($view, '::') !== false) {
-            list($dirPath, $viewPath) = explode('::', $viewPath);
-            $dirPath = APP . $dirPath . DS . 'Views' . DS;
-
+        if (strpos($view, ':') !== false) {
+            [$dirPath, $viewPath] = explode(':', $viewPath);
+            $dirPath = rtrim(config("view.view_sources.{$dirPath}"), DS) . DS;
         } else {
             $dirPath = config('app.views_dir', RESOURCES . 'views' . DS);
         }
@@ -87,7 +95,7 @@ class View implements ViewInterface
     protected function getContentAndDoCache($filePath, $args)
     {
         if ($this->cacheDriver->shouldUpdateFile($filePath)) {
-            $content = ViewParser::parse(file_get_contents($filePath));
+            $content = $this->parser->parse(file_get_contents($filePath));
             $this->cacheDriver->cache($filePath, $content);
         }
 
@@ -99,7 +107,10 @@ class View implements ViewInterface
 
         ob_start();
 
-        include $this->cacheDriver->getCacheFilename($filePath);
+        $cachedFilename = $this->cacheDriver->getCacheFilename($filePath);
+        EventDisptatcher::dispatch(new ViewLoaded($filePath, $cachedFilename));
+
+        include $cachedFilename;
 
         return ob_get_clean();
     }
@@ -107,7 +118,7 @@ class View implements ViewInterface
     /**
      * @return Section
      */
-    public function getSection()
+    public function getSection(): Section
     {
         return $this->section;
     }
@@ -116,8 +127,13 @@ class View implements ViewInterface
      * @param $key
      * @param $value
      */
-    public static function addVariable($key, $value)
+    public static function setVariable($key, $value)
     {
         static::$envVariables[$key] = $value;
+    }
+
+    public static function component($component, $expression = null)
+    {
+        return "<?php echo app()->make({$component}::class)->render({$expression}); ?>";
     }
 }

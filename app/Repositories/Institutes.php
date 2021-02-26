@@ -4,33 +4,37 @@ namespace App\Repositories;
 
 use App\Models\Institute;
 use Framework\Database\PaginatedResultSet;
+use Framework\Repository;
 
 /**
  * Description of Institutes
  *
  * @author ivan
  */
-class Institutes extends \Framework\Repository
+class Institutes extends Repository
 {
     /**
      *
      * @param string $keyword
-     * @param string $city
+     * @param null $city
      * @return PaginatedResultSet|Institute[]
      */
     public function search($keyword, $city = null)
     {
-        $builder =  $this->getBuilder();
+        $builder =  $this->getBuilder()->apply(['notDeleted', 'approved']);
 
         if ($city) {
             $builder->where('city', $city);
         }
-        
+
         if ($keyword) {
             $keyword = trim($keyword, ' ');
-            $builder->whereRaw('MATCH (name, city) AGAINST (? IN BOOLEAN MODE)', [$keyword ? '+' . str_replace(' ', '* +', $keyword) . '*' : '']);
+            $builder->whereRaw(
+                'MATCH (name, name2, city, district) AGAINST (? IN BOOLEAN MODE)',
+                [$keyword ? '+' . str_replace(' ', '* +', $keyword) . '*' : '']
+            );
         }
-        
+
         $rows = $builder->orderBy('name', 'asc')->paginate(15);
 
         return $this->getInstances($rows);
@@ -40,29 +44,45 @@ class Institutes extends \Framework\Repository
     {
         return $this->getInstances($this->getBuilder()->paginate(30));
     }
-    
+
     public function getInstitutesForAdmin($filter = [])
     {
-        $builder = $this->getBuilder()->orderBy('id', 'desc')->whereNull('deleted_at');
+        $builder = $this->getBuilder()->whereNull('institutes.deleted_at')
+            ->select('institutes.*, count(church_groups.id) as cnt')
+            ->leftJoin('church_groups', 'institutes.id = church_groups.institute_id')
+            ->groupBy('institutes.id');
 
         if ($city = $filter['city']) {
-            $builder->where('city', $city);
+            $builder->addSelect('institutes.*')->where('city', $city);
         }
 
         if ($name = $filter['search']) {
-            $builder->where('name', 'like', "%$name%");
+            $builder->whereRaw("(name like ? or name2 like ?)", ["%$name%", "%$name%"]);
         }
-        
+
+        if ($filter['sort']) {
+            $orderBy = $filter['order_by'] ?: self::getPrimaryCol();
+            if ($orderBy == 'group_count') {
+                $builder->orderBy('count(church_groups.id)', $filter['sort']);
+            } else {
+                $builder->orderBy($orderBy, $filter['sort']);
+            }
+        } else {
+            $builder->orderBy('institutes.id', 'desc');
+        }
+
         return $this->getInstances($builder->paginate(30));
     }
 
 
     //put your code here
-    public static function getModelClass(): string {
+    public static function getModelClass(): string
+    {
         return Institute::class;
     }
 
-    public static function getTable(): string {
+    public static function getTable(): string
+    {
         return 'institutes';
     }
 
@@ -74,4 +94,14 @@ class Institutes extends \Framework\Repository
         return $this->getInstances($this->getBuilder()->whereIn('id', $instituteIds)->get());
     }
 
+    public function searchByCityAndInstituteName(string $city, string $institute): ?Institute
+    {
+        $builder = $this->getBuilder()
+            ->whereRaw("MATCH(city) AGAINST(? IN BOOLEAN MODE)", [$city])
+            ->whereRaw("MATCH(name) AGAINST(? IN BOOLEAN MODE)", [$institute]);
+
+        $row = $builder->first();
+
+        return $this->getInstance($row);
+    }
 }
