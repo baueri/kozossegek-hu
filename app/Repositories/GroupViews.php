@@ -55,12 +55,17 @@ class GroupViews extends Repository
             if ($found) {
                 $builder->whereIn('id', collect($found)->pluck('group_id')->all());
             } else {
-                $builder->where('name', 'like', "%$keyword%");
+                $builder->where('name', 'like', "%{$keyword}%");
             }
         }
 
         if ($varos = $filter['varos']) {
-            $builder->where('city', $varos);
+            if ($varos === 'Budapest') {
+                $builder->where('city', 'like', "{$varos}%");
+            } else {
+                $builder->where('city', $varos);
+            }
+
         }
 
         if ($korosztaly = $filter['korosztaly']) {
@@ -91,6 +96,10 @@ class GroupViews extends Repository
 
         if ($institute_name = $filter['intezmeny']) {
             $builder->where('institute_name', 'like', "%$institute_name%");
+        }
+
+        if ($userId = $filter['user_id']) {
+            $builder->where('user_id', $userId);
         }
 
         if ($filter['deleted']) {

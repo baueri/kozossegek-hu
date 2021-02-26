@@ -61,6 +61,13 @@
         </div>
         <div class="col-md-3">
             <div class="form-group">
+                <select name="user_id" id="user_id" class="form-control">
+                    <option value="{{ $filter['user_id'] }}">{{ $karbantarto ?? 'karbantartó' }}</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
                 <select class="form-control" id="korosztaly" name="korosztaly">
                     <option></option>
                     @foreach($age_groups as $age_group)
@@ -115,6 +122,15 @@
                     }
                     return params;
                 }
+            }
+        });
+        $("[name=user_id]").select2({
+            placeholder: "karbantartó",
+            allowClear: true,
+            ajax: {
+                url: "@route('api.search-user')",
+                dataType: 'json',
+                delay: 300
             }
         });
         $("#pending, #status").select2({

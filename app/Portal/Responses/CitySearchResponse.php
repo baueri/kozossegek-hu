@@ -11,6 +11,6 @@ class CitySearchResponse extends Select2Response
 {
     public function getText($model)
     {
-        return $model['city'];
+        return $model->name;
     }
 }

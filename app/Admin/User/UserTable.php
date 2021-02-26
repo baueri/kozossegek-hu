@@ -2,6 +2,7 @@
 
 namespace App\Admin\User;
 
+use App\Models\User;
 use Framework\Database\PaginatedResultSetInterface;
 use App\Repositories\Users;
 use Framework\Http\Request;
@@ -13,9 +14,12 @@ class UserTable extends AdminTable implements Deletable, Editable
 {
     protected $columns = [
         'id' => '#',
+        'groups' => '<i class="fa fa-comments"></i>',
         'name' => 'Név',
         'username' => 'Felhasználónév',
         'email' => 'Email',
+        'activated_at' => 'Aktiválva',
+        'created_at' => 'Regisztráció',
     ];
 
     /**
@@ -46,6 +50,31 @@ class UserTable extends AdminTable implements Deletable, Editable
     public function getEditColumn(): string
     {
         return 'name';
+    }
+
+    public function getActivatedAt($activatedAt)
+    {
+        if ($activatedAt) {
+            return static::getCheckIcon();
+        }
+
+        return static::getBanIcon();
+    }
+
+    public function getCreatedAt($date)
+    {
+        return date('Y.m.d', strtotime($date));
+    }
+
+    public function getGroups($g, User $user)
+    {
+        $icon = static::getIcon('fa fa-comments');
+        $route = route('admin.group.list', ['user_id' => $user->id]);
+        return static::getLink(
+            $route,
+            $icon,
+            "karbantartott közösség(ek)"
+        );
     }
 
     public function getData(): PaginatedResultSetInterface
