@@ -1,8 +1,3 @@
-<?php
-
-use App\Auth\Auth;
-
-?>
 <!DOCTYPE html>
 <html lang="hu">
 <head>
@@ -11,7 +6,7 @@ use App\Auth\Auth;
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('subtitle')kozossegek.hu</title>
+    <title>@yield('subtitle'){{ site_name() }}</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:wght@200|Open+Sans:400,600|Work+Sans:400,700|Merriweather|Roboto+Condensed:wght@300;400|" rel="stylesheet">
@@ -65,7 +60,7 @@ use App\Auth\Auth;
                     </ul>
                 </div>
 
-                <div class="col-md-4 offset-4 col-sm-6 col-xs-12">
+                <div class="col-md-5 offset-3 col-sm-6 col-xs-12">
                     <h5>Partnereink</h5>
                     <div class="partnereink">
                         <a href="https://pasztoralis.hu/" title="Pasztorális helynökség Szeged" target="_blank" rel="noopener noreferrer">
@@ -76,6 +71,9 @@ use App\Auth\Auth;
                         </a>
                         <a href="https://fbe.hu/" title="Felebarátok egyesület" target="_blank" rel="noopener noreferrer">
                             <img src="/images/partnerek/felebaratok_egyesulet.png" alt="Felebarátok egyesület">
+                        </a>
+                        <a href="https://72tanitvany.hu/" title="Hetvenkét Tanítvány Mozgalom" target="_blank" rel="noopener noreferrer" class="t72-logo">
+                            <img src="/images/partnerek/t72_2.png" alt="Felebarátok egyesület">
                         </a>
                     </div>
                 </div>

@@ -6,15 +6,15 @@ use Framework\Mail\Mailable;
 
 class GroupContactMail extends Mailable
 {
-
-    public function __construct($data)
+    public function __construct(string $name, string $email, string $message)
     {
         $this->subject('kozossegek.hu - Új érdeklődő szeretné felvenni a kapcsolatot a közösséggel')
+            ->replyTo($email)
             ->view('email_templates:group-contact')
             ->with([
-                'name' => strip_tags($data['name']),
-                'email' => strip_tags($data['email']),
-                'message' => str_replace(PHP_EOL, '<br>', strip_tags($data['message'])),
+                'name' => $name,
+                'email' => $email,
+                'message' => str_replace(PHP_EOL, '<br>', $message),
             ]);
     }
 }

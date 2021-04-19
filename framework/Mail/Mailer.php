@@ -60,10 +60,14 @@ class Mailer
             if ($mailable->from) {
                 $this->phpMailer->setFrom(...$mailable->from);
             } else {
-                $this->phpMailer->setFrom($this->phpMailer->Username, 'kozossegek.hu');
+                $this->phpMailer->setFrom($this->phpMailer->Username, site_name());
             }
             $this->phpMailer->Subject = $mailable->subject;
             $this->phpMailer->Body = $mailable->getBody();
+        }
+
+        if ($mailable->replyTo) {
+            $this->phpMailer->addReplyTo($mailable->replyTo);
         }
 
         return $this->phpMailer->send();

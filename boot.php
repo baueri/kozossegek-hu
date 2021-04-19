@@ -1,6 +1,8 @@
 <?php
 
 use App\Bootstrapper\RegisterDirectives;
+use App\Repositories\EventLogRepository;
+use App\Services\EventLogger;
 use Arrilot\DotEnv\DotEnv;
 use Framework\Application;
 use Framework\Database\Database;
@@ -18,13 +20,13 @@ if (!defined('DS')) {
     define('DS', DIRECTORY_SEPARATOR);
 }
 
-define('ROOT', __DIR__ . DS);
-define('APP', ROOT . 'app' . DS);
-define('RESOURCES', ROOT . 'resources' . DS);
-define('CACHE', ROOT . 'cache' . DS);
-define('LANG', 'hu');
-define('APP_VERSION', 'v0.7 beta');
-define('STORAGE_PATH', ROOT . 'storage' . DS);
+const ROOT = __DIR__ . DS;
+const APP = ROOT . 'app' . DS;
+const RESOURCES = ROOT . 'resources' . DS;
+const CACHE = ROOT . 'cache' . DS;
+const LANG = 'hu';
+const APP_VERSION = 'v1.1';
+const STORAGE_PATH = ROOT . 'storage' . DS;
 
 include 'vendor/autoload.php';
 
@@ -45,6 +47,7 @@ $application->bind(RouteInterface::class, Route::class);
 $application->bind(ViewInterface::class, View::class);
 $application->singleton(Config::class);
 $application->singleton(RouterInterface::class, XmlRouter::class);
+$application->singleton(EventLogger::class, EventLogRepository::class);
 $application->singleton(Database::class, function (Application $app) {
     $settings = $app->config('db');
     $databaseConfiguration = $app->make(

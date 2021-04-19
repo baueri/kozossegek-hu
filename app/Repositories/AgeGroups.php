@@ -6,13 +6,13 @@ use App\Enums\AgeGroupEnum;
 use App\Models\AgeGroup;
 use ReflectionException;
 
-class AgeGroups {
-
+class AgeGroups
+{
     /**
      * @return AgeGroup[]
      * @throws ReflectionException
      */
-    public function all() : array
+    final public function all(): array
     {
         return AgeGroupEnum::values()->make(AgeGroup::class)->all();
     }

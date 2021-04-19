@@ -235,6 +235,20 @@
     </div>
 </form>
 <script>
+    function validateRequiredInput(selector) {
+        var classSelector = selector;
+        if (selector.next("span").hasClass("select2")) {
+            classSelector = selector.next("span");
+        }
+        classSelector.inputMessage("dismiss");
+        if (selector.val() !== "") {
+            classSelector.inputOk();
+            return true;
+        }
+        classSelector.inputError();
+        return false;
+    }
+
     $(() => {
 
         const form = $("form#group-form");
@@ -242,24 +256,6 @@
         function validateUserName()
         {
             return validateRequiredInput($("[name=user_name]", form));
-        }
-
-        function validateRequiredInput(selector) {
-
-            var classSelector = selector;
-
-            if (selector.next("span").hasClass("select2")) {
-                classSelector = selector.next("span");
-            }
-
-            classSelector.inputMessage("dismiss");
-            if (selector.val() !== "") {
-                classSelector.inputOk();
-                return true;
-            }
-
-            classSelector.inputError();
-            return false;
         }
 
         async function validateEmailAddress(item, checkUnique)
@@ -342,7 +338,7 @@
 
             const selector = $("[name=institute_id]");
 
-            return validateRequiredInput(selector)
+            return validateRequiredInput(selector);
         }
 
         function validatePassword()
@@ -384,12 +380,11 @@
                 "[name=user_name]",
                 "[name=email]",
                 "[name=name]",
-                "[name=age_group]",
+                // "[name='age_group[]']",
                 "[name=occasion_frequency]",
                 "[name='tags[]']",
                 "[name=description]",
-                "[name=group_leader_names]",
-                "[name=group_leader_email]"
+                "[name=group_leaders]",
             ];
 
             $(toValidate.join(", "), $(".required", form)).each(function() {
@@ -417,8 +412,14 @@
 
             if (typeof data === "undefined" || !data.send_request) {
                 e.preventDefault();
-                if(!validateRequiredInputs()
-                    || !validateUserName()
+                let baseInputsOk = validateRequiredInputs();
+                let userNameOk = validateUserName();
+                let userEmailOk = await validateEmailAddress($("[name=email]", form));
+                let leaderEmailOk = await validateEmailAddress($("[name=group_leader_email]", form), false);
+                let instituteOk = validateInstitute();
+                let passwordOk = validatePassword();
+                if(!baseInputsOk
+                    || !userNameOk
                     || !await validateEmailAddress($("[name=email]", form))
                     || !await validateEmailAddress($("[name=group_leader_email]", form), false)
                     || !validateInstitute()
@@ -462,6 +463,7 @@
         $("[name=institute_id]").instituteSelect();
 
         initSummernote('[name=description]', {
+            height: 200,
             toolbar: [
                 ['style', ['style']],
                 ['font', ['bold', 'underline', 'clear']],

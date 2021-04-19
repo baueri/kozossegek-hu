@@ -3,6 +3,7 @@
 namespace App\Admin\Group\Services;
 
 use App\Enums\JoinMode;
+use App\Models\GroupView;
 use App\Repositories\AgeGroups;
 use App\Repositories\Denominations;
 use App\Repositories\GroupStatusRepository;
@@ -66,7 +67,7 @@ class BaseGroupForm
      * @return array
      * @throws ReflectionException
      */
-    protected function getFormData(Group $group)
+    protected function getFormData(GroupView $group)
     {
         $institute = $this->institutes->find($group->institute_id) ?: new Institute();
         $denominations = (new Denominations())->all();
@@ -107,11 +108,11 @@ class BaseGroupForm
     }
 
     /**
-     * @param Group $group
+     * @param GroupView $group
      * @return View|string
      * @throws ReflectionException
      */
-    public function render(Group $group)
+    public function render(GroupView $group)
     {
         return view('admin.group.form', $this->getFormData($group));
     }

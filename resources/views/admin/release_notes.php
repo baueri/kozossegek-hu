@@ -1,5 +1,29 @@
 @title('Verzióinformáció')
 @extends('admin')
+<h3>v1.1 (2021.05.19)</h3>
+<ul>
+    <li>[NEW]: Az info@kozossegek.hu-ra küldött kapcsolatfelvételi üzenetre a levelező kliensben most már lehet közvetlenül válaszolni.</li>
+    <li>[NEW]: .well-known/security.txt fájl generálása</li>
+    <li>[NEW]: Meta információk elhelyzése a főoldalra</li>
+    <li>[FIXED]: "nem vagyok robot" funckió javítása</li>
+    <li>[FIXED]: Közösség regisztrációkor / mentéskor nem állítódott be a feltöltött fotó</li>
+    <li>[FIXED]: Admin oldali intézménykereső sql hiba javítás</li>
+    <li>[FIXED]: Egyes linkek felugró szövegei kattintás után nem tűntek el, ha a link új lapon nyílt meg.</li>
+    <li>[FIXED]: Közösség regisztrációs űrlap elemeinek ellenőrzésének javítása</li>
+    <li>[CHANGED]: Főoldal átalakítás
+        <ul>
+            <li>A főoldal most már nem szerkeszthető az admin felületen, csak közvetlenül a fájlban.</li>
+        </ul>
+    </li>
+    <li>[CHANGED]: Hibalevél tartalmának kiegészítése további információkkal</li>
+    <li>[CHANGED]: Fejléc menü átalakítás</li>
+    <li>[CHANGED]: Közösséget keresek oldal szűrő átalakítás</li>
+    <li>[CHANGED]: Code beautifying</li>
+    <li>[CHANGED]: .htaccess fájlban tiltásra kerültek a wordpress-es linkek, hogy ne a keretrendszer legyen leterhelve ezekkel a kérésekkel</li>
+    <li>[CHANGED]: Látogató oldali dizájn ráncfelvarrás</li>
+    <li>[CHANGED]: Partnerek közé bekerült a 72 tanítvány mozgalom</li>
+    <li>[CHANGED]: Látogatói oldalon megerősítő felugró ablak megjelenítése saját közösség törlése esetén</li>
+</ul>
 <h3>v1.0</h3>
 <ul>
     <li>[NEW]: Sima fiók regisztráció</li>

@@ -33,6 +33,8 @@ class Mailable
      */
     public ?string $message = null;
 
+    public ?string $replyTo = null;
+
     protected bool $useDefaultTemplate = false;
 
     /**
@@ -118,5 +120,14 @@ class Mailable
     public function usingDefaultTemplate()
     {
         $this->useDefaultTemplate = true;
+
+        return $this;
+    }
+
+    public function replyTo(string $email)
+    {
+        $this->replyTo = $email;
+
+        return $this;
     }
 }

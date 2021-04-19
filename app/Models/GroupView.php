@@ -82,7 +82,7 @@ class GroupView extends Group
     public function getThumbnail()
     {
         if ($this->image_url) {
-            return get_site_url() . $this->image_url;
+            return $this->image_url;
         }
 
         return $this->institute_image ?: '/images/default_thumbnail.jpg';

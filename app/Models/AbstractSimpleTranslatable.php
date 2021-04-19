@@ -2,27 +2,31 @@
 
 namespace App\Models;
 
+use Framework\Support\StringHelper;
+
 /**
  * Description of AbstractSimpleTranslatable
  *
  * @author ivan
  */
-abstract class AbstractSimpleTranslatable {
-    
-    public $name;
-    
-    public function __construct($name) {
+abstract class AbstractSimpleTranslatable
+{
+    public string $name;
+
+    public function __construct(string $name)
+    {
         $this->name = $name;
     }
-    
-    public function translate()
+
+    final public function translate(): string
     {
-        $className = substr(static::class, strrpos(static::class, '\\')+1);
-        
-        return lang(\Framework\Support\StringHelper::snake($className) . '.' . $this->name);
+        $className = substr(static::class, strrpos(static::class, '\\') + 1);
+
+        return lang(StringHelper::snake($className) . '.' . $this->name);
     }
-    
-    public function __toString() {
+
+    public function __toString(): string
+    {
         return $this->translate();
     }
 }

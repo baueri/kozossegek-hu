@@ -57,7 +57,7 @@ class Institutes extends Repository
         }
 
         if ($name = $filter['search']) {
-            $builder->whereRaw("(name like ? or name2 like ?)", ["%$name%", "%$name%"]);
+            $builder->whereRaw("(institutes.name like ? or institutes.name2 like ?)", ["%$name%", "%$name%"]);
         }
 
         if ($filter['sort']) {

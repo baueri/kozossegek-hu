@@ -4,10 +4,11 @@ namespace App\Repositories;
 
 use App\Models\EventLog;
 use App\Models\User;
+use App\Services\EventLogger;
 use Framework\Model\Model;
 use Framework\Repository;
 
-class EventLogRepository extends Repository
+class EventLogRepository extends Repository implements EventLogger
 {
     /**
      * @param string $type

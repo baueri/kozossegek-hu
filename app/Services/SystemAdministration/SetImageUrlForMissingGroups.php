@@ -2,7 +2,6 @@
 
 namespace App\Services\SystemAdministration;
 
-use App\Models\Group;
 use App\Models\GroupView;
 use App\Models\Institute;
 use App\Repositories\Groups;

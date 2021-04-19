@@ -28,9 +28,7 @@ img {
 }
 .tag-dropdown-menu {
     width: 100%;
-    display: none;
-    background: rgba(0, 0, 0, .5);
-    padding: 1em;
+    margin-top: 2em;
     margin-bottom: 2em;
 }
 
@@ -41,7 +39,7 @@ img {
 }
 
 body:not(.home) .featured-header {
-    padding: 7rem 0 4rem;
+    padding: 5rem 0 2rem;
 }
 
 .featured-bg {
@@ -136,7 +134,7 @@ body:not(.home) .featured-header {
 }
 
 #main-finder img {
-    max-width: 240px;
+    max-width: 220px;
     filter: brightness(0) invert(1);
 }
 
@@ -226,7 +224,8 @@ nav.navbar .nav-link:hover {
 .featured h1 {
     padding: 2em 0;
     margin: 0;
-    font-family: 'Montserrat', sans-serif;
+    /*font-family: 'Montserrat', sans-serif;*/
+    font-family: 'Roboto Condensed', sans-serif;
     color: #fff;
     text-shadow: 0 0 10px #000;
 }
@@ -392,7 +391,7 @@ nav.navbar .nav-link:hover {
     content: "Böngészés"
 }
 
-input[name=search]::placeholder {
+input[name=search]::placeholder, input[name=varos]::placeholder {
     color: #999;
 }
 
@@ -506,11 +505,17 @@ input[name=search]::placeholder {
 #footer .partnereink img {
     max-width: 75px;
     height: auto;
+    vertical-align: top;
+}
+
+#footer .partnereink .t72-logo img {
+    max-width: 160px;
 }
 
 #footer .partnereink a {
     margin-right: 10px;
     display: inline-block;
+    border-bottom: none !important;
 }
 
 .note-icon-caret {
@@ -605,7 +610,12 @@ input[name=search]::placeholder {
 #main-finder h1 {
     font-family: 'Oswald', sans-serif;
     text-transform: uppercase;
-    font-size: 4rem;
+    font-size: 3.5rem;
+    text-shadow: 0 0 10px #000;
+    cursor: default;
+}
+
+#main-finder h4 {
     text-shadow: 0 0 10px #000;
     cursor: default;
 }
@@ -620,7 +630,71 @@ input[name=search]::placeholder {
     margin-bottom: 3em;
 }
 
-.jumbotron.main-block { border-radius: 0;}
+.main-age-group > a {
+    display: block;
+    color: #fff;
+    border: 2px solid #fff;
+    margin: .5em;
+    padding: 25% 0;
+    font-weight: bold;
+    text-shadow: 0 0 5px #000;
+    text-decoration: none !important;
+    border-radius: 5px;
+    transition: background-color ease-in .1s, color ease-in .1s, text-shadow ease-in .1s;
+}
+
+.main-age-group > a:hover {
+    background: #fff;
+    color: #000;
+    text-shadow: none;
+}
+
+ul.age-group-select {
+    padding: 0;
+    margin: 0 0 2em;
+}
+
+ul.age-group-select li {
+    display: inline-block;
+}
+
+ul.age-group-select li.active a  {
+    border-bottom: 1px solid;
+    font-weight: bold;
+}
+
+ul.age-group-select li:not(:last-child):after {
+    content: "•";
+    color: #fff;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+ul.age-group-select li a {
+    color: #fff;
+    text-decoration: none !important;
+}
+ul.age-group-select li a:hover {
+    border-bottom: 1px solid;
+}
+
+.jumbotron.main-block {
+    border-radius: 0;
+    background-color: #f9f9f9;
+    padding: 2rem 1rem;
+}
+
+.jumbotron.main-block h1 {
+    font-family: 'Roboto Condensed', sans-serif;
+}
+
+/*.inner [target=_blank]::after {*/
+/*    content: "\f35d";*/
+/*    font-family: "Font Awesome 5 Free";*/
+/*    margin-left: 6px;*/
+/*    margin-right: 5px;*/
+/*    font-size: 13px;*/
+/*}*/
 
 #main-finder [name=search] {
     display: block;
@@ -677,7 +751,7 @@ input[name=search]::placeholder {
 }
 
 .group-tag:checked + label {
-    background: var(--primary);
+    background: var(--darkblue);
     color: #fff;
 }
 .required > label:after, .required h4:after {

@@ -429,11 +429,11 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     /**
      * Applies array_map on collection
      *
-     * @param Closure $func
+     * @param Closure|string $func
      * @param bool $keepKeys
      * @return static
      */
-    public function map(Closure $func, bool $keepKeys = false)
+    public function map($func, bool $keepKeys = false)
     {
         return new self(DataSet::map($this->items, $func, $keepKeys));
     }

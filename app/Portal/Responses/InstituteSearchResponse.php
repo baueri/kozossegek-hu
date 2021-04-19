@@ -20,9 +20,9 @@ class InstituteSearchResponse extends Select2Response
      */
     public function getText($institute)
     {
-        $miserend_info = $this->admin && $institute->miserend_id ? ' (miserend.hu)' : '';
+        $miserend_info = $this->admin && $institute->miserend_id ? ' -- miserend.hu --' : '';
         $cityAndDistrict = $institute->city . ($institute->district ? ", $institute->district" : '');
-        return "{$institute->name} ({$cityAndDistrict}){$miserend_info}";
+        return "{$institute->name} ({$cityAndDistrict}, {$institute->address}){$miserend_info}";
     }
 
     public function getId($model)

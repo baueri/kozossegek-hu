@@ -136,6 +136,10 @@ class XmlRouter implements RouterInterface
      */
     public function find(string $method, string $uri)
     {
+        if ($method === 'HEAD') {
+            $method = 'GET';
+        }
+
         $hasStrictMatch = false;
         foreach ($this->routes as $route) {
             $trimmed = trim($uri, '/');

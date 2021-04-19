@@ -11,10 +11,10 @@ class GroupHelper
 {
     /**
      *
-     * @param string $ageGroup
+     * @param string|null $ageGroup
      * @return string
      */
-    public static function parseAgeGroup(?string $ageGroup)
+    public static function parseAgeGroup(?string $ageGroup): string
     {
         $ageGroups = static::getAgeGroups($ageGroup);
 
@@ -30,7 +30,7 @@ class GroupHelper
      * @param string $ageGroup
      * @return Collection
      */
-    public static function getAgeGroups(string $ageGroup)
+    public static function getAgeGroups(string $ageGroup): Collection
     {
         return (new Collection(explode(',', $ageGroup)))
             ->filter()
@@ -63,6 +63,11 @@ class GroupHelper
         $root = _env('STORAGE_PATH') . 'groups' . DS;
 
         return $root . static::getRelpath($groupId);
+    }
+
+    public static function getPublicImagePath(?int $groupId): string
+    {
+        return "/media/groups/images/{$groupId}_1.jpg";
     }
 
     public static function isGroupEditableBy(Group $group, User $user): bool

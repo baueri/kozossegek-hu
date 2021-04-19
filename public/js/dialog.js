@@ -156,15 +156,20 @@ const dialog = (function () {
 $(() => {
     $(document).on("click", ".confirm-action", function (e) {
         const action = $(this).attr("href");
-        let message = $(this).data("message");
+        let message = $(this).data("confirm_message");
 
         if (!message) {
             message = "Biztos vagy benne?";
         }
 
         e.preventDefault();
-        dialog.confirm(message, function (dialog, confirmed) {
 
+        dialog.confirm({message: message, type: "danger", size: "md"}, function (modal, confirmed) {
+            if (confirmed) {
+                window.location.href = action;
+            } else {
+                modal.close();
+            }
         });
     });
 

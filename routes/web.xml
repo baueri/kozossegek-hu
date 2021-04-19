@@ -9,6 +9,8 @@
         <route method="all" uri="regisztracio" controller="LoginController" use="register" as="portal.register"/>
 
         <route method="all" uri="kozossegek" as="portal.groups" controller="GroupController" use="kozossegek"/>
+        <route method="all" uri="kozossegek/{korosztaly}" as="portal.groups_korosztaly" controller="GroupController" use="kozossegek"/>
+
         <route method="all" uri="kozosseg-regisztracio" as="portal.register_group" controller="GroupController" use="kozossegRegisztracio"/>
 
         <route method="all" uri="[A-Z][a-z]+" as="portal.groups.in_city" controller="GroupController" use="kozossegek"/>

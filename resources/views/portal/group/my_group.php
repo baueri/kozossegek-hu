@@ -54,22 +54,12 @@
                     <input type="text" id="name" value='{{ $group->name }}' name="name" class="form-control">
                 </div>
                 <div class="row">
-                    <div class="col-md-3">
-                        <div class="form-group required">
-                            <label for="denomination">Felekezet</label>
-                            <select class="form-control" name="denomination" required>
-                                @foreach($denominations as $denomination)
-                                    <option value="{{ $denomination->name }}">{{ $denomination }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-9">
+                    <div class="col-md-12">
                         <div class="form-group required">
                             <label for="institute_id">Intézmény / plébánia</label>
                             <select name="institute_id" style="width:100%" class="form-control" required>
                                 <option value="{{ $group->institute_id }}">
-                                    {{ $group->institute_id ? $group->institute_name . ' (' . $group->city . ')' : 'intézmény' }}
+                                    {{ $group->institute_id ? $group->institute_name . ' (' . $group->city . ', ' . $group->address . ')' : 'intézmény' }}
                                     @if($institute && $institute->approved == 0)
                                         - függőben levő intézmény
                                     @endif
@@ -277,8 +267,8 @@
 
 
         $("[name=institute_id]").instituteSelect();
-
         initSummernote('[name=description]', {
+            height: 200,
             toolbar: [
                 ['style', ['style']],
                 ['font', ['bold', 'underline', 'clear']],
