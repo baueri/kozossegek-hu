@@ -2,6 +2,7 @@
 
 namespace App\Admin\Group\Services;
 
+use App\Helpers\GroupHelper;
 use App\Models\Group;
 use Framework\Exception\FileTypeNotAllowedException;
 use Framework\Support\Collection;
@@ -22,6 +23,7 @@ class CreateGroup extends BaseGroupService
         $data['age_group'] = implode(',', $data['age_group'] ?? []);
         $data['on_days'] = implode(',', $data['on_days'] ?? []);
         $data['document'] = '';
+        $data['image_url'] = '';
 
         if (!$this->validate($data)) {
             return null;
@@ -50,6 +52,10 @@ class CreateGroup extends BaseGroupService
             $this->updateSearchEngine($group);
 
             $this->syncImages($group, [$request['image']]);
+
+            if ($request['image']) {
+                $group->image_url = GroupHelper::getPublicImagePath($group->id);
+            }
 
             $file = $this->uploadDocument($group, $document);
 

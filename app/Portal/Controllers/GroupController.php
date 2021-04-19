@@ -33,7 +33,8 @@ class GroupController extends Controller
 
     public function kozossegek(Request $request, GroupList $service)
     {
-        return $service->getHtml($request->collect());
+        $filter = $request->collect()->merge(['korosztaly' => $request['korosztaly']]);
+        return $service->getHtml($filter);
     }
 
     public function intezmenyKozossegek(Request $request, GroupList $service, Institutes $institutes)
@@ -95,7 +96,9 @@ class GroupController extends Controller
         $slug = $group->slug();
         $keywords = builder('search_engine')->where('group_id', $group->id)->first()['keywords'];
 
-        $this->getEventLogger()->logEvent('group_profile_opened');
+        $this->getEventLogger()->logEvent('group_profile_opened', [
+            'group_id' => $group->id, 'referer' => $_SERVER['HTTP_REFERER']
+        ]);
 
         return view('portal.kozosseg', compact(
             'group',
@@ -127,7 +130,7 @@ class GroupController extends Controller
     public function sendContactMessage(Request $request, Groups $repo, SendContactMessage $service)
     {
         try {
-            $service->send($repo->findOrFail($request['id']), $request->all());
+            $service->send($repo->findOrFail($request['id']), $request->map('strip_tags', true)->all());
 
             return [
                 'success' => true,

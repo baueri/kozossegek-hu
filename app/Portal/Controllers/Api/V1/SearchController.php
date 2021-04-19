@@ -50,6 +50,10 @@ class SearchController
 
     public function searchInstitute(Institutes $repository)
     {
+        if (!$this->request['term']) {
+            return [];
+        }
+
         $user = Auth::user();
         $response = new InstituteSearchResponse($repository->search($this->request['term'], $this->request['city']));
         return $response->asAdmin($user && $user->isAdmin());

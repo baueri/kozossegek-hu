@@ -21,7 +21,7 @@ class HoneyPot
      * @param string $hashVal
      * @throws UnauthorizedException
      */
-    public static function validate(string $id, string $hashVal)
+    public static function validate(string $id, string $hashVal): void
     {
         $checkTime = $_SESSION['honey_pot'][$id]['honeypot_check_time'];
         $check_hash = $_SESSION['honey_pot'][$id]['honeypot_check_hash'];

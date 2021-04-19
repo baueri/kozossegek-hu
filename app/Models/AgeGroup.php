@@ -7,7 +7,8 @@ namespace App\Models;
  *
  * @author ivan
  */
-class AgeGroup extends AbstractSimpleTranslatable {
+class AgeGroup extends AbstractSimpleTranslatable
+{
 
-    
+
 }

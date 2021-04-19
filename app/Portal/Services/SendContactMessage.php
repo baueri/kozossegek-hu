@@ -5,6 +5,7 @@ namespace App\Portal\Services;
 use App\Helpers\HoneyPot;
 use App\Mail\GroupContactMail;
 use App\Models\Group;
+use App\Traits\LogsEvent;
 use Framework\Application;
 use Framework\Exception\UnauthorizedException;
 use Framework\Mail\Mailer;
@@ -50,8 +51,14 @@ class SendContactMessage
             throw new UnauthorizedException();
         }
 
-        $mail = new GroupContactMail($data);
+        $mail = new GroupContactMail($data['name'], $data['email'], $data['message']);
 
-        return $this->mailer->to($group->group_leader_email)->send($mail);
+        $success = $this->mailer->to($group->group_leader_email)->send($mail);
+
+        log_event('group_contact', [
+            'group_id' => $group->id
+        ]);
+
+        return $success;
     }
 }

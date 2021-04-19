@@ -63,7 +63,7 @@ class GroupController extends AdminController
      */
     public function create(BaseGroupForm $service): string
     {
-        return $service->render(new Group());
+        return $service->render(new GroupView());
     }
 
     /**

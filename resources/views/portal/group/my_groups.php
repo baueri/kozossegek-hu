@@ -32,7 +32,7 @@
                         @endif
                     </td>
                     <td>
-                        <a href="@route('portal.delete_group', $group)" class="text-danger" title="közösség törlése"><i class="fa fa-trash-alt"></i></a>
+                        <a href="@route('portal.delete_group', $group)" class="text-danger confirm-action" data-confirm_message="Biztosan törlöd a közösséged?" title="közösség törlése"><i class="fa fa-trash-alt"></i></a>
                     </td>
                 </tr>
                 @endforeach

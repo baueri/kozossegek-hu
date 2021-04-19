@@ -11,7 +11,7 @@ trait LogsEvent
     protected function getEventLogger()
     {
         if (is_null($this->eventLogRepository)) {
-            $this->eventLogRepository = app()->get(EventLogRepository::class);
+            $this->eventLogRepository = event_logger();
         }
 
         return $this->eventLogRepository;

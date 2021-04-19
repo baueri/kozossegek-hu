@@ -12,5 +12,5 @@
 
     # a wordpress-es heckelőknek rögtön letiltjuk a kapcsolatot,
     # hogy ne terheljék a szervert
-    RewriteRule wp-(includes|login|admin)|wordpress - [F]
+    RewriteRule wp-(includes|login|admin|content)|wordpress - [F]
 </IfModule>

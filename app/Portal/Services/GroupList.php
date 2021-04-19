@@ -3,6 +3,7 @@
 namespace App\Portal\Services;
 
 use App\Enums\GroupStatusEnum;
+use App\Models\AgeGroup;
 use App\Repositories\AgeGroups;
 use App\Repositories\GroupStatusRepository;
 use App\Repositories\OccasionFrequencies;
@@ -49,11 +50,11 @@ class GroupList
      */
     public function getHtml(Collection $request)
     {
-        $filter = $request->only('search', 'korosztaly', 'rendszeresseg', 'tags', 'institute_id');
-        $filter['varos'] = $request['varos'];
+        $baseFilter = $request->only('search', 'korosztaly', 'tags', 'institute_id');
+        $baseFilter['varos'] = $request['varos'];
 
-//        $filter['order_by'] = ['city', 'district'];
-//        $filter['sort'] = 'asc';
+        $filter = $baseFilter;
+
         $filter['pending'] = 0;
         $filter['status'] = GroupStatusEnum::ACTIVE;
         $groups = $this->service->search($filter, 18);
@@ -63,6 +64,8 @@ class GroupList
             $group_tags = builder('v_group_tags')->whereIn('group_id', $groupIds)->get();
             $groups->withMany($group_tags, 'tags', 'id', 'group_id');
         }
+
+        $korosztaly = $filter['korosztaly'] ?? null;
 
         $model = [
             'groups' => $groups,
@@ -76,6 +79,8 @@ class GroupList
             'tags' => builder('tags')->get(),
             'header_background' => '/images/kozosseget_keresek.jpg',
             'statuses' => $statuses,
+            'selected_age_group' => $korosztaly,
+            'age_group_query' => http_build_query($baseFilter)
         ];
 
         return view('portal.kozossegek', $model);

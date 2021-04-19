@@ -4,7 +4,10 @@ use App\Admin\Components\DebugBar\DebugBar;
 use App\Auth\Auth;
 use App\Mailable\CriticalErrorEmail;
 use App\Middleware\AdminMiddleware;
+use App\Models\User;
+use App\Repositories\EventLogRepository;
 use App\Repositories\Widgets;
+use App\Services\EventLogger;
 use Arrilot\DotEnv\DotEnv;
 use Framework\Application;
 use Framework\Database\Builder;
@@ -424,6 +427,16 @@ function get_class_name($class)
 function site_has_error_logs(): bool
 {
     return file_exists(ROOT . 'error.log') && filesize(ROOT . 'error.log');
+}
+
+function event_logger(): EventLogger
+{
+    return app()->get(EventLogRepository::class);
+}
+
+function log_event(string $type, array $data = [], ?User $user = null)
+{
+    event_logger()->logEvent($type, $data, $user);
 }
 
 function site_name(): string

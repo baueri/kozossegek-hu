@@ -2,6 +2,7 @@
 
 namespace App\Admin\Group\Services;
 
+use App\Helpers\GroupHelper;
 use App\Models\Group;
 use Framework\Exception\FileTypeNotAllowedException;
 use Framework\Http\Message;
@@ -30,7 +31,7 @@ class UpdateGroup extends BaseGroupService
             $request = collect($request);
         }
 
-        $data = $request->except('id', 'tags')->all();
+        $data = $request->except('id', 'tags', 'image')->all();
 
         $data['description'] = strip_tags($data['description'], ['a', 'h1', 'h2', 'h3', 'p', 'b', 'u', 'ul', 'ol', 'li', 'code', 'pre']);
 
@@ -60,13 +61,15 @@ class UpdateGroup extends BaseGroupService
 
         $this->syncTags($group, (array) $request['tags']);
 
-        $group->update($data);
+        $this->syncImages($group, [$request['image']]);
 
-        $this->repository->update($group);
+        if ($request['image']) {
+            $data['image_url'] = GroupHelper::getPublicImagePath($group->id);
+        }
+
+        $this->repository->update($group, $data);
 
         $this->updateSearchEngine($group);
-
-        $this->syncImages($group, [$request['image']]);
 
         Message::success('Sikeres mentés.');
 

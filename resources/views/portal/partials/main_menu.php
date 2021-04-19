@@ -7,28 +7,23 @@
         <input type="checkbox" style="display: none" id="toggle_main_menu" name="toggle_main_menu">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a href="@route('portal.page', ['slug' => 'rolunk'])" class="nav-link"><span>Rólunk</span></a>
-            </li>
-            <li class="nav-item">
                 <a href="@route('portal.groups')" class="nav-link"><span>Közösséget keresek</span></a>
             </li>
             <li class="nav-item">
-                <a href="@route('portal.page', ['slug' => 'a-kozosseg'])" class="nav-link">A közösségről @icon('angle-down')</a>
-                <ul class="submenu" style="left: 0; right: auto">
-                    <li class="nav-item">
-                        <a href="/hogyan-alakitsunk-kiskozosseget" class="nav-link">Új kisközösség kialakítása</a>
-                    </li>
-                </ul>
-            </li>
-            <li class="nav-item divider-before">
                 <a href="@route('portal.register_group')" class="nav-link"><span>Közösséget vezetek</span></a>
+            </li>
+            <li class="nav-item">
+                <a href="@route('portal.page', ['slug' => 'a-kozosseg'])" class="nav-link">A közösségről</a>
+            </li>
+            <li class="nav-item">
+                <a href="@route('portal.page', ['slug' => 'rolunk'])" class="nav-link"><span>Rólunk</span></a>
             </li>
             @auth
                 <li class="nav-item nav-item-profile">
                     <a href="@route('portal.my_profile')" class="nav-link user-menu"><i class="fa fa-user-circle" style="font-size: 18px;"></i></a>
                     <ul class="submenu">
                         <li class="nav-item">
-                            <a href="@route('portal.my_profile')" class="nav-link">Profilom</a>
+                            <a href="@route('portal.my_profile')" class="nav-link">Fiókom</a>
                         </li>
                         <li class="nav-item">
                             <a href="@route('portal.my_groups')" class="nav-link">Közösségeim</a>

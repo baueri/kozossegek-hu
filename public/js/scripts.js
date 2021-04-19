@@ -12,19 +12,9 @@ $(() => {
         }, 200);
     });
 
-    $("[title]").tooltip();
-});
-
-$(window).scroll(function (e) {
-    // const scrollTop = $(window).scrollTop();
-    // const docHeight = $(document).height();
-    // const winHeight = $(window).height();
-    //
-    // const featuredH = $(".featured").height();
-    // const scrollPercent = (scrollTop) / (docHeight - winHeight - featuredH);
-    // const scrollPercentRounded = scrollPercent * 100;
-    //
-    // $(".featured-bg").css("background-position", 'center ' + (-scrollPercentRounded * 5) + 'px');
+    $("[title]").tooltip({
+        trigger: "hover"
+    });
 });
 
 $(window).on("load scroll", () => {
@@ -38,7 +28,7 @@ $(window).on("load scroll", () => {
 $.fn.instituteSelect = function (options) {
     $(this).each(function () {
         $(this).select2($.extend({
-            placeholder: "intézmény",
+            placeholder: "kezdd el gépelni az intézmény nevét...",
             allowClear: true,
             ajax: {
                 url: "/api/v1/search-institute",

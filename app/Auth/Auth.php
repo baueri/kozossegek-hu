@@ -49,16 +49,15 @@ class Auth
     /**
      * @return bool
      */
-    public static function loggedIn()
+    public static function loggedIn(): bool
     {
         return (bool) static::$user;
     }
 
     /**
-     *
-     * @return User
+     * @return User|null
      */
-    public static function user()
+    public static function user(): ?User
     {
         return static::$user;
     }
