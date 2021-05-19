@@ -66,11 +66,14 @@ class GroupList
         }
 
         $korosztaly = $filter['korosztaly'] ?? null;
-
+        $ageGroups = collect($this->ageGroups->all());
         $model = [
             'groups' => $groups,
             'occasion_frequencies' => $this->occasionFrequencies->all(),
-            'age_groups' => $this->ageGroups->all(),
+            'age_groups' => $ageGroups->map(fn (AgeGroup $ageGroup) => [
+                'value' => $ageGroup->name,
+                'name' => $ageGroup->translate()
+            ]),
             'page' => $groups->page(),
             'total' => $groups->total(),
             'perpage' => $groups->perpage(),

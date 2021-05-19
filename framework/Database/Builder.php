@@ -203,7 +203,8 @@ class Builder
      */
     public function paginate($limit = 30, $page = null)
     {
-        $page = $page ?: app()->get(Request::class)['pg'] ?: 1;
+        $page = $page ?: request()->get('pg', 1);
+        $limit = $limit ?? 30;
 
         $total = $this->count();
 
@@ -418,7 +419,7 @@ class Builder
         return (bool) $this->first()['exists'];
     }
 
-    public function toSql($withBindings = false)
+    public function toSql($withBindings = false): string
     {
         [$query, $bindings] = $this->getBaseSelect();
 

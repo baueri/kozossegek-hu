@@ -10,3 +10,4 @@ storage/
 public/media
 tmp_deploy
 email_templates/
+tests/

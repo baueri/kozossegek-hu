@@ -3,23 +3,18 @@
 namespace App\EventListeners;
 
 use App\Events\BaseLogEvent;
-use App\Repositories\EventLogRepository;
+use App\Services\EventLogger;
 use Framework\Event\Event;
 use Framework\Event\EventListener;
 
-/**
- * Description of BaseLogger
- *
- * @author ivan
- */
 class BaseLogger implements EventListener
 {
 
-    private EventLogRepository $eventLogRepo;
+    private EventLogger $eventLogger;
 
-    public function __construct(EventLogRepository $eventLogRepo)
+    public function __construct(EventLogger $eventLogRepo)
     {
-        $this->eventLogRepo = $eventLogRepo;
+        $this->eventLogger = $eventLogRepo;
     }
 
     /**
@@ -27,6 +22,6 @@ class BaseLogger implements EventListener
      */
     public function trigger($event)
     {
-        $this->eventLogRepo->logEvent($event->logType, $event->data, $event->user);
+        $this->eventLogger->logEvent($event->logType, $event->data, $event->user);
     }
 }

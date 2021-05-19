@@ -20,6 +20,7 @@ return [
 
     'contact_email' => _env('CONTACT_EMAIL', 'birkaivan@gmail.com'),
     'error_email' => _env('ERROR_EMAIL', 'birkaivan@gmail.com'),
+    'website_contact_email' => _env('WEBSITE_CONTACT_EMAIL', 'birkaivan@gmail.com'),
 
     'providers' => [
 

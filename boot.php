@@ -25,7 +25,7 @@ const APP = ROOT . 'app' . DS;
 const RESOURCES = ROOT . 'resources' . DS;
 const CACHE = ROOT . 'cache' . DS;
 const LANG = 'hu';
-const APP_VERSION = 'v1.1';
+const APP_VERSION = 'v1.2';
 const STORAGE_PATH = ROOT . 'storage' . DS;
 
 include 'vendor/autoload.php';

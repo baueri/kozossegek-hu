@@ -31,6 +31,6 @@ class AdminPageRepository extends PageRepository
 
         $builder->orderByFromRequest();
 
-        return $this->getInstances($builder->paginate(30));
+        return $this->getInstances($builder->paginate());
     }
 }

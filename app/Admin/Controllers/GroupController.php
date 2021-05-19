@@ -76,6 +76,7 @@ class GroupController extends AdminController
     {
         try {
             $group = $service->create($this->request->collect());
+            event_logger()->logEvent('group_created', ['group_id' => $group->id]);
 
             Message::success('Közösség létrehozva.');
             redirect_route('admin.group.edit', ['id' => $group->id]);

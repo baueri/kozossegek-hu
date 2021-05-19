@@ -50,8 +50,8 @@ class InstituteController extends AdminController
 
     public function update(Request $request, Institutes $repository)
     {
-        /* @var $institute Institute */
         $institute = $repository->findOrFail($request['id']);
+        $a = $institute->name;
 
         if ($imageSource = $request['image']) {
             $image = new Base64Image($imageSource);

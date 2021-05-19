@@ -52,6 +52,7 @@ body:not(.home) .featured-header {
     background-size: cover !important;
     z-index: -1;
     transform: translateZ(-1px) scale(1.04);
+    filter: brightness(.8);
 }
 
 .featured-header.header-outer #header {
@@ -138,7 +139,7 @@ body:not(.home) .featured-header {
     filter: brightness(0) invert(1);
 }
 
-#main-finder button {
+#search-button {
     transition: all ease-in .12s;
     text-transform: uppercase;
     font-family: 'Roboto Condensed', sans-serif;
@@ -148,6 +149,27 @@ body:not(.home) .featured-header {
     padding: .8em 3em;
     border-radius: 25px;
     box-shadow: 0 0 10px 0 #333;
+}
+
+#search-group input, #search-group select {
+    border: none !important;
+}
+#search-group input:focus, #search-group select:focus, #search-group .btn:focus {
+    box-shadow: none;
+}
+
+#search-group select {
+    font-style: italic;
+}
+
+#search-group select option:not(:first-child), #search-group select.has-val {
+    font-style: normal;
+    color: #333 !important;
+}
+
+#search-group input::placeholder {
+    font-style: italic;
+    color: #aaa !important;
 }
 
 nav.navbar .nav-link i {
@@ -173,6 +195,11 @@ nav.navbar .submenu {
     max-height: 0;
     overflow: hidden;
 
+}
+
+.title-secondary {
+    font-weight: 100;
+    font-family: 'Raleway', sans-serif;
 }
 
 nav a {
@@ -224,10 +251,9 @@ nav.navbar .nav-link:hover {
 .featured h1 {
     padding: 2em 0;
     margin: 0;
-    /*font-family: 'Montserrat', sans-serif;*/
-    font-family: 'Roboto Condensed', sans-serif;
+    font-family: 'Poppins', sans-serif;
     color: #fff;
-    text-shadow: 0 0 10px #000;
+    /*text-shadow: 0 0 10px #000;*/
 }
 
 #finder [name=korosztaly]+span, #finder [name=rendszeresseg]+span {
@@ -407,7 +433,7 @@ input[name=search]::placeholder, input[name=varos]::placeholder {
 #main-finder #finder {
     margin: auto;
     width: 100%;
-    max-width: 800px;
+    max-width: 960px;
 }
 
 #finder .group-tag:checked + label span:first-child {
@@ -696,15 +722,6 @@ ul.age-group-select li a:hover {
 /*    font-size: 13px;*/
 /*}*/
 
-#main-finder [name=search] {
-    display: block;
-    margin: auto;
-    padding: 1em 2em;
-    width: 100%;
-    max-width: 350px;
-    border: 0;
-    border-radius: .2rem;
-}
 #instructions i {
     color: #555;
     background: #fff;
@@ -932,6 +949,16 @@ ul.age-group-select li a:hover {
 }
 
 @media (max-width: 991px) {
+    #search-group {
+        background-color: transparent !important;
+        text-align: center;
+    }
+    #search-group .border-right {
+        border: none !important;
+    }
+    #search-group button[type=submit] {
+        max-width: 200px;
+    }
     .tag-dropdown button {
         border-radius: 4px;
     }

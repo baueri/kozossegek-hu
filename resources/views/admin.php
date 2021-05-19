@@ -15,22 +15,23 @@
     <link rel="stylesheet" href="/assets/sidebar-09/css/style.css">
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+    @yield('header')
+    <script src="/assets/jquery-ui/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="/assets/jquery-ui/jquery-ui.min.css">
+    <link rel="stylesheet" href="/css/admin.css">
+    <script src="/js/dialog.js"></script>
+    <script src="/js/admin.js"></script>
+    <script src="/assets/sidebar-09/js/main.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.9/css/bootstrap-dialog.min.css" rel="stylesheet" type="text/css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.9/js/bootstrap-dialog.min.js"></script>
 
-    @yield('header')
-<!--    <script src="/assets/jquery-ui/jquery-ui.min.js"></script>-->
-<!--    <link rel="stylesheet" href="/assets/jquery-ui/jquery-ui.min.css">-->
-    <link rel="stylesheet" href="/css/admin.css">
-    <script src="/js/dialog.js"></script>
-    <script src="/js/admin.js"></script>
-    <script src="/assets/sidebar-09/js/main.js"></script>
-
 </head>
-<body @if($show_debugbar)class="has-debugbar"@endif>
+<body class="bg-light @if($show_debugbar)has-debugbar @endif">
 <nav id="top_menu" class="navbar navbar-expand navbar-dark bg-dark fixed-top">
     <ul class="navbar-nav mr-auto">
         <li class="nav-item" id="mobile_menu_toggle">

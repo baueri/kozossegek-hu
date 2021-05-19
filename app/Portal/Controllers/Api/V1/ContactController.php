@@ -23,14 +23,23 @@ class ContactController
         HoneyPot::validate('/rolunk', $request['website']);
 
         try {
+            if ($request['category'] === 'kapcsolat') {
+                $to = config('app.contact_email');
+                $subject = 'Új üzenet';
+            } else {
+                $to = config('app.website_contact_email');
+                $subject = 'Új honlappal kapcsolatos üzenet';
+            }
+
             $request->stripTags()
                 ->validate('name', 'email', 'message');
             $mailable = Mailable::make()
-                ->subject('kozossegek.hu - új üzenet')
-                ->with($request->only('name', 'email', 'message'))
+                ->subject(site_name() . ' - ' . $subject)
+                ->with($request->only('name', 'email', 'message', 'category'))
+                ->replyTo($request['email'])
                 ->view('email_templates:contact_us');
 
-            if ($mailer->to(config('app.contact_email'))->send($mailable)) {
+            if ($mailer->to($to)->send($mailable)) {
                 return api()->ok('Köszönjük! Üzenetedet elküldtük.');
             }
 
