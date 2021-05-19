@@ -140,18 +140,20 @@ function builder(?string $table = null)
 }
 
 /**
- * @param $route
+ * @param string $route
  * @param array|string|Model $args
  * @return string
  */
-function route($route, $args = [])
+function route(string $route, $args = [])
 {
     return app()->get(RouterInterface::class)->route($route, $args);
 }
 
-/**
- * @var string $uri
- */
+function route_is(string $routeName): bool
+{
+    return current_route()->getAs() === $routeName;
+}
+
 function redirect(string $uri)
 {
     header("Location: $uri");

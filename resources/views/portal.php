@@ -9,7 +9,7 @@
     <title>@yield('subtitle'){{ site_name() }}</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:wght@200|Open+Sans:400,600|Work+Sans:400,700|Merriweather|Roboto+Condensed:wght@300;400|" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:wght@200|Open+Sans:300,400,600|Work+Sans:400,700|Raleway|Roboto+Condensed:wght@100,300;400|Poppins" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="search" type="application/opensearchdescription+xml" title="kozossegek.hu" href="/opensearch.xml">
 
@@ -20,9 +20,6 @@
     <link rel="stylesheet" href="/css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-    <div id="fb-root"></div>
-    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/hu_HU/sdk.js#xfbml=1&version=v9.0&appId=784869592115351&autoLogAppEvents=1" nonce="lcQfw2hE"></script>
-
     @if(is_prod())
         <!-- Global site tag (gtag.js) - Google Analytics -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=UA-43190044-6"></script>
@@ -36,6 +33,8 @@
     @endif
 </head>
 <body class="{{ $is_prod ? 'demo' : '' }} {{ $is_home ? 'home' : '' }}">
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/hu_HU/sdk.js#xfbml=1&version=v9.0&appId=784869592115351&autoLogAppEvents=1" nonce="lcQfw2hE"></script>
+    <div id="fb-root"></div>
     @if($header_background)
         <div class="featured-header header-outer">
             @include('portal.partials.main_menu')

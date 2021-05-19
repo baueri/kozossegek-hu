@@ -2,18 +2,17 @@
 
 namespace App\Models;
 
-/**
- * Description of EventLog
- *
- * @author ivan
- */
-class EventLog extends \Framework\Model\Model
+use Framework\Model\Model;
+
+class EventLog extends Model
 {
     public $id;
-    
+
     public $type;
-    
-    public $data;
-    
+
+    public $log;
+
     public $user_id;
+
+    public $created_at;
 }

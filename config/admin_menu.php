@@ -8,12 +8,12 @@ return [
     ],
     [
         'title' => 'Tartalom',
-        'icon' => 'file',
+        'icon' => 'file-alt',
         'as' => 'admin.page.list',
         'submenu' => [
             [
                 'title' => 'Oldalak',
-                'icon' => 'file',
+                'icon' => 'file-alt',
                 'as' => 'admin.page.list',
                 'similars' => ['admin.page.edit', 'admin.page.trash'],
             ], [

@@ -147,4 +147,9 @@ class StringHelper
         return $text;
     }
 
+    public static function wrap(string $string, string $before, ?string $after = null): string
+    {
+        $after = $after ?? $before;
+        return "{$before}{$string}{$after}";
+    }
 }

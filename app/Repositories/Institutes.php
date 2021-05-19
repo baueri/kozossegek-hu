@@ -10,6 +10,7 @@ use Framework\Repository;
  * Description of Institutes
  *
  * @author ivan
+ * @extends Repository<\App\Models\Institute>
  */
 class Institutes extends Repository
 {
@@ -22,7 +23,6 @@ class Institutes extends Repository
     public function search($keyword, $city = null)
     {
         $builder =  $this->getBuilder()->apply(['notDeleted', 'approved']);
-
         if ($city) {
             $builder->where('city', $city);
         }
@@ -84,14 +84,6 @@ class Institutes extends Repository
     public static function getTable(): string
     {
         return 'institutes';
-    }
-
-    public function getInstitutesByIds($instituteIds)
-    {
-        if (empty($instituteIds)) {
-            return $this->getInstances([]);
-        }
-        return $this->getInstances($this->getBuilder()->whereIn('id', $instituteIds)->get());
     }
 
     public function searchByCityAndInstituteName(string $city, string $institute): ?Institute

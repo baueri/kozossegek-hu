@@ -100,6 +100,7 @@ class PortalCreateGroup
         $group = $this->createGroup->create(collect($data), $fileData);
 
         if ($group) {
+            event_logger()->logEvent('group_created', ['group_id' => $group->id], $user);
             (new Mailer())->to($user->email)->send($mailable);
             return $group;
         }

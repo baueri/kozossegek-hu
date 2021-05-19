@@ -15,7 +15,6 @@ use App\Portal\Services\SendContactMessage;
 use App\Repositories\Groups;
 use App\Repositories\GroupViews;
 use App\Repositories\Institutes;
-use App\Traits\LogsEvent;
 use Error;
 use ErrorException;
 use Exception;
@@ -29,8 +28,6 @@ use Throwable;
 
 class GroupController extends Controller
 {
-    use LogsEvent;
-
     public function kozossegek(Request $request, GroupList $service)
     {
         $filter = $request->collect()->merge(['korosztaly' => $request['korosztaly']]);
@@ -96,7 +93,7 @@ class GroupController extends Controller
         $slug = $group->slug();
         $keywords = builder('search_engine')->where('group_id', $group->id)->first()['keywords'];
 
-        $this->getEventLogger()->logEvent('group_profile_opened', [
+        log_event('group_profile_opened', [
             'group_id' => $group->id, 'referer' => $_SERVER['HTTP_REFERER']
         ]);
 

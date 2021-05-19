@@ -12,14 +12,14 @@ class CreateGroup extends BaseGroupService
 
     /**
      *
-     * @param Collection $request
+     * @param Collection $groupData
      * @param array|null $document
      * @return Group|null
      * @throws FileTypeNotAllowedException
      */
-    public function create(Collection $request, ?array $document = null): ?Group
+    public function create(Collection $groupData, ?array $document = null): ?Group
     {
-        $data = $request->filter()->except('files', 'image', 'tags', 'institute')->all();
+        $data = $groupData->filter()->except('files', 'image', 'tags', 'institute')->all();
         $data['age_group'] = implode(',', $data['age_group'] ?? []);
         $data['on_days'] = implode(',', $data['on_days'] ?? []);
         $data['document'] = '';
@@ -29,9 +29,9 @@ class CreateGroup extends BaseGroupService
             return null;
         }
 
-        $instituteId = $request['institute_id'];
+        $instituteId = $groupData['institute_id'];
 
-        if (($institute = $request['institute']) && !$instituteId) {
+        if (($institute = $groupData['institute']) && !$instituteId) {
             $institute['approved'] = 0;
             $institute['user_id'] = $data['user_id'];
             $instituteId = $this->institutes->create($institute)->id;
@@ -47,13 +47,13 @@ class CreateGroup extends BaseGroupService
         $group = $this->repository->create($data);
 
         if ($group) {
-            $this->syncTags($group, (array) $request['tags']);
+            $this->syncTags($group, (array) $groupData['tags']);
 
             $this->updateSearchEngine($group);
 
-            $this->syncImages($group, [$request['image']]);
+            $this->syncImages($group, [$groupData['image']]);
 
-            if ($request['image']) {
+            if ($groupData['image']) {
                 $group->image_url = GroupHelper::getPublicImagePath($group->id);
             }
 

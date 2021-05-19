@@ -42,6 +42,8 @@
 
     #debugbar-content > div > div {
         display: none;
+        max-height: 600px;
+        overflow-y: auto;
     }
 
     #debugbar-content input[type=radio]:checked ~ div {

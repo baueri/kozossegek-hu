@@ -2,6 +2,7 @@
 
 namespace App\Admin\Controllers;
 
+use App\Admin\Settings\EventLog\EventLogAdminTable;
 use App\Services\SystemAdministration\SetImageUrlForMissingGroups;
 use Framework\Http\Message;
 use Framework\Http\View\Section;
@@ -39,11 +40,13 @@ class SettingsController extends AdminController
         return redirect_route('admin.error_log');
     }
 
-    public function eventLog()
+    public function eventLog(EventLogAdminTable $table, Request $request)
     {
         Section::add('title', 'Eseménynapló');
+        $date_from = $request['date_from'];
+        $date_to = $request['date_to'];
 
-        return view('admin');
+        return view('admin.settings.event-log', compact('table', 'date_from', 'date_to'));
     }
 
     public function setGroupImages(SetImageUrlForMissingGroups $service)

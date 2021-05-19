@@ -7,16 +7,16 @@ use Framework\Database\PaginatedResultSetInterface;
 use Framework\Model\Model;
 use Framework\Model\ModelCollection;
 use Framework\Model\ModelNotFoundException;
+use Framework\Model\ModelRepositoryBuilder;
 use Framework\Model\PaginatedModelCollection;
 use Framework\Support\Collection;
 use Framework\Support\DataSet;
+use Framework\Traits\Makeable;
 
-/**
- * Class Repository
- * @package Framework
- */
 abstract class Repository
 {
+    use Makeable;
+
     /**
      * @return Database\Builder
      */
@@ -228,7 +228,7 @@ abstract class Repository
      */
     public function deleteMultiple($models, $forceDelete = false)
     {
-        DataSet::each($models, fn($model) => $this->delete($model, $forceDelete));
+        DataSet::each($models, fn ($model) => $this->delete($model, $forceDelete));
     }
 
     public function deleteMultipleByIds($ids, $forceDelete)
@@ -246,5 +246,10 @@ abstract class Repository
     public function updateOrCreate(array $where, array $data)
     {
         return $this->getBuilder()->updateOrInsert($where, $data);
+    }
+
+    public function query(): ModelRepositoryBuilder
+    {
+        return new ModelRepositoryBuilder($this);
     }
 }

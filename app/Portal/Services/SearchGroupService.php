@@ -10,6 +10,7 @@ use Framework\Model\Model;
 use Framework\Model\ModelCollection;
 use Framework\Model\PaginatedModelCollection;
 use Framework\Support\Collection;
+use Framework\Support\DataSet;
 
 class SearchGroupService
 {
@@ -45,7 +46,22 @@ class SearchGroupService
 
     private function logEvent($data)
     {
-        $data['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
-        EventDisptatcher::dispatch(new SearchTriggered('search', $data));
+        if (isset($data['status'])) {
+            unset($data['status']);
+        }
+
+        if (isset($data['pending'])) {
+            unset($data['pending']);
+        }
+
+        if (self::shouldLog($data)) {
+            $data['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
+            EventDisptatcher::dispatch(new SearchTriggered('search', $data));
+        }
+    }
+
+    private static function shouldLog($filterData)
+    {
+        return (bool) array_filter($filterData);
     }
 }

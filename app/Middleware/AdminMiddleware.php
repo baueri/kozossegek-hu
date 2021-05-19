@@ -21,7 +21,10 @@ class AdminMiddleware implements Middleware
     }
 
 
-    public function handle()
+    /**
+     * @throws \Framework\Exception\UnauthorizedException
+     */
+    final public function handle()
     {
         if (!Auth::loggedIn()) {
             Session::set('last_visited', $_SERVER['REQUEST_URI']);
@@ -29,7 +32,7 @@ class AdminMiddleware implements Middleware
             redirect_route('login');
         }
 
-        if (!Auth::user()->hasUserGroup('SUPER_ADMIN')) {
+        if (!Auth::user()->isAdmin()) {
             throw new UnauthorizedException();
         }
 
@@ -39,7 +42,7 @@ class AdminMiddleware implements Middleware
         View::setVariable('admin_menu', $admin_menu);
         View::setVariable('current_menu_item', $admin_menu->first('active'));
 
-        if ($this->maintenance->isMaintenanceOn() && \App\Auth\Auth::loggedIn()) {
+        if ($this->maintenance->isMaintenanceOn() && Auth::loggedIn()) {
             View::setVariable('is_maintenance_on', true);
         } else {
             View::setVariable('is_maintenance_on', false);

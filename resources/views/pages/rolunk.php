@@ -37,6 +37,13 @@
                         <label for="mail_address">Email címed</label>
                         <input type="email" class="form-control form-control-sm" name="email" required id="mail_address">
                     </div>
+                    <div class="form-group">
+                        <label for="category">Mivel kapcsolatban keresel minket?</label>
+                        <select id="category" name="category" class="form-control">
+                            <option value="kapcsolat">Kapcsolatfelvétel</option>
+                            <option value="honlap">Honlappal kapcsolatos kérdés, észrevétel</option>
+                        </select>
+                    </div>
                     <div class="form-group required">
                         <label for="mail_msg">Üzenet</label>
                         <textarea class="noresize form-control form-control-sm" name="message" rows="4" required onresize id="mail_msg"></textarea>

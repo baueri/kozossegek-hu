@@ -3,7 +3,6 @@
 
 namespace Framework\Traits;
 
-
 trait Makeable
 {
     /**

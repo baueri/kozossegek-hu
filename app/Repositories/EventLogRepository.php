@@ -20,7 +20,7 @@ class EventLogRepository extends Repository implements EventLogger
     {
         return $this->create([
             'type' => $type,
-            'data' => json_encode($data),
+            'log' => json_encode($data),
             'user_id' => $user ? $user->id : 0
         ]);
     }

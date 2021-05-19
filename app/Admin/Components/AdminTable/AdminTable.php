@@ -3,6 +3,7 @@
 namespace App\Admin\Components\AdminTable;
 
 use Exception;
+use Framework\Database\Database;
 use Framework\Database\PaginatedResultSetInterface;
 use Framework\Dispatcher\Dispatcher;
 use Framework\Http\Request;
@@ -99,6 +100,10 @@ abstract class AdminTable
     {
         $columns = $this->columns;
 
+        if (count(array_filter(array_keys($columns), 'is_string')) === 0) {
+            $columns = array_combine($columns, $columns);
+        }
+
         if ($this instanceof Deletable) {
             $columns['delete'] = '<i class="fa fa-trash"></i>';
         }
@@ -120,9 +125,7 @@ abstract class AdminTable
             $value = $row[$column] ?? null;
         }
 
-
         if (!method_exists($this, $method)) {
-
             if ($this instanceof Editable && $column == $this->getEditColumn()) {
                 return $this->getEdit($value, $row);
             }

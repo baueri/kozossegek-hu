@@ -1,5 +1,19 @@
 @title('Verzióinformáció')
 @extends('admin')
+<h3>v1.2</h3>
+<ul>
+    <li>[NEW]: Admin vezérlőpultba bekerült két doboz:
+        <ul>
+            <li>Statisztikai adatok</li>
+            <li>Gyorsfunkciók létrehozáshoz</li>
+        </ul>
+    </li>
+    <li>[NEW]: Eseménynapló a gépházba</li>
+    <li>[FIXED]: Email ellenőrző script-ben a reguláris kifejezés javítva lett</li>
+    <li>[CHANGED]: Látogatói oldalon (főoldalon és a 'közösséget keresek' oldalon a szűrő átalakításra került</li>
+    <li>[CHANGED]: Most már csak akkor naplózzuk a kereséseket, ha valamilyen szűrőt alkalmazott a látogató</li>
+    <li>[CHANGED]: Látogatói oldalon a 'Profilom' és 'Közösségeim' oldalak menüje vízszintesre lett alakítva, hogy több hely legyen.</li>
+</ul>
 <h3>v1.1 (2021.05.19)</h3>
 <ul>
     <li>[NEW]: Az info@kozossegek.hu-ra küldött kapcsolatfelvételi üzenetre a levelező kliensben most már lehet közvetlenül válaszolni.</li>
