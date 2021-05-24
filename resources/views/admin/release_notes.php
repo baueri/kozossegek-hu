@@ -1,6 +1,6 @@
 @title('Verzióinformáció')
 @extends('admin')
-<h3>v1.2</h3>
+<h3>v1.2 (2021.05.19)</h3>
 <ul>
     <li>[NEW]: Admin vezérlőpultba bekerült két doboz:
         <ul>
@@ -14,7 +14,7 @@
     <li>[CHANGED]: Most már csak akkor naplózzuk a kereséseket, ha valamilyen szűrőt alkalmazott a látogató</li>
     <li>[CHANGED]: Látogatói oldalon a 'Profilom' és 'Közösségeim' oldalak menüje vízszintesre lett alakítva, hogy több hely legyen.</li>
 </ul>
-<h3>v1.1 (2021.05.19)</h3>
+<h3>v1.1 (2021.04.19)</h3>
 <ul>
     <li>[NEW]: Az info@kozossegek.hu-ra küldött kapcsolatfelvételi üzenetre a levelező kliensben most már lehet közvetlenül válaszolni.</li>
     <li>[NEW]: .well-known/security.txt fájl generálása</li>

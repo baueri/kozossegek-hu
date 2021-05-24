@@ -43,7 +43,7 @@ body.has-debugbar #content {
 
 #top_menu {
     margin-left: 200px;
-    background: #32373d !important;
+    /*background: #32373d !important;*/
 }
 
 #top_menu .nav-link {

@@ -34,6 +34,8 @@ class GroupTable extends AdminTable implements Editable, Deletable
 
     protected array $sortableColumns = ['id', 'status', 'pending', 'document', 'created_at'];
 
+    protected array $columnClasses = ['age_group' => 'd-none d-xl-table-cell'];
+
     private GroupViews $repository;
 
     /**
@@ -51,12 +53,14 @@ class GroupTable extends AdminTable implements Editable, Deletable
     {
         $ageGroups = GroupHelper::getAgeGroups($ageGroup);
 
-        return $ageGroups->implode(', ');
+        return $ageGroups->count() > 1 ? 'vegyes' : $ageGroups->first();
     }
 
     public function getCreatedAt($createdAt)
     {
-        return date('Y.m.d H:i', strtotime($createdAt));
+        $fullDate = date('Y.m.d H:i', strtotime($createdAt));
+        $date = date('Y.m.d', strtotime($createdAt));
+        return "<span title='{$fullDate}'>{$date}</span>";
     }
 
     public function getStatus($status)
@@ -71,7 +75,7 @@ class GroupTable extends AdminTable implements Editable, Deletable
     {
         return $this->getLink(
             $this->getListUrl(['institute_id' => $group->institute_id]),
-            $instituteName,
+            static::excerpt($instituteName, true, 45),
             'szűrés erre az intézményre'
         );
     }
@@ -107,7 +111,7 @@ class GroupTable extends AdminTable implements Editable, Deletable
     {
         return $this->repository->search($this->request->merge([
             'deleted' => $this->request->route->getAs() == 'admin.group.trash'
-        ]));
+        ]), $this->perpage);
     }
 
     public function getDeleteUrl($model): string

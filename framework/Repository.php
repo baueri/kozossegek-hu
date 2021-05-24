@@ -11,12 +11,9 @@ use Framework\Model\ModelRepositoryBuilder;
 use Framework\Model\PaginatedModelCollection;
 use Framework\Support\Collection;
 use Framework\Support\DataSet;
-use Framework\Traits\Makeable;
 
 abstract class Repository
 {
-    use Makeable;
-
     /**
      * @return Database\Builder
      */

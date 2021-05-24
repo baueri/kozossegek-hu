@@ -11,7 +11,7 @@
 
     <link href="https://fonts.googleapis.com/css?family=Montserrat|Work+Sans:400,700|Merriweather|Roboto+Condensed:wght@300;400" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
+    <link rel="stylesheet" href="/assets/fontawesome/css/all.min.css">
     <link rel="stylesheet" href="/assets/sidebar-09/css/style.css">
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -32,7 +32,7 @@
 
 </head>
 <body class="bg-light @if($show_debugbar)has-debugbar @endif">
-<nav id="top_menu" class="navbar navbar-expand navbar-dark bg-dark fixed-top">
+<nav id="top_menu" class="navbar navbar-expand navbar-light bg-white fixed-top">
     <ul class="navbar-nav mr-auto">
         <li class="nav-item" id="mobile_menu_toggle">
             <a class="nav-link"><i class="fa fa-bars"></i></a>
@@ -54,11 +54,11 @@
         @endif
     </ul>
     <ul class="navbar-nav ml-auto">
-        <li class="nav-item text-white">
-            <span>Hello <a href="@route('admin.user.profile')">{{ App\Auth\Auth::user()->keresztnev() }}</a></span>
+        <li class="nav-item">
+            <span>Hello <a href="@route('admin.user.profile')">@icon('user') {{ App\Auth\Auth::user()->keresztnev() }}</a></span>
         </li>
         <li class="divider nav-item"></li>
-        <li class="nav-item"><a href="@route('home')" title="ugrás az oldalra" target="_blank" class="text-white nav-link"><i class="fa fa-eye"></i></a></li>
+        <li class="nav-item"><a href="@route('home')" title="ugrás az oldalra" target="_blank" class= nav-link"><i class="fa fa-eye"></i></a></li>
         <li class="nav-item"><a href="@route('logout')" title="kilépés" class="text-danger nav-link"><i class="fa fa-sign-out-alt"></i></a></li>
     </ul>
 </nav>

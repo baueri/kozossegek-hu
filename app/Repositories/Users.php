@@ -35,7 +35,7 @@ class Users extends Repository
      * @param int $limit
      * @return User[]|PaginatedModelCollection
      */
-    public function getUsers(Collection $filter, $limit = 30)
+    public function getUsers(Collection $filter, ?int $limit = null)
     {
         $builder = $this->getBuilder();
 
