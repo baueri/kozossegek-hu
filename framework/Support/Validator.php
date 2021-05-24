@@ -43,7 +43,7 @@ abstract class Validator
     final public function validate(array $data): bool
     {
         foreach ($this->getRules() as $field => $fieldRules) {
-            $toValidate = DataSet::get($data, $field);
+            $toValidate = Arr::get($data, $field);
             $this->validateField($field, $toValidate, $fieldRules, $data);
         }
 

@@ -10,7 +10,7 @@ use Framework\Model\Model;
 use Framework\Model\ModelCollection;
 use Framework\Model\PaginatedModelCollection;
 use Framework\Support\Collection;
-use Framework\Support\DataSet;
+use Framework\Support\Arr;
 
 class SearchGroupService
 {

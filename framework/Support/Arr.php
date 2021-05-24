@@ -2,7 +2,7 @@
 
 namespace Framework\Support;
 
-class DataSet
+class Arr
 {
     /**
      * @param array|Collection $items
@@ -136,7 +136,7 @@ class DataSet
 
     public static function sum(array $results, string $column = null)
     {
-        if (is_numeric(DataSet::first($results))) {
+        if (is_numeric(Arr::first($results))) {
             return array_sum($results);
         }
 

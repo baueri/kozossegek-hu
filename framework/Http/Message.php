@@ -45,7 +45,7 @@ class Message
      *
      * @return array|null
      */
-    public static function flash()
+    public static function flash(): ?array
     {
         return Session::flash(self::SESSION_KEY_NAME);
     }

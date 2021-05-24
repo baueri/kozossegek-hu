@@ -36,7 +36,7 @@ class PortalEditGroupForm
         $occasion_frequencies = (new OccasionFrequencies())->all();
         $age_groups = (new AgeGroups())->all();
         $denominations = (new Denominations())->all();
-        $days = DayEnum::all();
+        $days = DayEnum::asArray();
 
         $group_tags = collect(builder('group_tags')->whereGroupId($group->id)->get())->pluck('tag')->all();
         $age_group_array = array_filter(explode(',', $group->age_group));

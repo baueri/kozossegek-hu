@@ -3,7 +3,6 @@
 namespace App\Admin\Components\AdminTable;
 
 use Exception;
-use Framework\Database\Database;
 use Framework\Database\PaginatedResultSetInterface;
 use Framework\Dispatcher\Dispatcher;
 use Framework\Http\Request;
@@ -112,7 +111,7 @@ abstract class AdminTable
         }
 
         if ($this instanceof Deletable) {
-            $columns['delete'] = '<i class="fa fa-trash"></i>';
+            $columns['delete'] = '<i class="fa fa-trash-alt"></i>';
         }
 
         return $columns;
@@ -174,7 +173,7 @@ abstract class AdminTable
 
     protected function getDeleteColumn(string $url, string $title)
     {
-        return "<a href='$url' title='$title'><i class='fa fa-trash text-danger'></i></a>";
+        return "<a href='$url' title='$title'><i class='fa fa-trash-alt text-danger'></i></a>";
     }
 
     protected static function getCheckIcon(string $title = '')
@@ -217,5 +216,10 @@ abstract class AdminTable
 
             return '';
         }
+    }
+
+    public function getRequest()
+    {
+        return $this->request;
     }
 }

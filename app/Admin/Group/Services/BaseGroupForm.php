@@ -81,7 +81,7 @@ class BaseGroupForm
         $group_tags = collect(builder('v_group_tags')
             ->apply('whereGroupId', $group->id)->get())
             ->pluck('tag')->all();
-        $days = DayEnum::all();
+        $days = DayEnum::asArray();
         $group_days = explode(',', $group->on_days);
         $title = $group->exists() ? 'Közösség módosítása' : 'Új közösség létrehozása';
         $owner = $this->users->find($group->user_id);

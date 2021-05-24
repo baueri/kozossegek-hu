@@ -15,6 +15,7 @@ use Framework\Database\Database;
 use Framework\Dispatcher\Dispatcher;
 use Framework\Dispatcher\HttpDispatcher;
 use Framework\Http\ApiResponse;
+use Framework\Http\Message;
 use Framework\Http\Request;
 use Framework\Http\Response;
 use Framework\Http\Route\RouteInterface;
@@ -444,4 +445,9 @@ function log_event(string $type, array $data = [], ?User $user = null)
 function site_name(): string
 {
     return config('app.site_name');
+}
+
+function flash(): ?array
+{
+    return Message::flash();
 }

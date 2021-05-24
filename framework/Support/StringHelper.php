@@ -141,7 +141,7 @@ class StringHelper
         $text = '';
 
         for ($i = 0; $i < $numberOfCharactersToTake; $i++) {
-            $text .= DataSet::random(mb_str_split($charList));
+            $text .= Arr::random(mb_str_split($charList));
         }
 
         return $text;

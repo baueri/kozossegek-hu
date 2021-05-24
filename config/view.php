@@ -9,6 +9,7 @@ use App\Http\Components\Selectors\JoinModeSelector;
 use App\Http\Components\Selectors\OccasionFrequencySelector;
 use App\Http\Components\Selectors\OnDaysSelector;
 use App\Http\Components\Selectors\SpiritualMovementSelector;
+use App\Http\Components\Selectors\UserGroupSelector;
 use Framework\Http\View\View;
 
 return [
@@ -42,23 +43,19 @@ return [
         'on_days_selector' => function ($matches) {
             return View::component(OnDaysSelector::class, $matches[1]);
         },
-        'spiritual_movement_selector' => function ($matches) {
-            return View::component(SpiritualMovementSelector::class, $matches[1]);
-        },
-        'join_mode_selector' => function ($matches) {
-            return View::component(JoinModeSelector::class, $matches[1]);
-        },
-        'facebook_share_button' => fn($matches) => View::component(FacebookShareButton::class, $matches[1]),
+        'spiritual_movement_selector' => fn ($matches) =>
+            View::component(SpiritualMovementSelector::class, $matches[1]),
+        'join_mode_selector' => fn ($matches) => View::component(JoinModeSelector::class, $matches[1]),
+        'user_group_selector' => fn ($matches) => View::component(UserGroupSelector::class, $matches[1]),
+        'facebook_share_button' => fn ($matches) => View::component(FacebookShareButton::class, $matches[1]),
         'alert' => function ($matches) {
-
             if (strpos($matches[0], '@alert') !== false) {
-                return '<div class="alert alert-' . str_replace(['\'', '"'], '', $matches[1]) . '">';
+                return '<div class="alert alert-' . str_replace(['\'', '"'], '', $matches[1]) . ' shadow-sm">';
             }
 
             return '</div>';
         },
         'admin' => function ($matches) {
-
             if ($matches[0] == '@endadmin') {
                 return '<?php endif; ?>';
             }
@@ -69,12 +66,15 @@ return [
             $file = str_replace("'", "", $matches[1]);
             return "/storage/uploads/$file";
         },
-        'message' => function () {
-            return "<?php echo view('admin.partials.message') ?>";
+        'message' => fn () => "<?php echo view('admin.partials.message') ?>",
+        'honeypot' => fn () => View::component(HoneyPotComponent::class),
+        'icon' => fn ($matches) => View::component(FontawesomeIcon::class, $matches[1]),
+        'filter_box' => function ($matches) {
+            if (strpos($matches[0], '@endfilter_box') !== false) {
+                return '</div>';
+            }
+
+            return '<div class="shadow-sm bg-white p-3 rounded"><h5>Szűrő</h5>';
         },
-        'honeypot' => function () {
-            return View::component(HoneyPotComponent::class);
-        },
-        'icon' => fn($matches) => View::component(FontawesomeIcon::class, $matches[1]),
     ]
 ];
