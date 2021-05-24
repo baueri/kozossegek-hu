@@ -1,5 +1,13 @@
 @title('Verzióinformáció')
 @extends('admin')
+<h3>v1.2.1 (2021.05.24)</h3>
+<ul>
+    <li>[CHANGED]: Admin oldali design módosítások</li>
+    <li>[CHANGED]: Admin intézményi lista átalakítás</li>
+    <li>[CHANGED]: Admin közösségi lista átalakítás</li>
+    <li>[CHANGED]: Keretrendszer fejlesztések, javítások</li>
+    <li>[CHANGED]: Ikonkészlet (fontawesome) helyi használata CDN helyett</li>
+</ul>
 <h3>v1.2 (2021.05.19)</h3>
 <ul>
     <li>[NEW]: Admin vezérlőpultba bekerült két doboz:
