@@ -3,7 +3,7 @@
 namespace Framework\Database;
 
 use Framework\Http\Request;
-use Framework\Support\DataSet;
+use Framework\Support\Arr;
 use InvalidArgumentException;
 
 class Builder

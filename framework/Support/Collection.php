@@ -177,7 +177,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
      */
     public function random()
     {
-        return DataSet::random($this->items);
+        return Arr::random($this->items);
     }
 
     /**
@@ -188,7 +188,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
      */
     public function each(Closure $func): self
     {
-        DataSet::each($this->items, $func, $this);
+        Arr::each($this->items, $func, $this);
 
         return $this;
     }
@@ -226,7 +226,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
             return new self(array_filter($this->items));
         }
 
-        return new self(DataSet::filter($this->items, $func));
+        return new self(Arr::filter($this->items, $func));
     }
 
     /**
@@ -423,7 +423,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
      */
     public function pluck($key)
     {
-        return new self(DataSet::pluck($this->items, $key));
+        return new self(Arr::pluck($this->items, $key));
     }
 
     /**
@@ -431,11 +431,11 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
      *
      * @param Closure|string $func
      * @param bool $keepKeys
-     * @return static
+     * @return self
      */
     public function map($func, bool $keepKeys = false)
     {
-        return new self(DataSet::map($this->items, $func, $keepKeys));
+        return new self(Arr::map($this->items, $func, $keepKeys));
     }
 
     public function unique($key = null)
@@ -445,8 +445,8 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         }
 
         return $this->reduce(function ($filtered, $item) use ($key) {
-            if (!DataSet::has($filtered, $key, $item)) {
-                $filtered[] = DataSet::getItemValue($item, $key);
+            if (!Arr::has($filtered, $key, $item)) {
+                $filtered[] = Arr::getItemValue($item, $key);
             }
                 return $filtered;
         }, new self());
@@ -749,6 +749,6 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
 
     public function has($key, $value)
     {
-        return DataSet::has($this->items, $key, $value);
+        return Arr::has($this->items, $key, $value);
     }
 }

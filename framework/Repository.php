@@ -10,7 +10,7 @@ use Framework\Model\ModelNotFoundException;
 use Framework\Model\ModelRepositoryBuilder;
 use Framework\Model\PaginatedModelCollection;
 use Framework\Support\Collection;
-use Framework\Support\DataSet;
+use Framework\Support\Arr;
 
 abstract class Repository
 {
@@ -225,7 +225,7 @@ abstract class Repository
      */
     public function deleteMultiple($models, $forceDelete = false)
     {
-        DataSet::each($models, fn ($model) => $this->delete($model, $forceDelete));
+        Arr::each($models, fn ($model) => $this->delete($model, $forceDelete));
     }
 
     public function deleteMultipleByIds($ids, $forceDelete)

@@ -23,7 +23,7 @@ final class AddCsatlakozasModjaToGroupsTable extends AppMigration
     public function up(): void
     {
         $this->table('groups')
-            ->addColumn('join_mode', MysqlAdapter::PHINX_TYPE_ENUM, ['null' => true, 'values' => JoinMode::all()])
+            ->addColumn('join_mode', MysqlAdapter::PHINX_TYPE_ENUM, ['null' => true, 'values' => JoinMode::asArray()])
             ->save();
         $this->execute(RefreshGroupViewTable::getQuery());
     }

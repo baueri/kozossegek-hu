@@ -10,7 +10,7 @@ final class ChangeAgeGroupType extends AbstractMigration
     public function up(): void
     {
         $this->table('groups')
-            ->changeColumn('age_group', MysqlAdapter::PHINX_TYPE_SET, ['values' => App\Enums\AgeGroupEnum::all(), 'comment' => 'korosztály'])
+            ->changeColumn('age_group', MysqlAdapter::PHINX_TYPE_SET, ['values' => App\Enums\AgeGroupEnum::asArray(), 'comment' => 'korosztály'])
             ->save();
     }
 }

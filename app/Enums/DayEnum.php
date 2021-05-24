@@ -6,17 +6,17 @@ use Framework\Support\Enum;
 
 class DayEnum extends Enum
 {
-    const HE = 'he';
+    public const HE = 'he';
 
-    const KE = 'ke';
+    public const KE = 'ke';
 
-    const SZE = 'sze';
+    public const SZE = 'sze';
 
-    const CSUT = 'csut';
+    public const CSUT = 'csut';
 
-    const PE = 'pe';
+    public const PE = 'pe';
 
-    const SZO = 'szo';
+    public const SZO = 'szo';
 
-    const VAS = 'vas';
+    public const VAS = 'vas';
 }

@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-use Framework\Support\DataSet;
+use Framework\Support\Arr;
 use Framework\Support\Enum;
 
 final class JoinMode extends Enum
@@ -15,7 +15,7 @@ final class JoinMode extends Enum
 
     final public static function getText(?string $joinMode): ?string
     {
-        return DataSet::get(self::getModesWithName(), $joinMode);
+        return Arr::get(self::getModesWithName(), $joinMode);
     }
 
     final public static function getModesWithName(): array

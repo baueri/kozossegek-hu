@@ -23,7 +23,7 @@ use Framework\Http\Controller;
 use Framework\Http\Message;
 use Framework\Http\Request;
 use Framework\Model\ModelNotFoundException;
-use Framework\Support\DataSet;
+use Framework\Support\Arr;
 use Throwable;
 
 class GroupController extends Controller
@@ -73,7 +73,7 @@ class GroupController extends Controller
         $backUrl = null;
         $user = Auth::user();
 
-        if (strpos(DataSet::get($_SERVER, 'HTTP_REFERER'), route('portal.groups')) !== false) {
+        if (strpos(Arr::get($_SERVER, 'HTTP_REFERER'), route('portal.groups')) !== false) {
             $backUrl = $_SERVER['HTTP_REFERER'];
         }
 

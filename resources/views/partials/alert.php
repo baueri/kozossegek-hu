@@ -1,3 +1,3 @@
-<div class="alert alert-{{ $level }}">
+<div class="alert alert-{{ $level }} shadow shadow-sm">
     {{ $message }}
 </div>

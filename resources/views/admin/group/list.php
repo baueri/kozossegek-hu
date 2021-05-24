@@ -18,7 +18,8 @@
         </a>
     @endalert
 @endif
-<form method="get" id="finder" class="jumbotron p-3">
+<form method="get" id="finder">
+    @filter_box()
     <div class="row">
         <div class="col-md-3">
             <div class="form-group">
@@ -83,6 +84,7 @@
             <a class="btn btn-default btn-sm" href="@route('admin.group.list')">Alapállapot</a>
         </div>
     </div>
+    @endfilter_box
 </form>
 
 {{ $table }}

@@ -3,7 +3,6 @@
 
 namespace Framework\Support;
 
-
 use InvalidArgumentException;
 use ReflectionClass;
 use ReflectionException;
@@ -11,46 +10,54 @@ use ReflectionException;
 class Enum
 {
 
-    /**
-     * @var null|array
-     */
-    private static $constCacheArray = NULL;
+    private static ?array $constCacheArray = null;
 
     /**
-     * @var string
+     * @var string|int
      */
     protected $value;
 
+    protected string $key;
+
     /**
-     * @param string $value
      * @throws ReflectionException
      */
-    public function __construct(string $value)
+    private function __construct($value, string $key)
     {
         if (!static::isValid($value)) {
             throw new InvalidArgumentException('invalid enum type');
         }
 
         $this->value = $value;
+        $this->key = $key;
     }
 
     /**
-     * @param string $value
+     * @param string|int $value
      * @return bool
      * @throws ReflectionException
      */
-    public static function isValid(string $value)
+    public static function isValid($value)
     {
-        return in_array($value, static::all());
+        return in_array($value, static::asArray());
     }
 
     /**
-     * @return array|mixed
+     * @return static[]|\Framework\Support\Collection
+     * @throws \ReflectionException
+     */
+    public static function get(): Collection
+    {
+        return collect(self::asArray())->map(fn ($value, $key) => new static($value, $key), true);
+    }
+
+    /**
+     * @return array
      * @throws ReflectionException
      */
-    public static function all()
+    public static function asArray(): array
     {
-        if (self::$constCacheArray == NULL) {
+        if (self::$constCacheArray == null) {
             self::$constCacheArray = [];
         }
 
@@ -59,6 +66,7 @@ class Enum
             $reflect = new ReflectionClass($calledClass);
             self::$constCacheArray[$calledClass] = $reflect->getConstants();
         }
+
         return self::$constCacheArray[$calledClass];
     }
 
@@ -77,7 +85,7 @@ class Enum
      */
     public static function values()
     {
-        return collect(static::all())->values();
+        return collect(static::asArray())->values();
     }
 
     /**
@@ -88,4 +96,22 @@ class Enum
         return $this->value;
     }
 
+    public static function valueOf(string $key)
+    {
+        return static::values()->get($key);
+    }
+
+    public static function keyOf($value): ?string
+    {
+        return array_search($value, static::asArray()) ?? null;
+    }
+
+    /**
+     * @throws \ReflectionException
+     */
+    public static function of($value): Enum
+    {
+        $key = self::keyOf($value);
+        return new static($value, $key);
+    }
 }

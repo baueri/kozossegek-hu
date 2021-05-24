@@ -20,7 +20,7 @@ class OnDaysSelector
 
     public function render($group_days)
     {
-        $days = DayEnum::all();
+        $days = DayEnum::asArray();
         return view('partials.components.on_days_selector', compact('days', 'group_days'));
     }
 }

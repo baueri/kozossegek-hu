@@ -4,6 +4,7 @@ namespace App\Admin\Controllers;
 
 use App\Admin\User\UserTable;
 use App\Auth\Auth;
+use App\Enums\UserGroup;
 use App\Mail\RegistrationEmail;
 use App\Models\User;
 use App\Repositories\Groups;
@@ -21,7 +22,8 @@ class UserController extends AdminController
 
     public function list(UserTable $table)
     {
-        return view('admin.user.list', compact('table'));
+        $selected_user_group = request()['user_group'];
+        return view('admin.user.list', compact('table', 'selected_user_group'));
     }
 
     public function create()
