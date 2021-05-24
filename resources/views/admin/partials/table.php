@@ -2,11 +2,11 @@
 <div class="mt-4">Összes találat: <b>{{ $total }}</b></div>
 <div class="mb-4">@include('partials.simple-pager')</div>
 
-<table class="table table-striped table-hover table-sm table-responsive-sm">
+<table class="bg-white shadow rounded table table-hover table-responsive-sm">
     <thead>
         <tr>
             @foreach($columns as $key => $column)
-                <th {{ in_array($key, $centered_columns) ? 'class="text-center"' : '' }}>
+                <th class="{{ $column_classes[$key] ?? '' }} {{ in_array($key, $centered_columns) ? 'text-center' : '' }}">
                     @if($order[0] == $key || in_array($key, $sortable_columns))
                         <?php $sort_order = $key != $order[0] || $order[1] == 'asc' ? 'desc' : 'asc'; ?>
                         <a href="?{{ http_build_query(array_merge($_REQUEST, ['sort' => $sort_order, 'order_by' => $key])) }}" style="white-space: nowrap">
@@ -25,9 +25,9 @@
     <tbody>
         @if(isset($rows) && $rows)
             @foreach($rows as $row)
-                <tr>
+                <tr style="border-bottom: 4px solid var(--light)">
                     @foreach($columns as $key => $column)
-                        <td {{ in_array($key, $centered_columns) ? 'class="text-center"' : '' }}>{{ $row[$key] }}</td>
+                        <td class="{{ in_array($key, $centered_columns) ? 'text-center' : '' }} {{ $column_classes[$key] ?? '' }}">{{ $row[$key] }}</td>
                     @endforeach
                 </tr>
             @endforeach

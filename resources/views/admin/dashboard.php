@@ -1,7 +1,7 @@
 @title('Vezérlőpult')
 @extends('admin')
 <div class="row">
-    <div class="col-lg-6 col-md-6 mb-4">
+    <div class="col-xl-5 col-sm-6 mb-4">
         <div class="shadow rounded bg-white p-4 h-100">
             <h6 class="text-dark border-bottom pb-1"><i class="fa fa-comments"></i> Közösségek</h6>
             <div class="row">
@@ -37,7 +37,7 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-4 col-md-6 mb-4">
+    <div class="col-xl-4 col-sm-6 mb-4">
         <div class="shadow rounded bg-white p-4 h-100">
             <h5><i class="fa fa-plus-circle text-success"></i> Új elem létrehozása</h5>
             <div class="row">
@@ -54,6 +54,12 @@
                     <i class="fa fa-user fs-4 text-warning"></i><br/>Új Felhasználó
                     </a></div>
             </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-sm-6 mb-4">
+        <div class="shadow rounded bg-white p-4 h-100 text-center">
+            <img src="/images/logo_only.png" style="max-width: 150px;"/><br/><br/>
+            <blockquote>"Keressetek és találtok"<br/><small>Mt7,7</small></blockquote>
         </div>
     </div>
     @if(site_has_error_logs())

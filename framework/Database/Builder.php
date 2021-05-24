@@ -197,14 +197,14 @@ class Builder
     }
 
     /**
-     * @param $limit
-     * @param $page
+     * @param int|null $limit
+     * @param int|null $page
      * @return PaginatedResultSet
      */
-    public function paginate($limit = 30, $page = null)
+    public function paginate(?int $limit = null, ?int $page = null)
     {
         $page = $page ?: request()->get('pg', 1);
-        $limit = $limit ?? 30;
+        $limit = $limit ?? request()->get('per-page', 30);
 
         $total = $this->count();
 
@@ -213,7 +213,7 @@ class Builder
         return new PaginatedResultSet($rows, $limit, $page, $total);
     }
 
-    public function orderBy($columns, $order = null)
+    public function orderBy($columns, ?string $order = null)
     {
         foreach ((array) $columns as $column) {
             $this->orderBy[] = $column . ($order ? ' ' . $order : '');

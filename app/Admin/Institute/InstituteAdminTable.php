@@ -27,8 +27,8 @@ class InstituteAdminTable extends AdminTable implements Deletable, Editable
         'name' => 'Intézmény / plébánia neve',
         'leader_name' => 'Intézményvezető',
         'group_count' => '<i class="fa fa-comments" title="Közösségek száma"></i>',
-        'city' => 'Település',
-        'district' => 'Városrész',
+//        'city' => 'Település',
+//        'district' => 'Városrész',
         'address' => 'Cím',
         'updated_at' => 'Módosítva',
         'user' => 'Létrehozta'
@@ -93,7 +93,7 @@ class InstituteAdminTable extends AdminTable implements Deletable, Editable
     public function getName($value, Institute $institute)
     {
         $warning = !$institute->approved ? '<i class="fa fa-exclamation-circle text-danger" title="még nem jóváhagyott intézmény"></i> ' : '';
-        return $warning . $this->getEdit($value, $institute, 40) . "<br/><span style='font-size: 10px; color: #555'>{$institute->name2}</span>";
+        return $warning . $this->getEdit($value, $institute, 40) . " <small>{$institute->name2}</small>";
     }
 
     public function getImage($img, Institute $institute)
@@ -112,9 +112,9 @@ class InstituteAdminTable extends AdminTable implements Deletable, Editable
         return 'name';
     }
 
-    public function getAddress($address)
+    public function getAddress($address, Institute $institute)
     {
-        return static::excerpt($address);
+        return static::excerpt(implode(', ', array_filter([$institute->city, $institute->district, $address])));
     }
 
     public function getGroupCount($count, Institute $institute)

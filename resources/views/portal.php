@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('subtitle'){{ site_name() }}</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
+    <link rel="stylesheet" href="/assets/fontawesome/css/all.min.css">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:wght@200|Open+Sans:300,400,600|Work+Sans:400,700|Raleway|Roboto+Condensed:wght@100,300;400|Poppins" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="search" type="application/opensearchdescription+xml" title="kozossegek.hu" href="/opensearch.xml">
@@ -80,12 +80,17 @@
         </div>
         <div id="footer-bottom">
             <div class="container">
-                <small>© 2021 {{ date('Y') > 2021 ? ' - ' . date('Y') : '' }} kozossegek.hu - Minden jog fenntartva!</small>
+                <div class="row">
+                    <div class="col-sm-6"><small>© 2021 {{ date('Y') > 2021 ? ' - ' . date('Y') : '' }} kozossegek.hu - Minden jog fenntartva!</small></div>
+                    <div class="col-sm-6 text-right">
+                        <a href="https://www.facebook.com/K%C3%B6z%C3%B6ss%C3%A9gekhu-107828477772892" target="_blank" class="text-white"><i class="fab fa-facebook-square fs-3"></i> </a>
+                        <a href="https://www.instagram.com/kozossegek.hu/" target="_blank" class="text-white"><i class="fab fa-instagram-square fs-3"></i> </a>
+                    </div>
+                </div>
             </div>
         </div>
     </footer>
     @yield('footer')
-
     @if($show_debugbar)
     {{ debugbar()->render() }}
     @endif

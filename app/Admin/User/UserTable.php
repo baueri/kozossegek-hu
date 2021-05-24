@@ -82,6 +82,6 @@ class UserTable extends AdminTable implements Deletable, Editable
         $filter = collect($this->request->only('deleted'));
         $filter['sort'] = $this->request['sort'] ?: 'desc';
         $filter['order_by'] = $this->request['order_by'] ?: 'id';
-        return $this->repository->getUsers($filter);
+        return $this->repository->getUsers($filter, $this->perpage);
     }
 }

@@ -19,12 +19,16 @@ abstract class AdminTable
 
     protected array $order = ['id', 'desc'];
 
+    protected int $perpage;
+
     /**
      * @var array
      */
     protected array $centeredColumns = [];
 
     protected array $sortableColumns = [];
+
+    protected array $columnClasses = [];
 
     /**
      * @var Request
@@ -49,6 +53,8 @@ abstract class AdminTable
         $this->order = [$request->get('order_by', 'id'), $request->get('sort', 'desc')];
 
         $this->request = $request;
+
+        $this->perpage = $request['per-page'] ?? 20;
     }
 
     /**
@@ -69,6 +75,7 @@ abstract class AdminTable
             'sort_order' => $this->order[1] == 'asc' || $this->order[0] ? 'desc' : 'asc',
             'centered_columns' => $this->centeredColumns,
             'sortable_columns' => $this->sortableColumns,
+            'column_classes' => $this->columnClasses,
             'rows' => $this->transformData($data->rows()),
             'adminTable' => $this,
             'total' => $data->total(),
@@ -185,9 +192,9 @@ abstract class AdminTable
         return "<i class='{$class}' title='$title'></i>";
     }
 
-    protected static function excerpt(string $text, $withTooltip = true)
+    protected static function excerpt(string $text, bool $withTooltip = true, int $limit = 20)
     {
-        $shorten = StringHelper::shorten($text, 20, '...');
+        $shorten = StringHelper::shorten($text, $limit, '...');
         $tooltip = $withTooltip ? $text : '';
         return "<span title='$tooltip'>$shorten</span>";
     }
