@@ -5,7 +5,6 @@ namespace App\Admin\Group\Services;
 use App\Enums\JoinMode;
 use App\Models\GroupView;
 use App\Repositories\AgeGroups;
-use App\Repositories\Denominations;
 use App\Repositories\GroupStatusRepository;
 use App\Repositories\OccasionFrequencies;
 use Framework\Http\Request;
@@ -70,7 +69,6 @@ class BaseGroupForm
     protected function getFormData(GroupView $group)
     {
         $institute = $this->institutes->find($group->institute_id) ?: new Institute();
-        $denominations = (new Denominations())->all();
         $statuses = (new GroupStatusRepository())->all();
         $occasion_frequencies = (new OccasionFrequencies())->all();
         $age_groups = (new AgeGroups())->all();
@@ -90,7 +88,6 @@ class BaseGroupForm
         return compact(
             'group',
             'institute',
-            'denominations',
             'statuses',
             'occasion_frequencies',
             'age_groups',

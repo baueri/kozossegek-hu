@@ -4,9 +4,7 @@ namespace App\Http\Responses;
 
 use App\Enums\DayEnum;
 use App\Models\GroupView;
-use App\Models\User;
 use App\Repositories\AgeGroups;
-use App\Repositories\Denominations;
 use App\Repositories\GroupStatusRepository;
 use App\Repositories\Institutes;
 use App\Repositories\OccasionFrequencies;
@@ -35,7 +33,6 @@ class PortalEditGroupForm
         $spiritual_movements = db()->select('select * from spiritual_movements order by name');
         $occasion_frequencies = (new OccasionFrequencies())->all();
         $age_groups = (new AgeGroups())->all();
-        $denominations = (new Denominations())->all();
         $days = DayEnum::asArray();
 
         $group_tags = collect(builder('group_tags')->whereGroupId($group->id)->get())->pluck('tag')->all();
@@ -48,7 +45,6 @@ class PortalEditGroupForm
         return view($view, compact(
             'group',
             'institute',
-            'denominations',
             'statuses',
             'occasion_frequencies',
             'age_groups',

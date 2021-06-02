@@ -17,7 +17,7 @@
 
     @yield('header')
 
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/style.css?{{ filemtime('css/style.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     @if(is_prod())
@@ -32,7 +32,7 @@
         </script>
     @endif
 </head>
-<body class="{{ $is_prod ? 'demo' : '' }} {{ $is_home ? 'home' : '' }}">
+<body class="{{ $is_prod ? 'demo' : '' }} {{ $is_home ? 'home' : '' }} {{ $body_class ?? '' }}">
     <script async defer crossorigin="anonymous" src="https://connect.facebook.net/hu_HU/sdk.js#xfbml=1&version=v9.0&appId=784869592115351&autoLogAppEvents=1" nonce="lcQfw2hE"></script>
     <div id="fb-root"></div>
     @if($header_background)
@@ -100,8 +100,28 @@
             Rendben
         </button>
     </div>
-    <script src="/js/scripts.js"></script>
-    <script src="/js/dialog.js"></script>
+    <script src="/js/scripts.js?{{ filemtime('js/scripts.js') }}"></script>
+    <script src="/js/dialog.js?{{ filemtime('js/dialog.js') }}"></script>
     @yield('scripts')
+    <noscript>
+        <div class="modal fade show" tabindex="-1" aria-hidden="true" style="z-index: 1040; display: block">
+            <div class="modal-dialog">
+                <div class="modal-content bg-danger text-light">
+                    <div class="modal-header text-center">
+                        <h5 class="modal-title" style="width: 100%">Nincs engedélyezve a javascript</h5>
+                    </div>
+                    <div class="modal-body text-center">
+                        <p>Az oldal zavartalan működéséhez kérjük engedélyezd a böngésződben a javascript-et.</p>
+                        <p>További információ és segítség a javascript engedélyezéséhez:</p>
+                        <a href="https://www.enablejavascript.io/hu" target="_blank" style="color: #fff; text-decoration: underline">
+                            <b>https://www.enablejavascript.io/hu</b>
+                            @icon('external-link-alt')
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-backdrop fade show stacked" style="z-index: 1039;"></div>
+    </noscript>
 </body>
 </html>

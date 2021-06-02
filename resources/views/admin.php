@@ -19,9 +19,9 @@
     @yield('header')
     <script src="/assets/jquery-ui/jquery-ui.min.js"></script>
     <link rel="stylesheet" href="/assets/jquery-ui/jquery-ui.min.css">
-    <link rel="stylesheet" href="/css/admin.css">
-    <script src="/js/dialog.js"></script>
-    <script src="/js/admin.js"></script>
+    <link rel="stylesheet" href="/css/admin.css?{{ filemtime('css/admin.css') }}">
+    <script src="/js/dialog.js?{{ filemtime('js/dialog.js') }}"></script>
+    <script src="/js/admin.js?{{ filemtime('js/admin.js') }}"></script>
     <script src="/assets/sidebar-09/js/main.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>

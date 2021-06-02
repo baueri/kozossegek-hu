@@ -50,6 +50,7 @@ class GroupList
      */
     public function getHtml(Collection $request)
     {
+
         $baseFilter = $request->only('search', 'korosztaly', 'tags', 'institute_id');
         $baseFilter['varos'] = $request['varos'];
 
@@ -57,34 +58,43 @@ class GroupList
 
         $filter['pending'] = 0;
         $filter['status'] = GroupStatusEnum::ACTIVE;
-        $groups = $this->service->search($filter, 18);
-        $statuses = (new GroupStatusRepository())->all();
 
-        if ($groupIds = $groups->pluck('id')->all()) {
-            $group_tags = builder('v_group_tags')->whereIn('group_id', $groupIds)->get();
-            $groups->withMany($group_tags, 'tags', 'id', 'group_id');
-        }
+        $statuses = (new GroupStatusRepository())->all();
 
         $korosztaly = $filter['korosztaly'] ?? null;
         $ageGroups = collect($this->ageGroups->all());
+
         $model = [
-            'groups' => $groups,
             'occasion_frequencies' => $this->occasionFrequencies->all(),
             'age_groups' => $ageGroups->map(fn (AgeGroup $ageGroup) => [
                 'value' => $ageGroup->name,
                 'name' => $ageGroup->translate()
             ]),
-            'page' => $groups->page(),
-            'total' => $groups->total(),
-            'perpage' => $groups->perpage(),
             'filter' => collect($filter),
             'selected_tags' => array_filter(explode(',', $filter['tags'] ?? '')),
             'tags' => builder('tags')->get(),
-            'header_background' => '/images/kozosseget_keresek.jpg',
             'statuses' => $statuses,
             'selected_age_group' => $korosztaly,
+            'header_background' => '/images/kozosseget_keresek.jpg',
             'age_group_query' => http_build_query($baseFilter)
         ];
+
+        if ($request->isEmpty()) {
+            return view('portal.kozossegek_no_filter', $model);
+        }
+
+        $groups = $this->service->search($filter, 18);
+        if ($groupIds = $groups->pluck('id')->all()) {
+            $group_tags = builder('v_group_tags')->whereIn('group_id', $groupIds)->get();
+            $groups->withMany($group_tags, 'tags', 'id', 'group_id');
+        }
+
+        $model = array_merge($model, [
+            'groups' => $groups,
+            'page' => $groups->page(),
+            'total' => $groups->total(),
+            'perpage' => $groups->perpage(),
+        ]);
 
         return view('portal.kozossegek', $model);
     }

@@ -2,11 +2,9 @@
 
 namespace App\Enums;
 
-/**
- * Felekezet
- */
-class DenominationEnum extends \Framework\Support\Enum
+use Framework\Support\Enum;
+
+class DenominationEnum extends Enum
 {
-   const KATOLIKUS = 'katolikus';
-   
+    public const KATOLIKUS = 'katolikus';
 }

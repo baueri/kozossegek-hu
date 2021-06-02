@@ -24,6 +24,6 @@ return [
     'EMAIL_SSL' => 'STARTTLS',
 
     'CONTACT_EMAIL' => 'kozossegek.szeged@gmail.com',
-    'ERROR_EMAIL' => 'birkaivan@gmail.com'
+    'ERROR_EMAIL' => 'ivan.bauer90@gmail.com'
 
 ];

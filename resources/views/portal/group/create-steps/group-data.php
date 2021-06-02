@@ -5,10 +5,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.css"/>
 @endsection
 @extends('portal.group.create-steps.create-wrapper')
-@alert('warning')
-    <i class="fa fa-exclamation-triangle"></i> Fontos számunkra, hogy az oldalon valóban keresztény értékeket közvetítő közösségeket hirdessünk. Mielőtt kitöltenéd a regisztrációs űrlapot, kérjük, hogy mindenképp olvasd el az <a href="/iranyelveink" target="_blank">irányelveinket</a>.
-@endalert
 <form method="post" id="group-form" enctype="multipart/form-data" action="@route('portal.my_group.create')">
+    @alert('warning')
+        <i class="fa fa-exclamation-triangle"></i> Fontos számunkra, hogy az oldalon valóban keresztény értékeket közvetítő közösségeket hirdessünk. Mielőtt kitöltenéd a regisztrációs űrlapot, kérjük, hogy mindenképp olvasd el az <a href="/iranyelveink" target="_blank">irányelveinket</a>.
+    @endalert
     @if(!is_loggedin())
         <div class="step-container">
             <h4>Felhasználói adatok</h4>
@@ -499,5 +499,4 @@
         $("#new-institute").slideToggle();
         $("[name=institute_id]").val(null).trigger("change");
     }
-
 </script>

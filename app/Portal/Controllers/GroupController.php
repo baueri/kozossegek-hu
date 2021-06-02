@@ -20,6 +20,7 @@ use ErrorException;
 use Exception;
 use Framework\Exception\FileTypeNotAllowedException;
 use Framework\Http\Controller;
+use Framework\Http\Exception\PageNotFoundException;
 use Framework\Http\Message;
 use Framework\Http\Request;
 use Framework\Model\ModelNotFoundException;
@@ -30,7 +31,8 @@ class GroupController extends Controller
 {
     public function kozossegek(Request $request, GroupList $service)
     {
-        $filter = $request->collect()->merge(['korosztaly' => $request['korosztaly']]);
+        $filter = $request->collect()->merge(['korosztaly' => $request['korosztaly']])->filter();
+
         return $service->getHtml($filter);
     }
 
@@ -81,7 +83,7 @@ class GroupController extends Controller
         $group = $repo->findBySlug($slug);
 
         if (!$group || !$group->isVisibleBy($user)) {
-            throw new ModelNotFoundException();
+            throw new PageNotFoundException();
         }
 
         $institute = $instituteRepo->find($group->institute_id);
@@ -215,7 +217,6 @@ class GroupController extends Controller
             $service->update($group, $request->only(
                 'status',
                 'name',
-                'denomination',
                 'institute_id',
                 'age_group',
                 'occasion_frequency',
