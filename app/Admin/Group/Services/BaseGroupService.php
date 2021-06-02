@@ -130,7 +130,6 @@ abstract class BaseGroupService
     {
         $requiredFields = [
             'name',
-            'denomination',
             'age_group',
             'occasion_frequency',
             'description',

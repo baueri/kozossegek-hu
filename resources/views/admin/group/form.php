@@ -127,14 +127,6 @@
                 </select>
             </div>
             <div class="form-group required">
-                <label for="denomination">Felekezet</label>
-                <select class="form-control" name="denomination" required>
-                    @foreach($denominations as $denomination)
-                    <option value="{{ $denomination->name }}">{{ $denomination }}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="form-group required">
                 <label for="age_group">Korosztály</label>
                 <select class="form-control" name="age_group[]" multiple="multiple">
                     @foreach($age_groups as $age_group)

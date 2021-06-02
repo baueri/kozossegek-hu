@@ -94,3 +94,7 @@
 .fs-6 {
     font-size: 1rem;
 }
+
+.flex-grow {
+    flex: 1 0 auto;
+}

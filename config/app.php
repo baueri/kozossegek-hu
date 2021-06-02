@@ -1,8 +1,8 @@
 <?php
 
 return [
-    'site_url' => _env('SITE_URL', 'http://kozossegek.local'),
-    'site_name' => _env('SITE_NAME', 'kozossegek.local'),
+    'site_url' => _env('SITE_URL'),
+    'site_name' => _env('SITE_NAME', 'kozossegek.hu'),
     'environment' => _env('ENVIRONMENT', 'development'),
     'base_auth' => _env('BASE_AUTH', false),
     'base_auth.user' => 'kozossegek',
@@ -18,12 +18,11 @@ return [
     'email_port' => _env('EMAIL_PORT'),
     'email_ssl' => _env('EMAIL_SSL'),
 
-    'contact_email' => _env('CONTACT_EMAIL', 'birkaivan@gmail.com'),
-    'error_email' => _env('ERROR_EMAIL', 'birkaivan@gmail.com'),
-    'website_contact_email' => _env('WEBSITE_CONTACT_EMAIL', 'birkaivan@gmail.com'),
+    'contact_email' => _env('CONTACT_EMAIL', 'ivan.bauer90@gmail.com'),
+    'error_email' => _env('ERROR_EMAIL', 'ivan.bauer90@gmail.com'),
+    'website_contact_email' => _env('WEBSITE_CONTACT_EMAIL', 'ivan.bauer90@gmail.com'),
 
     'providers' => [
 
     ]
-
 ];

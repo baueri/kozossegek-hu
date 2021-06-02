@@ -1,5 +1,17 @@
 @title('Verzióinformáció')
 @extends('admin')
+<h3>v1.2.2 (2021.06.02)</h3>
+<ul>
+    <li>[CHANGED]: Honlapos kapcsolattartó email cím le lett cserélve</li>
+    <li>[CHANGED]: Felekezet választó ki lett szedve a kódból</li>
+    <li>[CHANGED]: 404-es illetve HoneyPot-os hibákról nem jönnek most már hiba email-ek</li>
+    <li>[CHANGED]: Találati lista oldalon csak akkor jelenik meg, ha adtak meg valamilyen szűrési feltételt.</li>
+    <li>[CHANGED]: Találati lista oldalon a közösségek fotóinak magassága növelve lett</li>
+    <li>[FIXED]: Találati lista oldalon a közösségek responzív elrendezése optimalizálva lett</li>
+    <li>[FIXED]: A 'hasonló közösségek' szekcióban most már csak jóváhagyott aktív közösségek jelennek meg</li>
+    <li>[FIXED]: Az általános js és css fájlok elérési útvonala végére bekerült a módosítási idő, hogy újratöltse a böngésző, ha módosulnak a fájlok</li>
+    <li>[NEW]: noscript tag tartalom megjelenítése az oldalon, ha a böngészőben nincs engedélyezve a javascript.</li>
+</ul>
 <h3>v1.2.1 (2021.05.24)</h3>
 <ul>
     <li>[CHANGED]: Admin oldali design módosítások</li>

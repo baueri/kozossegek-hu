@@ -47,4 +47,9 @@ class DebugBar
 
         return StringHelper::sanitize(view('admin.partials.debugbar', compact('headers', 'tab_contents')));
     }
+
+    public function enabled(): bool
+    {
+        return (bool) _env('DEBUG');
+    }
 }

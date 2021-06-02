@@ -5,9 +5,11 @@ namespace Framework\Http;
 use Error;
 use Exception;
 use Framework\Http\Exception\PageNotFoundException;
+use Framework\Http\Exception\RouteNotFoundException;
 use Framework\Middleware\Middleware;
 use Framework\Exception\UnauthorizedException;
 use Framework\Kernel;
+use Framework\Model\ModelNotFoundException;
 use Throwable;
 
 class HttpKernel implements Kernel
@@ -52,7 +54,7 @@ class HttpKernel implements Kernel
 
         try {
             throw $exception;
-        } catch (PageNotFoundException $exception) {
+        } catch (PageNotFoundException | ModelNotFoundException | RouteNotFoundException $exception) {
             return print(view('portal.error', [
                 'code' => $exception->getCode(),
                 'message' => 'A keresett oldal nem található',

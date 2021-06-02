@@ -72,7 +72,6 @@ class GroupView extends Group
         $varos = StringHelper::slugify($this->city);
 
         $data = ['varos' => $varos, 'intezmeny' => $intezmeny, 'kozosseg' => $this->slug()];
-
         return $this->cachedUrl = get_site_url() . route('kozosseg', $data);
     }
 

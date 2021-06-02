@@ -5,13 +5,13 @@ use App\HttpKernel;
 use Framework\Application;
 use Framework\Dispatcher\Dispatcher;
 use Framework\Dispatcher\HttpDispatcher;
-use Framework\Http\Request;
-
-/* @var $application Application */
 
 session_start();
 
 ob_start();
+
+/* @var $application Application */
+$application = null;
 
 include '../boot.php';
 
@@ -23,7 +23,7 @@ try {
     $application->singleton(DebugBar::class);
 
     $application->run($application->get(Dispatcher::class));
-} catch (Error | \Exception | \Throwable $e) {
+} catch (Error | Exception | Throwable $e) {
     ob_get_clean();
     $application->handleError($e);
 }

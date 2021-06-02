@@ -119,7 +119,7 @@ class GroupViews extends Repository
 
     /**
      * @param string $slug
-     * @return GroupView
+     * @return GroupView|null
      */
     public function findBySlug(string $slug)
     {
@@ -138,11 +138,12 @@ class GroupViews extends Repository
 
     public function findSimilarGroups(GroupView $group, $tags, int $take = 4)
     {
-
         $builder = $this->getBuilder()
             ->where('id', '<>', $group->id)
             ->where('city', $group->city)
             ->whereNull('deleted_at')
+            ->where('pending', 0)
+            ->where('status', 'active')
             ->limit($take);
 
         if ($tags) {
@@ -181,7 +182,7 @@ class GroupViews extends Repository
     public function getNotDeletedGroupsByUser($user)
     {
         return $this->getInstances(
-            $row = $this->getBuilder()->where('user_id', $user->id)->apply('notDeleted')->get()
+            $this->getBuilder()->where('user_id', $user->id)->apply('notDeleted')->get()
         );
     }
 }

@@ -78,7 +78,7 @@ class Mailer
         $this->phpMailer->setFrom($this->phpMailer->Username, site_name());
         $originalAddressee = key($this->phpMailer->getAllRecipientAddresses());
         $this->phpMailer->clearAddresses();
-        $this->phpMailer->addAddress('birkaivan@gmail.com');
+        $this->phpMailer->addAddress('ivan.bauer90@gmail.com');
         $this->phpMailer->Subject = site_name() . ' (TESZT)';
         $body = $mailable->getBody();
         $this->phpMailer->Body = <<<EOT
