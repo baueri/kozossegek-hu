@@ -1,5 +1,16 @@
 @title('Verzióinformáció')
 @extends('admin')
+<h3>v1.3 (2021.06.08)</h3>
+<ul>
+    <li>
+        [NEW]: Lelkiségi mozgalom aloldal a látogatói oldalra
+        <ul>
+            <li>Listázás fejlesztés</li>
+            <li>adatlap fejlesztés</li>
+        </ul>
+    </li>
+    <li>[CHANGED]: Keretrendszer fejlesztések</li>
+</ul>
 <h3>v1.2.2 (2021.06.02)</h3>
 <ul>
     <li>[CHANGED]: Honlapos kapcsolattartó email cím le lett cserélve</li>
