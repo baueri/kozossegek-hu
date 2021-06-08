@@ -8,11 +8,11 @@ use Framework\File\Enums\FileType;
 
 class FileManager
 {
-    const TYPES_IMAGE = [
+    public const TYPES_IMAGE = [
         'image/jpeg', 'image/gif', 'image/png'
     ];
 
-    const TYPES_DOCUMENT = [
+    public const TYPES_DOCUMENT = [
         'application/msword',
         'application/vnd.oasis.opendocument.text',
         'application/octet-stream',
@@ -21,15 +21,15 @@ class FileManager
         'application/vnd.openxmlformats-officedocument.wordprocessingml.template'
     ];
 
-    const TYPES_EXCEL = [
+    public const TYPES_EXCEL = [
         'application/vnd.ms-excel'
     ];
 
-    const TYPES_PDF = [
+    public const TYPES_PDF = [
         'application/pdf',
     ];
 
-    const TYPES = [
+    public const TYPES = [
         FileType::IMAGE => self::TYPES_IMAGE,
         FileType::DOCUMENT => self::TYPES_DOCUMENT,
         FileType::EXCEL => self::TYPES_EXCEL,
@@ -38,28 +38,17 @@ class FileManager
 
     /**
      * Root path of file manager
-     *
-     * @var string
      */
-    protected $rootPath;
+    protected ?string $rootPath;
 
     /**
      * List of enabled Types
-     *
-     * @var array
      */
-    protected $enabledTypes = [];
+    protected array $enabledTypes = [];
 
-    /**
-     * @var bool
-     */
-    protected $createFolderIfMissing = true;
+    protected bool $createFolderIfMissing = true;
 
-    /**
-     * FileManager constructor.
-     * @param string $rootPath
-     */
-    public function __construct($rootPath = '', array $enabledTypes = ['*'])
+    public function __construct(string $rootPath = '', array $enabledTypes = ['*'])
     {
         $this->rootPath = static::addDirectorySeparator($rootPath);
 
@@ -70,19 +59,19 @@ class FileManager
      * Upload a file to the server
      *
      * @param array $fileData
-     * @param null $fileName
+     * @param string|null $fileName
      * @param string $subDir
      * @return File
-     * @throws Exception
+     * @throws \Framework\Exception\FileTypeNotAllowedException
      */
-    public function uploadFileByFileData(array $fileData, $fileName = null, $subDir = '')
+    public function uploadFileByFileData(array $fileData, ?string $fileName = null, string $subDir = ''): File
     {
         $file = new File($fileData['tmp_name']);
 
         return $this->uploadFile($file, $fileName ?: $fileData['name'], $subDir);
     }
 
-    public function uploadFile(File $file, $fileName = '', $subDir = '')
+    public function uploadFile(File $file, ?string $fileName = '', string $subDir = ''): File
     {
         if ($this->createFolderIfMissing) {
             $this->createFolder($subDir);

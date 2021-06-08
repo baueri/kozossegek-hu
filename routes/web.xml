@@ -44,8 +44,12 @@
         <route method="get" uri="sikeres-regisztracio" as="portal.group.create_group_success" controller="GroupController" use="registrationSuccess"/>
 
         <route method="post" uri="create-group" as="portal.my_group.create" controller="GroupController" use="createGroup"/>
+
+        <route method="get" uri="lelkisegi-mozgalmak" as="portal.spiritual_movements" controller="SpiritualMovementController" use="list"/>
+        <route method="get" uri="lelkisegi-mozgalom/{slug}" as="portal.spiritual_movement.view" controller="SpiritualMovementController" use="view"/>
     </route-group>
 
+    <!--  FIÓK AKTIVÁLÁS  -->
     <route method="all" uri="/user/activate" as="portal.user.activate" controller="App\Portal\Controllers\UserController" use="activateUser"/>
     <route method="post" uri="login-modal" as="portal.login_modal" view="portal.partials.login_modal"/>
 

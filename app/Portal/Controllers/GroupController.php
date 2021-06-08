@@ -237,7 +237,9 @@ class GroupController extends Controller
             Message::danger('Nincs ilyen közösség!');
             redirect_route('portal.my_groups');
         } catch (FileTypeNotAllowedException $e) {
-            Message::danger('<b>A dokumentum fájltípusa érvénytelen!</b> Az alábbi fájltípusokat fogadjuk el: doc, docx, pdf');
+            Message::danger(
+                '<b>A dokumentum fájltípusa érvénytelen!</b> Az alábbi fájltípusokat fogadjuk el: doc, docx, pdf, jpeg, jpg, png'
+            );
             redirect_route('portal.edit_group', $group);
         } catch (Error | Throwable $e) {
             Message::danger('Sikertelen mentés!');

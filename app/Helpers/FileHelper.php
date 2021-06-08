@@ -20,13 +20,15 @@ class FileHelper
      */
     public static function parseFilesToArray(Collection $files): array
     {
-        return $files->map(fn(File $file) => [
+        return $files->map(fn (File $file) => [
             'name' => $file->getFileName(),
             'type' => $file->getFileType(),
             'main_type' => $file->getMainType(),
             'size' => $file->getFileSize('MB', 2),
             'path' => static::getPublicPathFor($file),
             'is_dir' => $file->isDir(),
+            'url' => $file->isDir() ?
+                route('admin.content.upload.list', ['dir' => $file->getFileName()]) : static::getPublicPathFor($file),
             'is_img' => $file->isImage(),
             'icon' => static::getIcon($file),
             'upload_date' => $file->getCreationDate(),
@@ -44,6 +46,8 @@ class FileHelper
             return 'fa fa-file-word';
         } elseif ($type == FileType::PDF) {
             return 'fa fa-file-pdf';
+        } elseif ($type === 'folder') {
+            return 'fa fa-folder-open';
         }
 
         return '';

@@ -54,7 +54,7 @@
                     <label for="institute_id">Intézmény / plébánia</label>
                     <select name="institute_id" style="width:100%" class="form-control" required>
                         <option value="{{ $group->institute_id }}">
-                            {{ $group->institute_id ? $group->institute_name . ' (' . $group->city . ', ' . $group->address . ')' : 'intézmény' }}
+                            {{ $group->institute_id ? $group->institute_name . ' (' . $group->city . ')' : 'intézmény' }}
                             @if($institute && $institute->approved == 0)
                                 - függőben levő intézmény
                             @endif
@@ -195,7 +195,7 @@
             <div class="form-group">
                 <div class="mb-3">
                     <h5 class="mb-0">Igazoló dokumentum lecserélése</h5>
-                    <p><small>Microsoft office dokumentum (<b>doc, docx</b>) vagy <b>pdf</b> formátum</small></p>
+                    <p><small>Microsoft office dokumentum (<b>doc, docx</b>), <b>pdf</b> vagy kép formátum</small></p>
                     <input type="file" name="document">
                 </div>
             </div>

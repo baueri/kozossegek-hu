@@ -34,7 +34,7 @@ body.has-debugbar #content {
 }
 
 #sidebar ul li a {
-    padding: 8px 30px;
+    padding: 8px 15px 8px 10px;
 }
 
 #sidebar .submenu > li > a {

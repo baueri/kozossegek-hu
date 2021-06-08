@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Http\Components;
-
 
 use App\Helpers\HoneyPot;
 

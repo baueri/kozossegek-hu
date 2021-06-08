@@ -12,6 +12,11 @@ use Framework\Model\PaginatedModelCollection;
 use Framework\Support\Collection;
 use Framework\Support\Arr;
 
+/**
+ * Class Repository
+ * @package Framework
+ * @psalm-template T
+ */
 abstract class Repository
 {
     /**
@@ -24,7 +29,8 @@ abstract class Repository
 
     /**
      * @param $id
-     * @return Model
+     * @return Model|null
+     * @psalm-return T|null
      */
     public function find($id)
     {
@@ -35,27 +41,13 @@ abstract class Repository
     /**
      * @param $id
      * @return Model|null
+     * @psalm-return T|null
      * @throws ModelNotFoundException
      */
     public function findOrFail($id)
     {
-        if ($model = $this->find($id)) {
-            return $model;
-        }
-
-        throw new ModelNotFoundException();
+        return $this->getOrFail($this->find($id));
     }
-
-    /**
-     * @return Model|mixed
-     */
-    public function first()
-    {
-        $row = $this->getBuilder()->first();
-
-        return $this->getInstance($row);
-    }
-
 
     public static function getPrimaryCol()
     {
@@ -71,6 +63,7 @@ abstract class Repository
     /**
      * @param array|null $values
      * @return Model|mixed
+     * @psalm-return T|null
      */
     public function getInstance(?array $values = null)
     {
@@ -83,8 +76,18 @@ abstract class Repository
         return new $class($values);
     }
 
+    public function getOrFail(?Model $model)
+    {
+        if (!$model) {
+            throw new ModelNotFoundException();
+        }
+
+        return $model;
+    }
+
     /**
      * @return ModelCollection|Model[]
+     * @psalm-return T[]
      */
     public function all()
     {
@@ -94,6 +97,7 @@ abstract class Repository
     /**
      * @param array|PaginatedResultSetInterface $rows
      * @return ModelCollection|Model[]|PaginatedResultSet
+     * @psalm-return T[]|ModelCollection|PaginatedResultSet
      */
     public function getInstances($rows)
     {
@@ -111,6 +115,7 @@ abstract class Repository
     /**
      * @param array $values
      * @return Model|mixed
+     * @psalm-return T
      */
     public function create(array $values)
     {

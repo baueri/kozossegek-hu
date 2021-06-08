@@ -2,15 +2,29 @@
 
 namespace App\Repositories;
 
-class SpiritualMovements
+use App\Models\SpiritualMovement;
+use Framework\Repository;
+
+/**
+ * Class SpiritualMovements
+ * @package App\Repositories
+ * @extends Repository<\App\Models\SpiritualMovement>
+ */
+class SpiritualMovements extends Repository
 {
-    public function all()
+    /**
+     * @inheritDoc
+     */
+    public static function getModelClass(): string
     {
-        return db()->select('select * from spiritual_movements');
+        return SpiritualMovement::class;
     }
 
-    public function find($id)
+    /**
+     * @return string
+     */
+    public static function getTable(): string
     {
-        return builder('spiritual_movements')->where('id', $id)->first();
+        return 'spiritual_movements';
     }
 }

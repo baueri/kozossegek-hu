@@ -225,7 +225,7 @@
                 <p>Az igazolás mintát innen tudjátok letölteni: <a href="@upload('igazolas.pdf')" download><i class="fa fa-download"></i> Igazolás minta letöltése</a></p>
             @endalert
             <p class="mb-3">
-                <small>Microsoft office dokumentum (<b>doc, docx</b>) vagy <b>pdf</b> formátum</small><br/>
+                <small>Microsoft office dokumentum (<b>doc, docx</b>), <b>pdf</b> vagy kép formátum</small><br/>
                 <input type="file" name="document">
             </p>
         </div>

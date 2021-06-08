@@ -12,6 +12,11 @@
             <li class="nav-item">
                 <a href="@route('portal.register_group')" class="nav-link"><span>Közösséget vezetek</span></a>
             </li>
+            @admin()
+            <li class="nav-item">
+                <a href="@route('portal.spiritual_movements')" class="nav-link"><span>Lelkiségi mozgalmak</span></a>
+            </li>
+            @endadmin
             <li class="nav-item">
                 <a href="@route('portal.page', ['slug' => 'a-kozosseg'])" class="nav-link">A közösségről</a>
             </li>
@@ -23,10 +28,10 @@
                     <a href="@route('portal.my_profile')" class="nav-link user-menu"><i class="fa fa-user-circle" style="font-size: 18px;"></i></a>
                     <ul class="submenu">
                         <li class="nav-item">
-                            <a href="@route('portal.my_profile')" class="nav-link">Fiókom</a>
+                            <a href="@route('portal.my_profile')" class="nav-link">@icon('user-circle') Fiókom</a>
                         </li>
                         <li class="nav-item">
-                            <a href="@route('portal.my_groups')" class="nav-link">Közösségeim</a>
+                            <a href="@route('portal.my_groups')" class="nav-link">@icon('comments') Közösségeim</a>
                         </li>
                         @admin()
                             <li class="nav-item">

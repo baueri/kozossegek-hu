@@ -101,11 +101,14 @@
         </route-group>
 
         <!-- Lelkiségi mozgalmak -->
-        <route-group controller="SpiritualMovementController">
-            <route method="get" uri="spiritual-movements" use="spiritualMovements" as="spiritual_movements"/>
-            <route method="post" middleware="Framework\Middleware\JsonApi" uri="api/spiritual-movements/create" use="create" as="spiritual_movements.create"/>
-            <route method="post" middleware="Framework\Middleware\JsonApi" uri="api/spiritual-movements/save" use="update" as="spiritual_movements.save"/>
-            <route method="post" middleware="Framework\Middleware\JsonApi" uri="api/spiritual-movements/delete" use="delete" as="spiritual_movements.delete"/>
+        <route-group controller="SpiritualMovementController" as="spiritual_movement" prefix="spiritual-movement">
+            <route method="get" uri="list" as="list" use="spiritualMovements"/>
+            <route method="get" uri="{id}/edit" use="edit" as="edit"/>
+            <route method="post" uri="{id}/update" use="update" as="update"/>
+
+            <route method="get" uri="create" use="create" as="create"/>
+            <route method="post" uri="create" use="doCreate" as="do_create"/>
+            <route method="get" uri="{id}/delete" use="delete" as="delete"/>
         </route-group>
 
         <route method="get" uri="" controller="DashboardController" use="dashboard" as="dashboard"/>

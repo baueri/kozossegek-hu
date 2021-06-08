@@ -116,7 +116,7 @@ class UserTable extends AdminTable implements Deletable, Editable
         }
 
         if ($search = $filter['search']) {
-            $query->where(function(Builder $query) use ($search) {
+            $query->where(function (Builder $query) use ($search) {
                 $query->where('name', 'like', "%{$search}%")
                     ->orWhere('email', 'like', "%{$search}%")
                     ->orWhere('username', 'like', "%{$search}%");
@@ -128,6 +128,7 @@ class UserTable extends AdminTable implements Deletable, Editable
         }
 
         $users = $query->paginate($this->perpage);
+
         return $users->withCount($this->getNumberOfGroups($users), 'group_count', 'id', 'user_id');
     }
 }

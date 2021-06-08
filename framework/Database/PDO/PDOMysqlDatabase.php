@@ -83,14 +83,9 @@ class PDOMysqlDatabase implements Database
         return new PDOResultSet($statement);
     }
 
-    /**
-     * @param $query
-     * @param mixed ...$bindings
-     * @return array
-     */
-    public function select(string $query, $bindings = []): array
+    public function select(string $query, array $bindings = []): array
     {
-        return $this->execute($query, ...(array) $bindings)->getRows();
+        return $this->execute($query, ... $bindings)->getRows();
     }
 
     public function beginTransaction(): bool

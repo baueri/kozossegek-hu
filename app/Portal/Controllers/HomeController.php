@@ -2,7 +2,6 @@
 
 namespace App\Portal\Controllers;
 
-use App\Repositories\PageRepository;
 use Framework\Http\Controller;
 
 /**
@@ -12,12 +11,10 @@ use Framework\Http\Controller;
  */
 class HomeController extends Controller
 {
-    public function home(PageRepository $pages)
+    public function home()
     {
         use_default_header_bg();
 
-        $content = $pages->findBySlug('fooldal')->content;
-
-        return view('portal.home', compact('content'));
+        return view('portal.home');
     }
 }

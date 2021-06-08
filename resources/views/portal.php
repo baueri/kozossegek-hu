@@ -32,7 +32,7 @@
         </script>
     @endif
 </head>
-<body class="{{ $is_prod ? 'demo' : '' }} {{ $is_home ? 'home' : '' }} {{ $body_class ?? '' }}">
+<body class="{{ is_prod() ? 'demo' : '' }} {{ is_home() ? 'home' : '' }} {{ $body_class ?? '' }}">
     <script async defer crossorigin="anonymous" src="https://connect.facebook.net/hu_HU/sdk.js#xfbml=1&version=v9.0&appId=784869592115351&autoLogAppEvents=1" nonce="lcQfw2hE"></script>
     <div id="fb-root"></div>
     @if($header_background)

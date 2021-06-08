@@ -41,9 +41,24 @@ class ModelRepositoryBuilder
         return $this->repository->getInstances($this->builder->get());
     }
 
+    public function first()
+    {
+        return $this->repository->getInstance($this->builder->first());
+    }
+
+    public function firstOrFail()
+    {
+        return $this->repository->getOrFail($this->first());
+    }
+
     public function paginate(?int $perpage = null, ?int $page = null)
     {
         return $this->repository->getInstances($this->builder->paginate($perpage, $page));
+    }
+
+    public function exists(): bool
+    {
+        return $this->builder->exists();
     }
 
     public function toSql($withBindings = false)

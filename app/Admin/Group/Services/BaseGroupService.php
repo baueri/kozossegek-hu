@@ -102,9 +102,9 @@ abstract class BaseGroupService
             return null;
         }
 
-        $file = $file = File::createFromFormData($document);
+        $file = File::createFromFormData($document);
 
-        if (!$file->mainTypeIs([FileType::DOCUMENT, FileType::PDF])) {
+        if (!$file->mainTypeIs([FileType::DOCUMENT, FileType::PDF, FileType::IMAGE])) {
             throw new FileTypeNotAllowedException();
         }
 

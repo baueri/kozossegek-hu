@@ -92,9 +92,9 @@ class File
      * @param int|null $mode
      * @return static
      */
-    public function move(string $newPath, string $newFilename = null, $mode = null): self
+    public function move(string $newPath, string $newFilename = null, int $mode = null): self
     {
-        $newFilePath = $newPath . ($newFilename ?: $this->fileName);
+        $newFilePath = $newPath . '/' . ($newFilename ?: $this->fileName);
 
         if (!is_dir(dirname($newFilePath))) {
             mkdir(dirname($newFilePath), 0777, true);
@@ -236,6 +236,10 @@ class File
 
     public function getMainType(): string
     {
+        if (is_dir($this->filePath)) {
+            return 'folder';
+        }
+
         foreach (FileManager::TYPES as $mainType => $types) {
             if (in_array($this->fileType, $types)) {
                 return $mainType;

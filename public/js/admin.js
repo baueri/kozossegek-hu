@@ -92,23 +92,32 @@ function deleteConfirm(action)
 
 function selectImageFromMediaLibrary(options)
 {
-    $.post("/admin/api/uploads/get", response => {
+    console.log(options);
+    $.post("/admin/api/uploads/get", {dir: options.dir}, response => {
         dialog.show({
             title: "Feltöltések",
             message: response,
             size: "xl",
             cssClass: "uploads-modal",
             onShown: function (dialog) {
-                $("#modal-uploads .file-item").click(function () {
-                    var src = $(this).data("src");
-                    var is_img = $(this).data("is_img");
-                    var text = $(this).data("text");
-                    options.onSelect({
-                        text: text,
-                        is_img: is_img,
-                        src: src
-                    });
-                    dialog.modal('hide');
+                $("#modal-uploads .file-item").click(function (e) {
+                    e.preventDefault();
+
+                    if ($(this).hasClass("item-dir")) {
+                        dialog.modal("hide");
+                        options.dir = $(this).data("text");
+                        selectImageFromMediaLibrary(options);
+                    } else {
+                        var src = $(this).data("src");
+                        var is_img = $(this).data("is_img");
+                        var text = $(this).data("text");
+                        options.onSelect({
+                            text: text,
+                            is_img: is_img,
+                            src: src
+                        });
+                        dialog.modal('hide');
+                    }
                 });
             }
         });
