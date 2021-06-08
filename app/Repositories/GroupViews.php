@@ -150,7 +150,6 @@ class GroupViews extends Repository
             $builder->apply('whereGroupTag', collect($tags)->pluck('tag')->all());
         }
 
-
         $groups = $this->getInstances($builder->get());
 
         $groupids = $groups->pluck('id');

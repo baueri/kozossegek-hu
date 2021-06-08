@@ -16,7 +16,11 @@ abstract class AdminTable
      */
     protected $columns = [];
 
-    protected array $order = ['id', 'desc'];
+    protected array $order;
+
+    protected string $defaultOrderColumn = 'id';
+
+    protected string $defaultOrder = 'desc';
 
     protected int $perpage;
 
@@ -49,7 +53,10 @@ abstract class AdminTable
             throw new InvalidArgumentException('missing columns for ' . static::class);
         }
 
-        $this->order = [$request->get('order_by', 'id'), $request->get('sort', 'desc')];
+        $this->order = [
+            $request->get('order_by', $this->defaultOrderColumn),
+            $request->get('sort', $this->defaultOrder)
+        ];
 
         $this->request = $request;
 

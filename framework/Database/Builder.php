@@ -368,7 +368,7 @@ class Builder
         [$query, $bindings] = $this->build();
         $table = implode(', ', $this->table);
         $allBindings = array_merge(array_values($values), $bindings);
-        return $this->db->update("update {$table} set {$set}, {$query}", ...$allBindings);
+        return $this->db->update("update {$table} set {$set} {$query}", ...$allBindings);
     }
 
     public function insert(array $values)

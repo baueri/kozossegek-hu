@@ -37,7 +37,7 @@
     @foreach($uploads as $upload)
     <tr>
         <td>
-            <a href="{{ $upload['path'] }}" target="_blank"><i class="{{ $upload['icon'] }}"></i> {{ $upload['name'] }}</a>
+            <a href="{{ $upload['url'] }}" @if(!$upload['is_dir']) target="_blank" @endif><i class="{{ $upload['icon'] }}"></i> {{ $upload['name'] }}</a>
         </td>
         <td>{{ $upload['main_type'] }}</td>
         <td>

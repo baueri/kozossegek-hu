@@ -54,8 +54,11 @@ class RegisterGroupForm extends AbstractGroupStep
         $data['age_group'] = implode(',', $request['age_group'] ?? []);
         $data['on_days'] = implode(',', $request['on_days'] ?? []);
         $data['spiritual_movement'] = '';
-        if ($request['spiritual_movement_id'] && $movement = $this->spiritualMovements->find($request['spiritual_movement_id'])) {
-            $data['spiritual_movement'] = $movement['name'];
+        if (
+            $request['spiritual_movement_id'] &&
+            $movement = $this->spiritualMovements->find($request['spiritual_movement_id'])
+        ) {
+            $data['spiritual_movement'] = $movement->name;
         }
 
         $group = new GroupView($data->all());

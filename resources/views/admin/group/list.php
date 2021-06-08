@@ -6,7 +6,6 @@
         <a class="btn {{ $current_page == 'inactive' ? 'active btn-primary' : 'btn-default' }}" href="@route('admin.group.list', ['status' => 'inactive'])">Inaktív</a>
         <a class="btn {{ $current_page == 'trash' ? 'active btn-primary' : 'btn-default' }}" href="@route('admin.group.trash')">Lomtár</a>
     </div>
-
 @endsection
 @section('header')@include('asset_groups.select2')@endsection
 @extends('admin')

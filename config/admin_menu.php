@@ -45,11 +45,6 @@ return [
                 'as' => 'admin.group.create',
             ],
             [
-                'title' => 'Lelkiségi mozgalmak',
-                'icon' => 'landmark',
-                'as' => 'admin.spiritual_movements',
-            ],
-            [
                 'title' => 'Címkék',
                 'icon' => 'tags',
                 'as' => 'admin.tags.list',
@@ -60,6 +55,25 @@ return [
                 'as' => 'admin.group.maintenance',
             ],
         ],
+    ],
+    [
+        'title' => 'Lelkiségi mozgalmak',
+        'icon' => 'landmark',
+        'as' => 'admin.spiritual_movement.list',
+        'submenu' => [
+            [
+                'title' => 'Lelkiségi mozgalmak',
+                'icon' => 'landmark',
+                'as' => 'admin.spiritual_movement.list',
+                'similars' => ['admin.spiritual_movement.edit'],
+            ],
+            [
+                'title' => 'Új lelkiségi mozgalom',
+                'icon' => 'plus',
+                'as' => 'admin.spiritual_movement.create',
+                'similars' => ['admin.spiritual_movement.do_create']
+            ]
+        ]
     ],
     [
         'title' => 'Intézmények',

@@ -29,10 +29,17 @@ use Framework\Translator;
 use PHPDeploy\PHPDeploy;
 
 /**
- * @return Application|null
+ * @return Application|null|mixed
+ * @psalm-template T
+ * @psalm-param T
+ * @psalm-return T
  */
-function app()
+function app(string $abstract = null)
 {
+    if ($abstract) {
+        return Application::getInstance()->get($abstract);
+    }
+
     return Application::getInstance();
 }
 

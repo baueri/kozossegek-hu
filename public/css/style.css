@@ -62,7 +62,7 @@ body:not(.home) .featured-header {
 .header-outer #header.compact {
     background: #fff;
     box-shadow: 0 0 6px 0;
-    font-size: 14px;
+    /*font-size: 14px;*/
 }
 
 .header-outer #header.compact .navbar-nav > li .nav-link {
@@ -234,7 +234,7 @@ nav.navbar {
 
 nav.navbar .nav-link {
     color: #000;
-    text-transform: uppercase;
+    /*text-transform: uppercase;*/
     transition: all ease-in .2s;
     font-family: 'Roboto Condensed', sans-serif;
 }
@@ -502,6 +502,7 @@ input[name=search]::placeholder, input[name=varos]::placeholder {
 .edit-page {
     font-size: 20px;
     text-shadow: none;
+    color: #fff;
 }
 
 .img-big {

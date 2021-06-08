@@ -2,6 +2,7 @@
 
 namespace Framework\Storage;
 
+use App\Helpers\FileHelper;
 use Framework\File\File;
 use Framework\File\FileManager;
 
@@ -28,7 +29,7 @@ class PublicStorage extends FileManager
      */
     public function getPublicPathFor(File $file)
     {
-        return \App\Helpers\FileHelper::getPublicPathFor($file);
+        return FileHelper::getPublicPathFor($file);
     }
 
     /**

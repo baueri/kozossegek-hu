@@ -17,17 +17,18 @@ abstract class Model
     /**
      * @var mixed[]
      */
-    protected array $originalValues = [];
+    protected array $originalAttributes = [];
 
-    /**
-     * Model constructor.
-     * @param array $values
-     */
-    public function __construct($values = [])
+    public function __construct(array $attributes = [])
     {
-        $this->setProperties($values);
+        $this->setAttributes($attributes);
 
-        $this->originalValues = $values;
+        $this->originalAttributes = $attributes;
+    }
+
+    public static function make(array $attributes = []): Model
+    {
+        return new static($attributes);
     }
 
     /**
@@ -54,20 +55,17 @@ abstract class Model
         return (bool) $this->getId();
     }
 
-    /**
-     * @param $id
-     */
     public function setId($id)
     {
         $this->{static::$primaryCol} = $id;
     }
 
     /**
-     * @return array|mixed[]
+     * @return array
      */
-    public function getOriginalValues()
+    public function getOriginalAttributes()
     {
-        return $this->originalValues;
+        return $this->originalAttributes;
     }
 
     /**
@@ -90,7 +88,7 @@ abstract class Model
      */
     public function update(array $data)
     {
-        $this->setProperties($data);
+        $this->setAttributes($data);
     }
 
     /**
@@ -98,7 +96,7 @@ abstract class Model
      * @param array $values
      * @return static
      */
-    protected function setProperties(array $values)
+    protected function setAttributes(array $values)
     {
         foreach ($values as $col => $value) {
             if (property_exists($this, $col)) {
@@ -116,7 +114,7 @@ abstract class Model
     {
         $values = [];
 
-        foreach (array_keys($this->getOriginalValues()) as $column) {
+        foreach (array_keys($this->getOriginalAttributes()) as $column) {
             if (property_exists($this, $column)) {
                 $values[$column] = $this->{$column};
             }
@@ -127,7 +125,7 @@ abstract class Model
 
     public function getChanges()
     {
-        $original = $this->getOriginalValues();
+        $original = $this->getOriginalAttributes();
         $newValues = $this->valuesToArray();
 
         $changes = [];
