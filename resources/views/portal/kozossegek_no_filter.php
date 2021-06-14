@@ -33,7 +33,6 @@
                     <span class="text-white text-shadowed">Közösség jellege</span>
                 </p>
                 @foreach($tags as $i => $tag)
-                @if($i > 0 && $i % 9 == 0) <br/> @endif
                 <input type="checkbox"
                        class="group-tag"
                        id="tag-{{ $tag['slug'] }}"
@@ -54,6 +53,11 @@
 @endsection
 
 @extends('portal')
+<div class="container">
+    <div class="bg-white m-0 px-5" style="padding-top: 4em; padding-bottom: 4em;">
+        <h4 class="font-italic text-center m-0">A keresés indításához add meg a városod nevét, a korosztályodat vagy olyan kulcsszót, ami azt a közösséget jellemzi, amihez szívesen csatlakoznál!</h4>
+    </div>
+</div>
 <script>
     var onRes = () => {
         if($(window).width() <= 992) {
@@ -65,10 +69,10 @@
         }
     }
 
-    $(window).resize(onRes);
+    // $(window).resize(onRes);
 
     $(() => {
-        onRes();
+        // onRes();
         $(".group-tag").change(function () {
             var val = "";
             $(".group-tag:checked").each(function () {
