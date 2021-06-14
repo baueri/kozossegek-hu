@@ -117,23 +117,6 @@ function detectmob()
     return ((window.innerWidth <= 800) && (window.innerHeight <= 600));
 }
 
-function readURL(input)
-{
-
-    if (input.files && input.files[0]) {
-        var reader = new FileReader();
-
-        reader.onload = function (e) {
-            $('#blah')
-                .attr('src', e.target.result)
-                .width(150)
-                .height(200);
-        };
-
-        reader.readAsDataURL(input.files[0]);
-    }
-}
-
 function validate_email(mail)
 {
     return /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(mail);
