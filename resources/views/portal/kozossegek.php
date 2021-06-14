@@ -8,7 +8,7 @@
     @include('portal.partials.kozosseget_keresek_title')
     <div class="pb-0 mb-0">
         <div class="container">
-            <form method="get" id="finder" action="@route('portal.groups_korosztaly', ['korosztaly' => $filter['korosztaly']])">
+            <form method="get" id="finder" action="@route('portal.groups')">
                 <div id="search-group" class="rounded-pill bg-white py-1 px-1">
                     <div class="row">
                         <div class="col-lg-4 border-right mb-2 mb-lg-0">

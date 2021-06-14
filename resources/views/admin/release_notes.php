@@ -1,6 +1,12 @@
 @title('Verzióinformáció')
 @extends('admin')
-<h3>v1.3 (2021.06.08)</h3>
+<h3>v1.3.1 (2021.06.14)</h3>
+<ul>
+    <li>[FIXED]: Javítva lett a hiba ami miatt a korosztályszűrő mindig az először kiválaszott korosztály közösségeire szűrt rá</li>
+    <li>[FIXED]: Kisebb felbontású képernyőkön (laptop pl) a keresőben a jellemzők kicsúsztak a képről.</li>
+    <li>[CHANGED]: Amikor nincs még szűrés megadva, akkor egy alapértelmezett szöveg jelenik meg 'placeholder'-nek.</li>
+</ul>
+<h3>v1.3.0 (2021.06.08)</h3>
 <ul>
     <li>
         [NEW]: Lelkiségi mozgalom aloldal a látogatói oldalra
