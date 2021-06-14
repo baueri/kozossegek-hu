@@ -12,16 +12,13 @@
     @if(!is_loggedin())
         <div class="step-container">
             <h4>Felhasználói adatok</h4>
-            @alert('info')
-                Az itt megadott email címeddel fogsz majd a sikeres regisztráció után belépni az oldalra.
-            @endalert
+            <p>
+                <a href="#" id="login-existing-user" onclick="showLoginModal('{{ request()->uri }}'); return false;"><b>
+                        @icon('key') van már fiókom, belépek
+                    </b></a>
+            </p>
             <div class="row">
                 <div class="col-md-4">
-                    <p>
-                        <a href="#" id="login-existing-user" onclick="showLoginModal('{{ request()->uri }}'); return false;"><b>
-                            <i class="fa fa-key"></i> van már fiókom, belépek
-                        </b></a>
-                    </p>
                     <div class="form-group required">
                         <label>Neved</label>
                         <input type="text" class="form-control" name="user_name"  value="{{ $user_name }}" data-describedby="validate_user_name">
@@ -31,6 +28,10 @@
                         <label>Email címed</label>
                         <input type="email" class="form-control" name="email" value="{{ $email }}" data-describedby="validate_email">
                         <div id="validate_email" class="validate_message"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone_number">Telefonszám @icon('info-circle small', 'Nem kötelező, de a könnyebb kapcsolattartás érdekében megadhatod a telefonszámodat is')</label>
+                        <input type="tel" name="phone_number" id="phone_number" value="{{ $phone_number }}" class="form-control">
                     </div>
                     <div class="form-group required">
                         <label>Jelszó <small>(min. 8 karakter)</small></label>
@@ -48,11 +49,19 @@
     @endif
     <div class="step-container">
         <h4>Általános adatok</h4>
-        <div class="form-group required">
-            <label for="name">Közösség neve</label>
-            <input type="text" id="name" value='{{ $group->name }}' name="name" class="form-control">
-        </div>
         <div class="row">
+            <div class="col-md-6">
+                <div class="form-group required">
+                    <label for="name">Közösség neve</label>
+                    <input type="text" id="name" value='{{ $group->name }}' name="name" class="form-control">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group required">
+                    <label for="group_leaders">Közösségvezető(k) neve(i)</label>
+                    <input type="text" name="group_leaders" id="group_leaders" class="form-control" value="{{ $group->group_leaders ?: $user->name ?? '' }}" >
+                </div>
+            </div>
             <div class="col-md-12">
                 <div class="form-group required">
                     <label for="institute_id">Intézmény / plébánia</label>
@@ -157,46 +166,14 @@
                 @endforeach
             </div>
         </div>
-    </div>
-    <div class="step-container required">
-        <h4>Bemutatkozás</h4>
+        <h4>Bemutatkozás<small style="color: red">*</small></h4>
         @alert('info')
             Írd le pár mondatban azt, hogy kik vagytok, milyen jellegű közösségi alkalmakat tartotok, illetve bármilyen információt, ami vonzóvá teszi a közösségeteket mások számára.
         @endalert
         <div class="form-group required">
             <textarea name="description" id="description">{{ $group->description }}</textarea>
         </div>
-    </div>
-    <div class="step-container">
-        <h4>Közösségvezető(k) adatai</h4>
-        @alert('info')
-            A felhasználói fiókon felül azért kérjük ezeket az adatokat, mert előfordulhat, hogy a közösséget menedzselő felhasználó és a közösségvezető személye eltérő. Az itt megadott email címre küldünk levelet akkor, amikor egy látogató kitölti a kapcsolatfelvevő űrlapot a közösség adatlapján.
-            <br/><strong>Email címet semmilyen esetben nem jelenítünk meg a honlapon.</strong>
-        @endalert
-        <div class="row">
-            <div class="col-md-12">
-                <div class="form-group required">
-                    <label for="group_leaders">Közösségvezető(k) neve(i)</label>
-                    <input type="text" name="group_leaders" id="group_leaders" class="form-control" value="{{ $group->group_leaders ?: $user->name ?? '' }}" >
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="group_leader_phone">Elérhetőség (Telefon)</label>
-                    <input type="tel" name="group_leader_phone" id="group_leader_phone" value="{{ $group->group_leader_phone }}" class="form-control">
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group required">
-                    <label for="group_leader_email">Elérhetőség (Email cím)</label>
-                    <input type="email" name="group_leader_email" id="group_leader_email" value="{{ $group->group_leader_email ?: $user->email ?? '' }}" class="form-control" data-describedby="validate_group_leader_email">
-                    <div id="validate_group_leader_email" class="validate_message"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="step-container">
-        <h4>Fotó a közösségről</h4>
+        <h4 class="mt-5">Fotó a közösségről</h4>
         <div class="row group-images">
             <div class="col-md-12">
                 <div class="form-group">
@@ -404,7 +381,7 @@
             }
         }
 
-        $("input:not([name=email]):not(.institute-data):not([type=password]):not([name=group_leader_email]), select:not([name=institute_id]), textarea", $(".required", form)).on("focusout input change", function() {
+        $("input:not([name=email]):not(.institute-data):not([type=password]), select:not([name=institute_id]), textarea", $(".required", form)).on("focusout input change", function() {
             validateRequiredInput($(this));
         });
 
@@ -415,13 +392,11 @@
                 let baseInputsOk = validateRequiredInputs();
                 let userNameOk = validateUserName();
                 let userEmailOk = await validateEmailAddress($("[name=email]", form));
-                let leaderEmailOk = await validateEmailAddress($("[name=group_leader_email]", form), false);
                 let instituteOk = validateInstitute();
                 let passwordOk = validatePassword();
                 if(!baseInputsOk
                     || !userNameOk
                     || !await validateEmailAddress($("[name=email]", form))
-                    || !await validateEmailAddress($("[name=group_leader_email]", form), false)
                     || !validateInstitute()
                     || !validatePassword()) {
                     return dialog.danger("Kérjük ellenőrizd az adataidat! A csillaggal jelölt mezők kitöltése kötelező!");
@@ -479,13 +454,7 @@
         });
 
         $("[name=email]", form).on("change focusout", async function () {
-            if (await validateEmailAddress($(this)) && !$("#group_leader_email", form).val()) {
-                $("#group_leader_email").val($(this).val());
-            }
-        });
-
-        $("[name=group_leader_email]", form).on("change focusout", function () {
-            validateEmailAddress($(this), false);
+            validateEmailAddress($(this));
         });
 
         $("[type=password]").on("change focusout", function(){

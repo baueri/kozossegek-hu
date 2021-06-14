@@ -15,7 +15,10 @@ class SpiritualMovementHelper
         $counts = db()->select(
             "select count(*) as cnt, spiritual_movement_id
                     from church_groups
-                    where spiritual_movement_id in ($ids) and deleted_at is null
+                    where spiritual_movement_id in ($ids) and deleted_at is null and
+                    deleted_at is null and
+                    pending = 0 and
+                    status = 'active'
                     group by spiritual_movement_id"
         );
 

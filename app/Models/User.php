@@ -30,6 +30,8 @@ class User extends Model
 
     public $activated_at;
 
+    public $phone_number;
+
     public function keresztnev()
     {
         return substr($this->name, strpos($this->name, ' '));

@@ -37,8 +37,6 @@ class UpdateGroup extends BaseGroupService
 
         $data['name'] = strip_tags($data['name']);
         $data['group_leaders'] = strip_tags($data['group_leaders']);
-        $data['group_leader_email'] = strip_tags($data['group_leader_email']);
-        $data['group_leader_phone'] = strip_tags($data['group_leader_phone']);
         $data['age_group'] = implode(',', $data['age_group']);
         $data['on_days'] = implode(',', $data['on_days'] ?? []);
 

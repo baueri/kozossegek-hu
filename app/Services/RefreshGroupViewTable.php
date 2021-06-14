@@ -9,6 +9,7 @@ class RefreshGroupViewTable
         return 'CREATE OR REPLACE VIEW v_groups AS
             SELECT
                 church_groups.*,
+                users.email as 
                 institutes.name as institute_name,
                 institutes.city,
                 institutes.district,

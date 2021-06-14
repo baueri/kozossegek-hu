@@ -32,7 +32,7 @@ class ApiGroupController extends Controller
             $perPage = (int) $request['per_page'] ?: 30;
             $results = $groupViews->search($filter, $perPage);
 
-            $data = $results->map(fn(GroupView $groupView) => [
+            $data = $results->map(fn (GroupView $groupView) => [
                 'name' => $groupView->name,
                 'city' => $groupView->city,
                 'district' => $groupView->district,
@@ -50,7 +50,6 @@ class ApiGroupController extends Controller
             ]);
 
             return compact('query', 'data');
-
         } catch (Exception $e) {
             error_log($e);
             return api()->error(['message' => 'unexpected_error']);

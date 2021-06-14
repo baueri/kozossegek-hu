@@ -199,7 +199,7 @@ function showLoginModal(redirectUrlAfterLogin)
 {
     $.post("/login-modal", {redirect: redirectUrlAfterLogin}, html => {
         dialog.show({
-            size: "md",
+            size: "sm",
             type: "info",
             title: "Belépés",
             message: html,

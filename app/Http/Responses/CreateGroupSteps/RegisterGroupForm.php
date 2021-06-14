@@ -80,6 +80,7 @@ class RegisterGroupForm extends AbstractGroupStep
             'group_tags' => $request['tags'] ?? [],
             'group_days' => $request['on_days'] ?? [],
             'user_name' => $request['user_name'],
+            'phone_number' => $request['phone_number'],
             'email' => $request['email'],
         ];
     }

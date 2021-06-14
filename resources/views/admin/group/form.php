@@ -14,9 +14,19 @@
 <form method="post" id="group-form" action="{{ $action }}">
     <div class="row">
         <div class="col-md-9">
-            <div class="form-group required">
-                <label for="name">Közösség neve:</label>
-                <input type="text" id="name" value='{{ $group->name }}' name="name" class="form-control" required>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="form-group required">
+                        <label for="name">Közösség neve:</label>
+                        <input type="text" id="name" value='{{ $group->name }}' name="name" class="form-control" required>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group required">
+                        <label for="group_leaders">Közösségvezető(k)</label>
+                        <input type="text" name="group_leaders" id="group_leaders" class="form-control" value="{{ $group->group_leaders }}" required>
+                    </div>
+                </div>
             </div>
 
             <div class="row">
@@ -45,8 +55,8 @@
                                 @endif
                         </label>
                         <div style="width: 200px">
-                            <select name="user_id" class="form-control" placeholder="karbantartó">
-                                <option value="{{ $group->user_id ?: "" }}">{{ $owner->name }}</option>
+                            <select name="user_id" id="user_id" class="form-control">
+                                <option value="{{ $group->user_id ?: '' }}">{{ $owner->name }}</option>
                             </select>
                         </div>
                     </div>
@@ -54,22 +64,7 @@
             </div>
             <div class="row">
                 <div class="col-md-4">
-                    <div class="form-group required">
-                        <label for="group_leaders">Közösségvezető(k)</label>
-                        <input type="text" name="group_leaders" id="group_leaders" class="form-control" value="{{ $group->group_leaders }}" required>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="group_leader_phone">Telefon</label>
-                        <input type="tel" name="group_leader_phone" id="group_leader_phone" value="{{ $group->group_leader_phone }}" class="form-control">
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group required">
-                        <label for="group_leader_email">Email cím</label>
-                        <input name="group_leader_email" id="group_leader_email" value="{{ $group->group_leader_email }}" class="form-control" required>
-                    </div>
+
                 </div>
             </div>
             <div class="form-group">
@@ -102,7 +97,7 @@
                             <i class="fa fa-upload"></i> Kép feltöltése
                             <input type="file" onchange="loadFile(event, this);" data-target="temp-image" id="image-upload">
                         </label>
-                        <div style="display: none"/><img id="temp-image" /></div>
+                        <div style="display: none"><img id="temp-image" /></div>
                         <input type="hidden" name="image">
                     </div>
                 </div>
@@ -187,7 +182,7 @@
             <div class="form-group">
                 <label>Felöltött igazolás</label><br/>
                 @if($group->exists() && $group->hasDocument())
-                    <p><a href="{{ $group->getDocumentUrl() }}"><i class="fa fa-download" download></i> Igazolás letöltése: {{ $group->document }}</a></p>
+                    <p><a href="{{ $group->getDocumentUrl() }}" download=""><i class="fa fa-download"></i> Igazolás letöltése: {{ $group->document }}</a></p>
                 @else
                     @alert('warning') nincs igazolás @endalert
                 @endif

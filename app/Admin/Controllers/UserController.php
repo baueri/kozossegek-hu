@@ -82,7 +82,7 @@ class UserController extends AdminController
     {
         /* @var $user User */
         $user = $repository->findOrFail($request['id']);
-        $data = $request->only('name', 'email', 'user_group', 'username');
+        $data = $request->only('name', 'email', 'user_group', 'username', 'phone_number');
 
         if ($password = $request['new_password']) {
             if ($password !== $request['new_password_again']) {
