@@ -25,6 +25,7 @@ use Framework\Http\Message;
 use Framework\Http\Request;
 use Framework\Model\ModelNotFoundException;
 use Framework\Support\Arr;
+use Jaybizzle\CrawlerDetect\CrawlerDetect;
 use Throwable;
 
 class GroupController extends Controller
@@ -95,9 +96,11 @@ class GroupController extends Controller
         $slug = $group->slug();
         $keywords = builder('search_engine')->where('group_id', $group->id)->first()['keywords'];
 
-        log_event('group_profile_opened', [
-            'group_id' => $group->id, 'referer' => $_SERVER['HTTP_REFERER']
-        ]);
+        if (!(new CrawlerDetect())->isCrawler()) {
+            log_event('group_profile_opened', [
+                'group_id' => $group->id, 'referer' => $_SERVER['HTTP_REFERER']
+            ]);
+        }
 
         return view('portal.kozosseg', compact(
             'group',
@@ -224,8 +227,6 @@ class GroupController extends Controller
                 'spiritual_movement',
                 'tags',
                 'group_leaders',
-                'group_leader_phone',
-                'group_leader_email',
                 'description',
                 'image',
                 'join_mode'

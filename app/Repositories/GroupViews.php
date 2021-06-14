@@ -59,11 +59,11 @@ class GroupViews extends Repository
             }
         }
 
-        if ($varos = $filter['varos']) {
-            if ($varos === 'Budapest') {
+        if ($varos = mb_strtolower($filter['varos'])) {
+            if ($varos === 'budapest') {
                 $builder->where('city', 'like', "{$varos}%");
             } else {
-                $builder->where('city', $varos);
+                $builder->where('city', 'like', $varos);
             }
 
         }

@@ -31,23 +31,14 @@ return [
 
             return '<?php $__env->getSection()->add("footer", function($args) { extract($args); ?> ';
         },
-        'featuredTitle' =>  function ($matches) {
-            return View::component(FeaturedTitle::class, $matches[1]);
-        },
-        'age_group_selector' => function ($matches) {
-            return View::component(AgeGroupSelector::class, $matches[1]);
-        },
-        'occasion_frequency_selector' => function ($matches) {
-            return View::component(OccasionFrequencySelector::class, $matches[1]);
-        },
-        'on_days_selector' => function ($matches) {
-            return View::component(OnDaysSelector::class, $matches[1]);
-        },
-        'spiritual_movement_selector' => fn ($matches) =>
-            View::component(SpiritualMovementSelector::class, $matches[1]),
-        'join_mode_selector' => fn ($matches) => View::component(JoinModeSelector::class, $matches[1]),
-        'user_group_selector' => fn ($matches) => View::component(UserGroupSelector::class, $matches[1]),
-        'facebook_share_button' => fn ($matches) => View::component(FacebookShareButton::class, $matches[1]),
+        'featuredTitle' => FeaturedTitle::class,
+        'age_group_selector' => AgeGroupSelector::class,
+        'occasion_frequency_selector' => OccasionFrequencySelector::class,
+        'on_days_selector' => OnDaysSelector::class,
+        'spiritual_movement_selector' => SpiritualMovementSelector::class,
+        'join_mode_selector' => JoinModeSelector::class,
+        'user_group_selector' => UserGroupSelector::class,
+        'facebook_share_button' => FacebookShareButton::class,
         'alert' => function ($matches) {
             if (strpos($matches[0], '@alert') !== false) {
                 return '<div class="alert alert-' . str_replace(['\'', '"'], '', $matches[1]) . ' shadow-sm">';
@@ -67,8 +58,8 @@ return [
             return "/storage/uploads/$file";
         },
         'message' => fn () => "<?php echo view('admin.partials.message') ?>",
-        'honeypot' => fn () => View::component(HoneyPotComponent::class),
-        'icon' => fn ($matches) => View::component(FontawesomeIcon::class, $matches[1]),
+        'honeypot' => HoneyPotComponent::class,
+        'icon' => FontawesomeIcon::class,
         'filter_box' => function ($matches) {
             if (strpos($matches[0], '@endfilter_box') !== false) {
                 return '</div>';

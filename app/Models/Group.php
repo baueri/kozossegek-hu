@@ -57,12 +57,6 @@ class Group extends Model
     public $group_leader_email;
 
     /**
-     * Kapcsolattartó telefonszáma
-     * @var string
-     */
-    public $group_leader_phone;
-
-    /**
      * Lelkiségi mozgalom azonosítója
      * @var int
      */

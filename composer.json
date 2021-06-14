@@ -9,7 +9,8 @@
     "require": {
         "arrilot/dotenv-php": "^2.0",
         "phpmailer/phpmailer": "~6.1",
-        "psr/container": "^1.0"
+        "psr/container": "^1.0",
+        "jaybizzle/crawler-detect": "^1.2"
     },
     "autoload": {
       "psr-4": {

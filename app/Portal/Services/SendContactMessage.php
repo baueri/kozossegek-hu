@@ -37,12 +37,12 @@ class SendContactMessage
 
     /**
      * @param Group $group
-     * @param $data
+     * @param array $data
      * @return bool
      * @throws UnauthorizedException
      * @throws Exception
      */
-    public function send(Group $group, $data): bool
+    public function send(Group $group, array $data): bool
     {
         $checkTime = $_SESSION['honepot_check_time'];
         $check_hash = $_SESSION['honeypot_check_hash'];

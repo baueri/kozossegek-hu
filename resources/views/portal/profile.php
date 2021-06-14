@@ -15,6 +15,10 @@
                     <input type="text" name="name" value="{{ $user->name }}" class="form-control"/>
                 </div>
                 <div class="form-group">
+                    <label for="phone_number">Telefonszám @icon('info-circle small', 'Nem kötelező, de a könnyebb kapcsolattartás érdekében megadhatod a telefonszámodat is')</label>
+                    <input type="tel" name="phone_number" id="phone_number" value="{{ $user->phone_number }}" class="form-control">
+                </div>
+                <div class="form-group">
                     <label>Régi jelszó</label>
                     <input type="password" name="old_password" class="form-control" autocomplete="off"/>
                 </div>

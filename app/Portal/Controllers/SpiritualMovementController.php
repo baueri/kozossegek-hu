@@ -43,6 +43,7 @@ class SpiritualMovementController extends Controller
 
             $groups = app(GroupViews::class)->query()
                 ->where('spiritual_movement_id', $spiritualMovement->id)
+                ->apply('active')
                 ->get();
 
             $groupids = $groups->pluck('id');
