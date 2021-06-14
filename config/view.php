@@ -60,7 +60,7 @@ return [
                 return '<?php endif; ?>';
             }
 
-            return '<?php if(\App\Auth\Auth::user()->isAdmin()): ?>';
+            return '<?php if(($user = \App\Auth\Auth::user()) && $user->isAdmin()): ?>';
         },
         'upload' => function ($matches) {
             $file = str_replace("'", "", $matches[1]);
