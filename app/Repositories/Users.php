@@ -92,11 +92,7 @@ class Users extends Repository
         return $this->getInstances($rows);
     }
 
-    /**
-     * @param string|null $email
-     * @return User
-     */
-    public function getUserByEmail(?string $email)
+    public function getUserByEmail(?string $email): ?User
     {
         $row = $this->getBuilder()
             ->where('email', $email)
