@@ -164,6 +164,9 @@ function route_is(string $routeName): bool
 
 function redirect(string $uri)
 {
+    if ($uri === 'self') {
+        $uri = request()->uri;
+    }
     header("Location: $uri");
     exit;
 }
@@ -276,7 +279,6 @@ function image_with_watermark($imgPath)
 
 function widget($uniqid)
 {
-
     return app()->get(Widgets::class)->getByUniqId($uniqid);
 }
 

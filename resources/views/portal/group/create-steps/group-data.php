@@ -18,7 +18,7 @@
             <div class="row">
                 <div class="col-md-4">
                     <p>
-                        <a href="#" id="login-existing-user" onclick="showLoginModal('{{ request()->uri }}'); return false;"><b>
+                        <a href="@route('login')" id="login-existing-user" onclick="showLoginModal('{{ request()->uri }}'); return false;"><b>
                             <i class="fa fa-key"></i> van már fiókom, belépek
                         </b></a>
                     </p>

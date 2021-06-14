@@ -41,7 +41,7 @@
                 <div class="form-group">
                     <button type="submit" class="btn btn-darkblue">Regisztráció</button>
                     <p class="mt-2">
-                        <a href="#" id="login-existing-user" onclick="showLoginModal('{{ request()->uri }}'); return false;"><b>
+                        <a href="@route('login')" id="login-existing-user" onclick="showLoginModal('{{ request()->uri }}'); return false;"><b>
                             <i class="fa fa-key"></i> van már fiókom, belépek
                         </b></a>
                     </p>
