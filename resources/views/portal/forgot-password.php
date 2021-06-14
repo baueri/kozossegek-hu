@@ -1,6 +1,7 @@
 @extends('portal')
-@featuredTitle('Új jelszó igénylése')
-<div class="container p-3">
+<div class="container inner p-3">
+    <h1 class="h2 mb-4">Új jelszó igénylése</h1>
+    @message()
     <p>
         Add meg a fiókodhoz tartozó email címedet, amire küldünk egy levelet a további lépésekkel kapcsolatban!
     </p>
