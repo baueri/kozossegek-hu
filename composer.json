@@ -1,38 +1,44 @@
 {
-    "name": "ivan/kozossegek",
-    "authors": [
-        {
-            "name": "Bauer Iván",
-            "email": "bauer.ivan@zengo.eu"
-        }
-    ],
-    "require": {
-        "arrilot/dotenv-php": "^2.0",
-        "phpmailer/phpmailer": "~6.1",
-        "psr/container": "^1.0",
-        "jaybizzle/crawler-detect": "^1.2"
+  "name": "ivan/kozossegek",
+  "authors": [
+    {
+      "name": "Bauer Iván",
+      "email": "ivan.bauer90@gmail.com"
+    }
+  ],
+  "require": {
+    "arrilot/dotenv-php": "^2.0",
+    "phpmailer/phpmailer": "~6.1",
+    "psr/container": "^1.0",
+    "jaybizzle/crawler-detect": "^1.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "app/",
+      "Framework\\": "framework/",
+      "PHPDeploy\\": "php_deploy/"
     },
-    "autoload": {
-      "psr-4": {
-        "App\\": "app/",
-        "Framework\\": "framework/",
-        "PHPDeploy\\": "php_deploy/"
-      },
-      "files": [
-        "framework/functions.php"
-      ]
-    },
+    "files": [
+      "framework/functions.php"
+    ]
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/"
+    }
+  },
   "scripts": {
     "migrate": "vendor/bin/phinx migrate",
     "make:migration": "vendor/bin/phinx create",
     "migrate:rollback": "vendor/bin/phinx rollback",
     "db:seed": "vendor/bin/phinx seed:run",
-    "make:seed": "vendor/bin/phinx seed:create"
+    "make:seed": "vendor/bin/phinx seed:create",
+    "test": "vendor/bin/phpunit tests"
   },
-    "require-dev": {
-        "fzaninotto/faker": "^1.9",
-        "robmorgan/phinx": "^0.12.4",
-        "phpseclib/phpseclib": "^3.0",
-        "phpunit/phpunit": "^9"
-    }
+  "require-dev": {
+    "fzaninotto/faker": "^1.9",
+    "robmorgan/phinx": "^0.12.4",
+    "phpseclib/phpseclib": "^3.0",
+    "phpunit/phpunit": "^9"
+  }
 }

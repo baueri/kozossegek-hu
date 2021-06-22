@@ -56,11 +56,7 @@ class Base64Image
         file_put_contents($path, $thumnailSource);
     }
 
-    /**
-     * @param $path
-     * @throws Exception
-     */
-    protected function createDirIfMissing($path)
+    protected function createDirIfMissing(string $path): void
     {
         $dirname = dirname($path);
 
