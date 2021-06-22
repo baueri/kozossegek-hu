@@ -31,7 +31,7 @@ use PHPDeploy\PHPDeploy;
 /**
  * @return Application|null|mixed
  * @psalm-template T
- * @psalm-param T
+ * @psalm-param class-string<T> $abstract
  * @psalm-return T
  */
 function app(string $abstract = null)
