@@ -73,8 +73,6 @@ class PortalCreateGroup
             'join_mode'
         );
 
-        $data['group_leader_email'] = $requestData['email'];
-
         $data['denomination'] = DenominationEnum::KATOLIKUS;
 
         if (!$user) {

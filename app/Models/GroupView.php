@@ -60,6 +60,18 @@ class GroupView extends Group
     private ?string $cachedUrl = null;
 
     /**
+     * Kapcsolattartó email címe
+     * @var string
+     */
+    public $group_leader_email;
+
+    /**
+     * Karbantartó neve
+     * @var string
+     */
+    public $user_name;
+
+    /**
      * @return string
      */
     public function url(): string
@@ -85,5 +97,12 @@ class GroupView extends Group
         }
 
         return $this->institute_image ?: '/images/default_thumbnail.jpg';
+    }
+
+    public function getGroup(): Group
+    {
+        $values = $this->valuesToArray();
+
+        return Group::make($values);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Portal\Services;
 use App\Helpers\HoneyPot;
 use App\Mail\GroupContactMail;
 use App\Models\Group;
+use App\Models\GroupView;
 use App\Traits\LogsEvent;
 use Framework\Application;
 use Framework\Exception\UnauthorizedException;
@@ -36,13 +37,10 @@ class SendContactMessage
     }
 
     /**
-     * @param Group $group
-     * @param array $data
-     * @return bool
      * @throws UnauthorizedException
      * @throws Exception
      */
-    public function send(Group $group, array $data): bool
+    public function send(GroupView $group, array $data): bool
     {
         $checkTime = $_SESSION['honepot_check_time'];
         $check_hash = $_SESSION['honeypot_check_hash'];
