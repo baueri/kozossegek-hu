@@ -8,7 +8,7 @@
                 <h3>Profilom</h3>
                 <hr/>
                 <div class="form-group">
-                    <label>E-mail cím</label>
+                    <label>E-mail cím @icon('info-circle small', 'Amikor valaki felszeretné venni a kapcsolatot a közösséggel, erre az email címre küldjük el az érdeklődő üzenetét.')</label>
                     <input type="email" name="email" value="{{ $user->email }}" class="form-control"/>
                 </div>
                 <div class="form-group">
