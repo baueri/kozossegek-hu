@@ -28,7 +28,7 @@ class Institutes extends Repository
         }
 
         if ($keyword) {
-            $keyword = trim($keyword, ' ');
+            $keyword = trim($keyword, ' -*');
             $builder->whereRaw(
                 'MATCH (name, name2, city, district) AGAINST (? IN BOOLEAN MODE)',
                 [$keyword ? '+' . str_replace(' ', '* +', $keyword) . '*' : '']
