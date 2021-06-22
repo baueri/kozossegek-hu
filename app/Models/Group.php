@@ -50,11 +50,6 @@ class Group extends Model
      */
     public $group_leaders;
 
-    /**
-     * Kapcsolattartó email címe
-     * @var string
-     */
-    public $group_leader_email;
 
     /**
      * Lelkiségi mozgalom azonosítója
@@ -122,6 +117,9 @@ class Group extends Model
      */
     public $tags;
 
+    /**
+     * @var string
+     */
     public $image_url;
 
 

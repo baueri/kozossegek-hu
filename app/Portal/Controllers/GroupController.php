@@ -129,10 +129,11 @@ class GroupController extends Controller
         return view('portal.partials.group-contact-form', compact('group'));
     }
 
-    public function sendContactMessage(Request $request, Groups $repo, SendContactMessage $service)
+    public function sendContactMessage(Request $request, GroupViews $repo, SendContactMessage $service)
     {
         try {
-            $service->send($repo->findOrFail($request['id']), $request->map('strip_tags', true)->all());
+            $group = $repo->findOrFail($request['id']);
+            $service->send($group, $request->map('strip_tags', true)->all());
 
             return [
                 'success' => true,
