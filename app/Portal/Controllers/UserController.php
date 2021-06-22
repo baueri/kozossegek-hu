@@ -61,11 +61,15 @@ class UserController
             $mail = ResetPasswordEmail::make($user, $userToken);
 
             $mailer->to($user->email)->send($mail);
+
+            Message::success('A levelet elküldtük az email címedre.');
+
+            redirect_route('login');
         }
 
-        Message::success('A levelet elküldtük az email címedre.');
+        Message::danger('Nincs ilyen felhasználó!');
 
-        redirect_route('login');
+        redirect_route('portal.forgot_password');
     }
 
     public function recoverPassword(Request $request, Users $users, UpdateUser $service, UserTokens $userTokens)

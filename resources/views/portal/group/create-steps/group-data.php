@@ -13,7 +13,7 @@
         <div class="step-container">
             <h4>Felhasználói adatok</h4>
             <p>
-                <a href="#" id="login-existing-user" onclick="showLoginModal('{{ request()->uri }}'); return false;"><b>
+                <a href="@route('login')" id="login-existing-user" onclick="showLoginModal('{{ request()->uri }}'); return false;"><b>
                         @icon('key') van már fiókom, belépek
                     </b></a>
             </p>

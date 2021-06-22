@@ -15,7 +15,7 @@ use Framework\Support\Arr;
 /**
  * Class Repository
  * @package Framework
- * @psalm-template T
+ * @psalm-template T of Model
  */
 abstract class Repository
 {
@@ -28,23 +28,23 @@ abstract class Repository
     }
 
     /**
-     * @param $id
+     * @param string|int $id
      * @return Model|null
      * @psalm-return T|null
      */
-    public function find($id)
+    public function find($id): ?Model
     {
         $row = $this->getBuilder()->where(static::getPrimaryCol(), $id)->first();
         return $this->getInstance($row);
     }
 
     /**
-     * @param $id
-     * @return Model|null
+     * @param string|int $id
+     * @return Model
      * @psalm-return T|null
      * @throws ModelNotFoundException
      */
-    public function findOrFail($id)
+    public function findOrFail($id): Model
     {
         return $this->getOrFail($this->find($id));
     }

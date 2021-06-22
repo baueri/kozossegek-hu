@@ -14,25 +14,11 @@ use Framework\Support\StringHelper;
 
 class CreateUser
 {
-    /**
-     * @var Users
-     */
     private Users $users;
 
-    /**
-     * @var UserTokens
-     */
-    private UserTokens $userTokens;
-
-    /**
-     * CreateUser constructor.
-     * @param Users $users
-     * @param UserTokens $userTokens
-     */
-    public function __construct(Users $users, UserTokens $userTokens)
+    public function __construct(Users $users)
     {
         $this->users = $users;
-        $this->userTokens = $userTokens;
     }
 
     /**

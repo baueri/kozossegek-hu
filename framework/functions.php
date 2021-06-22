@@ -31,7 +31,7 @@ use PHPDeploy\PHPDeploy;
 /**
  * @return Application|null|mixed
  * @psalm-template T
- * @psalm-param T
+ * @psalm-param class-string<T> $abstract
  * @psalm-return T
  */
 function app(string $abstract = null)
@@ -164,6 +164,9 @@ function route_is(string $routeName): bool
 
 function redirect(string $uri)
 {
+    if ($uri === 'self') {
+        $uri = request()->uri;
+    }
     header("Location: $uri");
     exit;
 }
@@ -276,7 +279,6 @@ function image_with_watermark($imgPath)
 
 function widget($uniqid)
 {
-
     return app()->get(Widgets::class)->getByUniqId($uniqid);
 }
 

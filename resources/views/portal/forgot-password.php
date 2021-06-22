@@ -4,6 +4,7 @@
 @endsection
 @extends('portal')
 <div class="container inner p-3">
+    @message()
     <p>
         Add meg a fiókodhoz tartozó email címedet, amire küldünk egy levelet a további lépésekkel kapcsolatban!
     </p>
