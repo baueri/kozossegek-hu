@@ -4,20 +4,13 @@ namespace App\Portal\Services;
 
 use App\Helpers\HoneyPot;
 use App\Mail\GroupContactMail;
-use App\Models\Group;
 use App\Models\GroupView;
-use App\Traits\LogsEvent;
 use Framework\Application;
 use Framework\Exception\UnauthorizedException;
 use Framework\Mail\Mailer;
 use PHPMailer\PHPMailer\Exception;
 
-/**
- * Description of SendContactMessage
- *
- * @author ivan
- */
-class SendContactMessage
+class SendGroupContactMessage
 {
 
     /**
@@ -42,12 +35,7 @@ class SendContactMessage
      */
     public function send(GroupView $group, array $data): bool
     {
-        $checkTime = $_SESSION['honepot_check_time'];
-        $check_hash = $_SESSION['honeypot_check_hash'];
-
-        if (!$checkTime || !$check_hash || time() - $checkTime < 5 || $data['website'] !== $check_hash) {
-            throw new UnauthorizedException();
-        }
+        HoneyPot::validate('group-contact', $data['website']);
 
         $mail = new GroupContactMail($data['name'], $data['email'], $data['message']);
 

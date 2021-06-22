@@ -12,8 +12,8 @@
         <tr><th>Bemutatkozás</th><td>{{ $group->description }}</td></tr>
         <tr><td colspan="2"><hr></td></tr>
         <tr><th>Közösségvezető(k)</th><td> {{ $group->group_leaders }}</td></tr>
-        <tr><th>Elérhetőség (telefon)</th><td> {{ $user->phone_number ?: '-' }}</td></tr>
-        <tr><th>Elérhetőség (email)</th><td> {{ $user->email }}</td></tr>
+        <tr><th>Elérhetőség (telefon)</th><td> {{ $phone_number ?: '-' }}</td></tr>
+        <tr><th>Elérhetőség (email)</th><td> {{ $email ?? '' }}</td></tr>
     </table>
     @if($image)
         <hr>

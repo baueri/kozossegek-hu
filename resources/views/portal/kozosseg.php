@@ -136,7 +136,6 @@
 
       </div>
       <div class="modal-footer">
-        <input type="text" name="website" id="{{ $nvr }}" value="{{ $honeypot_check_hash }}">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Bezár</button>
         <button type="submit" class="btn btn-primary">Üzenet küldése</button>
       </div>
@@ -159,7 +158,6 @@
             $.post("@route('portal.group-contact-form', ['kozosseg' => $slug])", function(form) {
                 $("#contact-modal .modal-body").html(form);
                 $("#contact-modal").modal("show");
-
             });
         });
 
@@ -173,10 +171,14 @@
                 website: $("[name=website]").val()
             }
             $.post("@route('portal.contact-group', $group)", data, function(response) {
-                console.log(response);
                 if (response.success) {
                     $("#contact-modal .modal-body").html(response.msg);
                     $("#contact-modal [type=submit]").remove();
+                } else {
+                    dialog.danger({
+                        message: 'Nem sikerült elküldeni az üzenetet, kérjük, próbáld meg később!',
+                        size: 'md'
+                    });
                 }
             });
         });

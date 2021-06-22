@@ -11,7 +11,7 @@ use App\Models\GroupView;
 use App\Portal\Services\GroupList;
 use App\Portal\Services\PortalCreateGroup;
 use App\Portal\Services\PortalUpdateGroup;
-use App\Portal\Services\SendContactMessage;
+use App\Portal\Services\SendGroupContactMessage;
 use App\Repositories\Groups;
 use App\Repositories\GroupViews;
 use App\Repositories\Institutes;
@@ -91,8 +91,6 @@ class GroupController extends Controller
 
         $tag_names = builder('v_group_tags')->where('group_id', $group->id)->get();
         $similar_groups = $repo->findSimilarGroups($group, $tag_names)->all();
-        $_SESSION['honepot_check_time'] = $checkTime = time();
-        $_SESSION['honeypot_check_hash'] = $honeypot_check_hash = md5($checkTime);
         $slug = $group->slug();
         $keywords = builder('search_engine')->where('group_id', $group->id)->first()['keywords'];
 
@@ -108,7 +106,6 @@ class GroupController extends Controller
             'backUrl',
             'tag_names',
             'similar_groups',
-            'honeypot_check_hash',
             'slug',
             'keywords',
             'user',
@@ -129,7 +126,7 @@ class GroupController extends Controller
         return view('portal.partials.group-contact-form', compact('group'));
     }
 
-    public function sendContactMessage(Request $request, GroupViews $repo, SendContactMessage $service)
+    public function sendContactMessage(Request $request, GroupViews $repo, SendGroupContactMessage $service)
     {
         try {
             $group = $repo->findOrFail($request['id']);
