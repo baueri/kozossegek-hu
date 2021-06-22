@@ -108,13 +108,24 @@ abstract class Model
     }
 
     /**
+     * @param string[] $only
      * @return array
      */
-    public function valuesToArray()
+    public function valuesToArray(array $only = []): array
     {
+        $only = (array) $only;
+
         $values = [];
 
-        foreach (array_keys($this->getOriginalAttributes()) as $column) {
+        $attributesToGet = array_keys($this->getOriginalAttributes());
+        if ($only) {
+            $attributesToGet = array_filter(
+                (array)$attributesToGet,
+                fn ($attribute) => in_array($attribute, $only)
+            );
+        }
+
+        foreach ($attributesToGet as $column) {
             if (property_exists($this, $column)) {
                 $values[$column] = $this->{$column};
             }
