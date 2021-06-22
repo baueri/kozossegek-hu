@@ -45,7 +45,7 @@ class GroupViews extends Repository
         $builder = builder()->select('*')->from('v_groups');
 
         if ($keyword = $filter['search']) {
-            $keyword = StringHelper::sanitize(str_replace('-', ' ', $keyword));
+            $keyword = StringHelper::sanitize(str_replace(['-', '.', '(', ')'], ' ', $keyword));
             $keywords = '+' . str_replace(' ', '* +', trim($keyword, ' ')) . '*';
 
             $found = db()->select('select group_id
