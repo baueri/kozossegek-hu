@@ -1,5 +1,12 @@
 @title('Verzióinformáció')
 @extends('admin')
+<h3>v1.4.0</h3>
+<ul>
+    <li>[CHANGED]: Email és telefonszámkezelés át lett alakítva, most már a felhasználóhoz (közösség karbantartóhoz) vannak ezek kapcsolva a közösség helyett</li>
+    <li>[CHANGED]: Közösségi és profil oldali űrlapok átalakítva lettek</li>
+    <li>[FIXED]: Intézmény és közösség keresésnél javítva lett a lekérdez, amikor valaki speciális karaktert (pl, pont, csillag, kötőjel) írt be a keresőmezőbe.</li>
+    <li>[FIXED]: A "közösséget vezetek" oldalon a "van már fiókom" gombra középső egérrel való kattintásra a főoldalra vitt az oldal.</li>
+</ul>
 <h3>v1.3.1 (2021.06.14)</h3>
 <ul>
     <li>[FIXED]: Javítva lett a hiba ami miatt a korosztályszűrő mindig az először kiválaszott korosztály közösségeire szűrt rá</li>
