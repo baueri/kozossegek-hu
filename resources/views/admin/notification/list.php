@@ -1,0 +1,2 @@
+@title('Értesítések')
+@extends('admin')

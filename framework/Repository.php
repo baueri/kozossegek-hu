@@ -245,11 +245,6 @@ abstract class Repository
         );
     }
 
-    public function updateOrCreate(array $where, array $data)
-    {
-        return $this->getBuilder()->updateOrInsert($where, $data);
-    }
-
     public function query(): ModelRepositoryBuilder
     {
         return new ModelRepositoryBuilder($this);
