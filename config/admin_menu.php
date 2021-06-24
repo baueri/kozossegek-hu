@@ -123,6 +123,23 @@ return [
         'as' => 'admin.email_template.list',
     ],
     [
+        'title' => 'Értesítések',
+        'icon' => 'bell',
+        'as' => 'admin.notification.list',
+        'submenu' => [
+            [
+                'title' => 'Értesítések',
+                'icon' => 'bell',
+                'as' => 'admin.notification.list',
+            ],
+            [
+                'title' => 'Létrehozás',
+                'icon' => 'plus',
+                'as' => 'admin.notification.create',
+            ]
+        ]
+    ],
+    [
         'title' => 'Gépház',
         'icon' => 'cog',
         'as' => 'admin.settings',

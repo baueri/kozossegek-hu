@@ -152,4 +152,13 @@ class StringHelper
         $after = $after ?? $before;
         return "{$before}{$string}{$after}";
     }
+
+    public static function plural($word)
+    {
+        if (strrpos($word, 'y') === strlen($word) -1 ) {
+            return substr($word, 0, strlen($word) - 1) . 'ies';
+        }
+
+        return "{$word}s";
+    }
 }
