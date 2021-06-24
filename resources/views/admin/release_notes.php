@@ -1,6 +1,6 @@
 @title('Verzióinformáció')
 @extends('admin')
-<h3>v1.4.0</h3>
+<h3>v1.4.0 (2021.06.24)</h3>
 <ul>
     <li>[CHANGED]: Email és telefonszámkezelés át lett alakítva, most már a felhasználóhoz (közösség karbantartóhoz) vannak ezek kapcsolva a közösség helyett</li>
     <li>[CHANGED]: Közösségi és profil oldali űrlapok átalakítva lettek</li>
