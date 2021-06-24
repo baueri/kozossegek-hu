@@ -5,6 +5,7 @@ namespace App\Bootstrapper;
 use App\Directives\TitleDirective;
 use Framework\Bootstrapper;
 use Framework\Http\View\Directives\Directive;
+use Framework\Http\View\View;
 use Framework\Http\View\ViewParser;
 
 class RegisterDirectives implements Bootstrapper
@@ -12,11 +13,17 @@ class RegisterDirectives implements Bootstrapper
     public function boot()
     {
         ViewParser::registerDirective(new TitleDirective());
-        foreach (config('view.directives') as $name => $callback) {
+        foreach (config('view.directives') as $name => $directive) {
+            $callback = $directive;
+
+            if (is_string($directive) && class_exists($directive)) {
+                $callback = fn ($matches) => View::component($directive, $matches[1]);
+            }
+
             ViewParser::registerDirective($name, $callback);
         }
 
-        ViewParser::registerDirective(new class () implements Directive{
+        ViewParser::registerDirective(new class () implements Directive {
             public function getPattern()
             {
                 return '/\@auth|\@endauth/';

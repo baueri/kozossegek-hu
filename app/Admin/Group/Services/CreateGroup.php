@@ -11,10 +11,6 @@ class CreateGroup extends BaseGroupService
 {
 
     /**
-     *
-     * @param Collection $groupData
-     * @param array|null $document
-     * @return Group|null
      * @throws FileTypeNotAllowedException
      */
     public function create(Collection $groupData, ?array $document = null): ?Group

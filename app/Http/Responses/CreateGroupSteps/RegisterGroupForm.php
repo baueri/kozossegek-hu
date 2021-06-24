@@ -46,8 +46,8 @@ class RegisterGroupForm extends AbstractGroupStep
             'join_mode'
         ));
         $institute = $this->institutes->find($data['institute_id']);
+
         $data['group_leaders'] = $request->get('group_leaders', $request['user_name']);
-        $data['group_leader_email'] = $request->get('group_leader_email', $request['email']);
         $data['institute_name'] = $institute ? $institute->name : '';
         $data['city'] = $institute ? $institute->city : '';
         $data['district'] = $institute ? $institute->district : '';
@@ -80,7 +80,8 @@ class RegisterGroupForm extends AbstractGroupStep
             'group_tags' => $request['tags'] ?? [],
             'group_days' => $request['on_days'] ?? [],
             'user_name' => $request['user_name'],
-            'email' => $request['email'],
+            'phone_number' => $user ? $user->phone_number : $request['phone_number'],
+            'email' => $user ? $user->email : $request['email']
         ];
     }
 

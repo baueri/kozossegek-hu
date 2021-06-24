@@ -20,7 +20,7 @@ class ContactController
      */
     public function send(Request $request, Mailer $mailer)
     {
-        HoneyPot::validate('/rolunk', $request['website']);
+        HoneyPot::validate('rolunk', $request['website']);
 
         try {
             if ($request['category'] === 'kapcsolat') {

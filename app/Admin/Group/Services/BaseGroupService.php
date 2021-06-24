@@ -134,7 +134,6 @@ abstract class BaseGroupService
             'occasion_frequency',
             'description',
             'group_leaders',
-            'group_leader_email'
         ];
 
         foreach ($requiredFields as $field) {
