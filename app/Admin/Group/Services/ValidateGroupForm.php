@@ -3,6 +3,7 @@
 namespace App\Admin\Group\Services;
 
 use App\Models\GroupView;
+use App\Repositories\Users;
 
 class ValidateGroupForm
 {
@@ -13,12 +14,15 @@ class ValidateGroupForm
             ->select('GROUP_CONCAT(tag_name SEPARATOR ", ") as names')
             ->first();
 
+        $user = app(Users::class)->find($group->user_id);
+
         $model = [
             'group' => $group,
             'selected_tags' => $tags['names'],
             'image' => $group->getThumbnail(),
             'document' => $group->getDocumentUrl(),
-            'has_document' => $group->hasDocument()
+            'has_document' => $group->hasDocument(),
+            'user' => $user
         ];
 
         return view('admin.group.validate', $model);

@@ -1,1 +1,0 @@
-@extends('portal.group.my_group')

@@ -2,18 +2,25 @@
 <div class="container inner">
     @include('portal.partials.user-sidemenu')
     @include('admin.partials.message')
-    <h1 class="h3">Profilom</h1>
     <form method="post" action="@route('portal.profile.update')" class="mb-4">
         <div class="row">
             <div class="col-lg-5 col-md-12">
+                <h3>Profilom</h3>
+                <hr/>
                 <div class="form-group">
-                    <label>E-mail cím</label>
+                    <label>E-mail cím @icon('info-circle small', 'Amikor valaki felszeretné venni a kapcsolatot a közösséggel, erre az email címre küldjük el az érdeklődő üzenetét.')</label>
                     <input type="email" name="email" value="{{ $user->email }}" class="form-control"/>
                 </div>
                 <div class="form-group">
                     <label>Név</label>
                     <input type="text" name="name" value="{{ $user->name }}" class="form-control"/>
                 </div>
+                <div class="form-group">
+                    <label for="phone_number">Telefonszám @icon('info-circle small', 'Nem kötelező, de a könnyebb kapcsolattartás érdekében megadhatod a telefonszámodat is')</label>
+                    <input type="tel" name="phone_number" id="phone_number" value="{{ $user->phone_number }}" class="form-control">
+                </div>
+                <h3>Jelszócsere</h3>
+                <hr/>
                 <div class="form-group">
                     <label>Régi jelszó</label>
                     <input type="password" name="old_password" class="form-control" autocomplete="off"/>

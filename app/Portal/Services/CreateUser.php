@@ -32,7 +32,7 @@ class CreateUser
             throw new EmailTakenException();
         }
 
-        $data = $data->only('name', 'email', 'password');
+        $data = $data->only('name', 'email', 'password', 'phone_number');
         $data['password'] = Password::hash($data['password']);
 
         /* @var $user User */

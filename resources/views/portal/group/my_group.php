@@ -44,9 +44,20 @@
                 </div>
             </div>
         </div>
-        <div class="form-group required">
-            <label for="name">Közösség neve</label>
-            <input type="text" id="name" value='{{ $group->name }}' name="name" class="form-control">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group required">
+                    <label for="name">Közösség neve</label>
+                    <input type="text" id="name" value='{{ $group->name }}' name="name" class="form-control">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group required">
+                    <label for="group_leaders">Közösségvezető(k) neve(i)</label>
+                    <input type="text" name="group_leaders" id="group_leaders" class="form-control"
+                           value="{{ $group->group_leaders ?: $user->name }}" required>
+                </div>
+            </div>
         </div>
         <div class="row">
             <div class="col-md-12">
@@ -141,32 +152,6 @@
         <div class="form-group required">
             <h3 class="h4 mt-3">Bemutatkozás</h3>
             <textarea name="description" id="description">{{ $group->description }}</textarea>
-        </div>
-
-        <h3 class="h4 mt-3">Közösségvezető(k) adatai</h3>
-
-        <div class="row">
-            <div class="col-md-12">
-                <div class="form-group required">
-                    <label for="group_leaders">Közösségvezető(k) neve(i)</label>
-                    <input type="text" name="group_leaders" id="group_leaders" class="form-control"
-                           value="{{ $group->group_leaders ?: $user->name }}" required>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="group_leader_phone">Elérhetőség (Telefon)</label>
-                    <input type="tel" name="group_leader_phone" id="group_leader_phone"
-                           value="{{ $group->group_leader_phone }}" class="form-control">
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group required">
-                    <label for="group_leader_email">Elérhetőség (Email cím)</label>
-                    <input type="email" name="group_leader_email" id="group_leader_email"
-                           value="{{ $group->group_leader_email ?: $user->email }}" class="form-control">
-                </div>
-            </div>
         </div>
         <div class="group-images">
                 <div class="form-group">

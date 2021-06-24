@@ -26,7 +26,7 @@ class UserController
     public function update(Request $request, UpdateUser $service)
     {
         $user = Auth::user();
-        $changes = $request->only('name', 'email');
+        $changes = $request->only('name', 'email', 'phone_number');
 
         $passwordChange = $request->only('old_password', 'new_password', 'new_password_again');
 
@@ -35,6 +35,13 @@ class UserController
         }
 
         redirect_route('portal.my_profile');
+    }
+
+    public function forgotPassword()
+    {
+        use_default_header_bg();
+
+        return view('portal.forgot-password');
     }
 
     /**
