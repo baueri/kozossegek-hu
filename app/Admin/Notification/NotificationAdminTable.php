@@ -14,12 +14,19 @@ class NotificationAdminTable extends AdminTable implements Editable
         'id' => '#',
         'title' => 'Cím',
         'message' => 'Üzenet',
-        'user_notifications_count' => 'Elolvasva'
+        'display_for' => 'Megjelenítés',
+        'user_notifications_count' => 'Elolvasva',
+        'created_at' => 'Létrehozva'
     ];
 
     public function getMessage($message)
     {
-        return StringHelper::more($message, 30);
+        return StringHelper::more($message, 10, '...');
+    }
+
+    public function getDisplayFor($value)
+    {
+        return $value === 'PORTAL' ? 'Látogatói oldalon' : 'Admin oldalon';
     }
 
     /**
