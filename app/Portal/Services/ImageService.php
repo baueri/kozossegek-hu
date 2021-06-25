@@ -19,10 +19,16 @@ class ImageService
             return;
         }
 
+        $img = imagecreatefromjpeg($path);
+
         header('Pragma: public');
         header('Cache-Control: max-age=86400');
 
-        image_with_watermark($path);
+        ob_start();
+        imagejpeg($img);
+
+        $mime_type = mime_content_type($path);
+        header("Content-Type: {$mime_type}");
     }
 
     public function getInstituteImage(string $image)

@@ -4,6 +4,7 @@ namespace Framework\Model;
 
 use Framework\Database\Builder;
 use Framework\Repository;
+use RuntimeException;
 
 /**
  * Class ModelRepositoryBuilder
@@ -26,9 +27,10 @@ class ModelRepositoryBuilder
     {
         if (method_exists($this->builder, $name)) {
             call_user_func_array([$this->builder, $name], $arguments);
+            return $this;
         }
 
-        return $this;
+        throw new RuntimeException("Call to undefined function {$name}");
     }
 
     public function count()

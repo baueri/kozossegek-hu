@@ -9,7 +9,6 @@ use App\Admin\Group\Services\EditGroup;
 use App\Admin\Group\Services\ListGroups;
 use App\Admin\Group\Services\UpdateGroup;
 use App\Admin\Group\Services\ValidateGroupForm;
-use App\Exception\EmailTakenException;
 use App\Http\Exception\RequestParameterException;
 use App\Mail\GroupAcceptedEmail;
 use App\Mail\DefaultMailable;
@@ -17,7 +16,6 @@ use App\Models\Group;
 use App\Models\GroupView;
 use App\Repositories\Groups;
 use App\Repositories\GroupViews;
-use App\Services\CreateUserFromGroup;
 use App\Services\RebuildSearchEngine;
 use Exception;
 use Framework\Exception\FileTypeNotAllowedException;
@@ -162,45 +160,11 @@ class GroupController extends AdminController
     }
 
     /**
-     * @param Request $request
-     * @param Groups $groups
-     * @param CreateUserFromGroup $service
-     * @return string
-     */
-    public function createUserFromGroup(Request $request, Groups $groups, CreateUserFromGroup $service)
-    {
-        return 'majd';
-//        $group = $groups->findOrFail($request['id']);
-//
-//        $user = $service->createUserAndAddToGroup($group);
-    }
-
-    /**
-     * @param CreateUserFromGroup $service
-     */
-    public function createMissingUsers(CreateUserFromGroup $service)
-    {
-        $template = $this->request['email_template'];
-
-        $groups = $this->groupViews->getGroupsWithoutUser();
-
-        foreach ($groups as $group) {
-            $service->createUserAndAddToGroup($group, $template);
-        }
-
-        Message::success('Felhasználói fiókok létrehozva, továbbá a regisztrációs email-ek kiküldésre kerültek!');
-
-        redirect_route('admin.group.maintenance');
-    }
-
-    /**
      * @return View|string
      */
     public function maintenance()
     {
-        $groups = $this->groupViews->getGroupsWithoutUser();
-
-        return view('admin.group.maintenance', compact('groups'));
+        return view('admin.group.maintenance');
     }
 
     /**
@@ -260,22 +224,19 @@ class GroupController extends AdminController
     }
 
     /**
-     * @param Groups $groups
-     * @param Mailer $mailer
-     * @return array
      * @throws ModelNotFoundException
      * @throws \PHPMailer\PHPMailer\Exception
      */
-    public function approveGroup(Groups $groups, Mailer $mailer)
+    public function approveGroup(Groups $groupRepo, Mailer $mailer): array
     {
-        /* @var $group GroupView */
-        $group = $this->groupViews->findOrFail($this->request['id']);
+        /* @var $groupView GroupView */
+        $groupView = $this->groupViews->findOrFail($this->request['id']);
 
-        $groups->update($group, ['pending' => 0]);
+        $groupRepo->update($groupView->getGroup(), ['pending' => 0]);
 
-        $mailable = new GroupAcceptedEmail($group);
+        $mailable = new GroupAcceptedEmail($groupView);
 
-        $mailer->to($group->group_leader_email, $group->group_leaders)
+        $mailer->to($groupView->group_leader_email, $groupView->group_leaders)
             ->send($mailable);
 
         return api()->ok();

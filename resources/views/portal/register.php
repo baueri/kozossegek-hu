@@ -34,7 +34,7 @@
         </div>
         <div class="row">
             <div class="col-md-6">
-                @honeypot()
+                @honeypot('register')
                 <p>
                     <label><input type="checkbox" required id="adatvedelmi-tajekoztato"> Az <a href="/adatvedelmi-nyilatkozat" target="_blank">adatvédelmi tájékoztatót</a> elolvastam és elfogadom</label><br/>
                 </p>

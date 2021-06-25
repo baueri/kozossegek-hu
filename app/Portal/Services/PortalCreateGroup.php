@@ -68,8 +68,6 @@ class PortalCreateGroup
             'spiritual_movement',
             'tags',
             'group_leaders',
-            'group_leader_phone',
-            'group_leader_email',
             'description',
             'image',
             'join_mode'
@@ -81,7 +79,8 @@ class PortalCreateGroup
             $user = $this->createUser->create(collect([
                 'name' => $requestData['user_name'],
                 'email' => $requestData['email'],
-                'password' => $requestData['password']
+                'password' => $requestData['password'],
+                'phone_number' => $requestData['phone_number']
             ]));
 
             $userToken = $this->userTokens->createActivationToken($user);

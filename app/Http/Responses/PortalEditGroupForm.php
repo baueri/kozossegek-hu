@@ -38,7 +38,7 @@ class PortalEditGroupForm
         $group_tags = collect(builder('group_tags')->apply('whereGroupId', $group->id)->get())->pluck('tag')->all();
         $age_group_array = array_filter(explode(',', $group->age_group));
         $group_days = explode(',', $group->on_days);
-        $view = 'portal.group.edit_my_group';
+        $view = 'portal.group.my_group';
         $action = route('portal.my_group.update');
         $institute = $this->institutes->find($group->institute_id);
 

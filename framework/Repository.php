@@ -57,8 +57,9 @@ abstract class Repository
 
     /**
      * @return string|Model
+     * @psalm-return class-string<T>
      */
-    abstract public static function getModelClass(): string;
+    abstract protected static function getModelClass(): string;
 
     /**
      * @param array|null $values
@@ -155,6 +156,7 @@ abstract class Repository
     /**
      * @param Model $model
      * @param array $data
+     * @psalm-param T
      * @return bool
      */
     public function update(Model $model, $data = [])
