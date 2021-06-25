@@ -7,7 +7,7 @@ use Framework\Database\PaginatedResultSet;
 use Framework\Database\PaginatedResultSetInterface;
 use Framework\Database\Repository\Events\ModelCreated;
 use Framework\Event\EventDisptatcher;
-use Framework\Support\Arr;
+use Framework\Model\Relation\HasRelations;
 use Framework\Support\Collection;
 use Framework\Support\StringHelper;
 
@@ -17,6 +17,8 @@ use Framework\Support\StringHelper;
  */
 abstract class EntityQueryBuilder
 {
+    use HasRelations;
+
     public const TABLE = null;
 
     protected Builder $builder;
@@ -65,20 +67,6 @@ abstract class EntityQueryBuilder
         $rows = $this->builder->get();
         $instances = $this->getInstances($rows);
 
-        if ($belongsToRelations = $this->preparedRelations['belongsTo'] ?? null) {
-            /* @var $belongsToRelations EntityQueryBuilder[] */
-            foreach ($belongsToRelations as $belongsToRelation) {
-                $relationCol = $belongsToRelation[1] ?? $belongsToRelation[0]->primaryCol();
-                //TODO!!!!
-                $belongsToRelationRows = $belongsToRelation[0]->whereIn($relationCol, Arr::pluck($rows, 'notification_id'))->get();
-                foreach ($instances as $instance) {
-                    $instance->relations['notification'] = $belongsToRelationRows->filter(function ($model) use ($instance, $relationCol) {
-                        return $model->{$relationCol} == $instance->notification_id;
-                    })->first();
-                }
-            }
-        }
-
         return $instances;
     }
 
@@ -90,14 +78,18 @@ abstract class EntityQueryBuilder
     public function getInstances($rows)
     {
         if ($rows instanceof PaginatedResultSetInterface) {
-            return new PaginatedModelCollection(array_map(function ($row) {
+            $models = new PaginatedModelCollection(array_map(function ($row) {
                 return $this->getInstance($row);
             }, $rows->rows()), $rows->perpage(), $rows->page(), $rows->total());
+        } else {
+            $models = new ModelCollection(array_map(function ($row) {
+                return $this->getInstance($row);
+            }, $rows));
         }
 
-        return new ModelCollection(array_map(function ($row) {
-            return $this->getInstance($row);
-        }, $rows));
+        $this->loadRelations($models);
+
+        return $models;
     }
 
     /**
@@ -114,6 +106,11 @@ abstract class EntityQueryBuilder
         $class = static::getModelClass();
 
         return new $class($values);
+    }
+
+    public function find($id): ?Entity
+    {
+        return $this->where(static::primaryCol(), $id)->first();
     }
 
     public function firstOrFail()
@@ -275,20 +272,6 @@ abstract class EntityQueryBuilder
         EventDisptatcher::dispatch(new ModelCreated($model));
 
         return $model;
-    }
-
-    public function with(string $relation)
-    {
-        $this->{$relation}();
-
-        return $this;
-    }
-
-    public function belongsTo($repositoryClass, ?string $foreingkey = null, ?string $localKey = null)
-    {
-        $this->preparedRelations['belongsTo'][] = [app($repositoryClass), $foreingkey, $localKey];
-
-        return $this;
     }
 
     public static function primaryCol(): string
