@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories;
+namespace App\EntityQueryBuilders;
 
 use App\Models\Notification;
 use Framework\Model\EntityQueryBuilder;
@@ -14,6 +14,6 @@ class Notifications extends EntityQueryBuilder
 
     public function user_notifications()
     {
-        return $this->hasMany(UserNotifications::class, 'notification_id');
+        return $this->hasMany(UserNotifications::class);
     }
 }

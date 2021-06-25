@@ -2,7 +2,7 @@
     @include('asset_groups.editor')
 @endsection
 @extends('admin')
-<form action="@route('admin.notification.doCreate')" method="post">
+<form action="{{ $action }}" method="post">
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
@@ -18,8 +18,8 @@
             <div class="form-group">
                 <label>Hol jelenjen meg</label>
                 <select class="form-control" name="display_for">
-                    <option value="PORTAL" @if($notification->display_for ?? null === 'PORTAL')selected@endif>Látogatiói oldalon</option>
-                    <option value="ADMIN" @if($notification->display_for ?? null === 'ADMIN')selected@endif>Admin oldalon</option>
+                    <option value="PORTAL" @if($notification->display_for ?? null === 'PORTAL') selected @endif>Látogatói oldalon</option>
+                    <option value="ADMIN" @if($notification->display_for ?? null === 'ADMIN') selected @endif>Admin oldalon</option>
                 </select>
             </div>
             <button type="submit" class="btn btn-primary form-control mb-2">Mentés</button>

@@ -4,6 +4,7 @@ namespace Framework\Dispatcher;
 
 use Exception;
 use Framework\Application;
+use Framework\Http\Controller;
 use Framework\Http\Cookie;
 use Framework\Http\HttpKernel;
 use Framework\Http\Request;
@@ -94,6 +95,7 @@ class HttpDispatcher implements Dispatcher
      */
     private function resolveController(RouteInterface $route)
     {
+        /* @var $controller Controller */
         $controller = $this->app->make($route->getController());
 
         if (!method_exists($controller, $route->getUse())) {

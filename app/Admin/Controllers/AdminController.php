@@ -6,5 +6,4 @@ use Framework\Http\Controller;
 
 class AdminController extends Controller
 {
-
 }

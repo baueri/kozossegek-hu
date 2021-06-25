@@ -52,7 +52,7 @@ abstract class EntityQueryBuilder
     /**
      * @return static
      */
-    public static function make()
+    public static function init()
     {
         return new static();
     }
@@ -224,7 +224,7 @@ abstract class EntityQueryBuilder
         return $this->builder->insert($values);
     }
 
-    public function updateOrInsert(array $where, array $values)
+    public function updateOrInsert(array $where, array $values = [])
     {
         return $this->builder->updateOrInsert($where, $values);
     }

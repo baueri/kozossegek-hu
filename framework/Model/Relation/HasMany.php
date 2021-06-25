@@ -2,6 +2,8 @@
 
 namespace Framework\Model\Relation;
 
+use Framework\Support\StringHelper;
+
 trait HasMany
 {
     public function loadHasManyRelations($instances)
@@ -39,7 +41,7 @@ trait HasMany
         $this->preparedRelations['hasMany'][] = new Relation(
             app($repositoryClass),
             $this->getRelationName(),
-            $foreingkey,
+            $foreingkey ?? StringHelper::snake(get_class_name(static::getModelClass())) . '_id',
             $localKey
         );
 

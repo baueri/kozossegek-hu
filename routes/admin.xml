@@ -139,7 +139,9 @@
             <route method="get" uri="/" as="list" use="list"/>
             <route method="get" uri="create" as="create" use="create"/>
             <route method="post" uri="create" as="doCreate" use="doCreate"/>
+            <route method="post" uri="{id}/update" as="update" use="update"/>
             <route method="get" uri="{id}/edit" as="edit" use="edit"/>
+            <route method="get" uri="{id}/delete" as="delete" use="delete"/>
         </route-group>
         <route-group>
             <route method="get" uri="appearance" as="appearance" view="admin"/>

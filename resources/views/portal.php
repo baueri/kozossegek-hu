@@ -102,6 +102,19 @@
     <script src="/js/scripts.js?{{ filemtime('js/scripts.js') }}"></script>
     <script src="/js/dialog.js?{{ filemtime('js/dialog.js') }}"></script>
     @yield('scripts')
+    <script>
+        @if(isset($user_notification))
+            dialog.show({
+                "title": "{{ $user_notification->title }}",
+                "message": "{{ addslashes($user_notification->message) }}",
+                "buttons": [
+                    {"text": "Megértettem", "cssClass": "btn btn-primary", action(modal, callback) { callback(modal, true); modal.close(); }},
+                ]
+            }, () => {
+                $.post("@route('api.approve_notification', $user_notification)");
+            });
+        @endif
+    </script>
     <noscript>
         <div class="modal fade show" tabindex="-1" aria-hidden="true" style="z-index: 1040; display: block">
             <div class="modal-dialog">

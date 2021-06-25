@@ -19,6 +19,8 @@
 
             <!-- Közösségek API szolgáltatás -->
             <route method="all" uri="kozossegek" as="portal.kozossegek" controller="ApiGroupController" use="list"/>
+
+            <route method="all" uri="notificaion/{id}/approve" controller="NotificationApiController" use="approveNotification" as="approve_notification"/>
         </route-group>
     </route-group>
 
