@@ -149,7 +149,7 @@ function builder(?string $table = null)
 
 /**
  * @param string $route
- * @param array|string|Model $args
+ * @param array|string|Model|Entity $args
  * @return string
  */
 function route(string $route, $args = [])

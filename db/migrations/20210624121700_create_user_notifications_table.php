@@ -16,4 +16,11 @@ final class CreateUserNotificationsTable extends AppMigration
             ->addForeignKey('notification_id', 'notifications')
             ->create();
     }
+
+    public function down(): void
+    {
+        $this->table('user_notifications')
+            ->drop()
+            ->save();
+    }
 }

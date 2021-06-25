@@ -137,7 +137,9 @@
         <!--    ÉRTESÍTÉSEK    -->
         <route-group controller="NotificationController" as="notification" prefix="notification">
             <route method="get" uri="/" as="list" use="list"/>
-            <route method="get" uri="/" as="create" use="create"/>
+            <route method="get" uri="create" as="create" use="create"/>
+            <route method="post" uri="create" as="doCreate" use="doCreate"/>
+            <route method="get" uri="{id}/edit" as="edit" use="edit"/>
         </route-group>
         <route-group>
             <route method="get" uri="appearance" as="appearance" view="admin"/>
