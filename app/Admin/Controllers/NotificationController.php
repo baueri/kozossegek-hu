@@ -3,8 +3,10 @@
 namespace App\Admin\Controllers;
 
 use App\Admin\Notification\NotificationAdminTable;
-use App\Repositories\Notifications;
+use App\Auth\Auth;
+use App\EntityQueryBuilders\Notifications;
 use Framework\Http\Message;
+use Framework\Http\Request;
 
 class NotificationController extends AdminController
 {
@@ -16,26 +18,53 @@ class NotificationController extends AdminController
 
     public function create()
     {
-        return view('admin.notification.notification_create');
+        return view('admin.notification.notification_create', [
+            'action' => route('admin.notification.doCreate')
+        ]);
     }
 
     public function doCreate()
     {
-        Notifications::make()->create(
-            request()->only('title', 'message', 'display_for')
+        $data = request()->only('title', 'message', 'display_for');
+        $data['user_id'] = Auth::user()->id;
+
+        Notifications::init()->create(
+            $data
         );
 
         Message::success('Sikeres létrehozás');
 
-        return redirect_route('admin.notification.list');
+        redirect_route('admin.notification.list');
     }
 
     public function edit()
     {
-        $notification = Notifications::make()->find(
+        $notification = Notifications::init()->find(
             request()->getUriValue('id')
         );
 
-        return view('admin.notification.notification_edit', compact('notification'));
+        $action = route('admin.notification.update', $notification);
+
+        return view('admin.notification.notification_edit', compact('notification', 'action'));
+    }
+
+    public function update()
+    {
+        Notifications::init()->where('id', $this->request['id'])->update(
+            request()->only('title', 'message', 'display_for')
+        );
+
+        Message::success('Sikeres mentés');
+
+        redirect_route('admin.notification.edit', ['id' => $this->request['id']]);
+    }
+
+    public function delete(Request $request)
+    {
+        Notifications::init()->where('id', $request['id'])->delete();
+
+        Message::danger('Értesítés törölve');
+
+        redirect_route('admin.notification.list');
     }
 }

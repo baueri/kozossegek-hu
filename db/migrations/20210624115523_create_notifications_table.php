@@ -12,8 +12,10 @@ final class CreateNotificationsTable extends AppMigration
             ->addColumn('title', MysqlAdapter::PHINX_TYPE_STRING)
             ->addColumn('message', MysqlAdapter::PHINX_TYPE_TEXT)
             ->addColumn('display_for', MysqlAdapter::PHINX_TYPE_ENUM, ['default' => 'PORTAL', 'values' => ['PORTAL', 'ADMIN']])
+            ->addColumn('user_id', MysqlAdapter::PHINX_TYPE_INTEGER)
             ->createdAt()
             ->updatedAt()
+            ->addIndex('user_id')
             ->create();
     }
 

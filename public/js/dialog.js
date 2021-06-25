@@ -79,7 +79,8 @@ const dialog = (function () {
             cssClass: "",
             onShown: null,
             type: null,
-            draggable: false
+            draggable: false,
+            closeable: true
         }, options);
 
         let headerCssClass = "";
@@ -90,7 +91,8 @@ const dialog = (function () {
 
         let dialog = $("<div class='modal-dialog modal-" + options.size + " " + options.cssClass + "'></div>");
         let content = $("<div class='modal-content'></div>");
-        let header = $("<div class='modal-header" + headerCssClass + "'><h5 class='modal-title'>" + options.title + "</h5><button type='button' class='close' data-dismiss='modal' aria-label='bezár'><span aria-hidden='true'>&times;</span></button></div>");
+        let closableBtn = options.closeable ? "<button type='button' class='close' data-dismiss='modal' aria-label='bezár'><span aria-hidden='true'>&times;</span></button>" : "";
+        let header = $("<div class='modal-header" + headerCssClass + "'><h5 class='modal-title'>" + options.title + "</h5>" + closableBtn + "</div>");
         let body = $("<div class='modal-body'></div>");
 
         if (options.draggable) {

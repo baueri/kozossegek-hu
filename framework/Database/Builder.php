@@ -416,7 +416,7 @@ class Builder
     {
         $this->select('1 as `exists`');
 
-        return (bool) $this->first()['exists'];
+        return isset($this->first()['exists']);
     }
 
     public function toSql($withBindings = false): string

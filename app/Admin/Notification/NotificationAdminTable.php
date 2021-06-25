@@ -3,12 +3,13 @@
 namespace App\Admin\Notification;
 
 use App\Admin\Components\AdminTable\AdminTable;
+use App\Admin\Components\AdminTable\Deletable;
 use App\Admin\Components\AdminTable\Editable;
-use App\Repositories\Notifications;
+use App\EntityQueryBuilders\Notifications;
 use Framework\Database\PaginatedResultSetInterface;
 use Framework\Support\StringHelper;
 
-class NotificationAdminTable extends AdminTable implements Editable
+class NotificationAdminTable extends AdminTable implements Editable, Deletable
 {
     protected $columns = [
         'id' => '#',
@@ -34,7 +35,7 @@ class NotificationAdminTable extends AdminTable implements Editable
      */
     protected function getData(): PaginatedResultSetInterface
     {
-        return Notifications::make()->with('user_notifications')->paginate();
+        return Notifications::init()->with('user_notifications')->paginate();
     }
 
     /**
@@ -52,5 +53,10 @@ class NotificationAdminTable extends AdminTable implements Editable
     public function getEditColumn(): string
     {
         return 'title';
+    }
+
+    public function getDeleteUrl($model): string
+    {
+        return route('admin.notification.delete', $model);
     }
 }
