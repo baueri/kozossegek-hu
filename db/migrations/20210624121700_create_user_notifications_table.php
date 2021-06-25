@@ -12,8 +12,8 @@ final class CreateUserNotificationsTable extends AppMigration
             ->addColumn('user_id', MysqlAdapter::PHINX_TYPE_INTEGER)
             ->addColumn('notification_id', MysqlAdapter::PHINX_TYPE_INTEGER)
             ->timestamp('created_at', ['default' => 'CURRENT_TIMESTAMP', 'comment' => 'Mikor lett elfogadva'])
-            ->addForeignKey('user_id', 'users')
-            ->addForeignKey('notification_id', 'notifications')
+            ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE'])
+            ->addForeignKey('notification_id', 'notifications', 'id', ['delete' => 'CASCADE'])
             ->create();
     }
 
