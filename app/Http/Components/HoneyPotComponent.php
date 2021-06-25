@@ -6,10 +6,10 @@ use App\Helpers\HoneyPot;
 
 class HoneyPotComponent
 {
-    public function render()
+    public function render(?string $name = null)
     {
         $nvr = 'a_' . substr(md5(time()), 0, 5);
-        $hash = HoneyPot::getHash(request()->uri);
+        $hash = HoneyPot::getHash($name ?? request()->uri);
         return <<<EOT
             <input type="text" name="website" id="$nvr" value="$hash" style="width: 0px;padding: 0;border: 0;margin: 0;">
         EOT;

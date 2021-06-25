@@ -13,6 +13,10 @@
                 <input type="email" name="email" value="{{ $user->email }}" class="form-control"/>
             </div>
             <div class="form-group">
+                <label for="phone_number">Telefon</label>
+                <input type="tel" name="phone_number" id="phone_number" value="{{ $user->phone_number }}" class="form-control">
+            </div>
+            <div class="form-group">
                 <label>Név</label>
                 <input type="text" name="name" value="{{ $user->name }}" class="form-control"/>
             </div>

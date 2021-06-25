@@ -26,7 +26,11 @@ abstract class Model
         $this->originalAttributes = $attributes;
     }
 
-    public static function make(array $attributes = []): Model
+    /**
+     * @param array $attributes
+     * @return static
+     */
+    public static function make(array $attributes = [])
     {
         return new static($attributes);
     }

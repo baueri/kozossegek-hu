@@ -10,7 +10,7 @@ use Framework\Model\Model;
 use Framework\Model\ModelCollection;
 use Framework\Model\PaginatedModelCollection;
 use Framework\Support\Collection;
-use Framework\Support\Arr;
+use Jaybizzle\CrawlerDetect\CrawlerDetect;
 
 class SearchGroupService
 {
@@ -39,7 +39,9 @@ class SearchGroupService
     {
         $groups = $this->groupRepo->search($filter, $perPage);
 
-        $this->logEvent($filter);
+        if (!app(CrawlerDetect::class)->isCrawler()) {
+            $this->logEvent($filter);
+        }
 
         return $groups;
     }

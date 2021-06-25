@@ -9,7 +9,6 @@ use Framework\Event\EventListener;
 
 class BaseLogger implements EventListener
 {
-
     private EventLogger $eventLogger;
 
     public function __construct(EventLogger $eventLogRepo)

@@ -59,7 +59,6 @@ class DummyGroupSeeder extends AbstractSeed
 
         $movements = collect(db()->select('select id from spiritual_movements'))->pluck('id');
 
-
         for ($i = 0; $i < 1000; $i++) {
             $institute = $this->fetchRow('select id from institutes order by rand()');
             $data = [
@@ -67,8 +66,6 @@ class DummyGroupSeeder extends AbstractSeed
                 'description' => $faker->paragraphs(3, true),
                 'denomination' => App\Enums\DenominationEnum::KATOLIKUS,
                 'group_leaders' => $faker->lastName . ' ' . $faker->firstName . (rand(0, 20) > 15 ? ', ' . $faker->lastName . ' ' . $faker->firstName : ''),
-                'group_leader_email' => $faker->email,
-                'group_leader_phone' => $faker->phoneNumber,
                 'spiritual_movement_id' => $movements->random(),
                 'age_group' => \App\Enums\AgeGroupEnum::random(),
                 'occasion_frequency' => App\Enums\OccasionFrequencyEnum::random(),

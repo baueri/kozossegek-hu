@@ -48,7 +48,7 @@
                         <label for="mail_msg">Üzenet</label>
                         <textarea class="noresize form-control form-control-sm" name="message" rows="4" required onresize id="mail_msg"></textarea>
                     </div>
-                    @honeypot()
+                    @honeypot('rolunk')
                     <button type="submit" name="send" class="btn btn-darkblue btn-sm"><i class="fa fa-paper-plane mr-2"></i> Üzenet elküldése</button>
                 </form>
             </div>
