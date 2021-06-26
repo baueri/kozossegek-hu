@@ -19,7 +19,6 @@ use Error;
 use ErrorException;
 use Exception;
 use Framework\Exception\FileTypeNotAllowedException;
-use Framework\Http\Controller;
 use Framework\Http\Exception\PageNotFoundException;
 use Framework\Http\Message;
 use Framework\Http\Request;
@@ -28,7 +27,7 @@ use Framework\Support\Arr;
 use Jaybizzle\CrawlerDetect\CrawlerDetect;
 use Throwable;
 
-class GroupController extends Controller
+class GroupController extends PortalController
 {
     public function kozossegek(Request $request, GroupList $service)
     {

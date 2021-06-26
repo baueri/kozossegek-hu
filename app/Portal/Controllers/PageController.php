@@ -3,12 +3,10 @@
 namespace App\Portal\Controllers;
 
 use App\Repositories\PageRepository;
-use Framework\Http\Controller;
 use Framework\Http\Request;
-use Framework\Http\Exception\PageNotFoundException;
 use Framework\Http\View\View;
 
-class PageController extends Controller
+class PageController extends PortalController
 {
     /**
      * @param Request $request

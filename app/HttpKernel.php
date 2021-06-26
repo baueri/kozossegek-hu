@@ -4,7 +4,6 @@ namespace App;
 
 use App\Middleware\DebugBarMiddleware;
 use App\Middleware\ListenViewLoading;
-use App\Middleware\NotificationMiddleware;
 use Framework\Middleware\BaseAuthMiddleware;
 use Framework\Middleware\TranslationRoute;
 use Framework\Middleware\AuthMiddleware;
@@ -23,7 +22,6 @@ class HttpKernel extends \Framework\Http\HttpKernel
         CheckMaintenance::class,
         AuthMiddleware::class,
         AppServiceProvider::class,
-        NotificationMiddleware::class
     ];
 
     public function handleMaintenance()
