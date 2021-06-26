@@ -107,6 +107,7 @@
             dialog.show({
                 "title": "{{ $user_notification->title }}",
                 "message": "{{ addslashes($user_notification->message) }}",
+                "closable": false,
                 "buttons": [
                     {"text": "Megértettem", "cssClass": "btn btn-primary", action(modal, callback) { callback(modal, true); modal.close(); }},
                 ]

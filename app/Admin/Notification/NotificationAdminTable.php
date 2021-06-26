@@ -16,7 +16,6 @@ class NotificationAdminTable extends AdminTable implements Editable, Deletable
         'title' => 'Cím',
         'message' => 'Üzenet',
         'display_for' => 'Megjelenítés',
-        'user_notifications_count' => 'Elolvasva',
         'created_at' => 'Létrehozva'
     ];
 
@@ -35,7 +34,9 @@ class NotificationAdminTable extends AdminTable implements Editable, Deletable
      */
     protected function getData(): PaginatedResultSetInterface
     {
-        return Notifications::init()->with('user_notifications')->paginate();
+        return Notifications::init()
+            ->orderBy(...$this->order)
+            ->paginate();
     }
 
     /**

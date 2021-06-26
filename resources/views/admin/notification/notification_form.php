@@ -4,7 +4,7 @@
 @extends('admin')
 <form action="{{ $action }}" method="post">
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-8">
             <div class="form-group">
                 <label>Cím</label>
                 <input type="text" class="form-control" name="title" value="{{ $notification->title ?? '' }}">
@@ -18,8 +18,8 @@
             <div class="form-group">
                 <label>Hol jelenjen meg</label>
                 <select class="form-control" name="display_for">
-                    <option value="PORTAL" @if($notification->display_for ?? null === 'PORTAL') selected @endif>Látogatói oldalon</option>
-                    <option value="ADMIN" @if($notification->display_for ?? null === 'ADMIN') selected @endif>Admin oldalon</option>
+                    <option value="PORTAL" @if(isset($notification) && $notification->display_for === 'PORTAL') selected @endif>Látogatói oldalon</option>
+                    <option value="ADMIN" @if(isset($notification) && $notification->display_for === 'ADMIN') selected @endif>Admin oldalon</option>
                 </select>
             </div>
             <button type="submit" class="btn btn-primary form-control mb-2">Mentés</button>

@@ -28,16 +28,20 @@ class NotificationMiddleware implements Middleware
 
         return !UserNotifications::init()
             ->forCurrentUser()
-            ->whereNotification($notification)
+            ->whereLastNotification($notification)
             ->exists();
     }
 
     private function getLastNotification(): ?Notification
     {
+        if (!($user = Auth::user())) {
+            return null;
+        }
+
         $displayFor = is_admin() ? 'ADMIN' : 'PORTAL';
         return Notifications::init()
             ->where('display_for', $displayFor)
-            ->where('user_id', '<>', Auth::user()->id)
+            ->where('user_id', '<>', $user->id)
             ->orderBy('created_at', 'desc')
             ->first();
     }
