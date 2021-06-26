@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Framework\Model\Entity;
 
-class UserNotification extends Entity
+class UserLegalNotice extends Entity
 {
 
 }

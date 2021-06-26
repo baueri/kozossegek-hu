@@ -14,6 +14,6 @@ class Notifications extends EntityQueryBuilder
 
     public function user_notifications()
     {
-        return $this->hasMany(UserNotifications::class, 'last_notification_id');
+        return $this->hasMany(UserLegalNotices::class, 'last_notification_id');
     }
 }

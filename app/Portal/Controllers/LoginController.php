@@ -12,16 +12,13 @@ use App\Portal\Services\CreateUser;
 use App\Repositories\Users;
 use App\Repositories\UserTokens;
 use Exception;
-use Framework\Http\Controller;
 use Framework\Http\Cookie;
 use Framework\Http\Request;
 use Framework\Http\Message;
 use Framework\Http\Session;
-use Framework\Mail\Mailable;
 use Framework\Mail\Mailer;
-use Framework\Support\Validator;
 
-class LoginController extends Controller
+class LoginController extends PortalController
 {
     public function login()
     {

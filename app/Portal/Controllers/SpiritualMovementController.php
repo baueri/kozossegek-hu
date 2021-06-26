@@ -6,12 +6,11 @@ use App\Auth\Auth;
 use App\Helpers\SpiritualMovementHelper;
 use App\Repositories\GroupViews;
 use App\Repositories\SpiritualMovements;
-use Framework\Http\Controller;
 use Framework\Http\Exception\PageNotFoundException;
 use Framework\Http\Request;
 use Framework\Model\ModelNotFoundException;
 
-class SpiritualMovementController extends Controller
+class SpiritualMovementController extends PortalController
 {
     private SpiritualMovements $repository;
 

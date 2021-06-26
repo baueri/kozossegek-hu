@@ -103,16 +103,19 @@
     <script src="/js/dialog.js?{{ filemtime('js/dialog.js') }}"></script>
     @yield('scripts')
     <script>
-        @if(isset($user_notification))
+        @if(isset($display_legal_notice) && $display_legal_notice)
             dialog.show({
-                "title": "{{ $user_notification->title }}",
-                "message": "{{ addslashes($user_notification->message) }}",
+                "title": "Az adatvédelmi nyilatkozatunk módosult",
+                "message": "<p>A személyes adatok biztonsága fontos számunkra.</p><p>Ezért igyekszünk a regisztrált közösségvezetők részére érthetővé és láthatóvá" +
+                    " tenni, hogy mely adatokat milyen céllal tárolunk a rendszerünkben. Az adatvédelmi nyilatkozatunkat módosítottuk, amit az alábbi linkre kattintva meg tudsz tekinteni.</p><p>" +
+                    "<p class='text-center'><a href='/adatvedelmi-nyilatkozat?accept-legal-notice' target='_blank'>Adatvédelmi nyilatkozat <i class='fa fa-external-link-alt'></i></a></p>" +
+                    "<p class='text-center'><small>Az oldal további böngészésével elfogadod az adatvédelmi nyilatkozatot.</small></p>",
                 "closable": false,
                 "buttons": [
                     {"text": "Megértettem", "cssClass": "btn btn-primary", action(modal, callback) { callback(modal, true); modal.close(); }},
                 ]
             }, () => {
-                $.post("@route('api.approve_notification', $user_notification)");
+                $.post("@route('api.accept_legal_notice')");
             });
         @endif
     </script>

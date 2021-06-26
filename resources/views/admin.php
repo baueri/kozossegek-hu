@@ -98,17 +98,6 @@
         $("#mobile_menu_toggle").click(function(){
             $("body").toggleClass("sidebar-open");
         });
-
-        @if(isset($user_notification))
-            dialog.show({
-                "title": "{{ $user_notification->title }}",
-                "message": "{{ addslashes($user_notification->message) }}",
-                "closable": false
-            }, (modal) => {
-                $.post("@route('api.approve_notification', $user_notification)");
-                modal.close();
-            });
-        @endif
     });
 </script>
 </body>
