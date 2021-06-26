@@ -30,17 +30,13 @@ use ReflectionException;
 class GroupController extends AdminController
 {
     /**
-     * @var Request
-     */
-    private Request $request;
-    /**
      * @var GroupViews
      */
     private GroupViews $groupViews;
 
     public function __construct(Request $request, GroupViews $groupViews)
     {
-        $this->request = $request;
+        parent::__construct($request);
         $this->groupViews = $groupViews;
     }
 

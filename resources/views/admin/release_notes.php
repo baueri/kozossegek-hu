@@ -1,5 +1,18 @@
 @title('Verzióinformáció')
 @extends('admin')
+<h3></h3>
+<ul>
+    <li>
+        [NEW]: Értesítések létrehozása látogatói és admin oldalakra
+    </li>
+    <li>
+        [NEW]: Keretrendszer fejlesztések
+        <ul>
+            <li>Új model struktúra</li>
+            <li>Új relációs query builder fejlesztés</li>
+        </ul>
+    </li>
+</ul>
 <h3>v1.4.0 (2021.06.24)</h3>
 <ul>
     <li>[CHANGED]: Email és telefonszámkezelés át lett alakítva, most már a felhasználóhoz (közösség karbantartóhoz) vannak ezek kapcsolva a közösség helyett</li>

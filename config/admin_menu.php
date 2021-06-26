@@ -143,12 +143,12 @@ return [
     [
         'title' => 'Gépház',
         'icon' => 'cog',
-        'as' => 'admin.settings',
+        'as' => 'admin.release_notes',
         'submenu' => [
             [
                 'title' => 'Gépház',
                 'icon' => 'cog',
-                'as' => 'admin.settings',
+                'as' => 'admin.release_notes',
             ],
             [
                 'title' => 'Eseménynapló',
@@ -159,11 +159,6 @@ return [
                 'title' => 'Hibanapló',
                 'icon' => 'exclamation-circle ' . (site_has_error_logs() ? 'text-danger' : ''),
                 'as' => 'admin.error_log',
-            ],
-            [
-                'title' => 'Verzióinformáció',
-                'icon' => 'info-circle',
-                'as' => 'admin.release_notes',
             ],
         ],
     ],

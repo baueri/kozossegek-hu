@@ -103,8 +103,10 @@
             dialog.show({
                 "title": "{{ $user_notification->title }}",
                 "message": "{{ addslashes($user_notification->message) }}",
-            }, () => {
+                "closable": false
+            }, (modal) => {
                 $.post("@route('api.approve_notification', $user_notification)");
+                modal.close();
             });
         @endif
     });

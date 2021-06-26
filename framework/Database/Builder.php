@@ -384,23 +384,17 @@ class Builder
         return $this->db->insert($query, $bindings);
     }
 
-    public function updateOrInsert(array $where, array $values)
+    public function updateOrInsert(array $where, array $values = [])
     {
-        $onDuplicateArr = [];
-        $allColumns = array_merge($where, $values);
-        $columns = implode(',', array_keys($allColumns));
-        foreach ($values as $key => $value) {
-            $onDuplicateArr[] = $key . '=?';
+        foreach ($where as $column => $value) {
+            $this->where($column, $value);
         }
 
-        $onDuplicate = implode(',', $onDuplicateArr);
-        [$table] = $this->table;
-        $whereValues = implode(',', array_fill(0, count($allColumns), '?'));
-        $query = "insert into $table ($columns) values($whereValues) on duplicate key update $onDuplicate";
+        if ($this->exists()) {
+            return $this->update($values);
+        }
 
-        $bindings = array_merge(array_values($allColumns), array_values($values));
-
-        return $this->db->insert($query, $bindings);
+        return $this->insert(array_merge($where, $values));
     }
 
     public function delete()

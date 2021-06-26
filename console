@@ -1,14 +1,13 @@
 #!/usr/bin/env php
-
 <?php
-
-/* @var $application Application */
 
 use App\Console\ConsoleKernel;
 use Framework\Application;
 use Framework\Console\ConsoleKernel as Kernel;
 use Framework\Dispatcher\Dispatcher;
 use Framework\Dispatcher\CliDispatcher;
+
+/* @var $application Application */
 
 include 'boot.php';
 
@@ -19,12 +18,9 @@ $dispatcher = $application->make(Dispatcher::class);
 
 try {
     $application->run($dispatcher);
-} catch(\Error|\Exception|\Throwable $e) {
+} catch (Error | Exception | Throwable $e) {
     if (_env('DEBUG')) {
         throw $e;
     }
     $application->handleError($e);
 }
-
-
-?>

@@ -12,9 +12,10 @@ class NotificationApiController
     {
         $user = Auth::user();
 
-        UserNotifications::init()->insert([
+        UserNotifications::init()->updateOrInsert([
             'user_id' => $user->id,
-            'notification_id' => $request['id']
+        ], [
+            'last_notification_id' => $request['id']
         ]);
 
         return api()->ok();
