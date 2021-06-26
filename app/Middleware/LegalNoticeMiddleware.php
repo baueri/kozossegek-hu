@@ -3,9 +3,7 @@
 namespace App\Middleware;
 
 use App\Auth\Auth;
-use App\EntityQueryBuilders\Notifications;
 use App\EntityQueryBuilders\UserLegalNotices;
-use App\Models\Notification;
 use Framework\Http\View\View;
 use Framework\Middleware\Middleware;
 
