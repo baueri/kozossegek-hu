@@ -7,7 +7,7 @@ final class UpdateGroupViewLeaderColumns extends AbstractMigration
 {
     public function up(): void
     {
-        db()->execute('CREATE OR REPLACE VIEW v_groups AS
+        $this->execute('CREATE OR REPLACE VIEW v_groups AS
             SELECT
                 church_groups.id,
                 church_groups.name,

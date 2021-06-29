@@ -126,7 +126,7 @@
 <h3>V0.5 beta</h3>
 <ul>
     <li>[NEW]: Közösség regisztrációs oldalon bejelentkzési lehetőség</li>
-    <li>[NEW]: Fiók törlése gomb + funkció látogatiói oldalon</li>
+    <li>[NEW]: Fiók törlése gomb + funkció látogatói oldalon</li>
     <li>[NEW]: Törölt oldal visszaállítása</li>
     <li>[NEW]: Belépésnél request paraméterben megadható, hogy sikeres belépés után hova irányítson át az oldal</li>
     <li>[NEW]: Adminisztrációs oldalon figyelmeztető szövegek törölt sorok (közösségek, oldalak) szerkesztő oldalán</li>

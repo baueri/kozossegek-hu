@@ -5,6 +5,7 @@ namespace Framework\Http\Route;
 use Framework\Application;
 use Framework\Http\Request;
 use Framework\Misc\XmlObject;
+use Framework\Model\Entity;
 use Framework\Support\Collection;
 use Framework\Model\Model;
 use Framework\Http\Exception\RouteNotFoundException;
@@ -160,13 +161,13 @@ class XmlRouter implements RouterInterface
 
     /**
      * @param string $name
-     * @param array|string $args
+     * @param array|string|Model|\Framework\Model\Entity $args
      * @return string
      * @throws RouteNotFoundException
      */
     public function route(string $name, $args = [])
     {
-        if ($args instanceof Model) {
+        if ($args instanceof Model || $args instanceof Entity) {
             $args = ['id' => $args->getId()];
         }
 

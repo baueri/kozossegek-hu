@@ -3,9 +3,6 @@
 namespace App\Middleware;
 
 use App\EventListeners\LoadViewToDebugBar;
-use App\Models\Group;
-use App\Models\Institute;
-use Framework\Database\Repository\Events\ModelUpdated;
 use Framework\Http\View\ViewLoaded;
 use Framework\Middleware\Middleware;
 

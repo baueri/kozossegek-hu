@@ -152,4 +152,18 @@ class StringHelper
         $after = $after ?? $before;
         return "{$before}{$string}{$after}";
     }
+
+    public static function plural($word)
+    {
+        if (static::endsWith($word, 'y')) {
+            return substr($word, 0, strlen($word) - 1) . 'ies';
+        }
+
+        return "{$word}s";
+    }
+
+    public static function endsWith($string, $endsWith): bool
+    {
+        return strrpos($string, $endsWith) === strlen($string) - strlen($endsWith);
+    }
 }

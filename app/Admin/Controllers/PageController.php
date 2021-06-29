@@ -14,16 +14,10 @@ use Framework\Http\Request;
 
 class PageController extends AdminController
 {
-
     /**
      * @var PageRepository
      */
     private $repository;
-
-    /**
-     * @var Request
-     */
-    private Request $request;
 
     /**
      *
@@ -32,7 +26,7 @@ class PageController extends AdminController
      */
     public function __construct(Request $request, AdminPageRepository $repository)
     {
-        $this->request = $request;
+        parent::__construct($request);
         $this->repository = $repository;
     }
 

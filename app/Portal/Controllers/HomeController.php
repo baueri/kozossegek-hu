@@ -2,14 +2,7 @@
 
 namespace App\Portal\Controllers;
 
-use Framework\Http\Controller;
-
-/**
- * Description of HomeController
- *
- * @author ivan
- */
-class HomeController extends Controller
+class HomeController extends PortalController
 {
     public function home()
     {

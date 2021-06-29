@@ -17,5 +17,4 @@ class AppMigration extends \Phinx\Migration\AbstractMigration
 
         return $table;
     }
-    
 }

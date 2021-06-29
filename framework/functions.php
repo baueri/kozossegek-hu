@@ -149,7 +149,7 @@ function builder(?string $table = null)
 
 /**
  * @param string $route
- * @param array|string|Model $args
+ * @param array|string|Model|Entity $args
  * @return string
  */
 function route(string $route, $args = [])
@@ -208,6 +208,7 @@ function _env($key, $default = null)
  * @param string|null $view
  * @param array $args
  * @return string|View
+ * @throws \ReflectionException
  */
 function view(string $view = null, array $args = [])
 {

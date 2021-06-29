@@ -13,9 +13,8 @@ use Framework\Http\Session;
 use Framework\Mail\Mailer;
 use PHPMailer\PHPMailer\Exception;
 
-class UserController
+class UserController extends PortalController
 {
-
     public function profile()
     {
         $user = Auth::user();

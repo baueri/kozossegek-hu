@@ -6,17 +6,17 @@ use App\Auth\Auth;
 use App\Helpers\SpiritualMovementHelper;
 use App\Repositories\GroupViews;
 use App\Repositories\SpiritualMovements;
-use Framework\Http\Controller;
 use Framework\Http\Exception\PageNotFoundException;
 use Framework\Http\Request;
 use Framework\Model\ModelNotFoundException;
 
-class SpiritualMovementController extends Controller
+class SpiritualMovementController extends PortalController
 {
     private SpiritualMovements $repository;
 
-    public function __construct(SpiritualMovements $repository)
+    public function __construct(Request $request, SpiritualMovements $repository)
     {
+        parent::__construct($request);
         $this->repository = $repository;
     }
 
@@ -32,12 +32,12 @@ class SpiritualMovementController extends Controller
         return view('portal.spiritual_movement.list', compact('spiritualMovements'));
     }
 
-    public function view(Request $request)
+    public function view()
     {
         try {
             /* @var $spiritualMovement \App\Models\SpiritualMovement */
             $spiritualMovement = $this->repository->query()
-                ->where('slug', $request['slug'])
+                ->where('slug', $this->request['slug'])
                 ->where('highlighted', 1)
                 ->firstOrFail();
 

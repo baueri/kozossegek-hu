@@ -54,11 +54,7 @@ class Users extends Repository
         return $this->getInstances($rows);
     }
 
-    /**
-     * @param $auth
-     * @return User
-     */
-    public function findByAuth($auth)
+    public function findByAuth($auth): ?User
     {
         if (!$auth) {
             return null;
