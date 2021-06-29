@@ -13,7 +13,7 @@ use Framework\Support\StringHelper;
 
 /**
  * @package Framework\Model
- * @psalm-template T of Entity
+ * @psalm-template T of \Framework\Model\Entity
  */
 abstract class EntityQueryBuilder
 {
@@ -30,7 +30,7 @@ abstract class EntityQueryBuilder
         $this->builder = builder(static::getTableName());
     }
 
-    public static function getTableName(): string
+    public static function getTableName(): ?string
     {
         if (self::TABLE) {
             return self::TABLE;
@@ -62,12 +62,13 @@ abstract class EntityQueryBuilder
         return $this->builder->count();
     }
 
+    /**
+     * @return Entity[]|ModelCollection|PaginatedModelCollection|T[]|PaginatedResultSet|Collection
+     */
     public function get()
     {
         $rows = $this->builder->get();
-        $instances = $this->getInstances($rows);
-
-        return $instances;
+        return $this->getInstances($rows);
     }
 
     /**
@@ -127,7 +128,11 @@ abstract class EntityQueryBuilder
         return $model;
     }
 
-    public function first()
+    /**
+     * @psalm-return T|null
+     * @return \Framework\Model\Entity|mixed|null|T
+     */
+    public function first(): ?Entity
     {
         return $this->getInstance($this->builder->first());
     }

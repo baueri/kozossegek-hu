@@ -89,7 +89,7 @@ class InstituteController extends AdminController
     public function doCreate(Request $request, Institutes $repository)
     {
         $data = $request->only('name', 'city', 'district', 'address', 'leader_name');
-        $data['user_id'] = Auth::user()->id;
+        $data['user_id'] = Auth::user()->id ?? null;
         $data['approved'] = 1;
         $institute = $repository->create($data);
 

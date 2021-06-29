@@ -44,14 +44,10 @@ class View implements ViewInterface
 
 
     /**
-     * @param string $view
-     * @param array $args
-     * @param array $additional_args
-     * @return string
      * @throws ViewNotFoundException
      * @throws Exception
      */
-    public function view(string $view, array $args = [], array $additional_args = [])
+    public function view(string $view, array $args = [], array $additional_args = []): string
     {
         $filePath = $this->getPath($view);
 
@@ -67,11 +63,6 @@ class View implements ViewInterface
         return file_exists($this->getPath($view));
     }
 
-    /**
-     * @param string $view
-     * @return string
-     *
-     */
     public function getPath(string $view): string
     {
         $viewPath = str_replace('.', DS, $view);
@@ -87,12 +78,9 @@ class View implements ViewInterface
     }
 
     /**
-     * @param $filePath
-     * @param $args
-     * @return false|string
      * @throws Exception
      */
-    protected function getContentAndDoCache($filePath, $args)
+    protected function getContentAndDoCache(string $filePath, array $args = []): string
     {
         if ($this->cacheDriver->shouldUpdateFile($filePath)) {
             $content = $this->parser->parse(file_get_contents($filePath));
@@ -112,27 +100,31 @@ class View implements ViewInterface
 
         include $cachedFilename;
 
-        return ob_get_clean();
+        return (string) ob_get_clean();
     }
 
-    /**
-     * @return Section
-     */
     public function getSection(): Section
     {
         return $this->section;
     }
 
     /**
-     * @param $key
-     * @param $value
+     * @param string $key
+     * @param mixed $value
      */
-    public static function setVariable($key, $value)
+    public static function setVariable(string $key, $value): void
     {
         static::$envVariables[$key] = $value;
     }
 
-    public static function component($component, $expression = null)
+    /**
+     * @psalm-template T
+     * @psalm-param $component T class-string<T>
+     * @param string $component
+     * @param string|null $expression
+     * @return string
+     */
+    public static function component(string $component, ?string $expression = null): string
     {
         return "<?php echo app()->make({$component}::class)->render({$expression}); ?>";
     }

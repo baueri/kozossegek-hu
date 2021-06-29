@@ -26,7 +26,7 @@ class Container implements ContainerInterface
      * @throws AbstractionAlreadySharedException
      * @throws AlreadyBoundException
      */
-    public function singleton($abstraction, $concrete = null)
+    public function singleton($abstraction, $concrete = null): void
     {
         if ($this->isSingletonRegistered($abstraction)) {
             throw new AbstractionAlreadySharedException("$abstraction is already registered");
@@ -41,12 +41,12 @@ class Container implements ContainerInterface
         $this->singletons[] = $abstraction;
     }
 
-    private function isSingletonRegistered($abstraction)
+    private function isSingletonRegistered($abstraction): bool
     {
         return in_array($abstraction, $this->singletons);
     }
 
-    public function bind($abstraction, $concrete)
+    public function bind($abstraction, $concrete): void
     {
         if (!$abstraction) {
             throw new InvalidArgumentException('abstraction name must not be empty');
@@ -59,7 +59,7 @@ class Container implements ContainerInterface
         $this->bindings[$abstraction] = $concrete;
     }
 
-    private function isBindingRegistered($abstraction)
+    private function isBindingRegistered($abstraction): bool
     {
         return isset($this->bindings[$abstraction]);
     }
@@ -103,7 +103,15 @@ class Container implements ContainerInterface
         return $this->shared[$id];
     }
 
-    public function make($abstraction, ...$args)
+    /**
+     * @psalm-template T
+     * @psalm-param $abstraction T class-string<T>
+     * @psalm-return T
+     * @param string $abstraction
+     * @param mixed ...$args
+     * @return T
+     */
+    public function make(string $abstraction, ...$args)
     {
         $binding = $this->getBinding($abstraction);
 
@@ -155,17 +163,13 @@ class Container implements ContainerInterface
     }
 
     /**
-     * @param $class
-     * @param string $method
-     * @return array
-     * @throws ReflectionException
+     * @throws \ReflectionException
      */
-    private function getDependencies($class, $method = '__construct')
+    private function getDependencies($class, string $method = '__construct'): array
     {
         if (!method_exists($class, $method) && !function_exists($class)) {
             return [];
         }
-
 
         $dependencies = [];
         $reflectionMethod = $this->getReflectionMethod($class, $method);
@@ -178,12 +182,9 @@ class Container implements ContainerInterface
     }
 
     /**
-     * @param $class
-     * @param string $method
-     * @return ReflectionFunctionAbstract
      * @throws ReflectionException
      */
-    private function getReflectionMethod($class, $method = '__construct')
+    private function getReflectionMethod($class, string $method = '__construct'): ?ReflectionFunctionAbstract
     {
         if (is_callable($class)) {
             return new ReflectionFunction($class);
@@ -206,29 +207,25 @@ class Container implements ContainerInterface
         $value = null;
 
         if ($resource->hasType()) {
-
             $resourceType = $resource->getType()->getName();
-
             if ($resource->isDefaultValueAvailable()) {
                 $value = $resource->getDefaultValue();
             } else {
                 $value = $this->get($resourceType);
             }
-
         } elseif ($resource->isDefaultValueAvailable()) {
-
             $value = $resource->getDefaultValue();
         }
 
         return $value;
     }
 
-    public function share($key, $value)
+    public function share(string $key, $value): void
     {
         $this->shared[$key] = $value;
     }
 
-    public function getBindings()
+    public function getBindings(): array
     {
         return $this->bindings;
     }

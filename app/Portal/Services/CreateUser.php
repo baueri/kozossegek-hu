@@ -33,7 +33,6 @@ class CreateUser
         $data = $data->only('name', 'email', 'password', 'phone_number');
         $data['password'] = Password::hash($data['password']);
 
-        /* @var $user User */
         $user = $this->users->create($data);
 
         UserLegalNotices::init()->updateOrInsertCurrentFor($user);

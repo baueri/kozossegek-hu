@@ -9,6 +9,11 @@ use App\Models\UserLegalNotice;
 use App\Services\User\LegalNoticeService;
 use Framework\Model\EntityQueryBuilder;
 
+/**
+ * Class UserLegalNotices
+ * @package \App\EntityQueryBuilders
+ * @template-extends \Framework\Model\EntityQueryBuilder<\App\Models\UserLegalNotice>
+ */
 class UserLegalNotices extends EntityQueryBuilder
 {
     use HasUserColumn;
