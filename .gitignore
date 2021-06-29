@@ -12,3 +12,4 @@ tmp_deploy
 email_templates/
 tests/
 .php_cs.cache
+.phpstan.xml
