@@ -4,15 +4,12 @@ namespace App\Portal\Controllers;
 
 use App\Auth\Auth;
 use App\Auth\Authenticate;
-use App\EntityQueryBuilders\UserLegalNotices;
 use App\Exception\EmailTakenException;
 use App\Helpers\HoneyPot;
-use App\Http\Validators\UserRegisterValidator;
 use App\Mail\RegistrationEmail;
 use App\Portal\Services\CreateUser;
 use App\Repositories\Users;
 use App\Repositories\UserTokens;
-use App\Services\User\LegalNoticeService;
 use Exception;
 use Framework\Http\Cookie;
 use Framework\Http\Request;
@@ -22,7 +19,7 @@ use Framework\Mail\Mailer;
 
 class LoginController extends PortalController
 {
-    public function login()
+    public function login(): string
     {
         use_default_header_bg();
 
@@ -33,7 +30,7 @@ class LoginController extends PortalController
         return view('portal.login');
     }
 
-    public function doLogin(Request $request, Authenticate $service)
+    public function doLogin(Request $request, Authenticate $service): string
     {
         use_default_header_bg();
 
@@ -44,8 +41,6 @@ class LoginController extends PortalController
             }
 
             $user = $service->authenticate($request['username'], $request['password']);
-
-            app()->get(LegalNoticeService::class)->setLegalNoticeSessionFor($user);
 
             if (!$user && $service->hasErrors()) {
                 Message::danger($service->firstError());
@@ -65,7 +60,7 @@ class LoginController extends PortalController
         }
     }
 
-    public function logout()
+    public function logout(): void
     {
         Auth::logout();
 
@@ -74,8 +69,9 @@ class LoginController extends PortalController
         redirect_route('login');
     }
 
-    public function register(Request $request, CreateUser $service, UserTokens $tokens, Mailer $mailer, UserRegisterValidator $validator)
+    public function register(CreateUser $service, UserTokens $tokens, Mailer $mailer): string
     {
+        $request = $this->request;
         use_default_header_bg();
 
         $model = [
@@ -106,17 +102,12 @@ class LoginController extends PortalController
     }
 
     /**
-     * @param Request $request
-     * @param Mailer $mailer
-     * @param Users $users
-     * @param UserTokens $userTokens
-     * @return array
      * @throws \PHPMailer\PHPMailer\Exception
      * @throws Exception
      */
-    public function resendActivationEmail(Request $request, Mailer $mailer, Users $users, UserTokens $userTokens)
+    public function resendActivationEmail(Mailer $mailer, Users $users, UserTokens $userTokens): array
     {
-        $user = $users->getUserByEmail($request['email']);
+        $user = $users->getUserByEmail($this->request['email']);
 
         if (!$user) {
             return api()->error();

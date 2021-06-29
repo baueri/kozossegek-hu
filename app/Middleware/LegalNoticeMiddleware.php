@@ -27,6 +27,6 @@ class LegalNoticeMiddleware implements Middleware
 
     private function needsAcceptance(): bool
     {
-        return LegalNoticeService::needsCheck() && Session::get('needs_legal_notice_accept');
+        return LegalNoticeService::needsCheck();
     }
 }

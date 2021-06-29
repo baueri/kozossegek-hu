@@ -1,64 +1,54 @@
 <?php
 
-
 namespace App\Auth;
 
-
 use App\Models\User;
+use App\Services\User\LegalNoticeService;
 
-class Auth
+final class Auth
 {
-    /**
-     * @var User|null
-     */
-    protected static ?User $user = null;
+    private static ?User $user = null;
 
-    /**
-     * @param User $user
-     */
     public static function setUser(User $user): void
     {
         self::$user = $user;
     }
 
-    /**
-     *
-     * @param User $user
-     */
-    public static function login(User $user)
+    public static function login(User $user): void
     {
-        db()->execute('replace into user_sessions (unique_id, user_id, created_at) values(?, ?, CURRENT_TIMESTAMP)', session_id(), $user->id);
+        app()->make(LegalNoticeService::class)->setLegalNoticeSessionFor($user);
+
+        db()->execute(
+            'replace into user_sessions (unique_id, user_id, created_at)
+                    values(?, ?, CURRENT_TIMESTAMP)',
+            session_id(),
+            $user->id
+        );
         db()->execute('update users set last_login=CURRENT_TIMESTAMP where id=?', $user->id);
 
-        static::setUser($user);
+        self::setUser($user);
     }
 
-    public static function logout()
+    public static function logout(): void
     {
         db()->execute('delete from user_sessions where unique_id=?', session_id());
 
         session_destroy();
 
-        static::$user = null;
+        self::$user = null;
 
         session_start();
 
         session_id(session_create_id());
     }
 
-    /**
-     * @return bool
-     */
     public static function loggedIn(): bool
     {
-        return (bool) static::$user;
+        return (bool) self::$user;
     }
 
-    /**
-     * @return User|null
-     */
     public static function user(): ?User
     {
-        return static::$user;
+        return self::$user;
     }
 }

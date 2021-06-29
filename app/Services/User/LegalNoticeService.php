@@ -10,16 +10,11 @@ class LegalNoticeService
 {
     public function setLegalNoticeSessionFor(User $user): void
     {
-        if (!self::needsCheck()) {
-            return;
-        }
-
-        $hasAcceptedLegalNotice = UserLegalNotices::init()
+        $legalNotice = UserLegalNotices::init()
             ->forUser($user)
-            ->currentVersion()
-            ->exists();
+            ->first();
 
-        Session::set('needs_legal_notice_accept', $hasAcceptedLegalNotice === false);
+        Session::set('accepted_legal_notice_version', $legalNotice->accepted_legal_notice_version);
     }
 
     public static function getVersion(): ?int
@@ -29,6 +24,6 @@ class LegalNoticeService
 
     public static function needsCheck(): bool
     {
-        return self::getVersion() > 0;
+        return Session::get('accepted_legal_notice_version', 0) !== self::getVersion();
     }
 }

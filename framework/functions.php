@@ -208,6 +208,7 @@ function _env($key, $default = null)
  * @param string|null $view
  * @param array $args
  * @return string|View
+ * @throws \ReflectionException
  */
 function view(string $view = null, array $args = [])
 {
