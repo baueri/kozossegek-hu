@@ -26,7 +26,7 @@ class CriticalErrorEmail extends Mailable
                 'exception' => $this->exception,
                 'request' => request(),
                 'user' => Auth::user(),
-                'referer' => $_SERVER['HTTP_REFERER']
+                'referer' => $_SERVER['HTTP_REFERER'] ?? null
             ])
             ->subject(get_site_url() . ' HIBA: ' . $this->exception->getMessage());
     }

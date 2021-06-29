@@ -2,15 +2,13 @@
 
 namespace App\Portal\Services;
 
+use App\EntityQueryBuilders\UserLegalNotices;
 use App\Exception\EmailTakenException;
 use App\Mail\RegistrationEmail;
 use App\Models\User;
 use App\Repositories\Users;
-use App\Repositories\UserTokens;
-use Framework\Mail\Mailer;
 use Framework\Support\Collection;
 use Framework\Support\Password;
-use Framework\Support\StringHelper;
 
 class CreateUser
 {
@@ -35,7 +33,10 @@ class CreateUser
         $data = $data->only('name', 'email', 'password', 'phone_number');
         $data['password'] = Password::hash($data['password']);
 
-        /* @var $user User */
-        return $this->users->create($data);
+        $user = $this->users->create($data);
+
+        UserLegalNotices::init()->updateOrInsertCurrentFor($user);
+
+        return $user;
     }
 }

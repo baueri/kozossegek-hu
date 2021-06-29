@@ -133,7 +133,7 @@ abstract class AdminTable
     {
         $method = StringHelper::camel("get" . ucfirst($column));
         if (is_object($row)) {
-            $value = property_exists($row, $column) ? $row->{$column} : null;
+            $value = $row->{$column} ?? null;
         } else {
             $value = $row[$column] ?? null;
         }

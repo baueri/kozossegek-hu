@@ -120,6 +120,7 @@
             <route method="get" uri="event-log" use="eventLog" as="event_log"/>
         </route-group>
 
+        <!--   EMAIL SABLONOK     -->
         <route-group controller="EmailTemplateController" as="email_template">
             <route method="get" uri="email-templates" view="admin.email-templates" as="list"/>
             <route method="get" uri="email-template/registration" use="registration" as="registration"/>

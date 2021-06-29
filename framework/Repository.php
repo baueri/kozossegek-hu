@@ -2,6 +2,7 @@
 
 namespace Framework;
 
+use Framework\Database\Builder;
 use Framework\Database\PaginatedResultSet;
 use Framework\Database\PaginatedResultSetInterface;
 use Framework\Model\Model;
@@ -15,14 +16,14 @@ use Framework\Support\Arr;
 /**
  * Class Repository
  * @package Framework
- * @psalm-template T of Model
+ * @psalm-template T of \Framework\Model\Model
  */
 abstract class Repository
 {
     /**
      * @return Database\Builder
      */
-    public function getBuilder()
+    public function getBuilder(): Builder
     {
         return builder()->select('*')->from(static::getTable());
     }
@@ -115,7 +116,7 @@ abstract class Repository
 
     /**
      * @param array $values
-     * @return Model|mixed
+     * @return Model|mixed|T
      * @psalm-return T
      */
     public function create(array $values)
@@ -245,11 +246,6 @@ abstract class Repository
             ),
             $forceDelete
         );
-    }
-
-    public function updateOrCreate(array $where, array $data)
-    {
-        return $this->getBuilder()->updateOrInsert($where, $data);
     }
 
     public function query(): ModelRepositoryBuilder

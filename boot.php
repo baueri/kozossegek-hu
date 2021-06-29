@@ -28,6 +28,9 @@ const LANG = 'hu';
 const APP_VERSION = 'v1.4.0';
 const STORAGE_PATH = ROOT . 'storage' . DS;
 
+// Config constants for faster development
+const APP_CFG_LEGAL_NOTICE_VERSION = 'app.legal_notice_version';
+
 include 'vendor/autoload.php';
 
 DotEnv::load(ROOT . '.env.php');

@@ -23,5 +23,6 @@ return [
 
     'CONTACT_EMAIL' => 'please_set',
 
-    'CACHE_PAGES' => false
+    'CACHE_PAGES' => false,
+    'LEGAL_NOTICE_VERSION' => 1
 ];

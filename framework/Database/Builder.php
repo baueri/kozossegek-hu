@@ -177,7 +177,7 @@ class Builder
         return $where;
     }
 
-    public function getWhere()
+    protected function getWhere()
     {
         return $this->where;
     }
@@ -384,23 +384,17 @@ class Builder
         return $this->db->insert($query, $bindings);
     }
 
-    public function updateOrInsert(array $where, array $values)
+    public function updateOrInsert(array $where, array $values = [])
     {
-        $onDuplicateArr = [];
-        $allColumns = array_merge($where, $values);
-        $columns = implode(',', array_keys($allColumns));
-        foreach ($values as $key => $value) {
-            $onDuplicateArr[] = $key . '=?';
+        foreach ($where as $column => $value) {
+            $this->where($column, $value);
         }
 
-        $onDuplicate = implode(',', $onDuplicateArr);
-        [$table] = $this->table;
-        $whereValues = implode(',', array_fill(0, count($allColumns), '?'));
-        $query = "insert into $table ($columns) values($whereValues) on duplicate key update $onDuplicate";
+        if ($this->exists()) {
+            return $this->update($values);
+        }
 
-        $bindings = array_merge(array_values($allColumns), array_values($values));
-
-        return $this->db->insert($query, $bindings);
+        return $this->insert(array_merge($where, $values));
     }
 
     public function delete()
@@ -416,7 +410,7 @@ class Builder
     {
         $this->select('1 as `exists`');
 
-        return (bool) $this->first()['exists'];
+        return isset($this->first()['exists']);
     }
 
     public function toSql($withBindings = false): string
@@ -437,9 +431,7 @@ class Builder
 
     public function __call($method, $args)
     {
-        $macro = $this->getMacro($method);
-
-        $macro($this, ...$args);
+        $this->applyMacro($method, $args);
 
         return $this;
     }
@@ -457,13 +449,24 @@ class Builder
     {
         if (is_array($macro)) {
             foreach ($macro as $m) {
-                $this->__call($m, $args);
+                $this->applyMacro($m, $args);
             }
 
             return $this;
         }
 
-        return $this->__call($macro, $args);
+        return $this->applyMacro($macro, $args);
+    }
+
+    protected function applyMacro($macro, $args)
+    {
+        $callback = $this->getMacro($macro);
+
+        if ($callback) {
+            $callback($this, ...$args);
+        }
+
+        return $this;
     }
 
     protected function getMacro($method)
@@ -474,7 +477,7 @@ class Builder
             return static::$macros['global'][$method];
         }
 
-        throw new InvalidArgumentException("database builder macro $method not found");
+        return null;
     }
 
     public function __toString()

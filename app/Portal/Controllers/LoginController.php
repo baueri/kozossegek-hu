@@ -6,24 +6,20 @@ use App\Auth\Auth;
 use App\Auth\Authenticate;
 use App\Exception\EmailTakenException;
 use App\Helpers\HoneyPot;
-use App\Http\Validators\UserRegisterValidator;
 use App\Mail\RegistrationEmail;
 use App\Portal\Services\CreateUser;
 use App\Repositories\Users;
 use App\Repositories\UserTokens;
 use Exception;
-use Framework\Http\Controller;
 use Framework\Http\Cookie;
 use Framework\Http\Request;
 use Framework\Http\Message;
 use Framework\Http\Session;
-use Framework\Mail\Mailable;
 use Framework\Mail\Mailer;
-use Framework\Support\Validator;
 
-class LoginController extends Controller
+class LoginController extends PortalController
 {
-    public function login()
+    public function login(): string
     {
         use_default_header_bg();
 
@@ -34,14 +30,14 @@ class LoginController extends Controller
         return view('portal.login');
     }
 
-    public function doLogin(Request $request, Authenticate $service)
+    public function doLogin(Request $request, Authenticate $service): string
     {
         use_default_header_bg();
 
         try {
             if (!Cookie::enabled()) {
                 Message::danger('A belépéshez engedélyezd a cookie-kat a böngésződben!');
-                return redirect_route('login');
+                redirect_route('login');
             }
 
             $user = $service->authenticate($request['username'], $request['password']);
@@ -64,7 +60,7 @@ class LoginController extends Controller
         }
     }
 
-    public function logout()
+    public function logout(): void
     {
         Auth::logout();
 
@@ -73,8 +69,9 @@ class LoginController extends Controller
         redirect_route('login');
     }
 
-    public function register(Request $request, CreateUser $service, UserTokens $tokens, Mailer $mailer, UserRegisterValidator $validator)
+    public function register(CreateUser $service, UserTokens $tokens, Mailer $mailer): string
     {
+        $request = $this->request;
         use_default_header_bg();
 
         $model = [
@@ -105,17 +102,12 @@ class LoginController extends Controller
     }
 
     /**
-     * @param Request $request
-     * @param Mailer $mailer
-     * @param Users $users
-     * @param UserTokens $userTokens
-     * @return array
      * @throws \PHPMailer\PHPMailer\Exception
      * @throws Exception
      */
-    public function resendActivationEmail(Request $request, Mailer $mailer, Users $users, UserTokens $userTokens)
+    public function resendActivationEmail(Mailer $mailer, Users $users, UserTokens $userTokens): array
     {
-        $user = $users->getUserByEmail($request['email']);
+        $user = $users->getUserByEmail($this->request['email']);
 
         if (!$user) {
             return api()->error();

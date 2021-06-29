@@ -17,7 +17,7 @@ return [
                 'as' => 'admin.page.list',
                 'similars' => ['admin.page.edit', 'admin.page.trash'],
             ], [
-                'title' => 'Új oldal',
+                'title' => 'Létrehozás',
                 'icon' => 'plus',
                 'as' => 'admin.page.create',
             ], [
@@ -40,7 +40,7 @@ return [
                 'similars' => ['admin.group.edit', 'admin.group.trash', 'admin.group.validate', 'admin.group.list.pending'],
             ],
             [
-                'title' => 'Új közösség',
+                'title' => 'Létrehozás',
                 'icon' => 'plus',
                 'as' => 'admin.group.create',
             ],
@@ -68,7 +68,7 @@ return [
                 'similars' => ['admin.spiritual_movement.edit'],
             ],
             [
-                'title' => 'Új lelkiségi mozgalom',
+                'title' => 'Létrehozás',
                 'icon' => 'plus',
                 'as' => 'admin.spiritual_movement.create',
                 'similars' => ['admin.spiritual_movement.do_create']
@@ -87,7 +87,7 @@ return [
                 'similars' => ['admin.institute.edit'],
             ],
             [
-                'title' => 'Új intézmény',
+                'title' => 'Létrehozás',
                 'icon' => 'plus',
                 'as' => 'admin.institute.create',
             ],
@@ -110,7 +110,7 @@ return [
                 'similars' => ['admin.user.edit', 'admin.user.profile'],
             ],
             [
-                'title' => 'Új felhasználó',
+                'title' => 'Létrehozás',
                 'icon' => 'plus',
                 'as' => 'admin.user.create',
             ],
@@ -125,12 +125,12 @@ return [
     [
         'title' => 'Gépház',
         'icon' => 'cog',
-        'as' => 'admin.settings',
+        'as' => 'admin.release_notes',
         'submenu' => [
             [
                 'title' => 'Gépház',
                 'icon' => 'cog',
-                'as' => 'admin.settings',
+                'as' => 'admin.release_notes',
             ],
             [
                 'title' => 'Eseménynapló',
@@ -141,11 +141,6 @@ return [
                 'title' => 'Hibanapló',
                 'icon' => 'exclamation-circle ' . (site_has_error_logs() ? 'text-danger' : ''),
                 'as' => 'admin.error_log',
-            ],
-            [
-                'title' => 'Verzióinformáció',
-                'icon' => 'info-circle',
-                'as' => 'admin.release_notes',
             ],
         ],
     ],

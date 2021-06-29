@@ -1,20 +1,10 @@
 <?php
 
-
 namespace Framework\Http\View;
-
 
 interface ViewInterface
 {
-    /**
-     * @param string $view
-     * @param array $args
-     * @return string
-     */
-    public function view(string $view, array $args = []);
+    public function view(string $view, array $args = []): string;
 
-    /**
-     * @return Section
-     */
-    public function getSection();
+    public function getSection(): Section;
 }

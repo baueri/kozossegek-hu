@@ -27,17 +27,11 @@ class Authenticate
         $this->repository = $repository;
     }
 
-    /**
-     * @param $username
-     * @param $password
-     *
-     * @return User
-     */
-    public function authenticate($username, $password)
+    public function authenticate(?string $username, ?string $password): ?User
     {
         $user = $this->repository->findByAuth($username);
 
-        if (! $user || ! Password::verify($password, $user->password)) {
+        if (!$user || ! Password::verify($password, $user->password)) {
             $this->pushError('Hibás felhasználónév vagy jelszó!');
             return null;
         }
