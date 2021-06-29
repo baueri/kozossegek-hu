@@ -4,6 +4,7 @@ namespace App\Portal\Controllers;
 
 use App\Auth\Auth;
 use App\Auth\Authenticate;
+use App\EntityQueryBuilders\UserLegalNotices;
 use App\Exception\EmailTakenException;
 use App\Helpers\HoneyPot;
 use App\Http\Validators\UserRegisterValidator;
@@ -11,6 +12,7 @@ use App\Mail\RegistrationEmail;
 use App\Portal\Services\CreateUser;
 use App\Repositories\Users;
 use App\Repositories\UserTokens;
+use App\Services\User\LegalNoticeService;
 use Exception;
 use Framework\Http\Cookie;
 use Framework\Http\Request;
@@ -38,10 +40,12 @@ class LoginController extends PortalController
         try {
             if (!Cookie::enabled()) {
                 Message::danger('A belépéshez engedélyezd a cookie-kat a böngésződben!');
-                return redirect_route('login');
+                redirect_route('login');
             }
 
             $user = $service->authenticate($request['username'], $request['password']);
+
+            app()->get(LegalNoticeService::class)->setLegalNoticeSessionFor($user);
 
             if (!$user && $service->hasErrors()) {
                 Message::danger($service->firstError());

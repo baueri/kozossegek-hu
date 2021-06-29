@@ -64,6 +64,13 @@ class Container implements ContainerInterface
         return isset($this->bindings[$abstraction]);
     }
 
+    /**
+     * @psalm-template T
+     * @psalm-param class-string<T>
+     * @param string $id
+     * @return T
+     * @psalm-return T
+     */
     public function get($id)
     {
         if ($this->has($id) || $this->isSingletonRegistered($id)) {
