@@ -2,7 +2,6 @@
 
 use App\Admin\Components\DebugBar\DebugBar;
 use App\HttpKernel;
-use Framework\Application;
 use Framework\Dispatcher\Dispatcher;
 use Framework\Dispatcher\HttpDispatcher;
 
@@ -10,20 +9,17 @@ session_start();
 
 ob_start();
 
-/* @var $application Application */
-$application = null;
-
 include '../boot.php';
 
 try {
     ob_start();
-    $application->singleton(Framework\Http\Request::class);
-    $application->singleton(\Framework\Http\HttpKernel::class, HttpKernel::class);
-    $application->singleton(Dispatcher::class, HttpDispatcher::class);
-    $application->singleton(DebugBar::class);
+    app()->singleton(Framework\Http\Request::class);
+    app()->singleton(\Framework\Http\HttpKernel::class, HttpKernel::class);
+    app()->singleton(Dispatcher::class, HttpDispatcher::class);
+    app()->singleton(DebugBar::class);
 
-    $application->run($application->get(Dispatcher::class));
+    app()->run(app()->get(Dispatcher::class));
 } catch (Error | Exception | Throwable $e) {
     ob_get_clean();
-    $application->handleError($e);
+    app()->handleError($e);
 }
