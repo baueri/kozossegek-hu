@@ -13,9 +13,7 @@ class LegalNoticeMiddleware implements Middleware
 {
     public function handle(): void
     {
-        $needsAcceptance = $this->needsAcceptance();
-
-        if ($needsAcceptance && request()->exists('accept-legal-notice')) {
+        if (($needsAcceptance = LegalNoticeService::needsApproval()) && request()->exists('accept-legal-notice')) {
             UserLegalNotices::init()->updateOrInsertCurrentFor(Auth::user());
             return;
         }
@@ -23,10 +21,5 @@ class LegalNoticeMiddleware implements Middleware
         if (Auth::user() && $needsAcceptance) {
             View::setVariable('display_legal_notice', true);
         }
-    }
-
-    private function needsAcceptance(): bool
-    {
-        return LegalNoticeService::needsCheck();
     }
 }

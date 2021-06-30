@@ -2,25 +2,22 @@
 <?php
 
 use App\Console\ConsoleKernel;
-use Framework\Application;
 use Framework\Console\ConsoleKernel as Kernel;
 use Framework\Dispatcher\Dispatcher;
 use Framework\Dispatcher\CliDispatcher;
 
-/* @var $application Application */
-
 include 'boot.php';
 
-$application->bind(Kernel::class, ConsoleKernel::class);
-$application->singleton(Dispatcher::class, CliDispatcher::class);
+app()->bind(Kernel::class, ConsoleKernel::class);
+app()->singleton(Dispatcher::class, CliDispatcher::class);
 
-$dispatcher = $application->make(Dispatcher::class);
+$dispatcher = app()->make(Dispatcher::class);
 
 try {
-    $application->run($dispatcher);
+    app()->run($dispatcher);
 } catch (Error | Exception | Throwable $e) {
     if (_env('DEBUG')) {
         throw $e;
     }
-    $application->handleError($e);
+    app()->handleError($e);
 }

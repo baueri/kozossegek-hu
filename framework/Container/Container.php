@@ -107,7 +107,7 @@ class Container implements ContainerInterface
      * @psalm-template T
      * @psalm-param $abstraction T class-string<T>
      * @psalm-return T
-     * @param string $abstraction
+     * @param string|T $abstraction
      * @param mixed ...$args
      * @return T
      */

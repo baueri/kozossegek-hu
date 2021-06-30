@@ -17,13 +17,14 @@ class LegalNoticeService
         Session::set('accepted_legal_notice_version', $legalNotice->accepted_legal_notice_version);
     }
 
-    public static function getVersion(): ?int
+    public static function getVersion(): int
     {
-        return config(APP_CFG_LEGAL_NOTICE_VERSION);
+        return (int) config(APP_CFG_LEGAL_NOTICE_VERSION) ?? 0;
     }
 
-    public static function needsCheck(): bool
+    public static function needsApproval(): bool
     {
-        return Session::get('accepted_legal_notice_version', 0) !== self::getVersion();
+        $version = self::getVersion();
+        return $version > 0 && Session::get('accepted_legal_notice_version', 0) !== $version;
     }
 }

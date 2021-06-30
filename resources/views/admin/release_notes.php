@@ -1,5 +1,13 @@
 @title('Verzióinformáció')
 @extends('admin')
+<h3>v1.4.0 (2021.06.30)</h3>
+<ul>
+    <li>[NEW]: psalm support-osra lettek alakítva a comment blockok néhány helyen</li>
+    <li>[CHANGED]: A legutoljára elfogadott adatvédelmi nyilatkozat verziót session-ben tároljuk le, hogy ne kelljen mindig adatbázisból lekérni.</li>
+    <li>[CHANGED]: Néhány nem használt kód törlése, coding style javítások</li>
+    <li>[FIXED]: A v_groups nézettábla frissítő lekérdezés nem futott le rendesen a framework-ös db()->execute() hívásával,
+        így az újonnan regisztráltaknak nem került be az email címe a nézettáblába. Javítva lett</li>
+</ul>
 <h3>v1.4.0 (2021.06.24)</h3>
 <ul>
     <li>[CHANGED]: Email és telefonszámkezelés át lett alakítva, most már a felhasználóhoz (közösség karbantartóhoz) vannak ezek kapcsolva a közösség helyett</li>
