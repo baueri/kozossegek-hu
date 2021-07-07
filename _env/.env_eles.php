@@ -7,14 +7,14 @@ return [
     'ENVIRONMENT' => 'production',
     'DEBUG' => false,
 
-    'DB_HOST' => 'mysql.nethely.hu',
+    'DB_HOST' => 'localhost',
     'DB_USER' => 'kozossegek_eles',
     'DB_PASSWORD' => 'tlx0BGzO',
     'DB_NAME' => 'kozossegek_eles',
 
     'DB_PORT' => '3306',
     'BASE_AUTH' => false,
-    'COMING_SOON' => true,
+    'COMING_SOON' => false,
 
     //EMAIL beállítások
     'EMAIL_HOST' => 'mail.nethely.hu',
@@ -24,6 +24,7 @@ return [
     'EMAIL_SSL' => 'STARTTLS',
 
     'CONTACT_EMAIL' => 'kozossegek.szeged@gmail.com',
-    'ERROR_EMAIL' => 'ivan.bauer90@gmail.com'
-
+    'ERROR_EMAIL' => 'ivan.bauer90@gmail.com',
+    'LEGAL_NOTICE_VERSION' => 0,
+    'LEGAL_NOTICE_DATE' => '2021-07-07',
 ];

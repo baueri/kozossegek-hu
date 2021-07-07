@@ -24,7 +24,6 @@ class LegalNoticeService
 
     public static function needsApproval(): bool
     {
-        $version = self::getVersion();
-        return $version > 0 && Session::get('accepted_legal_notice_version', 0) !== $version;
+        return Session::get('accepted_legal_notice_version', '0') != self::getVersion();
     }
 }

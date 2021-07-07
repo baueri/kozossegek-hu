@@ -52,7 +52,7 @@
                     <ul class="navbar-nav">
                         <li class="nav-item"><a href="@route('portal.page', 'rolunk')" class="nav-link">Rólunk</a></li>
                         <li class="nav-item"><a href="@route('portal.page', 'impresszum')" class="nav-link">Impresszum</a></li>
-                        <li class="nav-item"><a href="@route('portal.page', 'adatvedelmi-nyilatkozat')" class="nav-link">Adatvédelmi nyilatkozat</a></li>
+                        <li class="nav-item"><a href="@route('portal.page', 'adatkezelesi-tajekoztato')" class="nav-link">Adatvédelem</a></li>
                         <li class="nav-item"><a href="@route('portal.page', 'iranyelveink')" class="nav-link">Irányelveink</a></li>
                         <li class="nav-item"><a href="@route('portal.page', 'rolunk')#contact" class="nav-link">Kapcsolat</a></li>
                     </ul>
@@ -105,11 +105,10 @@
     <script>
         @if(isset($display_legal_notice) && $display_legal_notice)
             dialog.show({
-                "title": "Az adatvédelmi nyilatkozatunk módosult",
-                "message": "<p>A személyes adatok biztonsága fontos számunkra.</p><p>Ezért igyekszünk a regisztrált közösségvezetők részére érthetővé és láthatóvá" +
-                    " tenni, hogy mely adatokat milyen céllal tárolunk a rendszerünkben. Az adatvédelmi nyilatkozatunkat módosítottuk, amit az alábbi linkre kattintva meg tudsz tekinteni.</p><p>" +
-                    "<p class='text-center'><a href='/adatvedelmi-nyilatkozat?accept-legal-notice' target='_blank'>Adatvédelmi nyilatkozat <i class='fa fa-external-link-alt'></i></a></p>" +
-                    "<p class='text-center'><small>Az oldal további böngészésével elfogadod az adatvédelmi nyilatkozatot.</small></p>",
+                "title": "Adatvédelmi tájékoztatónk módosult",
+                "message": "<p>Kedves Felhasználónk!<br/><br/> A <b>kozossegek.hu</b> adatkezelési tájékoztatója <b>{{ $legal_notice_date }}</b> napján módosult. Kérjük, ismerje meg a módosított adatvédelmi tájékoztatónkat.</p><p>" +
+                    "<p class='text-center'><a href='/adatkezelesi-tajekoztato?accept-legal-notice' target='_blank'>Adatvédelmi tájékoztató <i class='fa fa-external-link-alt'></i></a></p>" +
+                    "<p class='text-center'><small><b><u>Az oldal további böngészésével elfogadod az adatvédelmi tájékoztatót.</u></b></small></p>",
                 "closable": false,
                 "buttons": [
                     {"text": "Megértettem", "cssClass": "btn btn-primary", action(modal, callback) { callback(modal, true); modal.close(); }},

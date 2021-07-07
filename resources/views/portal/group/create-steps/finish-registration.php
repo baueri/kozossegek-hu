@@ -22,9 +22,9 @@
         </p>
     @endif
     <hr>
-    <p class="text-right">
-        <label>Az <a href="/adatvedelmi-nyilatkozat" target="_blank">adatvédelmi tájékoztatót</a> elolvastam és elfogadom <input type="checkbox" required id="adatvedelmi-tajekoztato"></label><br/>
-        <label>A közösségem a <a href="/iranyelveink" target="_blank">kereszténységgel egyező szellemiséget</a> képvisel <input type="checkbox" required id="iranyelvek"></label>
+    <p class="text-left">
+        @component('aszf')<br/>
+        <label><input type="checkbox" required id="iranyelvek"> A közösségem a <a href="/iranyelveink" target="_blank"><b><u>kereszténységgel egyező szellemiséget</u></b></a> képvisel</label>
     </p>
 </div>
 <style>

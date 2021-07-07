@@ -22,7 +22,8 @@ return [
     'error_email' => _env('ERROR_EMAIL', 'ivan.bauer90@gmail.com'),
     'website_contact_email' => _env('WEBSITE_CONTACT_EMAIL', 'ivan.bauer90@gmail.com'),
 
-    'legal_notice_version' => _env('LEGAL_NOTICE_VERSION'),
+    'legal_notice_version' => _env('LEGAL_NOTICE_VERSION', 0),
+    'legal_notice_date' => _env('LEGAL_NOTICE_DATE', '2021-07-07'),
 
     'providers' => [
 
