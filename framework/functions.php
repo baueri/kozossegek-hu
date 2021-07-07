@@ -9,6 +9,7 @@ use App\Repositories\EventLogRepository;
 use App\Repositories\Widgets;
 use App\Services\EventLogger;
 use Arrilot\DotEnv\DotEnv;
+use Carbon\Carbon;
 use Framework\Application;
 use Framework\Database\Builder;
 use Framework\Database\Database;
@@ -202,6 +203,11 @@ function collect_file($file)
 function _env($key, $default = null)
 {
     return DotEnv::get($key, $default);
+}
+
+function now($tz = null): Carbon
+{
+    return Carbon::now($tz);
 }
 
 /**

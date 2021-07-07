@@ -71,7 +71,7 @@ class View implements ViewInterface
             [$dirPath, $viewPath] = explode(':', $viewPath);
             $dirPath = rtrim(config("view.view_sources.{$dirPath}"), DS) . DS;
         } else {
-            $dirPath = config('app.views_dir', RESOURCES . 'views' . DS);
+            $dirPath = config('app.views_dir', VIEWS);
         }
 
         return $dirPath . $viewPath . '.php';
