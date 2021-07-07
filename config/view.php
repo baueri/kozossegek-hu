@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Components\AszfCheckBox;
+use App\Http\Components\ComponentParser;
 use App\Http\Components\FacebookShareButton;
 use App\Http\Components\FeaturedTitle;
 use App\Http\Components\FontawesomeIcon;
@@ -10,7 +12,6 @@ use App\Http\Components\Selectors\OccasionFrequencySelector;
 use App\Http\Components\Selectors\OnDaysSelector;
 use App\Http\Components\Selectors\SpiritualMovementSelector;
 use App\Http\Components\Selectors\UserGroupSelector;
-use Framework\Http\View\View;
 
 return [
     'view_sources' => [
@@ -67,5 +68,9 @@ return [
 
             return '<div class="shadow-sm bg-white p-3 rounded"><h5>Szűrő</h5>';
         },
+        'component' => ComponentParser::class
+    ],
+    'components' => [
+        'aszf' => AszfCheckBox::class
     ]
 ];

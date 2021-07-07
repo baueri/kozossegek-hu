@@ -2,6 +2,7 @@
     <link rel="canonical" href="{{ $page->getUrl() }}" />
     <meta name="description" content="{{ $page->excerpt() }}" />
 @endsection
+@section('subtitle', $page->title . ' | ')
 @section('header_content')
     @if($header_background)
         @featuredTitle($page_title)

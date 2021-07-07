@@ -24,5 +24,6 @@ return [
     'CONTACT_EMAIL' => 'please_set',
 
     'CACHE_PAGES' => false,
-    'LEGAL_NOTICE_VERSION' => 1
+    'LEGAL_NOTICE_VERSION' => 1,
+    'LEGAL_NOTICE_DATE' => '2021-07-07',
 ];

@@ -9,7 +9,7 @@ use Framework\Http\Session;
 
 class LegalNoticeController
 {
-    public function accept()
+    public function accept(): array
     {
         if ($user = Auth::user()) {
             UserLegalNotices::init()->updateOrInsertCurrentFor($user);

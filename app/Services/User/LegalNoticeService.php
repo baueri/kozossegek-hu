@@ -24,6 +24,6 @@ class LegalNoticeService
 
     public static function needsCheck(): bool
     {
-        return Session::get('accepted_legal_notice_version', 0) !== self::getVersion();
+        return Session::get('accepted_legal_notice_version', '0') != self::getVersion();
     }
 }
