@@ -81,6 +81,14 @@ const dialog = (function () {
             closable: true
         }, options);
 
+        if (options.okBtn) {
+            options.buttons[0] = $.extend(options.buttons[0], options.okBtn);
+        }
+
+        if (options.cancelBtn) {
+            options.buttons[1] = $.extend(options.buttons[1], options.cancelBtn);
+        }
+
         let backDrop = !options.closable ? "data-backdrop='static' data-keyboard='false' tabindex='-1'" : "";
 
         let outer = $("<div class='modal fade' " + backDrop + " tabindex='-1'></div>");

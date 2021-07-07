@@ -118,6 +118,7 @@ abstract class Repository
      * @param array $values
      * @return Model|mixed|T
      * @psalm-return T
+     * @phpstan-return T
      */
     public function create(array $values)
     {

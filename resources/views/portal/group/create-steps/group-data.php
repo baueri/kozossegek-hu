@@ -415,8 +415,7 @@
                         cssClass: "group-register-preview"
                     }, function (modal, confirm) {
                         if (confirm) {
-
-                            if (!$("#adatvedelmi-tajekoztato").is(":checked") || !$("#iranyelvek").is(":checked")) {
+                            if (!$("#adatkezelesi-tajekoztato").is(":checked") || !$("#iranyelvek").is(":checked")) {
                                 dialog.show("A regisztráció befejezéséhez először el kell fogadnod az adatvédelmi tájékoztatót és az irányelveinket!");
                                 return;
                             }

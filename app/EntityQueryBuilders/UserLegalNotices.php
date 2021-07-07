@@ -10,8 +10,6 @@ use App\Services\User\LegalNoticeService;
 use Framework\Model\EntityQueryBuilder;
 
 /**
- * Class UserLegalNotices
- * @package \App\EntityQueryBuilders
  * @template-extends \Framework\Model\EntityQueryBuilder<\App\Models\UserLegalNotice>
  */
 class UserLegalNotices extends EntityQueryBuilder
@@ -41,7 +39,7 @@ class UserLegalNotices extends EntityQueryBuilder
         );
     }
 
-    public function updateOrInsertCurrentFor(User $user)
+    public function updateOrInsertCurrentFor(User $user): int
     {
         return $this->updateOrInsert([
             'user_id' => $user->id

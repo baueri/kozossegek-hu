@@ -36,7 +36,7 @@
             <div class="col-md-6">
                 @honeypot('register')
                 <p>
-                    <label><input type="checkbox" required id="adatvedelmi-tajekoztato"> Az <a href="/adatvedelmi-nyilatkozat" target="_blank">adatvédelmi tájékoztatót</a> elolvastam és elfogadom</label><br/>
+                    @component('aszf')<br/>
                 </p>
                 <div class="form-group">
                     <button type="submit" class="btn btn-darkblue">Regisztráció</button>
