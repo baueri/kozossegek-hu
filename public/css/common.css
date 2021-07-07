@@ -38,15 +38,14 @@
     color: #fff;
 }
 
-.video-container {
+.responsive-container {
     position: relative;
-    padding-bottom: 56.25%;
-    padding-top: 30px;
     height: 0;
     overflow: hidden;
+    padding-top: 30px;
 }
 
-.video-container iframe, .video-container object, .video-container embed {
+.responsive-container iframe, .responsive-container object, .responsive-container embed {
     position: absolute;
     top: 0;
     left: 0;
@@ -54,6 +53,13 @@
     height: 100%;
 }
 
+.responsive-container.video-container {
+    padding-bottom: 56.25%;
+}
+
+.responsive-container.pdf-container {
+    padding-bottom: 80%;
+}
 
 .shadowed {
     padding: 1rem;

@@ -196,7 +196,7 @@ function collect_file($file)
 
 /**
  * @param $key
- * @param null $default
+ * @param mixed|null $default
  * @return mixed|null
  */
 function _env($key, $default = null)

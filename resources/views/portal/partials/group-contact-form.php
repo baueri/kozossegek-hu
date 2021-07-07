@@ -19,5 +19,5 @@
 </div>
 @honeypot('group-contact')
 <div class="text-right">
-    <p><label><input type="checkbox" required> Az <a href="/adatvedelmi-nyilatkozat" target="_blank">adatvédelmi tájékoztatót</a> elolvastam és elfogadom</label></p>
+    <p><label><input type="checkbox" required> Az <a href="/adatkezelesi-tajekoztato" target="_blank">adatvédelmi tájékoztatót</a> elolvastam és elfogadom</label></p>
 </div>
