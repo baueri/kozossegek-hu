@@ -62,6 +62,14 @@
             <blockquote>"Keressetek és találtok"<br/><small>Mt7,7</small></blockquote>
         </div>
     </div>
+    @if($release_info)
+        <div class="col-xl-5 col-sm-6 mb-4">
+            <div class="shadow rounded bg-white p-4 h-100">
+                <h5><a href="@route('admin.release_notes')">@icon('info-circle') Új verzió! - {{ $release_info['header'] }}</a></h5>
+                {{ $release_info['notes'] }}
+            </div>
+        </div>
+    @endif
     @if(site_has_error_logs())
         <div class="col-lg-4 col-md-6 mb-4">
             <div class="card text-white bg-danger mb-3 shadow">

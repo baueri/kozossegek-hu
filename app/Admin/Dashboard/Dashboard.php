@@ -4,6 +4,7 @@ namespace App\Admin\Dashboard;
 
 use App\Admin\Settings\Services\ErrorLogParser;
 use App\Repositories\Groups;
+use Carbon\Carbon;
 
 class Dashboard
 {
@@ -19,6 +20,8 @@ class Dashboard
 
     final public function getHtml(): string
     {
+        $releaseInfo = $this->releaseNoteInfo();
+
         $groupStatsForThisMonth = $this->getGroupStats(date('Y-m-01'));
 
         $groupsThisMonth = $this->groups->query()
@@ -37,7 +40,8 @@ class Dashboard
             'groups_count' => $groupsTotal,
             'pending_groups' => $pendingGroups,
             'groups_this_month' => $groupsThisMonth,
-            'last_error' => $lastError
+            'last_error' => $lastError,
+            'release_info' => $releaseInfo
         ]);
     }
 
@@ -64,5 +68,38 @@ class Dashboard
         }
 
         return $query->first();
+    }
+
+    private function releaseNoteInfo(): ?array
+    {
+        $page = file_get_contents(VIEWS . 'admin/release_notes.php');
+
+        preg_match('/<h3>(.*)<\/h3>/', $page, $matches);
+
+        if (!$matches) {
+            return null;
+        }
+
+        [$version, $date] = explode(' ', $matches[1]);
+
+        $date = str_replace(['(', ')', '.'], ['', '', '-'], $date);
+
+        $latestDate = Carbon::parse($date);
+        $toCheck = now()->subDays(5);
+
+        if ($toCheck->gt($latestDate)) {
+            return null;
+        }
+
+        $dom = new \DOMDocument();
+        $dom->loadHTML($page);
+
+        /* @var $ul \DOMElement */
+        $ul = $dom->getElementsByTagName('ul')[0];
+
+        return [
+            'header' => $matches[1],
+            'notes' => htmlspecialchars_decode(utf8_decode($ul->ownerDocument->saveHTML($ul)))
+        ];
     }
 }

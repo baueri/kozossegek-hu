@@ -1,6 +1,17 @@
 @title('Verzióinformáció')
 @extends('admin')
-<h3>v1.4.0 (2021.06.30)</h3>
+<h3>v1.4.2 (2021.07.07)</h3>
+<ul>
+    <li>[NEW]: Adatvédelmi tájékoztató popup elkészült. Minden belépéskor ellenőrizzük, hogy szükséges e megjeleníteni a felugró ablakot</li>
+    <li>
+        <b>Gépház</b>
+        <ul>
+            <li>[CHANGED]: a &commat;component() direktíva mostantól paraméterezhető</li>
+            <li>[NEW]: Új model struktúra (Entity) került bevezetésre egyszerűbb kezelésre</li>
+        </ul>
+    </li>
+</ul>
+<h3>v1.4.1 (2021.06.30)</h3>
 <ul>
     <li>[NEW]: psalm support-osra lettek alakítva a comment blockok néhány helyen</li>
     <li>[CHANGED]: A legutoljára elfogadott adatvédelmi nyilatkozat verziót session-ben tároljuk le, hogy ne kelljen mindig adatbázisból lekérni.</li>

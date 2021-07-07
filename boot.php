@@ -23,9 +23,10 @@ if (!defined('DS')) {
 const ROOT = __DIR__ . DS;
 const APP = ROOT . 'app' . DS;
 const RESOURCES = ROOT . 'resources' . DS;
+const VIEWS = RESOURCES . 'views' . DS;
 const CACHE = ROOT . 'cache' . DS;
 const LANG = 'hu';
-const APP_VERSION = 'v1.4.0';
+const APP_VERSION = 'v1.4.2';
 const STORAGE_PATH = ROOT . 'storage' . DS;
 
 // Config constants for faster development
