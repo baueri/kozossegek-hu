@@ -12,9 +12,9 @@
             <li class="nav-item">
                 <a href="@route('portal.register_group')" class="nav-link"><span>Közösséget vezetek</span></a>
             </li>
-<!--            <li class="nav-item">-->
-<!--                <a href="@route('portal.spiritual_movements')" class="nav-link"><span>Lelkiségi mozgalmak</span></a>-->
-<!--            </li>-->
+            <li class="nav-item">
+                <a href="@route('portal.spiritual_movements')" class="nav-link"><span>Lelkiségi mozgalmak</span></a>
+            </li>
             <li class="nav-item">
                 <a href="@route('portal.page', ['slug' => 'a-kozosseg'])" class="nav-link">A közösségről</a>
             </li>
