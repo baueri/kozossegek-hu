@@ -1,5 +1,10 @@
 @title('Verzióinformáció')
 @extends('admin')
+<h3>v1.4.3 (2021.09.14)</h3>
+<ul>
+    <li>[FIXED]: Intézménykereső hibát dobott, ha a kulcsszó zárójelet tartalmazott</li>
+    <li>[FIXED]: A lelkiségi mozgalmas szövegben kétszer szerepelt egy mondat.</li>
+</ul>
 <h3>v1.4.2 (2021.07.07)</h3>
 <ul>
     <li>[NEW]: Adatvédelmi tájékoztató popup elkészült. Minden belépéskor ellenőrizzük, hogy szükséges e megjeleníteni a felugró ablakot</li>
