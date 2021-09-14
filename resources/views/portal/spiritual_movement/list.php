@@ -9,7 +9,7 @@
             Egy katolikus lelkiségi mozgalom olyan közösség, amely a római katolikus egyház tanítását követve, a szerzetesrendek és a különféle társulatok, egyesületek mellett újabb alternatívát kínálnak a katolikus hit megélésének területén.
         </p>
         <p>
-            A régebbi korokban elsősorban a szerzetesrendek és a különféle társulatok, egyesületek jelentettek alternatívát a hit megélésének területén. A mai idők hasonló új kezdeményezéseit általában „mozgalmak és lelkiségek” néven foglaljuk össze. A régebbi kezdeményezések az idők során jórészt intézményesültek, alkalmazkodtak a plébániarendszer által meghatározott szervezeti struktúrához. Egyes nagy múltra visszatekintő szervezetek eredeti lendületüket fölelevenítve maguk is az újonnan induló áramlatok mellé sorakoznak fel.
+            A mai idők hasonló új kezdeményezéseit általában „mozgalmak és lelkiségek” néven foglaljuk össze. A régebbi kezdeményezések az idők során jórészt intézményesültek, alkalmazkodtak a plébániarendszer által meghatározott szervezeti struktúrához. Egyes nagy múltra visszatekintő szervezetek eredeti lendületüket fölelevenítve maguk is az újonnan induló áramlatok mellé sorakoznak fel.
         </p>
     </div>
     <div>
