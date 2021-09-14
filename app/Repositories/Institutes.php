@@ -4,11 +4,10 @@ namespace App\Repositories;
 
 use App\Models\Institute;
 use Framework\Database\PaginatedResultSet;
+use Framework\Model\PaginatedModelCollection;
 use Framework\Repository;
 
 /**
- * Description of Institutes
- *
  * @author ivan
  * @extends Repository<\App\Models\Institute>
  */
@@ -16,11 +15,11 @@ class Institutes extends Repository
 {
     /**
      *
-     * @param string $keyword
-     * @param null $city
+     * @param string|null $keyword
+     * @param string|null $city
      * @return PaginatedResultSet|Institute[]
      */
-    public function search($keyword, $city = null)
+    public function search(?string $keyword = null, ?string $city = null)
     {
         $builder =  $this->getBuilder()->apply(['notDeleted', 'approved']);
         if ($city) {
@@ -28,7 +27,7 @@ class Institutes extends Repository
         }
 
         if ($keyword) {
-            $keyword = trim($keyword, ' -*');
+            $keyword = trim($keyword, ' -*()');
             $builder->whereRaw(
                 'MATCH (name, name2, city, district) AGAINST (? IN BOOLEAN MODE)',
                 [$keyword ? '+' . str_replace(' ', '* +', $keyword) . '*' : '']
