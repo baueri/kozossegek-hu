@@ -7,6 +7,8 @@ use Framework\Support\Arr;
 
 trait BelongsTo
 {
+    protected array $preparedRelations = [];
+
     public function belongsTo(string $repositoryClass, ?string $foreingkey = null, ?string $localKey = null)
     {
         $this->preparedRelations['belongsTo'][] = new Relation(
