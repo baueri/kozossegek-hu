@@ -11,6 +11,7 @@ trait HasRelations
     {
         $this->loadBelongsToRelations($instances);
         $this->loadHasManyRelations($instances);
+        return $instances;
     }
 
     protected function getRelationName(): string

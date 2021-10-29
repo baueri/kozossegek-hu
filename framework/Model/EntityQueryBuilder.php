@@ -23,9 +23,7 @@ abstract class EntityQueryBuilder
 
     protected Builder $builder;
 
-    protected array $preparedRelations = [];
-
-    public function __construct()
+    final public function __construct()
     {
         $this->builder = builder(static::getTableName());
     }
@@ -63,34 +61,15 @@ abstract class EntityQueryBuilder
     }
 
     /**
-     * @return Entity[]|ModelCollection|PaginatedModelCollection|T[]|PaginatedResultSet|Collection
+     * @return Entity[]|ModelCollection
      */
     public function get()
     {
-        $rows = $this->builder->get();
-        return $this->getInstances($rows);
-    }
-
-    /**
-     * @param array|PaginatedResultSetInterface $rows
-     * @return Collection|Entity[]|PaginatedResultSet
-     * @psalm-return T[]|Collection|PaginatedResultSet
-     */
-    public function getInstances($rows)
-    {
-        if ($rows instanceof PaginatedResultSetInterface) {
-            $models = new PaginatedModelCollection(array_map(function ($row) {
+        return $this->loadRelations(
+            new ModelCollection(array_map(function ($row) {
                 return $this->getInstance($row);
-            }, $rows->rows()), $rows->perpage(), $rows->page(), $rows->total());
-        } else {
-            $models = new ModelCollection(array_map(function ($row) {
-                return $this->getInstance($row);
-            }, $rows));
-        }
-
-        $this->loadRelations($models);
-
-        return $models;
+            }, $this->builder->get()))
+        );
     }
 
     /**
@@ -114,12 +93,18 @@ abstract class EntityQueryBuilder
         return $this->where(static::primaryCol(), $id)->first();
     }
 
-    public function firstOrFail()
+    /**
+     * @throws ModelNotFoundException
+     */
+    public function firstOrFail(): Entity
     {
         return $this->getOrFail($this->first());
     }
 
-    public function getOrFail(?Model $model)
+    /**
+     * @throws ModelNotFoundException
+     */
+    public function getOrFail(?Entity $model): Entity
     {
         if (!$model) {
             throw new ModelNotFoundException();
@@ -130,7 +115,7 @@ abstract class EntityQueryBuilder
 
     /**
      * @psalm-return T|null
-     * @return \Framework\Model\Entity|mixed|null|T
+     * @return Entity|mixed|null
      */
     public function first(): ?Entity
     {
@@ -239,9 +224,13 @@ abstract class EntityQueryBuilder
         return $this->builder->delete();
     }
 
-    public function paginate(?int $perpage = null, ?int $page = null)
+    public function paginate(?int $perpage = null, ?int $page = null): PaginatedModelCollection
     {
-        return $this->getInstances($this->builder->paginate($perpage, $page));
+        $rows = $this->builder->paginate($perpage, $page);
+        $models = new PaginatedModelCollection(array_map(function ($row) {
+            return $this->getInstance($row);
+        }, $rows->rows()), $rows->perpage(), $rows->page(), $rows->total());
+        return $this->loadRelations($models);
     }
 
     public function exists(): bool
