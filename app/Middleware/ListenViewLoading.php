@@ -9,7 +9,7 @@ use Framework\Middleware\Middleware;
 class ListenViewLoading implements Middleware
 {
 
-    public function handle()
+    public function handle(): void
     {
         ViewLoaded::listen(LoadViewToDebugBar::class);
 //        ModelUpdated::listen(function (ModelUpdated $event) {

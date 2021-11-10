@@ -2,8 +2,6 @@
 
 namespace Framework\Http;
 
-use Framework\Middleware\Middleware;
-
 class Controller
 {
     protected array $middleware = [];
@@ -17,28 +15,10 @@ class Controller
         foreach ($this->middleware as $middleware) {
             $this->middleware($middleware);
         }
-
-        $this->boot();
     }
 
-    public function boot()
-    {
-
-    }
-
-    /**
-     * @param string|Middleware $middleware
-     * @psalm-template T of Middleware
-     * @psalm-param class-string<T>
-     */
     public function middleware(string $middleware): void
     {
-        if (is_string($middleware)) {
-            $middleware = (array) $middleware;
-        }
-
-        foreach ($middleware as $handler) {
-            app($handler)->handle();
-        }
+        app($middleware)->handle();
     }
 }

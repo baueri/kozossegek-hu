@@ -19,7 +19,7 @@ class AuthMiddleware implements Middleware
         $this->service = $service;
     }
 
-    public function handle()
+    public function handle(): void
     {
         $this->service->authenticateBySession();
     }

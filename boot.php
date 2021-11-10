@@ -33,8 +33,6 @@ const STORAGE_PATH = ROOT . 'storage' . DS;
 const APP_CFG_LEGAL_NOTICE_VERSION = 'app.legal_notice_version';
 const APP_CFG_LEGAL_NOTICE_DATE = 'app.legal_notice_date';
 
-include 'vendor/autoload.php';
-
 DotEnv::load(ROOT . '.env.php');
 
 if (!_env('DEBUG')) {
