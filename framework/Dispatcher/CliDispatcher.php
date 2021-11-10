@@ -46,7 +46,7 @@ class CliDispatcher implements Dispatcher
         }
     }
 
-    public function handleError($e)
+    public function handleError($e): void
     {
         $this->kernel->handleError($e);
     }

@@ -73,8 +73,9 @@ class HttpDispatcher implements Dispatcher
 
     /**
      * @param RouteInterface $route
-     * @return mixed|string
+     * @return mixed
      * @throws PageNotFoundException
+     * @throws \ReflectionException
      */
     private function resolveRoute(RouteInterface $route)
     {
@@ -91,42 +92,33 @@ class HttpDispatcher implements Dispatcher
     /**
      * @param RouteInterface $route
      * @return mixed
-     * @throws PageNotFoundException
+     * @throws PageNotFoundException|\ReflectionException
      */
     private function resolveController(RouteInterface $route)
     {
-        /* @var $controller Controller */
         $controller = $this->app->make($route->getController());
 
         if (!method_exists($controller, $route->getUse())) {
             throw new PageNotFoundException($this->request->uri);
         }
 
-        return $this->app->resolve($controller, $route->getUse(), $this->request->getUriValues());
+        return $this->app->resolve($controller, $route->getUse());
     }
 
-    /**
-     * @return string
-     */
     private function resolveView()
     {
         return view($this->request->route->getView(), $this->request->getUriValues());
     }
 
-    /**
-     * @return RouteInterface|null
-     */
-    public function getCurrentRoute()
+    public function getCurrentRoute(): ?RouteInterface
     {
         return $this->router->find($this->request->requestMethod, $this->request->uri);
     }
 
     /**
-     *
-     * @param Exception $e
-     * @throws Exception
+     * @throws Exception|\Throwable
      */
-    public function handleError($e)
+    public function handleError($e): void
     {
         $this->kernel->handleError($e);
     }

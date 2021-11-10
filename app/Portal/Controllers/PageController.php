@@ -25,7 +25,7 @@ class PageController extends PortalController
 
         $page_title = $page->pageTitle();
 
-        if (view()->exists($view = "pages.{$request['slug']}")) {
+        if (View::exists($view = "pages.{$request['slug']}")) {
             return view($view, compact('page', 'page_title'));
         }
 

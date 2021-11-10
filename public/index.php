@@ -5,11 +5,11 @@ use App\HttpKernel;
 use Framework\Dispatcher\Dispatcher;
 use Framework\Dispatcher\HttpDispatcher;
 
+include '../vendor/autoload.php';
+
 session_start();
 
 ob_start();
-
-include '../boot.php';
 
 try {
     ob_start();
