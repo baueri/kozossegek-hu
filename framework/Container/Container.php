@@ -65,9 +65,8 @@ class Container implements ContainerInterface
     }
 
     /**
-     * @psalm-template T
-     * @psalm-param class-string<T>
-     * @param string $id
+     * @template T
+     * @param class-string<T> $id
      * @return T
      * @psalm-return T
      */
@@ -104,11 +103,8 @@ class Container implements ContainerInterface
     }
 
     /**
-     * @psalm-template T
-     * @psalm-param $abstraction T class-string<T>
-     * @psalm-return T
+     * @template T
      * @param string|T $abstraction
-     * @param mixed ...$args
      * @return T
      */
     public function make(string $abstraction, ...$args)
@@ -181,9 +177,6 @@ class Container implements ContainerInterface
         return $dependencies;
     }
 
-    /**
-     * @throws ReflectionException
-     */
     private function getReflectionMethod($class, string $method = '__construct'): ?ReflectionFunctionAbstract
     {
         if (is_callable($class)) {
@@ -200,7 +193,6 @@ class Container implements ContainerInterface
     /**
      * @param ReflectionParameter $resource
      * @return mixed
-     * @throws ReflectionException
      */
     private function getDependencyResourceValue(ReflectionParameter $resource)
     {
@@ -220,6 +212,10 @@ class Container implements ContainerInterface
         return $value;
     }
 
+    /**
+     * @param string $key
+     * @param mixed $value
+     */
     public function share(string $key, $value): void
     {
         $this->shared[$key] = $value;
@@ -230,7 +226,12 @@ class Container implements ContainerInterface
         return $this->bindings;
     }
 
-    public function resolve($concrete, $method = '__construct', array $args = [])
+    /**
+     * @param mixed $concrete
+     * @return mixed
+     * @throws \ReflectionException
+     */
+    public function resolve($concrete, string $method = '__construct')
     {
         return call_user_func_array([$concrete, $method], $this->getDependencies($concrete, $method));
     }
