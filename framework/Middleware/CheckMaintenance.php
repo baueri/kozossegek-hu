@@ -32,7 +32,7 @@ class CheckMaintenance implements Middleware
         $this->maintenance = $maintenance;
     }
 
-    public function handle()
+    public function handle(): void
     {
 
         if ($this->maintenance->isMaintenanceOn()) {

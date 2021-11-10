@@ -20,7 +20,8 @@
       "PHPDeploy\\": "php_deploy/"
     },
     "files": [
-      "framework/functions.php"
+      "framework/functions.php",
+      "boot.php"
     ]
   },
   "autoload-dev": {

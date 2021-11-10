@@ -1,32 +1,32 @@
 <?php
 
-
 namespace Framework;
-
 
 use Framework\Exception\InvalidTranslationFileException;
 use Framework\Support\Collection;
-use Framework\Support\DataFile\JsonDataFile;
 
 class Translator
 {
-    protected $cache;
+    private Collection $cache;
 
-    protected $defaultLang;
+    private string $defaultLang = '';
 
     public function __construct()
     {
         $this->cache = new Collection();
     }
 
-    public function setDefaultLang($lang)
+    public function setDefaultLang(string $lang): Translator
     {
         $this->defaultLang = $lang;
 
         return $this;
     }
 
-    public function translate($key, $lang = null)
+    /**
+     * @throws InvalidTranslationFileException
+     */
+    public function translate(string $key, ?string $lang = null): string
     {
         $lang = $lang ?: $this->defaultLang;
 
@@ -37,16 +37,22 @@ class Translator
         return $this->cache[$lang][$key] ?: "?$key?";
     }
 
-    public function translate_f($key, ...$args)
+    /**
+     * @throws InvalidTranslationFileException
+     */
+    public function translateF(string $key, ...$args): string
     {
         return sprintf($this->translate($key), ...$args);
     }
 
-    private function load($lang)
+    /**
+     * @throws InvalidTranslationFileException
+     */
+    private function load(string $lang): void
     {
         $content = file_get_contents(RESOURCES . 'lang' . DS . $lang . '.json');
 
-        if($parsed = json_decode($content, true)) {
+        if ($parsed = json_decode($content, true)) {
             $this->cache[$lang] = $parsed;
         } else {
             throw new InvalidTranslationFileException();

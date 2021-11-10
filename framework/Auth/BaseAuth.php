@@ -6,7 +6,6 @@ use Framework\Exception\UnauthorizedException;
 
 class BaseAuth
 {
-
     /**
      * @param $realm
      * @param $user
@@ -14,7 +13,7 @@ class BaseAuth
      * @return bool
      * @throws UnauthorizedException
      */
-    public function authenticate($realm, $user, $password)
+    public function authenticate($realm, $user, $password): void
     {
         $validated = $user == $_SERVER['PHP_AUTH_USER'] && $password === $_SERVER['PHP_AUTH_PW'];
 
@@ -23,7 +22,5 @@ class BaseAuth
             header('HTTP/1.0 401 Unauthorized');
             throw new UnauthorizedException('Not authorized.');
         }
-
-        return true;
     }
 }
