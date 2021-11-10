@@ -13,6 +13,7 @@ use App\Models\User;
 use App\Repositories\UserTokens;
 use Framework\Http\Request;
 use Framework\Http\Response;
+use Framework\Http\View\View;
 use Framework\PasswordGenerator;
 
 class EmailTemplateController extends AdminController
@@ -91,7 +92,7 @@ class EmailTemplateController extends AdminController
     {
         Response::asJson();
 
-        $template = view()->getPath($request['template']);
+        $template = View::getPath($request['template']);
         $content = $request['content'];
 
         file_put_contents($template, $content);

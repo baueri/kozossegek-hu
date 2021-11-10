@@ -1,10 +1,8 @@
 <?php
 
-
 namespace Framework\Middleware;
-
 
 interface Middleware
 {
-    public function handle();
+    public function handle(): void;
 }

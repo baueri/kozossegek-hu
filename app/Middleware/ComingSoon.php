@@ -8,7 +8,7 @@ use App\Auth\Auth;
 
 class ComingSoon implements Middleware
 {
-    public function handle()
+    public function handle(): void
     {
         if (array_key_exists('29Y1L', $_REQUEST)) {
             Session::set('test_mode', true);

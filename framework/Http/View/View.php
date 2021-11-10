@@ -49,7 +49,7 @@ class View implements ViewInterface
      */
     public function view(string $view, array $args = [], array $additional_args = []): string
     {
-        $filePath = $this->getPath($view);
+        $filePath = static::getPath($view);
 
         if (!file_exists($filePath)) {
             throw new ViewNotFoundException('view file not found: ' . $filePath);
@@ -58,12 +58,12 @@ class View implements ViewInterface
         return $this->getContentAndDoCache($filePath, array_merge($additional_args, $args));
     }
 
-    public function exists(string $view): bool
+    public static function exists(string $view): bool
     {
-        return file_exists($this->getPath($view));
+        return file_exists(static::getPath($view));
     }
 
-    public function getPath(string $view): string
+    public static function getPath(string $view): string
     {
         $viewPath = str_replace('.', DS, $view);
 

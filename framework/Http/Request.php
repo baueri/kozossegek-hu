@@ -5,6 +5,7 @@ namespace Framework\Http;
 use App\Http\Exception\RequestParameterException;
 use ArrayAccess;
 use Countable;
+use Framework\Http\Route\RouteInterface;
 use Framework\Support\Collection;
 use InvalidArgumentException;
 use IteratorAggregate;
@@ -16,40 +17,20 @@ use IteratorAggregate;
  */
 class Request implements ArrayAccess, Countable, IteratorAggregate
 {
-    /**
-     * @var Collection
-     */
-    public $request;
+    public Collection $request;
 
-    /**
-     * @var Collection
-     */
-    public $files;
+    public Collection $files;
 
-    /**
-     * @var string
-     */
-    public $requestMethod;
+    public string $requestMethod;
 
-    /**
-     * @var string
-     */
-    public $uri;
+    public string $uri;
 
-    /**
-     *
-     * @var Route\Route
-     */
-    public $route;
+    public RouteInterface $route;
 
-    /**
-     * @var array
-     */
-    protected $uriValues;
+    private ?array $uriValues = null;
 
     public function __construct()
     {
-
         $this->request = (new Collection($_REQUEST))->each(function ($item, $key, $collection) {
             if ($item == "true" || $item == "false") {
                 $collection[$key] = filter_var($item, FILTER_VALIDATE_BOOLEAN);
@@ -64,8 +45,6 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
     }
 
     /**
-     * @param $name
-     * @param $arguments
      * @return mixed
      */
     public function __call($name, $arguments)
@@ -76,17 +55,19 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
     /**
      * @return array
      */
-    public function getUriValues()
+    public function getUriValues(): array
     {
-        if (is_null($this->uriValues)) {
-            $uriParts = explode('/', trim($this->uri, '/'));
-            $uriParts2 = explode('/', trim($this->route->getUriMask(), '/'));
-            $this->uriValues = [];
-            foreach ($uriParts2 as $i => $uriPart) {
-                preg_match_all('/{([a-zA-Z0-9\_]+)}/', $uriPart, $matches);
-                if ($matches[1]) {
-                    $this->uriValues[$matches[1][0]] = $uriParts[$i];
-                }
+        if (!is_null($this->uriValues)) {
+            return $this->uriValues;
+        }
+
+        $uriParts = explode('/', trim($this->uri, '/'));
+        $uriParts2 = explode('/', trim($this->route->getUriMask(), '/'));
+        $this->uriValues = [];
+        foreach ($uriParts2 as $i => $uriPart) {
+            preg_match_all('/{([a-zA-Z0-9\_]+)}/', $uriPart, $matches);
+            if ($matches[1]) {
+                $this->uriValues[$matches[1][0]] = $uriParts[$i];
             }
         }
 
