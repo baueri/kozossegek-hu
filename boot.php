@@ -26,14 +26,12 @@ const RESOURCES = ROOT . 'resources' . DS;
 const VIEWS = RESOURCES . 'views' . DS;
 const CACHE = ROOT . 'cache' . DS;
 const LANG = 'hu';
-const APP_VERSION = 'v1.4.2';
+const APP_VERSION = 'v1.4.4';
 const STORAGE_PATH = ROOT . 'storage' . DS;
 
 // Config constants for faster development
 const APP_CFG_LEGAL_NOTICE_VERSION = 'app.legal_notice_version';
 const APP_CFG_LEGAL_NOTICE_DATE = 'app.legal_notice_date';
-
-include 'vendor/autoload.php';
 
 DotEnv::load(ROOT . '.env.php');
 

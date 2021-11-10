@@ -24,7 +24,7 @@ class AdminMiddleware implements Middleware
     /**
      * @throws \Framework\Exception\UnauthorizedException
      */
-    final public function handle()
+    final public function handle(): void
     {
         if (!Auth::loggedIn()) {
             Session::set('last_visited', $_SERVER['REQUEST_URI']);

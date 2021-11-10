@@ -7,7 +7,7 @@ use Framework\Middleware\Middleware;
 
 class AppServiceProvider implements Middleware
 {
-    public function handle()
+    public function handle(): void
     {
         View::setVariable('is_home', is_home());
         View::setVariable('is_prod', is_prod());

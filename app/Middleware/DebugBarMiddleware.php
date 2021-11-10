@@ -10,7 +10,7 @@ use Framework\Middleware\Middleware;
 class DebugBarMiddleware implements Middleware
 {
 
-    public function handle()
+    public function handle(): void
     {
         View::setVariable('show_debugbar', config('app.environment') !== 'production' && config('app.debug'));
     }

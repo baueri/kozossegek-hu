@@ -115,7 +115,7 @@ function lang($key = null, $lang = null)
  */
 function lang_f($key, ...$args)
 {
-    return lang()->setDefaultLang(getLang())->translate_f($key, ...$args);
+    return lang()->setDefaultLang(getLang())->translateF($key, ...$args);
 }
 
 /**
@@ -210,19 +210,9 @@ function now($tz = null): Carbon
     return Carbon::now($tz);
 }
 
-/**
- * @param string|null $view
- * @param array $args
- * @return string|View
- * @throws \ReflectionException
- */
-function view(string $view = null, array $args = [])
+function view(string $view, array $args = []): string
 {
-    if ($view) {
-        return app()->make(ViewInterface::class)->view($view, $args);
-    }
-
-    return app()->make(ViewInterface::class);
+    return app()->make(ViewInterface::class)->view($view, $args);
 }
 
 /**

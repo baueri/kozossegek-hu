@@ -1,42 +1,28 @@
 <?php
 
-
 namespace Framework\Middleware;
 
-
-use Framework\Application;
 use Framework\Auth\BaseAuth;
 
 class BaseAuthMiddleware implements Middleware
 {
-    /**
-     * @var Application
-     */
-    private $app;
-    /**
-     * @var BaseAuth
-     */
-    private $auth;
+    private BaseAuth $auth;
 
-    /**
-     * BaseAuthMiddleware constructor.
-     * @param Application $app
-     * @param BaseAuth $auth
-     */
-    public function __construct(Application $app, BaseAuth $auth)
+    public function __construct(BaseAuth $auth)
     {
-        $this->app = $app;
         $this->auth = $auth;
     }
 
-    public function handle()
+    public function handle(): void
     {
-
-
         if (!config('app.base_auth')) {
-            return true;
+            return;
         }
-        
-        $this->auth->authenticate('kozossegek.hu Basic Authentication', config('app.base_auth.user'), config('app.base_auth.password'));
+
+        $this->auth->authenticate(
+            'kozossegek.hu Basic Authentication',
+            config('app.base_auth.user'),
+            config('app.base_auth.password')
+        );
     }
 }
