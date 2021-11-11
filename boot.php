@@ -26,7 +26,7 @@ const RESOURCES = ROOT . 'resources' . DS;
 const VIEWS = RESOURCES . 'views' . DS;
 const CACHE = ROOT . 'cache' . DS;
 const LANG = 'hu';
-const APP_VERSION = 'v1.4.4';
+const APP_VERSION = 'v1.4.5';
 const STORAGE_PATH = ROOT . 'storage' . DS;
 
 // Config constants for faster development

@@ -181,13 +181,9 @@ function redirect_route(string $route, $args = [])
     redirect(route($route, $args));
 }
 
-/**
- * @param $values
- * @return Collection
- */
-function collect(?array $values = [])
+function collect(?array $values = []): Collection
 {
-    return Collection::create($values);
+    return new Collection($values);
 }
 
 function collect_file($file)

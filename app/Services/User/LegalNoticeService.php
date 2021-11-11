@@ -8,13 +8,29 @@ use Framework\Http\Session;
 
 class LegalNoticeService
 {
+    private UserLegalNotices $repo;
+
+    public function __construct(UserLegalNotices $repo)
+    {
+        $this->repo = $repo;
+    }
+
     public function setLegalNoticeSessionFor(User $user): void
     {
-        $legalNotice = UserLegalNotices::init()
+        if (Session::has('accepted_legal_notice_version')) {
+            return;
+        }
+
+        $legalNotice = $this->repo
             ->forUser($user)
             ->first();
 
         Session::set('accepted_legal_notice_version', $legalNotice->accepted_legal_notice_version);
+    }
+
+    public function updateOrInsertCurrentFor(User $user): void
+    {
+        $this->repo->updateOrInsertCurrentFor($user);
     }
 
     public static function getVersion(): int

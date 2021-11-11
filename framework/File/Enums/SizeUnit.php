@@ -6,13 +6,13 @@ use Framework\Support\Enum;
 
 class SizeUnit extends Enum
 {
-    const B = 'B';
-    const KB = 'KB';
-    const MB = 'MB';
-    const GB = 'GB';
-    const TB = 'TB';
+    public const B = 'B';
+    public const KB = 'KB';
+    public const MB = 'MB';
+    public const GB = 'GB';
+    public const TB = 'TB';
 
-    public static function getSizeUnits()
+    public static function getSizeUnits(): array
     {
         return [
             self::KB => 1,
