@@ -33,11 +33,6 @@ abstract class Entity
         return $this->{static::$primaryCol};
     }
 
-    public function setId($id): void
-    {
-        $this->{static::$primaryCol} = $id;
-    }
-
     public static function getPrimaryCol(): string
     {
         return static::$primaryCol;

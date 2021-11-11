@@ -9,10 +9,10 @@ use Framework\Http\Session;
 
 class LegalNoticeController
 {
-    public function accept(): array
+    public function accept(UserLegalNotices $repo): array
     {
         if ($user = Auth::user()) {
-            UserLegalNotices::init()->updateOrInsertCurrentFor($user);
+            $repo->updateOrInsertCurrentFor($user);
             Session::set('accepted_legal_notice_version', LegalNoticeService::getVersion());
         }
 

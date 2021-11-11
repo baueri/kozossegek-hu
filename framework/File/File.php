@@ -16,7 +16,7 @@ class File
 
     protected ?string $fileType = null;
 
-    public function __construct($filePath = '')
+    final public function __construct($filePath = '')
     {
         if ($filePath) {
             $this->setFileName($filePath);
@@ -25,55 +25,28 @@ class File
         }
     }
 
-    /**
-     * @return string
-     */
-    public function getFileName()
+    public function getFileName(): ?string
     {
         return $this->fileName;
     }
 
-    /**
-     * @param string $fileName
-     * @return static
-     */
     public function setFileName(string $fileName): self
     {
         $this->fileName = basename($fileName);
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getFilePath()
+    public function getFilePath(): ?string
     {
         return $this->filePath;
     }
 
-    /**
-     * @param string $filePath
-     */
-    public function setFilePath($filePath)
+    public function setFilePath(string $filePath): void
     {
         $this->filePath = $filePath;
     }
 
-    public function getFileSizeIntelligent()
-    {
-        $sizeMB = $this->getFileSize(SizeUnit::MB, 2);
-        if ($sizeMB < 1) {
-            return $this->getFileSize(SizeUnit::KB, 3) . ' KB';
-        }
-        return $sizeMB . ' MB';
-    }
-
-    /**
-     * @param string $unit
-     * @param int $precision
-     * @return float|int
-     */
-    public function getFileSize($unit = 'B', $precision = 5)
+    public function getFileSize(string $unit = 'B', int $precision = 5): float
     {
         $size = filesize($this->filePath);
 
@@ -115,10 +88,7 @@ class File
         return $this;
     }
 
-    /**
-     * @return bool
-     */
-    public function delete()
+    public function delete(): bool
     {
         if (!$this->isDir()) {
             return unlink($this->filePath);
@@ -126,44 +96,27 @@ class File
         return rmdir($this->filePath);
     }
 
-    /**
-     * @return bool
-     */
-    public function isDir()
+    public function isDir(): bool
     {
         return is_dir($this->filePath);
     }
 
-    /**
-     * @param string $mode
-     * @return bool
-     */
-    public function setPermission($mode)
+    public function setPermission(string $mode): bool
     {
         return chmod($this->filePath, $mode);
     }
 
-    /**
-     * @param string $user
-     * @return bool]
-     */
-    public function setOwner($user)
+    public function setOwner(string $user): bool
     {
         return chown($this->filePath, $user);
     }
 
-    /**
-     * @return string
-     */
-    public function getFileType()
+    public function getFileType(): ?string
     {
         return $this->fileType;
     }
 
-    /**
-     * @return string
-     */
-    public function getIcon()
+    public function getIcon(): string
     {
         $typeClass = 'icon ' . ($this->isDir() ? 'folder' : 'file');
         $extensionClass = 'f-' . strtolower($this->getExtension());
@@ -171,65 +124,38 @@ class File
         return '<span class="' . implode(' ', $classes) . '">' . strtolower($this->getExtension(true)) . '</span>';
     }
 
-    /**
-     * @param bool $withDot
-     * @return string
-     */
-    public function getExtension($withDot = false)
+    public function getExtension(bool $withDot = false): string
     {
-        $ext = $this->getPathinfo('extension');
+        $ext = $this->getPathinfo()['extension'] ?? null;
         return ($ext && $withDot ? '.' : '') . $ext;
     }
 
-    /**
-     * @param null $key
-     * @return mixed
-     */
-    public function getPathInfo($key = null)
+    public function getPathInfo()
     {
-        if (!$this->pathInfo) {
-            $this->pathInfo = pathinfo($this->filePath);
-        }
-        if ($key) {
-            return isset($this->pathInfo[$key]) ? $this->pathInfo[$key] : null;
-        }
-        return $this->pathInfo;
+        return $this->pathInfo ??= pathinfo($this->filePath);
     }
 
-    /**
-     * @return bool
-     */
-    public function isImage()
+    public function isImage(): bool
     {
         return strpos($this->fileType, 'image/') === 0;
     }
 
-    /**
-     * @return false|string
-     */
-    public function getCreationDate()
+    public function getCreationDate(): ?string
     {
-        return date('Y.m.d H:i:s', filectime($this->filePath));
+        return date('Y.m.d H:i:s', filectime($this->filePath)) ?: null;
     }
 
-    /**
-     * @return false|string
-     */
-    public function getModificationDate()
+    public function getModificationDate(): ?string
     {
-        return date('Y.m.d H:i:s', filemtime($this->filePath));
+        return date('Y.m.d H:i:s', filemtime($this->filePath)) ?: null;
     }
 
-    public function getDirName()
+    public function getDirName(): string
     {
         return dirname($this->filePath);
     }
 
-    /**
-     * @param string $link
-     * @return bool
-     */
-    public function createSymLink($link)
+    public function createSymLink(string $link): bool
     {
         return symlink($this->filePath, $link);
     }
@@ -249,7 +175,7 @@ class File
         return 'unknown';
     }
 
-    public function is($fileType)
+    public function is($fileType): bool
     {
         return in_array($this->fileType, (array) $fileType);
     }
