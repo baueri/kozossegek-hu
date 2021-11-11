@@ -10,7 +10,7 @@ use App\Services\User\LegalNoticeService;
 use Framework\Model\EntityQueryBuilder;
 
 /**
- * @template-extends \Framework\Model\EntityQueryBuilder<\App\Models\UserLegalNotice>
+ * @phpstan-extends \Framework\Model\EntityQueryBuilder<\App\Models\UserLegalNotice>
  */
 class UserLegalNotices extends EntityQueryBuilder
 {
@@ -29,14 +29,6 @@ class UserLegalNotices extends EntityQueryBuilder
     public function forUser(User $user): self
     {
         return $this->where('user_id', $user->id);
-    }
-
-    public function currentVersion(): self
-    {
-        return $this->where(
-            'accepted_legal_notice_version',
-            LegalNoticeService::getVersion()
-        );
     }
 
     public function updateOrInsertCurrentFor(User $user): int

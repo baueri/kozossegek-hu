@@ -6,14 +6,11 @@ use Framework\Support\Collection;
 
 class QueryHistory
 {
-    /**
-     * @var Collection
-     */
-    protected $queryHistory;
+    protected Collection $queryHistory;
 
     public function __construct()
     {
-        $this->queryHistory = collect();
+        $this->queryHistory = new Collection();
     }
 
     public function pushQuery($query, $bindings, $time)
@@ -21,24 +18,18 @@ class QueryHistory
         $this->queryHistory->push([$query, $bindings, $time]);
     }
 
-    /**
-     * @return Collection
-     */
-    public function getQueryHistory()
+    public function getQueryHistory(): Collection
     {
         return $this->queryHistory;
     }
 
-    /**
-     * @return array
-     */
-    public function getLastQuery()
+    public function getLastQuery(): array
     {
         return $this->queryHistory->last();
     }
 
     public function getExecutionTime()
     {
-        return $this->queryHistory->reduce(fn($time, $row) => $time += $row[2], 0);
+        return $this->queryHistory->reduce(fn ($time, $row) => $time += $row[2], 0);
     }
 }

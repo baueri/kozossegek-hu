@@ -7,41 +7,18 @@ use App\Repositories\AgeGroups;
 use App\Repositories\Cities;
 use App\Repositories\GroupStatusRepository;
 use App\Repositories\OccasionFrequencies;
-use App\Enums\GroupStatusEnum;
 use App\Repositories\Users;
 use Framework\Http\Request;
 use ReflectionException;
 
-/**
- * Description of GroupListService
- *
- * @author ivan
- */
 class ListGroups
 {
-    /**
-     * @var OccasionFrequencies
-     */
-    private OccasionFrequencies $OccasionFrequencies;
+    private OccasionFrequencies $occasionFrequencies;
 
-    /**
-     * @var AgeGroups
-     */
-    private AgeGroups $AgeGroups;
+    private AgeGroups $ageGroups;
 
-    /**
-     * @var GroupTable
-     */
     private GroupTable $table;
 
-    /**
-     * @var Cities
-     */
-    private Cities $cities;
-
-    /**
-     * @var Request
-     */
     private Request $request;
 
     /**
@@ -49,37 +26,30 @@ class ListGroups
      * @param GroupTable $table
      * @param AgeGroups $AgeGroups
      * @param OccasionFrequencies $OccasionFrequencies
-     * @param Cities $Cities
      */
     public function __construct(
         Request $request,
         GroupTable $table,
         AgeGroups $AgeGroups,
-        OccasionFrequencies $OccasionFrequencies,
-        Cities $Cities
+        OccasionFrequencies $OccasionFrequencies
     ) {
         $this->table = $table;
-        $this->AgeGroups = $AgeGroups;
-        $this->OccasionFrequencies = $OccasionFrequencies;
-        $this->cities = $Cities;
+        $this->ageGroups = $AgeGroups;
+        $this->occasionFrequencies = $OccasionFrequencies;
         $this->request = $request;
     }
 
-    /**
-     * @return string
-     * @throws ReflectionException
-     */
-    public function show()
+    public function show(): string
     {
-        $age_groups = $this->AgeGroups->all();
+        $age_groups = $this->ageGroups->all();
 
-        $occasion_frequencies = $this->OccasionFrequencies->all();
+        $occasion_frequencies = $this->occasionFrequencies->all();
         $statuses = (new GroupStatusRepository())->all();
 
         $institute = null;
 
         if ($institute_id = $this->request['institute_id']) {
-            $institute = db()->fetchColumn("select name from institutes where id=?", [$institute_id]);
+            $institute = db()->first("select name from institutes where id=?", [$institute_id])['name'];
         }
 
         $filter = $this->request;

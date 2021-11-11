@@ -12,8 +12,7 @@ use Framework\Support\Collection;
 use Framework\Support\StringHelper;
 
 /**
- * @package Framework\Model
- * @psalm-template T of \Framework\Model\Entity
+ * @phpstan-template T of \Framework\Model\Entity
  */
 abstract class EntityQueryBuilder
 {
@@ -44,15 +43,14 @@ abstract class EntityQueryBuilder
     }
 
     /**
-     * @return string
-     * @psalm-return class-string<T>
+     * @phpstan-return class-string<T>
      */
     abstract protected static function getModelClass(): string;
 
     /**
      * @return static
      */
-    public static function init()
+    public static function query(): self
     {
         return new static();
     }
@@ -95,8 +93,7 @@ abstract class EntityQueryBuilder
 
     /**
      * @param array|null $values
-     * @return Entity|mixed
-     * @psalm-return T|null
+     * @return T|null
      */
     public function getInstance(?array $values = null)
     {
@@ -129,8 +126,7 @@ abstract class EntityQueryBuilder
     }
 
     /**
-     * @psalm-return T|null
-     * @return \Framework\Model\Entity|mixed|null|T
+     * @phpstan-return \Framework\Model\Entity<T>|T|null
      */
     public function first(): ?Entity
     {
@@ -172,6 +168,13 @@ abstract class EntityQueryBuilder
         return $this;
     }
 
+    /**
+     * @param $column
+     * @param null $operator
+     * @param null $value
+     * @param string $clause
+     * @return static
+     */
     public function where($column, $operator = null, $value = null, $clause = 'and')
     {
         $this->builder->where($column, $operator, $value, $clause);

@@ -8,12 +8,8 @@ use PDOStatement;
 
 class PDOResultSet implements ResultSet
 {
-
     public const FETCH_STYLE = PDO::FETCH_ASSOC;
 
-    /**
-     * @var PDOStatement
-     */
     private PDOStatement $statement;
 
     public function __construct(PDOStatement $statement)
@@ -21,17 +17,17 @@ class PDOResultSet implements ResultSet
         $this->statement = $statement;
     }
 
-    public function fetchRow($fetchStyle = self::FETCH_STYLE)
+    public function fetchRow(int $fetchStyle = self::FETCH_STYLE)
     {
         return $this->statement->fetch($fetchStyle) ?: null;
     }
 
-    public function getRows($fetchStyle = self::FETCH_STYLE)
+    public function getRows(int $fetchStyle = self::FETCH_STYLE): array
     {
         return $this->statement->fetchAll($fetchStyle);
     }
 
-    public function rowCount()
+    public function rowCount(): int
     {
         return $this->statement->rowCount();
     }

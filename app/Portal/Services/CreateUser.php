@@ -35,7 +35,7 @@ class CreateUser
 
         $user = $this->users->create($data);
 
-        UserLegalNotices::init()->updateOrInsertCurrentFor($user);
+        UserLegalNotices::query()->updateOrInsertCurrentFor($user);
 
         return $user;
     }
