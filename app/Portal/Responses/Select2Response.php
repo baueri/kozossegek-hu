@@ -47,6 +47,6 @@ abstract class Select2Response
     {
         return ['results' => $this->collection->map(function ($model) {
             return ['id' => $this->getId($model), 'text' => $this->getText($model)];
-        })->toArray()];
+        })->all()];
     }
 }

@@ -2,11 +2,7 @@
 
 namespace Framework\Database;
 
-use Framework\Http\Request;
-use Framework\Support\Arr;
-use InvalidArgumentException;
-
-class Builder
+final class Builder
 {
     private Database $db;
 
@@ -28,7 +24,7 @@ class Builder
 
     private array $selectBindings = [];
 
-    protected static array $macros = [];
+    private static array $macros = [];
 
     /**
      * Builder constructor.
@@ -40,25 +36,12 @@ class Builder
     }
 
     /**
-     * @return static
-     */
-    public static function query()
-    {
-        return app()->make(static::class);
-    }
-
-    /**
      *
-     * @return array[]
+     * @return array<int, array>
      */
-    public function get()
+    public function get(): array
     {
         return $this->db->select(...$this->getBaseSelect());
-    }
-
-    public function fetchColumn()
-    {
-        return $this->db->fetchColumn(...$this->getBaseSelect());
     }
 
     /**
@@ -90,7 +73,7 @@ class Builder
         return (int) $count;
     }
 
-    protected function getBaseSelect()
+    private function getBaseSelect(): array
     {
         [$query, $bindings] = $this->build();
         $bindings = array_merge($this->selectBindings, $bindings);
@@ -106,7 +89,7 @@ class Builder
         return [$base . $query, $bindings];
     }
 
-    protected function build()
+    private function build(): array
     {
         $bindings = [];
 
@@ -133,7 +116,7 @@ class Builder
         return [$query, $bindings];
     }
 
-    public function buildWhere(&$bindings = [])
+    public function buildWhere(?array &$bindings = []): string
     {
         $where = '';
         foreach ($this->where as $i => [$column, $operator, $value]) {
@@ -177,7 +160,7 @@ class Builder
         return $where;
     }
 
-    protected function getWhere()
+    private function getWhere(): array
     {
         return $this->where;
     }
@@ -189,7 +172,11 @@ class Builder
         return $this->db->first(...$this->getBaseSelect());
     }
 
-    public function limit($limit)
+    /**
+     * @param string|int $limit
+     * @return static
+     */
+    public function limit($limit): self
     {
         $this->limit = " limit $limit";
 

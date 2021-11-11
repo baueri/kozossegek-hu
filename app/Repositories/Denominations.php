@@ -19,6 +19,6 @@ class Denominations {
      */
     public function all() : array
     {
-        return DenominationEnum::values()->make(Denomination::class)->all();
+        return DenominationEnum::values()->as(Denomination::class)->all();
     }
 }

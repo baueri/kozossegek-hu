@@ -19,10 +19,7 @@ class Enum
 
     protected string $key;
 
-    /**
-     * @throws ReflectionException
-     */
-    private function __construct($value, string $key)
+    final private function __construct($value, string $key)
     {
         if (!static::isValid($value)) {
             throw new InvalidArgumentException('invalid enum type');
@@ -34,28 +31,21 @@ class Enum
 
     /**
      * @param string|int $value
-     * @return bool
-     * @throws ReflectionException
      */
-    public static function isValid($value)
+    public static function isValid($value): bool
     {
         return in_array($value, static::asArray());
     }
 
     /**
-     * @return static[]|\Framework\Support\Collection
-     * @throws \ReflectionException
+     * @return Collection<string, static>
      */
     public static function get(): Collection
     {
         return collect(self::asArray())->map(fn ($value, $key) => new static($value, $key), true);
     }
 
-    /**
-     * @return array
-     * @throws ReflectionException
-     */
-    public static function asArray(): array
+    final public static function asArray(): array
     {
         if (self::$constCacheArray == null) {
             self::$constCacheArray = [];
@@ -79,11 +69,7 @@ class Enum
         return static::values()->random();
     }
 
-    /**
-     * @return Collection
-     * @throws ReflectionException
-     */
-    public static function values()
+    public static function values(): Collection
     {
         return collect(static::asArray())->values();
     }
@@ -101,15 +87,16 @@ class Enum
         return static::values()->get($key);
     }
 
-    public static function keyOf($value): ?string
+    private static function keyOf($value)
     {
-        return array_search($value, static::asArray()) ?? null;
+        $search = array_search($value, static::asArray());
+        if (is_numeric($search)) {
+            return $search;
+        }
+        return null;
     }
 
-    /**
-     * @throws \ReflectionException
-     */
-    public static function of($value): Enum
+    public static function of($value): self
     {
         $key = self::keyOf($value);
         return new static($value, $key);
