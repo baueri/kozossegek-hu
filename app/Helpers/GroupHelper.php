@@ -34,7 +34,7 @@ class GroupHelper
     {
         return (new Collection(explode(',', $ageGroup)))
             ->filter()
-            ->make(AgeGroup::class)
+            ->as(AgeGroup::class)
             ->keyBy('name')
             ->map(function ($ageGroup) {
                 return $ageGroup->translate();

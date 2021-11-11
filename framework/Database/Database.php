@@ -14,20 +14,21 @@ interface Database
 
     public function update($query, ...$params): int;
 
-    public function insert($query, $params = []): int;
+    /**
+     * @return int|string
+     */
+    public function insert(string $query, array $params = []);
 
     public function exists($query, $params = []): bool;
 
     /**
-     * @param $query
-     * @param array $params
      * @return int number of affected rows
      */
-    public function delete($query, $params = []): int;
+    public function delete(string $query, array $params = []): int;
 
     public function fetchColumn($query, $params = []);
 
-    public function lastInsertId(): ?int;
+    public function lastInsertId();
 
     public function beginTransaction(): bool;
 

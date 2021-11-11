@@ -20,6 +20,6 @@ class OccasionFrequencies {
      */
     public function all()
     {
-        return OccasionFrequencyEnum::values()->make(OccasionFrequency::class)->all();
+        return OccasionFrequencyEnum::values()->as(OccasionFrequency::class)->all();
     }
 }

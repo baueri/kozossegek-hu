@@ -139,7 +139,7 @@ class PDOMysqlDatabase implements Database
         return $this->execute($query, ...$params)->rowCount();
     }
 
-    public function lastInsertId(): ?int
+    public function lastInsertId()
     {
         return $this->pdo->lastInsertId();
     }
@@ -149,7 +149,7 @@ class PDOMysqlDatabase implements Database
         return $this->execute($query, ...$bindings)->fetchRow();
     }
 
-    public function insert($query, $params = []): int
+    public function insert(string $query, array $params = []): int
     {
         $this->execute($query, ...$params);
 
@@ -168,7 +168,7 @@ class PDOMysqlDatabase implements Database
         return array_shift($row);
     }
 
-    public function delete($query, $params = []): int
+    public function delete(string $query, array $params = []): int
     {
         return $this->execute($query, ...$params)->rowCount();
     }

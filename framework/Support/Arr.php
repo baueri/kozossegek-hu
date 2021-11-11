@@ -31,7 +31,7 @@ class Arr
     public static function map($items, $callback, bool $keepKeys = false): array
     {
         if ($items instanceof Collection) {
-            return $items->map($callback, $keepKeys)->toArray();
+            return $items->map($callback, $keepKeys)->all();
         }
 
         $result = [];
@@ -50,7 +50,7 @@ class Arr
     public static function filter($items, $callback): array
     {
         if ($items instanceof Collection) {
-            return $items->filter($callback)->toArray();
+            return $items->filter($callback)->all();
         }
 
         $result = [];
@@ -72,7 +72,7 @@ class Arr
         return $item->{$key} ?? $default;
     }
 
-    public static function has($items, $key, $value = null)
+    public static function has($items, $key, $value = null): bool
     {
         if (is_null($value)) {
             return array_key_exists($key, $items);
@@ -108,7 +108,7 @@ class Arr
     public static function pluck($items, $key): array
     {
         if ($items instanceof Collection) {
-            return $items->pluck($key)->toArray();
+            return $items->pluck($key)->all();
         }
 
         return static::map(

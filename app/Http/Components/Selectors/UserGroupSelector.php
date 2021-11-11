@@ -11,7 +11,7 @@ class UserGroupSelector
         $user_groups = UserGroup::get()->map(fn(UserGroup $userGroup) => $userGroup->text(), true);
         return view('partials.components.base_selector', [
             'selected_value' => $selected_user_group,
-            'values' => $user_groups->toArray(),
+            'values' => $user_groups->all(),
             'name' => 'user_group',
             'placeholder' => '-- Jogosultság --'
         ]);

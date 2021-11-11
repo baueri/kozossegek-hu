@@ -156,7 +156,7 @@ class GroupViews extends Repository
 
         if ($groupids->isNotEmpty()) {
             $group_tags = builder('v_group_tags')
-                ->whereIn('group_id', $groupids->toArray())
+                ->whereIn('group_id', $groupids->all())
                 ->get();
 
             if ($group_tags) {

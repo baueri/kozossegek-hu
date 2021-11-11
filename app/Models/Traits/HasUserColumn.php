@@ -6,7 +6,7 @@ use App\Models\User;
 
 trait HasUserColumn
 {
-    public function whereUser(User $user, string $column = 'user_id')
+    public function whereUser(User $user, string $column = 'user_id'): self
     {
         return $this->where($column, $user->id);
     }
