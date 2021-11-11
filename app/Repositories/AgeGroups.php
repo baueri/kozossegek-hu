@@ -14,6 +14,6 @@ class AgeGroups
      */
     final public function all(): array
     {
-        return AgeGroupEnum::values()->make(AgeGroup::class)->all();
+        return AgeGroupEnum::values()->as(AgeGroup::class)->all();
     }
 }

@@ -20,6 +20,6 @@ class GroupStatusRepository {
      */
     public function all() : array
     {
-        return GroupStatusEnum::values()->make(GroupStatus::class)->all();
+        return GroupStatusEnum::values()->as(GroupStatus::class)->all();
     }
 }
