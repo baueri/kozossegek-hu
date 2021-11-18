@@ -2,6 +2,7 @@
 
 namespace Framework;
 
+use Carbon\Language;
 use Error;
 use Exception;
 use Framework\Container\Container;
@@ -27,20 +28,19 @@ class Application extends Container
         BootListeners::class,
     ];
 
-    private $locale = LANG;
+    private string $locale;
 
     /**
-     * Application constructor.
      * @throws Exception
      */
     public function __construct()
     {
+        $this->locale = 'hu';
         $this->singleton(static::class, function () {
             return static::getInstance();
         });
 
         $this->singleton(QueryHistory::class);
-
         static::$singleton = $this;
     }
 

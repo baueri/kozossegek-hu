@@ -70,8 +70,12 @@
                         <a href="https://fbe.hu/" title="Felebarátok egyesület" target="_blank" rel="noopener noreferrer">
                             <img src="/images/partnerek/felebaratok_egyesulet.png" alt="Felebarátok egyesület">
                         </a>
+                        <br/>
                         <a href="https://72tanitvany.hu/" title="Hetvenkét Tanítvány Mozgalom" target="_blank" rel="noopener noreferrer" class="t72-logo">
-                            <img src="/images/partnerek/t72_2.png" alt="Felebarátok egyesület">
+                            <img src="/images/partnerek/t72_2.png" alt="Hetvenkét Tanítvány Mozgalom">
+                        </a>
+                        <a href="https://bizdramagad.hu/" title="Bízd rá magad" target="_blank" rel="noopener noreferrer" class="t72-logo">
+                            <img src="/images/partnerek/bizd_ra_magad.png" alt="Bízd rá magad">
                         </a>
                     </div>
                 </div>
