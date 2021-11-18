@@ -15,9 +15,9 @@ class LegalNoticeService
         $this->repo = $repo;
     }
 
-    public function setLegalNoticeSessionFor(User $user): void
+    public function setLegalNoticeSessionFor(?User $user): void
     {
-        if (Session::has('accepted_legal_notice_version')) {
+        if (!$user || Session::has('accepted_legal_notice_version')) {
             return;
         }
 
