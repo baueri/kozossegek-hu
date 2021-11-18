@@ -474,7 +474,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         return new self($this->items);
     }
 
-    public function has($key, $value): bool
+    public function has($key, $value = null): bool
     {
         return Arr::has($this->items, $key, $value);
     }

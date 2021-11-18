@@ -30,8 +30,9 @@ class UserController extends AdminController
     {
         $user = new User();
         $action = route('admin.user.create');
+        $groups = UserGroup::getTranslated();
 
-        return view('admin.user.create', compact('user', 'action'));
+        return view('admin.user.create', compact('user', 'action', 'groups'));
     }
 
     /**
@@ -70,7 +71,8 @@ class UserController extends AdminController
         $user = $repository->findOrFail($request['id']);
         $my_profile = $user->is(Auth::user());
         $action = route('admin.user.update', $user);
-        return view('admin.user.edit', compact('user', 'my_profile', 'action'));
+        $groups = UserGroup::getTranslated();
+        return view('admin.user.edit', compact('user', 'my_profile', 'action', 'groups'));
     }
 
     /**

@@ -8,13 +8,35 @@ use Framework\Support\Enum;
 class UserGroup extends Enum
 {
     public const SUPER_ADMIN = 'SUPER_ADMIN';
-
+    public const SPIRITUAL_MOVEMENT_LEADER = 'SPIRITUAL_MOVEMENT_LEADER';
     public const GROUP_LEADER = 'GROUP_LEADER';
 
-    private static $text = [
-        self::SUPER_ADMIN => 'Super Admin',
-        self::GROUP_LEADER => 'Közösségvezető'
+    private static array $roles = [
+        self::SUPER_ADMIN => [UserRight::FULL_ACCESS],
+        self::GROUP_LEADER => [],
+        self::SPIRITUAL_MOVEMENT_LEADER => [UserRight::MANAGE_SPIRITUAL_MOVEMENT, UserRight::MANAGE_SPIRITUAL_MOVEMENT_GROUPS]
     ];
+
+    private static array $text = [
+        self::SUPER_ADMIN => 'Super Admin',
+        self::SPIRITUAL_MOVEMENT_LEADER => 'Lelikségi mozgalom vezető',
+        self::GROUP_LEADER => 'Közösségvezető',
+    ];
+
+    /**
+     * @return array<string, string>
+     */
+    public static function getTranslated(): array
+    {
+        return UserGroup::get()->map(fn (UserGroup $group) => $group->text(), true)->all();
+    }
+
+    public static function can(string $role, string $right): bool
+    {
+        $userRoles = collect(self::$roles[$role] ?? []);
+
+        return $userRoles->has(UserRight::FULL_ACCESS) || $userRoles->has($right);
+    }
 
     public function text(): string
     {
