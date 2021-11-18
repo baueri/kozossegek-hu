@@ -19,7 +19,7 @@ class Enum
 
     protected string $key;
 
-    final private function __construct($value, string $key)
+    final private function __construct($value, ?string $key)
     {
         if (!static::isValid($value)) {
             throw new InvalidArgumentException('invalid enum type');
@@ -89,11 +89,7 @@ class Enum
 
     private static function keyOf($value)
     {
-        $search = array_search($value, static::asArray());
-        if (is_numeric($search)) {
-            return $search;
-        }
-        return null;
+        return array_search($value, static::asArray()) ?? null;
     }
 
     public static function of($value): self

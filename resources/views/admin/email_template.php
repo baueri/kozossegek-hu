@@ -63,7 +63,7 @@
                         <?php endforeach; ?>
                     </ul>
                 @endalert
-                <textarea name="email-content">{{ file_get_contents(view()->getPath($mailable->getView())) }}</textarea>
+                <textarea name="email-content">{{ file_get_contents(view_path($mailable->getView())) }}</textarea>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Bezár</button>
