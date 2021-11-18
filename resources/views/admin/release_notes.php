@@ -1,5 +1,10 @@
 @title('Verzióinformáció')
 @extends('admin')
+<h3>v1.4.6 (2021.11.18)</h3>
+<ul>
+    <li>[NEW]: Bízd rá magad logó bekerült a láblécbe</li>
+    <li>[CHANGED]: Kis kód tisztítás</li>
+</ul>
 <h3>v1.4.3 (2021.09.14)</h3>
 <ul>
     <li>[FIXED]: Intézménykereső hibát dobott, ha a kulcsszó zárójelet tartalmazott</li>
