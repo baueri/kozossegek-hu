@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Admin\Controllers;
 
 use App\Mail\GroupContactMail;
