@@ -535,6 +535,7 @@ input[name=search]::placeholder, input[name=varos]::placeholder {
     max-width: 75px;
     height: auto;
     vertical-align: top;
+    margin-bottom: 1em;
 }
 
 #footer .partnereink .t72-logo img {
