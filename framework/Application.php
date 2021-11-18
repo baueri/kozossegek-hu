@@ -2,7 +2,6 @@
 
 namespace Framework;
 
-use Carbon\Language;
 use Error;
 use Exception;
 use Framework\Container\Container;
