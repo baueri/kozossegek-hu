@@ -211,6 +211,11 @@ function view(string $view, array $args = []): string
     return app()->make(ViewInterface::class)->view($view, $args);
 }
 
+function view_path(string $view): string
+{
+    return View::getPath($view);
+}
+
 /**
  * @return RouteInterface
  */
