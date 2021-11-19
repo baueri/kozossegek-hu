@@ -4,6 +4,7 @@ namespace App\Mailable;
 
 use App\Auth\Auth;
 use Framework\Mail\Mailable;
+use Jaybizzle\CrawlerDetect\CrawlerDetect;
 
 class CriticalErrorEmail extends Mailable
 {
@@ -22,12 +23,14 @@ class CriticalErrorEmail extends Mailable
 
     public function build()
     {
+        $decector = new CrawlerDetect();
         $this->with([
-                'exception' => $this->exception,
-                'request' => request(),
-                'user' => Auth::user(),
-                'referer' => $_SERVER['HTTP_REFERER'] ?? null
-            ])
-            ->subject(get_site_url() . ' HIBA: ' . $this->exception->getMessage());
+            'exception' => $this->exception,
+            'request' => request(),
+            'user' => Auth::user(),
+            'referer' => $_SERVER['HTTP_REFERER'] ?? null,
+            'is_bot' => $decector->isCrawler()
+        ])
+        ->subject(get_site_url() . ' HIBA: ' . $this->exception->getMessage());
     }
 }
