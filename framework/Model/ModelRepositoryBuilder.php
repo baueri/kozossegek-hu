@@ -48,6 +48,9 @@ class ModelRepositoryBuilder
         return $this->repository->getInstance($this->builder->first());
     }
 
+    /**
+     * @throws ModelNotFoundException
+     */
     public function firstOrFail()
     {
         return $this->repository->getOrFail($this->first());
