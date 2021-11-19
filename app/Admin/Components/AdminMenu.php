@@ -42,9 +42,9 @@ class AdminMenu
 
         $menuItem['active'] = $this->isActive($menuItem, $currentRoute);
         if (isset($menuItem['submenu'])) {
-            $menuItem['submenu'] = array_map(function($menuItem) use ($currentRoute) {
+            $menuItem['submenu'] = collect($menuItem['submenu'])->map(function($menuItem) use ($currentRoute) {
                 return $this->parseMenuItem($menuItem, $currentRoute);
-            }, $menuItem['submenu']);
+            })->filter()->all();
         }
 
         return $menuItem;
