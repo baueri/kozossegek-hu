@@ -13,23 +13,12 @@ use PDO;
 
 class PDOMysqlDatabase implements Database
 {
-
-    /**
-     * @var DatabaseConfiguration
-     */
     private DatabaseConfiguration $configuration;
 
-    /**
-     * @var PDO
-     */
     private PDO $pdo;
 
     private int $transactionCounter = 0;
 
-    /**
-     * PDOMysqlDatabase constructor.
-     * @param DatabaseConfiguration $configuration
-     */
     public function __construct(DatabaseConfiguration $configuration)
     {
         $this->configuration = $configuration;
@@ -41,7 +30,7 @@ class PDOMysqlDatabase implements Database
         ]);
     }
 
-    private function getDsn()
+    private function getDsn(): string
     {
         return sprintf(
             "mysql:host=%s;dbname=%s;charset=%s;port=%s",
@@ -50,15 +39,6 @@ class PDOMysqlDatabase implements Database
             $this->configuration->charset,
             $this->configuration->port
         );
-    }
-
-    /**
-     * @param DatabaseConfiguration $configuration
-     * @return static
-     */
-    public static function connect(DatabaseConfiguration $configuration)
-    {
-        return new static($configuration);
     }
 
     /**

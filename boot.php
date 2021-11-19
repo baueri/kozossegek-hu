@@ -51,16 +51,8 @@ $application->singleton(RouterInterface::class, XmlRouter::class);
 $application->singleton(EventLogger::class, EventLogRepository::class);
 $application->singleton(Database::class, function (Application $app) {
     $settings = $app->config('db');
-    $databaseConfiguration = $app->make(
-        DatabaseConfiguration::class,
-        $settings['host'],
-        $settings['user'],
-        $settings['password'],
-        $settings['database'],
-        $settings['charset'],
-        $settings['port']
-    );
-    return $app->make(PDOMysqlDatabase::class, $databaseConfiguration);
+    $databaseConfiguration = $app->make(DatabaseConfiguration::class, $settings);
+    return new PDOMysqlDatabase($databaseConfiguration);
 });
 
 $application->boot(RegisterDirectives::class);

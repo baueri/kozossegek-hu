@@ -2,7 +2,7 @@
 
 namespace App\Admin\User;
 
-use App\Enums\UserGroup;
+use App\Enums\UserRole;
 use App\Models\User;
 use App\Repositories\Groups;
 use Framework\Database\Builder;
@@ -54,7 +54,7 @@ class UserTable extends AdminTable implements Deletable, Editable
 
     public function getUserGroup($userGroup)
     {
-        return UserGroup::of($userGroup)->text();
+        return UserRole::of($userGroup)->text();
     }
 
     public function getActivatedAt($activatedAt)

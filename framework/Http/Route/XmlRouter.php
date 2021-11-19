@@ -105,7 +105,10 @@ class XmlRouter implements RouterInterface
     public function add(string $method, string $uri, array $options)
     {
         /* @var $route RouteInterface */
-        $route = app()->make(RouteInterface::class, strtoupper($method), $uri, ...$options);
+        $route = app()->make(RouteInterface::class, array_merge([
+            'method' => $method,
+            'uriMask' => $uri,
+        ], $options));
         $this->routes->push($route);
 
         return $route;
@@ -133,7 +136,6 @@ class XmlRouter implements RouterInterface
      * @param string $method
      * @param string $uri
      * @return Route|RouteInterface|mixed|null
-     * @throws RouteNotFoundException
      */
     public function find(string $method, string $uri)
     {
@@ -155,8 +157,6 @@ class XmlRouter implements RouterInterface
                 return $route;
             }
         }
-
-        throw new RouteNotFoundException($uri);
     }
 
     /**

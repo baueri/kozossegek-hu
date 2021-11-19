@@ -454,7 +454,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     public function as(string $abstraction): self
     {
         return $this->map(function ($item) use ($abstraction) {
-            return app()->make($abstraction, $item);
+            return app()->make($abstraction, [$item]);
         });
     }
 

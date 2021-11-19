@@ -1,42 +1,75 @@
 <?php
 
-
 namespace App\Admin\Components;
 
-
+use App\Auth\AuthUser;
+use App\Middleware\CheckRole;
 use Framework\Http\Route\RouteInterface;
+use Framework\Http\Route\RouterInterface;
 use Framework\Support\Collection;
+use Framework\Support\StringHelper;
 
 class AdminMenu
 {
+    private RouterInterface $router;
+
+    private AuthUser $user;
+
+    public function __construct(RouterInterface $router, AuthUser $user)
+    {
+        $this->router = $router;
+        $this->user = $user;
+    }
 
     /**
-     * @return string[][]|Collection
+     * @return Collection
      */
-    public static function getMenu()
+    public function getMenu(): Collection
     {
         $currentRoute = current_route();
         
-        return collect(config('admin_menu'))->map(function($item) use($currentRoute){
-            return static::parseMenuItem($item, $currentRoute);
-        });
+        return collect(config('admin_menu'))->map(function($item) use($currentRoute) {
+            return $this->parseMenuItem($item, $currentRoute);
+        })->filter();
     }
 
-    private static function parseMenuItem(array $menuItem, RouteInterface $currentRoute)
+    private function parseMenuItem(array $menuItem, RouteInterface $currentRoute): array
     {
         $menuItem['uri'] = route($menuItem['as']);
-        $menuItem['active'] = static::isActive($menuItem, $currentRoute);
+        if (!$this->canAccess($menuItem['uri'])) {
+            return [];
+        }
 
+        $menuItem['active'] = $this->isActive($menuItem, $currentRoute);
         if (isset($menuItem['submenu'])) {
             $menuItem['submenu'] = array_map(function($menuItem) use ($currentRoute) {
-                return static::parseMenuItem($menuItem, $currentRoute);
+                return $this->parseMenuItem($menuItem, $currentRoute);
             }, $menuItem['submenu']);
         }
 
         return $menuItem;
     }
 
-    private static function isActive($menuItem, RouteInterface $currentRoute)
+    private function canAccess(string $uri): bool
+    {
+        $route = $this->router->find('GET', $uri);
+        if (!$route) {
+            return true;
+        }
+
+        foreach ($route->getMiddleware() as $middleware) {
+            if (StringHelper::startsWith($middleware, CheckRole::class)) {
+                preg_match('/roles:(.*)/', $middleware, $roles);
+                $rolesArray = array_filter(explode(',', $roles[1] ?? ''));
+                if ($rolesArray && !$this->user->can($rolesArray)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private function isActive($menuItem, RouteInterface $currentRoute): bool
     {
         if ($currentRoute->getAs() == $menuItem['as']) {
             return true;
@@ -48,8 +81,7 @@ class AdminMenu
         
         
         return (isset($menuItem['submenu']) && array_filter($menuItem['submenu'], function($subMenuItem) use($currentRoute){
-            return static::isActive($subMenuItem, $currentRoute);
+            return $this->isActive($subMenuItem, $currentRoute);
         }));
     }
-
 }

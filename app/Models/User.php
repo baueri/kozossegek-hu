@@ -2,16 +2,12 @@
 
 namespace App\Models;
 
-use App\Enums\UserGroup;
+use App\Auth\AuthUser;
+use App\Enums\UserRole;
 use Framework\Model\Model;
 use Framework\Model\TimeStamps;
 
-/**
- * Description of User
- *
- * @author ivan
- */
-class User extends Model
+class User extends Model implements AuthUser
 {
     use TimeStamps;
 
@@ -48,9 +44,9 @@ class User extends Model
         return $this->user_group === $group;
     }
 
-    public function can(string $right): bool
+    public function can($right): bool
     {
-        return UserGroup::can($this->user_group, $right);
+        return UserRole::can($this->user_group, (array) $right);
     }
 
     public function firstName()

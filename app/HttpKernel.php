@@ -14,7 +14,7 @@ use Framework\Middleware\CheckMaintenance;
 
 class HttpKernel extends \Framework\Http\HttpKernel
 {
-    protected $middleware = [
+    protected array $middleware = [
         BaseAuthMiddleware::class,
         DebugBarMiddleware::class,
         ListenViewLoading::class,
