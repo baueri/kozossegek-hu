@@ -121,7 +121,7 @@
             <route method="get" uri="{id}/restore" use="restore" as="restore"/>
 
             <route method="get" uri="refresh-search-engine" use="rebuildSearchEngine" as="refresh_search_engine"/>
-            <route method="get" uri="maintenance" use="maintenance" as="maintenance"/>
+            <route method="get" uri="maintenance" use="maintenance" as="maintenance" middleware="App\Middleware\CheckRole@roles:FULL_ACCESS"/>
 
             <route method="post" uri="{id}/reject-modal" as="reject_modal" use="getRejectModal"/>
             <route method="all" uri="{id}/delete-modal" as="delete_modal" use="getDeleteModal"/>
