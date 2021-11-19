@@ -78,6 +78,9 @@ abstract class Repository
         return new $class($values);
     }
 
+    /**
+     * @throws ModelNotFoundException
+     */
     public function getOrFail(?Model $model)
     {
         if (!$model) {
