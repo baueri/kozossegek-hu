@@ -4,7 +4,7 @@ namespace App\Admin\Controllers;
 
 use App\Admin\User\UserTable;
 use App\Auth\Auth;
-use App\Enums\UserGroup;
+use App\Enums\UserRole;
 use App\Mail\RegistrationEmail;
 use App\Models\User;
 use App\Repositories\Groups;
@@ -30,7 +30,7 @@ class UserController extends AdminController
     {
         $user = new User();
         $action = route('admin.user.create');
-        $groups = UserGroup::getTranslated();
+        $groups = UserRole::getTranslated();
 
         return view('admin.user.create', compact('user', 'action', 'groups'));
     }
@@ -71,7 +71,7 @@ class UserController extends AdminController
         $user = $repository->findOrFail($request['id']);
         $my_profile = $user->is(Auth::user());
         $action = route('admin.user.update', $user);
-        $groups = UserGroup::getTranslated();
+        $groups = UserRole::getTranslated();
         return view('admin.user.edit', compact('user', 'my_profile', 'action', 'groups'));
     }
 

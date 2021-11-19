@@ -5,16 +5,21 @@ namespace App\Enums;
 use Framework\Support\Arr;
 use Framework\Support\Enum;
 
-class UserGroup extends Enum
+class UserRole extends Enum
 {
     public const SUPER_ADMIN = 'SUPER_ADMIN';
     public const SPIRITUAL_MOVEMENT_LEADER = 'SPIRITUAL_MOVEMENT_LEADER';
     public const GROUP_LEADER = 'GROUP_LEADER';
 
     private static array $roles = [
-        self::SUPER_ADMIN => [UserRight::FULL_ACCESS],
-        self::GROUP_LEADER => [],
-        self::SPIRITUAL_MOVEMENT_LEADER => [UserRight::MANAGE_SPIRITUAL_MOVEMENT, UserRight::MANAGE_SPIRITUAL_MOVEMENT_GROUPS]
+        self::SUPER_ADMIN => [
+            UserRight::FULL_ACCESS
+        ],
+        self::SPIRITUAL_MOVEMENT_LEADER => [
+            UserRight::ACCESS_BACKEND,
+            UserRight::MANAGE_SPIRITUAL_MOVEMENT,
+            UserRight::MANAGE_SPIRITUAL_MOVEMENT_GROUPS
+        ]
     ];
 
     private static array $text = [
@@ -28,14 +33,22 @@ class UserGroup extends Enum
      */
     public static function getTranslated(): array
     {
-        return UserGroup::get()->map(fn (UserGroup $group) => $group->text(), true)->all();
+        return UserRole::get()->map(fn (UserRole $group) => $group->text(), true)->all();
     }
 
-    public static function can(string $role, string $right): bool
+    public static function can(string $role, $right): bool
     {
         $userRoles = collect(self::$roles[$role] ?? []);
-
-        return $userRoles->has(UserRight::FULL_ACCESS) || $userRoles->has($right);
+        if ($userRoles->contains(UserRight::FULL_ACCESS)) {
+            return true;
+        }
+        $rights = (array) $right;
+        foreach ($rights as $rightToCheck) {
+            if ($userRoles->contains($rightToCheck)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public function text(): string

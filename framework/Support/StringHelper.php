@@ -166,4 +166,9 @@ class StringHelper
     {
         return strrpos($string, $endsWith) === strlen($string) - strlen($endsWith);
     }
+
+    public static function startsWith($string, $startsWith): bool
+    {
+        return strpos($string, $startsWith) === 0;
+    }
 }

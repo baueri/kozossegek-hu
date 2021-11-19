@@ -7,10 +7,7 @@ use Framework\Misc\XmlObject;
 
 class XmlRouteBuilder
 {
-    /**
-     * @var XmlObject
-     */
-    protected $element;
+    protected XmlObject $element;
 
     /**
      * @param XmlObject $element
@@ -20,19 +17,19 @@ class XmlRouteBuilder
         $this->element = $element;
     }
 
-    /**
-     * @return RouteInterface
-     */
     public function build(): RouteInterface
     {
         return app()->make(RouteInterface::class,
-            $this->getRequestMethod(),
-            $this->getUriMask(),
-            $this->getAs(),
-            $this->getController(),
-            $this->getUse(),
-            $this->getMiddleware(),
-            $this->getView());
+            [
+                $this->getRequestMethod(),
+                $this->getUriMask(),
+                $this->getAs(),
+                $this->getController(),
+                $this->getUse(),
+                $this->getMiddleware(),
+                $this->getView()
+            ]
+        );
     }
 
     /**
@@ -45,29 +42,17 @@ class XmlRouteBuilder
         return implode('/', $prefixes);
     }
 
-    /**
-     * @return array
-     */
-    protected function getPrefix()
+    protected function getPrefix(): array
     {
         return $this->getAttributeValues('prefix');
     }
 
     /**
-     * returns xml route element's attributes including parent's
-     * attributes
-     *
-     * @param $key
-     * @param bool $includingCurrentItem
-     * @return array
+     * returns xml route element's attributes including parent's attributes
      */
-    protected function getAttributeValues($key, bool $includingCurrentItem = true)
+    protected function getAttributeValues(string $key): array
     {
-        if ($includingCurrentItem) {
-            $elements = $this->element->getParentsWithCurrentNode();
-        } else {
-            $elements = $this->element->getParents();
-        }
+        $elements = $this->element->getParentsWithCurrentNode();
         return array_filter(
             array_map(function (XmlObject $element) use ($key) {
                 return (string) $element[$key];
@@ -75,11 +60,10 @@ class XmlRouteBuilder
         );
     }
 
-    protected function getParentProperties($propertyName)
+    protected function getParentProperties($propertyName): array
     {
         $elements = $this->element->getParents();
         $parentProperties = [];
-
         foreach ($elements as $element) {
             if ($element->{$propertyName}) {
                 foreach ($element->{$propertyName} as $property) {
@@ -87,18 +71,13 @@ class XmlRouteBuilder
                 }
             }
         }
-
         return $parentProperties;
     }
 
-    /**
-     * @return array
-     */
-    public function getMiddleware()
+    public function getMiddleware(): array
     {
         $middleware = $this->getAttributeValues('middleware');
         $parentProperties = $this->getParentProperties('middleware');
-
         return collect($parentProperties)
             ->map(function(XmlObject $middleware){
                 return (string) $middleware['name'];

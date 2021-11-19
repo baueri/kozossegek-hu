@@ -3,6 +3,7 @@
 namespace App\Middleware;
 
 use App\Auth\Auth;
+use App\Enums\UserRight;
 use Framework\Middleware\Middleware;
 use Framework\Http\Message;
 use Framework\Http\Session;
@@ -15,14 +16,16 @@ class AdminMiddleware implements Middleware
 {
     private Maintenance $maintenance;
 
-    public function __construct(Maintenance $maintenance)
+    private AdminMenu $adminMenu;
+
+    public function __construct(Maintenance $maintenance, AdminMenu $adminMenu)
     {
         $this->maintenance = $maintenance;
+        $this->adminMenu = $adminMenu;
     }
 
-
     /**
-     * @throws \Framework\Exception\UnauthorizedException
+     * @throws UnauthorizedException
      */
     final public function handle(): void
     {
@@ -32,13 +35,16 @@ class AdminMiddleware implements Middleware
             redirect_route('login');
         }
 
-        if (!Auth::user()->isAdmin()) {
+        $user = Auth::user();
+
+        if (!$user->can(UserRight::ACCESS_BACKEND)) {
             throw new UnauthorizedException();
         }
 
         $currentRoute = current_route();
         View::setVariable('current_route', $currentRoute);
-        $admin_menu = AdminMenu::getMenu();
+
+        $admin_menu = $this->adminMenu->getMenu();
         View::setVariable('admin_menu', $admin_menu);
         View::setVariable('current_menu_item', $admin_menu->first('active'));
 

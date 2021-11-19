@@ -17,9 +17,9 @@ class HttpKernel implements Kernel
     /**
      * @var string[]|Middleware[]
      */
-    protected $middleware = [];
+    protected array $middleware = [];
 
-    public function getMiddleware()
+    public function getMiddleware(): array
     {
         return $this->middleware;
     }
