@@ -32,7 +32,7 @@ class SpiritualMovementController extends PortalController
         return view('portal.spiritual_movement.list', compact('spiritualMovements'));
     }
 
-    public function view()
+    public function view(GroupViews $groupViews)
     {
         try {
             /* @var $spiritualMovement \App\Models\SpiritualMovement */
@@ -41,7 +41,7 @@ class SpiritualMovementController extends PortalController
                 ->where('highlighted', 1)
                 ->firstOrFail();
 
-            $groups = app(GroupViews::class)->query()
+            $groups = $groupViews->query()
                 ->where('spiritual_movement_id', $spiritualMovement->id)
                 ->apply('active')
                 ->get();
@@ -50,7 +50,7 @@ class SpiritualMovementController extends PortalController
 
             if ($groupids->isNotEmpty()) {
                 $group_tags = builder('v_group_tags')
-                    ->whereIn('group_id', $groupids->toArray())
+                    ->whereIn('group_id', $groupids->all())
                     ->get();
 
                 if ($group_tags) {

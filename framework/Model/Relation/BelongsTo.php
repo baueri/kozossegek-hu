@@ -2,14 +2,13 @@
 
 namespace Framework\Model\Relation;
 
-use Framework\Model\EntityQueryBuilder;
-use Framework\Support\Arr;
+use Framework\Support\Collection;
 
 trait BelongsTo
 {
     protected array $preparedRelations = [];
 
-    public function belongsTo(string $repositoryClass, ?string $foreingkey = null, ?string $localKey = null)
+    public function belongsTo(string $repositoryClass, ?string $foreingkey = null, ?string $localKey = null): self
     {
         $this->preparedRelations['belongsTo'][] = new Relation(
             app($repositoryClass),
@@ -23,8 +22,9 @@ trait BelongsTo
 
     protected function loadBelongsToRelations($instances): void
     {
+        /** @var Collection $instances */
         if ($relations = $this->preparedRelations['belongsTo'] ?? null) {
-            /* @var $relations \Framework\Model\Relation\Relation[] */
+            /* @var $relations Relation[] */
             foreach ($relations as $relation) {
                 $primaryCol = $relation->getBuilder()->primaryCol();
                 $relationName = $relation->relationName();
@@ -37,7 +37,7 @@ trait BelongsTo
                     $belongsToRelationRows = $relation->getBuilder()
                         ->whereIn(
                             $foreignKey,
-                            $instances->pluck($localKey)->toArray()
+                            $instances->pluck($localKey)->all()
                         )->get();
                 }
 
