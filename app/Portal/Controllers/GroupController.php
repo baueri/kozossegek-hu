@@ -6,7 +6,6 @@ use App\Auth\Auth;
 use App\Exception\EmailTakenException;
 use App\Http\Responses\CreateGroupSteps\RegisterGroupForm;
 use App\Http\Responses\PortalEditGroupForm;
-use App\Models\GroupView;
 use App\Portal\Services\GroupList;
 use App\Portal\Services\PortalCreateGroup;
 use App\Portal\Services\PortalUpdateGroup;
@@ -30,9 +29,6 @@ use Throwable;
 
 class GroupController extends PortalController
 {
-    /**
-     * @throws \ReflectionException
-     */
     public function kozossegek(Request $request, GroupList $service): string
     {
         $filter = $request->collect()->merge(['korosztaly' => $request['korosztaly']])->filter();
@@ -40,9 +36,6 @@ class GroupController extends PortalController
         return $service->getHtml($filter);
     }
 
-    /**
-     * @throws \ReflectionException
-     */
     public function intezmenyKozossegek(Request $request, GroupList $service, Institutes $institutes): string
     {
         $city = str_replace('-', ' ', $request['varos']);
@@ -149,7 +142,7 @@ class GroupController extends PortalController
         return view('portal.group.my_groups', compact('groups'));
     }
 
-    public function editGroup(Request $request, \App\QueryBuilders\GroupViews $groups, PortalEditGroupForm $response): string
+    public function editGroup(Request $request, GroupViews $groups, PortalEditGroupForm $response): string
     {
         $user = Auth::user();
 
@@ -166,12 +159,6 @@ class GroupController extends PortalController
         return $response->getResponse($group);
     }
 
-    /**
-     * @param Request $request
-     * @param PortalCreateGroup $createGroupService
-     * @param RegisterGroupForm $form
-     * @return string|void
-     */
     public function createGroup(Request $request, PortalCreateGroup $createGroupService, RegisterGroupForm $form)
     {
         try {
@@ -203,11 +190,6 @@ class GroupController extends PortalController
         }
     }
 
-    /**
-     * @param Request $request
-     * @param PortalUpdateGroup $service
-     * @param Groups $groups
-     */
     public function updateMyGroup(Request $request, PortalUpdateGroup $service, Groups $groups)
     {
         try {
@@ -245,8 +227,6 @@ class GroupController extends PortalController
     }
 
     /**
-     * @param Request $request
-     * @param Groups $groups
      * @throws ModelNotFoundException
      */
     public function deleteGroup(Request $request, Groups $groups)
@@ -265,28 +245,26 @@ class GroupController extends PortalController
         redirect_route('portal.my_groups');
     }
 
-    public function registrationSuccess()
+    public function registrationSuccess(): string
     {
         return view('portal.group.create_group_success');
     }
 
+    /**
+     * @throws \Framework\Model\ModelNotFoundException
+     */
     public function downloadDocument(Request $request, GroupViews $groups)
     {
-        try {
-            /* @var $group GroupView */
-            $group = $groups->findOrFail($request['id']);
+        $group = $groups->findOrFail($request['id']);
 
-            if (!$group->isEditableBy(Auth::user())) {
-                raise_403();
-            }
-
-            $file_url = $group->getDocumentPath();
-            header('Content-Type: application/octet-stream');
-            header("Content-Transfer-Encoding: Binary");
-            header("Content-disposition: attachment; filename=\"" . basename($file_url) . "\"");
-            readfile($file_url);
-        } catch (\Exception $e) {
-            dd($e);
+        if (!$group->isEditableBy(Auth::user())) {
+            raise_403();
         }
+
+        $file_url = $group->getDocumentPath();
+        header('Content-Type: application/octet-stream');
+        header("Content-Transfer-Encoding: Binary");
+        header("Content-disposition: attachment; filename=\"" . basename($file_url) . "\"");
+        readfile($file_url);
     }
 }

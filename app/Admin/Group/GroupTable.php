@@ -5,7 +5,7 @@ namespace App\Admin\Group;
 use App\Admin\Components\AdminTable\AdminTable;
 use App\Admin\Components\AdminTable\Deletable;
 use App\Admin\Components\AdminTable\Editable;
-use App\Models\EntityGroupView;
+use App\Models\ChurchGroupView;
 use App\Models\GroupStatus;
 use App\Helpers\GroupHelper;
 use App\Services\GroupSearchRepository;
@@ -66,7 +66,7 @@ class GroupTable extends AdminTable implements Editable, Deletable
         return "<i class='$class'></i>";
     }
 
-    public function getInstituteName($instituteName, EntityGroupView $group)
+    public function getInstituteName($instituteName, ChurchGroupView $group)
     {
         return $this->getLink(
             $this->getListUrl(['institute_id' => $group->institute_id]),
@@ -124,13 +124,13 @@ class GroupTable extends AdminTable implements Editable, Deletable
         return route('admin.group.edit', $model);
     }
 
-    public function getImage($image, EntityGroupView $group)
+    public function getImage($image, ChurchGroupView $group)
     {
         $imageUrl = $group->getThumbnail() . '?' . time();
         return "<img src='$imageUrl' style='max-width: 25px; height: auto;' title='<img src=\"$imageUrl\">' data-html='true'/>";
     }
 
-    public function getDocument($document, EntityGroupView $model)
+    public function getDocument($document, ChurchGroupView $model)
     {
         if ($model->hasDocument()) {
             return self::getCheckIcon('van');
@@ -144,7 +144,7 @@ class GroupTable extends AdminTable implements Editable, Deletable
         return 'name';
     }
 
-    public function getView($null, EntityGroupView $model)
+    public function getView($null, ChurchGroupView $model)
     {
         return "<a href='{$model->url()}' target='_blank' title='megtekintés'><i class='fa fa-eye'></i></a>";
     }

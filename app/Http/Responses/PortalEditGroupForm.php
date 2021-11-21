@@ -3,7 +3,7 @@
 namespace App\Http\Responses;
 
 use App\Enums\DayEnum;
-use App\Models\GroupView;
+use App\Models\ChurchGroupView;
 use App\Repositories\AgeGroups;
 use App\Repositories\GroupStatusRepository;
 use App\Repositories\Institutes;
@@ -18,16 +18,21 @@ class PortalEditGroupForm
         $this->institutes = $institutes;
     }
 
-    public function getResponse(GroupView $group): string
+    public function getResponse(ChurchGroupView $group): string
     {
         $statuses = (new GroupStatusRepository())->all();
-        $tags = builder('tags')->select('*')->get();
+        $tags = builder('tags')->select()->get();
         $spiritual_movements = db()->select('select * from spiritual_movements order by name');
         $occasion_frequencies = (new OccasionFrequencies())->all();
         $age_groups = (new AgeGroups())->all();
         $days = DayEnum::asArray();
 
-        $group_tags = collect(builder('group_tags')->apply('whereGroupId', $group->id)->get())->pluck('tag')->all();
+        $group_tags = collect(
+            builder('group_tags')
+            ->apply('whereGroupId', $group->getId())
+            ->get()
+        )->pluck('tag')->all();
+
         $age_group_array = array_filter(explode(',', $group->age_group));
         $group_days = explode(',', $group->on_days);
         $view = 'portal.group.my_group';

@@ -1,13 +1,11 @@
 <?php
 
-
 namespace App\Console;
 
 use App\Console\Commands\ClearUserSessionCommand;
 use App\Console\Commands\DailyCron;
 use App\Console\Commands\PublishApp;
 use App\Console\Commands\RebuildSearchEngineCommand;
-use App\Console\Commands\SetImageUrlForMissingGroupsCommand;
 use Framework\Console\ConsoleKernel as Kernel;
 
 class ConsoleKernel extends Kernel
@@ -17,6 +15,5 @@ class ConsoleKernel extends Kernel
         ClearUserSessionCommand::class,
         RebuildSearchEngineCommand::class,
         PublishApp::class,
-        SetImageUrlForMissingGroupsCommand::class,
     ];
 }

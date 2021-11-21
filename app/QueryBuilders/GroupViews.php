@@ -2,12 +2,12 @@
 
 namespace App\QueryBuilders;
 
-use App\Models\EntityGroupView;
+use App\Models\ChurchGroupView;
 use App\Models\User;
 use Framework\Model\EntityQueryBuilder;
 
 /**
- * @phpstan-extends \Framework\Model\EntityQueryBuilder<\App\Models\EntityGroupView>
+ * @phpstan-extends \Framework\Model\EntityQueryBuilder<\App\Models\ChurchGroupView>
  */
 class GroupViews extends EntityQueryBuilder
 {
@@ -15,7 +15,7 @@ class GroupViews extends EntityQueryBuilder
 
     protected static function getModelClass(): string
     {
-        return EntityGroupView::class;
+        return ChurchGroupView::class;
     }
 
     public function forUser(User $user): self

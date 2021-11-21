@@ -3,7 +3,7 @@
 namespace App\Http\Responses\CreateGroupSteps;
 
 use App\Auth\Auth;
-use App\Models\EntityGroupView;
+use App\Models\ChurchGroupView;
 use App\Models\Institute;
 use App\Repositories\Institutes;
 use App\QueryBuilders\SpiritualMovements;
@@ -50,7 +50,7 @@ class RegisterGroupForm extends AbstractGroupStep
             $data['spiritual_movement'] = $movement->name;
         }
 
-        $group = new EntityGroupView($data->all());
+        $group = new ChurchGroupView($data->all());
         $user = Auth::user();
 
         $image = $request['image'];
