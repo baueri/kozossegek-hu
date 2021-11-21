@@ -9,7 +9,7 @@ use Framework\Console\Out;
 class ClearCache implements Command
 {
 
-    public static function signature()
+    public static function signature(): string
     {
         return 'cache:clear';
     }
@@ -17,7 +17,7 @@ class ClearCache implements Command
     /**
      * @throws Exception
      */
-    public function handle()
+    public function handle(): void
     {
         if (!rrmdir(CACHE . '/')) {
             Out::fatal('Nem sikerült a cache törlés');

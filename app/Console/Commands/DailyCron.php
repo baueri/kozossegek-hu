@@ -26,12 +26,12 @@ class DailyCron implements Command
         $this->forceDeleteDeletedChurchGroups = $forceDeleteDeletedChurchGroups;
     }
 
-    public static function signature()
+    public static function signature(): string
     {
         return 'cron:daily';
     }
 
-    public function handle()
+    public function handle(): void
     {
         $this->clearUserSession->run();
     }

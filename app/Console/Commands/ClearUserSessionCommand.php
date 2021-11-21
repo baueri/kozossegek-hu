@@ -8,12 +8,12 @@ use Framework\Console\Out;
 
 class ClearUserSessionCommand implements Command
 {
-    public static function signature()
+    public static function signature(): string
     {
         return 'clear:session';
     }
 
-    public function handle()
+    public function handle(): void
     {
         $ok = (new ClearUserSession())->run();
 
