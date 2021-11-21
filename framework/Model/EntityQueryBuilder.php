@@ -6,6 +6,7 @@ use App\Models\ChurchGroupView;
 use Closure;
 use Framework\Database\Builder;
 use Framework\Database\Repository\Events\ModelCreated;
+use Framework\Database\Repository\Events\ModelDeleted;
 use Framework\Event\EventDisptatcher;
 use Framework\Model\Relation\HasRelations;
 use Framework\Support\StringHelper;
@@ -52,7 +53,7 @@ abstract class EntityQueryBuilder
         return new static();
     }
 
-    public function count()
+    public function count(): int
     {
         return $this->builder->count();
     }
@@ -97,7 +98,7 @@ abstract class EntityQueryBuilder
 
     /**
      * @throws \Framework\Model\ModelNotFoundException
-     * @return T
+     * @phpstan-return T
      */
     public function findOrFail($id): Entity
     {
@@ -114,6 +115,7 @@ abstract class EntityQueryBuilder
 
     /**
      * @throws ModelNotFoundException
+     * @phpstan-return T
      */
     public function getOrFail(?Entity $model): Entity
     {
@@ -266,9 +268,9 @@ abstract class EntityQueryBuilder
         return $this->builder->update($values);
     }
 
-    public function save(Entity $entity, array $values)
+    public function save(Entity $entity, array $values): int
     {
-        $this->query()->where(static::primaryCol(), $entity->getId())->update($values);
+        return $this->query()->where(static::primaryCol(), $entity->getId())->update($values);
     }
 
     public function insert(array $values)
@@ -281,9 +283,21 @@ abstract class EntityQueryBuilder
         return $this->builder->updateOrInsert($where, $values);
     }
 
-    public function delete(): int
+    public function delete($model, bool $hardDelete = false)
     {
-        return $this->builder->delete();
+        if (is_numeric($model)) {
+            $model = $this->find($model);
+        }
+
+        if (property_exists($model, 'deleted_at') && !$hardDelete) {
+            return $this->save($model, ['deleted_at' => date('Y-m-d H:i:s')]);
+        }
+
+        $deleted = $this->query()->builder->where(static::primaryCol(), $model->getId())->delete();
+
+        EventDisptatcher::dispatch(new ModelDeleted($model));
+
+        return (bool) $deleted;
     }
 
     public function paginate(?int $perpage = null, ?int $page = null): PaginatedModelCollection

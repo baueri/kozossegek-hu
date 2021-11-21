@@ -196,7 +196,7 @@ abstract class Repository
      * @param bool $hardDelete
      * @return bool
      */
-    public function delete($model, bool $hardDelete = false)
+    public function delete($model, bool $hardDelete = false): bool
     {
         if (property_exists($model, 'deleted_at') && !$hardDelete) {
             $model->deleted_at = date('Y-m-d H:i:s');
@@ -207,7 +207,7 @@ abstract class Repository
 
         Event\EventDisptatcher::dispatch(new Database\Repository\Events\ModelDeleted($model));
 
-        return $deleted;
+        return (bool) $deleted;
     }
 
     /**

@@ -205,7 +205,7 @@ class GroupController extends AdminController
         return view('admin.group.partials.delete_modal', compact('group', 'message'));
     }
 
-    public function deleteByValidation(Groups $groups, Mailer $mailer): array
+    public function deleteByValidation(ChurchGroups $groups, Mailer $mailer): array
     {
         try {
             $this->request->validate('message', 'subject', 'email', 'name');
