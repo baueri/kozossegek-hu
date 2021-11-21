@@ -21,16 +21,13 @@ class AdminMenu
         $this->user = $user;
     }
 
-    /**
-     * @return Collection
-     */
     public function getMenu(): Collection
     {
         $currentRoute = current_route();
-        
-        return collect(config('admin_menu'))->map(function($item) use($currentRoute) {
-            return $this->parseMenuItem($item, $currentRoute);
-        })->filter();
+
+        return collect(config('admin_menu'))->map(
+            fn ($item) => $this->parseMenuItem($item, $currentRoute)
+        )->filter();
     }
 
     private function parseMenuItem(array $menuItem, RouteInterface $currentRoute): array
@@ -42,7 +39,7 @@ class AdminMenu
 
         $menuItem['active'] = $this->isActive($menuItem, $currentRoute);
         if (isset($menuItem['submenu'])) {
-            $menuItem['submenu'] = collect($menuItem['submenu'])->map(function($menuItem) use ($currentRoute) {
+            $menuItem['submenu'] = collect($menuItem['submenu'])->map(function ($menuItem) use ($currentRoute) {
                 return $this->parseMenuItem($menuItem, $currentRoute);
             })->filter()->all();
         }
@@ -74,14 +71,13 @@ class AdminMenu
         if ($currentRoute->getAs() == $menuItem['as']) {
             return true;
         }
-        
         if (isset($menuItem['similars']) && in_array($currentRoute->getAs(), $menuItem['similars'])) {
             return true;
         }
-        
-        
-        return (isset($menuItem['submenu']) && array_filter($menuItem['submenu'], function($subMenuItem) use($currentRoute){
-            return $this->isActive($subMenuItem, $currentRoute);
-        }));
+        return isset($menuItem['submenu']) &&
+            array_filter(
+                $menuItem['submenu'],
+                fn ($subMenuItem) => $this->isActive($subMenuItem, $currentRoute)
+            );
     }
 }

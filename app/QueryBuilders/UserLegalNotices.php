@@ -1,6 +1,6 @@
 <?php
 
-namespace App\EntityQueryBuilders;
+namespace App\QueryBuilders;
 
 use App\Auth\Auth;
 use App\Models\Traits\HasUserColumn;

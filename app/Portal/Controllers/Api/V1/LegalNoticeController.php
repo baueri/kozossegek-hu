@@ -3,7 +3,7 @@
 namespace App\Portal\Controllers\Api\V1;
 
 use App\Auth\Auth;
-use App\EntityQueryBuilders\UserLegalNotices;
+use App\QueryBuilders\UserLegalNotices;
 use App\Services\User\LegalNoticeService;
 use Framework\Http\Session;
 

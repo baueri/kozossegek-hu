@@ -27,8 +27,6 @@ class InstituteAdminTable extends AdminTable implements Deletable, Editable
         'name' => 'Intézmény / plébánia neve',
         'leader_name' => 'Intézményvezető',
         'group_count' => '<i class="fa fa-comments" title="Közösségek száma"></i>',
-//        'city' => 'Település',
-//        'district' => 'Városrész',
         'address' => 'Cím',
         'updated_at' => 'Módosítva',
         'user' => 'Létrehozta'
@@ -38,22 +36,10 @@ class InstituteAdminTable extends AdminTable implements Deletable, Editable
 
     protected array $centeredColumns = ['image', 'group_count'];
 
-    /**
-     * @var Institutes
-     */
     private Institutes $repository;
 
-    /**
-     * @var Users
-     */
     private Users $userRepository;
 
-    /**
-     * InstituteAdminTable constructor.
-     * @param Request $request
-     * @param Institutes $repository
-     * @param Users $userRepository
-     */
     public function __construct(Request $request, Institutes $repository, Users $userRepository)
     {
         parent::__construct($request);
@@ -70,8 +56,8 @@ class InstituteAdminTable extends AdminTable implements Deletable, Editable
     {
         $filter = $this->request;
         $institutes = $this->repository->getInstitutesForAdmin($filter);
-        $userIds = $institutes->pluck('user_id');
-        $users = $this->userRepository->getUsersByIds($userIds->unique()->all());
+        $userIds = $institutes->pluck('user_id')->filter()->unique()->all();
+        $users = $this->userRepository->getUsersByIds($userIds);
         $groupsCount = $this->getNumberOfGroups($institutes);
         $institutes->with($users, 'user', 'user_id')
             ->withCount($groupsCount, 'group_count', 'id', 'institute_id');
@@ -79,24 +65,24 @@ class InstituteAdminTable extends AdminTable implements Deletable, Editable
         return $institutes;
     }
 
-    public function getLeaderName($leader_name)
+    public function getLeaderName($leader_name): string
     {
         $shortName = StringHelper::shorten($leader_name, 20, '...');
         return "<span title='{$leader_name}'>$shortName</span>";
     }
 
-    public function getUser($user)
+    public function getUser($user): string
     {
         return $user ? $user->name : '';
     }
 
-    public function getName($value, Institute $institute)
+    public function getName($value, Institute $institute): string
     {
         $warning = !$institute->approved ? '<i class="fa fa-exclamation-circle text-danger" title="még nem jóváhagyott intézmény"></i> ' : '';
         return $warning . $this->getEdit($value, $institute, 40) . " <small>{$institute->name2}</small>";
     }
 
-    public function getImage($img, Institute $institute)
+    public function getImage($img, Institute $institute): string
     {
         $imageUrl = $institute->hasImage() ? $institute->getImageRelPath() . '?' . time() : '/images/default_thumbnail.jpg';
         return "<img src='$imageUrl' style='max-width: 25px; height: auto;' title='<img src=\"$imageUrl\">' data-html='true'/>";
@@ -112,12 +98,12 @@ class InstituteAdminTable extends AdminTable implements Deletable, Editable
         return 'name';
     }
 
-    public function getAddress($address, Institute $institute)
+    public function getAddress($address, Institute $institute): string
     {
         return static::excerpt(implode(', ', array_filter([$institute->city, $institute->district, $address])));
     }
 
-    public function getGroupCount($count, Institute $institute)
+    public function getGroupCount($count, Institute $institute): string
     {
         $count = $count ?: 0;
         $url = route('admin.group.list', ['institute_id' => $institute->id]);
@@ -125,7 +111,7 @@ class InstituteAdminTable extends AdminTable implements Deletable, Editable
         return "<a href='$url' title='közösségek mutatása'>{$count}</a>";
     }
 
-    private function getNumberOfGroups(Collection $institutes)
+    private function getNumberOfGroups(Collection $institutes): array
     {
         if ($institutes->isEmpty()) {
             return [];

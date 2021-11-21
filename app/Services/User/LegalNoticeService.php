@@ -2,7 +2,7 @@
 
 namespace App\Services\User;
 
-use App\EntityQueryBuilders\UserLegalNotices;
+use App\QueryBuilders\UserLegalNotices;
 use App\Models\User;
 use Framework\Http\Session;
 
@@ -31,6 +31,7 @@ class LegalNoticeService
     public function updateOrInsertCurrentFor(User $user): void
     {
         $this->repo->updateOrInsertCurrentFor($user);
+        Session::set('accepted_legal_notice_version', LegalNoticeService::getVersion());
     }
 
     public static function getVersion(): int

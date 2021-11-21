@@ -3,11 +3,10 @@
 namespace App\Models;
 
 use Framework\Support\StringHelper;
+use Legacy\Group;
 
 /**
- * Description of GroupView
- *
- * @author ivan
+ * @deprecated
  */
 class GroupView extends Group
 {
@@ -54,9 +53,6 @@ class GroupView extends Group
      */
     public $institute_image;
 
-    /**
-     * @var string|null
-     */
     private ?string $cachedUrl = null;
 
     /**
@@ -71,9 +67,6 @@ class GroupView extends Group
      */
     public $user_name;
 
-    /**
-     * @return string
-     */
     public function url(): string
     {
         if ($this->cachedUrl) {
@@ -87,22 +80,12 @@ class GroupView extends Group
         return $this->cachedUrl = get_site_url() . route('kozosseg', $data);
     }
 
-    /**
-     * @return string
-     */
-    public function getThumbnail()
+    public function getThumbnail(): string
     {
         if ($this->image_url) {
             return $this->image_url;
         }
 
         return $this->institute_image ?: '/images/default_thumbnail.jpg';
-    }
-
-    public function getGroup(): Group
-    {
-        $values = $this->valuesToArray();
-
-        return Group::make($values);
     }
 }

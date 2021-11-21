@@ -2,12 +2,12 @@
 
 namespace App\Mail;
 
-use App\Models\GroupView;
+use App\Models\EntityGroupView;
 use Framework\Mail\Mailable;
 
 class GroupAcceptedEmail extends Mailable
 {
-    public function __construct(GroupView $group)
+    public function __construct(EntityGroupView $group)
     {
         $this->with([
             'name' => $group->group_leaders,

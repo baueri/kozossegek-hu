@@ -6,15 +6,15 @@ use App\Auth\Auth;
 use App\Exception\EmailTakenException;
 use App\Http\Responses\CreateGroupSteps\RegisterGroupForm;
 use App\Http\Responses\PortalEditGroupForm;
-use App\Models\Group;
 use App\Models\GroupView;
 use App\Portal\Services\GroupList;
 use App\Portal\Services\PortalCreateGroup;
 use App\Portal\Services\PortalUpdateGroup;
 use App\Portal\Services\SendGroupContactMessage;
+use App\QueryBuilders\GroupViews;
 use App\Repositories\Groups;
-use App\Repositories\GroupViews;
 use App\Repositories\Institutes;
+use App\Services\GroupSearchRepository;
 use Error;
 use ErrorException;
 use Exception;
@@ -25,18 +25,25 @@ use Framework\Http\Request;
 use Framework\Model\ModelNotFoundException;
 use Framework\Support\Arr;
 use Jaybizzle\CrawlerDetect\CrawlerDetect;
+use Legacy\Group;
 use Throwable;
 
 class GroupController extends PortalController
 {
-    public function kozossegek(Request $request, GroupList $service)
+    /**
+     * @throws \ReflectionException
+     */
+    public function kozossegek(Request $request, GroupList $service): string
     {
         $filter = $request->collect()->merge(['korosztaly' => $request['korosztaly']])->filter();
 
         return $service->getHtml($filter);
     }
 
-    public function intezmenyKozossegek(Request $request, GroupList $service, Institutes $institutes)
+    /**
+     * @throws \ReflectionException
+     */
+    public function intezmenyKozossegek(Request $request, GroupList $service, Institutes $institutes): string
     {
         $city = str_replace('-', ' ', $request['varos']);
         $instituteName = str_replace('-', ' ', $request['intezmeny']);
@@ -47,7 +54,7 @@ class GroupController extends PortalController
         ]));
     }
 
-    public function groupsByCity(Request $request, GroupList $service)
+    public function groupsByCity(Request $request, GroupList $service): string
     {
         $data = [
             'varos' => trim($request->uri, '/')
@@ -55,7 +62,7 @@ class GroupController extends PortalController
         return $service->getHtml(collect($data));
     }
 
-    public function kozossegRegisztracio(RegisterGroupForm $service)
+    public function kozossegRegisztracio(RegisterGroupForm $service): string
     {
         set_header_bg('/images/kozosseget_vezetek.jpg');
         return (string) $service;
@@ -63,13 +70,9 @@ class GroupController extends PortalController
 
     /**
      * Közösség adatlap
-     * @param Request $request
-     * @param GroupViews $repo
-     * @param Institutes $instituteRepo
-     * @return string
-     * @throws ModelNotFoundException
+     * @throws \Framework\Http\Exception\PageNotFoundException
      */
-    public function kozosseg(Request $request, GroupViews $repo, Institutes $instituteRepo)
+    public function kozosseg(Request $request, GroupSearchRepository $repo, Institutes $instituteRepo): string
     {
         use_default_header_bg();
         $backUrl = null;
@@ -113,11 +116,8 @@ class GroupController extends PortalController
 
     /**
      * kapcsolatfelvételi űrlap html
-     * @param  Request    $request
-     * @param  GroupViews $repo
-     * @return string
      */
-    public function groupContactForm(Request $request, GroupViews $repo)
+    public function groupContactForm(Request $request, GroupSearchRepository $repo): string
     {
         $slug = $request['kozosseg'];
         $group = $repo->findBySlug($slug);
@@ -125,22 +125,22 @@ class GroupController extends PortalController
         return view('portal.partials.group-contact-form', compact('group'));
     }
 
-    public function sendContactMessage(Request $request, GroupViews $repo, SendGroupContactMessage $service)
+    public function sendContactMessage(Request $request, GroupViews $repo, SendGroupContactMessage $service): array
     {
         try {
             $group = $repo->findOrFail($request['id']);
             $service->send($group, $request->map('strip_tags', true)->all());
-
+            $msg = '<div class="alert alert-success text-center">Köszönjük! Üzenetedet elküldtük a közösségvezető(k)nek!</div>';
             return [
                 'success' => true,
-                'msg' => '<div class="alert alert-success text-center">Köszönjük! Üzenetedet elküldtük a közösségvezető(k)nek!</div>'
+                'msg' => $msg
             ];
         } catch (Exception $e) {
             return ['success' => false];
         }
     }
 
-    public function myGroups(GroupViews $groupRepo)
+    public function myGroups(GroupSearchRepository $groupRepo)
     {
         $user = Auth::user();
 
@@ -149,11 +149,10 @@ class GroupController extends PortalController
         return view('portal.group.my_groups', compact('groups'));
     }
 
-    public function editGroup(Request $request, GroupViews $groups, PortalEditGroupForm $response)
+    public function editGroup(Request $request, \App\QueryBuilders\GroupViews $groups, PortalEditGroupForm $response): string
     {
         $user = Auth::user();
 
-        /* @var $group GroupView */
         $group = $groups->find($request['id']);
 
         if (!$group || $group->isDeleted()) {
@@ -177,19 +176,20 @@ class GroupController extends PortalController
     {
         try {
             $user = Auth::user();
-            $group = db()->transaction(fn () =>
+            $group =
                 $createGroupService->createGroup(
                     $request->collect(),
                     $request->files['document'],
                     $user
-                ));
+                );
 
             if ($user) {
                 Message::success('Közösség sikeresen létrehozva!');
                 redirect_route('portal.edit_group', $group);
-            } else {
-                redirect_route('portal.group.create_group_success');
             }
+
+            redirect_route('portal.group.create_group_success');
+
         } catch (FileTypeNotAllowedException $e) {
             Message::danger('Csak <b>word</b> és <b>pdf</b> dokumentumot fogadunk el igazolásként!');
             return (string) $form;
@@ -210,7 +210,6 @@ class GroupController extends PortalController
      */
     public function updateMyGroup(Request $request, PortalUpdateGroup $service, Groups $groups)
     {
-
         try {
             /* @var $group Group */
             $group = $groups->findOrFail($request['id']);

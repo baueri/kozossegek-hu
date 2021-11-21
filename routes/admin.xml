@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <routes>
     <route-group namespace="App\Admin\Controllers" prefix="admin" as="admin" middleware="App\Middleware\AdminMiddleware">
-        <!-- ADMIN  -->
         <middleware name="App\Middleware\CheckRole@roles:ACCESS_BACKEND"/>
+        <middleware name="App\Providers\AdminServiceProvider"/>
 
         <!-- CSAK ADMIN DOLGOK -->
         <route-group middleware="App\Middleware\CheckRole@roles:FULL_ACCESS">
@@ -59,10 +59,6 @@
                 <route method="get" uri="{id}/edit" use="edit" as="edit"/>
                 <route method="post" uri="{id}/update" use="update" as="update"/>
                 <route method="get" uri="{id}/delete" use="delete" as="delete"/>
-
-                <route method="get" uri="profile" use="profile" as="profile"/>
-                <route method="post" uri="profile/update" use="updateProfile" as="profile.update"/>
-                <route method="post" uri="profile/change-password" use="changeMyPassword" as="profile.change_password"/>
             </route-group>
 
             <!-- Címkék -->
@@ -133,9 +129,16 @@
             <route method="get" uri="{id}/edit" use="edit" as="edit"/>
             <route method="post" uri="{id}/update" use="update" as="update"/>
 
-            <route method="get" uri="create" use="create" as="create"/>
-            <route method="post" uri="create" use="doCreate" as="do_create"/>
-            <route method="get" uri="{id}/delete" use="delete" as="delete"/>
+            <route method="get" uri="create" use="create" as="create" middleware="App\Middleware\CheckRole@roles:FULL_ACCESS"/>
+            <route method="post" uri="create" use="doCreate" as="do_create" middleware="App\Middleware\CheckRole@roles:FULL_ACCESS"/>
+            <route method="get" uri="{id}/delete" use="delete" as="delete" middleware="App\Middleware\CheckRole@roles:FULL_ACCESS"/>
+        </route-group>
+
+        <!--    SAJÁT PROFIL    -->
+        <route-group controller="UserController" prefix="user" as="user">
+            <route method="get" uri="profile" use="profile" as="profile"/>
+            <route method="post" uri="profile/update" use="updateProfile" as="profile.update"/>
+            <route method="post" uri="profile/change-password" use="changeMyPassword" as="profile.change_password"/>
         </route-group>
 
         <route method="get" uri="" controller="DashboardController" use="dashboard" as="dashboard"/>

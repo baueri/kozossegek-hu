@@ -3,17 +3,27 @@
 namespace App\Providers;
 
 use App\Auth\Auth;
-use App\Repositories\GroupViews;
+use App\Enums\UserRight;
+use App\QueryBuilders\GroupViews;
+use App\QueryBuilders\SpiritualMovements;
 use Framework\Middleware\Middleware;
 
 class AdminServiceProvider implements Middleware
 {
     public function handle(): void
     {
-        if (!is_admin()) {
-            return;
+        $user = Auth::user();
+
+        if ($user->hasRight(UserRight::MANAGE_SPIRITUAL_MOVEMENT)) {
+            app()->bind(SpiritualMovements::class, function () use ($user) {
+                return (new SpiritualMovements())->forUser($user);
+            });
         }
 
-        //TODO query-k előre build-elése, ha nincsenek belépve
+        if ($user->hasRight(UserRight::MANAGE_SPIRITUAL_MOVEMENT_GROUPS)) {
+            app()->bind(GroupViews::class, function () use ($user) {
+                return (new GroupViews())->forUser($user);
+            });
+        }
     }
 }

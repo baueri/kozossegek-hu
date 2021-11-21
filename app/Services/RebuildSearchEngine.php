@@ -2,20 +2,14 @@
 
 namespace App\Services;
 
-use App\Models\Group;
 use App\Models\GroupView;
+use App\QueryBuilders\GroupViews;
 use App\Repositories\Groups;
-use App\Repositories\GroupViews;
 use App\Repositories\Institutes;
+use Legacy\Group;
 
-/**
- * Description of RebuildSearchEngine
- *
- * @author ivan
- */
 class RebuildSearchEngine
 {
-
     private GroupViews $groupViews;
 
     private Institutes $institutes;
@@ -43,8 +37,7 @@ class RebuildSearchEngine
     public function updateSearchEngine(Group $group)
     {
         /* @var $groupView GroupView */
-        $groupView = $this->groupViews->find($group->id);
-
+        $groupView = $this->groupViews->query()->find($group->id);
         $keywords = collect(builder('v_group_tags')->where('group_id', $groupView->id)->get())->pluck('tag_name');
         $keywords[] = $groupView->denomination();
         $keywords = $keywords->merge($groupView->getAgeGroups())

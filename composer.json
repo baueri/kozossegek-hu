@@ -17,7 +17,8 @@
     "psr-4": {
       "App\\": "app/",
       "Framework\\": "framework/",
-      "PHPDeploy\\": "php_deploy/"
+      "PHPDeploy\\": "php_deploy/",
+      "Legacy\\": "legacy/"
     },
     "files": [
       "framework/functions.php",

@@ -7,8 +7,6 @@ use Framework\Repository;
 use RuntimeException;
 
 /**
- * Class ModelRepositoryBuilder
- * @package Framework\Model
  * @mixin Builder
  */
 class ModelRepositoryBuilder
@@ -33,7 +31,7 @@ class ModelRepositoryBuilder
         throw new RuntimeException("Call to undefined function {$name}");
     }
 
-    public function count()
+    public function count(): int
     {
         return $this->builder->count();
     }
@@ -51,7 +49,7 @@ class ModelRepositoryBuilder
     /**
      * @throws ModelNotFoundException
      */
-    public function firstOrFail()
+    public function firstOrFail(): Model
     {
         return $this->repository->getOrFail($this->first());
     }
@@ -66,7 +64,7 @@ class ModelRepositoryBuilder
         return $this->builder->exists();
     }
 
-    public function toSql($withBindings = false)
+    public function toSql($withBindings = false): string
     {
         return $this->builder->toSql($withBindings);
     }

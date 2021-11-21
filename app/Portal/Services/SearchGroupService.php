@@ -3,43 +3,28 @@
 namespace App\Portal\Services;
 
 use App\Events\SearchTriggered;
-use App\Repositories\GroupViews;
-use Framework\Database\PaginatedResultSet;
+use App\Services\GroupSearchRepository;
 use Framework\Event\EventDisptatcher;
-use Framework\Model\Model;
-use Framework\Model\ModelCollection;
-use Framework\Model\PaginatedModelCollection;
-use Framework\Support\Collection;
 use Jaybizzle\CrawlerDetect\CrawlerDetect;
 
 class SearchGroupService
 {
 
-    /**
-     * @var GroupViews
-     */
-    private GroupViews $groupRepo;
+    private GroupSearchRepository $groupRepo;
 
-    /**
-     *
-     * @param GroupViews $groupRepo
-     */
-    public function __construct(GroupViews $groupRepo)
+    private CrawlerDetect $crawlerDetect;
+
+    public function __construct(GroupSearchRepository $groupRepo, CrawlerDetect $crawlerDetect)
     {
         $this->groupRepo = $groupRepo;
+        $this->crawlerDetect = $crawlerDetect;
     }
 
-    /**
-     *
-     * @param Collection|array $filter
-     * @param int $perPage
-     * @return PaginatedResultSet|Model[]|ModelCollection|PaginatedModelCollection
-     */
-    public function search($filter, $perPage = 21)
+    public function search($filter, int $perPage = 21)
     {
         $groups = $this->groupRepo->search($filter, $perPage);
 
-        if (!app(CrawlerDetect::class)->isCrawler()) {
+        if (!$this->crawlerDetect->isCrawler()) {
             $this->logEvent($filter);
         }
 
@@ -62,7 +47,7 @@ class SearchGroupService
         }
     }
 
-    private static function shouldLog($filterData)
+    private static function shouldLog($filterData): bool
     {
         return (bool) array_filter($filterData);
     }

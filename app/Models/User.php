@@ -46,7 +46,12 @@ class User extends Model implements AuthUser
 
     public function can($right): bool
     {
-        return UserRole::can($this->user_group, (array) $right);
+        return $this->user_group === UserRole::SUPER_ADMIN || $this->hasRight($right);
+    }
+
+    public function hasRight($right): bool
+    {
+        return UserRole::can($this->user_group, ($right));
     }
 
     public function firstName()

@@ -2,7 +2,7 @@
 
 use App\Admin\Components\DebugBar\DebugBar;
 use App\Auth\Auth;
-use App\Mailable\CriticalErrorEmail;
+use App\Mailable\ThrowableCriticalErrorEmail;
 use App\Middleware\AdminMiddleware;
 use App\Models\User;
 use App\Repositories\EventLogRepository;
@@ -23,6 +23,7 @@ use Framework\Http\Route\RouteInterface;
 use Framework\Http\Route\RouterInterface;
 use Framework\Http\View\View;
 use Framework\Http\View\ViewInterface;
+use Framework\Mail\Mailable;
 use Framework\Mail\Mailer;
 use Framework\Model\Entity;
 use Framework\Model\Model;
@@ -114,7 +115,7 @@ function db(): Database
 
 function builder(?string $table = null): Builder
 {
-    return app()->make(Builder::class)->table($table);
+    return app()->make(Builder::class)->from($table);
 }
 
 /**
@@ -266,8 +267,7 @@ function raise_403($message = '', $message2 = 'Nincs jogosultsága a tartalom me
 function process_error($e)
 {
     if (!_env('DEBUG')) {
-        $errorEmail = new CriticalErrorEmail($e);
-        (new Mailer())->to(config('app.error_email'))->send($errorEmail);
+        report($e);
     } else {
         dd($e, request()->all(), request()->route);
     }
@@ -382,4 +382,22 @@ function site_name(): string
 function flash(): ?array
 {
     return Message::flash();
+}
+
+function report($exception): void
+{
+    if (!_env('DEBUG') || ($exception instanceof \Throwable && $exception->getCode() == '404')) {
+        return;
+    }
+    $mailer = new Mailer();
+    $mailer->to(config('app.error_email'));
+
+    if ($exception instanceof \Throwable) {
+        $mail = new ThrowableCriticalErrorEmail($exception);
+    } else {
+        $mail = new Mailable();
+        $mail->setMessage($exception);
+    }
+
+    $mailer->send($mail);
 }

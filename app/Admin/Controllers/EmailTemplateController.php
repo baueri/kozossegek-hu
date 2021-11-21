@@ -7,7 +7,7 @@ use App\Mail\NewGroupEmail;
 use App\Mail\RegistrationByGroupEmailForFirstUsers;
 use App\Mail\RegistrationEmail;
 use App\Mail\ResetPasswordEmail;
-use App\Models\GroupView;
+use App\Models\EntityGroupView;
 use App\Models\User;
 use App\Repositories\UserTokens;
 use Framework\Http\Request;
@@ -17,67 +17,75 @@ use Framework\PasswordGenerator;
 
 class EmailTemplateController extends AdminController
 {
-    public function registration(UserTokens $userTokens)
+    /**
+     * @throws \Exception
+     */
+    public function registration(UserTokens $userTokens): string
     {
         $user = new User(['name' => 'Minta János', 'email' => 'minta_janos@kozossegek.hu']);
         $user_token = $userTokens->make($user, route('portal.user.activate'));
-        $mailable = RegistrationEmail::make($user, $user_token);
+        $mailable = new RegistrationEmail($user, $user_token);
         $title = 'Regisztrációs email sablon';
 
         return view('admin.email_template', compact('mailable', 'title'));
     }
 
-    public function registrationByGroup(UserTokens $userTokens)
+    /**
+     * @throws \Exception
+     */
+    public function registrationByGroup(UserTokens $userTokens): string
     {
         $user = new User(['name' => 'Minta János', 'email' => 'minta_janos@kozossegek.hu']);
         $password = (new PasswordGenerator(6))->setOpt(PasswordGenerator::OPTION_LOWER, false)->generate();
 
-        $group = new GroupView();
-        $group->name = 'Minta közösség';
-        $group->city = 'Szeged';
+        $group = new EntityGroupView(['name' => 'Minta Közösség', 'city' => 'Szeged']);
 
         $user_token = $userTokens->make($user, route('portal.user.activate'));
-        $mailable = RegistrationByGroupEmailForFirstUsers::make($user, $password, $user_token, $group);
+        $mailable = new RegistrationByGroupEmailForFirstUsers($user, $password, $user_token, $group);
         $title = 'Csoportadatok alapján létrehozott felhasználó regisztrációs sablonja';
 
         return view('admin.email_template', compact('mailable', 'title'));
     }
 
-    public function passwordReset(UserTokens $userTokens)
+    /**
+     * @throws \Exception
+     */
+    public function passwordReset(UserTokens $userTokens): string
     {
         $user = new User(['name' => 'Minta János', 'email' => 'minta_janos@kozossegek.hu']);
         $user_token = $userTokens->make($user, route('portal.user.activate'));
-        $mailable = ResetPasswordEmail::make($user, $user_token);
+        $mailable = new ResetPasswordEmail($user, $user_token);
         $title = 'Jelszó visszaállító email sablon';
 
         return view('admin.email_template', compact('mailable', 'title'));
     }
 
-    public function groupContact()
+    public function groupContact(): string
     {
-        $mailable = GroupContactMail::make([
-            'name' => 'Minta János',
-            'email' => 'minta_janos@kozossegek.hu',
-            'message' => "Sziasztok! A kozossegek.hu oldalon találtam rá a közösségetekre.
+        $message = "Sziasztok! A kozossegek.hu oldalon találtam rá a közösségetekre.
              Szeretném kérdezni, hogy aktuális-e még a tagfelvétel? Ha igen, csatlakozhatok-e?
              
              Köszi!
-             Minta János"
-        ]);
+             Minta János";
+
+        $mailable = new GroupContactMail('Minta János', 'Minta János', $message);
 
         $title = 'Közösségvezetői kapcsolatfelvételi email sablon';
 
         return view('admin.email_template', compact('mailable', 'title'));
     }
 
-    public function createdGroup()
+    public function createdGroup(): string
     {
         $mailable = (new NewGroupEmail(new User(['name' => 'Minta János', 'email' => 'minta_janos@kozossegek.hu'])));
         $title = 'Új közösség létrehozása (létező fiókkal)';
         return view('admin.email_template', compact('mailable', 'title'));
     }
 
-    public function createdGroupWithNewUser(UserTokens $userTokens)
+    /**
+     * @throws \Exception
+     */
+    public function createdGroupWithNewUser(UserTokens $userTokens): string
     {
         $user = new User(['name' => 'Minta János', 'email' => 'minta_janos@kozossegek.hu']);
         $token = $userTokens->make($user, route('portal.user.activate'));
@@ -87,7 +95,7 @@ class EmailTemplateController extends AdminController
         return view('admin.email_template', compact('mailable', 'title'));
     }
 
-    public function saveTemplate(Request $request)
+    public function saveTemplate(Request $request): array
     {
         Response::asJson();
 

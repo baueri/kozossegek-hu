@@ -43,14 +43,8 @@ class GroupList
         $this->service = $service;
     }
 
-    /**
-     * @param Collection $request
-     * @return string
-     * @throws ReflectionException
-     */
-    public function getHtml(Collection $request)
+    public function getHtml(Collection $request): string
     {
-
         $baseFilter = $request->only('search', 'korosztaly', 'tags', 'institute_id');
         $baseFilter['varos'] = $request['varos'];
 

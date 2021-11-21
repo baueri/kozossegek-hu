@@ -21,13 +21,13 @@ class QueryHistoryTab extends DebugBarTab
         $this->queryHistory = $queryHistory;
     }
 
-    public function getName()
+    public function getName(): string
     {
         $count = $this->queryHistory->getQueryHistory()->count();
         return "lekérdezések ($count)";
     }
 
-    public function render()
+    public function render(): string
     {
         $time = round($this->queryHistory->getExecutionTime(), 3);
         $queries = $this->queryHistory->getQueryHistory()->map(function ($row) {

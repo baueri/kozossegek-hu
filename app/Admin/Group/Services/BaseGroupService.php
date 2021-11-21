@@ -4,7 +4,6 @@ namespace App\Admin\Group\Services;
 
 use App\Helpers\FileHelper;
 use App\Helpers\GroupHelper;
-use App\Models\Group;
 use App\Repositories\Groups;
 use App\Repositories\Institutes;
 use App\Services\RebuildSearchEngine;
@@ -14,34 +13,18 @@ use Framework\File\Enums\FileType;
 use Framework\File\File;
 use Framework\File\FileManager;
 use Framework\Traits\ManagesErrors;
+use Legacy\Group;
 
-/**
- * Description of BaseGroupService
- *
- * @author ivan
- */
 abstract class BaseGroupService
 {
     use ManagesErrors;
 
-    /**
-     * @var RebuildSearchEngine
-     */
     private RebuildSearchEngine $searchEngineRebuilder;
 
-    /**
-     * @var Groups
-     */
     protected Groups $repository;
 
-    /**
-     * @var FileManager
-     */
     private FileManager $fileManager;
 
-    /**
-     * @var Institutes
-     */
     protected Institutes $institutes;
 
     public function __construct(
@@ -76,6 +59,9 @@ abstract class BaseGroupService
         }
     }
 
+    /**
+     * @throws \Exception
+     */
     protected function syncImages(Group $group, $images)
     {
         $images = array_filter($images);
@@ -91,12 +77,9 @@ abstract class BaseGroupService
     }
 
     /**
-     * @param Group $group
-     * @param array|null $document
-     * @return File|null
      * @throws FileTypeNotAllowedException
      */
-    protected function uploadDocument(Group $group, ?array $document = null)
+    protected function uploadDocument(Group $group, ?array $document = null): ?File
     {
         if (!$document || (isset($document['error']) && $document['error'] > 0)) {
             return null;
@@ -121,11 +104,6 @@ abstract class BaseGroupService
         return $file;
     }
 
-    /**
-     *
-     * @param array $data
-     * @return bool
-     */
     protected function validate(array $data): bool
     {
         $requiredFields = [

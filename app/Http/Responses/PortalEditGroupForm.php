@@ -9,16 +9,8 @@ use App\Repositories\GroupStatusRepository;
 use App\Repositories\Institutes;
 use App\Repositories\OccasionFrequencies;
 
-/**
- * Description of PortalEditGroupForm
- *
- * @author ivan
- */
 class PortalEditGroupForm
 {
-    /**
-     * @var Institutes
-     */
     private Institutes $institutes;
 
     public function __construct(Institutes $institutes)
@@ -26,7 +18,7 @@ class PortalEditGroupForm
         $this->institutes = $institutes;
     }
 
-    public function getResponse(GroupView $group)
+    public function getResponse(GroupView $group): string
     {
         $statuses = (new GroupStatusRepository())->all();
         $tags = builder('tags')->select('*')->get();
