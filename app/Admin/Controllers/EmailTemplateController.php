@@ -7,7 +7,7 @@ use App\Mail\NewGroupEmail;
 use App\Mail\RegistrationByGroupEmailForFirstUsers;
 use App\Mail\RegistrationEmail;
 use App\Mail\ResetPasswordEmail;
-use App\Models\EntityGroupView;
+use App\Models\ChurchGroupView;
 use App\Models\User;
 use App\Repositories\UserTokens;
 use Framework\Http\Request;
@@ -38,7 +38,7 @@ class EmailTemplateController extends AdminController
         $user = new User(['name' => 'Minta János', 'email' => 'minta_janos@kozossegek.hu']);
         $password = (new PasswordGenerator(6))->setOpt(PasswordGenerator::OPTION_LOWER, false)->generate();
 
-        $group = new EntityGroupView(['name' => 'Minta Közösség', 'city' => 'Szeged']);
+        $group = new ChurchGroupView(['name' => 'Minta Közösség', 'city' => 'Szeged']);
 
         $user_token = $userTokens->make($user, route('portal.user.activate'));
         $mailable = new RegistrationByGroupEmailForFirstUsers($user, $password, $user_token, $group);

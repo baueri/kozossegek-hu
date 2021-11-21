@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Models\EntityGroupView;
+use App\Models\ChurchGroupView;
 use App\Models\User;
 use App\QueryBuilders\GroupViews;
 use Framework\Support\StringHelper;
@@ -105,7 +105,7 @@ class GroupSearchRepository
         return $builder->where('id', $id)->apply('notDeleted')->first();
     }
 
-    public function findSimilarGroups(EntityGroupView $group, $tags, int $take = 4)
+    public function findSimilarGroups(ChurchGroupView $group, $tags, int $take = 4)
     {
         $builder = $this->repository->query()
             ->where('id', '<>', $group->id)

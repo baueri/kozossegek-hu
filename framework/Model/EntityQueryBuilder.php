@@ -2,7 +2,7 @@
 
 namespace Framework\Model;
 
-use App\Models\EntityGroupView;
+use App\Models\ChurchGroupView;
 use Closure;
 use Framework\Database\Builder;
 use Framework\Database\Repository\Events\ModelCreated;
@@ -59,6 +59,7 @@ abstract class EntityQueryBuilder
 
     /**
      * @return Entity[]|ModelCollection
+     * @phpstan-return T[]|\Framework\Model\ModelCollection
      */
     public function get()
     {
@@ -87,7 +88,7 @@ abstract class EntityQueryBuilder
     /**
      * @param mixed $id
      * @return \Framework\Model\Entity|null
-     * @phpstan-return null|T
+     * @phpstan-return \Framework\Model\Entity<T>|T|null
      */
     public function find($id): ?Entity
     {

@@ -12,7 +12,7 @@ use App\Admin\Group\Services\ValidateGroupForm;
 use App\Http\Exception\RequestParameterException;
 use App\Mail\DefaultMailable;
 use App\Mail\GroupAcceptedEmail;
-use App\Models\EntityGroupView;
+use App\Models\ChurchGroupView;
 use App\QueryBuilders\ChurchGroups;
 use App\QueryBuilders\GroupViews;
 use App\Repositories\Groups;
@@ -47,7 +47,7 @@ class GroupController extends AdminController
 
     public function create(BaseGroupForm $service): string
     {
-        return $service->render(EntityGroupView::make());
+        return $service->render(ChurchGroupView::make());
     }
 
     public function doCreate(CreateGroup $service, BaseGroupForm $form)
@@ -231,7 +231,7 @@ class GroupController extends AdminController
     /**
      * @throws ModelNotFoundException
      */
-    private function findOrFailById(): EntityGroupView
+    private function findOrFailById(): ChurchGroupView
     {
         return $this->groupViews->findOrFail($this->request['id']);
     }

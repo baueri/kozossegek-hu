@@ -20,8 +20,10 @@ use Framework\Support\StringHelper;
  * @property-read null|string $leader_name
  * @property-read null|string $group_leader_email
  * @property-read null|string $district
+ * @property-read null|string $institute_name2
+ * @property-read null|string $spiritual_movement
  */
-class EntityGroupView extends Entity
+class ChurchGroupView extends Entity
 {
     use GroupTrait;
 

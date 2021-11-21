@@ -5,7 +5,7 @@ namespace App\Portal\Controllers;
 use App\Auth\Auth;
 use App\Helpers\SpiritualMovementHelper;
 use App\Models\SpiritualMovement;
-use App\Repositories\GroupViews;
+use App\QueryBuilders\GroupViews;
 use App\QueryBuilders\SpiritualMovements;
 use Framework\Http\Exception\PageNotFoundException;
 use Framework\Http\Request;

@@ -2,12 +2,12 @@
 
 namespace App\Admin\Group\Services;
 
-use App\Models\EntityGroupView;
+use App\Models\ChurchGroupView;
 use App\Repositories\Users;
 
 class ValidateGroupForm
 {
-    public function render(EntityGroupView $group): string
+    public function render(ChurchGroupView $group): string
     {
         $tags = builder('v_group_tags')
             ->where('group_id', $group->id)

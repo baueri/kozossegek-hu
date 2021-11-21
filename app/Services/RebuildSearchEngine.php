@@ -2,24 +2,20 @@
 
 namespace App\Services;
 
-use App\Models\GroupView;
+use App\Models\ChurchGroupView;
 use App\QueryBuilders\GroupViews;
 use App\Repositories\Groups;
-use App\Repositories\Institutes;
 use Legacy\Group;
 
 class RebuildSearchEngine
 {
     private GroupViews $groupViews;
 
-    private Institutes $institutes;
-
     private Groups $groupRepo;
 
-    public function __construct(Groups $groupRepo, Institutes $institutes, GroupViews $groupViews)
+    public function __construct(Groups $groupRepo, GroupViews $groupViews)
     {
         $this->groupRepo = $groupRepo;
-        $this->institutes = $institutes;
         $this->groupViews = $groupViews;
     }
 
@@ -36,9 +32,8 @@ class RebuildSearchEngine
 
     public function updateSearchEngine(Group $group)
     {
-        /* @var $groupView GroupView */
-        $groupView = $this->groupViews->query()->find($group->id);
-        $keywords = collect(builder('v_group_tags')->where('group_id', $groupView->id)->get())->pluck('tag_name');
+        $groupView = $this->getGroupView($group);
+        $keywords = collect(builder('v_group_tags')->where('group_id', $groupView->getId())->get())->pluck('tag_name');
         $keywords[] = $groupView->denomination();
         $keywords = $keywords->merge($groupView->getAgeGroups())
             ->merge($groupView->getDays())
@@ -63,8 +58,13 @@ class RebuildSearchEngine
 
         db()->execute(
             'replace into search_engine (group_id, keywords) values(?, ?)',
-            $groupView->id,
+            $groupView->getId(),
             $keywords->implode(' ')
         );
+    }
+
+    private function getGroupView(Group $group): ChurchGroupView
+    {
+        return $this->groupViews->query()->find($group->getId());
     }
 }

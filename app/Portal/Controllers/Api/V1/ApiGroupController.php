@@ -3,7 +3,7 @@
 namespace App\Portal\Controllers\Api\V1;
 
 use App\Http\Responses\CreateGroupSteps\FinishRegistration;
-use App\Models\EntityGroupView;
+use App\Models\ChurchGroupView;
 use App\Services\GroupSearchRepository;
 use Exception;
 use Framework\Http\Controller;
@@ -23,7 +23,7 @@ class ApiGroupController extends Controller
             $perPage = (int) $request['per_page'] ?: 30;
             $results = $groupViews->search($filter, $perPage);
 
-            $data = $results->map(fn (EntityGroupView $groupView) => [
+            $data = $results->map(fn (ChurchGroupView $groupView) => [
                 'name' => $groupView->name,
                 'city' => $groupView->city,
                 'district' => $groupView->district,

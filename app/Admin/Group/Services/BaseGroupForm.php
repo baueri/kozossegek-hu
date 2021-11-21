@@ -3,7 +3,7 @@
 namespace App\Admin\Group\Services;
 
 use App\Enums\JoinMode;
-use App\Models\EntityGroupView;
+use App\Models\ChurchGroupView;
 use App\Repositories\AgeGroups;
 use App\Repositories\GroupStatusRepository;
 use App\Repositories\OccasionFrequencies;
@@ -35,7 +35,7 @@ class BaseGroupForm
         $this->users = $users;
     }
 
-    protected function getFormData(EntityGroupView $group): array
+    protected function getFormData(ChurchGroupView $group): array
     {
         $institute = $this->institutes->find($group->institute_id) ?: new Institute();
         $statuses = (new GroupStatusRepository())->all();
@@ -73,7 +73,7 @@ class BaseGroupForm
         );
     }
 
-    public function render(EntityGroupView $group): string
+    public function render(ChurchGroupView $group): string
     {
         return view('admin.group.form', $this->getFormData($group));
     }
