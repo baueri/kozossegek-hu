@@ -2,10 +2,13 @@
 
 namespace App\Repositories;
 
-use App\Models\Group;
 use App\Models\User;
 use Framework\Repository;
+use Legacy\Group;
 
+/**
+ * @phpstan-extends \Framework\Repository<\Legacy\Group>
+ */
 class Groups extends Repository
 {
     public function getGroupsByUser(User $user)

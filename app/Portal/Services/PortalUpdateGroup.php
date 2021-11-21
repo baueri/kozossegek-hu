@@ -3,22 +3,11 @@
 namespace App\Portal\Services;
 
 use App\Admin\Group\Services\UpdateGroup;
-use App\Models\Group;
-use Framework\Exception\FileTypeNotAllowedException;
-use Framework\Http\Request;
-use Framework\Support\Collection;
+use Legacy\Group;
 
 class PortalUpdateGroup extends UpdateGroup
 {
-    /**
-     *
-     * @param Group $group
-     * @param Request|Collection|array $request
-     * @param array|null $document
-     * @return void
-     * @throws FileTypeNotAllowedException
-     */
-    public function update(Group $group, $request, ?array $document = [])
+    public function update(Group $group, $request, ?array $document = []): Group
     {
         if ($group->isDeleted()) {
             raise_404();
@@ -29,5 +18,7 @@ class PortalUpdateGroup extends UpdateGroup
         if ($group->isRejected() && $group->hasChanges()) {
             $this->repository->update($group->setToPending());
         }
+
+        return $group;
     }
 }

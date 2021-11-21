@@ -39,9 +39,6 @@ class UserRole extends Enum
     public static function can(string $role, $right): bool
     {
         $userRoles = collect(self::$roles[$role] ?? []);
-        if ($userRoles->contains(UserRight::FULL_ACCESS)) {
-            return true;
-        }
         $rights = (array) $right;
         foreach ($rights as $rightToCheck) {
             if ($userRoles->contains($rightToCheck)) {

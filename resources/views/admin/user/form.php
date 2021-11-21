@@ -30,6 +30,17 @@
                     @endforeach
                 </select>
             </div>
+            <div class="form-group">
+                <label for="spiritual_movement_id">Lelkiségi mozgalom</label>
+                <select id="spiritual_movement_id" name="spiritual_movement_id" class="form-control" data-allow-clear="1" data-placeholder="Nincs megadva">
+                    <option></option>
+                    @foreach($spiritual_movements as $spiritual_movement)
+                    <option value="{{ $spiritual_movement['id'] }}" @if($user_movement == $spiritual_movement['id']) selected @endif>
+                        {{ $spiritual_movement['name'] }}
+                    </option>
+                    @endforeach
+                </select>
+            </div>
         </div>
     </div>
     <div class="row">

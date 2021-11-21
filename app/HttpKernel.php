@@ -4,12 +4,9 @@ namespace App;
 
 use App\Middleware\DebugBarMiddleware;
 use App\Middleware\ListenViewLoading;
-use App\Providers\AdminServiceProvider;
 use Framework\Middleware\BaseAuthMiddleware;
 use Framework\Middleware\TranslationRoute;
 use Framework\Middleware\AuthMiddleware;
-use Framework\Mail\Mailer;
-use App\Mailable\CriticalErrorEmail;
 use App\Components\Widget\AppServiceProvider;
 use Framework\Middleware\CheckMaintenance;
 
@@ -23,7 +20,6 @@ class HttpKernel extends \Framework\Http\HttpKernel
         CheckMaintenance::class,
         AuthMiddleware::class,
         AppServiceProvider::class,
-        AdminServiceProvider::class
     ];
 
     public function handleMaintenance()
@@ -31,18 +27,12 @@ class HttpKernel extends \Framework\Http\HttpKernel
         echo view('maintenance');
     }
 
-    public function handleError($error)
+    public function handleError($exception)
     {
-        if ($error->getCode() != '404' && !_env('DEBUG')) {
-            $mail = (new CriticalErrorEmail($error));
-
-            $mail->build();
-
-            $mailer = new Mailer();
-
-            $mailer->to(config('app.error_email'))->send($mail);
+        if ($exception->getCode() != '404' && !_env('DEBUG')) {
+            report($exception);
         }
 
-        parent::handleError($error);
+        parent::handleError($exception);
     }
 }

@@ -30,6 +30,7 @@ class HttpKernel implements Kernel
     }
 
     /**
+     * @throws \Throwable
      * @var Error|Throwable|Exception $exception
      */
     public function handleError($exception)

@@ -215,8 +215,12 @@ class Container implements ContainerInterface
 
     public function isResolvable(ReflectionParameter $parameter): bool
     {
-        $type = $parameter->getType()->getName();
-        return interface_exists($type) || class_exists($type);
+        $type = $parameter->getType();
+        if (!$type) {
+            return false;
+        }
+        $name = $type->getName();
+        return interface_exists($name) || class_exists($name);
     }
 
     /**

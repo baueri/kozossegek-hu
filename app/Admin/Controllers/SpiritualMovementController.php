@@ -3,10 +3,10 @@
 namespace App\Admin\Controllers;
 
 use App\Admin\SpiritualMovement\SpiritualMovementTable;
+use App\QueryBuilders\SpiritualMovements;
 use App\Models\SpiritualMovement;
-use App\Repositories\SpiritualMovements;
-use Framework\Http\Request;
 use Framework\Http\Message;
+use Framework\Http\Request;
 use Framework\Support\StringHelper;
 
 class SpiritualMovementController
@@ -17,7 +17,10 @@ class SpiritualMovementController
         return view('admin.spiritual_movement.spiritual_movements', compact('table', 'name'));
     }
 
-    public function edit(SpiritualMovements $query)
+    /**
+     * @throws \Framework\Model\ModelNotFoundException
+     */
+    public function edit(SpiritualMovements $query): string
     {
         $spiritualMovement = $query->findOrFail(request()->getUriValue('id'));
         $action = route('admin.spiritual_movement.update', $spiritualMovement);
@@ -35,7 +38,7 @@ class SpiritualMovementController
                 'highlighted'
             );
 
-            $repo->query()->where('id', $request['id'])->update($data);
+            $repo->where('id', $request['id'])->update($data);
             Message::success('Sikeres mentés');
         } catch (\Exception $e) {
             process_error($e);
@@ -45,7 +48,7 @@ class SpiritualMovementController
         }
     }
 
-    public function create(Request $request)
+    public function create(Request $request): string
     {
         return view('admin.spiritual_movement.create', [
             'spiritualMovement' => SpiritualMovement::make(),
@@ -56,7 +59,7 @@ class SpiritualMovementController
     public function doCreate(Request $request, SpiritualMovements $repo)
     {
         $data = $request->only('name', 'description', 'website', 'image_url');
-        if ($repo->query()->where('name', $request['name'])->exists()) {
+        if ($repo->where('name', $request['name'])->exists()) {
             Message::danger('Ez a lelkiségi mozgalom már létezik!');
 
             return view('admin.spiritual_movement.create', [

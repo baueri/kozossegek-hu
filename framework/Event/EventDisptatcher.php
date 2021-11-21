@@ -2,11 +2,6 @@
 
 namespace Framework\Event;
 
-/**
- * Description of EventDisptatcher
- *
- * @author ivan
- */
 class EventDisptatcher
 {
     public static function dispatch(Event $event)

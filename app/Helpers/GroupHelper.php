@@ -3,9 +3,9 @@
 namespace App\Helpers;
 
 use App\Models\AgeGroup;
-use App\Models\Group;
 use App\Models\User;
 use Framework\Support\Collection;
+use Legacy\Group;
 
 class GroupHelper
 {

@@ -21,9 +21,9 @@ abstract class AbstractGroupStep
         $this->request = $request;
     }
 
-    abstract protected function getView();
+    abstract protected function getView(): string;
 
-    protected function getModel()
+    protected function getModel(): array
     {
         return [];
     }

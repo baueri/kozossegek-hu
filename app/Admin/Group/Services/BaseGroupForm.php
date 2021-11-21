@@ -3,7 +3,7 @@
 namespace App\Admin\Group\Services;
 
 use App\Enums\JoinMode;
-use App\Models\GroupView;
+use App\Models\EntityGroupView;
 use App\Repositories\AgeGroups;
 use App\Repositories\GroupStatusRepository;
 use App\Repositories\OccasionFrequencies;
@@ -11,46 +11,20 @@ use Framework\Http\Request;
 use App\Repositories\Groups;
 use App\Repositories\Institutes;
 use App\Repositories\Users;
-use App\Models\Group;
 use App\Models\Institute;
 use App\Enums\DayEnum;
-use Framework\Http\View\View;
-use ReflectionException;
 
-/**
- * Description of BaseGroupForm
- *
- * @author ivan
- */
 class BaseGroupForm
 {
 
-    /**
-     * @var Institutes
-     */
     protected Institutes $institutes;
 
-    /**
-     * @var Groups
-     */
     protected Groups $repository;
 
-    /**
-     * @var Users
-     */
     protected Users $users;
 
-    /**
-     * @var Request
-     */
     protected Request $request;
 
-    /**
-     *
-     * @param Request $request
-     * @param Institutes $institutes
-     * @param Users $users
-     */
     public function __construct(
         Request $request,
         Institutes $institutes,
@@ -61,12 +35,7 @@ class BaseGroupForm
         $this->users = $users;
     }
 
-    /**
-     * @param Group $group
-     * @return array
-     * @throws ReflectionException
-     */
-    protected function getFormData(GroupView $group)
+    protected function getFormData(EntityGroupView $group): array
     {
         $institute = $this->institutes->find($group->institute_id) ?: new Institute();
         $statuses = (new GroupStatusRepository())->all();
@@ -104,17 +73,12 @@ class BaseGroupForm
         );
     }
 
-    /**
-     * @param GroupView $group
-     * @return View|string
-     * @throws ReflectionException
-     */
-    public function render(GroupView $group)
+    public function render(EntityGroupView $group): string
     {
         return view('admin.group.form', $this->getFormData($group));
     }
 
-    protected function getAction(Group $group)
+    protected function getAction($group): string
     {
         return route('admin.group.do_create');
     }

@@ -6,7 +6,7 @@ use App\Auth\Auth;
 use App\Helpers\SpiritualMovementHelper;
 use App\Models\SpiritualMovement;
 use App\Repositories\GroupViews;
-use App\Repositories\SpiritualMovements;
+use App\QueryBuilders\SpiritualMovements;
 use Framework\Http\Exception\PageNotFoundException;
 use Framework\Http\Request;
 use Framework\Model\ModelNotFoundException;
@@ -21,10 +21,10 @@ class SpiritualMovementController extends PortalController
         $this->repository = $repository;
     }
 
-    public function list()
+    public function list(): string
     {
         use_default_header_bg();
-        $spiritualMovements = $this->repository->query()
+        $spiritualMovements = $this->repository
             ->where('highlighted', 1)
             ->orderBy('name')->get();
 
@@ -40,7 +40,7 @@ class SpiritualMovementController extends PortalController
     {
         try {
             /* @var $spiritualMovement SpiritualMovement */
-            $spiritualMovement = $this->repository->query()
+            $spiritualMovement = $this->repository
                 ->where('slug', $this->request['slug'])
                 ->where('highlighted', 1)
                 ->firstOrFail();
@@ -61,6 +61,7 @@ class SpiritualMovementController extends PortalController
                     $groups->withMany($group_tags, 'tags', 'id', 'group_id');
                 }
             }
+
             $title = $spiritualMovement->name;
 
             if (Auth::loggedIn()) {
