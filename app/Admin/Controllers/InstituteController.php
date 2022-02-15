@@ -11,11 +11,6 @@ use App\Auth\Auth;
 use App\Admin\Institute\InstituteAdminTable;
 use App\Storage\Base64Image;
 
-/**
- * Description of InstituteController
- *
- * @author ivan
- */
 class InstituteController extends AdminController
 {
     /**
@@ -23,14 +18,14 @@ class InstituteController extends AdminController
      * @param InstituteAdminTable $table
      * @return string
      */
-    public function list(Request $request, InstituteAdminTable $table)
+    public function list(Request $request, InstituteAdminTable $table): string
     {
         $city = $request['city'];
         $search = $request['search'];
         return view('admin.institute.list', compact('table', 'city', 'search'));
     }
 
-    public function edit(Request $request, Institutes $repository)
+    public function edit(Request $request, Institutes $repository): string
     {
         /* @var $institute Institute */
         $institute = $repository->find($request['id']);

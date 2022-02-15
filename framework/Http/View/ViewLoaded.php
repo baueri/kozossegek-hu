@@ -6,7 +6,7 @@ use Framework\Event\Event;
 
 class ViewLoaded extends Event
 {
-    protected static $listeners = [];
+    protected static array $listeners = [];
 
     public string $filePath;
 

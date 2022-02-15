@@ -10,28 +10,23 @@ use Framework\Model\ModelCollection;
 use Framework\Model\ModelNotFoundException;
 use Framework\Model\ModelRepositoryBuilder;
 use Framework\Model\PaginatedModelCollection;
-use Framework\Support\Collection;
 use Framework\Support\Arr;
+use Framework\Support\Collection;
 
 /**
- * Class Repository
- * @package Framework
- * @psalm-template T of \Framework\Model\Model
+ * @template T of \Framework\Model\Model
  */
 abstract class Repository
 {
-    /**
-     * @return Database\Builder
-     */
     public function getBuilder(): Builder
     {
-        return builder()->select('*')->from(static::getTable());
+        return builder()->select()->from(static::getTable());
     }
 
     /**
      * @param string|int $id
      * @return Model|null
-     * @psalm-return T|null
+     * @phpstan-return T|null
      */
     public function find($id): ?Model
     {
@@ -42,7 +37,7 @@ abstract class Repository
     /**
      * @param string|int $id
      * @return Model
-     * @psalm-return T|null
+     * @phpstan-return T|null
      * @throws ModelNotFoundException
      */
     public function findOrFail($id): Model
@@ -58,14 +53,14 @@ abstract class Repository
 
     /**
      * @return string|Model
-     * @psalm-return class-string<T>
+     * @phpstan-return class-string<T>
      */
     abstract protected static function getModelClass(): string;
 
     /**
      * @param array|null $values
      * @return Model|mixed
-     * @psalm-return T|null
+     * @phpstan-return T|null
      */
     public function getInstance(?array $values = null)
     {
@@ -92,7 +87,7 @@ abstract class Repository
 
     /**
      * @return ModelCollection|Model[]
-     * @psalm-return T[]
+     * @phpstan-return T[]
      */
     public function all()
     {
@@ -102,7 +97,7 @@ abstract class Repository
     /**
      * @param array|PaginatedResultSetInterface $rows
      * @return ModelCollection|Model[]|PaginatedResultSet
-     * @psalm-return T[]|ModelCollection|PaginatedResultSet
+     * @phpstan-return T[]|ModelCollection|PaginatedResultSet
      */
     public function getInstances($rows)
     {
@@ -120,7 +115,7 @@ abstract class Repository
     /**
      * @param array $values
      * @return Model|mixed|T
-     * @psalm-return T
+     * @phpstan-return T
      * @phpstan-return T
      */
     public function create(array $values)
@@ -161,7 +156,7 @@ abstract class Repository
     /**
      * @param Model $model
      * @param array $data
-     * @psalm-param T
+     * @phpstan-param T
      * @return bool
      */
     public function update(Model $model, $data = [])
@@ -201,7 +196,7 @@ abstract class Repository
      * @param bool $hardDelete
      * @return bool
      */
-    public function delete($model, bool $hardDelete = false)
+    public function delete($model, bool $hardDelete = false): bool
     {
         if (property_exists($model, 'deleted_at') && !$hardDelete) {
             $model->deleted_at = date('Y-m-d H:i:s');
@@ -212,7 +207,7 @@ abstract class Repository
 
         Event\EventDisptatcher::dispatch(new Database\Repository\Events\ModelDeleted($model));
 
-        return $deleted;
+        return (bool) $deleted;
     }
 
     /**
@@ -233,14 +228,13 @@ abstract class Repository
 
     /**
      * @param Model[]|Collection $models
-     * @param bool $forceDelete
      */
-    public function deleteMultiple($models, $forceDelete = false)
+    public function deleteMultiple($models, bool $forceDelete = false)
     {
         Arr::each($models, fn ($model) => $this->delete($model, $forceDelete));
     }
 
-    public function deleteMultipleByIds($ids, $forceDelete)
+    public function deleteMultipleByIds($ids, bool $forceDelete = false)
     {
         $this->deleteMultiple(
             $this->getInstances(

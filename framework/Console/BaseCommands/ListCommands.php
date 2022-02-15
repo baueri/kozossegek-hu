@@ -30,12 +30,12 @@ class ListCommands implements Command
         $this->out = $out;
     }
 
-    public static function signature()
+    public static function signature(): string
     {
         return 'list';
     }
 
-    public function handle()
+    public function handle(): void
     {
         $this->out->heading('list of available commands');
         foreach ($this->kernel->getCommands() as $command) {

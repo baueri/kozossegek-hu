@@ -28,6 +28,9 @@ interface Database
 
     public function fetchColumn($query, $params = []);
 
+    /**
+     * @return mixed
+     */
     public function lastInsertId();
 
     public function beginTransaction(): bool;

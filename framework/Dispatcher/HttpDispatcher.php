@@ -6,10 +6,12 @@ use Exception;
 use Framework\Application;
 use Framework\Http\Controller;
 use Framework\Http\Cookie;
+use Framework\Http\Exception\RouteNotFoundException;
 use Framework\Http\HttpKernel;
 use Framework\Http\Request;
 use Framework\Http\Route\RouteInterface;
 use Framework\Http\Route\RouterInterface;
+use Framework\Middleware\MiddlewareResolver;
 use Framework\Support\StringHelper;
 use Framework\Http\Exception\PageNotFoundException;
 
@@ -52,11 +54,9 @@ class HttpDispatcher implements Dispatcher
 
         $this->request->route = $route;
 
-        $middleware = array_unique(array_merge($this->kernel->getMiddleware(), $route->getMiddleware()));
-
-        foreach ($middleware as $item) {
-            $this->app->resolve($this->app->get($item), 'handle');
-        }
+        $middlewareResolver = new MiddlewareResolver();
+        $middleware = array_merge($this->kernel->getMiddleware(), $route->getMiddleware());
+        array_walk($middleware, fn($item) => $middlewareResolver->resolve($item)->handle());
 
         $response = $this->resolveRoute($route);
 
@@ -75,7 +75,6 @@ class HttpDispatcher implements Dispatcher
      * @param RouteInterface $route
      * @return mixed
      * @throws PageNotFoundException
-     * @throws \ReflectionException
      */
     private function resolveRoute(RouteInterface $route)
     {
@@ -92,7 +91,7 @@ class HttpDispatcher implements Dispatcher
     /**
      * @param RouteInterface $route
      * @return mixed
-     * @throws PageNotFoundException|\ReflectionException
+     * @throws PageNotFoundException
      */
     private function resolveController(RouteInterface $route)
     {
@@ -105,14 +104,21 @@ class HttpDispatcher implements Dispatcher
         return $this->app->resolve($controller, $route->getUse());
     }
 
-    private function resolveView()
+    private function resolveView(): string
     {
         return view($this->request->route->getView(), $this->request->getUriValues());
     }
 
+    /**
+     * @throws RouteNotFoundException
+     */
     public function getCurrentRoute(): ?RouteInterface
     {
-        return $this->router->find($this->request->requestMethod, $this->request->uri);
+        $route = $this->router->find($this->request->requestMethod, $this->request->uri);
+        if ($route) {
+            return $route;
+        }
+        throw new RouteNotFoundException($this->request->uri);
     }
 
     /**

@@ -6,7 +6,7 @@ use Framework\Console\ConsoleKernel as Kernel;
 use Framework\Dispatcher\Dispatcher;
 use Framework\Dispatcher\CliDispatcher;
 
-include 'boot.php';
+include 'vendor/autoload.php';
 
 app()->bind(Kernel::class, ConsoleKernel::class);
 app()->singleton(Dispatcher::class, CliDispatcher::class);

@@ -8,8 +8,15 @@ use Closure;
 use Countable;
 use IteratorAggregate;
 
+/**
+ * @template T
+ */
 class Collection implements ArrayAccess, Countable, IteratorAggregate
 {
+    /**
+     * @var array
+     * @phpstan-var T[]
+     */
     protected array $items = [];
 
     public function __construct(?array $items = [])
@@ -45,11 +52,20 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         return $this;
     }
 
+    /**
+     * @return mixed|null
+     * @phpstan-return T|null
+     */
     public function pop()
     {
         return array_pop($this->items);
     }
 
+    /**
+     * @param mixed $key
+     * @return self
+     * @phpstan-return self<T>
+     */
     public function keyBy($key): self
     {
         $items = [];
@@ -64,6 +80,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     /**
      * @param Closure|string|null $callback
      * @param null $default
+     * @phpstan-return T|null
      */
     public function first($callback = null, $default = null)
     {
@@ -98,6 +115,10 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         return end($this->items);
     }
 
+    /**
+     * @return mixed
+     * @phpstan-return T
+     */
     public function random()
     {
         return Arr::random($this->items);
@@ -454,7 +475,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     public function as(string $abstraction): self
     {
         return $this->map(function ($item) use ($abstraction) {
-            return app()->make($abstraction, $item);
+            return app()->make($abstraction, [$item]);
         });
     }
 
@@ -474,7 +495,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         return new self($this->items);
     }
 
-    public function has($key, $value): bool
+    public function has($key, $value = null): bool
     {
         return Arr::has($this->items, $key, $value);
     }

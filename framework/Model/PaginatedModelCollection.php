@@ -6,20 +6,11 @@ use Framework\Database\PaginatedResultSetInterface;
 
 class PaginatedModelCollection extends ModelCollection implements PaginatedResultSetInterface
 {
-    /**
-     * @var int
-     */
-    protected $page;
+    protected int $page;
 
-    /**
-     * @var int
-     */
-    protected $total;
+    protected int $total;
 
-    /**
-     * @var int
-     */
-    private $perpage;
+    private int $perpage;
 
     public function __construct($rows, $perpage, $page = 1, $total = 0)
     {
@@ -29,31 +20,22 @@ class PaginatedModelCollection extends ModelCollection implements PaginatedResul
         $this->perpage = $perpage;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function rows()
+    public function rows(): array
     {
         return $this->items;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function page()
     {
         return $this->page;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function total()
     {
         return $this->total;
     }
 
-    public function perpage()
+    public function perpage(): int
     {
         return $this->perpage;
     }

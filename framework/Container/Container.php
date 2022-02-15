@@ -4,6 +4,7 @@ namespace Framework\Container;
 
 use Framework\Container\Exceptions\AbstractionAlreadySharedException;
 use Framework\Container\Exceptions\AlreadyBoundException;
+use Framework\Database\DatabaseConfiguration;
 use InvalidArgumentException;
 use Psr\Container\ContainerInterface;
 use ReflectionException;
@@ -106,7 +107,7 @@ class Container implements ContainerInterface
      * @param string|T $abstraction
      * @return T
      */
-    public function make(string $abstraction, ...$args)
+    public function make(string $abstraction, array $args = [])
     {
         $binding = $this->getBinding($abstraction);
 
@@ -118,9 +119,7 @@ class Container implements ContainerInterface
             throw new InvalidArgumentException('Cannot instantiate interface ' . $binding . ' without a binding registered to it');
         }
 
-        if (empty($args)) {
-            $args = $this->getDependencies($binding);
-        }
+        $args = $this->getDependencies($binding, '__construct', $args);
 
         return new $binding(...$args);
     }
@@ -157,10 +156,7 @@ class Container implements ContainerInterface
         return $this->getFallback($parent);
     }
 
-    /**
-     * @throws \ReflectionException
-     */
-    private function getDependencies($class, string $method = '__construct'): array
+    private function getDependencies($class, string $method = '__construct', array $resolvedDependencies = []): array
     {
         if (!method_exists($class, $method) && !function_exists($class)) {
             return [];
@@ -169,8 +165,15 @@ class Container implements ContainerInterface
         $dependencies = [];
         $reflectionMethod = $this->getReflectionMethod($class, $method);
         $parameters = $reflectionMethod->getParameters();
-        foreach ($parameters as $parameter) {
-            $dependencies[] = $this->getDependencyResourceValue($parameter);
+
+        foreach ($parameters as $i => $parameter) {
+            if (key($resolvedDependencies) === 0 && isset($resolvedDependencies[$i])) {
+                $dependencies[] = $resolvedDependencies[$i];
+            } elseif (isset($resolvedDependencies[$parameter->name])) {
+                $dependencies[] = $resolvedDependencies[$parameter->name];
+            } elseif ($this->isResolvable($parameter)) {
+                $dependencies[] = $this->getDependencyResourceValue($parameter);
+            }
         }
 
         return $dependencies;
@@ -207,8 +210,17 @@ class Container implements ContainerInterface
         } elseif ($resource->isDefaultValueAvailable()) {
             $value = $resource->getDefaultValue();
         }
-
         return $value;
+    }
+
+    public function isResolvable(ReflectionParameter $parameter): bool
+    {
+        $type = $parameter->getType();
+        if (!$type) {
+            return false;
+        }
+        $name = $type->getName();
+        return interface_exists($name) || class_exists($name);
     }
 
     /**
@@ -228,7 +240,6 @@ class Container implements ContainerInterface
     /**
      * @param mixed $concrete
      * @return mixed
-     * @throws \ReflectionException
      */
     public function resolve($concrete, string $method = '__construct')
     {

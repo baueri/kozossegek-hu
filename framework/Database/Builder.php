@@ -2,6 +2,8 @@
 
 namespace Framework\Database;
 
+use Closure;
+
 final class Builder
 {
     private Database $db;
@@ -26,17 +28,12 @@ final class Builder
 
     private static array $macros = [];
 
-    /**
-     * Builder constructor.
-     * @param Database $db
-     */
     public function __construct(Database $db)
     {
         $this->db = $db;
     }
 
     /**
-     *
      * @return array<int, array>
      */
     public function get(): array
@@ -125,7 +122,7 @@ final class Builder
                 $where .= sprintf("$column $operator (%s)", $in);
                 $bindings = array_merge($bindings, $value);
             } elseif (is_callable($column)) {
-                $builder = builder();
+                $builder = new self($this->db);
 
                 $column($builder);
 
@@ -183,12 +180,7 @@ final class Builder
         return $this;
     }
 
-    /**
-     * @param int|null $limit
-     * @param int|null $page
-     * @return PaginatedResultSet
-     */
-    public function paginate(?int $limit = null, ?int $page = null)
+    public function paginate(?int $limit = null, ?int $page = null): PaginatedResultSet
     {
         $page = $page ?: request()->get('pg', 1);
         $limit = $limit ?? request()->get('per-page', 30);
@@ -200,7 +192,7 @@ final class Builder
         return new PaginatedResultSet($rows, $limit, $page, $total);
     }
 
-    public function orderBy($columns, ?string $order = null)
+    public function orderBy($columns, ?string $order = null): self
     {
         foreach ((array) $columns as $column) {
             $this->orderBy[] = $column . ($order ? ' ' . $order : '');
@@ -209,25 +201,20 @@ final class Builder
         return $this;
     }
 
-    public function groupBy($groupBy)
+    public function groupBy($groupBy): self
     {
         $this->groupBy[] = $groupBy;
         return $this;
     }
 
-    public function from($table)
+    public function from($table): self
     {
         $this->table = [$table];
 
         return $this;
     }
 
-    public function table($table)
-    {
-        return $this->from($table);
-    }
-
-    public function select($select = '*', $bindings = [])
+    public function select($select = '*', $bindings = []): self
     {
         $this->select = [$select];
         $this->selectBindings = array_merge($this->selectBindings, $bindings);
@@ -235,13 +222,13 @@ final class Builder
         return $this;
     }
 
-    public function distinct()
+    public function distinct(): self
     {
         $this->distinct = true;
         return $this;
     }
 
-    public function addSelect($select, $bindings = [])
+    public function addSelect($select, $bindings = []): self
     {
         $this->select[] = $select;
         $this->selectBindings = array_merge($this->selectBindings, $bindings);
@@ -249,7 +236,7 @@ final class Builder
         return $this;
     }
 
-    public function where($column, $operator = null, $value = null, $clause = 'and')
+    public function where($column, $operator = null, $value = null, $clause = 'and'): self
     {
         if (is_callable($column)) {
             $this->where[] = [$column, null, null, $operator ?: 'and'];
@@ -266,87 +253,108 @@ final class Builder
         return $this;
     }
 
-    public function whereRaw($where, $bindings = [], $clause = 'and')
+    public function whereRaw($where, $bindings = [], $clause = 'and'): self
     {
         $this->where[] = [$where, null, $bindings, $clause];
 
         return $this;
     }
 
-    public function whereInSet($column, $value, $clause = 'and')
+    public function whereInSet($column, $value, $clause = 'and'): self
     {
         return $this->whereRaw("FIND_IN_SET(?, $column)", [$value], $clause);
     }
 
-    public function whereNull($column, $clause = 'and')
+    public function whereNull($column, $clause = 'and'): self
     {
         return $this->whereRaw("$column IS NULL", [], $clause);
     }
 
-    public function whereNotNull($column, $clause = 'and')
+    public function whereNotNull($column, $clause = 'and'): self
     {
         return $this->whereRaw("$column IS NOT NULL", [], $clause);
     }
 
-    public function whereNotIn($column, array $values, $clause = 'and')
+    public function whereNotIn($column, array $values, $clause = 'and'): self
     {
         return $this->where($column, 'not in', $values, $clause);
     }
 
-    public function whereIn($column, array $values, $clause = 'and')
+    public function whereIn($column, array $values, $clause = 'and'): self
     {
         $this->where($column, 'in', $values, $clause);
 
         return $this;
     }
 
-    public function orWhere($column, $operator, $value)
+    public function orWhere($column, $operator = null, $value = null): self
     {
         return $this->where($column, $operator, $value, 'or');
     }
 
-    public function orWhereRaw($where, $bindings = [])
+    public function orWhereRaw($where, $bindings = []): self
     {
         return $this->whereRaw($where, $bindings, 'or');
     }
 
-    public function orWhereInSet($column, $value)
+    public function orWhereInSet($column, $value): self
     {
         return $this->whereInSet($column, $value, 'or');
     }
 
-    public function join(string $table, string $on, string $joinMode = '')
+    /**
+     * @param string $table
+     * @param \Closure $callback
+     * @param string $clause
+     * @return $this
+     */
+    public function whereExists(string $table, Closure $callback, string $clause = 'and'): self
+    {
+        $callback($builder = (new self($this->db))->select('1')->from($table));
+
+        [$query, $bindings] = $builder->getBaseSelect();
+        $this->whereRaw("EXISTS ($query)", $bindings, $clause);
+
+        return $this;
+    }
+
+    public function orWhereExists(string $table, Closure $callback): self
+    {
+        return $this->whereExists($table, $callback, 'or');
+    }
+
+    public function join(string $table, string $on, string $joinMode = ''): self
     {
         return $this->joinRaw("{$joinMode} join {$table} on {$on}");
     }
 
-    public function leftJoin(string $table, string $on)
+    public function leftJoin(string $table, string $on): self
     {
         return $this->join($table, $on, 'left');
     }
 
-    public function rightJoin(string $table, string $on)
+    public function rightJoin(string $table, string $on): self
     {
         return $this->join($table, $on, 'right');
     }
 
-    public function innerJoin(string $table, string $on)
+    public function innerJoin(string $table, string $on): self
     {
         return $this->join($table, $on, 'inner');
     }
 
-    public function joinRaw(string $join)
+    public function joinRaw(string $join): self
     {
         $this->join[] = $join;
         return $this;
     }
 
-    public function orderByFromRequest()
+    public function orderByFromRequest(): self
     {
         return $this->orderBy(request()->get('order_by', 'id'), request()->get('sort', 'desc'));
     }
 
-    public function update(array $values)
+    public function update(array $values): int
     {
         $set = implode(', ', array_map(function ($column) {
             return "$column=?";
@@ -384,7 +392,7 @@ final class Builder
         return $this->insert(array_merge($where, $values));
     }
 
-    public function delete()
+    public function delete(): int
     {
         [$query, $bindings] = $this->build();
 
@@ -393,7 +401,7 @@ final class Builder
         return $this->db->delete("delete from {$tables} {$query}", $bindings);
     }
 
-    public function exists()
+    public function exists(): bool
     {
         $this->select('1 as `exists`');
 
@@ -411,7 +419,7 @@ final class Builder
         return DatabaseHelper::getQueryWithBindings($query, $bindings);
     }
 
-    private function getTable()
+    public function getTable(): string
     {
         return implode(',', $this->table);
     }
@@ -423,16 +431,16 @@ final class Builder
         return $this;
     }
 
-    public function macro($macroName, $callback)
+    public function macro($macroName, $callback): self
     {
         $key = !$this->getTable() ? 'global' : $this->getTable();
 
-        static::$macros[$key][$macroName] = $callback;
+        self::$macros[$key][$macroName] = $callback;
 
         return $this;
     }
 
-    public function apply($macro, ...$args)
+    public function apply($macro, ...$args): self
     {
         if (is_array($macro)) {
             foreach ($macro as $m) {
@@ -445,7 +453,7 @@ final class Builder
         return $this->applyMacro($macro, $args);
     }
 
-    protected function applyMacro($macro, $args)
+    protected function applyMacro($macro, $args): self
     {
         $callback = $this->getMacro($macro);
 
@@ -458,10 +466,10 @@ final class Builder
 
     protected function getMacro($method)
     {
-        if (isset(static::$macros[$this->getTable()][$method])) {
-            return static::$macros[$this->getTable()][$method];
-        } elseif (isset(static::$macros['global'][$method])) {
-            return static::$macros['global'][$method];
+        if (isset(self::$macros[$this->getTable()][$method])) {
+            return self::$macros[$this->getTable()][$method];
+        } elseif (isset(self::$macros['global'][$method])) {
+            return self::$macros['global'][$method];
         }
 
         return null;

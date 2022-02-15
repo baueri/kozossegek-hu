@@ -4,6 +4,9 @@ namespace Framework\Model;
 
 use Framework\Support\StringHelper;
 
+/**
+ * @property null|string $id
+ */
 abstract class Entity
 {
     protected static string $primaryCol = 'id';
@@ -16,11 +19,21 @@ abstract class Entity
 
     protected array $relations_count = [];
 
-    public function __construct(array $attributes)
+    final public function __construct(array $attributes = [])
     {
         $this->attributes = $attributes;
 
         $this->originalAttributes = $attributes;
+    }
+
+    /**
+     * @param array $attributes
+     * @return static
+     * @phpstan-return static
+     */
+    public static function make(array $attributes = []): self
+    {
+        return new static($attributes);
     }
 
     public function exists(): bool
@@ -56,5 +69,10 @@ abstract class Entity
     public function getAttributes(): array
     {
         return $this->attributes;
+    }
+
+    public function isDeleted(): bool
+    {
+        return (bool) $this->deleted_at;
     }
 }

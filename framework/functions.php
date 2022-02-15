@@ -2,7 +2,7 @@
 
 use App\Admin\Components\DebugBar\DebugBar;
 use App\Auth\Auth;
-use App\Mailable\CriticalErrorEmail;
+use App\Mailable\ThrowableCriticalErrorEmail;
 use App\Middleware\AdminMiddleware;
 use App\Models\User;
 use App\Repositories\EventLogRepository;
@@ -23,7 +23,9 @@ use Framework\Http\Route\RouteInterface;
 use Framework\Http\Route\RouterInterface;
 use Framework\Http\View\View;
 use Framework\Http\View\ViewInterface;
+use Framework\Mail\Mailable;
 use Framework\Mail\Mailer;
+use Framework\Model\Entity;
 use Framework\Model\Model;
 use Framework\Support\Collection;
 use Framework\Translator;
@@ -44,10 +46,7 @@ function app(string $abstract = null)
     return Application::getInstance();
 }
 
-/**
- * @return bool
- */
-function is_cli()
+function is_cli(): bool
 {
     return PHP_SAPI == 'cli';
 }
@@ -90,62 +89,33 @@ function dd(...$data)
     exit;
 }
 
-/**
- * @param string|null $key
- * @param null $lang
- * @return string|Translator
- */
-function lang($key = null, $lang = null)
+function lang(string $key = null, ?string $lang = null): string
 {
     $translator = app()->get(Translator::class);
 
     $lang = $lang ?: getLang();
 
-    if (is_null($key)) {
-        return $translator;
-    }
-
-    return app()->get(Translator::class)->translate($key, $lang);
+    return $translator->translate($key, $lang);
 }
 
-/**
- * @param $key
- * @param mixed ...$args
- * @return string
- */
-function lang_f($key, ...$args)
+function lang_f($key, ...$args): string
 {
-    return lang()->setDefaultLang(getLang())->translateF($key, ...$args);
+    return app()->get(Translator::class)->setDefaultLang(getLang())->translateF($key, ...$args);
 }
 
-/**
- * @return string
- */
-function getLang()
+function getLang(): string
 {
     return app()->getLocale();
 }
 
-/**
- * @param null $connection
- * @return Database
- */
-function db($connection = null)
+function db(): Database
 {
-    if (!$connection) {
-        return app()->get(Database::class);
-    }
-
     return app()->make(Database::class);
 }
 
-/**
- * @param string|null $table
- * @return Builder
- */
-function builder(?string $table = null)
+function builder(?string $table = null): Builder
 {
-    return app()->make(Builder::class)->table($table);
+    return app()->make(Builder::class)->from($table);
 }
 
 /**
@@ -153,7 +123,7 @@ function builder(?string $table = null)
  * @param array|string|Model|Entity $args
  * @return string
  */
-function route(string $route, $args = [])
+function route(string $route, $args = []): string
 {
     return app()->get(RouterInterface::class)->route($route, $args);
 }
@@ -174,7 +144,7 @@ function redirect(string $uri)
 
 /**
  * @param string $route
- * @param array $args
+ * @param mixed $args
  */
 function redirect_route(string $route, $args = [])
 {
@@ -186,16 +156,11 @@ function collect(?array $values = []): Collection
     return new Collection($values);
 }
 
-function collect_file($file)
+function collect_file($file): Collection
 {
     return collect(array_filter(explode(PHP_EOL, file_get_contents($file))));
 }
 
-/**
- * @param $key
- * @param mixed|null $default
- * @return mixed|null
- */
 function _env($key, $default = null)
 {
     return DotEnv::get($key, $default);
@@ -216,36 +181,21 @@ function view_path(string $view): string
     return View::getPath($view);
 }
 
-/**
- * @return RouteInterface
- */
-function current_route()
+function current_route(): RouteInterface
 {
     return app()->make(HttpDispatcher::class)->getCurrentRoute();
 }
 
-/**
- * @return Dispatcher
- */
-function dispatcher()
+function dispatcher(): Dispatcher
 {
     return app()->make(Dispatcher::class);
 }
 
-/**
- * @return string
- */
-function get_site_url()
+function get_site_url(): string
 {
     return config('app.site_url');
 }
 
-/**
- *
- * @param mixed $key
- * @param mixed $default
- * @return mixed
- */
 function config($key, $default = null)
 {
     return app()->config($key, $default);
@@ -256,44 +206,22 @@ function make($abstraction, $values = [])
     return app()->make($abstraction, ...$values);
 }
 
-function image_with_watermark($imgPath)
-{
-    $stamp = imagecreatefrompng(ROOT . 'resources/watermark.png');
-    $img = imagecreatefromjpeg($imgPath);
-
-    $marge_right = 10;
-    $marge_bottom = 10;
-    $sx = imagesx($stamp);
-    $sy = imagesy($stamp);
-
-    imagecopy($img, $stamp, imagesx($img) - $sx - $marge_right, imagesy($img) - $sy - $marge_bottom, 0, 0, $sx, $sy);
-
-    ob_start();
-    imagejpeg($img);
-
-    $mime_type = mime_content_type($imgPath);
-    header("Content-Type: {$mime_type}");
-}
-
 function widget($uniqid)
 {
     return app()->get(Widgets::class)->getByUniqId($uniqid);
 }
 
-function is_prod()
+function is_prod(): bool
 {
     return app()->envIs('production');
 }
 
-/**
- * @return DebugBar
- */
-function debugbar()
+function debugbar(): DebugBar
 {
     return app()->get(DebugBar::class);
 }
 
-function is_home()
+function is_home(): bool
 {
     return !trim(app()->get(Request::class)->uri, '/');
 }
@@ -303,12 +231,12 @@ function request(): Request
     return app()->get(Request::class);
 }
 
-function is_admin()
+function is_admin(): bool
 {
     return in_array(AdminMiddleware::class, current_route()->getMiddleware());
 }
 
-function mb_ucfirst($string, $encoding = 'utf-8')
+function mb_ucfirst($string, $encoding = 'utf-8'): string
 {
     $firstChar = mb_substr($string, 0, 1, $encoding);
     $then = mb_substr($string, 1, null, $encoding);
@@ -339,19 +267,18 @@ function raise_403($message = '', $message2 = 'Nincs jogosultsága a tartalom me
 function process_error($e)
 {
     if (!_env('DEBUG')) {
-        $errorEmail = new CriticalErrorEmail($e);
-        (new Mailer())->to(config('app.error_email'))->send($errorEmail);
+        report($e);
     } else {
         dd($e, request()->all(), request()->route);
     }
 }
 
-function is_loggedin()
+function is_loggedin(): bool
 {
     return Auth::loggedIn();
 }
 
-function rrmdir($dir)
+function rrmdir($dir): bool
 {
     if (is_dir($dir)) {
         $objects = scandir($dir);
@@ -375,11 +302,11 @@ function api(): ApiResponse
     return new ApiResponse();
 }
 
-// copies files and non-empty directories
-function rcopy($src, $dst, $excludeSymlinks = false)
+// Copy files and non-empty directories
+function rcopy($src, $dst, $excludeSymlinks = false): void
 {
     if ($excludeSymlinks && is_link($src)) {
-        return null;
+        return;
     }
 
     if (file_exists($dst)) {
@@ -393,18 +320,16 @@ function rcopy($src, $dst, $excludeSymlinks = false)
                 rcopy("$src/$file", "$dst/$file");
             }
         }
-    } elseif (file_exists($src)) {
-        return copy($src, $dst);
+    }
+    if (file_exists($src)) {
+        copy($src, $dst);
     }
 }
 
 /**
- * @param $env
- * @param null $cwd
- * @return PHPDeploy
  * @throws Exception
  */
-function php_deploy($env, $cwd = null)
+function php_deploy(string $env, ?string $cwd = null): PHPDeploy
 {
     return new PHPDeploy($env, $cwd);
 }
@@ -457,4 +382,22 @@ function site_name(): string
 function flash(): ?array
 {
     return Message::flash();
+}
+
+function report($exception): void
+{
+    if (!_env('DEBUG') || ($exception instanceof \Throwable && $exception->getCode() == '404')) {
+        return;
+    }
+    $mailer = new Mailer();
+    $mailer->to(config('app.error_email'));
+
+    if ($exception instanceof \Throwable) {
+        $mail = new ThrowableCriticalErrorEmail($exception);
+    } else {
+        $mail = new Mailable();
+        $mail->setMessage($exception);
+    }
+
+    $mailer->send($mail);
 }

@@ -2,54 +2,28 @@
 
 namespace Framework\Http\Route;
 
+use App\Middleware\AdminMiddleware;
+use Framework\Middleware\Middleware;
+
 class Route implements RouteInterface
 {
-    /**
-     * @var string
-     */
-    protected $method;
+    protected string $method;
 
-    /**
-     * @var string
-     */
-    protected $uriMask;
+    protected string $uriMask;
 
-    /**
-     * @var string
-     */
-    protected $as;
+    protected string $as;
 
-    /**
-     * @var string
-     */
-    protected $controller;
+    protected string $controller;
 
-    /**
-     * @var string
-     */
-    protected $use;
+    protected string $use;
 
-    /**
-     * @var string
-     */
-    protected $view;
+    protected string $view;
 
-    /**
-     * @var array
-     */
-    protected $middleware = [];
+    protected array $middleware = [];
 
-    /**
-     * Route constructor.
-     * @param string $method
-     * @param string $uriMask
-     * @param string $as
-     * @param string $controller
-     * @param string $use
-     * @param array $middleware
-     * @param $view
-     */
-    public function __construct($method, $uriMask, $as, $controller, $use, $middleware, $view)
+    private array $resolvedMiddleware;
+
+    public function __construct(string $method, string $uriMask, string $as, string $controller, string $use, array $middleware, string $view)
     {
         $this->method = $method;
         $this->uriMask = $uriMask;
@@ -68,41 +42,26 @@ class Route implements RouteInterface
         return $this->method;
     }
 
-    /**
-     * @return string
-     */
     public function getUriMask(): string
     {
         return $this->uriMask;
     }
 
-    /**
-     * @return string
-     */
     public function getAs(): string
     {
         return $this->as;
     }
 
-    /**
-     * @return string
-     */
     public function getController(): string
     {
         return $this->controller;
     }
 
-    /**
-     * @return string
-     */
     public function getUse(): string
     {
         return $this->use;
     }
 
-    /**
-     * @return array
-     */
     public function getMiddleware(): array
     {
         return $this->middleware;
@@ -110,9 +69,8 @@ class Route implements RouteInterface
 
    /**
     * @param array|string $args
-    * @return string
     */
-    public function getWithArgs($args = [])
+    public function getWithArgs($args = []): string
     {
         $uri = $this->uriMask;
 
@@ -124,10 +82,10 @@ class Route implements RouteInterface
                 }
             }
         } elseif (is_string($args)) {
-            $uri = preg_replace('/({\??[a-zA-Z\-\_]+})/', $args, $uri, 1);
+            $uri = preg_replace('/({\??[a-zA-Z\-_]+})/', $args, $uri, 1);
             $args = '';
         }
-        $uri = '/' . trim(preg_replace('/({\?[a-zA-Z\-\_]+})/', '', $uri), '/');
+        $uri = '/' . trim(preg_replace('/({\?[a-zA-Z\-_]+})/', '', $uri), '/');
 
         if (!empty($args)) {
             $uri .= '?' . http_build_query($args);
@@ -136,20 +94,13 @@ class Route implements RouteInterface
         return $uri;
     }
 
-    /**
-     * @param string $uri
-     * @return bool
-     */
     public function matches(string $uri): bool
     {
         $pattern = '/^' . $this->getUriForPregReplace() . '$/';
         return $this->uriMask == $uri || preg_match_all($pattern, $uri);
     }
 
-    /**
-     * @return null|string
-     */
-    public function getUriForPregReplace()
+    public function getUriForPregReplace(): ?string
     {
         return preg_replace([
             '/({[a-zA-Z\-\_\.]+})/',
@@ -162,18 +113,15 @@ class Route implements RouteInterface
         ], trim($this->uriMask, '/'));
     }
 
-    /**
-     * @return string
-     */
-    public function getView()
+    public function getView(): string
     {
         return $this->view;
     }
 
-    public function requestMethodIs($method)
+    public function requestMethodIs($method): bool
     {
         if (strpos($this->method, '|') !== false) {
-            return strpos($this->method, $method) >= 0;
+            return strpos($this->method, $method) !== false;
         }
 
         return $this->method == $method || $this->method == 'ALL';

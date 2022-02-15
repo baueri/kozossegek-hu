@@ -3,29 +3,18 @@
 namespace App\Http\Responses\CreateGroupSteps;
 
 use App\Auth\Auth;
-use App\Models\GroupView;
+use App\Models\ChurchGroupView;
 use App\Models\Institute;
 use App\Repositories\Institutes;
-use App\Repositories\SpiritualMovements;
+use App\QueryBuilders\SpiritualMovements;
 use Framework\Http\Request;
 
 class RegisterGroupForm extends AbstractGroupStep
 {
-    /**
-     * @var Institutes
-     */
     private Institutes $institutes;
-    /**
-     * @var SpiritualMovements
-     */
+
     private SpiritualMovements $spiritualMovements;
 
-    /**
-     *
-     * @param Request $request
-     * @param Institutes $institutes
-     * @param SpiritualMovements $spiritualMovements
-     */
     public function __construct(Request $request, Institutes $institutes, SpiritualMovements $spiritualMovements)
     {
         parent::__construct($request);
@@ -33,7 +22,7 @@ class RegisterGroupForm extends AbstractGroupStep
         $this->spiritualMovements = $spiritualMovements;
     }
 
-    protected function getModel()
+    protected function getModel(): array
     {
         $request = $this->request;
         /* @var $institute Institute */
@@ -61,7 +50,7 @@ class RegisterGroupForm extends AbstractGroupStep
             $data['spiritual_movement'] = $movement->name;
         }
 
-        $group = new GroupView($data->all());
+        $group = new ChurchGroupView($data->all());
         $user = Auth::user();
 
         $image = $request['image'];
@@ -85,7 +74,7 @@ class RegisterGroupForm extends AbstractGroupStep
         ];
     }
 
-    protected function getView()
+    protected function getView(): string
     {
         return 'portal.group.create-steps.group-data';
     }

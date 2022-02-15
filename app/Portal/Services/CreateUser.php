@@ -2,9 +2,8 @@
 
 namespace App\Portal\Services;
 
-use App\EntityQueryBuilders\UserLegalNotices;
+use App\QueryBuilders\UserLegalNotices;
 use App\Exception\EmailTakenException;
-use App\Mail\RegistrationEmail;
 use App\Models\User;
 use App\Repositories\Users;
 use Framework\Support\Collection;
@@ -14,9 +13,12 @@ class CreateUser
 {
     private Users $users;
 
-    public function __construct(Users $users)
+    private UserLegalNotices $legalNotices;
+
+    public function __construct(Users $users, UserLegalNotices $legalNotices)
     {
         $this->users = $users;
+        $this->legalNotices = $legalNotices;
     }
 
     /**
@@ -35,7 +37,7 @@ class CreateUser
 
         $user = $this->users->create($data);
 
-        UserLegalNotices::query()->updateOrInsertCurrentFor($user);
+        $this->legalNotices->updateOrInsertCurrentFor($user);
 
         return $user;
     }

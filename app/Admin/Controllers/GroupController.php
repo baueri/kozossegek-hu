@@ -10,28 +10,25 @@ use App\Admin\Group\Services\ListGroups;
 use App\Admin\Group\Services\UpdateGroup;
 use App\Admin\Group\Services\ValidateGroupForm;
 use App\Http\Exception\RequestParameterException;
-use App\Mail\GroupAcceptedEmail;
 use App\Mail\DefaultMailable;
-use App\Models\Group;
-use App\Models\GroupView;
+use App\Mail\GroupAcceptedEmail;
+use App\Models\ChurchGroupView;
+use App\QueryBuilders\ChurchGroups;
+use App\QueryBuilders\GroupViews;
 use App\Repositories\Groups;
-use App\Repositories\GroupViews;
 use App\Services\RebuildSearchEngine;
 use Exception;
 use Framework\Exception\FileTypeNotAllowedException;
 use Framework\Http\Message;
 use Framework\Http\Request;
-use Framework\Http\View\View;
 use Framework\Mail\Mailer;
-use Framework\Model\Model;
 use Framework\Model\ModelNotFoundException;
+use Legacy\Group;
 use ReflectionException;
+use Throwable;
 
 class GroupController extends AdminController
 {
-    /**
-     * @var GroupViews
-     */
     private GroupViews $groupViews;
 
     public function __construct(Request $request, GroupViews $groupViews)
@@ -41,31 +38,18 @@ class GroupController extends AdminController
     }
 
     /**
-     * @param ListGroups $service
-     * @return string
      * @throws Exception
      */
-    public function list(ListGroups $service)
+    public function list(ListGroups $service): string
     {
         return $service->show();
     }
 
-    /**
-     * @param BaseGroupForm $service
-     * @return string
-     * @throws ReflectionException
-     */
     public function create(BaseGroupForm $service): string
     {
-        return $service->render(new GroupView());
+        return $service->render(ChurchGroupView::make());
     }
 
-    /**
-     * @param CreateGroup $service
-     * @param BaseGroupForm $form
-     * @return View|string
-     * @throws ReflectionException
-     */
     public function doCreate(CreateGroup $service, BaseGroupForm $form)
     {
         try {
@@ -74,7 +58,6 @@ class GroupController extends AdminController
 
             Message::success('Közösség létrehozva.');
             redirect_route('admin.group.edit', ['id' => $group->id]);
-            exit;
         } catch (Exception $e) {
             process_error($e->getMessage());
             Message::danger('Váratlan hiba történt!');
@@ -83,24 +66,19 @@ class GroupController extends AdminController
     }
 
     /**
-     * @param EditGroup $service
-     * @return View|string
      * @throws ModelNotFoundException|ReflectionException
      */
-    public function edit(EditGroup $service)
+    public function edit(EditGroup $service): string
     {
         return $service->render($this->findOrFailById());
     }
 
     /**
-     * @param UpdateGroup $service
-     * @param Groups $groups
      * @throws FileTypeNotAllowedException
      * @throws ModelNotFoundException
      */
     public function update(UpdateGroup $service, Groups $groups)
     {
-        /* @var $group Group */
         $group = $groups->findOrFail($this->request['id']);
         $service->update($group, $this->request);
 
@@ -108,7 +86,6 @@ class GroupController extends AdminController
     }
 
     /**
-     * @param DeleteGroup $service
      * @throws ModelNotFoundException
      */
     public function delete(DeleteGroup $service)
@@ -118,34 +95,22 @@ class GroupController extends AdminController
         redirect_route('admin.group.list');
     }
 
-    /**
-     * @param ListGroups $service
-     * @return string
-     * @throws ReflectionException
-     */
-    public function trash(ListGroups $service)
+    public function trash(ListGroups $service): string
     {
         return $service->show();
     }
 
-    /**
-     * @param RebuildSearchEngine $service
-     */
     public function rebuildSearchEngine(RebuildSearchEngine $service)
     {
         $service->run();
 
         Message::success('Sikeres keresőmotor frissítés');
 
-        return redirect_route('admin.group.list');
+        redirect_route('admin.group.list');
     }
 
-    /**
-     * @param Groups $groups
-     */
     public function restore(Groups $groups)
     {
-        /* @var $group Group */
         $group = $groups->find($this->request['id']);
         $group->deleted_at = null;
         $groups->save($group);
@@ -155,20 +120,15 @@ class GroupController extends AdminController
         redirect_route('admin.group.edit', $group);
     }
 
-    /**
-     * @return View|string
-     */
-    public function maintenance()
+    public function maintenance(): string
     {
         return view('admin.group.maintenance');
     }
 
     /**
-     * @param ValidateGroupForm $form
-     * @return View|string
      * @throws ModelNotFoundException
      */
-    public function validate(ValidateGroupForm $form)
+    public function validate(ValidateGroupForm $form): string
     {
         $group = $this->findOrFailById();
 
@@ -176,10 +136,9 @@ class GroupController extends AdminController
     }
 
     /**
-     * @return View|string
      * @throws ModelNotFoundException
      */
-    public function getRejectModal()
+    public function getRejectModal(): string
     {
         $group = $this->findOrFailById();
         $message = view('mail.templates.reject-group', [
@@ -191,21 +150,15 @@ class GroupController extends AdminController
         return view('admin.group.reject-form', compact('group', 'message'));
     }
 
-    /**
-     * @param Groups $groups
-     * @param Mailer $mailer
-     * @return array
-     */
-    public function rejectGroup(Groups $groups, Mailer $mailer)
+    public function rejectGroup(ChurchGroups $groups, Mailer $mailer): array
     {
         try {
             $this->request->validate('message', 'subject', 'email', 'name');
 
             $group = $this->findOrFailById();
+            $groups->save($group, ['pending' => -1]);
 
-            $groups->update($group, ['pending' => -1]);
-
-            $mailable = DefaultMailable::make()
+            $mailable = app()->make(DefaultMailable::class)
                 ->setMessage($this->request['message'])
                 ->subject("kozossegek.hu - {$this->request['subject']}");
 
@@ -214,7 +167,8 @@ class GroupController extends AdminController
             return api()->ok();
         } catch (RequestParameterException $e) {
             return api()->error('Minden mező kötelező!');
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
+            report($e);
             return api()->error('Váratlan hiba történt!');
         }
     }
@@ -225,10 +179,8 @@ class GroupController extends AdminController
      */
     public function approveGroup(Groups $groupRepo, Mailer $mailer): array
     {
-        /* @var $groupView GroupView */
         $groupView = $this->groupViews->findOrFail($this->request['id']);
-
-        $groupRepo->update($groupView->getGroup(), ['pending' => 0]);
+        $groupRepo->query()->where('id', $groupView->id)->update(['pending' => 0]);
 
         $mailable = new GroupAcceptedEmail($groupView);
 
@@ -241,7 +193,7 @@ class GroupController extends AdminController
     /**
      * @throws ModelNotFoundException
      */
-    public function getDeleteModal()
+    public function getDeleteModal(): string
     {
         $group = $this->findOrFailById();
 
@@ -253,7 +205,7 @@ class GroupController extends AdminController
         return view('admin.group.partials.delete_modal', compact('group', 'message'));
     }
 
-    public function deleteByValidation(Groups $groups, Mailer $mailer)
+    public function deleteByValidation(ChurchGroups $groups, Mailer $mailer): array
     {
         try {
             $this->request->validate('message', 'subject', 'email', 'name');
@@ -262,7 +214,7 @@ class GroupController extends AdminController
 
             $groups->delete($group);
 
-            $mailable = DefaultMailable::make()
+            $mailable = app()->make(DefaultMailable::class)
                 ->setMessage($this->request['message'])
                 ->subject("kozossegek.hu - {$this->request['subject']}");
 
@@ -277,10 +229,9 @@ class GroupController extends AdminController
     }
 
     /**
-     * @return GroupView|Model
      * @throws ModelNotFoundException
      */
-    private function findOrFailById(): GroupView
+    private function findOrFailById(): ChurchGroupView
     {
         return $this->groupViews->findOrFail($this->request['id']);
     }

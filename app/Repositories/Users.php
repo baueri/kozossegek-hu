@@ -8,6 +8,9 @@ use Framework\Repository;
 use Framework\Support\Collection;
 use Framework\Support\StringHelper;
 
+/**
+ * @phpstan-extends \Framework\Repository<\App\Models\User>
+ */
 class Users extends Repository
 {
     public function searchUsers($keyword)
@@ -30,9 +33,6 @@ class Users extends Repository
     }
 
     /**
-     *
-     * @param Collection $filter
-     * @param int $limit
      * @return User[]|PaginatedModelCollection
      */
     public function getUsers(Collection $filter, ?int $limit = null)

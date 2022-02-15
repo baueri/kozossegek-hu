@@ -2,76 +2,47 @@
 
 namespace Framework\Mail;
 
-use Framework\Traits\Makeable;
-
 class Mailable
 {
-    use Makeable;
-
     /**
      * @var string[]
      */
     public ?array $from = [];
 
-    /**
-     * @var string|null
-     */
     protected ?string $view = null;
 
-    /**
-     * @var array
-     */
     protected array $viewData = [];
 
-    /**
-     * @var string
-     */
     public string $subject = '';
 
-    /**
-     * @var string|null
-     */
     public ?string $message = null;
 
     public ?string $replyTo = null;
 
     protected bool $useDefaultTemplate = false;
 
-    /**
-     * @param  string $view
-     * @return static
-     */
-    final public function view(string $view)
+    final public function view(string $view): self
     {
         $this->view = $view;
 
         return $this;
     }
 
-    /**
-     * @param  array  $data
-     * @return static
-     */
-    final public function with(array $data)
+    final public function with(array $data): self
     {
         $this->viewData = array_merge($this->viewData, $data);
 
         return $this;
     }
 
-    /**
-     * @param string $from
-     * @param string|null $name
-     * @return static
-     */
-    final public function from(string $from, string $name = null)
+    final public function from(string $from, string $name = null): self
     {
         $this->from = array_filter([$from, $name]);
 
         return $this;
     }
 
-    final public function subject(string $subject)
+    final public function subject(string $subject): self
     {
         $this->subject = $subject;
 
@@ -93,38 +64,31 @@ class Mailable
         return $message;
     }
 
-    /**
-     * @return void
-     */
-    public function build()
-    {
-    }
-
-    public function getView()
+    public function getView(): ?string
     {
         return $this->view;
     }
 
-    public function getVariableNames()
+    public function getVariableNames(): array
     {
         return array_keys($this->viewData);
     }
 
-    public function setMessage(string $message)
+    public function setMessage(string $message): self
     {
         $this->message = $message;
 
         return $this;
     }
 
-    public function usingDefaultTemplate()
+    public function usingDefaultTemplate(): self
     {
         $this->useDefaultTemplate = true;
 
         return $this;
     }
 
-    public function replyTo(string $email)
+    public function replyTo(string $email): self
     {
         $this->replyTo = $email;
 

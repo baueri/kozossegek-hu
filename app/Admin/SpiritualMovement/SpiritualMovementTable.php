@@ -6,8 +6,9 @@ use App\Admin\Components\AdminTable\AdminTable;
 use App\Admin\Components\AdminTable\Deletable;
 use App\Admin\Components\AdminTable\Editable;
 use App\Helpers\SpiritualMovementHelper;
-use App\Repositories\SpiritualMovements;
-use Framework\Database\PaginatedResultSetInterface;
+use App\QueryBuilders\SpiritualMovements;
+use Framework\Http\Request;
+use Framework\Model\PaginatedModelCollection;
 use Framework\Support\Collection;
 
 class SpiritualMovementTable extends AdminTable implements Editable, Deletable
@@ -27,9 +28,17 @@ class SpiritualMovementTable extends AdminTable implements Editable, Deletable
 
     protected string $defaultOrder = 'asc';
 
-    protected function getData(): PaginatedResultSetInterface
+    private SpiritualMovements $repository;
+
+    public function __construct(Request $request, SpiritualMovements $repository)
     {
-        $query = (new SpiritualMovements())->query()
+        parent::__construct($request);
+        $this->repository = $repository;
+    }
+
+    protected function getData(): PaginatedModelCollection
+    {
+        $query = $this->repository
             ->orderBy(...$this->order);
         if ($name = $this->request['name']) {
             $query->where('name', 'like', "%{$name}%")
@@ -62,7 +71,7 @@ class SpiritualMovementTable extends AdminTable implements Editable, Deletable
         return 'name';
     }
 
-    private function getGroupsCount(Collection $movements)
+    private function getGroupsCount(Collection $movements): array
     {
         if ($movements->isEmpty()) {
             return [];

@@ -4,57 +4,39 @@ namespace Framework\Model;
 
 abstract class Model
 {
-    /**
-     * @var mixed
-     */
     public $id;
 
-    /**
-     * @var string
-     */
     protected static string $primaryCol = 'id';
 
-    /**
-     * @var mixed[]
-     */
     protected array $originalAttributes = [];
 
-    public function __construct(array $attributes = [])
+    final public function __construct(?array $attributes = [])
     {
+        if (!$attributes) {
+            return;
+        }
+
         $this->setAttributes($attributes);
 
         $this->originalAttributes = $attributes;
     }
 
-    /**
-     * @param array $attributes
-     * @return static
-     */
-    public static function make(array $attributes = [])
+    public static function make(array $attributes = []): self
     {
         return new static($attributes);
     }
 
-    /**
-     * @return string
-     */
-    public static function getPrimaryCol()
+    public static function getPrimaryCol(): string
     {
         return static::$primaryCol;
     }
 
-    /**
-     * @return string
-     */
     public function getId()
     {
         return $this->{static::$primaryCol};
     }
 
-    /**
-     * @return bool
-     */
-    public function exists()
+    public function exists(): bool
     {
         return (bool) $this->getId();
     }
@@ -64,18 +46,11 @@ abstract class Model
         $this->{static::$primaryCol} = $id;
     }
 
-    /**
-     * @return array
-     */
-    public function getOriginalAttributes()
+    public function getOriginalAttributes(): array
     {
         return $this->originalAttributes;
     }
 
-    /**
-     * @param mixed $model
-     * @return bool
-     */
     public function is($model): bool
     {
         return $model instanceof $this && $this->getId() == $model->getId();
@@ -83,24 +58,15 @@ abstract class Model
 
     public function isDeleted(): bool
     {
-        return property_exists($this, 'deleted_at') && (bool) $this->deleted_at;
+        return property_exists($this, 'deleted_at') && $this->deleted_at;
     }
 
-    /**
-     *
-     * @param array $data
-     */
     public function update(array $data)
     {
         $this->setAttributes($data);
     }
 
-    /**
-     *
-     * @param array $values
-     * @return static
-     */
-    protected function setAttributes(array $values)
+    protected function setAttributes(array $values): Model
     {
         foreach ($values as $col => $value) {
             if (property_exists($this, $col)) {
@@ -138,7 +104,7 @@ abstract class Model
         return $values;
     }
 
-    public function getChanges()
+    public function getChanges(): array
     {
         $original = $this->getOriginalAttributes();
         $newValues = $this->valuesToArray();

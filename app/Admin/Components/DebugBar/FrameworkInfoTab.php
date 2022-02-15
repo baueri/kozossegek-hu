@@ -1,18 +1,15 @@
 <?php
 
-
 namespace App\Admin\Components\DebugBar;
-
 
 class FrameworkInfoTab extends DebugBarTab
 {
-
-    public function getName()
+    public function getName(): string
     {
         return 'keretrendszer';
     }
 
-    public function render()
+    public function render(): string
     {
         $route = current_route();
         $uriMask = $route->getUriMask();

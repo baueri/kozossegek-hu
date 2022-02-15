@@ -6,10 +6,10 @@ use Framework\Model\ModelCollection;
 
 class SpiritualMovementHelper
 {
-    public static function loadGroupsCount(ModelCollection $movements)
+    public static function loadGroupsCount(ModelCollection $movements): ModelCollection
     {
         if ($movements->isEmpty()) {
-            return [];
+            return $movements;
         }
         $ids = $movements->pluck('id')->implode(',');
         $counts = db()->select(
@@ -22,6 +22,7 @@ class SpiritualMovementHelper
                     group by spiritual_movement_id"
         );
 
-        return $movements->withCount($counts, 'group_count', 'id', 'spiritual_movement_id');
+        $movements->withCount($counts, 'group_count', 'id', 'spiritual_movement_id');
+        return $movements;
     }
 }
