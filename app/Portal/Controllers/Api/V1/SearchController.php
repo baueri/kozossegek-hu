@@ -7,48 +7,29 @@ use Framework\Http\Request;
 use App\Repositories\Cities;
 use App\Repositories\Districts;
 use App\Repositories\Institutes;
-use App\Repositories\Users;
+use App\Repositories\UsersLegacy;
 use App\Portal\Responses\DistrictResponse;
 use App\Portal\Responses\CitySearchResponse;
 use App\Portal\Responses\InstituteSearchResponse;
 use App\Portal\Responses\UserResponse;
 
-/**
- * @author ivan
- */
 class SearchController
 {
-
-    /**
-     * @var Request
-     */
-    private Request $request;
-
-    /**
-     *
-     * @param Request $request
-     */
-    public function __construct(Request $request)
+    public function __construct(private Request $request)
     {
-        $this->request = $request;
     }
 
-    /**
-     *
-     * @param Cities $repository
-     * @return CitySearchResponse
-     */
-    public function searchCity(Cities $repository)
+    public function searchCity(Cities $repository): CitySearchResponse
     {
         return new CitySearchResponse($repository->search($this->request['term']));
     }
 
-    public function searchCitiesByExistingInstitutes(Cities $repository)
+    public function searchCitiesByExistingInstitutes(Cities $repository): CitySearchResponse
     {
         return new CitySearchResponse($repository->search($this->request['term']));
     }
 
-    public function searchInstitute(Institutes $repository)
+    public function searchInstitute(Institutes $repository): array|InstituteSearchResponse
     {
         if (!$this->request['term']) {
             return [];
@@ -59,12 +40,12 @@ class SearchController
         return $response->asAdmin($user && $user->isAdmin());
     }
 
-    public function searchDistrict(Districts $repository)
+    public function searchDistrict(Districts $repository): DistrictResponse
     {
         return new DistrictResponse($repository->searchDistrict($this->request['term'], $this->request['city']));
     }
 
-    public function searchUser(Users $users)
+    public function searchUser(UsersLegacy $users): UserResponse
     {
         return new UserResponse($users->searchUsers($this->request['term']));
     }

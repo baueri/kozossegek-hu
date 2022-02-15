@@ -11,18 +11,14 @@ abstract class Entity
 {
     protected static string $primaryCol = 'id';
 
-    protected array $attributes = [];
-
     protected array $originalAttributes = [];
 
     public array $relations = [];
 
     protected array $relations_count = [];
 
-    final public function __construct(array $attributes = [])
+    final public function __construct(protected array $attributes = [])
     {
-        $this->attributes = $attributes;
-
         $this->originalAttributes = $attributes;
     }
 

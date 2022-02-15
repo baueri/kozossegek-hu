@@ -9,7 +9,7 @@ use App\Models\Institute;
 use App\Repositories\Institutes;
 use Framework\Database\PaginatedResultSetInterface;
 use Framework\Http\Request;
-use App\Repositories\Users;
+use App\Repositories\UsersLegacy;
 use Framework\Support\Collection;
 use Framework\Support\StringHelper;
 
@@ -21,7 +21,7 @@ use Framework\Support\StringHelper;
 class InstituteAdminTable extends AdminTable implements Deletable, Editable
 {
 
-    protected $columns = [
+    protected array $columns = [
         'id' => '<i class="fa fa-hashtag"></i>',
         'image' => '<i class="fa fa-image" title="Kép"></i>',
         'name' => 'Intézmény / plébánia neve',
@@ -38,9 +38,9 @@ class InstituteAdminTable extends AdminTable implements Deletable, Editable
 
     private Institutes $repository;
 
-    private Users $userRepository;
+    private UsersLegacy $userRepository;
 
-    public function __construct(Request $request, Institutes $repository, Users $userRepository)
+    public function __construct(Request $request, Institutes $repository, UsersLegacy $userRepository)
     {
         parent::__construct($request);
         $this->repository = $repository;
@@ -116,7 +116,7 @@ class InstituteAdminTable extends AdminTable implements Deletable, Editable
         if ($institutes->isEmpty()) {
             return [];
         }
-        $ids = $institutes->pluck('id')->implode(',');
+        $ids = $institutes->getIds()->implode(',');
         return db()->select("select count(*) as cnt, institute_id from church_groups where institute_id in ($ids) and deleted_at is null group by institute_id");
     }
 }

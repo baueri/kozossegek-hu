@@ -3,11 +3,11 @@
 namespace App\Admin\User;
 
 use App\Enums\UserRole;
-use App\Models\User;
+use App\Models\UserLegacy;
 use App\Repositories\Groups;
 use Framework\Database\Builder;
 use Framework\Database\PaginatedResultSetInterface;
-use App\Repositories\Users;
+use App\Repositories\UsersLegacy;
 use Framework\Http\Request;
 use App\Admin\Components\AdminTable\ {
     AdminTable, Deletable, Editable
@@ -16,7 +16,7 @@ use Framework\Support\Collection;
 
 class UserTable extends AdminTable implements Deletable, Editable
 {
-    protected $columns = [
+    protected array $columns = [
         'id' => '#',
         'groups' => '<i class="fa fa-comments"></i>',
         'name' => 'Név',
@@ -26,11 +26,11 @@ class UserTable extends AdminTable implements Deletable, Editable
         'created_at' => 'Regisztráció',
     ];
 
-    private Users $repository;
+    private UsersLegacy $repository;
 
     private Groups $groups;
 
-    public function __construct(Users $repository, Groups $groups, Request $request)
+    public function __construct(UsersLegacy $repository, Groups $groups, Request $request)
     {
         $this->repository = $repository;
         $this->groups = $groups;
@@ -52,12 +52,12 @@ class UserTable extends AdminTable implements Deletable, Editable
         return 'name';
     }
 
-    public function getUserGroup($userGroup)
+    public function getUserGroup($userGroup): string
     {
         return UserRole::of($userGroup)->text();
     }
 
-    public function getActivatedAt($activatedAt)
+    public function getActivatedAt($activatedAt): string
     {
         if ($activatedAt) {
             return static::getCheckIcon();
@@ -66,12 +66,12 @@ class UserTable extends AdminTable implements Deletable, Editable
         return static::getBanIcon();
     }
 
-    public function getCreatedAt($date)
+    public function getCreatedAt($date): string
     {
         return date('Y.m.d', strtotime($date));
     }
 
-    public function getGroups($g, User $user)
+    public function getGroups($g, UserLegacy $user): string
     {
         $icon = static::getIcon('fa fa-comments');
         $route = route('admin.group.list', ['user_id' => $user->id]);

@@ -24,7 +24,7 @@ interface RouterInterface
      * @param array $args
      * @return string
      */
-    public function route(string $name, array $args = []);
+    public function route(string $name, mixed $args = null): string;
 
     /**
      * @param $name

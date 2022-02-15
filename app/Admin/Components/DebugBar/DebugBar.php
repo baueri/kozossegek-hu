@@ -3,13 +3,14 @@
 namespace App\Admin\Components\DebugBar;
 
 use Framework\Support\StringHelper;
+use InvalidArgumentException;
 
 class DebugBar
 {
     /**
      * @var DebugBarTab[]
      */
-    private $tabs = [];
+    private array $tabs;
 
     public function __construct(FrameworkInfoTab $frameworkInfoTab, QueryHistoryTab $queryHistoryTab, LoadedViewsTab $loadedViewsTab)
     {
@@ -20,11 +21,7 @@ class DebugBar
         ];
     }
 
-    /**
-     * @param $tabClassName
-     * @return DebugBarTab
-     */
-    public function tab($tabClassName)
+    public function tab(string $tabClassName): DebugBarTab
     {
         foreach ($this->tabs as $tab) {
             if (get_class($tab) == $tabClassName) {
@@ -32,10 +29,10 @@ class DebugBar
             }
         }
 
-        throw new \InvalidArgumentException("tab $tabClassName does not exists");
+        throw new InvalidArgumentException("tab $tabClassName does not exists");
     }
 
-    public function render()
+    public function render(): string
     {
         $headers = [];
         $tab_contents = [];

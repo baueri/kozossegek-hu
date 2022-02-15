@@ -3,7 +3,7 @@
 namespace App\QueryBuilders;
 
 use App\Models\ChurchGroupView;
-use App\Models\User;
+use App\Models\UserLegacy;
 use Framework\Model\EntityQueryBuilder;
 
 /**
@@ -18,7 +18,7 @@ class GroupViews extends EntityQueryBuilder
         return ChurchGroupView::class;
     }
 
-    public function forUser(User $user): self
+    public function forUser(UserLegacy $user): self
     {
         return $this->where('user_id', $user->id);
     }

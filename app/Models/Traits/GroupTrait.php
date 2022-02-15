@@ -2,10 +2,11 @@
 
 namespace App\Models\Traits;
 
+use App\Enums\DayEnum;
 use App\Enums\GroupStatusEnum;
 use App\Enums\JoinMode;
 use App\Helpers\GroupHelper;
-use App\Models\User;
+use App\Models\UserLegacy;
 use Framework\File\File;
 use Framework\Support\Collection;
 use Framework\Support\StringHelper;
@@ -14,12 +15,12 @@ trait GroupTrait
 {
     public function ageGroup(): string
     {
-        return GroupHelper::parseAgeGroup($this->age_group);
+        return GroupHelper::parseAgeGroup((string) $this->age_group);
     }
 
     public function getAgeGroups(): Collection
     {
-        return GroupHelper::getAgeGroups($this->age_group);
+        return GroupHelper::getAgeGroups((string) $this->age_group);
     }
 
     public function denomination(): string
@@ -29,11 +30,11 @@ trait GroupTrait
 
     public function getDays(): Collection
     {
-        $days = array_filter(explode(',', $this->on_days));
+        $days = Collection::fromList($this->on_days);
         $daysTranslated = [];
 
         foreach ($days as $day) {
-            $daysTranslated[$day] = lang("day.$day");
+            $daysTranslated[$day] = DayEnum::of($day)->translate();
         }
 
         return collect($daysTranslated);
@@ -44,7 +45,7 @@ trait GroupTrait
         return lang('occasion_frequency.' . $this->occasion_frequency);
     }
 
-    public function excerpt($words = 25): string
+    public function excerpt(int $words = 25): string
     {
         return StringHelper::more(strip_tags($this->description), $words, '...');
     }
@@ -74,7 +75,7 @@ trait GroupTrait
         return false;
     }
 
-    public function isVisibleBy(?User $user): bool
+    public function isVisibleBy(?UserLegacy $user): bool
     {
         if ($user && ($user->isAdmin() || $this->user_id == $user->id)) {
             return true;
@@ -92,7 +93,7 @@ trait GroupTrait
         return get_site_url() . route('portal.edit_group', $this);
     }
 
-    public function isEditableBy(?User $user): bool
+    public function isEditableBy(?UserLegacy $user): bool
     {
         if (!$user) {
             return false;
@@ -128,5 +129,13 @@ trait GroupTrait
     public function isRejected(): bool
     {
         return $this->pending == -1;
+    }
+
+    public function pendingStatusIs(int $status): bool
+    {
+        if (is_null($this->pending)) {
+            return false;
+        }
+        return (int) $this->pending === $status;
     }
 }

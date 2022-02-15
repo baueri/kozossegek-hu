@@ -2,14 +2,9 @@
 
 namespace App\Admin\Page;
 
-/**
- * Lomtár
- *
- * @author ivan
- */
 class TrashPageTable extends PageTable
 {
-    protected $columns = [
+    protected array $columns = [
         'id' => '#',
         'title' => 'Oldal címe',
         'slug' => 'url',
@@ -19,7 +14,7 @@ class TrashPageTable extends PageTable
         'delete' => '<i class="fa fa-trash"></i>'
     ];
 
-    public function getRestore(...$params)
+    public function getRestore(...$params): string
     {
         [,$page] = $params;
 
@@ -28,7 +23,7 @@ class TrashPageTable extends PageTable
         return "<a href='$url' title='visszaállítás'><i class='fa fa-trash-restore text-success'></a>";
     }
 
-    public function getDelete($t, $page, $title = 'végleges törlés')
+    public function getDelete($t, $page, $title = 'végleges törlés'): string
     {
         $url = route('admin.page.force_delete', $page) ;
 

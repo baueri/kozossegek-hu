@@ -3,7 +3,7 @@
 namespace App\QueryBuilders;
 
 use App\Models\SpiritualMovement;
-use App\Models\User;
+use App\Models\UserLegacy;
 use Framework\Model\EntityQueryBuilder;
 
 /**
@@ -16,7 +16,7 @@ class SpiritualMovements extends EntityQueryBuilder
         return SpiritualMovement::class;
     }
 
-    public function forUser(User $user): self
+    public function forUser(UserLegacy $user): self
     {
         return $this->whereRaw('id in (SELECT spiritual_movement_id FROM spiritual_movement_administrators WHERE user_id = ?)', [$user->id]);
     }

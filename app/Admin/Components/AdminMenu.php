@@ -11,14 +11,10 @@ use Framework\Support\StringHelper;
 
 class AdminMenu
 {
-    private RouterInterface $router;
-
-    private AuthUser $user;
-
-    public function __construct(RouterInterface $router, AuthUser $user)
-    {
-        $this->router = $router;
-        $this->user = $user;
+    public function __construct(
+        private RouterInterface $router,
+        private AuthUser $user
+    ) {
     }
 
     public function getMenu(): Collection

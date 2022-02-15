@@ -9,17 +9,11 @@ use Legacy\Group;
 
 class RebuildSearchEngine
 {
-    private GroupViews $groupViews;
-
-    private Groups $groupRepo;
-
-    public function __construct(Groups $groupRepo, GroupViews $groupViews)
+    public function __construct(private Groups $groupRepo, private GroupViews $groupViews)
     {
-        $this->groupRepo = $groupRepo;
-        $this->groupViews = $groupViews;
     }
 
-    public function run()
+    public function run(): void
     {
         db()->execute('delete search_engine from search_engine
             left join church_groups cg on search_engine.group_id = cg.id
@@ -30,7 +24,7 @@ class RebuildSearchEngine
         }
     }
 
-    public function updateSearchEngine(Group $group)
+    public function updateSearchEngine(Group $group): void
     {
         $groupView = $this->getGroupView($group);
         $keywords = collect(builder('v_group_tags')->where('group_id', $groupView->getId())->get())->pluck('tag_name');

@@ -7,7 +7,6 @@ use App\Admin\Components\AdminTable\Deletable;
 use App\Admin\Components\AdminTable\Editable;
 use App\Models\PageStatus;
 use App\Repositories\AdminPageRepository;
-use App\Repositories\PageRepository;
 use App\Repositories\Users;
 use Framework\Database\PaginatedResultSetInterface;
 use Framework\Http\Request;
@@ -18,7 +17,7 @@ class PageTable extends AdminTable implements Deletable, Editable
 
     private Users $userRepository;
 
-    protected $columns = [
+    protected array $columns = [
         'id' => '#',
         'title' => 'Oldal címe',
         'slug' => 'url',
@@ -48,8 +47,9 @@ class PageTable extends AdminTable implements Deletable, Editable
 
     public function getUserId(...$params): string
     {
+        /** @var \App\Models\Page $page */
         [,$page] = $params;
-        return $page->user->name ?? '';
+        return $page->user?->keresztnev() ?? '';
     }
 
     protected function getData(): PaginatedResultSetInterface
@@ -63,7 +63,8 @@ class PageTable extends AdminTable implements Deletable, Editable
 
         $userIds = $pages->pluck('user_id')->unique()->all();
 
-        $pages->with($this->userRepository->getUsersByIds($userIds), 'user', 'user_id');
+        $users = $this->userRepository->whereIn('id', $userIds)->get();
+        $pages->with($users, 'user', 'user_id');
 
         return $pages;
     }

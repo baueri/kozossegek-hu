@@ -8,12 +8,7 @@ use Framework\Http\View\View;
 
 class PageController extends PortalController
 {
-    /**
-     * @param Request $request
-     * @param PageRepository $repository
-     * @return View|string
-     */
-    public function page(Request $request, PageRepository $repository)
+    public function page(Request $request, PageRepository $repository): string
     {
         use_default_header_bg();
 

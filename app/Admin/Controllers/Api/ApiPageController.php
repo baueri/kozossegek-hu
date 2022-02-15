@@ -6,15 +6,9 @@ use App\Repositories\PageRepository;
 use Framework\Http\Request;
 use Framework\Support\StringHelper;
 
-/**
- * Description of ApiPageController
- *
- * @author ivan
- */
 class ApiPageController
 {
-
-    public function generateSlug(Request $request, PageRepository $repository)
+    public function generateSlug(Request $request, PageRepository $repository): array
     {
         $title = $request['title'];
 

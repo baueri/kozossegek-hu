@@ -3,7 +3,7 @@
 namespace App\Portal\Controllers\Api\V1;
 
 use App\Auth\Auth;
-use App\Repositories\Users;
+use App\Repositories\UsersLegacy;
 use App\Services\DeleteUser;
 use Framework\Http\Controller;
 use Framework\Http\Request;
@@ -11,7 +11,7 @@ use Framework\Support\Password;
 
 class ApiUserController extends Controller
 {
-    public function checkEmail(Request $request, Users $users)
+    public function checkEmail(Request $request, UsersLegacy $users)
     {
         $user = $users->getUserByEmail($request['email']);
 

@@ -8,7 +8,7 @@ use App\Admin\Components\AdminTable\Editable;
 
 class WidgetAdminTable extends AdminTable implements Deletable, Editable
 {
-    protected $columns = [
+    protected array $columns = [
         'id' => '#',
         'name' => 'Név',
         'type' => 'Típus',

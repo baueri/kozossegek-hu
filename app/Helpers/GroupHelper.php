@@ -3,18 +3,11 @@
 namespace App\Helpers;
 
 use App\Models\AgeGroup;
-use App\Models\User;
 use Framework\Support\Collection;
-use Legacy\Group;
 
 class GroupHelper
 {
-    /**
-     *
-     * @param string|null $ageGroup
-     * @return string
-     */
-    public static function parseAgeGroup(?string $ageGroup): string
+    public static function parseAgeGroup(string $ageGroup): string
     {
         $ageGroups = static::getAgeGroups($ageGroup);
 
@@ -25,20 +18,13 @@ class GroupHelper
         return $ageGroups->implode(', ');
     }
 
-    /**
-     *
-     * @param string $ageGroup
-     * @return Collection
-     */
     public static function getAgeGroups(string $ageGroup): Collection
     {
-        return (new Collection(explode(',', $ageGroup)))
+        return Collection::fromList($ageGroup)
             ->filter()
             ->as(AgeGroup::class)
             ->keyBy('name')
-            ->map(function ($ageGroup) {
-                return $ageGroup->translate();
-            }, true);
+            ->map(fn ($ageGroup) => $ageGroup->translate(), true);
     }
 
     public static function getRelpath(?int $groupId): string
@@ -68,10 +54,5 @@ class GroupHelper
     public static function getPublicImagePath(?int $groupId): string
     {
         return "/media/groups/images/{$groupId}_1.jpg";
-    }
-
-    public static function isGroupEditableBy(Group $group, User $user): bool
-    {
-        return $user->isAdmin() || $user->id == $group->user_id;
     }
 }

@@ -13,7 +13,7 @@ use Framework\Support\Collection;
 
 class SpiritualMovementTable extends AdminTable implements Editable, Deletable
 {
-    protected $columns = [
+    protected array $columns = [
         'name' => 'Név',
         'website' => 'Weboldal',
         'group_count' => 'közösségek'

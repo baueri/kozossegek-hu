@@ -181,6 +181,17 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         return false;
     }
 
+    public function containsAny(array $values): bool
+    {
+        foreach ($this->items as $item) {
+            if (in_array($item, $values)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function sum($key = null): int
     {
         if ($key) {
@@ -371,12 +382,12 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         return array_key_exists($offset, $this->items);
     }
 
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         return $this->get($offset);
     }
 
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         if ($offset === null) {
             $this->items[] = $value;
@@ -385,7 +396,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         }
     }
 
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         unset($this->items[$offset]);
     }
@@ -414,7 +425,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         return reset($this->items);
     }
 
-    public function key()
+    public function key(): int|string|null
     {
         return key($this->items);
     }
@@ -498,5 +509,13 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     public function has($key, $value = null): bool
     {
         return Arr::has($this->items, $key, $value);
+    }
+
+    public static function fromList(?string $text, string $separator = ','): Collection
+    {
+        return new self(match ($text) {
+            null, '' => [],
+            default => explode($separator, $text)
+        });
     }
 }

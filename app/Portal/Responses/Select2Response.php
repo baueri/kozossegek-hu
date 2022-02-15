@@ -2,20 +2,13 @@
 
 namespace App\Portal\Responses;
 
-use Framework\Model\ModelCollection;
+use Framework\Support\Collection;
+use JetBrains\PhpStorm\ArrayShape;
 
-/**
- * Description of Select2Response
- *
- * @author ivan
- */
 abstract class Select2Response
 {
 
-    /**
-     * @var ModelCollection
-     */
-    private $collection;
+    private Collection $collection;
 
     public function __construct($collection)
     {
@@ -42,8 +35,7 @@ abstract class Select2Response
         return json_encode($this->getResponse());
     }
 
-
-    public function getResponse()
+    public function getResponse(): array
     {
         return ['results' => $this->collection->map(function ($model) {
             return ['id' => $this->getId($model), 'text' => $this->getText($model)];

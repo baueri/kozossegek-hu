@@ -17,7 +17,7 @@ class StringHelper
      * @param string $moreText
      * @return string
      */
-    public static function more($text, $numberOfWords, $moreText = '')
+    public static function more($text, int $numberOfWords, $moreText = ''): string
     {
         $text = strip_tags($text);
         if (str_word_count($text, 0) > $numberOfWords) {
@@ -29,45 +29,26 @@ class StringHelper
         return $text;
     }
 
-    /**
-     * @param string|null $text
-     * @param int $numberOfCharacters
-     * @param string $moreText
-     * @return string
-     */
-    public static function shorten(?string $text, int $numberOfCharacters, $moreText = ''): string
+    public static function shorten(?string $text, int $numberOfCharacters, string $moreText = ''): string
     {
-        if (mb_strlen($text) <= $numberOfCharacters) {
+        if (mb_strlen((string) $text) <= $numberOfCharacters) {
             return (string) $text;
         }
 
         return mb_substr($text, 0, $numberOfCharacters) . $moreText;
     }
 
-    /**
-     * @param $text
-     * @return string
-     */
-    public static function camel($text)
+    public static function camel($text): string
     {
         return lcfirst(str_replace(' ', '', ucwords(preg_replace('/[^a-zA-Z0-9\x7f-\xff]++/', ' ', $text))));
     }
 
-    /**
-     * @param $text
-     * @param string $delimiter
-     * @return string
-     */
-    public static function snake($text, $delimiter = '_')
+    public static function snake($text, string $delimiter = '_'): string
     {
         return strtolower(preg_replace(['/([A-Z]+)([A-Z][a-z])/', '/([a-z\d])([A-Z])/'], '\1' . $delimiter . '\2', ucfirst($text)));
     }
 
-    /**
-     * @param $text
-     * @return string
-     */
-    public static function slugify($text)
+    public static function slugify($text): string
     {
         // replace non letter or digits by -
         $text = preg_replace('~[^\pL\d]+~u', '-', $text);
@@ -94,21 +75,12 @@ class StringHelper
         return $text;
     }
 
-    /**
-     *
-     * @param string $string
-     * @return string
-     */
-    public static function convertSpecialChars($string)
+    public static function convertSpecialChars($string): string
     {
         return preg_replace("/&([a-z])[a-z]+;/i", "$1", iconv('utf-8', 'us-ascii//TRANSLIT', $string));
     }
 
-    /**
-     * @param $buffer
-     * @return string|string[]|null
-     */
-    public static function sanitize($buffer)
+    public static function sanitize($buffer): string
     {
         $search = [
             '/\>[^\S ]+/s',     // strip whitespaces after tags, except space
@@ -122,29 +94,9 @@ class StringHelper
         return preg_replace($search, $replace, $buffer);
     }
 
-    /**
-     * @param $string
-     * @return mixed
-     */
-    public static function isEmail($string)
+    public static function isEmail($string): bool
     {
         return (bool) filter_var($string, FILTER_VALIDATE_EMAIL);
-    }
-
-    /**
-     * @param string $charList
-     * @param int $numberOfCharactersToTake
-     * @return string
-     */
-    public static function generateRandomStringFrom(string $charList, $numberOfCharactersToTake = 1): string
-    {
-        $text = '';
-
-        for ($i = 0; $i < $numberOfCharactersToTake; $i++) {
-            $text .= Arr::random(mb_str_split($charList));
-        }
-
-        return $text;
     }
 
     public static function wrap(string $string, string $before, ?string $after = null): string
@@ -153,7 +105,7 @@ class StringHelper
         return "{$before}{$string}{$after}";
     }
 
-    public static function plural($word)
+    public static function plural($word): string
     {
         if (static::endsWith($word, 'y')) {
             return substr($word, 0, strlen($word) - 1) . 'ies';
@@ -169,6 +121,6 @@ class StringHelper
 
     public static function startsWith($string, $startsWith): bool
     {
-        return strpos($string, $startsWith) === 0;
+        return str_starts_with($string, $startsWith);
     }
 }
