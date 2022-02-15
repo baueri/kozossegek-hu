@@ -101,7 +101,7 @@ class GroupSearchRepository
         return $builder->where('id', $id)->apply('notDeleted')->first();
     }
 
-    public function findSimilarGroups(ChurchGroupView $group, $tags, int $take = 4)
+    public function findSimilarGroups(ChurchGroupView $group, $tags, int $take = 4): array|\Framework\Model\ModelCollection
     {
         $builder = $this->repository->query()
             ->where('id', '<>', $group->id)
