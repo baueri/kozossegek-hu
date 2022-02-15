@@ -4,18 +4,18 @@ namespace App\Portal\Services;
 
 use App\QueryBuilders\UserLegalNotices;
 use App\Exception\EmailTakenException;
-use App\Models\User;
-use App\Repositories\Users;
+use App\Models\UserLegacy;
+use App\Repositories\UsersLegacy;
 use Framework\Support\Collection;
 use Framework\Support\Password;
 
 class CreateUser
 {
-    private Users $users;
+    private UsersLegacy $users;
 
     private UserLegalNotices $legalNotices;
 
-    public function __construct(Users $users, UserLegalNotices $legalNotices)
+    public function __construct(UsersLegacy $users, UserLegalNotices $legalNotices)
     {
         $this->users = $users;
         $this->legalNotices = $legalNotices;
@@ -23,10 +23,10 @@ class CreateUser
 
     /**
      * @param Collection $data
-     * @return User
+     * @return UserLegacy
      * @throws EmailTakenException
      */
-    public function create(Collection $data): User
+    public function create(Collection $data): UserLegacy
     {
         if ($this->users->getUserByEmail($data['email'])) {
             throw new EmailTakenException();

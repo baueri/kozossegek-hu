@@ -5,7 +5,7 @@ namespace App\Portal\Controllers;
 use App\Mail\ResetPasswordEmail;
 use App\Repositories\UserTokens;
 use Framework\Http\Request;
-use App\Repositories\Users;
+use App\Repositories\UsersLegacy;
 use App\Auth\Auth;
 use App\Services\UpdateUser;
 use Framework\Http\Message;
@@ -45,13 +45,13 @@ class UserController extends PortalController
 
     /**
      * @param Request $request
-     * @param Users $users
+     * @param UsersLegacy $users
      * @param Mailer $mailer
      * @param UserTokens $userTokens
      * @throws Exception
      * @throws \Exception
      */
-    public function resetPassword(Request $request, Users $users, Mailer $mailer, UserTokens $userTokens)
+    public function resetPassword(Request $request, UsersLegacy $users, Mailer $mailer, UserTokens $userTokens)
     {
         $user = $users->getUserByEmail($request['email']);
 
@@ -72,7 +72,7 @@ class UserController extends PortalController
         redirect_route('portal.forgot_password');
     }
 
-    public function recoverPassword(Request $request, Users $users, UpdateUser $service, UserTokens $userTokens): string
+    public function recoverPassword(Request $request, UsersLegacy $users, UpdateUser $service, UserTokens $userTokens): string
     {
         $token = $userTokens->getByToken($request['token']);
 
@@ -104,7 +104,7 @@ class UserController extends PortalController
     }
 
 
-    public function activateUser(Request $request, Users $users, UserTokens $userTokens)
+    public function activateUser(Request $request, UsersLegacy $users, UserTokens $userTokens)
     {
         try {
             $token = $userTokens->getByToken($request['token']);

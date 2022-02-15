@@ -6,12 +6,8 @@ class Controller
 {
     protected array $middleware = [];
 
-    protected Request $request;
-
-    public function __construct(Request $request)
+    public function __construct(protected Request $request)
     {
-        $this->request = $request;
-
         foreach ($this->middleware as $middleware) {
             $this->middleware($middleware);
         }

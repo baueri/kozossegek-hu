@@ -2,19 +2,19 @@
 
 namespace App\Auth;
 
-use App\Models\User;
+use App\Models\UserLegacy;
 use App\Services\User\LegalNoticeService;
 
 final class Auth
 {
-    private static ?User $user = null;
+    private static ?UserLegacy $user = null;
 
-    public static function setUser(User $user): void
+    public static function setUser(UserLegacy $user): void
     {
         self::$user = $user;
     }
 
-    public static function login(User $user): void
+    public static function login(UserLegacy $user): void
     {
         app()->make(LegalNoticeService::class)->setLegalNoticeSessionFor($user);
 
@@ -47,7 +47,7 @@ final class Auth
         return (bool) self::$user;
     }
 
-    public static function user(): ?User
+    public static function user(): ?UserLegacy
     {
         return self::$user;
     }

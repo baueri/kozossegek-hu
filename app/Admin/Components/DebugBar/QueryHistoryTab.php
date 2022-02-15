@@ -7,18 +7,9 @@ use Framework\Database\QueryHistory;
 
 class QueryHistoryTab extends DebugBarTab
 {
-    /**
-     * @var QueryHistory
-     */
-    public QueryHistory $queryHistory;
-
-    /**
-     * QueryHistoryTab constructor.
-     * @param QueryHistory $queryHistory
-     */
-    public function __construct(QueryHistory $queryHistory)
-    {
-        $this->queryHistory = $queryHistory;
+    public function __construct(
+        public QueryHistory $queryHistory
+    ) {
     }
 
     public function getName(): string

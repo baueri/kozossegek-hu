@@ -9,7 +9,7 @@ use Framework\Http\Request;
 
 class EventLogAdminTable extends AdminTable
 {
-    protected $columns = [
+    protected array $columns = [
         'id' => '#',
         'type' => 'típus',
         'log' => 'adat',

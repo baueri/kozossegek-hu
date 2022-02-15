@@ -10,26 +10,14 @@ use Framework\Http\Request;
 use Framework\Http\Response;
 use Framework\Storage\PublicStorage;
 
-/**
- * Description of ContentUploadController
- *
- * @author ivan
- */
 class ContentUploadController
 {
-    /**
-     *
-     * @var PublicStorage
-     */
-    private $storage;
-
-    public function __construct()
-    {
-        $this->storage = new PublicStorage();
+    public function __construct(
+        private PublicStorage $storage
+    ) {
     }
 
-
-    public function list(Request $request)
+    public function list(Request $request): string
     {
         $dir = $request['dir'];
 
@@ -45,7 +33,7 @@ class ContentUploadController
         return view('admin.uploads.list', compact('uploads', 'breadCrumbs', 'dir'));
     }
 
-    public function uploadFile(Request $request)
+    public function uploadFile(Request $request): string
     {
         try {
             $dir = $request['dir'];

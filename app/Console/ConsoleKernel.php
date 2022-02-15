@@ -14,6 +14,6 @@ class ConsoleKernel extends Kernel
         DailyCron::class,
         ClearUserSessionCommand::class,
         RebuildSearchEngineCommand::class,
-        PublishApp::class,
+        PublishApp::class
     ];
 }

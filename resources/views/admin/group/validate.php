@@ -31,7 +31,7 @@
             <tr><td colspan="2"><hr></td></tr>
             <tr><th>Közösségvezető(k)</th><td> {{ $group->group_leaders }}</td></tr>
             <tr><th>Elérhetőség (telefon)</th><td> {{ $user->phone_number ?: '-' }}</td></tr>
-            <tr><th>Elérhetőség (email)</th><td> {{ $group->group_leader_email }}</td></tr>
+            <tr><th>Elérhetőség (email)</th><td> {{ $user->email }}</td></tr>
             <tr><td colspan="2"><hr></td></tr>
             <tr>
                 <th>Igazolás</th>

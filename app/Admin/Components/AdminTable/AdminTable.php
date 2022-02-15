@@ -11,10 +11,7 @@ use InvalidArgumentException;
 
 abstract class AdminTable
 {
-    /**
-     * @var array
-     */
-    protected $columns = [];
+    protected array $columns = [];
 
     protected array $order;
 
@@ -24,9 +21,6 @@ abstract class AdminTable
 
     protected int $perpage;
 
-    /**
-     * @var array
-     */
     protected array $centeredColumns = [];
 
     protected array $sortableColumns = [];
@@ -34,21 +28,14 @@ abstract class AdminTable
     protected array $columnClasses = [];
 
     /**
-     * @var Request
-     */
-    protected $request;
-
-    /**
      * @var string[]
      */
-    protected $dates = ['created_at', 'updated_at', 'deleted_at'];
+    protected array $dates = ['created_at', 'updated_at', 'deleted_at'];
 
-    /**
-     * AdminTable constructor.
-     * @param Request $request
-     */
-    public function __construct(Request $request)
-    {
+    public function __construct(
+        public readonly Request $request
+    ) {
+
         if (!$this->columns) {
             throw new InvalidArgumentException('missing columns for ' . static::class);
         }
@@ -58,20 +45,12 @@ abstract class AdminTable
             $request->get('sort', $this->defaultOrder)
         ];
 
-        $this->request = $request;
-
         $this->perpage = $request['per-page'] ?? 20;
     }
 
-    /**
-     * @return PaginatedResultSetInterface
-     */
     abstract protected function getData(): PaginatedResultSetInterface;
 
-    /**
-     * @return string
-     */
-    public function render()
+    public function render(): string
     {
         $data = $this->getData();
 
@@ -92,11 +71,7 @@ abstract class AdminTable
         return view('admin.partials.table', $model);
     }
 
-    /**
-     * @param $rows
-     * @return array
-     */
-    protected function transformData($rows)
+    protected function transformData($rows): array
     {
         $transformed = [];
 
@@ -109,7 +84,7 @@ abstract class AdminTable
         return $transformed;
     }
 
-    private function getColumns()
+    private function getColumns(): array
     {
         $columns = $this->columns;
 
@@ -124,12 +99,7 @@ abstract class AdminTable
         return $columns;
     }
 
-    /**
-     * @param $row
-     * @param $column
-     * @return mixed|null
-     */
-    protected function transformRowColumn($row, $column)
+    protected function transformRowColumn($row, string $column): mixed
     {
         $method = StringHelper::camel("get" . ucfirst($column));
         if (is_object($row)) {
@@ -156,7 +126,7 @@ abstract class AdminTable
         return call_user_func_array([$this, $method], [$value, $row]);
     }
 
-    protected function getEdit($value, $model, $excerpt = null)
+    protected function getEdit($value, $model, $excerpt = null): string
     {
         $url = $this->getEditUrl($model);
 
@@ -223,10 +193,5 @@ abstract class AdminTable
 
             return '';
         }
-    }
-
-    public function getRequest()
-    {
-        return $this->request;
     }
 }

@@ -19,24 +19,12 @@ abstract class BaseGroupService
 {
     use ManagesErrors;
 
-    private RebuildSearchEngine $searchEngineRebuilder;
-
-    protected Groups $repository;
-
-    private FileManager $fileManager;
-
-    protected Institutes $institutes;
-
     public function __construct(
-        Groups $repository,
-        RebuildSearchEngine $searchEngineRebuilder,
-        FileManager $fileManager,
-        Institutes $institutes
+        protected Groups $repository,
+        private RebuildSearchEngine $searchEngineRebuilder,
+        private FileManager $fileManager,
+        protected Institutes $institutes
     ) {
-        $this->repository = $repository;
-        $this->searchEngineRebuilder = $searchEngineRebuilder;
-        $this->fileManager = $fileManager;
-        $this->institutes = $institutes;
     }
 
     protected function updateSearchEngine(Group $group)

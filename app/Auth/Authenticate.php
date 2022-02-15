@@ -2,8 +2,8 @@
 
 namespace App\Auth;
 
-use App\Models\User;
-use App\Repositories\Users;
+use App\Models\UserLegacy;
+use App\Repositories\UsersLegacy;
 use Framework\Support\Password;
 use Framework\Traits\ManagesErrors;
 
@@ -11,23 +11,14 @@ class Authenticate
 {
     use ManagesErrors;
 
-    /**
-     *
-     * @var Users
-     */
-    private Users $repository;
+    private UsersLegacy $repository;
 
-    /**
-     * UserAuth constructor.
-     *
-     * @param Users $repository
-     */
-    public function __construct(Users $repository)
+    public function __construct(UsersLegacy $repository)
     {
         $this->repository = $repository;
     }
 
-    public function authenticate(?string $username, ?string $password): ?User
+    public function authenticate(?string $username, ?string $password): ?UserLegacy
     {
         $user = $this->repository->findByAuth($username);
 
@@ -53,7 +44,7 @@ class Authenticate
         $result = db()->first('select user_id from user_sessions where unique_id=?', [session_id()]);
 
         if ($result && $userId = $result['user_id']) {
-            /* @var $user User */
+            /* @var $user UserLegacy */
             $user = $this->repository->find($userId);
             Auth::setUser($user);
         }

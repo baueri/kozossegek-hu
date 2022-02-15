@@ -10,25 +10,24 @@ use App\Repositories\OccasionFrequencies;
 use Framework\Http\Request;
 use App\Repositories\Groups;
 use App\Repositories\Institutes;
-use App\Repositories\Users;
+use App\Repositories\UsersLegacy;
 use App\Models\Institute;
 use App\Enums\DayEnum;
 
 class BaseGroupForm
 {
-
     protected Institutes $institutes;
 
     protected Groups $repository;
 
-    protected Users $users;
+    protected UsersLegacy $users;
 
     protected Request $request;
 
     public function __construct(
         Request $request,
         Institutes $institutes,
-        Users $users
+        UsersLegacy $users
     ) {
         $this->request = $request;
         $this->institutes = $institutes;
@@ -43,13 +42,13 @@ class BaseGroupForm
         $age_groups = (new AgeGroups())->all();
         $action = $this->getAction($group);
         $spiritual_movements = db()->select('select * from spiritual_movements order by name');
-        $tags = builder('tags')->select('*')->get();
-        $age_group_array = is_array($group->age_group) ? $group->age_group : array_filter(explode(',', $group->age_group));
+        $tags = builder('tags')->get();
+        $age_group_array = $group->getAgeGroups();
         $group_tags = collect(builder('v_group_tags')
             ->apply('whereGroupId', $group->id)->get())
             ->pluck('tag')->all();
         $days = DayEnum::asArray();
-        $group_days = explode(',', $group->on_days);
+        $group_days = $group->getDays();
         $title = $group->exists() ? 'Közösség módosítása' : 'Új közösség létrehozása';
         $owner = $this->users->find($group->user_id);
         $join_modes = JoinMode::getModesWithName();

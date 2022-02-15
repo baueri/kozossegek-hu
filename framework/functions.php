@@ -4,7 +4,7 @@ use App\Admin\Components\DebugBar\DebugBar;
 use App\Auth\Auth;
 use App\Mailable\ThrowableCriticalErrorEmail;
 use App\Middleware\AdminMiddleware;
-use App\Models\User;
+use App\Models\UserLegacy;
 use App\Repositories\EventLogRepository;
 use App\Repositories\Widgets;
 use App\Services\EventLogger;
@@ -123,7 +123,7 @@ function builder(?string $table = null): Builder
  * @param array|string|Model|Entity $args
  * @return string
  */
-function route(string $route, $args = []): string
+function route(string $route, mixed $args = null): string
 {
     return app()->get(RouterInterface::class)->route($route, $args);
 }
@@ -133,7 +133,7 @@ function route_is(string $routeName): bool
     return current_route()->getAs() === $routeName;
 }
 
-function redirect(string $uri)
+function redirect(string $uri): never
 {
     if ($uri === 'self') {
         $uri = request()->uri;
@@ -142,11 +142,7 @@ function redirect(string $uri)
     exit;
 }
 
-/**
- * @param string $route
- * @param mixed $args
- */
-function redirect_route(string $route, $args = [])
+function redirect_route(string $route, $args = null): never
 {
     redirect(route($route, $args));
 }
@@ -369,7 +365,7 @@ function event_logger(): EventLogger
     return app()->get(EventLogRepository::class);
 }
 
-function log_event(string $type, array $data = [], ?User $user = null)
+function log_event(string $type, array $data = [], ?UserLegacy $user = null)
 {
     event_logger()->logEvent($type, $data, $user);
 }

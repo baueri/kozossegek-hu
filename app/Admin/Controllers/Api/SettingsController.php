@@ -7,7 +7,6 @@ use Framework\Maintenance;
 
 class SettingsController
 {
-
     public function toggleMaintenance(Request $request, Maintenance $maintenance)
     {
         if ($request['toggle']) {

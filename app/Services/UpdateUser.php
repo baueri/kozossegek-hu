@@ -2,21 +2,18 @@
 
 namespace App\Services;
 
-use App\Models\User;
-use App\Repositories\Users;
+use App\Models\UserLegacy;
+use App\Repositories\UsersLegacy;
 use Framework\Http\Message;
 use Framework\Support\Password;
 
 class UpdateUser
 {
-    private Users $users;
-
-    public function __construct(Users $users)
+    public function __construct(private UsersLegacy $users)
     {
-        $this->users = $users;
     }
 
-    final public function update(User $user, $changes, array $passwordChange = null)
+    final public function update(UserLegacy $user, $changes, array $passwordChange = null): bool
     {
         $emailTaken = builder('users')
             ->where('id', '<>', $user->id)
@@ -42,7 +39,7 @@ class UpdateUser
         return $this->users->save($user);
     }
 
-    public function changePassword(User $user, $passwordChange)
+    public function changePassword(UserLegacy $user, $passwordChange): bool
     {
         $password1 = $passwordChange['new_password'];
         $password2 = $passwordChange['new_password_again'];

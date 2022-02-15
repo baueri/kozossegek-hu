@@ -2,12 +2,12 @@
 
 namespace App\Events;
 
-use App\Models\User;
+use App\Models\UserLegacy;
 use Framework\Event\Event;
 
 class BaseLogEvent extends Event
 {
-    public ?User $user;
+    public ?UserLegacy $user;
 
     public array $data;
 
@@ -17,9 +17,9 @@ class BaseLogEvent extends Event
      *
      * @param string $logType
      * @param array $data
-     * @param User|null $user
+     * @param UserLegacy|null $user
      */
-    public function __construct(string $logType, array $data = [], ?User $user = null)
+    public function __construct(string $logType, array $data = [], ?UserLegacy $user = null)
     {
         $this->logType = $logType;
         $this->data = $data;
