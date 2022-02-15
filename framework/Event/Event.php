@@ -7,7 +7,7 @@ abstract class Event
     /**
      * @var EventListener[]
      */
-    protected static $listeners = [];
+    protected static array $listeners = [];
 
     /*
      * @return EventListener[]

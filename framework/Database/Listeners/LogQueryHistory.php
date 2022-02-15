@@ -1,32 +1,22 @@
 <?php
 
-
 namespace Framework\Database\Listeners;
-
 
 use Framework\Database\Events\QueryRan;
 use Framework\Database\QueryHistory;
-use Framework\Event\Event;
 use Framework\Event\EventListener;
 
 class LogQueryHistory implements EventListener
 {
-    /**
-     * @var QueryHistory
-     */
-    private $queryHistory;
+    private QueryHistory $queryHistory;
 
-    /**
-     * LogQueryHistory constructor.
-     * @param QueryHistory $queryHistory
-     */
     public function __construct(QueryHistory $queryHistory)
     {
         $this->queryHistory = $queryHistory;
     }
 
     /**
-     * @param QueryRan|Event $event
+     * @param QueryRan $event
      */
     public function trigger($event)
     {

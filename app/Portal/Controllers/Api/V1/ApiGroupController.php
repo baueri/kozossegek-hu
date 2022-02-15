@@ -3,36 +3,27 @@
 namespace App\Portal\Controllers\Api\V1;
 
 use App\Http\Responses\CreateGroupSteps\FinishRegistration;
-use App\Models\GroupView;
-use App\Repositories\GroupViews;
+use App\Models\ChurchGroupView;
+use App\Services\GroupSearchRepository;
 use Exception;
 use Framework\Http\Controller;
 use Framework\Http\Request;
 
 class ApiGroupController extends Controller
 {
-    /**
-     * @param FinishRegistration $preview
-     * @return string
-     */
-    public function previewGroup(FinishRegistration $preview)
+    public function previewGroup(FinishRegistration $preview): string
     {
-        return (string)$preview;
+        return (string) $preview;
     }
 
-    /**
-     * @param Request $request
-     * @param GroupViews $groupViews
-     * @return array
-     */
-    public function list(Request $request, GroupViews $groupViews)
+    public function list(Request $request, GroupSearchRepository $groupViews): array
     {
         try {
             $filter = $request->only('search', 'varos', 'intezmeny');
             $perPage = (int) $request['per_page'] ?: 30;
             $results = $groupViews->search($filter, $perPage);
 
-            $data = $results->map(fn (GroupView $groupView) => [
+            $data = $results->map(fn (ChurchGroupView $groupView) => [
                 'name' => $groupView->name,
                 'city' => $groupView->city,
                 'district' => $groupView->district,

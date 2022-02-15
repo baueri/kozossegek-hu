@@ -9,7 +9,7 @@ namespace App\Http\Responses\CreateGroupSteps;
  */
 class FinishRegistration extends RegisterGroupForm
 {
-    protected function getModel()
+    protected function getModel(): array
     {
         return array_merge(parent::getModel(), [
             'selected_tags' => collect(builder('tags')->get())
@@ -18,7 +18,7 @@ class FinishRegistration extends RegisterGroupForm
         ]);
     }
 
-    protected function getView()
+    protected function getView(): string
     {
         return 'portal.group.create-steps.finish-registration';
     }

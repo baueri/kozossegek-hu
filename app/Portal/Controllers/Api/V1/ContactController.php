@@ -33,7 +33,7 @@ class ContactController
 
             $request->stripTags()
                 ->validate('name', 'email', 'message');
-            $mailable = Mailable::make()
+            $mailable = (new Mailable())
                 ->subject(site_name() . ' - ' . $subject)
                 ->with($request->only('name', 'email', 'message', 'category'))
                 ->replyTo($request['email'])

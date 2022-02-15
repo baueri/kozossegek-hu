@@ -19,6 +19,6 @@ class Controller
 
     public function middleware(string $middleware): void
     {
-        app($middleware)->handle();
+        app()->make($middleware)->handle();
     }
 }

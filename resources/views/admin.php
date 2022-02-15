@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name='robots' content='noindex,noarchive' />
 
-    <title>kozossegek.hu - ADMIN</title>
+    <title>kozossegek.hu - Adminisztráció</title>
 
     <link href="https://fonts.googleapis.com/css?family=Montserrat|Work+Sans:400,700|Merriweather|Roboto+Condensed:wght@300;400" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
@@ -68,7 +68,7 @@
         <div class="img bg-wrap text-center" style="background-image: url(/assets/sidebar-09/images/bg_1.jpg);">
             <div class="user-logo">
 <!--                <div class="img" style="background-image: url(/images/logo_only.png);"></div>-->
-                <h3 style="">kozossegek.hu | <b>admin</b></h3>
+                <h3 style="">kozossegek.hu<br/><b>adminisztráció</b></h3>
             </div>
         </div>
         @include('admin.partials.menu')

@@ -1,40 +1,103 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <routes>
     <route-group namespace="App\Admin\Controllers" prefix="admin" as="admin" middleware="App\Middleware\AdminMiddleware">
+        <middleware name="App\Middleware\CheckRole@roles:ACCESS_BACKEND"/>
+        <middleware name="App\Providers\AdminServiceProvider"/>
 
-        <!-- ADMIN  -->
-        <!-- ************************************** -->
+        <!-- CSAK ADMIN DOLGOK -->
+        <route-group middleware="App\Middleware\CheckRole@roles:FULL_ACCESS">
+            <route method="get" uri="release-notes" as="release_notes" view="admin.release_notes"/>
+            <!-- OLDALAK -->
+            <route-group prefix="content/page" controller="PageController" as="page">
+                <route method="get" uri="list" use="list" as="list"/>
+                <route method="get" uri="trash" use="trash" as="trash"/>
+                <route method="get" uri="empty-trash" use="emptyTrash" as="empty_trash"/>
 
-        <route method="get" uri="release-notes" as="release_notes" view="admin.release_notes"/>
+                <route method="get" uri="create" use="create" as="create"/>
+                <route method="post" uri="create" use="doCreate" as="do_create"/>
 
-        <!-- OLDALAK -->
-        <route-group prefix="content/page" controller="PageController" as="page">
-            <route method="get" uri="list" use="list" as="list"/>
-            <route method="get" uri="trash" use="trash" as="trash"/>
-            <route method="get" uri="empty-trash" use="emptyTrash" as="empty_trash"/>
+                <route method="get" uri="{id}/edit" use="edit" as="edit"/>
+                <route method="post" uri="{id}/update" use="update" as="update"/>
+                <route method="get" uri="{id}/restore" use="restore" as="restore"/>
+                <route method="get" uri="{id}/delete" use="delete" as="delete"/>
+                <route method="get" uri="{id}/force-delete" use="forceDelete" as="force_delete"/>
+            </route-group>
 
-            <route method="get" uri="create" use="create" as="create"/>
-            <route method="post" uri="create" use="doCreate" as="do_create"/>
+            <route-group prefix="content/uploads" controller="ContentUploadController" as="content.upload">
+                <route method="get" uri="" use="list" as="list"/>
+                <route method="post" uri="upload-file" use="uploadFile" as="upload_file"/>
+                <route method="all" uri="delete-file" use="deleteFile" as="delete_file"/>
+            </route-group>
 
-            <route method="get" uri="{id}/edit" use="edit" as="edit"/>
-            <route method="post" uri="{id}/update" use="update" as="update"/>
-            <route method="get" uri="{id}/restore" use="restore" as="restore"/>
-            <route method="get" uri="{id}/delete" use="delete" as="delete"/>
-            <route method="get" uri="{id}/force-delete" use="forceDelete" as="force_delete"/>
+            <route-group controller="Api\ApiPageController" prefix="page/api" as="page.api" middleware="Framework\Middleware\JsonApi">
+                <route method="post" uri="generate-slug" use="generateSlug" as="generate_slug"/>
+                <route method="post" uri="summernote-upload" />
+            </route-group>
+
+            <!-- Intézmények -->
+            <route-group prefix="institute" as="institute" controller="InstituteController">
+                <route method="get" uri="list" use="list" as="list"/>
+
+                <route method="get" uri="create" use="create" as="create"/>
+                <route method="post" uri="create" use="doCreate" as="do_create"/>
+
+                <route method="get" uri="{id}/edit" use="edit" as="edit"/>
+                <route method="post" uri="{id}/update" use="update" as="update"/>
+                <route method="get" uri="{id}/delete" use="delete" as="delete"/>
+
+                <route method="get" uri="import" use="import" as="import"/>
+                <route method="post" uri="import" use="doImport" as="do_import"/>
+            </route-group>
+
+            <!-- FELHASZNÁLÓK -->
+            <route-group controller="UserController" prefix="user" as="user">
+                <route method="get" uri="list" use="list" as="list"/>
+
+                <route method="get" uri="create" use="create" as="create"/>
+                <route method="post" uri="create" use="doCreate" as="do_create"/>
+
+                <route method="get" uri="{id}/edit" use="edit" as="edit"/>
+                <route method="post" uri="{id}/update" use="update" as="update"/>
+                <route method="get" uri="{id}/delete" use="delete" as="delete"/>
+            </route-group>
+
+            <!-- Címkék -->
+            <route-group controller="TagController" as="tags" prefix="tags" middleware="">
+                <route method="get" uri="" as="list" use="tags"/>
+                <route method="post" uri="create" as="create" use="create" middleware="Framework\Middleware\JsonApi"/>
+                <route method="post" uri="delete" as="delete" use="delete" middleware="Framework\Middleware\JsonApi"/>
+                <route method="post" uri="save" as="save" use="update" middleware="Framework\Middleware\JsonApi"/>
+            </route-group>
+
+            <!-- GÉPHÁZ, BEÁLLÍTÁSOK -->
+            <route-group controller="SettingsController">
+                <route method="get" uri="settings" use="settings" as="settings"/>
+                <route method="get" uri="error-log" use="errorLog" as="error_log"/>
+                <route method="get" uri="error-log/clear" use="clearErrorLog" as="clear_error_log"/>
+                <route method="get" uri="event-log" use="eventLog" as="event_log"/>
+            </route-group>
+
+            <!--   EMAIL SABLONOK     -->
+            <route-group controller="EmailTemplateController" as="email_template">
+                <route method="get" uri="email-templates" view="admin.email-templates" as="list"/>
+                <route method="get" uri="email-template/registration" use="registration" as="registration"/>
+                <route method="get" uri="email-template/reset-password" use="passwordReset" as="reset_password"/>
+                <route method="get" uri="email-template/group-contact" use="groupContact" as="group_contact"/>
+                <route method="get" uri="email-template/register-by-group" use="registrationByGroup" as="register_by_group"/>
+                <route method="get" uri="email-template/created-group" use="createdGroup" as="created_group"/>
+                <route method="get" uri="email-template/created-group-with-new-user" use="createdGroupWithNewUser" as="created_group_with_new_user"/>
+
+                <route method="post" uri="email-template/save" use="saveTemplate" as="save_template"/>
+            </route-group>
+
+            <route-group>
+                <route method="get" uri="appearance" as="appearance" view="admin"/>
+            </route-group>
+
+            <route method="get" uri="fix-images" controller="SettingsController" use="setGroupImages"/>
+
+            <route method="post" uri="api/uploads/get" as="api.uploads" controller="Api\UploadController" use="getUploads" />
         </route-group>
-
-        <route-group prefix="content/uploads" controller="ContentUploadController" as="content.upload">
-            <route method="get" uri="" use="list" as="list"/>
-            <route method="post" uri="upload-file" use="uploadFile" as="upload_file"/>
-            <route method="all" uri="delete-file" use="deleteFile" as="delete_file"/>
-        </route-group>
-
-        <route-group controller="Api\ApiPageController" prefix="page/api" as="page.api" middleware="Framework\Middleware\JsonApi">
-            <route method="post" uri="generate-slug" use="generateSlug" as="generate_slug"/>
-            <route method="post" uri="summernote-upload" />
-        </route-group>
-
-        <route method="post" uri="api/uploads/get" as="api.uploads" controller="Api\UploadController" use="getUploads" />
 
 
         <!-- KÖZÖSSÉGEK -->
@@ -54,49 +117,10 @@
             <route method="get" uri="{id}/restore" use="restore" as="restore"/>
 
             <route method="get" uri="refresh-search-engine" use="rebuildSearchEngine" as="refresh_search_engine"/>
-            <route method="get" uri="maintenance" use="maintenance" as="maintenance"/>
+            <route method="get" uri="maintenance" use="maintenance" as="maintenance" middleware="App\Middleware\CheckRole@roles:FULL_ACCESS"/>
 
             <route method="post" uri="{id}/reject-modal" as="reject_modal" use="getRejectModal"/>
             <route method="all" uri="{id}/delete-modal" as="delete_modal" use="getDeleteModal"/>
-        </route-group>
-
-        <!-- Intézmények -->
-        <route-group prefix="institute" as="institute" controller="InstituteController">
-            <route method="get" uri="list" use="list" as="list"/>
-
-            <route method="get" uri="create" use="create" as="create"/>
-            <route method="post" uri="create" use="doCreate" as="do_create"/>
-
-            <route method="get" uri="{id}/edit" use="edit" as="edit"/>
-            <route method="post" uri="{id}/update" use="update" as="update"/>
-            <route method="get" uri="{id}/delete" use="delete" as="delete"/>
-
-            <route method="get" uri="import" use="import" as="import"/>
-            <route method="post" uri="import" use="doImport" as="do_import"/>
-        </route-group>
-
-        <!-- FELHASZNÁLÓK -->
-        <route-group controller="UserController" prefix="user" as="user">
-            <route method="get" uri="list" use="list" as="list"/>
-
-            <route method="get" uri="create" use="create" as="create"/>
-            <route method="post" uri="create" use="doCreate" as="do_create"/>
-
-            <route method="get" uri="{id}/edit" use="edit" as="edit"/>
-            <route method="post" uri="{id}/update" use="update" as="update"/>
-            <route method="get" uri="{id}/delete" use="delete" as="delete"/>
-
-            <route method="get" uri="profile" use="profile" as="profile"/>
-            <route method="post" uri="profile/update" use="updateProfile" as="profile.update"/>
-            <route method="post" uri="profile/change-password" use="changeMyPassword" as="profile.change_password"/>
-        </route-group>
-
-        <!-- Címkék -->
-        <route-group controller="TagController" as="tags" prefix="tags" middleware="">
-            <route method="get" uri="" as="list" use="tags"/>
-            <route method="post" uri="create" as="create" use="create" middleware="Framework\Middleware\JsonApi"/>
-            <route method="post" uri="delete" as="delete" use="delete" middleware="Framework\Middleware\JsonApi"/>
-            <route method="post" uri="save" as="save" use="update" middleware="Framework\Middleware\JsonApi"/>
         </route-group>
 
         <!-- Lelkiségi mozgalmak -->
@@ -105,38 +129,19 @@
             <route method="get" uri="{id}/edit" use="edit" as="edit"/>
             <route method="post" uri="{id}/update" use="update" as="update"/>
 
-            <route method="get" uri="create" use="create" as="create"/>
-            <route method="post" uri="create" use="doCreate" as="do_create"/>
-            <route method="get" uri="{id}/delete" use="delete" as="delete"/>
+            <route method="get" uri="create" use="create" as="create" middleware="App\Middleware\CheckRole@roles:FULL_ACCESS"/>
+            <route method="post" uri="create" use="doCreate" as="do_create" middleware="App\Middleware\CheckRole@roles:FULL_ACCESS"/>
+            <route method="get" uri="{id}/delete" use="delete" as="delete" middleware="App\Middleware\CheckRole@roles:FULL_ACCESS"/>
+        </route-group>
+
+        <!--    SAJÁT PROFIL    -->
+        <route-group controller="UserController" prefix="user" as="user">
+            <route method="get" uri="profile" use="profile" as="profile"/>
+            <route method="post" uri="profile/update" use="updateProfile" as="profile.update"/>
+            <route method="post" uri="profile/change-password" use="changeMyPassword" as="profile.change_password"/>
         </route-group>
 
         <route method="get" uri="" controller="DashboardController" use="dashboard" as="dashboard"/>
 
-        <!-- GÉPHÁZ, BEÁLLÍTÁSOK -->
-        <route-group controller="SettingsController">
-            <route method="get" uri="settings" use="settings" as="settings"/>
-            <route method="get" uri="error-log" use="errorLog" as="error_log"/>
-            <route method="get" uri="error-log/clear" use="clearErrorLog" as="clear_error_log"/>
-            <route method="get" uri="event-log" use="eventLog" as="event_log"/>
-        </route-group>
-
-        <!--   EMAIL SABLONOK     -->
-        <route-group controller="EmailTemplateController" as="email_template">
-            <route method="get" uri="email-templates" view="admin.email-templates" as="list"/>
-            <route method="get" uri="email-template/registration" use="registration" as="registration"/>
-            <route method="get" uri="email-template/reset-password" use="passwordReset" as="reset_password"/>
-            <route method="get" uri="email-template/group-contact" use="groupContact" as="group_contact"/>
-            <route method="get" uri="email-template/register-by-group" use="registrationByGroup" as="register_by_group"/>
-            <route method="get" uri="email-template/created-group" use="createdGroup" as="created_group"/>
-            <route method="get" uri="email-template/created-group-with-new-user" use="createdGroupWithNewUser" as="created_group_with_new_user"/>
-
-            <route method="post" uri="email-template/save" use="saveTemplate" as="save_template"/>
-        </route-group>
-
-        <route-group>
-            <route method="get" uri="appearance" as="appearance" view="admin"/>
-        </route-group>
-
-        <route method="get" uri="fix-images" controller="SettingsController" use="setGroupImages"/>
     </route-group>
 </routes>

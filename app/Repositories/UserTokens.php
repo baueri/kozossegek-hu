@@ -4,26 +4,23 @@ namespace App\Repositories;
 
 use App\Models\UserToken;
 use App\Models\User;
+use DateTime;
 use Framework\Repository;
 
+/**
+ * @phpstan-extends \Framework\Repository<\App\Models\UserToken>
+ */
 class UserTokens extends Repository
 {
-    /**
-     * @param $token
-     * @return UserToken
-     */
-    public function getByToken($token)
+    public function getByToken(string $token)
     {
         return $this->getInstance($this->getBuilder()->where('token', $token)->first());
     }
 
     /**
-     * @param User $user
-     * @param string $page
-     * @return UserToken
      * @throws \Exception
      */
-    public function createUserToken(User $user, string $page)
+    public function createUserToken(User $user, string $page): UserToken
     {
         $instance = $this->make($user, $page);
 
@@ -32,24 +29,24 @@ class UserTokens extends Repository
         return $instance;
     }
 
-    public function createActivationToken(User $user)
+    /**
+     * @throws \Exception
+     */
+    public function createActivationToken(User $user): UserToken
     {
         return $this->createUserToken($user, route('portal.user.activate'));
     }
 
     /**
-     * @param User $user
-     * @param string $page
-     * @return UserToken
      * @throws \Exception
      */
-    public function make(User $user, string $page)
+    public function make(User $user, string $page): UserToken
     {
         return $this->getInstance([
             'token' => bin2hex(random_bytes(20)),
             'email' => $user->email,
             'page' => $page,
-            'expires_at' => (new \DateTime())->modify('+1 day')->format('Y-m-d H:i:s')
+            'expires_at' => (new DateTime())->modify('+1 day')->format('Y-m-d H:i:s')
         ]);
     }
 

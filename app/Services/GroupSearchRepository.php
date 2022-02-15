@@ -1,48 +1,28 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Services;
 
+use App\Models\ChurchGroupView;
 use App\Models\User;
-use Framework\Database\PaginatedResultSet;
-use Framework\Model\Model;
-use Framework\Model\ModelCollection;
-use Framework\Model\PaginatedModelCollection;
-use Framework\Repository;
-use App\Models\GroupView;
-use Framework\Support\Collection;
+use App\QueryBuilders\GroupViews;
 use Framework\Support\StringHelper;
 
-class GroupViews extends Repository
+class GroupSearchRepository
 {
-    public static function getModelClass(): string
+    private GroupViews $repository;
+
+    public function __construct(GroupViews $repository)
     {
-        return GroupView::class;
+        $this->repository = $repository;
     }
 
-    public static function getTable(): string
-    {
-        return 'v_groups';
-    }
-
-    public function getGroupByUser(User $user)
-    {
-        $row = $this->getBuilder()->where('user_id', $user->id)->first();
-
-        return $this->getInstance($row);
-    }
-
-    /**
-     * @param Collection|array $filter
-     * @param int|null $perPage
-     * @return PaginatedResultSet|Model[]|ModelCollection|PaginatedModelCollection []
-     */
     public function search($filter = [], ?int $perPage = 30)
     {
         if (is_array($filter)) {
             $filter = collect($filter);
         }
 
-        $builder = builder()->select('*')->from('v_groups');
+        $builder = $this->repository;
 
         if ($keyword = $filter['search']) {
             $keyword = StringHelper::sanitize(str_replace(['-', '.', '(', ')'], ' ', $keyword));
@@ -65,7 +45,6 @@ class GroupViews extends Repository
             } else {
                 $builder->where('city', 'like', $varos);
             }
-
         }
 
         if ($korosztaly = $filter['korosztaly']) {
@@ -111,34 +90,24 @@ class GroupViews extends Repository
         $builder->orderBy($filter['order_by'] ?: 'id', $filter['sort'] ?: 'desc');
 
         if ($perPage == -1) {
-            return $this->getInstances($builder->get());
+            return $builder->get();
         }
 
-        return $this->getInstances($builder->paginate($perPage));
+        return $builder->paginate($perPage);
     }
 
-    /**
-     * @param string $slug
-     * @return GroupView|null
-     */
     public function findBySlug(string $slug)
     {
         $id = substr($slug, strrpos($slug, '-') + 1);
 
-        $builder = $this->getBuilder();
+        $builder = $this->repository->query();
 
-        $row = $builder->where('id', $id)->apply('notDeleted')->first();
-
-        if ($row) {
-            return $this->getInstance($row);
-        }
-
-        return null;
+        return $builder->where('id', $id)->apply('notDeleted')->first();
     }
 
-    public function findSimilarGroups(GroupView $group, $tags, int $take = 4)
+    public function findSimilarGroups(ChurchGroupView $group, $tags, int $take = 4)
     {
-        $builder = $this->getBuilder()
+        $builder = $this->repository->query()
             ->where('id', '<>', $group->id)
             ->where('city', $group->city)
             ->whereNull('deleted_at')
@@ -150,7 +119,7 @@ class GroupViews extends Repository
             $builder->apply('whereGroupTag', collect($tags)->pluck('tag')->all());
         }
 
-        $groups = $this->getInstances($builder->get());
+        $groups = $builder->get();
 
         $groupids = $groups->pluck('id');
 
@@ -167,10 +136,8 @@ class GroupViews extends Repository
         return $groups;
     }
 
-    public function getNotDeletedGroupsByUser($user)
+    public function getNotDeletedGroupsByUser(User $user)
     {
-        return $this->getInstances(
-            $this->getBuilder()->where('user_id', $user->id)->apply('notDeleted')->get()
-        );
+        return $this->repository->query()->forUser($user)->whereNull('deleted_at')->get();
     }
 }

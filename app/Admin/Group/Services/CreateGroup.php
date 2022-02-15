@@ -3,15 +3,15 @@
 namespace App\Admin\Group\Services;
 
 use App\Helpers\GroupHelper;
-use App\Models\Group;
 use Framework\Exception\FileTypeNotAllowedException;
 use Framework\Support\Collection;
+use Legacy\Group;
 
 class CreateGroup extends BaseGroupService
 {
-
     /**
      * @throws FileTypeNotAllowedException
+     * @throws \Exception
      */
     public function create(Collection $groupData, ?array $document = null): ?Group
     {
@@ -42,25 +42,23 @@ class CreateGroup extends BaseGroupService
         /* @var $group Group */
         $group = $this->repository->create($data);
 
-        if ($group) {
-            $this->syncTags($group, (array) $groupData['tags']);
+        $this->syncTags($group, (array) $groupData['tags']);
 
-            $this->updateSearchEngine($group);
+        $this->updateSearchEngine($group);
 
-            $this->syncImages($group, [$groupData['image']]);
+        $this->syncImages($group, [$groupData['image']]);
 
-            if ($groupData['image']) {
-                $group->image_url = GroupHelper::getPublicImagePath($group->id);
-            }
-
-            $file = $this->uploadDocument($group, $document);
-
-            if ($file) {
-                $group->document = $file->getFileName();
-            }
-
-            $this->repository->save($group);
+        if ($groupData['image']) {
+            $group->image_url = GroupHelper::getPublicImagePath($group->id);
         }
+
+        $file = $this->uploadDocument($group, $document);
+
+        if ($file) {
+            $group->document = $file->getFileName();
+        }
+
+        $this->repository->save($group);
 
         return $group;
     }

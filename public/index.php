@@ -1,6 +1,8 @@
 <?php
 
 use App\Admin\Components\DebugBar\DebugBar;
+use App\Auth\Auth;
+use App\Auth\AuthUser;
 use App\HttpKernel;
 use Framework\Dispatcher\Dispatcher;
 use Framework\Dispatcher\HttpDispatcher;
@@ -19,6 +21,9 @@ try {
     $app->singleton(\Framework\Http\HttpKernel::class, HttpKernel::class);
     $app->singleton(Dispatcher::class, HttpDispatcher::class);
     $app->singleton(DebugBar::class);
+    $app->bind(AuthUser::class, function () {
+        return Auth::user();
+    });
     $app->run($app->get(Dispatcher::class));
 } catch (Error | Exception | Throwable $e) {
     ob_get_clean();

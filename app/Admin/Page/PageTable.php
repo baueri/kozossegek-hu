@@ -14,15 +14,9 @@ use Framework\Http\Request;
 
 class PageTable extends AdminTable implements Deletable, Editable
 {
-    /**
-     * @var AdminPageRepository
-     */
     private AdminPageRepository $repository;
 
-    /**
-     * @var Users
-     */
-    private $userRepository;
+    private Users $userRepository;
 
     protected $columns = [
         'id' => '#',
@@ -34,11 +28,6 @@ class PageTable extends AdminTable implements Deletable, Editable
         'updated_at' => 'Utoljára módosítva',
     ];
 
-    /**
-     * PageTable constructor.
-     * @param Request $request
-     * @param AdminPageRepository $repository
-     */
     public function __construct(Request $request, AdminPageRepository $repository, Users $userRepository)
     {
         parent::__construct($request);
@@ -46,22 +35,21 @@ class PageTable extends AdminTable implements Deletable, Editable
         $this->userRepository = $userRepository;
     }
 
-    public function getSlug($slug)
+    public function getSlug($slug): string
     {
         $url = route('portal.page', compact('slug')) ;
         return "<a href='$url' target='_blank'>$url</a>";
     }
 
-    public function getStatus($status)
+    public function getStatus($status): string
     {
         return (new PageStatus($status))->translate();
     }
 
-    public function getUserId(...$params)
+    public function getUserId(...$params): string
     {
         [,$page] = $params;
-
-        return $page->user->name;
+        return $page->user->name ?? '';
     }
 
     protected function getData(): PaginatedResultSetInterface

@@ -10,6 +10,7 @@ use App\Mail\RegistrationEmail;
 use App\Portal\Services\CreateUser;
 use App\Repositories\Users;
 use App\Repositories\UserTokens;
+use App\Services\User\LegalNoticeService;
 use Exception;
 use Framework\Http\Cookie;
 use Framework\Http\Request;
@@ -69,7 +70,12 @@ class LoginController extends PortalController
         redirect_route('login');
     }
 
-    public function register(CreateUser $service, UserTokens $tokens, Mailer $mailer): string
+    /**
+     * @throws \PHPMailer\PHPMailer\Exception
+     * @throws \Framework\Exception\UnauthorizedException
+     * @throws \Exception
+     */
+    public function register(CreateUser $service, UserTokens $tokens, Mailer $mailer, LegalNoticeService $legalNoticeService): string
     {
         $request = $this->request;
         use_default_header_bg();
@@ -85,13 +91,12 @@ class LoginController extends PortalController
                     Message::danger('A két jelszó nem egyezik!');
                 } else {
                     $user = $service->create($request->collect());
-                    if ($user) {
-                        $token = $tokens->createActivationToken($user);
-                        $message = new RegistrationEmail($user, $token);
-                        $mailer->to($request['email'])->send($message);
-                        Message::success('Sikeres regisztráció! Az aktiváló linket elküldtük az email címedre.');
-                        redirect_route('login');
-                    }
+                    $token = $tokens->createActivationToken($user);
+                    $legalNoticeService->updateOrInsertCurrentFor($user);
+                    $message = new RegistrationEmail($user, $token);
+                    $mailer->to($request['email'])->send($message);
+                    Message::success('Sikeres regisztráció! Az aktiváló linket elküldtük az email címedre.');
+                    redirect_route('login');
                 }
             }
             return view('portal.register', $model);

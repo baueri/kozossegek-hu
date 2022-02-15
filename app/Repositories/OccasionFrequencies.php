@@ -6,19 +6,13 @@ use App\Enums\OccasionFrequencyEnum;
 use App\Models\OccasionFrequency;
 use ReflectionException;
 
-/**
- * Description of OccasionFrequencies
- *
- * @author ivan
- */
-class OccasionFrequencies {
+class OccasionFrequencies
+{
 
     /**
-     *
      * @return OccasionFrequency[]
-     * @throws ReflectionException
      */
-    public function all()
+    public function all(): array
     {
         return OccasionFrequencyEnum::values()->as(OccasionFrequency::class)->all();
     }

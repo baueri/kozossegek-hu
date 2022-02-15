@@ -10,7 +10,6 @@ class AgeGroups
 {
     /**
      * @return AgeGroup[]
-     * @throws ReflectionException
      */
     final public function all(): array
     {

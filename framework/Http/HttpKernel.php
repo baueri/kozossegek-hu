@@ -17,9 +17,9 @@ class HttpKernel implements Kernel
     /**
      * @var string[]|Middleware[]
      */
-    protected $middleware = [];
+    protected array $middleware = [];
 
-    public function getMiddleware()
+    public function getMiddleware(): array
     {
         return $this->middleware;
     }
@@ -30,6 +30,7 @@ class HttpKernel implements Kernel
     }
 
     /**
+     * @throws \Throwable
      * @var Error|Throwable|Exception $exception
      */
     public function handleError($exception)

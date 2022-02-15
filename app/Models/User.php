@@ -2,15 +2,12 @@
 
 namespace App\Models;
 
+use App\Auth\AuthUser;
+use App\Enums\UserRole;
 use Framework\Model\Model;
 use Framework\Model\TimeStamps;
 
-/**
- * Description of User
- *
- * @author ivan
- */
-class User extends Model
+class User extends Model implements AuthUser
 {
     use TimeStamps;
 
@@ -37,17 +34,24 @@ class User extends Model
         return substr($this->name, strpos($this->name, ' '));
     }
 
-   /**
-    * @return bool
-    */
-    public function isAdmin()
+    public function isAdmin(): bool
     {
         return $this->hasUserGroup('SUPER_ADMIN');
     }
 
-    public function hasUserGroup($group)
+    public function hasUserGroup(string $group): bool
     {
-        return $this->user_group == $group;
+        return $this->user_group === $group;
+    }
+
+    public function can($right): bool
+    {
+        return $this->user_group === UserRole::SUPER_ADMIN || $this->hasRight($right);
+    }
+
+    public function hasRight($right): bool
+    {
+        return UserRole::can($this->user_group, ($right));
     }
 
     public function firstName()
@@ -55,7 +59,7 @@ class User extends Model
         return substr($this->name, strpos($this->name, ' '));
     }
 
-    public function isActive()
+    public function isActive(): bool
     {
         return $this->activated_at !== '0000-00-00 00:00:00' && !is_null($this->activated_at);
     }

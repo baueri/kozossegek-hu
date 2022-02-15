@@ -4,9 +4,11 @@
 namespace Framework\Http\Route;
 
 
+use Framework\Middleware\Middleware;
+
 interface RouteInterface
 {
-    public function __construct($method, $uriMask, $as, $controller, $use, $middleware, $view);
+    public function __construct(string $method, string $uriMask, string $as, string $controller, string $use, array $middleware, string $view);
 
     public function getRequestMethod();
 
@@ -20,7 +22,7 @@ interface RouteInterface
 
     public function getUse();
 
-    public function getMiddleware();
+    public function getMiddleware(): array;
 
     public function getView();
 }

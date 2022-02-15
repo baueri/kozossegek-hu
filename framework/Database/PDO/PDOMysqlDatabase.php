@@ -13,60 +13,30 @@ use PDO;
 
 class PDOMysqlDatabase implements Database
 {
-
-    /**
-     * @var DatabaseConfiguration
-     */
-    private DatabaseConfiguration $configuration;
-
-    /**
-     * @var PDO
-     */
     private PDO $pdo;
 
     private int $transactionCounter = 0;
 
-    /**
-     * PDOMysqlDatabase constructor.
-     * @param DatabaseConfiguration $configuration
-     */
     public function __construct(DatabaseConfiguration $configuration)
     {
-        $this->configuration = $configuration;
-
-        $this->pdo = new PDO($this->getDsn(), $this->configuration->user, $this->configuration->password, [
+        $this->pdo = new PDO($this->getDsn($configuration), $configuration->user, $configuration->password, [
             PDO::ATTR_PERSISTENT => true,
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"
         ]);
     }
 
-    private function getDsn()
+    private function getDsn(DatabaseConfiguration $configuration): string
     {
         return sprintf(
             "mysql:host=%s;dbname=%s;charset=%s;port=%s",
-            $this->configuration->host,
-            $this->configuration->database,
-            $this->configuration->charset,
-            $this->configuration->port
+            $configuration->host,
+            $configuration->database,
+            $configuration->charset,
+            $configuration->port
         );
     }
 
-    /**
-     * @param DatabaseConfiguration $configuration
-     * @return static
-     */
-    public static function connect(DatabaseConfiguration $configuration)
-    {
-        return new static($configuration);
-    }
-
-    /**
-     *
-     * @param string $query
-     * @param mixed ...$bindings
-     * @return ResultSet
-     */
     public function execute(string $query, ...$bindings): ResultSet
     {
         $start = microtime(true);
@@ -84,7 +54,7 @@ class PDOMysqlDatabase implements Database
 
     public function select(string $query, array $bindings = []): array
     {
-        return $this->execute($query, ... $bindings)->getRows();
+        return $this->execute($query, ...$bindings)->getRows();
     }
 
     public function beginTransaction(): bool

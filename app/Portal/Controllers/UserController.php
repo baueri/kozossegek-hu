@@ -49,6 +49,7 @@ class UserController extends PortalController
      * @param Mailer $mailer
      * @param UserTokens $userTokens
      * @throws Exception
+     * @throws \Exception
      */
     public function resetPassword(Request $request, Users $users, Mailer $mailer, UserTokens $userTokens)
     {
@@ -57,7 +58,7 @@ class UserController extends PortalController
         if ($user) {
             $userToken = $userTokens->createUserToken($user, route('portal.recover_password'));
 
-            $mail = ResetPasswordEmail::make($user, $userToken);
+            $mail = new ResetPasswordEmail($user, $userToken);
 
             $mailer->to($user->email)->send($mail);
 
@@ -71,7 +72,7 @@ class UserController extends PortalController
         redirect_route('portal.forgot_password');
     }
 
-    public function recoverPassword(Request $request, Users $users, UpdateUser $service, UserTokens $userTokens)
+    public function recoverPassword(Request $request, Users $users, UpdateUser $service, UserTokens $userTokens): string
     {
         $token = $userTokens->getByToken($request['token']);
 
