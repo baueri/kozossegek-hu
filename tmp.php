@@ -10,7 +10,7 @@ function getItem($item)
     return $item;
 }
 
-echo getItem(\App\Models\User::class)->name;
+echo getItem(\App\Models\UserLegacy::class)->name;
 
 /**
  * @template T
@@ -22,4 +22,4 @@ function a($i)
     return $i;
 }
 
-$a = a(\App\Models\User::class)->firstName();
+$a = a(\App\Models\UserLegacy::class)->firstName();

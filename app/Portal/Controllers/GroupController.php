@@ -70,9 +70,10 @@ class GroupController extends PortalController
         use_default_header_bg();
         $backUrl = null;
         $user = Auth::user();
+        $referer = (string) Arr::get($_SERVER, 'HTTP_REFERER');
 
-        if (strpos(Arr::get($_SERVER, 'HTTP_REFERER'), route('portal.groups')) !== false) {
-            $backUrl = $_SERVER['HTTP_REFERER'];
+        if (str_contains($referer, route('portal.groups'))) {
+            $backUrl = $referer;
         }
 
         $slug = $request['kozosseg'];
@@ -84,14 +85,14 @@ class GroupController extends PortalController
 
         $institute = $instituteRepo->find($group->institute_id);
 
-        $tag_names = builder('v_group_tags')->where('group_id', $group->id)->get();
+        $tag_names = builder('v_group_tags')->where('group_id', $group->getId())->get();
         $similar_groups = $repo->findSimilarGroups($group, $tag_names)->all();
         $slug = $group->slug();
-        $keywords = builder('search_engine')->where('group_id', $group->id)->first()['keywords'];
+        $keywords = builder('search_engine')->where('group_id', $group->getId())->first()['keywords'];
 
         if (!(new CrawlerDetect())->isCrawler()) {
             log_event('group_profile_opened', [
-                'group_id' => $group->id, 'referer' => $_SERVER['HTTP_REFERER']
+                'group_id' => $group->getId(), 'referer' => $referer
             ]);
         }
 
@@ -129,11 +130,12 @@ class GroupController extends PortalController
                 'msg' => $msg
             ];
         } catch (Exception $e) {
+            report($e);
             return ['success' => false];
         }
     }
 
-    public function myGroups(GroupSearchRepository $groupRepo)
+    public function myGroups(GroupSearchRepository $groupRepo): string
     {
         $user = Auth::user();
 

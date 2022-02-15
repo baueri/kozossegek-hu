@@ -102,16 +102,16 @@
                 <label for="pending">Jóváhagyva</label>
                 <select class="form-control" id="pending" name="pending" data-placeholder="jóváhagyás állapota">
                     <option></option>
-                    <option value="0" @if($group->pending === '0') selected @endif>jóváhagyva</option>
-                    <option value="1" @if($group->pending === '1') selected @endif>jóhávagyásra vár</option>
-                    <option value="-1" @if($group->pending === '-1') selected @endif>visszautasítva</option>
+                    <option value="0" @selected($group->pendingStatusIs(0))>jóváhagyva</option>
+                    <option value="1" @selected($group->pendingStatusIs(1))>jóhávagyásra vár</option>
+                    <option value="-1" @selected($group->pendingStatusIs(-1))>visszautasítva</option>
                 </select>
             </div>
             <div class="form-group">
                 <label for="status">Állapot</label>
                 <select id="status" name="status" class="form-control">
                     @foreach($statuses as $status)
-                    <option value="{{ $status->name }}" {{ $group->status == $status->name ? 'selected' : '' }}>{{ $status }}</option>
+                    <option value="{{ $status->name }}"  @selected($group->status == $status->name)>{{ $status }}</option>
                     @endforeach
                 </select>
             </div>
@@ -119,7 +119,7 @@
                 <label for="age_group">Korosztály</label>
                 <select class="form-control" name="age_group[]" multiple="multiple">
                     @foreach($age_groups as $age_group)
-                        <option value="{{ $age_group->name }}" @if(in_array($age_group->name, $age_group_array)) selected @endif>{{ $age_group }}</option>
+                        <option value="{{ $age_group->name }}" @selected($age_group_array->has($age_group->name))>{{ $age_group }}</option>
                     @endforeach
                 </select>
             </div>
@@ -135,7 +135,7 @@
                 <label for="on_days">Mely napo(ko)n</label>
                 <select class="form-control" name="on_days[]" multiple="multiple" data-allow-clear="1" data-placeholder="Nincs megadva">
                     @foreach($days as $day)
-                        <option value="{{ $day }}" @if(in_array($day, $group_days)) selected @endif>
+                        <option value="{{ $day }}" @selected($group_days->has($day))>
                              @lang("day.$day")
                          </option>
                     @endforeach

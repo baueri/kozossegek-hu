@@ -13,12 +13,9 @@ use InvalidArgumentException;
 class ContactController
 {
     /**
-     * @param Request $request
-     * @param Mailer $mailer
-     * @return array
      * @throws UnauthorizedException
      */
-    public function send(Request $request, Mailer $mailer)
+    public function send(Request $request, Mailer $mailer): array
     {
         HoneyPot::validate('rolunk', $request['website']);
 
@@ -44,9 +41,10 @@ class ContactController
             }
 
             return api()->error('Nem sikerült elküldeni az email-t. Kérjük próbáld meg később.');
-        } catch (InvalidArgumentException $e) {
+        } catch (InvalidArgumentException) {
             return api()->error('Minden mező kitöltése kötelező!');
         } catch (Exception $e) {
+            report($e);
             return api()->error('Ismeretlen hiba történt, kérjük próbáld meg később.');
         }
     }

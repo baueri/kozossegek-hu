@@ -11,10 +11,7 @@ use InvalidArgumentException;
 
 abstract class AdminTable
 {
-    /**
-     * @var array
-     */
-    protected $columns = [];
+    protected array $columns = [];
 
     protected array $order;
 
@@ -24,9 +21,6 @@ abstract class AdminTable
 
     protected int $perpage;
 
-    /**
-     * @var array
-     */
     protected array $centeredColumns = [];
 
     protected array $sortableColumns = [];
@@ -34,21 +28,14 @@ abstract class AdminTable
     protected array $columnClasses = [];
 
     /**
-     * @var Request
-     */
-    protected $request;
-
-    /**
      * @var string[]
      */
-    protected $dates = ['created_at', 'updated_at', 'deleted_at'];
+    protected array $dates = ['created_at', 'updated_at', 'deleted_at'];
 
-    /**
-     * AdminTable constructor.
-     * @param Request $request
-     */
-    public function __construct(Request $request)
-    {
+    public function __construct(
+        public readonly Request $request
+    ) {
+
         if (!$this->columns) {
             throw new InvalidArgumentException('missing columns for ' . static::class);
         }
@@ -58,20 +45,12 @@ abstract class AdminTable
             $request->get('sort', $this->defaultOrder)
         ];
 
-        $this->request = $request;
-
         $this->perpage = $request['per-page'] ?? 20;
     }
 
-    /**
-     * @return PaginatedResultSetInterface
-     */
     abstract protected function getData(): PaginatedResultSetInterface;
 
-    /**
-     * @return string
-     */
-    public function render()
+    public function render(): string
     {
         $data = $this->getData();
 
@@ -92,11 +71,7 @@ abstract class AdminTable
         return view('admin.partials.table', $model);
     }
 
-    /**
-     * @param $rows
-     * @return array
-     */
-    protected function transformData($rows)
+    protected function transformData($rows): array
     {
         $transformed = [];
 
@@ -109,7 +84,7 @@ abstract class AdminTable
         return $transformed;
     }
 
-    private function getColumns()
+    private function getColumns(): array
     {
         $columns = $this->columns;
 
@@ -124,12 +99,7 @@ abstract class AdminTable
         return $columns;
     }
 
-    /**
-     * @param $row
-     * @param $column
-     * @return mixed|null
-     */
-    protected function transformRowColumn($row, $column)
+    protected function transformRowColumn($row, string $column): mixed
     {
         $method = StringHelper::camel("get" . ucfirst($column));
         if (is_object($row)) {
@@ -156,7 +126,7 @@ abstract class AdminTable
         return call_user_func_array([$this, $method], [$value, $row]);
     }
 
-    protected function getEdit($value, $model, $excerpt = null)
+    protected function getEdit($value, $model, $excerpt = null): string
     {
         $url = $this->getEditUrl($model);
 
@@ -171,34 +141,34 @@ abstract class AdminTable
         return "<a href='{$url}' title='{$value}'>{$icon} {$text}</a>";
     }
 
-    protected function getDelete($t, $model, $title = 'lomtárba')
+    protected function getDelete($t, $model, $title = 'lomtárba'): string
     {
         $url = $this->getDeleteUrl($model);
 
         return $this->getDeleteColumn($url, $title);
     }
 
-    protected function getDeleteColumn(string $url, string $title)
+    protected function getDeleteColumn(string $url, string $title): string
     {
         return "<a href='$url' title='$title'><i class='fa fa-trash-alt text-danger'></i></a>";
     }
 
-    protected static function getCheckIcon(string $title = '')
+    protected static function getCheckIcon(string $title = ''): string
     {
         return static::getIcon('fa fa-check-circle text-success', $title);
     }
 
-    protected static function getBanIcon(string $title = '')
+    protected static function getBanIcon(string $title = ''): string
     {
         return static::getIcon('fa fa-ban text-danger', $title);
     }
 
-    protected static function getIcon(string $class, string $title = '')
+    protected static function getIcon(string $class, string $title = ''): string
     {
         return "<i class='{$class}' title='$title'></i>";
     }
 
-    protected static function excerpt(string $text, bool $withTooltip = true, int $limit = 20)
+    protected static function excerpt(string $text, bool $withTooltip = true, int $limit = 20): string
     {
         $shorten = StringHelper::shorten($text, $limit, '...');
         $tooltip = $withTooltip ? $text : '';
@@ -211,22 +181,13 @@ abstract class AdminTable
         return "<a href='{$url}'{$titleAttr}>$text</a>";
     }
 
-    /**
-     * @return string
-     */
     public function __toString()
     {
         try {
             return $this->render();
         } catch (Exception $e) {
             app()->get(Dispatcher::class)->handleError($e);
-
             return '';
         }
-    }
-
-    public function getRequest()
-    {
-        return $this->request;
     }
 }

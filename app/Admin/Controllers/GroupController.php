@@ -23,18 +23,13 @@ use Framework\Http\Message;
 use Framework\Http\Request;
 use Framework\Mail\Mailer;
 use Framework\Model\ModelNotFoundException;
-use Legacy\Group;
-use ReflectionException;
 use Throwable;
 
 class GroupController extends AdminController
 {
-    private GroupViews $groupViews;
-
-    public function __construct(Request $request, GroupViews $groupViews)
+    public function __construct(Request $request, private GroupViews $groupViews)
     {
         parent::__construct($request);
-        $this->groupViews = $groupViews;
     }
 
     /**
@@ -54,19 +49,19 @@ class GroupController extends AdminController
     {
         try {
             $group = $service->create($this->request->collect());
-            event_logger()->logEvent('group_created', ['group_id' => $group->id]);
+            event_logger()->logEvent('group_created', ['group_id' => $group->getId()]);
 
             Message::success('Közösség létrehozva.');
-            redirect_route('admin.group.edit', ['id' => $group->id]);
+            redirect_route('admin.group.edit', ['id' => $group->getId()]);
         } catch (Exception $e) {
             process_error($e->getMessage());
             Message::danger('Váratlan hiba történt!');
-            return $form->render(new Group($this->request->all()));
+            return $form->render(ChurchGroupView::make($this->request->all()));
         }
     }
 
     /**
-     * @throws ModelNotFoundException|ReflectionException
+     * @throws ModelNotFoundException
      */
     public function edit(EditGroup $service): string
     {
@@ -221,9 +216,9 @@ class GroupController extends AdminController
             $mailer->to($this->request['email'], $this->request['name'])->send($mailable);
 
             return api()->ok();
-        } catch (RequestParameterException $e) {
+        } catch (RequestParameterException) {
             return api()->error('Minden mező kötelező!');
-        } catch (Exception $e) {
+        } catch (Exception) {
             return api()->error('Váratlan hiba történt!');
         }
     }

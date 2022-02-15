@@ -24,8 +24,6 @@ class Base64Image
     }
 
     /**
-     * @param string $path
-     * @return false|int
      * @throws Exception
      */
     public function saveImage(string $path)
@@ -36,10 +34,9 @@ class Base64Image
     }
 
     /**
-     * @param string $path
      * @throws Exception
      */
-    public function saveThumbnail(string $path)
+    public function saveThumbnail(string $path): void
     {
         $this->createDirIfMissing($path);
 

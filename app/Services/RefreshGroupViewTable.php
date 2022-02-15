@@ -4,7 +4,10 @@ namespace App\Services;
 
 class RefreshGroupViewTable
 {
-    public static function getQuery()
+    /**
+     * @deprecated SHOULD NOT BE USED!
+     */
+    public static function getQuery(): string
     {
         return 'CREATE OR REPLACE VIEW v_groups AS
             SELECT

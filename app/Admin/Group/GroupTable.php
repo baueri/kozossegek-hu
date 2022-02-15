@@ -15,7 +15,7 @@ use Framework\Support\StringHelper;
 
 class GroupTable extends AdminTable implements Editable, Deletable
 {
-    protected $columns = [
+    protected array $columns = [
         'id' => '#',
         'image' => '<i class="fa fa-image" title="Fotó"></i>',
         'view' => '<i class="fa fa-eye" title="Megtekintés a honlapon"></i>',

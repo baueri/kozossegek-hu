@@ -165,7 +165,7 @@ class XmlRouter implements RouterInterface
      * @return string
      * @throws RouteNotFoundException
      */
-    public function route(string $name, $args = [])
+    public function route(string $name, mixed $args = null): string
     {
         if ($args instanceof Model || $args instanceof Entity) {
             $args = ['id' => $args->getId()];

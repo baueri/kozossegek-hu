@@ -1,6 +1,8 @@
 <?php
 
 
+use App\Enums\AgeGroupEnum;
+use App\Enums\GroupStatusEnum;
 use Phinx\Seed\AbstractSeed;
 
 
@@ -67,9 +69,9 @@ class DummyGroupSeeder extends AbstractSeed
                 'denomination' => App\Enums\DenominationEnum::KATOLIKUS,
                 'group_leaders' => $faker->lastName . ' ' . $faker->firstName . (rand(0, 20) > 15 ? ', ' . $faker->lastName . ' ' . $faker->firstName : ''),
                 'spiritual_movement_id' => $movements->random(),
-                'age_group' => \App\Enums\AgeGroupEnum::random(),
-                'occasion_frequency' => App\Enums\OccasionFrequencyEnum::random(),
-                'status' => \App\Enums\GroupStatusEnum::ACTIVE,
+                'age_group' => AgeGroupEnum::values()->random(),
+                'occasion_frequency' => App\Enums\OccasionFrequencyEnum::values()->random(),
+                'status' => GroupStatusEnum::ACTIVE,
                 'institute_id' => $institute['id']
             ];
 

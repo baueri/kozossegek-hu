@@ -25,22 +25,19 @@ class Page extends Model
 
     public $header_image;
 
-    /**
-     * @var User
-     */
-    public $user;
+    public ?User $user = null;
 
-    public function getUrl()
+    public function getUrl(): string
     {
         return config('app.site_url') . '/' . $this->slug;
     }
 
-    public function excerpt($numberOfWords = 20)
+    public function excerpt(int $numberOfWords = 20): string
     {
         return StringHelper::more($this->content, $numberOfWords);
     }
 
-    public function pageTitle()
+    public function pageTitle(): string
     {
         $link = '';
         if (Auth::loggedIn() && Auth::user()->isAdmin()) {

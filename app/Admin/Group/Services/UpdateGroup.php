@@ -31,7 +31,7 @@ class UpdateGroup extends BaseGroupService
         $data['description'] = strip_tags($data['description'], self::ALLOWED_TAGS);
         $data['name'] = strip_tags($data['name']);
         $data['group_leaders'] = strip_tags($data['group_leaders']);
-        $data['age_group'] = implode(',', $data['age_group']);
+        $data['age_group'] = implode(',', (array) $data['age_group']);
         $data['on_days'] = implode(',', $data['on_days'] ?? []);
 
         if (!$this->validate($data)) {

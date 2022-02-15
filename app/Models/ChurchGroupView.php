@@ -22,6 +22,7 @@ use Framework\Support\StringHelper;
  * @property-read null|string $district
  * @property-read null|string $institute_name2
  * @property-read null|string $spiritual_movement
+ * @property-read null|string $pending
  */
 class ChurchGroupView extends Entity
 {

@@ -4,15 +4,14 @@ namespace Framework\Http;
 
 use App\Http\Exception\RequestParameterException;
 use ArrayAccess;
+use ArrayIterator;
 use Countable;
 use Framework\Http\Route\RouteInterface;
 use Framework\Support\Collection;
-use InvalidArgumentException;
 use IteratorAggregate;
+use Traversable;
 
 /**
- * Class Request
- * @package Framework\Http
  * @mixin Collection
  */
 class Request implements ArrayAccess, Countable, IteratorAggregate
@@ -44,17 +43,11 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
         $this->uri = urldecode(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
     }
 
-    /**
-     * @return mixed
-     */
     public function __call($name, $arguments)
     {
         return call_user_func_array([$this->request, $name], $arguments);
     }
 
-    /**
-     * @return array
-     */
     public function getUriValues(): array
     {
         if (!is_null($this->uriValues)) {
@@ -65,7 +58,7 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
         $uriParts2 = explode('/', trim($this->route->getUriMask(), '/'));
         $this->uriValues = [];
         foreach ($uriParts2 as $i => $uriPart) {
-            preg_match_all('/{([a-zA-Z0-9\_]+)}/', $uriPart, $matches);
+            preg_match_all('/{([a-zA-Z0-9_]+)}/', $uriPart, $matches);
             if ($matches[1]) {
                 $this->uriValues[$matches[1][0]] = $uriParts[$i];
             }
@@ -74,31 +67,27 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
         return $this->uriValues;
     }
 
-    /**
-     * @param string $key
-     * @return string|int|null
-     */
     public function getUriValue($key)
     {
         return $this->getUriValues()[$key] ?? null;
     }
 
-    public function getIterator()
+    public function getIterator(): Traversable|ArrayIterator
     {
         return $this->request->getIterator();
     }
 
-    public function count()
+    public function count(): int
     {
         return $this->request->count();
     }
 
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return $this->request->offsetExists($offset);
     }
 
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         if ($attribute = $this->getUriValue($offset)) {
             return $attribute;
@@ -107,27 +96,27 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
         return $this->request[$offset];
     }
 
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         $this->request->offsetSet($offset, $value);
     }
 
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         $this->request->offsetUnset($offset);
     }
 
-    public function isPostRequestSent()
+    public function isPostRequestSent(): bool
     {
         return $_SERVER['REQUEST_METHOD'] == 'POST';
     }
 
-    public function collect()
+    public function collect(): Collection
     {
         return $this->request->collect();
     }
 
-    public function stripTags()
+    public function stripTags(): static
     {
         foreach ($this->request as $key => $value) {
             $this->request[$key] = strip_tags($value);
@@ -136,7 +125,7 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
         return $this;
     }
 
-    public function validate(...$requestParams)
+    public function validate(...$requestParams): void
     {
         foreach ($requestParams as $requestParam) {
             if (!$this->request[$requestParam]) {

@@ -6,9 +6,9 @@ use App\Admin\User\UserTable;
 use App\Auth\Auth;
 use App\Enums\UserRole;
 use App\Mail\RegistrationEmail;
-use App\Models\User;
+use App\Models\UserLegacy;
 use App\Repositories\UserTokens;
-use App\Repositories\Users;
+use App\Repositories\UsersLegacy;
 use App\Services\DeleteUser;
 use Exception;
 use Framework\Exception\DuplicateEntryException;
@@ -29,14 +29,14 @@ class UserController extends AdminController
 
     public function create(): string
     {
-        $user = new User(Session::flash('admin.reg.user'));
+        $user = new UserLegacy(Session::flash('admin.reg.user'));
         $action = route('admin.user.create');
         $groups = UserRole::getTranslated();
 
         return view('admin.user.create', compact('user', 'action', 'groups'));
     }
 
-    public function doCreate(Request $request, Users $repository, UserTokens $passwordResetRepository)
+    public function doCreate(Request $request, UsersLegacy $repository, UserTokens $passwordResetRepository)
     {
         $data = $request->only('username', 'name', 'email', 'user_group');
         try {
@@ -55,7 +55,7 @@ class UserController extends AdminController
             }
 
             $data['password'] = Password::hash(time());
-            /* @var $user User */
+            /* @var $user UserLegacy */
             $user = $repository->create($data);
             $passwordReset = $passwordResetRepository->createActivationToken($user);
 
@@ -79,7 +79,7 @@ class UserController extends AdminController
     /**
      * @throws ModelNotFoundException
      */
-    public function edit(Request $request, Users $repository): string
+    public function edit(Request $request, UsersLegacy $repository): string
     {
         $user = $repository->findOrFail($request['id']);
         $my_profile = $user->is(Auth::user());
@@ -96,9 +96,9 @@ class UserController extends AdminController
     /**
      * @throws ModelNotFoundException
      */
-    public function update(Request $request, Users $repository): void
+    public function update(Request $request, UsersLegacy $repository): void
     {
-        /* @var $user User */
+        /* @var $user UserLegacy */
         $user = $repository->findOrFail($request['id']);
         $data = $request->only('name', 'email', 'user_group', 'username', 'phone_number');
 
@@ -131,7 +131,7 @@ class UserController extends AdminController
         return view('admin.user.profile', compact('user', 'my_profile', 'action'));
     }
 
-    public function updateProfile(Request $request, Users $repository): void
+    public function updateProfile(Request $request, UsersLegacy $repository): void
     {
         $user = Auth::user();
 
@@ -144,7 +144,7 @@ class UserController extends AdminController
         redirect_route('admin.user.profile');
     }
 
-    public function changeMyPassword(Request $request, Users $repository)
+    public function changeMyPassword(Request $request, UsersLegacy $repository)
     {
         $password1 = $request['new_password'];
         $password2 = $request['new_password_again'];
@@ -173,7 +173,7 @@ class UserController extends AdminController
     /**
      * @throws \Framework\Model\ModelNotFoundException
      */
-    public function delete(Request $request, Users $repository, DeleteUser $service): void
+    public function delete(Request $request, UsersLegacy $repository, DeleteUser $service): void
     {
         $user = $repository->findOrFail($request['id']);
 
