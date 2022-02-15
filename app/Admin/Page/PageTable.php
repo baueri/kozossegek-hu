@@ -44,7 +44,7 @@ class PageTable extends AdminTable implements Deletable, Editable
     {
         /** @var \App\Models\Page $page */
         [,$page] = $params;
-        return $page->user?->keresztnev() ?? '';
+        return $page->user->name ?? '<i style="color: #aaa">ismeretlen</i>';
     }
 
     protected function getData(): PaginatedResultSetInterface
