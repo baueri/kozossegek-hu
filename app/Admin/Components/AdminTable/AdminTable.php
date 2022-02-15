@@ -141,34 +141,34 @@ abstract class AdminTable
         return "<a href='{$url}' title='{$value}'>{$icon} {$text}</a>";
     }
 
-    protected function getDelete($t, $model, $title = 'lomtárba')
+    protected function getDelete($t, $model, $title = 'lomtárba'): string
     {
         $url = $this->getDeleteUrl($model);
 
         return $this->getDeleteColumn($url, $title);
     }
 
-    protected function getDeleteColumn(string $url, string $title)
+    protected function getDeleteColumn(string $url, string $title): string
     {
         return "<a href='$url' title='$title'><i class='fa fa-trash-alt text-danger'></i></a>";
     }
 
-    protected static function getCheckIcon(string $title = '')
+    protected static function getCheckIcon(string $title = ''): string
     {
         return static::getIcon('fa fa-check-circle text-success', $title);
     }
 
-    protected static function getBanIcon(string $title = '')
+    protected static function getBanIcon(string $title = ''): string
     {
         return static::getIcon('fa fa-ban text-danger', $title);
     }
 
-    protected static function getIcon(string $class, string $title = '')
+    protected static function getIcon(string $class, string $title = ''): string
     {
         return "<i class='{$class}' title='$title'></i>";
     }
 
-    protected static function excerpt(string $text, bool $withTooltip = true, int $limit = 20)
+    protected static function excerpt(string $text, bool $withTooltip = true, int $limit = 20): string
     {
         $shorten = StringHelper::shorten($text, $limit, '...');
         $tooltip = $withTooltip ? $text : '';
@@ -181,16 +181,12 @@ abstract class AdminTable
         return "<a href='{$url}'{$titleAttr}>$text</a>";
     }
 
-    /**
-     * @return string
-     */
     public function __toString()
     {
         try {
             return $this->render();
         } catch (Exception $e) {
             app()->get(Dispatcher::class)->handleError($e);
-
             return '';
         }
     }
