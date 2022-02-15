@@ -1,5 +1,5 @@
 # Követelmények
-- php7.4
+- php8.1
 - mysql
 - composer
 # Projekt inicializálása
