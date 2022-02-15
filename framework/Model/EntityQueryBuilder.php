@@ -3,6 +3,7 @@
 namespace Framework\Model;
 
 use App\Models\ChurchGroupView;
+use App\QueryBuilders\GroupViews;
 use Closure;
 use Framework\Database\Builder;
 use Framework\Database\Repository\Events\ModelCreated;
@@ -45,10 +46,7 @@ abstract class EntityQueryBuilder
      */
     abstract protected static function getModelClass(): string;
 
-    /**
-     * @return static
-     */
-    public function query(): EntityQueryBuilder
+    public static function query(): static
     {
         return new static();
     }
@@ -62,7 +60,7 @@ abstract class EntityQueryBuilder
      * @return Entity[]|ModelCollection
      * @phpstan-return T[]|\Framework\Model\ModelCollection
      */
-    public function get()
+    public function get(): ModelCollection
     {
         return $this->loadRelations(
             new ModelCollection(array_map(function ($row) {
@@ -326,9 +324,9 @@ abstract class EntityQueryBuilder
         return $this;
     }
 
-    public function apply($macro, array $args = []): EntityQueryBuilder
+    public function apply($macro, ...$args): EntityQueryBuilder
     {
-        $this->builder->apply($macro, $args);
+        $this->builder->apply($macro, ...$args);
 
         return $this;
     }
@@ -357,7 +355,7 @@ abstract class EntityQueryBuilder
         return $model::getPrimaryCol();
     }
 
-    public function dd()
+    public function dd(): never
     {
         dd($this->toSql(true));
     }

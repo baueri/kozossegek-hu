@@ -1,37 +1,21 @@
 <?php
 
-
 namespace Framework\Support;
 
 use InvalidArgumentException;
 use ReflectionClass;
-use ReflectionException;
 
 class Enum
 {
-
     private static ?array $constCacheArray = null;
 
-    /**
-     * @var string|int
-     */
-    protected $value;
-
-    protected string $key;
-
-    final private function __construct($value, ?string $key)
+    final private function __construct(public readonly mixed $value, public readonly string $key)
     {
         if (!static::isValid($value)) {
             throw new InvalidArgumentException('invalid enum type');
         }
-
-        $this->value = $value;
-        $this->key = $key;
     }
 
-    /**
-     * @param string|int $value
-     */
     public static function isValid($value): bool
     {
         return in_array($value, static::asArray());
@@ -60,23 +44,11 @@ class Enum
         return self::$constCacheArray[$calledClass];
     }
 
-    /**
-     * @return mixed
-     * @throws ReflectionException
-     */
-    public static function random()
-    {
-        return static::values()->random();
-    }
-
     public static function values(): Collection
     {
         return collect(static::asArray())->values();
     }
 
-    /**
-     * @return string
-     */
     public function value()
     {
         return $this->value;
@@ -87,12 +59,12 @@ class Enum
         return static::values()->get($key);
     }
 
-    private static function keyOf($value)
+    private static function keyOf($value): ?string
     {
         return array_search($value, static::asArray()) ?? null;
     }
 
-    public static function of($value): self
+    public static function of($value): static
     {
         $key = self::keyOf($value);
         return new static($value, $key);

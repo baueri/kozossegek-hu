@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Institute;
 use Framework\Database\PaginatedResultSet;
+use Framework\Model\ModelCollection;
 use Framework\Model\PaginatedModelCollection;
 use Framework\Repository;
 

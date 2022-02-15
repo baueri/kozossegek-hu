@@ -3,17 +3,14 @@
 namespace App\Services;
 
 use App\Models\ChurchGroupView;
-use App\Models\User;
+use App\Models\UserLegacy;
 use App\QueryBuilders\GroupViews;
 use Framework\Support\StringHelper;
 
 class GroupSearchRepository
 {
-    private GroupViews $repository;
-
-    public function __construct(GroupViews $repository)
+    public function __construct(private GroupViews $repository)
     {
-        $this->repository = $repository;
     }
 
     public function search($filter = [], ?int $perPage = 30)
@@ -39,7 +36,7 @@ class GroupSearchRepository
             }
         }
 
-        if ($varos = mb_strtolower($filter['varos'])) {
+        if ($varos = mb_strtolower($filter['varos'] ?? '')) {
             if ($varos === 'budapest') {
                 $builder->where('city', 'like', "{$varos}%");
             } else {
@@ -69,7 +66,6 @@ class GroupSearchRepository
 
         if ($tags = $filter['tags']) {
             $tags = explode(',', $tags);
-
             $builder->apply('whereGroupTag', $tags);
         }
 
@@ -105,7 +101,7 @@ class GroupSearchRepository
         return $builder->where('id', $id)->apply('notDeleted')->first();
     }
 
-    public function findSimilarGroups(ChurchGroupView $group, $tags, int $take = 4)
+    public function findSimilarGroups(ChurchGroupView $group, $tags, int $take = 4): array|\Framework\Model\ModelCollection
     {
         $builder = $this->repository->query()
             ->where('id', '<>', $group->id)
@@ -136,7 +132,7 @@ class GroupSearchRepository
         return $groups;
     }
 
-    public function getNotDeletedGroupsByUser(User $user)
+    public function getNotDeletedGroupsByUser(UserLegacy $user)
     {
         return $this->repository->query()->forUser($user)->whereNull('deleted_at')->get();
     }

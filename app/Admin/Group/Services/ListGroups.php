@@ -7,7 +7,7 @@ use App\Repositories\AgeGroups;
 use App\Repositories\Cities;
 use App\Repositories\GroupStatusRepository;
 use App\Repositories\OccasionFrequencies;
-use App\Repositories\Users;
+use App\Repositories\UsersLegacy;
 use Framework\Http\Request;
 use ReflectionException;
 
@@ -57,7 +57,7 @@ class ListGroups
         $current_page = $this->getCurrentPage();
         $karbantarto = null;
         if ($filter['user_id']) {
-            $karbantarto = app()->make(Users::class)->find($filter['user_id'])->name;
+            $karbantarto = app()->make(UsersLegacy::class)->find($filter['user_id'])->name;
         }
 
         if ($current_page === 'pending') {

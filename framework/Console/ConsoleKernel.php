@@ -27,34 +27,19 @@ class ConsoleKernel implements Kernel
      */
     protected array $commands = [];
 
-    /**
-     * @var Application
-     */
-    private Application $application;
-
-    /**
-     * ConsoleKernel constructor.
-     * @param Application $application
-     */
-    public function __construct(Application $application)
+    public function __construct(private Application $application)
     {
-        $this->application = $application;
     }
 
     /**
      * @return Command[]
      */
-    public function getCommands()
+    public function getCommands(): array
     {
         return array_merge($this->commands, $this->baseCommands);
     }
 
-    /**
-     * @param $signature
-     * @return Command
-     * @throws CommandNotFoundException
-     */
-    public function getCommand($signature)
+    public function getCommand(?string $signature)
     {
         if (!$signature) {
             return $this->application->make(ListCommands::class);
@@ -69,7 +54,7 @@ class ConsoleKernel implements Kernel
         throw new CommandNotFoundException("command not found: $signature");
     }
 
-    public function handleError($error)
+    public function handleError($error): void
     {
         Out::error('HIBA');
         Out::error($error->getMessage());

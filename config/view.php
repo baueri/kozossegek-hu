@@ -26,7 +26,7 @@ return [
             return '<?php $__env->getSection()->add("header", function($args) { extract($args); ?> ';
         },
         'footer' => function ($matches) {
-            if (strpos($matches[0], '@endfooter') !== false) {
+            if (str_contains($matches[0], '@endfooter')) {
                 return '<?php }); ?>';
             }
 
@@ -41,7 +41,7 @@ return [
         'user_group_selector' => UserGroupSelector::class,
         'facebook_share_button' => FacebookShareButton::class,
         'alert' => function ($matches) {
-            if (strpos($matches[0], '@alert') !== false) {
+            if (str_contains($matches[0], '@alert')) {
                 return '<div class="alert alert-' . str_replace(['\'', '"'], '', $matches[1]) . ' shadow-sm">';
             }
 
@@ -62,13 +62,14 @@ return [
         'honeypot' => HoneyPotComponent::class,
         'icon' => FontawesomeIcon::class,
         'filter_box' => function ($matches) {
-            if (strpos($matches[0], '@endfilter_box') !== false) {
+            if (str_contains($matches[0], '@endfilter_box')) {
                 return '</div>';
             }
 
             return '<div class="shadow-sm bg-white p-3 rounded"><h5>Szűrő</h5>';
         },
-        'component' => ComponentParser::class
+        'component' => ComponentParser::class,
+        'selected' => fn ($matches) => "<?php if($matches[1]): echo 'selected'; endif; ?>"
     ],
     'components' => [
         'aszf' => AszfCheckBox::class

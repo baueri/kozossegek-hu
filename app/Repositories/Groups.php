@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Models\User;
+use App\Models\UserLegacy;
 use Framework\Repository;
 use Legacy\Group;
 
@@ -11,7 +11,7 @@ use Legacy\Group;
  */
 class Groups extends Repository
 {
-    public function getGroupsByUser(User $user)
+    public function getGroupsByUser(UserLegacy $user)
     {
         return $this->getInstances(
             $this->getBuilder()

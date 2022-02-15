@@ -55,14 +55,18 @@ class ModelCollection extends Collection
         return $this;
     }
 
+    public function getIds(): Collection
+    {
+        return $this->map(fn ($model) => $model->getId());
+    }
+    
     /**
-     *
      * @param mixed $relations
      * @param string $target
      * @param mixed $onValue
-     * @return mixed
+     * @return array
      */
-    private static function getAttributeValues($relations, $target, $onValue)
+    private static function getAttributeValues($relations, $target, $onValue): array
     {
         $found = [];
         foreach ($relations as $relation) {

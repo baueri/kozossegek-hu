@@ -67,16 +67,13 @@ class Route implements RouteInterface
         return $this->middleware;
     }
 
-   /**
-    * @param array|string $args
-    */
-    public function getWithArgs($args = []): string
+    public function getWithArgs(mixed $args = null): string
     {
         $uri = $this->uriMask;
 
-        if (is_array($args)) {
+        if ($args && is_array($args)) {
             foreach ($args as $key => $arg) {
-                if (strpos($uri, '{' . $key . '}') !== false) {
+                if (str_contains($uri, '{' . $key . '}')) {
                     $uri = str_replace('{' . $key . '}', $arg, $uri);
                     unset($args[$key]);
                 }
@@ -85,6 +82,7 @@ class Route implements RouteInterface
             $uri = preg_replace('/({\??[a-zA-Z\-_]+})/', $args, $uri, 1);
             $args = '';
         }
+
         $uri = '/' . trim(preg_replace('/({\?[a-zA-Z\-_]+})/', '', $uri), '/');
 
         if (!empty($args)) {

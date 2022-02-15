@@ -13,12 +13,11 @@ use Framework\Model\ModelNotFoundException;
 
 class SpiritualMovementController extends PortalController
 {
-    private SpiritualMovements $repository;
-
-    public function __construct(Request $request, SpiritualMovements $repository)
-    {
+    public function __construct(
+        Request $request,
+        private SpiritualMovements $repository
+    ) {
         parent::__construct($request);
-        $this->repository = $repository;
     }
 
     public function list(): string
@@ -50,7 +49,7 @@ class SpiritualMovementController extends PortalController
                 ->apply('active')
                 ->get();
 
-            $groupids = $groups->pluck('id');
+            $groupids = $groups->getIds();
 
             if ($groupids->isNotEmpty()) {
                 $group_tags = builder('v_group_tags')
@@ -71,7 +70,7 @@ class SpiritualMovementController extends PortalController
 
             use_default_header_bg();
             return view('portal.spiritual_movement.view', compact('spiritualMovement', 'groups', 'title'));
-        } catch (ModelNotFoundException $e) {
+        } catch (ModelNotFoundException) {
             throw new PageNotFoundException();
         }
     }

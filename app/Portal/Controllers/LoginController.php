@@ -8,7 +8,7 @@ use App\Exception\EmailTakenException;
 use App\Helpers\HoneyPot;
 use App\Mail\RegistrationEmail;
 use App\Portal\Services\CreateUser;
-use App\Repositories\Users;
+use App\Repositories\UsersLegacy;
 use App\Repositories\UserTokens;
 use App\Services\User\LegalNoticeService;
 use Exception;
@@ -110,7 +110,7 @@ class LoginController extends PortalController
      * @throws \PHPMailer\PHPMailer\Exception
      * @throws Exception
      */
-    public function resendActivationEmail(Mailer $mailer, Users $users, UserTokens $userTokens): array
+    public function resendActivationEmail(Mailer $mailer, UsersLegacy $users, UserTokens $userTokens): array
     {
         $user = $users->getUserByEmail($this->request['email']);
 
