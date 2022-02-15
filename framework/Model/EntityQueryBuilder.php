@@ -46,10 +46,7 @@ abstract class EntityQueryBuilder
      */
     abstract protected static function getModelClass(): string;
 
-    /**
-     * @return static
-     */
-    public function query(): EntityQueryBuilder
+    public static function query(): static
     {
         return new static();
     }
@@ -358,7 +355,7 @@ abstract class EntityQueryBuilder
         return $model::getPrimaryCol();
     }
 
-    public function dd()
+    public function dd(): never
     {
         dd($this->toSql(true));
     }

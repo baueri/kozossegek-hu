@@ -13,9 +13,6 @@ use Framework\Http\Request;
 
 class PageTable extends AdminTable implements Deletable, Editable
 {
-    private AdminPageRepository $repository;
-
-    private Users $userRepository;
 
     protected array $columns = [
         'id' => '#',
@@ -27,11 +24,9 @@ class PageTable extends AdminTable implements Deletable, Editable
         'updated_at' => 'Utoljára módosítva',
     ];
 
-    public function __construct(Request $request, AdminPageRepository $repository, Users $userRepository)
+    public function __construct(Request $request, private AdminPageRepository $repository)
     {
         parent::__construct($request);
-        $this->repository = $repository;
-        $this->userRepository = $userRepository;
     }
 
     public function getSlug($slug): string
@@ -49,7 +44,7 @@ class PageTable extends AdminTable implements Deletable, Editable
     {
         /** @var \App\Models\Page $page */
         [,$page] = $params;
-        return $page->user?->keresztnev() ?? '';
+        return $page->user->name ?? '<i style="color: #aaa">ismeretlen</i>';
     }
 
     protected function getData(): PaginatedResultSetInterface
@@ -63,7 +58,7 @@ class PageTable extends AdminTable implements Deletable, Editable
 
         $userIds = $pages->pluck('user_id')->unique()->all();
 
-        $users = $this->userRepository->whereIn('id', $userIds)->get();
+        $users = Users::query()->whereIn('id', $userIds)->get();
         $pages->with($users, 'user', 'user_id');
 
         return $pages;
