@@ -6,7 +6,6 @@ use Closure;
 
 final class Builder
 {
-    private Database $db;
 
     private array $select = [];
 
@@ -28,9 +27,8 @@ final class Builder
 
     private static array $macros = [];
 
-    public function __construct(Database $db)
+    public function __construct(private Database $db)
     {
-        $this->db = $db;
     }
 
     /**
@@ -134,9 +132,7 @@ final class Builder
 
                 $where .= "($closureWhere) $operator";
 
-                if (is_array($closureBindings)) {
-                    $bindings = array_merge($bindings, $closureBindings);
-                }
+                $bindings = array_merge($bindings, $closureBindings);
             } elseif ($operator) {
                 $where .= sprintf('%s %s ?', $column, $operator);
                 $bindings[] = $value;
@@ -169,13 +165,9 @@ final class Builder
         return $this->db->first(...$this->getBaseSelect());
     }
 
-    /**
-     * @param string|int $limit
-     * @return static
-     */
-    public function limit($limit): self
+    public function limit(int|string $limit): self
     {
-        $this->limit = " limit $limit";
+        $this->limit = " limit {$limit}";
 
         return $this;
     }
@@ -306,7 +298,7 @@ final class Builder
 
     /**
      * @param string $table
-     * @param \Closure $callback
+     * @param Closure $callback
      * @param string $clause
      * @return $this
      */
@@ -315,7 +307,7 @@ final class Builder
         $callback($builder = (new self($this->db))->select('1')->from($table));
 
         [$query, $bindings] = $builder->getBaseSelect();
-        $this->whereRaw("EXISTS ($query)", $bindings, $clause);
+        $this->whereRaw("EXISTS ({$query})", $bindings, $clause);
 
         return $this;
     }
@@ -368,7 +360,7 @@ final class Builder
         return $this->db->update("update {$table} set {$set} {$query}", ...$allBindings);
     }
 
-    public function insert(array $values)
+    public function insert(array $values): int|string
     {
         $bindings = array_values($values);
 
