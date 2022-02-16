@@ -6,7 +6,6 @@ use App\Services\EventLogger;
 use Arrilot\DotEnv\DotEnv;
 use Framework\Application;
 use Framework\Database\Database;
-use Framework\Database\DatabaseConfiguration;
 use Framework\Database\PDO\PDOMysqlDatabase;
 use Framework\Http\Route\Route;
 use Framework\Http\Route\RouteInterface;
@@ -49,10 +48,25 @@ $application->bind(ViewInterface::class, View::class);
 $application->singleton(Config::class);
 $application->singleton(RouterInterface::class, XmlRouter::class);
 $application->singleton(EventLogger::class, EventLogRepository::class);
-$application->singleton(Database::class, function (Application $app) {
-    $settings = $app->config('db');
-    $databaseConfiguration = $app->make(DatabaseConfiguration::class, $settings);
-    return new PDOMysqlDatabase($databaseConfiguration);
+
+$application->singleton(Database::class, function () {
+    $configuration = config('db');
+
+    $dsn = sprintf(
+        'mysql:host=%s;dbname=%s;charset=%s;port=%s',
+        $configuration['host'],
+        $configuration['database'],
+        $configuration['charset'],
+        $configuration['port']
+    );
+
+    $pdo = new PDO($dsn, $configuration['user'], $configuration['password'], [
+        PDO::ATTR_PERSISTENT => true,
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'
+    ]);
+
+    return new PDOMysqlDatabase($pdo);
 });
 
 $application->boot(RegisterDirectives::class);

@@ -13,29 +13,9 @@ use PDO;
 
 class PDOMysqlDatabase implements Database
 {
-    private PDO $pdo;
-
     private int $transactionCounter = 0;
 
-    public function __construct(DatabaseConfiguration $configuration)
-    {
-        $this->pdo = new PDO($this->getDsn($configuration), $configuration->user, $configuration->password, [
-            PDO::ATTR_PERSISTENT => true,
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-            PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"
-        ]);
-    }
-
-    private function getDsn(DatabaseConfiguration $configuration): string
-    {
-        return sprintf(
-            "mysql:host=%s;dbname=%s;charset=%s;port=%s",
-            $configuration->host,
-            $configuration->database,
-            $configuration->charset,
-            $configuration->port
-        );
-    }
+    public function __construct(private PDO $pdo) {}
 
     public function execute(string $query, ...$bindings): ResultSet
     {
