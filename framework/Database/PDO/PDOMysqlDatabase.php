@@ -85,11 +85,9 @@ class PDOMysqlDatabase implements Database
     }
 
     /**
-     * @param Closure $callback
-     * @return mixed
      * @throws Exception
      */
-    public function transaction(Closure $callback)
+    public function transaction(Closure $callback): mixed
     {
         $this->beginTransaction();
 
@@ -118,7 +116,7 @@ class PDOMysqlDatabase implements Database
         return $this->execute($query, ...$bindings)->fetchRow();
     }
 
-    public function insert(string $query, array $params = []): int
+    public function insert(string $query, array $params = [])
     {
         $this->execute($query, ...$params);
 
