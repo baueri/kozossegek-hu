@@ -28,6 +28,7 @@ use Framework\Mail\Mailer;
 use Framework\Model\Entity;
 use Framework\Model\Model;
 use Framework\Support\Collection;
+use Framework\Support\HashMap;
 use Framework\Translator;
 use PHPDeploy\PHPDeploy;
 
@@ -396,4 +397,9 @@ function report($exception): void
     }
 
     $mailer->send($mail);
+}
+
+function hash_map($items): HashMap
+{
+    return new HashMap($items);
 }
