@@ -1,26 +1,23 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 namespace App\Http\Components\Selectors;
 
-use App\Enums\DayEnum;
+use App\Enums\WeekDay;
+use Framework\Http\View\Component;
+use Framework\Support\Collection;
 
-/**
- * Description of OnDaysSelector
- *
- * @author ivan
- */
-class OnDaysSelector
+class OnDaysSelector extends Component
 {
-
-    public function render($group_days)
+    /**
+     * @param \Framework\Support\Collection<WeekDay> $group_days
+     */
+    public function __construct(private readonly Collection $group_days)
     {
-        $days = DayEnum::asArray();
-        return view('partials.components.on_days_selector', compact('days', 'group_days'));
+    }
+
+    public function render(): string
+    {
+        $days = WeekDay::cases();
+        return view('partials.components.on_days_selector', ['days' => $days, 'group_days' => $this->group_days->pluck('name')->all()]);
     }
 }

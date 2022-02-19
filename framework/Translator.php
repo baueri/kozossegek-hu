@@ -34,7 +34,13 @@ class Translator
             $this->load($lang);
         }
 
-        return $this->cache[$lang][$key] ?: "?$key?";
+        $translated = $this->cache[$lang][$key] ?? null;
+
+        if (!$translated) {
+            report("hiányzó nyelvi kulcs ({$lang}): {$key}");
+        }
+
+        return $translated ?? "?$key?";
     }
 
     /**

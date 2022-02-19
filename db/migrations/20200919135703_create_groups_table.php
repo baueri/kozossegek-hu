@@ -1,12 +1,14 @@
 <?php
+
 declare(strict_types=1);
 
+use App\Migration\AppMigration;
 use Phinx\Db\Adapter\MysqlAdapter;
 use App\Enums\DenominationEnum;
+use App\Enums\AgeGroup;
 
-final class CreateGroupsTable extends \App\Migration\AppMigration
+final class CreateGroupsTable extends AppMigration
 {
-    
     public function up(): void
     {
          $this->table('groups')
@@ -19,7 +21,7 @@ final class CreateGroupsTable extends \App\Migration\AppMigration
                  ->addColumn('group_leader_email', MysqlAdapter::PHINX_TYPE_STRING)
                  ->addColumn('group_leader_phone', MysqlAdapter::PHINX_TYPE_STRING)
                  ->addColumn('spiritual_movement', MysqlAdapter::PHINX_TYPE_STRING, ['null' => true, 'comment' => 'lelkiségi mozgalom'])
-                 ->addColumn('age_group', MysqlAdapter::PHINX_TYPE_ENUM, ['values' => App\Enums\AgeGroupEnum::asArray(), 'comment' => 'korosztály'])
+                 ->addColumn('age_group', MysqlAdapter::PHINX_TYPE_ENUM, ['values' => AgeGroup::toArray(), 'comment' => 'korosztály'])
                  ->addColumn('occasion_frequency', MysqlAdapter::PHINX_TYPE_ENUM, ['values' => App\Enums\OccasionFrequencyEnum::asArray(), 'comment' => 'milyen gyakran találkoznak a közösségek'])
                  ->addColumn('status', MysqlAdapter::PHINX_TYPE_ENUM, ['values' => App\Enums\GroupStatusEnum::asArray()])
                  ->timestamps()
