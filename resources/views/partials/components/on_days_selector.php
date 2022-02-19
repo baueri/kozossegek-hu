@@ -1,14 +1,13 @@
-<select class="form-control" name="on_days[]" multiple="multiple" id="on_days">
+<select class="form-control day-selector" name="on_days[]" multiple="multiple" id="on_days">
     @foreach($days as $day)
-        <option value="{{ $day }}" @if(in_array($day, $group_days)) selected @endif>
-            @lang("day.$day")
+        <option value="{{ $day->name }}" @selected(in_array($day->name, $group_days))>
+            {{ $day->translate() }}
         </option>
     @endforeach
 </select>
 <script> 
     $(() => {
-        $("#on_days").select2({
-            placeholder: "napok",
+        $(".day-selector").select2({
             allowClear: true
         });
     });

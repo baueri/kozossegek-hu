@@ -2,7 +2,8 @@
 
 namespace App\Models\Traits;
 
-use App\Enums\DayEnum;
+use App\Enums\AgeGroup;
+use App\Enums\WeekDay;
 use App\Enums\GroupStatusEnum;
 use App\Enums\JoinMode;
 use App\Helpers\GroupHelper;
@@ -13,14 +14,12 @@ use Framework\Support\StringHelper;
 
 trait GroupTrait
 {
-    public function ageGroup(): string
-    {
-        return GroupHelper::parseAgeGroup((string) $this->age_group);
-    }
-
+    /**
+     * @return \Framework\Support\Collection<AgeGroup>
+     */
     public function getAgeGroups(): Collection
     {
-        return GroupHelper::getAgeGroups((string) $this->age_group);
+        return Collection::fromList($this->age_group)->as(AgeGroup::class);
     }
 
     public function denomination(): string
@@ -28,16 +27,12 @@ trait GroupTrait
         return lang("denomination.{$this->denomination}");
     }
 
+    /**
+     * @return \Framework\Support\Collection<WeekDay>
+     */
     public function getDays(): Collection
     {
-        $days = Collection::fromList($this->on_days);
-        $daysTranslated = [];
-
-        foreach ($days as $day) {
-            $daysTranslated[$day] = DayEnum::of($day)->translate();
-        }
-
-        return collect($daysTranslated);
+        return Collection::fromList($this->on_days)->as(WeekDay::class);
     }
 
     public function occasionFrequency(): string

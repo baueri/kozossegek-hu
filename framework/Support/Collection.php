@@ -486,6 +486,9 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     public function as(string $abstraction): self
     {
         return $this->map(function ($item) use ($abstraction) {
+            if (enum_exists($abstraction)) {
+                return $abstraction::from($item);
+            }
             return app()->make($abstraction, [$item]);
         });
     }

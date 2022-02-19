@@ -23,30 +23,12 @@ class XmlRouter implements RouterInterface
     protected $routes;
 
     /**
-     * @var Request
-     */
-    protected Request $request;
-
-    /**
-     * @var Application
-     */
-    private Application $application;
-
-    /**
      * @var array
      */
     protected static array $globalArgs = [];
 
-    /**
-     * XmlRouter constructor.
-     * @param Request $request
-     * @param Application $application
-     */
-    public function __construct(Request $request, Application $application)
+    public function __construct(protected Request $request, private Application $application)
     {
-        $this->request = $request;
-        $this->application = $application;
-
         $this->load();
     }
 
