@@ -87,65 +87,43 @@ class XmlRouteBuilder
             ->all();
     }
 
-    /**
-     * @return string
-     */
-    public function getController($withNamespace = true)
+    public function getController($withNamespace = true): string
     {
         if (!$withNamespace) {
-            
-            return (string) $this->getAncestorController();
+            return $this->getAncestorController();
         }
 
-        return (string) $this->getNamespace() . '\\' . $this->getAncestorController();
+        return $this->getNamespace() . '\\' . $this->getAncestorController();
     }
 
-    /**
-     * @return string
-     */
-    protected function getNamespace()
+    protected function getNamespace(): string
     {
-        return (string) rtrim(implode('\\', $this->getAttributeValues('namespace')), '\\');
+        return rtrim(implode('\\', $this->getAttributeValues('namespace')), '\\');
     }
 
-    /**
-     * @return string
-     */
-    protected function getAncestorController()
+    protected function getAncestorController(): string
     {
         $controllers = $this->getAttributeValues('controller');
 
         return (string) array_pop($controllers);
     }
 
-    /**
-     * @return string
-     */
-    public function getUse()
+    public function getUse(): string
     {
         return (string) $this->element['use'];
     }
 
-    /**
-     * @return string
-     */
-    public function getView()
+    public function getView(): string
     {
         return (string) $this->element['view'];
     }
 
-    /**
-     * @return string
-     */
-    public function getAs()
+    public function getAs(): string
     {
-        return (string) implode('.', $this->getAttributeValues('as'));
+        return implode('.', $this->getAttributeValues('as'));
     }
 
-    /**
-     * @return string
-     */
-    public function getRequestMethod()
+    public function getRequestMethod(): string
     {
         return strtoupper($this->element['method']);
     }

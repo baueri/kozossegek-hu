@@ -158,7 +158,7 @@ class GroupController extends PortalController
             raise_500();
         }
 
-        return $response->getResponse($group);
+        return $response($group);
     }
 
     public function createGroup(Request $request, PortalCreateGroup $createGroupService, RegisterGroupForm $form)
@@ -223,6 +223,7 @@ class GroupController extends PortalController
             );
             redirect_route('portal.edit_group', $group);
         } catch (Error | Throwable $e) {
+            dd($e);
             Message::danger('Sikertelen mentés!');
             redirect_route('portal.edit_group', $group);
         }

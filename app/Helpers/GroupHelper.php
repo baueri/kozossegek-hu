@@ -2,31 +2,8 @@
 
 namespace App\Helpers;
 
-use App\Models\AgeGroup;
-use Framework\Support\Collection;
-
 class GroupHelper
 {
-    public static function parseAgeGroup(string $ageGroup): string
-    {
-        $ageGroups = static::getAgeGroups($ageGroup);
-
-        if ($ageGroups->count() > 1) {
-            return 'vegyes';
-        }
-
-        return $ageGroups->implode(', ');
-    }
-
-    public static function getAgeGroups(string $ageGroup): Collection
-    {
-        return Collection::fromList($ageGroup)
-            ->filter()
-            ->as(AgeGroup::class)
-            ->keyBy('name')
-            ->map(fn ($ageGroup) => $ageGroup->translate(), true);
-    }
-
     public static function getRelpath(?int $groupId): string
     {
         if (!$groupId) {
@@ -51,7 +28,7 @@ class GroupHelper
         return $root . static::getRelpath($groupId);
     }
 
-    public static function getPublicImagePath(?int $groupId): string
+    public static function getPublicImagePath(int $groupId): string
     {
         return "/media/groups/images/{$groupId}_1.jpg";
     }

@@ -6,7 +6,7 @@ use http\Exception\InvalidArgumentException;
 
 class ComponentParser
 {
-    public function render(string $componentName, ...$args): string
+    public function render(string $componentName, $args)
     {
         $component = config("view.components.{$componentName}");
 
@@ -14,6 +14,6 @@ class ComponentParser
             throw new InvalidArgumentException('component does not exists');
         }
 
-        return app($component)->render(...$args);
+        return app()->make($component, $args);
     }
 }

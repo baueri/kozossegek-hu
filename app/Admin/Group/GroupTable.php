@@ -7,7 +7,6 @@ use App\Admin\Components\AdminTable\Deletable;
 use App\Admin\Components\AdminTable\Editable;
 use App\Models\ChurchGroupView;
 use App\Models\GroupStatus;
-use App\Helpers\GroupHelper;
 use App\Services\GroupSearchRepository;
 use Framework\Database\PaginatedResultSetInterface;
 use Framework\Http\Request;
@@ -44,21 +43,21 @@ class GroupTable extends AdminTable implements Editable, Deletable
         $this->repository = $repository;
     }
 
-    public function getAgeGroup($ageGroup)
+    public function getAgeGroup($ageGroup, ChurchGroupView $churchGroup): string
     {
-        $ageGroups = GroupHelper::getAgeGroups($ageGroup);
+        $ageGroups = $churchGroup->getAgeGroups();
 
-        return $ageGroups->count() > 1 ? 'vegyes' : $ageGroups->first();
+        return $ageGroups->count() > 1 ? 'vegyes' : $ageGroups->first()->translate();
     }
 
-    public function getCreatedAt($createdAt)
+    public function getCreatedAt($createdAt): string
     {
         $fullDate = date('Y.m.d H:i', strtotime($createdAt));
         $date = date('Y.m.d', strtotime($createdAt));
         return "<span title='{$fullDate}'>{$date}</span>";
     }
 
-    public function getStatus($status)
+    public function getStatus($status): string
     {
         $status = new GroupStatus($status);
         $class = $status->getClass();
@@ -66,7 +65,7 @@ class GroupTable extends AdminTable implements Editable, Deletable
         return "<i class='$class'></i>";
     }
 
-    public function getInstituteName($instituteName, ChurchGroupView $group)
+    public function getInstituteName($instituteName, ChurchGroupView $group): string
     {
         return $this->getLink(
             $this->getListUrl(['institute_id' => $group->institute_id]),
@@ -75,12 +74,12 @@ class GroupTable extends AdminTable implements Editable, Deletable
         );
     }
 
-    public function getCity($cityName)
+    public function getCity($cityName): string
     {
         return $cityName;
     }
 
-    public function getPending($pending, $group)
+    public function getPending($pending, $group): string
     {
         if ($pending == 1) {
             $icon = static::getIcon('fa fa-sync text-warning', 'jóváhagyásra vár');
@@ -93,15 +92,12 @@ class GroupTable extends AdminTable implements Editable, Deletable
         return $this->getLink(route('admin.group.validate', $group), $icon);
     }
 
-    public function getGroupLeaders($groupLeaders)
+    public function getGroupLeaders($groupLeaders): string
     {
         $shorten = StringHelper::shorten($groupLeaders, 15, '...');
         return "<span title='$groupLeaders'>$shorten</span>";
     }
 
-    /**
-     * @return PaginatedResultSetInterface
-     */
     protected function getData(): PaginatedResultSetInterface
     {
         return $this->repository->search($this->request->merge([
@@ -124,13 +120,13 @@ class GroupTable extends AdminTable implements Editable, Deletable
         return route('admin.group.edit', $model);
     }
 
-    public function getImage($image, ChurchGroupView $group)
+    public function getImage($image, ChurchGroupView $group): string
     {
         $imageUrl = $group->getThumbnail() . '?' . time();
         return "<img src='$imageUrl' style='max-width: 25px; height: auto;' title='<img src=\"$imageUrl\">' data-html='true'/>";
     }
 
-    public function getDocument($document, ChurchGroupView $model)
+    public function getDocument($document, ChurchGroupView $model): string
     {
         if ($model->hasDocument()) {
             return self::getCheckIcon('van');
@@ -144,12 +140,12 @@ class GroupTable extends AdminTable implements Editable, Deletable
         return 'name';
     }
 
-    public function getView($null, ChurchGroupView $model)
+    public function getView($null, ChurchGroupView $model): string
     {
         return "<a href='{$model->url()}' target='_blank' title='megtekintés'><i class='fa fa-eye'></i></a>";
     }
 
-    private function getListUrl(array $params = [])
+    private function getListUrl(array $params = []): string
     {
         return route('admin.group.list', $params);
     }
