@@ -4,7 +4,6 @@ namespace Framework\Dispatcher;
 
 use Exception;
 use Framework\Application;
-use Framework\Http\Controller;
 use Framework\Http\Cookie;
 use Framework\Http\Exception\RouteNotFoundException;
 use Framework\Http\HttpKernel;
@@ -17,33 +16,11 @@ use Framework\Http\Exception\PageNotFoundException;
 
 class HttpDispatcher implements Dispatcher
 {
-    private Application $app;
-
-    private RouterInterface $router;
-
-    private Request $request;
-
-    private HttpKernel $kernel;
-
-    /**
-     * @param Application $app
-     * @param Request $request
-     * @param RouterInterface $router
-     * @param HttpKernel $kernel
-     */
-    public function __construct(Application $app, Request $request, RouterInterface $router, HttpKernel $kernel)
+    public function __construct(private Application $app, private Request $request, private RouterInterface $router, private HttpKernel $kernel)
     {
-        $this->app = $app;
-        $this->router = $router;
-        $this->request = $request;
-        $this->kernel = $kernel;
-
         Cookie::setTestCookie();
     }
 
-    /**
-     * @throws PageNotFoundException
-     */
     public function dispatch(): void
     {
         $route = $this->getCurrentRoute();
@@ -72,8 +49,6 @@ class HttpDispatcher implements Dispatcher
     }
 
     /**
-     * @param RouteInterface $route
-     * @return mixed
      * @throws PageNotFoundException
      */
     private function resolveRoute(RouteInterface $route)

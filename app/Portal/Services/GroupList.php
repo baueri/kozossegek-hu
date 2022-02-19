@@ -3,44 +3,17 @@
 namespace App\Portal\Services;
 
 use App\Enums\GroupStatusEnum;
-use App\Models\AgeGroup;
-use App\Repositories\AgeGroups;
+use App\Enums\AgeGroup;
 use App\Repositories\GroupStatusRepository;
 use App\Repositories\OccasionFrequencies;
 use Framework\Support\Collection;
-use ReflectionException;
 
-/**
- * Description of GroupList
- *
- * @author ivan
- */
 class GroupList
 {
-
-    /**
-     * @var SearchGroupService
-     */
-    private SearchGroupService $service;
-
-    /**
-     * @var AgeGroups
-     */
-    private AgeGroups $ageGroups;
-
-    /**
-     * @var OccasionFrequencies
-     */
-    private OccasionFrequencies $occasionFrequencies;
-
     public function __construct(
-        SearchGroupService $service,
-        OccasionFrequencies $occasionFrequencies,
-        AgeGroups $ageGroups
+        private SearchGroupService $service,
+        private OccasionFrequencies $occasionFrequencies
     ) {
-        $this->occasionFrequencies = $occasionFrequencies;
-        $this->ageGroups = $ageGroups;
-        $this->service = $service;
     }
 
     public function getHtml(Collection $request): string
@@ -56,14 +29,10 @@ class GroupList
         $statuses = (new GroupStatusRepository())->all();
 
         $korosztaly = $filter['korosztaly'] ?? null;
-        $ageGroups = collect($this->ageGroups->all());
 
         $model = [
             'occasion_frequencies' => $this->occasionFrequencies->all(),
-            'age_groups' => $ageGroups->map(fn (AgeGroup $ageGroup) => [
-                'value' => $ageGroup->name,
-                'name' => $ageGroup->translate()
-            ]),
+            'age_groups' => AgeGroup::cases(),
             'filter' => collect($filter),
             'selected_tags' => array_filter(explode(',', $filter['tags'] ?? '')),
             'tags' => builder('tags')->get(),

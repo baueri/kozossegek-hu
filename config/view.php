@@ -33,9 +33,7 @@ return [
             return '<?php $__env->getSection()->add("footer", function($args) { extract($args); ?> ';
         },
         'featuredTitle' => FeaturedTitle::class,
-        'age_group_selector' => AgeGroupSelector::class,
         'occasion_frequency_selector' => OccasionFrequencySelector::class,
-        'on_days_selector' => OnDaysSelector::class,
         'spiritual_movement_selector' => SpiritualMovementSelector::class,
         'join_mode_selector' => JoinModeSelector::class,
         'user_group_selector' => UserGroupSelector::class,
@@ -72,6 +70,8 @@ return [
         'selected' => fn ($matches) => "<?php if($matches[1]): echo 'selected'; endif; ?>"
     ],
     'components' => [
-        'aszf' => AszfCheckBox::class
+        'aszf' => AszfCheckBox::class,
+        'day_selector' => OnDaysSelector::class,
+        'age_group_selector' => AgeGroupSelector::class,
     ]
 ];

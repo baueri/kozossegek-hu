@@ -71,7 +71,7 @@
                 <select class="form-control" id="korosztaly" name="korosztaly">
                     <option></option>
                     @foreach($age_groups as $age_group)
-                    <option value="{{ $age_group->name }}" {{ $age_group->name == $filter['korosztaly'] ? 'selected' : '' }}>{{ $age_group }}</option>
+                    <option value="{{ $age_group->name }}" {{ $age_group->name == $filter['korosztaly'] ? 'selected' : '' }}>{{ $age_group->translate() }}</option>
                     @endforeach
                 </select>
             </div>

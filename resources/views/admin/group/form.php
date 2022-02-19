@@ -119,7 +119,7 @@
                 <label for="age_group">Korosztály</label>
                 <select class="form-control" name="age_group[]" multiple="multiple">
                     @foreach($age_groups as $age_group)
-                        <option value="{{ $age_group->name }}" @selected($age_group_array->has($age_group->name))>{{ $age_group }}</option>
+                        <option value="{{ $age_group->value }}" @selected($age_group_array->has($age_group->value))>{{ $age_group->translate() }}</option>
                     @endforeach
                 </select>
             </div>
@@ -133,13 +133,7 @@
             </div>
             <div class="form-group">
                 <label for="on_days">Mely napo(ko)n</label>
-                <select class="form-control" name="on_days[]" multiple="multiple" data-allow-clear="1" data-placeholder="Nincs megadva">
-                    @foreach($days as $day)
-                        <option value="{{ $day }}" @selected($group_days->has($day))>
-                             @lang("day.$day")
-                         </option>
-                    @endforeach
-                </select>
+                @component('day_selector', compact('group_days'))
             </div>
             <div class="form-group">
                 <label for="join_mode">Csatlakozás módja</label>

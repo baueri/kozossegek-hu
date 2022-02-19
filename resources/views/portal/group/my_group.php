@@ -80,8 +80,8 @@
                     <label for="age_group">Korosztály <small>(legalább egyet adj meg)</small></label>
                     <select class="form-control" name="age_group[]" multiple="multiple" id="age_group" required>
                         @foreach($age_groups as $age_group)
-                        <option value="{{ $age_group->name }}" @if(in_array($age_group->name, $age_group_array)) selected @endif>
-                            {{ $age_group }}
+                        <option value="{{ $age_group->value }}" @selected(in_array($age_group->name, $age_group_array))>
+                            {{ $age_group->translate() }}
                         </option>
                         @endforeach
                     </select>
@@ -102,13 +102,7 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="on_days">Mely napo(ko)n</label>
-                    <select class="form-control" name="on_days[]" multiple="multiple" id="on_days">
-                        @foreach($days as $day)
-                        <option value="{{ $day }}" @if(in_array($day, $group_days)) selected @endif>
-                            @lang("day.$day")
-                        </option>
-                        @endforeach
-                    </select>
+                    @component('day_selector', compact('group_days'))
                 </div>
             </div>
         </div>
@@ -238,12 +232,6 @@
             allowClear: true,
         });
 
-        $("[name=on_days]").select2({
-            placeholder: "napok",
-            allowClear: true,
-        });
-
-
         $("[name=institute_id]").instituteSelect();
         initSummernote('[name=description]', {
             height: 200,
@@ -256,6 +244,6 @@
             ]
         });
 
-        $("#age_group, #on_days").select2();
+        $("#age_group").select2();
     });
 </script>
