@@ -2,9 +2,9 @@
 
 namespace App\Admin\Group\Services;
 
+use App\Enums\AgeGroup;
 use App\Enums\JoinMode;
 use App\Models\ChurchGroupView;
-use App\Repositories\AgeGroups;
 use App\Repositories\GroupStatusRepository;
 use App\Repositories\OccasionFrequencies;
 use Framework\Http\Request;
@@ -12,7 +12,6 @@ use App\Repositories\Groups;
 use App\Repositories\Institutes;
 use App\Repositories\UsersLegacy;
 use App\Models\Institute;
-use App\Enums\DayEnum;
 
 class BaseGroupForm
 {
@@ -39,7 +38,7 @@ class BaseGroupForm
         $institute = $this->institutes->find($group->institute_id) ?: new Institute();
         $statuses = (new GroupStatusRepository())->all();
         $occasion_frequencies = (new OccasionFrequencies())->all();
-        $age_groups = (new AgeGroups())->all();
+        $age_groups = AgeGroup::cases();
         $action = $this->getAction($group);
         $spiritual_movements = db()->select('select * from spiritual_movements order by name');
         $tags = builder('tags')->get();
@@ -47,7 +46,6 @@ class BaseGroupForm
         $group_tags = collect(builder('v_group_tags')
             ->apply('whereGroupId', $group->id)->get())
             ->pluck('tag')->all();
-        $days = DayEnum::asArray();
         $group_days = $group->getDays();
         $title = $group->exists() ? 'Közösség módosítása' : 'Új közösség létrehozása';
         $owner = $this->users->find($group->user_id);
@@ -64,7 +62,6 @@ class BaseGroupForm
             'tags',
             'age_group_array',
             'group_tags',
-            'days',
             'group_days',
             'title',
             'owner',

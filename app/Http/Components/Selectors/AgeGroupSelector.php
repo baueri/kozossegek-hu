@@ -2,19 +2,13 @@
 
 namespace App\Http\Components\Selectors;
 
-use App\Repositories\AgeGroups;
+use App\Enums\AgeGroup;
 
-/**
- * Description of AgeGroupSelector
- *
- * @author ivan
- */
 class AgeGroupSelector
 {
-
-    public function render($age_group_array, array $data = [])
+    public function render($age_group_array, array $data = []): string
     {
-        $age_groups = (new AgeGroups())->all();
+        $age_groups = AgeGroup::cases();
         return view('partials.components.age_group_selector', array_merge($data, compact('age_groups', 'age_group_array')));
     }
 }

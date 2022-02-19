@@ -29,8 +29,8 @@ class RebuildSearchEngine
         $groupView = $this->getGroupView($group);
         $keywords = collect(builder('v_group_tags')->where('group_id', $groupView->getId())->get())->pluck('tag_name');
         $keywords[] = $groupView->denomination();
-        $keywords = $keywords->merge($groupView->getAgeGroups())
-            ->merge($groupView->getDays())
+        $keywords = $keywords->merge($groupView->getAgeGroups()->pluck('value'))
+            ->merge($groupView->getDays()->pluck('value'))
             ->push($groupView->occasionFrequency())
             ->push($groupView->city)
             ->push(str_replace('atya', '', $groupView->leader_name))

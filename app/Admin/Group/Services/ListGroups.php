@@ -3,46 +3,24 @@
 namespace App\Admin\Group\Services;
 
 use App\Admin\Group\GroupTable;
-use App\Repositories\AgeGroups;
-use App\Repositories\Cities;
+use App\Enums\AgeGroup;
 use App\Repositories\GroupStatusRepository;
 use App\Repositories\OccasionFrequencies;
 use App\Repositories\UsersLegacy;
 use Framework\Http\Request;
-use ReflectionException;
 
 class ListGroups
 {
-    private OccasionFrequencies $occasionFrequencies;
-
-    private AgeGroups $ageGroups;
-
-    private GroupTable $table;
-
-    private Request $request;
-
-    /**
-     * @param Request $request
-     * @param GroupTable $table
-     * @param AgeGroups $AgeGroups
-     * @param OccasionFrequencies $OccasionFrequencies
-     */
     public function __construct(
-        Request $request,
-        GroupTable $table,
-        AgeGroups $AgeGroups,
-        OccasionFrequencies $OccasionFrequencies
+        private Request $request,
+        private GroupTable $table,
+        private OccasionFrequencies $occasionFrequencies
     ) {
-        $this->table = $table;
-        $this->ageGroups = $AgeGroups;
-        $this->occasionFrequencies = $OccasionFrequencies;
-        $this->request = $request;
     }
 
     public function show(): string
     {
-        $age_groups = $this->ageGroups->all();
-
+        $age_groups = AgeGroup::cases();
         $occasion_frequencies = $this->occasionFrequencies->all();
         $statuses = (new GroupStatusRepository())->all();
 
@@ -55,14 +33,9 @@ class ListGroups
         $filter = $this->request;
         $table = $this->table;
         $current_page = $this->getCurrentPage();
-        $karbantarto = null;
-        if ($filter['user_id']) {
-            $karbantarto = app()->make(UsersLegacy::class)->find($filter['user_id'])->name;
-        }
+        $karbantarto = $filter['user_id'] ? app()->make(UsersLegacy::class)->find($filter['user_id'])->name : null;
 
-        if ($current_page === 'pending') {
-            $filter['pending'] = 1;
-        }
+        $filter['pending'] = $current_page === 'pending';
 
         $pending_groups = builder()->from('church_groups')->where('pending', 1)->apply('notDeleted')->count();
 

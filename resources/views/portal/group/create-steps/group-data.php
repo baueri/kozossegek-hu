@@ -120,7 +120,7 @@
             <div class="col-md-4">
                 <div class="form-group required">
                     <label for="age_group">Korosztály <small>(legalább egyet adj meg)</small></label>
-                    @age_group_selector($age_group_array)
+                    @component('age_group_selector', compact('age_group_array'))
                 </div>
             </div>
             <div class="col-md-4">
@@ -132,14 +132,14 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="on_days">Mely napo(ko)n</label>
-                    @on_days_selector($group_days)
+                    @component('day_selector', compact('group_days'))
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col-md-4">
                 <div class="form-group">
-                    <label for="on_days">Csatlakozási lehetőség módja <i class="fa fa-info-circle"
+                    <label for="join_mode">Csatlakozási lehetőség módja <i class="fa fa-info-circle"
                         title="<b>Egyéni megbeszélés alapján:</b> Közösségvezetővel egyeztetve történik<br/><b>Folyamatos csatlakozási lehetőség:</b> Az év folyamán bármikor jöhetnek új tagok<br/><b>Időszakos csatlakozás:</b> pl.: Minden félév első hónapja, negyedévente stb"
                         data-html="true"></i></label>
                     @join_mode_selector($group->join_mode)
