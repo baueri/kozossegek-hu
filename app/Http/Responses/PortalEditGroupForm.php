@@ -2,9 +2,9 @@
 
 namespace App\Http\Responses;
 
-use App\Enums\DayEnum;
+use App\Enums\AgeGroup;
+use App\Enums\WeekDay;
 use App\Models\ChurchGroupView;
-use App\Repositories\AgeGroups;
 use App\Repositories\GroupStatusRepository;
 use App\Repositories\Institutes;
 use App\Repositories\OccasionFrequencies;
@@ -18,14 +18,14 @@ class PortalEditGroupForm
         $this->institutes = $institutes;
     }
 
-    public function getResponse(ChurchGroupView $group): string
+    public function __invoke(ChurchGroupView $group): string
     {
         $statuses = (new GroupStatusRepository())->all();
         $tags = builder('tags')->select()->get();
         $spiritual_movements = db()->select('select * from spiritual_movements order by name');
         $occasion_frequencies = (new OccasionFrequencies())->all();
-        $age_groups = (new AgeGroups())->all();
-        $days = DayEnum::asArray();
+        $age_groups = AgeGroup::cases();
+        $days = WeekDay::cases();
 
         $group_tags = collect(
             builder('group_tags')
@@ -34,7 +34,7 @@ class PortalEditGroupForm
         )->pluck('tag')->all();
 
         $age_group_array = array_filter(explode(',', $group->age_group));
-        $group_days = explode(',', $group->on_days);
+        $group_days = $group->getDays();
         $view = 'portal.group.my_group';
         $action = route('portal.my_group.update');
         $institute = $this->institutes->find($group->institute_id);
