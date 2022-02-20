@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use App\Migration\AppMigration;
 use Phinx\Db\Adapter\MysqlAdapter;
-use App\Enums\DenominationEnum;
+use App\Enums\Denomination;
 use App\Enums\AgeGroup;
 
 final class CreateGroupsTable extends AppMigration
@@ -15,7 +15,7 @@ final class CreateGroupsTable extends AppMigration
                  ->addColumn('name', MysqlAdapter::PHINX_TYPE_STRING)
                  ->addColumn('description', MysqlAdapter::PHINX_TYPE_TEXT, ['null' => true, 'length' => MysqlAdapter::TEXT_LONG])
                  ->addColumn('city', MysqlAdapter::PHINX_TYPE_STRING)
-                 ->addColumn('denomination', MysqlAdapter::PHINX_TYPE_ENUM, ['values' => DenominationEnum::asArray(), 'default' => DenominationEnum::KATOLIKUS, 'comment' => 'felekezet'])
+                 ->addColumn('denomination', MysqlAdapter::PHINX_TYPE_ENUM, ['values' => [Denomination::katolikus], 'default' => Denomination::katolikus, 'comment' => 'felekezet'])
                  ->addColumn('institute_id', MysqlAdapter::PHINX_TYPE_INTEGER, ['null' => true])
                  ->addColumn('group_leaders', MysqlAdapter::PHINX_TYPE_STRING)
                  ->addColumn('group_leader_email', MysqlAdapter::PHINX_TYPE_STRING)

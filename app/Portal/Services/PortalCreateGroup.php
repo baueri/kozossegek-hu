@@ -3,7 +3,7 @@
 namespace App\Portal\Services;
 
 use App\Admin\Group\Services\CreateGroup;
-use App\Enums\DenominationEnum;
+use App\Enums\Denomination;
 use App\Exception\EmailTakenException;
 use App\Mail\NewGroupEmail;
 use App\Models\UserLegacy;
@@ -55,7 +55,7 @@ class PortalCreateGroup
             'join_mode'
         );
 
-        $data['denomination'] = DenominationEnum::KATOLIKUS;
+        $data['denomination'] = Denomination::katolikus->name;
 
         if (!$user) {
             $user = $this->createUser->create(collect([
