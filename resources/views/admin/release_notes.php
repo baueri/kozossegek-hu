@@ -10,7 +10,7 @@
             <li>enum-ok bevezetése</li>
         </ul>
     </li>
-    <li>[CHANGED]: Komponens (@component('...')) használatának átalakítása</li>
+    <li>[CHANGED]: Komponens (&#64;component('...')) használatának átalakítása</li>
     <li>[CHANGED]: Admin oldali intézmény kereső felokosítása</li>
     <li>[FIXED]: keresőmotor generáló optimalizálás</li>
     <li>[FIXED]: `v_groups` nézettábla javítása</li>

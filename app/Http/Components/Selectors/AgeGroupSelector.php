@@ -3,12 +3,21 @@
 namespace App\Http\Components\Selectors;
 
 use App\Enums\AgeGroup;
+use Framework\Http\View\Component;
 
-class AgeGroupSelector
+class AgeGroupSelector extends Component
 {
-    public function render($age_group_array, array $data = []): string
+    private $age_group_array;
+
+    public function __construct($age_group_array)
+    {
+        $this->age_group_array = $age_group_array;
+    }
+
+    public function render(): string
     {
         $age_groups = AgeGroup::cases();
-        return view('partials.components.age_group_selector', array_merge($data, compact('age_groups', 'age_group_array')));
+        $age_group_array = $this->age_group_array;
+        return view('partials.components.age_group_selector', compact('age_groups', 'age_group_array'));
     }
 }

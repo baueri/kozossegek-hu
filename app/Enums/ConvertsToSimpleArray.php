@@ -20,12 +20,12 @@ trait ConvertsToSimpleArray
         return $enums;
     }
 
-    public function keys(): array
+    public static function keys(): array
     {
         return array_map(fn ($enum) => $enum->name, static::cases());
     }
 
-    public function values(): array
+    public static function values(): array
     {
         return array_map(fn ($enum) => static::getVal($enum), static::cases());
     }

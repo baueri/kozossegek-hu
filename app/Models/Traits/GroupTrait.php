@@ -12,9 +12,19 @@ use App\Models\UserLegacy;
 use Framework\File\File;
 use Framework\Support\Collection;
 use Framework\Support\StringHelper;
+use phpseclib3\File\ASN1\Maps\TerminalIdentifier;
 
 trait GroupTrait
 {
+    public function ageGroup(): string
+    {
+        if ($this->getAgeGroups()->count() > 1) {
+            return 'vegyes';
+        }
+
+        return $this->getAgeGroups()->first()->translate();
+    }
+
     /**
      * @return Collection<AgeGroup>
      */
