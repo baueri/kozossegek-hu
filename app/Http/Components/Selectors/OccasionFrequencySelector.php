@@ -2,18 +2,14 @@
 
 namespace App\Http\Components\Selectors;
 
-use App\Repositories\OccasionFrequencies;
+use App\Enums\OccasionFrequency;
+use Framework\Http\View\Component;
 
-/**
- * Description of OccasionFrequencySelector
- *
- * @author ivan
- */
-class OccasionFrequencySelector
+class OccasionFrequencySelector extends Component
 {
-    public function render($selected_occasion_frequency = null)
+    public function render(?string $selected_occasion_frequency = null): string
     {
-        $occasion_frequencies = (new OccasionFrequencies())->all();
+        $occasion_frequencies = OccasionFrequency::cases();
         return view("partials.components.occasion_frequency_selector", array_merge(compact("occasion_frequencies", "selected_occasion_frequency")));
     }
 }

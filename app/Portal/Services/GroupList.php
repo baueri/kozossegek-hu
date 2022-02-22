@@ -5,14 +5,12 @@ namespace App\Portal\Services;
 use App\Enums\GroupStatusEnum;
 use App\Enums\AgeGroup;
 use App\Repositories\GroupStatusRepository;
-use App\Repositories\OccasionFrequencies;
 use Framework\Support\Collection;
 
 class GroupList
 {
     public function __construct(
-        private SearchGroupService $service,
-        private OccasionFrequencies $occasionFrequencies
+        private SearchGroupService $service
     ) {
     }
 
@@ -31,7 +29,6 @@ class GroupList
         $korosztaly = $filter['korosztaly'] ?? null;
 
         $model = [
-            'occasion_frequencies' => $this->occasionFrequencies->all(),
             'age_groups' => AgeGroup::cases(),
             'filter' => collect($filter),
             'selected_tags' => array_filter(explode(',', $filter['tags'] ?? '')),

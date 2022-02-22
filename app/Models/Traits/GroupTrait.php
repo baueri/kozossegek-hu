@@ -3,6 +3,7 @@
 namespace App\Models\Traits;
 
 use App\Enums\AgeGroup;
+use App\Enums\Denomination;
 use App\Enums\WeekDay;
 use App\Enums\GroupStatusEnum;
 use App\Enums\JoinMode;
@@ -15,7 +16,7 @@ use Framework\Support\StringHelper;
 trait GroupTrait
 {
     /**
-     * @return \Framework\Support\Collection<AgeGroup>
+     * @return Collection<AgeGroup>
      */
     public function getAgeGroups(): Collection
     {
@@ -24,11 +25,11 @@ trait GroupTrait
 
     public function denomination(): string
     {
-        return lang("denomination.{$this->denomination}");
+        return Denomination::from($this->denomination)->translate();
     }
 
     /**
-     * @return \Framework\Support\Collection<WeekDay>
+     * @return Collection<WeekDay>
      */
     public function getDays(): Collection
     {

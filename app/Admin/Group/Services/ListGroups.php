@@ -5,7 +5,6 @@ namespace App\Admin\Group\Services;
 use App\Admin\Group\GroupTable;
 use App\Enums\AgeGroup;
 use App\Repositories\GroupStatusRepository;
-use App\Repositories\OccasionFrequencies;
 use App\Repositories\UsersLegacy;
 use Framework\Http\Request;
 
@@ -13,15 +12,13 @@ class ListGroups
 {
     public function __construct(
         private Request $request,
-        private GroupTable $table,
-        private OccasionFrequencies $occasionFrequencies
+        private GroupTable $table
     ) {
     }
 
     public function show(): string
     {
         $age_groups = AgeGroup::cases();
-        $occasion_frequencies = $this->occasionFrequencies->all();
         $statuses = (new GroupStatusRepository())->all();
 
         $institute = null;
@@ -42,7 +39,6 @@ class ListGroups
         return view('admin.group.list', compact(
             'table',
             'age_groups',
-            'occasion_frequencies',
             'statuses',
             'institute',
             'filter',

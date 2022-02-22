@@ -126,7 +126,7 @@
             <div class="col-md-4">
                 <div class="form-group required">
                     <label for="occasion_frequency">Alkalmak gyakorisága</label>
-                    @occasion_frequency_selector($group->occasion_frequency ?: 'hetente')
+                    @component('occasion_frequency_selector', ['selected_occasion_frequency' => $group->occasion_frequency ?: 'hetente'])
                 </div>
             </div>
             <div class="col-md-4">

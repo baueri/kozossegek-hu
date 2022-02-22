@@ -8,11 +8,9 @@ use Framework\Console\Out;
 
 class RebuildSearchEngineCommand implements Command
 {
-    private RebuildSearchEngine $service;
-
-    public function __construct(RebuildSearchEngine $service)
-    {
-        $this->service = $service;
+    public function __construct(
+        private RebuildSearchEngine $service
+    ) {
     }
 
     public function handle(): void

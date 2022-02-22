@@ -347,6 +347,19 @@ abstract class EntityQueryBuilder
         return $this->builder->getTable();
     }
 
+    public function each(Closure $callback, int $chunks = 1000): void
+    {
+        $limit = 0;
+        $builder = clone $this;
+        $builder->limit("0, {$chunks}");
+
+        while (($rows = $builder->get())->isNotEmpty()) {
+            $offset = (++$limit) * $chunks;
+            $builder->limit("{$offset}, {$chunks}");
+            $rows->each(fn($model) => $callback($model));
+        }
+    }
+
     public static function primaryCol(): string
     {
         /* @var $model Entity */
