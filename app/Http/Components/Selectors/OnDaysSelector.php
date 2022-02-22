@@ -11,8 +11,9 @@ class OnDaysSelector extends Component
     /**
      * @param \Framework\Support\Collection<WeekDay> $group_days
      */
-    public function __construct(private readonly Collection $group_days)
-    {
+    public function __construct(
+        private readonly Collection $group_days
+    ) {
     }
 
     public function render(): string

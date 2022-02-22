@@ -3,6 +3,7 @@
 namespace App\Models\Traits;
 
 use App\Enums\AgeGroup;
+use App\Enums\Denomination;
 use App\Enums\WeekDay;
 use App\Enums\GroupStatusEnum;
 use App\Enums\JoinMode;
@@ -11,11 +12,21 @@ use App\Models\UserLegacy;
 use Framework\File\File;
 use Framework\Support\Collection;
 use Framework\Support\StringHelper;
+use phpseclib3\File\ASN1\Maps\TerminalIdentifier;
 
 trait GroupTrait
 {
+    public function ageGroup(): string
+    {
+        if ($this->getAgeGroups()->count() > 1) {
+            return 'vegyes';
+        }
+
+        return $this->getAgeGroups()->first()->translate();
+    }
+
     /**
-     * @return \Framework\Support\Collection<AgeGroup>
+     * @return Collection<AgeGroup>
      */
     public function getAgeGroups(): Collection
     {
@@ -24,11 +35,11 @@ trait GroupTrait
 
     public function denomination(): string
     {
-        return lang("denomination.{$this->denomination}");
+        return Denomination::from($this->denomination)->translate();
     }
 
     /**
-     * @return \Framework\Support\Collection<WeekDay>
+     * @return Collection<WeekDay>
      */
     public function getDays(): Collection
     {

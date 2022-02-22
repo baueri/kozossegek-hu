@@ -67,7 +67,7 @@ class RegisterGroupForm extends AbstractGroupStep
             'image' => $image,
             'document' => $request->files['document']['name'] ?? null,
             'group_tags' => $request['tags'] ?? [],
-            'group_days' => $request['on_days'] ?? [],
+            'group_days' => $group->getDays(),
             'user_name' => $request['user_name'],
             'phone_number' => $user ? $user->phone_number : $request['phone_number'],
             'email' => $user ? $user->email : $request['email']

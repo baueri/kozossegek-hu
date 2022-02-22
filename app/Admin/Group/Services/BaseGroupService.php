@@ -4,6 +4,7 @@ namespace App\Admin\Group\Services;
 
 use App\Helpers\FileHelper;
 use App\Helpers\GroupHelper;
+use App\QueryBuilders\GroupViews;
 use App\Repositories\Groups;
 use App\Repositories\Institutes;
 use App\Services\RebuildSearchEngine;
@@ -29,7 +30,7 @@ abstract class BaseGroupService
 
     protected function updateSearchEngine(Group $group)
     {
-        $this->searchEngineRebuilder->updateSearchEngine($group);
+        $this->searchEngineRebuilder->updateSearchEngine(GroupViews::query()->find($group->getId()));
     }
 
     protected function syncTags(Group $group, array $tags = [])
@@ -104,7 +105,7 @@ abstract class BaseGroupService
 
         foreach ($requiredFields as $field) {
             if (!isset($data[$field]) || !$data[$field]) {
-                $this->pushError($field, 'error.required');
+                $this->getErrors()['error.required'][] = $field;
             }
         }
 

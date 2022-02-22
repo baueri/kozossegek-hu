@@ -13,11 +13,6 @@ use App\Repositories\UsersLegacy;
 use Framework\Support\Collection;
 use Framework\Support\StringHelper;
 
-/**
- * Description of InstituteAdminTable
- *
- * @author ivan
- */
 class InstituteAdminTable extends AdminTable implements Deletable, Editable
 {
 
@@ -36,15 +31,9 @@ class InstituteAdminTable extends AdminTable implements Deletable, Editable
 
     protected array $centeredColumns = ['image', 'group_count'];
 
-    private Institutes $repository;
-
-    private UsersLegacy $userRepository;
-
-    public function __construct(Request $request, Institutes $repository, UsersLegacy $userRepository)
+    public function __construct(Request $request, private Institutes $repository, private UsersLegacy $userRepository)
     {
         parent::__construct($request);
-        $this->repository = $repository;
-        $this->userRepository = $userRepository;
     }
 
     public function getDeleteUrl($model): string

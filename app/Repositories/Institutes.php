@@ -45,26 +45,26 @@ class Institutes extends Repository
         return $this->getInstances($this->getBuilder()->paginate(30));
     }
 
-    public function getInstitutesForAdmin($filter = [])
+    public function getInstitutesForAdmin($filter = []): PaginatedModelCollection
     {
-        $builder = $this->getBuilder()->whereNull('institutes.deleted_at')
-            ->select('institutes.*, count(church_groups.id) as cnt')
-            ->leftJoin('church_groups', 'institutes.id = church_groups.institute_id')
-            ->groupBy('institutes.id');
+        $builder = $this->getBuilder()->whereNull('institutes.deleted_at');
 
         if ($city = $filter['city']) {
             $builder->addSelect('institutes.*')->where('city', $city);
         }
 
         if ($name = $filter['search']) {
+            $matchAgainst = trim($name, ' -*()');
+            $builder->whereRaw(
+                'MATCH (name, name2, city, district) AGAINST (? IN BOOLEAN MODE)',
+                [$matchAgainst ? '+' . str_replace(' ', '* +', $matchAgainst) . '*' : '']
+            );
             $builder->whereRaw("(institutes.name like ? or institutes.name2 like ?)", ["%$name%", "%$name%"]);
         }
 
         if ($filter['sort']) {
             $orderBy = $filter['order_by'] ?: self::getPrimaryCol();
-            if ($orderBy == 'group_count') {
-                $builder->orderBy('count(church_groups.id)', $filter['sort']);
-            } else {
+            if ($orderBy != 'group_count') {
                 $builder->orderBy($orderBy, $filter['sort']);
             }
         } else {
