@@ -54,8 +54,7 @@ function is_cli(): bool
 function d(...$data)
 {
     if (!Response::contentTypeIsJson() && !is_cli()) {
-        // print "<pre style='white-space: pre-line'>";
-        print "<pre>";
+        print "<pre style='white-space: pre-line; word-break: break-word'>";
     }
     foreach ($data as $toDump) {
         if (is_bool($toDump)) {
@@ -83,7 +82,7 @@ function d(...$data)
     }
 }
 
-function dd(...$data)
+function dd(...$data): never
 {
     d(...$data);
     exit;
@@ -147,8 +146,12 @@ function redirect_route(string $route, $args = null): never
     redirect(route($route, $args));
 }
 
-function collect(?array $values = []): Collection
+function collect($values = []): Collection
 {
+    if ($values instanceof Collection) {
+        return $values;
+    }
+
     return new Collection($values);
 }
 

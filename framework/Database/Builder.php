@@ -272,13 +272,13 @@ final class Builder
         return $this->where($column, 'not in', $values, $clause);
     }
 
-    public function whereIn($column, array $values, $clause = 'and'): self
+    public function whereIn($column, $values, $clause = 'and'): self
     {
         if (!$values) {
             return $this->whereRaw('1 = 2');
         }
 
-        return $this->where($column, 'in', $values, $clause);
+        return $this->where($column, 'in', collect($values)->all(), $clause);
     }
 
     public function orWhere($column, $operator = null, $value = null): self

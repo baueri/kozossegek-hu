@@ -47,10 +47,7 @@ class Institutes extends Repository
 
     public function getInstitutesForAdmin($filter = []): PaginatedModelCollection
     {
-        $builder = $this->getBuilder()->whereNull('institutes.deleted_at')
-            ->select('institutes.*, count(church_groups.id) as cnt')
-            ->leftJoin('church_groups', 'institutes.id = church_groups.institute_id')
-            ->groupBy('institutes.id');
+        $builder = $this->getBuilder()->whereNull('institutes.deleted_at');
 
         if ($city = $filter['city']) {
             $builder->addSelect('institutes.*')->where('city', $city);
@@ -67,9 +64,7 @@ class Institutes extends Repository
 
         if ($filter['sort']) {
             $orderBy = $filter['order_by'] ?: self::getPrimaryCol();
-            if ($orderBy == 'group_count') {
-                $builder->orderBy('count(church_groups.id)', $filter['sort']);
-            } else {
+            if ($orderBy != 'group_count') {
                 $builder->orderBy($orderBy, $filter['sort']);
             }
         } else {
