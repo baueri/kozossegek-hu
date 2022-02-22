@@ -13,45 +13,28 @@ trait ManagesErrors
      */
     protected ?Collection $errors = null;
 
-    /**
-     * ManagesErrors constructor.
-     */
-    private function get()
+    public function getErrors(): Collection
     {
-        if (is_null($this->errors)) {
-            $this->errors = new Collection();
-        }
-
-        return $this->errors;
+        return $this->errors ??= collect();
     }
 
-    public function hasErrors()
+    public function hasErrors(): bool
     {
-        return $this->get()->isNotEmpty();
-    }
-
-    public function getErrors()
-    {
-        return $this->get();
-    }
-
-    public function fetchError()
-    {
-        return $this->get()->next();
+        return $this->getErrors()->isNotEmpty();
     }
 
     public function firstError()
     {
-        return $this->get()->first();
+        return $this->getErrors()->first();
     }
 
     public function setError($error, $key = null)
     {
-        $this->get()->set($key, $error);
+        $this->getErrors()->set($key, $error);
     }
 
-    public function pushError($error, $key = null)
+    public function pushError($error)
     {
-        $this->get()->push($error, $key);
+        $this->getErrors()->push($error);
     }
 }

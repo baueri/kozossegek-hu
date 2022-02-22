@@ -33,7 +33,6 @@ return [
             return '<?php $__env->getSection()->add("footer", function($args) { extract($args); ?> ';
         },
         'featuredTitle' => FeaturedTitle::class,
-        'occasion_frequency_selector' => OccasionFrequencySelector::class,
         'spiritual_movement_selector' => SpiritualMovementSelector::class,
         'join_mode_selector' => JoinModeSelector::class,
         'user_group_selector' => UserGroupSelector::class,
@@ -73,5 +72,6 @@ return [
         'aszf' => AszfCheckBox::class,
         'day_selector' => OnDaysSelector::class,
         'age_group_selector' => AgeGroupSelector::class,
+        'occasion_frequency_selector' => OccasionFrequencySelector::class
     ]
 ];
