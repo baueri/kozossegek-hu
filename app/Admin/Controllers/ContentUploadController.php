@@ -9,6 +9,7 @@ use Framework\Http\Message;
 use Framework\Http\Request;
 use Framework\Http\Response;
 use Framework\Storage\PublicStorage;
+use Framework\Support\Collection;
 
 class ContentUploadController
 {
@@ -23,7 +24,7 @@ class ContentUploadController
 
         $breadCrumbs = collect([
             ['name' => 'Feltöltések', 'path' => $this->storage->getDirName()]
-        ])->merge(collect(explode('/', $dir))->reverse()->map(function ($dir) {
+        ])->merge(Collection::fromList($dir, '/')->reverse()->map(function ($dir) {
             return ['name' => basename($dir), 'path' => $dir];
         }));
 
