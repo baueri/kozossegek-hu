@@ -4,9 +4,9 @@ namespace App\Admin\Group\Services;
 
 use App\Enums\AgeGroup;
 use App\Enums\JoinMode;
+use App\Enums\OccasionFrequency;
 use App\Models\ChurchGroupView;
 use App\Repositories\GroupStatusRepository;
-use App\Repositories\OccasionFrequencies;
 use Framework\Http\Request;
 use App\Repositories\Groups;
 use App\Repositories\Institutes;
@@ -37,7 +37,7 @@ class BaseGroupForm
     {
         $institute = $this->institutes->find($group->institute_id) ?: new Institute();
         $statuses = (new GroupStatusRepository())->all();
-        $occasion_frequencies = (new OccasionFrequencies())->all();
+        $occasion_frequencies = OccasionFrequency::cases();
         $age_groups = AgeGroup::cases();
         $action = $this->getAction($group);
         $spiritual_movements = db()->select('select * from spiritual_movements order by name');

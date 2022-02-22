@@ -45,9 +45,7 @@ class GroupTable extends AdminTable implements Editable, Deletable
 
     public function getAgeGroup($ageGroup, ChurchGroupView $churchGroup): string
     {
-        $ageGroups = $churchGroup->getAgeGroups();
-
-        return $ageGroups->count() > 1 ? 'vegyes' : $ageGroups->first()->translate();
+        return $churchGroup->ageGroup();
     }
 
     public function getCreatedAt($createdAt): string

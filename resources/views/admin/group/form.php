@@ -119,7 +119,9 @@
                 <label for="age_group">Korosztály</label>
                 <select class="form-control" name="age_group[]" multiple="multiple">
                     @foreach($age_groups as $age_group)
-                        <option value="{{ $age_group->value }}" @selected($age_group_array->has($age_group->value))>{{ $age_group->translate() }}</option>
+                        <option value="{{ $age_group->value }}" @selected($age_group_array->has($age_group->value))>
+                            {{ $age_group->translate() }}
+                        </option>
                     @endforeach
                 </select>
             </div>
@@ -127,7 +129,9 @@
                 <label for="occasion_frequency">Alkalmak gyakorisága</label>
                 <select class="form-control" name="occasion_frequency" required>
                     @foreach($occasion_frequencies as $occasion_frequency)
-                        <option value="{{ $occasion_frequency->name }}" @if($group->occasion_frequency == $occasion_frequency->name) selected @endif>{{ $occasion_frequency }}</option>
+                        <option value="{{ $occasion_frequency->value }}" @selected($group->occasion_frequency == $occasion_frequency->value)>
+                            {{ $occasion_frequency->translate() }}
+                        </option>
                     @endforeach
                 </select>
             </div>
