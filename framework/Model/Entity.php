@@ -17,7 +17,7 @@ abstract class Entity
 
     protected array $relations_count = [];
 
-    final public function __construct(protected array $attributes = [])
+    public function __construct(protected array $attributes = [])
     {
         $this->originalAttributes = $attributes;
     }

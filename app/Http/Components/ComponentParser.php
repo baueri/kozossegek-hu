@@ -2,7 +2,7 @@
 
 namespace App\Http\Components;
 
-use http\Exception\InvalidArgumentException;
+use InvalidArgumentException;
 
 class ComponentParser
 {
@@ -11,7 +11,7 @@ class ComponentParser
         $component = config("view.components.{$componentName}");
 
         if (!$component) {
-            throw new InvalidArgumentException('component does not exists');
+            throw new InvalidArgumentException("component `{$componentName}` does not exists");
         }
 
         return app()->make($component, $args);

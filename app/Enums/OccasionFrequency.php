@@ -7,7 +7,7 @@ enum OccasionFrequency: string
     use HasTranslation;
     use ConvertsToSimpleArray;
 
-    case hetente_tobbszor = 'hetente-tobbszor';
+    case hetente_tobbszor = 'hetente_tobbszor';
     case hetente = 'hetente';
     case kethetente = 'kethetente';
     case havonta = 'havonta';
