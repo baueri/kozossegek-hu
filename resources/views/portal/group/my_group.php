@@ -92,8 +92,8 @@
                     <label for="occasion_frequency">Alkalmak gyakorisága</label>
                     <select class="form-control" id="occasion_frequency" name="occasion_frequency" required>
                         @foreach($occasion_frequencies as $occasion_frequency)
-                        <option value="{{ $occasion_frequency->name }}" @if($group->occasion_frequency == $occasion_frequency->name) selected @endif>
-                            {{ $occasion_frequency }}
+                        <option value="{{ $occasion_frequency->value }}" @selected($group->occasion_frequency == $occasion_frequency->value)>
+                            {{ $occasion_frequency->translate() }}
                         </option>
                         @endforeach
                     </select>

@@ -45,7 +45,7 @@ class Institutes extends Repository
         return $this->getInstances($this->getBuilder()->paginate(30));
     }
 
-    public function getInstitutesForAdmin($filter = [])
+    public function getInstitutesForAdmin($filter = []): PaginatedModelCollection
     {
         $builder = $this->getBuilder()->whereNull('institutes.deleted_at')
             ->select('institutes.*, count(church_groups.id) as cnt')
@@ -57,6 +57,11 @@ class Institutes extends Repository
         }
 
         if ($name = $filter['search']) {
+            $matchAgainst = trim($name, ' -*()');
+            $builder->whereRaw(
+                'MATCH (name, name2, city, district) AGAINST (? IN BOOLEAN MODE)',
+                [$matchAgainst ? '+' . str_replace(' ', '* +', $matchAgainst) . '*' : '']
+            );
             $builder->whereRaw("(institutes.name like ? or institutes.name2 like ?)", ["%$name%", "%$name%"]);
         }
 

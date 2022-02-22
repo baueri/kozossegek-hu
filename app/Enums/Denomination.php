@@ -2,7 +2,9 @@
 
 namespace App\Enums;
 
-enum Denomination
+enum Denomination: string
 {
-    case katolikus;
+    use HasTranslation;
+
+    case katolikus = 'katolikus';
 }

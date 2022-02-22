@@ -30,7 +30,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
      * @param mixed $item
      * @param mixed $key
      */
-    public function push($item, $key = null): self
+    public function put($item, $key = null): self
     {
         if (!$key) {
             array_push($this->items, $item);
@@ -40,6 +40,15 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
             } else {
                 $this->items[$key][] = $item;
             }
+        }
+
+        return $this;
+    }
+
+    public function push(...$items): static
+    {
+        foreach ($items as $item) {
+            $this->items[] = $item;
         }
 
         return $this;
