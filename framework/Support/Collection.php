@@ -525,6 +525,6 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
 
     public function __get(string $name)
     {
-        return app()->make(Collection::class, ['collection' => $this, 'name' => $name]);
+        return new CollectionProxy($this, $name);
     }
 }
