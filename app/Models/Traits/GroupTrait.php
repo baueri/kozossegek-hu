@@ -4,6 +4,7 @@ namespace App\Models\Traits;
 
 use App\Enums\AgeGroup;
 use App\Enums\Denomination;
+use App\Enums\OccasionFrequency;
 use App\Enums\WeekDay;
 use App\Enums\GroupStatusEnum;
 use App\Enums\JoinMode;
@@ -12,7 +13,6 @@ use App\Models\UserLegacy;
 use Framework\File\File;
 use Framework\Support\Collection;
 use Framework\Support\StringHelper;
-use phpseclib3\File\ASN1\Maps\TerminalIdentifier;
 
 trait GroupTrait
 {
@@ -22,7 +22,17 @@ trait GroupTrait
             return 'vegyes';
         }
 
-        return $this->getAgeGroups()->first()->translate();
+        return (string) $this->getAgeGroups()->first()?->translate();
+    }
+
+    public function allAgeGroupsAsString(): string
+    {
+        return $this->getAgeGroups()->map->translate()->implode(', ');
+    }
+
+    public function getDaysAsString(): string
+    {
+        return $this->getDays()->map->translate()->implode(', ');
     }
 
     /**
@@ -48,7 +58,7 @@ trait GroupTrait
 
     public function occasionFrequency(): string
     {
-        return lang('occasion_frequency.' . $this->occasion_frequency);
+        return OccasionFrequency::from($this->occasion_frequency)->translate();
     }
 
     public function excerpt(int $words = 25): string

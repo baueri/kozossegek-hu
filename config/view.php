@@ -66,7 +66,8 @@ return [
             return '<div class="shadow-sm bg-white p-3 rounded"><h5>Szűrő</h5>';
         },
         'component' => ComponentParser::class,
-        'selected' => fn ($matches) => "<?php if($matches[1]): echo 'selected'; endif; ?>"
+        'selected' => fn ($matches) => "<?php if($matches[1]): echo 'selected'; endif; ?>",
+        'dump' => fn($matches) => "<?php d($matches[1]); ?>"
     ],
     'components' => [
         'aszf' => AszfCheckBox::class,

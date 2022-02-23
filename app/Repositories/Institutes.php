@@ -59,7 +59,6 @@ class Institutes extends Repository
                 'MATCH (name, name2, city, district) AGAINST (? IN BOOLEAN MODE)',
                 [$matchAgainst ? '+' . str_replace(' ', '* +', $matchAgainst) . '*' : '']
             );
-            $builder->whereRaw("(institutes.name like ? or institutes.name2 like ?)", ["%$name%", "%$name%"]);
         }
 
         if ($filter['sort']) {

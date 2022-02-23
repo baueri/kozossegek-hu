@@ -10,11 +10,14 @@ use IteratorAggregate;
 
 /**
  * @template T
+ * @property-read T|CollectionProxy $map
+ * @property-read T|CollectionProxy $each
+ * @property-read T|CollectionProxy $filter
+ * @property-read T|CollectionProxy $reject
  */
 class Collection implements ArrayAccess, Countable, IteratorAggregate
 {
     /**
-     * @var array
      * @phpstan-var T[]
      */
     protected array $items = [];
@@ -26,14 +29,10 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         }
     }
 
-    /**
-     * @param mixed $item
-     * @param mixed $key
-     */
-    public function put($item, $key = null): self
+    public function put($item, int|string|null $key = null): self
     {
         if (!$key) {
-            array_push($this->items, $item);
+            $this->items[] = $item;
         } else {
             if (is_numeric($key)) {
                 array_splice($this->items, $key, 0, array($key => $item));
@@ -62,7 +61,6 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     }
 
     /**
-     * @return mixed|null
      * @phpstan-return T|null
      */
     public function pop()
@@ -71,11 +69,9 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     }
 
     /**
-     * @param mixed $key
-     * @return self
      * @phpstan-return self<T>
      */
-    public function keyBy($key): self
+    public function keyBy(int|string $key): self
     {
         $items = [];
         foreach ($this->items as $item) {
@@ -87,18 +83,16 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
 
 
     /**
-     * @param Closure|string|null $callback
-     * @param null $default
      * @phpstan-return T|null
      */
-    public function first($callback = null, $default = null)
+    public function first(Closure|string $callback = null, $default = null)
     {
         if (!$callback) {
             return reset($this->items) ?: $default;
         }
 
         foreach ($this->items as $key => $val) {
-            if ((is_callable($callback) && $callback($val, $key)) || (bool)static::getItemVal($val, $callback)) {
+            if ((is_callable($callback) && $callback($val, $key)) || static::getItemVal($val, $callback)) {
                 return $val;
             }
         }
@@ -125,7 +119,6 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     }
 
     /**
-     * @return mixed
      * @phpstan-return T
      */
     public function random()
@@ -271,9 +264,13 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         return $accumulator;
     }
 
-    public function implode($glue): string
+    public function implode($value, $glue = null): string
     {
-        return implode($glue, $this->items);
+        if (is_null($glue)) {
+            return implode($value, $this->items);
+        }
+
+        return $this->pluck($value)->implode($glue);
     }
 
     public function reverse(bool $preserve_keys = true): self
@@ -328,12 +325,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         return new self($result);
     }
 
-    /**
-     * @param mixed $key
-     * @param mixed $default
-     * @return mixed|null
-     */
-    public function get($key, $default = null)
+    public function get(int|string $key, $default = null)
     {
         if (isset($this->items[$key])) {
             return $this->items[$key];
@@ -529,5 +521,10 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
             null, '' => [],
             default => explode($separator, $text)
         });
+    }
+
+    public function __get(string $name)
+    {
+        return app()->make(Collection::class, ['collection' => $this, 'name' => $name]);
     }
 }

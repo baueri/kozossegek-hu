@@ -35,7 +35,6 @@ abstract class AdminTable
     public function __construct(
         public readonly Request $request
     ) {
-
         if (!$this->columns) {
             throw new InvalidArgumentException('missing columns for ' . static::class);
         }

@@ -3,6 +3,7 @@
 namespace App\Admin\Group\Services;
 
 use App\Models\ChurchGroupView;
+use App\Repositories\Users;
 use App\Repositories\UsersLegacy;
 
 class ValidateGroupForm
@@ -14,7 +15,7 @@ class ValidateGroupForm
             ->select('GROUP_CONCAT(tag_name SEPARATOR ", ") as names')
             ->first();
 
-        $user = app(UsersLegacy::class)->find($group->user_id);
+        $user = app()->make(Users::class)->find($group->user_id);
 
         $model = [
             'group' => $group,
