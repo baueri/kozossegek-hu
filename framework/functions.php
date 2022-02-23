@@ -54,7 +54,7 @@ function is_cli(): bool
 function d(...$data)
 {
     if (!Response::contentTypeIsJson() && !is_cli()) {
-        print "<pre style='white-space: pre-line; word-break: break-word'>";
+        print "<pre>";
     }
     foreach ($data as $toDump) {
         if (is_bool($toDump)) {

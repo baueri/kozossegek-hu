@@ -2,20 +2,27 @@
 @extends('admin')
 <h3>v2.0 (2022.02.22)</h3>
 <ul>
-    <li>
-        [CHANGED]: Átállás php8.1-re
-        <ul>
-            <li>warning-ok, error-ok javítása</li>
-            <li>szintaxis átírása</li>
-            <li>enum-ok bevezetése</li>
-        </ul>
-    </li>
-    <li>[CHANGED]: Komponens (&#64;component('...')) használatának átalakítása</li>
     <li>[CHANGED]: Admin oldali intézmény kereső felokosítása</li>
     <li>[FIXED]: keresőmotor generáló optimalizálás</li>
-    <li>[FIXED]: `v_groups` nézettábla javítása</li>
-    <li>[NEW]: query builder-be új függvény (`each`)</li>
-    <li>[NEW]: Új ORM implementáció</li>
+    <li>
+        <b>Gépház</b>
+        <ul>
+            <li>[CHANGED]: Komponens (&#64;component('...')) használatának átalakítása</li>
+            <li>
+                [CHANGED]: Átállás php8.1-re
+                <ul>
+                    <li>warning-ok, error-ok javítása</li>
+                    <li>szintaxis átírása</li>
+                    <li>enum-ok bevezetése</li>
+                </ul>
+            </li>
+            <li>[FIXED]: `v_groups` nézettábla javítása</li>
+            <li>[NEW]: query builder-be új függvény (`each`)</li>
+            <li>[NEW]: Új ORM implementáció</li>
+            <li>[NEW]: Collection proxy</li>
+        </ul>
+    </li>
+
 </ul>
 <h3>v1.4.6 (2021.11.18)</h3>
 <ul>

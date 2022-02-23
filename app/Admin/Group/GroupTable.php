@@ -35,12 +35,9 @@ class GroupTable extends AdminTable implements Editable, Deletable
 
     protected array $columnClasses = ['age_group' => 'd-none d-xl-table-cell'];
 
-    private GroupSearchRepository $repository;
-
-    public function __construct(Request $request, GroupSearchRepository $repository)
+    public function __construct(Request $request, private GroupSearchRepository $repository)
     {
         parent::__construct($request);
-        $this->repository = $repository;
     }
 
     public function getAgeGroup($ageGroup, ChurchGroupView $churchGroup): string
@@ -108,7 +105,7 @@ class GroupTable extends AdminTable implements Editable, Deletable
         return route('admin.group.delete', $model);
     }
 
-    public function getName($name, $model)
+    public function getName($name, $model): string
     {
         return $this->getEdit($name, $model, 25);
     }
@@ -121,7 +118,7 @@ class GroupTable extends AdminTable implements Editable, Deletable
     public function getImage($image, ChurchGroupView $group): string
     {
         $imageUrl = $group->getThumbnail() . '?' . time();
-        return "<img src='$imageUrl' style='max-width: 25px; height: auto;' title='<img src=\"$imageUrl\">' data-html='true'/>";
+        return "<img src='$imageUrl' style='max-width: 25px; height: auto;' title='<img src=\"$imageUrl\">' data-html='true' alt='{$group->institute_name}'/>";
     }
 
     public function getDocument($document, ChurchGroupView $model): string

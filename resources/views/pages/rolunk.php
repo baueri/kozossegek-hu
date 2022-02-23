@@ -69,7 +69,7 @@
                         dialog.success({
                             message: response.msg,
                             size: "md"
-                        }, (dialog) => { $("form").trigger("reset"); dialog.close() })
+                        }, () => { window.location.reload() })
                     }
                 });
             });

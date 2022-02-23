@@ -33,8 +33,8 @@ final class SearchEngineKeywordCollector
 
         $this->pushWords($churchGroup->name);
         $this->pushWords($churchGroup->denomination());
-        $this->pushWords($churchGroup->getAgeGroups()->map(fn (AgeGroup $ageGroup) => $ageGroup->translate()));
-        $this->pushWords($churchGroup->getDays()->map(fn (WeekDay $day) => $day->translate()));
+        $this->pushWords($churchGroup->getAgeGroups()->map->translate());
+        $this->pushWords($churchGroup->getDays()->map->translate());
         $this->pushWords($churchGroup->occasionFrequency());
         $this->pushWords($churchGroup->city);
         $this->pushWords(str_replace('atya', '', (string) $churchGroup->leader_name));
