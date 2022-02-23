@@ -29,9 +29,9 @@
             <div class="form-group">
                 <select class="form-control" id="pending" name="pending" data-placeholder="jóváhagyás állapota">
                     <option></option>
-                    <option value="0" @if($filter['pending'] === '0') selected @endif>jóváhagyva</option>
-                    <option value="1" @if($filter['pending'] === '1') selected @endif>jóhávagyásra vár</option>
-                    <option value="-1" @if($filter['pending'] === '-1') selected @endif>visszautasítva</option>
+                    <option value="0" @selected($filter['pending'] === '0')>jóváhagyva</option>
+                    <option value="1" @selected($filter['pending'] === '1')>jóhávagyásra vár</option>
+                    <option value="-1" @selected($filter['pending'] === '-1')>visszautasítva</option>
                 </select>
             </div>
         </div>
