@@ -17,9 +17,9 @@
         <table style="width: 100%;">
             <tr><th>Közösség neve</th><td>{{ $group->name }}</td></tr>
             <tr><th>Intézmény</th><td> {{ $group->institute_name }} ({{ $group->city, $group->district ? ", $group->district" : "" }})</td></tr>
-            <tr><th>Korosztály</th><td>{{ $group->getAgeGroups()->implode(',') }}</td></tr>
+            <tr><th>Korosztály</th><td>{{ $group->allAgeGroupsAsString() }}</td></tr>
             <tr><th>Alkalmak gyakorisága</th><td>{{ $group->occasionFrequency() }}<br/></td></tr>
-            <tr><th>Mely napokon</th><td> {{ $group->getDays()->implode(',') }}<br/></td></tr>
+            <tr><th>Mely napokon</th><td> {{ $group->getDaysAsString() }}<br/></td></tr>
             <tr><th>Lelkiségi mozgalom</th><td> {{ $group->spiritual_movement ?: '-' }}<br/></td></tr>
             <tr><th>Csatlakozás módja</th><td> {{ $group->joinMode() ?: '-' }}<br/></td></tr>
             <tr>
@@ -30,8 +30,8 @@
             <tr><th>Bemutatkozás</th><td>{{ $group->description }}</td></tr>
             <tr><td colspan="2"><hr></td></tr>
             <tr><th>Közösségvezető(k)</th><td> {{ $group->group_leaders }}</td></tr>
-            <tr><th>Elérhetőség (telefon)</th><td> {{ $user->phone_number ?: '-' }}</td></tr>
-            <tr><th>Elérhetőség (email)</th><td> {{ $user->email }}</td></tr>
+            <tr><th>Elérhetőség (telefon)</th><td> {{ $user?->phone_number ?: '-' }}</td></tr>
+            <tr><th>Elérhetőség (email)</th><td> {{ $user?->email }}</td></tr>
             <tr><td colspan="2"><hr></td></tr>
             <tr>
                 <th>Igazolás</th>
