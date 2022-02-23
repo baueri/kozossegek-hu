@@ -11,8 +11,8 @@ use Framework\Http\Request;
 class ListGroups
 {
     public function __construct(
-        private Request $request,
-        private GroupTable $table
+        private readonly Request $request,
+        private readonly GroupTable $table
     ) {
     }
 
@@ -27,10 +27,10 @@ class ListGroups
             $institute = db()->first("select name from institutes where id=?", [$institute_id])['name'];
         }
 
-        $filter = $this->request;
+        $filter = $this->request->collect();
         $table = $this->table;
         $current_page = $this->getCurrentPage();
-        $karbantarto = $filter['user_id'] ? app()->make(UsersLegacy::class)->find($filter['user_id'])->name : null;
+        $karbantarto = $filter->has('user_id') ? app()->make(UsersLegacy::class)->find($filter['user_id'])->name : null;
 
         $filter['pending'] = $current_page === 'pending';
 
