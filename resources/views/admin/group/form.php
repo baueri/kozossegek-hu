@@ -119,7 +119,7 @@
                 <label for="age_group">Korosztály</label>
                 <select class="form-control" name="age_group[]" multiple="multiple">
                     @foreach($age_groups as $age_group)
-                        <option value="{{ $age_group->value }}" @selected($age_group_array->has($age_group->value))>
+                        <option value="{{ $age_group->value }}" @selected($age_group_array->has('value', $age_group->value))>
                             {{ $age_group->translate() }}
                         </option>
                     @endforeach
