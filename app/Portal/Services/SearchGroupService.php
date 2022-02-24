@@ -3,13 +3,15 @@
 namespace App\Portal\Services;
 
 use App\Events\SearchTriggered;
+use App\Models\ChurchGroupView;
 use App\Services\GroupSearchRepository;
 use Framework\Event\EventDisptatcher;
+use Framework\Model\PaginatedModelCollection;
+use Framework\Support\Collection;
 use Jaybizzle\CrawlerDetect\CrawlerDetect;
 
 class SearchGroupService
 {
-
     private GroupSearchRepository $groupRepo;
 
     private CrawlerDetect $crawlerDetect;
@@ -20,13 +22,16 @@ class SearchGroupService
         $this->crawlerDetect = $crawlerDetect;
     }
 
-    public function search($filter, int $perPage = 21)
+    /**
+     * @param array|Collection $filter
+     * @param int $perPage
+     * @return PaginatedModelCollection<ChurchGroupView>
+     */
+    public function search(array|Collection $filter, int $perPage = 21): PaginatedModelCollection
     {
         $groups = $this->groupRepo->search($filter, $perPage);
 
-        if (!$this->crawlerDetect->isCrawler()) {
-            $this->logEvent($filter);
-        }
+        $this->logEvent($filter);
 
         return $groups;
     }
@@ -41,14 +46,16 @@ class SearchGroupService
             unset($data['pending']);
         }
 
-        if (self::shouldLog($data)) {
+        if ($this->shouldLog($data)) {
             $data['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
             EventDisptatcher::dispatch(new SearchTriggered('search', $data));
         }
     }
 
-    private static function shouldLog($filterData): bool
+    private function shouldLog($filterData): bool
     {
-        return (bool) array_filter($filterData);
+        return !$this->crawlerDetect->isCrawler() &&
+            array_filter($filterData) &&
+            request()->get('pg', 1) == 1;
     }
 }

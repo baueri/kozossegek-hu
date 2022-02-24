@@ -6,7 +6,6 @@ use Closure;
 
 final class Builder
 {
-
     private array $select = [];
 
     private array $table = [];
@@ -27,8 +26,9 @@ final class Builder
 
     private static array $macros = [];
 
-    public function __construct(private Database $db)
-    {
+    public function __construct(
+        private Database $db
+    ) {
     }
 
     /**
@@ -66,6 +66,28 @@ final class Builder
         $this->orderBy = $oldOrders;
 
         return (int) $count;
+    }
+
+    public function each(Closure $callback, int $chunks = 1000): void
+    {
+        $limit = 0;
+        $builder = clone $this;
+        $builder->limit("0, {$chunks}");
+
+        while (count($rows = $builder->get()) > 0) {
+            $offset = (++$limit) * $chunks;
+            $builder->limit("{$offset}, {$chunks}");
+            array_walk($rows, fn ($row) => $callback($row));
+        }
+    }
+
+    public function when($expression, $callback): Builder
+    {
+        if ($expression) {
+            $callback($this, $expression);
+        }
+
+        return $this;
     }
 
     private function getBaseSelect(): array
