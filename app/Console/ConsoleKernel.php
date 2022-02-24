@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Console\Commands\AggregateLogsCommand;
 use App\Console\Commands\ClearUserSessionCommand;
 use App\Console\Commands\DailyCron;
 use App\Console\Commands\PublishApp;
@@ -14,6 +15,7 @@ class ConsoleKernel extends Kernel
         DailyCron::class,
         ClearUserSessionCommand::class,
         RebuildSearchEngineCommand::class,
-        PublishApp::class
+        PublishApp::class,
+        AggregateLogsCommand::class
     ];
 }
