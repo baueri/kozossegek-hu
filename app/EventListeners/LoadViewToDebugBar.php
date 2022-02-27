@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\EventListeners;
-
 
 use App\Admin\Components\DebugBar\LoadedViewsTab;
 use Framework\Event\EventListener;
