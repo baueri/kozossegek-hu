@@ -107,7 +107,7 @@ class Container implements ContainerInterface
      * @param string|T $abstraction
      * @return T
      */
-    public function make(string $abstraction, array $args = [])
+    public function make(string $abstraction, ?array $args = [])
     {
         $binding = $this->getBinding($abstraction);
 
@@ -156,7 +156,7 @@ class Container implements ContainerInterface
         return $this->getFallback($parent);
     }
 
-    private function getDependencies($class, string $method = '__construct', array $resolvedDependencies = []): array
+    private function getDependencies($class, string $method = '__construct', ?array $resolvedDependencies = []): array
     {
         if (!method_exists($class, $method) && !function_exists($class)) {
             return [];
@@ -167,7 +167,7 @@ class Container implements ContainerInterface
         $parameters = $reflectionMethod->getParameters();
 
         foreach ($parameters as $i => $parameter) {
-            if (key($resolvedDependencies) === 0 && isset($resolvedDependencies[$i])) {
+            if (isset($resolvedDependencies[$i]) && key($resolvedDependencies) === 0) {
                 $dependencies[] = $resolvedDependencies[$i];
             } elseif (isset($resolvedDependencies[$parameter->name])) {
                 $dependencies[] = $resolvedDependencies[$parameter->name];

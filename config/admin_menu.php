@@ -131,12 +131,7 @@ return [
                 'title' => 'Város alapján',
                 'icon' => 'city',
                 'as' => 'admin.statistics',
-            ],
-            [
-                'title' => 'Népszerű keresőszavak',
-                'icon' => 'tag',
-                'as' => 'admin.statistics.tags',
-            ],
+            ]
         ]
     ],
     [

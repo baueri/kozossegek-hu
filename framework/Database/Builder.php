@@ -3,8 +3,9 @@
 namespace Framework\Database;
 
 use Closure;
+use Framework\Support\Arr;
 
-final class Builder
+class Builder
 {
     private array $select = [];
 
@@ -29,6 +30,11 @@ final class Builder
     public function __construct(
         private Database $db
     ) {
+    }
+
+    public static function query(): static
+    {
+        return resolve(static::class);
     }
 
     /**
@@ -269,7 +275,7 @@ final class Builder
 
     public function whereRaw($where, $bindings = [], $clause = 'and'): self
     {
-        $this->where[] = [$where, null, $bindings, $clause];
+        $this->where[] = [$where, null, Arr::wrap($bindings), $clause];
 
         return $this;
     }
@@ -489,6 +495,11 @@ final class Builder
         }
 
         return null;
+    }
+
+    public function dd(bool $withBinding = false): never
+    {
+        dd($this->toSql($withBinding));
     }
 
     public function __toString()

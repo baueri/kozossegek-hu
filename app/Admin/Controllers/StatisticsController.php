@@ -3,6 +3,7 @@
 namespace App\Admin\Controllers;
 
 use App\Admin\Components\AdminTable\AdminTable;
+use App\Repositories\CityStatistics;
 use Framework\Database\PaginatedResultSetInterface;
 
 class StatisticsController extends AdminController
@@ -29,10 +30,9 @@ class StatisticsController extends AdminController
 
             protected function getData(): PaginatedResultSetInterface
             {
-                return builder('stat_city')
+                return CityStatistics::query()
                     ->when(request()->get('varos'), fn ($query, $city) => $query->where('city', 'like', "%{$city}%"))
-                    ->select('city, sum(search_count) as search_count, sum(opened_groups_count) as opened_groups_count, sum(contacted_groups_count) as contacted_groups_count')
-                    ->groupBy('city')
+                    ->selectSums()
                     ->orderBy("sum({$this->order[0]})", $this->order[1])
                     ->paginate();
             }

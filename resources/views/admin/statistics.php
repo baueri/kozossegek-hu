@@ -10,6 +10,9 @@
             <button type="submit" class="btn btn-primary btn-sm">Keresés</button>
             <a href="@route('admin.statistics')">Szűrés törlése</a>
         </form>
+        <p class="mt-3">
+            <a href="@route('api.admin.statistics.export', compact('varos'))" class="text-success">@icon('file-csv') exportálás <code>csv</code>-be</a>
+        </p>
     </div>
 </div>
 {{ $table }}
