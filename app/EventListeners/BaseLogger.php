@@ -4,7 +4,6 @@ namespace App\EventListeners;
 
 use App\Events\BaseLogEvent;
 use App\Services\EventLogger;
-use Framework\Event\Event;
 use Framework\Event\EventListener;
 
 class BaseLogger implements EventListener
@@ -17,7 +16,7 @@ class BaseLogger implements EventListener
     }
 
     /**
-     * @param BaseLogEvent|Event $event
+     * @param BaseLogEvent $event
      */
     public function trigger($event)
     {

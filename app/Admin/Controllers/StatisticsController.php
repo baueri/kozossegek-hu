@@ -5,12 +5,13 @@ namespace App\Admin\Controllers;
 use App\Admin\Components\AdminTable\AdminTable;
 use App\Repositories\CityStatistics;
 use Framework\Database\PaginatedResultSetInterface;
+use Framework\Http\Request;
 
 class StatisticsController extends AdminController
 {
-    public function __invoke(): string
+    public function __invoke(Request $request): string
     {
-        return view('admin.statistics', ['table' => $this->table(), 'varos' => request()->get('varos')]);
+        return view('admin.statistics', ['table' => $this->table(), 'varos' => $request['varos'] ?? '', 'periodus' => $request['periodus']]);
     }
 
     private function table(): AdminTable
@@ -32,6 +33,7 @@ class StatisticsController extends AdminController
             {
                 return CityStatistics::query()
                     ->when(request()->get('varos'), fn ($query, $city) => $query->where('city', 'like', "%{$city}%"))
+                    ->onPeriod(request()->get('periodus'))
                     ->selectSums()
                     ->orderBy("sum({$this->order[0]})", $this->order[1])
                     ->paginate();
