@@ -123,6 +123,18 @@ return [
         'as' => 'admin.email_template.list',
     ],
     [
+        'title' => 'Statisztika',
+        'icon' => 'chart-bar',
+        'as' => 'admin.statistics',
+        'submenu' => [
+            [
+                'title' => 'Város alapján',
+                'icon' => 'city',
+                'as' => 'admin.statistics',
+            ]
+        ]
+    ],
+    [
         'title' => 'Gépház',
         'icon' => 'cog',
         'as' => 'admin.release_notes',

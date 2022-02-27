@@ -2,10 +2,12 @@
 
 namespace Framework\Console;
 
+use JetBrains\PhpStorm\NoReturn;
+
 class Out
 {
     /**
-     * pre registered colors for console output
+     * pre-registered colors for console output
      */
     public const COLOR_WHITE = '1;37';
     public const COLOR_BLACK = '0;30';
@@ -37,9 +39,9 @@ class Out
         self::NOTIFICATION_TYPE_WARNING => self::COLOR_MAGENTA,
     ];
 
-    public static function color($text, $color)
+    public static function color($text, $color): string
     {
-        return "\033[" . $color . "m" . $text . "\033[0m";
+        return "\033[{$color}m{$text}\033[0m";
     }
 
     /**
@@ -59,7 +61,7 @@ class Out
      * @param string $text
      * @param string $color
      */
-    public static function write(string $text, $color = self::COLOR_WHITE)
+    public static function write(string $text, string $color = self::COLOR_WHITE)
     {
         print("\033[" . $color . "m" . $text . "\033[0m");
     }
@@ -110,20 +112,15 @@ class Out
         static::writeln($message . "\n");
     }
 
-    /**
-     * Info
-     *
-     * @param string $msg
-     */
     public static function info(string $msg)
     {
+        static::notify(self::NOTIFICATION_TYPE_INFO, $msg);
     }
 
     /**
      * Error notification and instantly ends process
-     * @param string $msg
      */
-    public static function fatal(string $msg)
+    public static function fatal(string $msg): never
     {
         static::error($msg);
         static::writeln('A kód nem futott végig', self::COLOR_RED);
@@ -148,12 +145,6 @@ class Out
         static::notify(static::NOTIFICATION_TYPE_WARNING, $msg);
     }
 
-    /**
-     * Dumps the data with print_r function
-     *
-     * @param mixed $data
-     *
-     */
     public static function dump($data)
     {
         $color = is_bool($data) ? static::COLOR_CYAN : null;

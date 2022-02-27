@@ -2,17 +2,13 @@
 
 namespace App\Migration;
 
+use Phinx\Db\Adapter\AdapterInterface;
 use Phinx\Db\Adapter\MysqlAdapter;
 use Phinx\Db\Table;
 
 class AppMigrationTable extends Table
 {
-    /**
-     *
-     * @param bool $withDeletedAt
-     * @return static
-     */
-    public function timestamps(bool $withDeletedAt = true)
+    public function timestamps(bool $withDeletedAt = true): static
     {
         $this->createdAt();
         $this->timestamp('updated_at', ['null' => true, 'update' => 'CURRENT_TIMESTAMP']);
@@ -24,36 +20,37 @@ class AppMigrationTable extends Table
         return $this;
     }
 
-    public function createdAt(string $columnName = 'created_at')
+    public function createdAt(string $column = 'created_at'): static
     {
-        $this->timestamp($columnName, ['default' => 'CURRENT_TIMESTAMP']);
+        $this->timestamp($column, ['default' => 'CURRENT_TIMESTAMP']);
 
         return $this;
     }
 
-    /**
-     *
-     * @param string $columnName
-     * @param array $options
-     * @return static
-     */
-    public function timestamp(string $columnName, array $options = [])
+    public function timestamp(string $column, array $options = []): static
     {
-        $this->addColumn($columnName, MysqlAdapter::PHINX_TYPE_DATETIME, $options);
+        $this->addColumn($column, MysqlAdapter::PHINX_TYPE_DATETIME, $options);
 
         return $this;
     }
 
-    public function deletedAt()
+    public function deletedAt(): static
     {
         $this->timestamp('deleted_at', ['null' => true]);
 
         return $this;
     }
 
-    public function updatedAt(string $columnName = 'updated_at')
+    public function updatedAt(string $column = 'updated_at'): static
     {
-        $this->timestamp($columnName, ['null' => true, 'update' => 'CURRENT_TIMESTAMP']);
+        $this->timestamp($column, ['null' => true, 'update' => 'CURRENT_TIMESTAMP']);
+
+        return $this;
+    }
+
+    public function date(string $column, array $options = []): static
+    {
+        $this->addColumn($column, AdapterInterface::PHINX_TYPE_DATE, $options);
 
         return $this;
     }

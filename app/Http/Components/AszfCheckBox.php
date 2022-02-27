@@ -2,7 +2,9 @@
 
 namespace App\Http\Components;
 
-class AszfCheckBox
+use Framework\Http\View\Component;
+
+class AszfCheckBox extends Component
 {
     public function render(): string
     {

@@ -48,10 +48,6 @@ class AdminMiddleware implements Middleware
         View::setVariable('admin_menu', $admin_menu);
         View::setVariable('current_menu_item', $admin_menu->first('active'));
 
-        if ($this->maintenance->isMaintenanceOn() && Auth::loggedIn()) {
-            View::setVariable('is_maintenance_on', true);
-        } else {
-            View::setVariable('is_maintenance_on', false);
-        }
+        View::setVariable('is_maintenance_on', $this->maintenance->isMaintenanceOn() && Auth::loggedIn());
     }
 }

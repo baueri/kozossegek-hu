@@ -21,6 +21,11 @@ class HttpDispatcher implements Dispatcher
         Cookie::setTestCookie();
     }
 
+    /**
+     * @return void
+     * @throws PageNotFoundException
+     * @throws RouteNotFoundException
+     */
     public function dispatch(): void
     {
         $route = $this->getCurrentRoute();
@@ -64,19 +69,21 @@ class HttpDispatcher implements Dispatcher
     }
 
     /**
-     * @param RouteInterface $route
-     * @return mixed
      * @throws PageNotFoundException
      */
     private function resolveController(RouteInterface $route)
     {
         $controller = $this->app->make($route->getController());
 
-        if (!method_exists($controller, $route->getUse())) {
-            throw new PageNotFoundException($this->request->uri);
+        if (method_exists($controller, $route->getUse())) {
+            return $this->app->resolve($controller, $route->getUse());
         }
 
-        return $this->app->resolve($controller, $route->getUse());
+        if (is_callable($controller)) {
+            return $this->app->resolve($controller, '__invoke');
+        }
+
+        throw new PageNotFoundException($this->request->uri);
     }
 
     private function resolveView(): string

@@ -141,6 +141,10 @@
             <route method="post" uri="profile/change-password" use="changeMyPassword" as="profile.change_password"/>
         </route-group>
 
+        <!--    Statisztika    -->
+        <route method="get" uri="statistics" as="statistics" controller="StatisticsController"/>
+        <route method="get" uri="statistics/tags" as="statistics.tags" controller="StatisticsController"/>
+
         <route method="get" uri="" controller="DashboardController" use="dashboard" as="dashboard"/>
 
     </route-group>

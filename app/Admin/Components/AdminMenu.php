@@ -13,7 +13,7 @@ class AdminMenu
 {
     public function __construct(
         private RouterInterface $router,
-        private AuthUser $user
+        private ?AuthUser $user
     ) {
     }
 

@@ -2,8 +2,6 @@
 
 namespace Framework\Model;
 
-use App\Models\ChurchGroupView;
-use App\QueryBuilders\GroupViews;
 use Closure;
 use Framework\Database\Builder;
 use Framework\Database\Repository\Events\ModelCreated;

@@ -1,5 +1,17 @@
 @title('Verzióinformáció')
 @extends('admin')
+<h3>v2.0 (2022.02.27)</h3>
+<ul>
+    <li>[NEW]: Városokra bontott statisztika. <a href="@route('admin.statistics')">Ugrás az oldalra</a></li>
+    <li>[FIXED]: ÁSZF komponens javítása.</li>
+    <li>
+        <b>Gépház</b>
+        <ul>
+            <li>[CHANGED]: <code>Builder::whereRaw()</code> bindings paraméter ne csak tömböt várjon.</li>
+            <li>[NEW]: <code>Arr::wrap()</code> függvény</li>
+        </ul>
+    </li>
+</ul>
 <h3>v2.0 (2022.02.22)</h3>
 <ul>
     <li>[CHANGED]: Admin oldali intézmény kereső felokosítása</li>
