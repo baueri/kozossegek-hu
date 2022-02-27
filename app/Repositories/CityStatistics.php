@@ -24,4 +24,23 @@ final class CityStatistics extends Builder
     {
         return $this->orderBy($column->name, 'desc');
     }
+
+    public function onPeriod(?string $period)
+    {
+        if (!$period) {
+            return $this;
+        }
+
+        switch ($period) {
+            case 'week':
+                $this->whereRaw('WEEK(date, 1) = WEEK(NOW(), 1) AND YEAR(date) = YEAR(NOW())');
+            break;
+            case 'month':
+                $this->whereRaw('MONTH(date) = MONTH(NOW()) AND YEAR(date) = YEAR(NOW())');
+            break;
+            case 'yesterday':
+                $this->whereRaw('date = DATE(DATE_SUB(NOW(), INTERVAL 1 DAY))');
+        }
+        return $this;
+    }
 }
