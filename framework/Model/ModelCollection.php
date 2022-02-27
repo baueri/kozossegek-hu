@@ -7,7 +7,6 @@ use Framework\Support\Collection;
 class ModelCollection extends Collection
 {
     /**
-     *
      * @param mixed $relations
      * @param $toLoad
      * @param $on

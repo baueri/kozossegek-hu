@@ -23,23 +23,24 @@ class ConsoleKernel implements Kernel
     ];
 
     /**
-     * @var Command[]|string[]
+     * @var array<int, class-string<Command>>
      */
     protected array $commands = [];
 
-    public function __construct(private Application $application)
-    {
+    public function __construct(
+        private Application $application
+    ) {
     }
 
-    /**
-     * @return Command[]
-     */
     public function getCommands(): array
     {
         return array_merge($this->commands, $this->baseCommands);
     }
 
-    public function getCommand(?string $signature)
+    /**
+     * @throws CommandNotFoundException
+     */
+    public function getCommand(?string $signature): Command
     {
         if (!$signature) {
             return $this->application->make(ListCommands::class);

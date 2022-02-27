@@ -2,8 +2,10 @@
 
 namespace Framework\Container;
 
+use Closure;
 use Framework\Container\Exceptions\AbstractionAlreadySharedException;
 use Framework\Container\Exceptions\AlreadyBoundException;
+use Framework\Http\Controller;
 use InvalidArgumentException;
 use Psr\Container\ContainerInterface;
 use ReflectionFunction;
@@ -105,7 +107,7 @@ class Container implements ContainerInterface
      * @param string|T $abstraction
      * @return T
      */
-    public function make(string $abstraction, array $args = [])
+    public function make(string $abstraction, ?array $args = [])
     {
         $binding = $this->getBinding($abstraction);
 
@@ -154,7 +156,7 @@ class Container implements ContainerInterface
         return $this->getFallback($parent);
     }
 
-    private function getDependencies($class, string $method = '__construct', array $resolvedDependencies = []): array
+    private function getDependencies($class, string $method = '__construct', ?array $resolvedDependencies = []): array
     {
         if (!method_exists($class, $method) && !function_exists($class)) {
             return [];
@@ -165,7 +167,7 @@ class Container implements ContainerInterface
         $parameters = $reflectionMethod->getParameters();
 
         foreach ($parameters as $i => $parameter) {
-            if (key($resolvedDependencies) === 0 && isset($resolvedDependencies[$i])) {
+            if (isset($resolvedDependencies[$i]) && key($resolvedDependencies) === 0) {
                 $dependencies[] = $resolvedDependencies[$i];
             } elseif (isset($resolvedDependencies[$parameter->name])) {
                 $dependencies[] = $resolvedDependencies[$parameter->name];
@@ -177,17 +179,17 @@ class Container implements ContainerInterface
         return $dependencies;
     }
 
-    private function getReflectionMethod($class, string $method = '__construct'): ?ReflectionFunctionAbstract
+    private function getReflectionMethod($abstract, string $method = '__construct'): ?ReflectionFunctionAbstract
     {
-        if (is_callable($class)) {
-            return new ReflectionFunction($class);
+        if ($abstract instanceof Closure || (is_string($abstract) && function_exists($abstract))) {
+            return new ReflectionFunction($abstract);
         }
 
-        if (!method_exists($class, $method)) {
+        if (!method_exists($abstract, $method)) {
             return null;
         }
 
-        return new ReflectionMethod($class, $method);
+        return new ReflectionMethod($abstract, $method);
     }
 
     /**

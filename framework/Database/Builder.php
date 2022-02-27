@@ -3,10 +3,10 @@
 namespace Framework\Database;
 
 use Closure;
+use Framework\Support\Arr;
 
-final class Builder
+class Builder
 {
-
     private array $select = [];
 
     private array $table = [];
@@ -27,8 +27,14 @@ final class Builder
 
     private static array $macros = [];
 
-    public function __construct(private Database $db)
+    public function __construct(
+        private Database $db
+    ) {
+    }
+
+    public static function query(): static
     {
+        return resolve(static::class);
     }
 
     /**
@@ -66,6 +72,28 @@ final class Builder
         $this->orderBy = $oldOrders;
 
         return (int) $count;
+    }
+
+    public function each(Closure $callback, int $chunks = 1000): void
+    {
+        $limit = 0;
+        $builder = clone $this;
+        $builder->limit("0, {$chunks}");
+
+        while (count($rows = $builder->get()) > 0) {
+            $offset = (++$limit) * $chunks;
+            $builder->limit("{$offset}, {$chunks}");
+            array_walk($rows, fn ($row) => $callback($row));
+        }
+    }
+
+    public function when($expression, $callback): Builder
+    {
+        if ($expression) {
+            $callback($this, $expression);
+        }
+
+        return $this;
     }
 
     private function getBaseSelect(): array
@@ -247,7 +275,7 @@ final class Builder
 
     public function whereRaw($where, $bindings = [], $clause = 'and'): self
     {
-        $this->where[] = [$where, null, $bindings, $clause];
+        $this->where[] = [$where, null, Arr::wrap($bindings), $clause];
 
         return $this;
     }
@@ -467,6 +495,11 @@ final class Builder
         }
 
         return null;
+    }
+
+    public function dd(bool $withBinding = false): never
+    {
+        dd($this->toSql($withBinding));
     }
 
     public function __toString()
