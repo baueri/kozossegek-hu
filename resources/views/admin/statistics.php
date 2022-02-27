@@ -2,6 +2,9 @@
 @extends('admin')
 <div class="row">
     <div class="col-md-3">
+        @alert('info')
+            Naponta frissül
+        @endalert
         <form method="get" action="@route('admin.statistics')">
             <div class="form-group">
                 <label>Város</label>
