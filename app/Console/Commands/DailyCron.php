@@ -2,13 +2,15 @@
 
 namespace App\Console\Commands;
 
+use App\Services\Statistics\EventLogAggregator;
 use App\Services\SystemAdministration\ClearUserSession;
 use Framework\Console\Command;
 
 class DailyCron implements Command
 {
     public function __construct(
-        private ClearUserSession $clearUserSession
+        private readonly ClearUserSession $clearUserSession,
+        private readonly EventLogAggregator $eventLogAggregator
     ) {
     }
 
@@ -20,5 +22,6 @@ class DailyCron implements Command
     public function handle(): void
     {
         $this->clearUserSession->run();
+        $this->eventLogAggregator->run();
     }
 }

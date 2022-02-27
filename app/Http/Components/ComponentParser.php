@@ -6,7 +6,7 @@ use InvalidArgumentException;
 
 class ComponentParser
 {
-    public function render(string $componentName, $args)
+    public function render(string $componentName, $args = [])
     {
         $component = config("view.components.{$componentName}");
 

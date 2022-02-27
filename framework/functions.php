@@ -400,3 +400,14 @@ function report($exception): void
 
     $mailer->send($mail);
 }
+
+/**
+ * @template T
+ * @param T $class
+ * @param $args
+ * @return T
+ */
+function resolve($class, $args = null)
+{
+    return app()->make($class, $args);
+}

@@ -3,8 +3,8 @@
 namespace App\Services\Statistics\Aggregators;
 
 use App\Enums\EventType;
+use App\Repositories\CityStatistics;
 use Carbon\Carbon;
-use Framework\Support\Collection;
 
 class CityStatAggregator extends StatAggregator
 {
@@ -43,8 +43,12 @@ class CityStatAggregator extends StatAggregator
         }
     }
 
-    public function save(): void
+    public function save(): int
     {
+        if (!$this->aggregated) {
+            return 0;
+        }
+
         $values = $bindings = [];
         foreach ($this->aggregated as $row) {
             $values[] = '(' . implode(',', array_fill(0, count($row), '?')) . ')';
@@ -53,14 +57,16 @@ class CityStatAggregator extends StatAggregator
 
         $valuesStr = implode(', ', $values);
 
-        db()->execute(<<<SQL
-            insert into stat_city (city, search_count, opened_groups_count, contacted_groups_count, date)
+        $table = CityStatistics::query()->getTable();
+
+        return db()->execute(<<<SQL
+            insert into {$table} (city, search_count, opened_groups_count, contacted_groups_count, date)
              values {$valuesStr}
              on duplicate key update
-                 search_count = stat_city.search_count + VALUES(search_count),
-                 opened_groups_count = stat_city.opened_groups_count + VALUES(opened_groups_count),
-                 contacted_groups_count = stat_city.contacted_groups_count + VALUES(contacted_groups_count)
-        SQL, ...$bindings);
+                 search_count = {$table}.search_count + VALUES(search_count),
+                 opened_groups_count = {$table}.opened_groups_count + VALUES(opened_groups_count),
+                 contacted_groups_count = {$table}.contacted_groups_count + VALUES(contacted_groups_count)
+        SQL, ...$bindings)->rowCount();
     }
 
     private function compositeKey(array $row): string

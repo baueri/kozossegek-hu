@@ -25,4 +25,9 @@
     </route-group>
 
     <route method="post" uri="preview-group-register" controller="App\Portal\Controllers\Api\V1\ApiGroupController" use="previewGroup" as="preview_group_register" prefix="api/v1"/>
+
+    <!--  ADMIN API  -->
+    <route-group middleware="App\Middleware\AdminMiddleware" prefix="admin" as="admin" namespace="App\Admin\Controllers\Api">
+        <route method="get" uri="statistics/export" controller="ExportStatisticsController" as="statistics.export"/>
+    </route-group>
 </routes>

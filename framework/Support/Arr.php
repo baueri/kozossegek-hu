@@ -147,4 +147,13 @@ class Arr
     {
         return $results[key($results)];
     }
+
+    public static function wrap($value): array
+    {
+        if (is_null($value)) {
+            return [];
+        }
+
+        return (array) $value;
+    }
 }
