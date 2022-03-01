@@ -92,7 +92,9 @@ class GroupController extends PortalController
 
         if (!(new CrawlerDetect())->isCrawler()) {
             log_event('group_profile_opened', [
-                'group_id' => $group->getId(), 'referer' => $referer
+                'group_id' => $group->getId(),
+                'referer' => $referer,
+                'user_agent' => $_SERVER['HTTP_USER_AGENT']
             ]);
         }
 

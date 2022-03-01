@@ -1,8 +1,8 @@
 @title('Verzióinformáció')
 @extends('admin')
-<h3>v2.0 (2022.02.27)</h3>
+<h3>v2.0.1 (2022.02.27)</h3>
 <ul>
-    <li>[NEW]: Városokra bontott statisztika. <a href="@route('admin.statistics')">Ugrás az oldalra</a></li>
+    <li>[NEW]: Városokra bontott statisztika. <a href="/admin/statistics">Ugrás az oldalra</a></li>
     <li>[FIXED]: ÁSZF komponens javítása.</li>
     <li>
         <b>Gépház</b>
