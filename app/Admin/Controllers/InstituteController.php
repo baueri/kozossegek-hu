@@ -2,14 +2,14 @@
 
 namespace App\Admin\Controllers;
 
-use App\Helpers\InstituteHelper;
-use App\Repositories\Institutes;
-use App\Models\Institute;
-use Framework\Http\Request;
-use Framework\Http\Message;
-use App\Auth\Auth;
 use App\Admin\Institute\InstituteAdminTable;
+use App\Auth\Auth;
+use App\Helpers\InstituteHelper;
 use App\Storage\Base64Image;
+use Framework\Http\Message;
+use Framework\Http\Request;
+use Legacy\Institute;
+use Legacy\Institutes;
 
 class InstituteController extends AdminController
 {
@@ -27,7 +27,7 @@ class InstituteController extends AdminController
 
     public function edit(Request $request, Institutes $repository): string
     {
-        /* @var $institute Institute */
+        /* @var $institute \Legacy\Institute */
         $institute = $repository->find($request['id']);
         $images = collect(builder('miserend_photos')->where('church_id', $institute->miserend_id)->get())
             ->map(fn($row) => InstituteHelper::getMiserendImagePath($institute, $row['filename']));

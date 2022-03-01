@@ -8,6 +8,7 @@ use Framework\Database\Repository\Events\ModelCreated;
 use Framework\Database\Repository\Events\ModelDeleted;
 use Framework\Event\EventDisptatcher;
 use Framework\Model\Relation\HasRelations;
+use Framework\Support\Collection;
 use Framework\Support\StringHelper;
 
 /**
@@ -52,6 +53,22 @@ abstract class EntityQueryBuilder
     public function count(): int
     {
         return $this->builder->count();
+    }
+
+    public function countBy(string $column): Collection
+    {
+        return $this->select("count(*) as cnt, {$column}")
+            ->groupBy($column)
+            ->pluck('cnt', $column);
+    }
+
+    public function pluck(string $key, ?string $keyBy = null): Collection
+    {
+        if (!$this->builder->getSelect()) {
+            return collect($this->builder->pluck($key, $keyBy));
+        }
+
+        return $this->get()->pluck($key, $keyBy);
     }
 
     /**
@@ -127,7 +144,7 @@ abstract class EntityQueryBuilder
      */
     public function first(): ?Entity
     {
-        return $this->getInstance($this->builder->first());
+        return $this->loadRelations($this->getInstance($this->builder->first()));
     }
 
     public function limit($limit)
@@ -183,7 +200,7 @@ abstract class EntityQueryBuilder
         return $this->where($column, $operator, $value, 'or');
     }
 
-    public function whereIn($column, array $values, $clause = 'and'): EntityQueryBuilder
+    public function whereIn($column, $values, $clause = 'and'): EntityQueryBuilder
     {
         $this->builder->whereIn($column, $values, $clause);
 

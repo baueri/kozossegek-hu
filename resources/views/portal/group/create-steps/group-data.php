@@ -429,11 +429,6 @@
             }
         });
 
-        $("[name=spiritual_movement_id]").select2({
-            placeholder: "lelkiségi mozgalom",
-            allowClear: true,
-        });
-
         $("[name=institute_id]").instituteSelect();
 
         initSummernote('[name=description]', {

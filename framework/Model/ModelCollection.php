@@ -4,6 +4,9 @@ namespace Framework\Model;
 
 use Framework\Support\Collection;
 
+/**
+ * @template T of \Framework\Model\Entity
+ */
 class ModelCollection extends Collection
 {
     /**

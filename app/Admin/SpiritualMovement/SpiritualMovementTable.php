@@ -5,23 +5,23 @@ namespace App\Admin\SpiritualMovement;
 use App\Admin\Components\AdminTable\AdminTable;
 use App\Admin\Components\AdminTable\Deletable;
 use App\Admin\Components\AdminTable\Editable;
-use App\Helpers\SpiritualMovementHelper;
+use App\Models\SpiritualMovement;
+use App\QueryBuilders\ChurchGroups;
 use App\QueryBuilders\SpiritualMovements;
 use Framework\Http\Request;
 use Framework\Model\PaginatedModelCollection;
-use Framework\Support\Collection;
 
 class SpiritualMovementTable extends AdminTable implements Editable, Deletable
 {
     protected array $columns = [
         'name' => 'Név',
         'website' => 'Weboldal',
-        'group_count' => 'közösségek'
+        'groups_count' => 'közösségek'
     ];
 
     protected array $sortableColumns = [
         'name',
-        'group_count'
+        'groups_count'
     ];
 
     protected string $defaultOrderColumn = 'name';
@@ -39,15 +39,19 @@ class SpiritualMovementTable extends AdminTable implements Editable, Deletable
     protected function getData(): PaginatedModelCollection
     {
         $query = $this->repository
-            ->orderBy(...$this->order);
+            ->orderBy(...$this->order)
+            ->withCount('groups', fn (ChurchGroups $query) => $query->active());
         if ($name = $this->request['name']) {
             $query->where('name', 'like', "%{$name}%")
                 ->orWhere('website', 'like', "%{$name}%");
         }
 
-        $movements = $query->paginate($this->perpage);
+        return $query->paginate($this->perpage);
+    }
 
-        return SpiritualMovementHelper::loadGroupsCount($movements);
+    public function getGroupsCount($count, SpiritualMovement $movement)
+    {
+        return $this->getLink(route('admin.group.list', ['spiritual_movement' => $movement->getId()]), $count);
     }
 
     /**
@@ -69,19 +73,5 @@ class SpiritualMovementTable extends AdminTable implements Editable, Deletable
     public function getEditColumn(): string
     {
         return 'name';
-    }
-
-    private function getGroupsCount(Collection $movements): array
-    {
-        if ($movements->isEmpty()) {
-            return [];
-        }
-        $ids = $movements->pluck('id')->implode(',');
-        return db()->select(
-            "select count(*) as cnt, spiritual_movement_id
-                    from church_groups
-                    where spiritual_movement_id in ($ids) and deleted_at is null
-                    group by spiritual_movement_id"
-        );
     }
 }

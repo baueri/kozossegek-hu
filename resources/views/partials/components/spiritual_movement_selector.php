@@ -6,3 +6,11 @@
     </option>
     @endforeach
 </select>
+<script>
+  $(()=> {
+    $('[name=spiritual_movement_id]').select2({
+      placeholder: 'lelkiségi mozgalom',
+      allowClear: true,
+    });
+  });
+</script>

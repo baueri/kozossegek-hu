@@ -21,7 +21,7 @@
                     <h5 class="card-title"><a href="@route('portal.spiritual_movement.view', ['slug' => $spiritualMovement->slug])">{{ $spiritualMovement->name }}</a></h5>
                     <div class="card-text">{{ $spiritualMovement->excerpt() }}</div>
                     <p class="card-text">
-                        <small class="text-muted">Regisztrált közösségek: {{ $spiritualMovement->group_count ?? 0 }}</small>
+                        <small class="text-muted">Regisztrált közösségek: {{ $spiritualMovement->groups_count ?? 0 }}</small>
                     </p>
                 </div>
             </div>

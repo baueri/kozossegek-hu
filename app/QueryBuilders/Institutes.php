@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Repositories;
+namespace App\QueryBuilders;
 
-use App\Models\User;
+use App\Models\Institute;
 use App\QueryBuilders\Relations\HasManyChurchGroupViews;
 use Framework\Model\EntityQueryBuilder;
 
-class Users extends EntityQueryBuilder
+class Institutes extends EntityQueryBuilder
 {
     use HasManyChurchGroupViews;
 
     protected static function getModelClass(): string
     {
-        return User::class;
+        return Institute::class;
     }
 }

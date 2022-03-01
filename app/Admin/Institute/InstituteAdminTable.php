@@ -5,33 +5,30 @@ namespace App\Admin\Institute;
 use App\Admin\Components\AdminTable\AdminTable;
 use App\Admin\Components\AdminTable\Deletable;
 use App\Admin\Components\AdminTable\Editable;
-use App\Models\Institute;
-use App\Repositories\Institutes;
+use App\Repositories\UsersLegacy;
 use Framework\Database\PaginatedResultSetInterface;
 use Framework\Http\Request;
-use App\Repositories\UsersLegacy;
-use Framework\Support\Collection;
 use Framework\Support\StringHelper;
+use App\Models\Institute;
 
 class InstituteAdminTable extends AdminTable implements Deletable, Editable
 {
-
     protected array $columns = [
         'id' => '<i class="fa fa-hashtag"></i>',
         'image' => '<i class="fa fa-image" title="Kép"></i>',
         'name' => 'Intézmény / plébánia neve',
         'leader_name' => 'Intézményvezető',
-        'group_count' => '<i class="fa fa-comments" title="Közösségek száma"></i>',
+        'groups_count' => '<i class="fa fa-comments" title="Közösségek száma"></i>',
         'address' => 'Cím',
         'updated_at' => 'Módosítva',
         'user' => 'Létrehozta'
     ];
 
-    protected array $sortableColumns = ['id', 'updated_at', 'group_count'];
+    protected array $sortableColumns = ['id', 'updated_at', 'groups_count'];
 
-    protected array $centeredColumns = ['image', 'group_count'];
+    protected array $centeredColumns = ['image', 'groups_count'];
 
-    public function __construct(Request $request, private Institutes $repository, private UsersLegacy $userRepository)
+    public function __construct(Request $request, private InstituteRepository $repository, private UsersLegacy $userRepository)
     {
         parent::__construct($request);
     }
@@ -44,13 +41,10 @@ class InstituteAdminTable extends AdminTable implements Deletable, Editable
     protected function getData(): PaginatedResultSetInterface
     {
         $filter = $this->request;
-        $institutes = $this->repository->getInstitutesForAdmin($filter);
+        $institutes = $this->repository->getInstitutes($filter);
         $userIds = $institutes->pluck('user_id')->filter()->unique()->all();
         $users = $this->userRepository->getUsersByIds($userIds);
-        $groupsCount = $this->getNumberOfGroups($institutes);
-        $institutes->with($users, 'user', 'user_id')
-            ->withCount($groupsCount, 'group_count', 'id', 'institute_id');
-
+        $institutes->with($users, 'user', 'user_id');
         return $institutes;
     }
 
@@ -92,20 +86,11 @@ class InstituteAdminTable extends AdminTable implements Deletable, Editable
         return static::excerpt(implode(', ', array_filter([$institute->city, $institute->district, $address])));
     }
 
-    public function getGroupCount($count, Institute $institute): string
+    public function getGroupsCount($count, Institute $institute): string
     {
         $count = $count ?: 0;
-        $url = route('admin.group.list', ['institute_id' => $institute->id]);
+        $url = route('admin.group.list', ['institute_id' => $institute->getId()]);
 
         return "<a href='$url' title='közösségek mutatása'>{$count}</a>";
-    }
-
-    private function getNumberOfGroups(Collection $institutes): array
-    {
-        if ($institutes->isEmpty()) {
-            return [];
-        }
-        $ids = $institutes->getIds()->implode(',');
-        return db()->select("select count(*) as cnt, institute_id from church_groups where institute_id in ($ids) and deleted_at is null group by institute_id");
     }
 }
