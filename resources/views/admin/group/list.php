@@ -52,21 +52,26 @@
                 </select>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <div class="form-group">
                 <select name="institute_id" id="institute_id" class="form-control">
                     <option value="{{ $filter['institute_id'] }}">{{ $institute ?? 'intézmény' }}</option>
                 </select>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
+            <div class="form-group">
+                @spiritual_movement_selector($filter['spiritual_movement'])
+            </div>
+        </div>
+        <div class="col-md-2">
             <div class="form-group">
                 <select name="user_id" id="user_id" class="form-control">
                     <option value="{{ $filter['user_id'] }}">{{ $karbantarto ?? 'karbantartó' }}</option>
                 </select>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <div class="form-group">
                 <select class="form-control" id="korosztaly" name="korosztaly">
                     <option></option>

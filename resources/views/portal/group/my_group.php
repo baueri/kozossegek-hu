@@ -118,14 +118,7 @@
         </div>
         <div class="form-group">
             <label for="spiritual_movement_id">Lelkiségi mozgalom</label>
-            <select id="spiritual_movement_id" name="spiritual_movement_id" class="form-control">
-                <option></option>
-                @foreach($spiritual_movements as $spiritual_movement)
-                <option value="{{ $spiritual_movement['id'] }}" @if($group->spiritual_movement_id == $spiritual_movement['id']) selected @endif>
-                    {{ $spiritual_movement['name'] }}
-                </option>
-                @endforeach
-            </select>
+            @spiritual_movement_selector($group->spiritual_movement_id)
         </div>
         <h3 class="h4 mt-3">A közösség jellemzői</h3>
         <div class="form-group">
@@ -225,11 +218,6 @@
                     $("[name=image]").val(base64);
                 });
             }
-        });
-
-        $("[name=spiritual_movement_id]").select2({
-            placeholder: "lelkiségi mozgalom",
-            allowClear: true,
         });
 
         $("[name=institute_id]").instituteSelect();

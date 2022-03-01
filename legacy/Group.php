@@ -4,7 +4,6 @@ namespace Legacy;
 
 use App\Enums\GroupStatusEnum;
 use App\Helpers\InstituteHelper;
-use App\Models\Institute;
 use App\Models\Traits\GroupTrait;
 use Framework\Model\Model;
 use Framework\Model\TimeStamps;

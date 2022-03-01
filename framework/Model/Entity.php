@@ -2,6 +2,7 @@
 
 namespace Framework\Model;
 
+use App\Models\Institute;
 use Framework\Support\StringHelper;
 
 /**
@@ -15,7 +16,7 @@ abstract class Entity
 
     public array $relations = [];
 
-    protected array $relations_count = [];
+    public array $relations_count = [];
 
     public function __construct(protected array $attributes = [])
     {
@@ -49,9 +50,14 @@ abstract class Entity
 
     public function __get($name)
     {
-        if (StringHelper::endsWith($name, '_count')) {
-            $relation = substr($name, 0, strrpos($name, '_count'));
-            return $this->relations_count[$name] ??= count($this->relations[$relation] ?? []);
+        $relation = substr($name, 0, strrpos($name, '_count'));
+
+        if (isset($this->relations_count[$relation])) {
+            return $this->relations_count[$relation];
+        }
+
+        if (StringHelper::endsWith($name, '_count') && isset($this->relations[$relation])) {
+            return $this->relations_count[$relation] = count($this->relations[$relation]);
         }
 
         return $this->attributes[$name] ?? $this->relations[$name] ?? null;

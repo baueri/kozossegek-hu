@@ -2,8 +2,10 @@
 
 namespace App\QueryBuilders;
 
+use App\Models\ChurchGroupView;
 use App\Models\SpiritualMovement;
 use App\Models\UserLegacy;
+use App\QueryBuilders\Relations\HasManyChurchGroupViews;
 use Framework\Model\EntityQueryBuilder;
 
 /**
@@ -11,6 +13,8 @@ use Framework\Model\EntityQueryBuilder;
  */
 class SpiritualMovements extends EntityQueryBuilder
 {
+    use HasManyChurchGroupViews;
+
     protected static function getModelClass(): string
     {
         return SpiritualMovement::class;

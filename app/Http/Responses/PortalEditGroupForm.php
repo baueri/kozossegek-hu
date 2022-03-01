@@ -7,8 +7,7 @@ use App\Enums\OccasionFrequency;
 use App\Enums\WeekDay;
 use App\Models\ChurchGroupView;
 use App\Repositories\GroupStatusRepository;
-use App\Repositories\Institutes;
-use App\Repositories\OccasionFrequencies;
+use Legacy\Institutes;
 
 class PortalEditGroupForm
 {
@@ -23,7 +22,6 @@ class PortalEditGroupForm
     {
         $statuses = (new GroupStatusRepository())->all();
         $tags = builder('tags')->select()->get();
-        $spiritual_movements = db()->select('select * from spiritual_movements order by name');
         $occasion_frequencies = OccasionFrequency::cases();
         $age_groups = AgeGroup::cases();
         $days = WeekDay::cases();
@@ -47,7 +45,6 @@ class PortalEditGroupForm
             'occasion_frequencies',
             'age_groups',
             'action',
-            'spiritual_movements',
             'tags',
             'age_group_array',
             'group_tags',

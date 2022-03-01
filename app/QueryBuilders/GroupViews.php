@@ -4,12 +4,11 @@ namespace App\QueryBuilders;
 
 use App\Models\ChurchGroupView;
 use App\Models\UserLegacy;
-use Framework\Model\EntityQueryBuilder;
 
 /**
  * @phpstan-extends \Framework\Model\EntityQueryBuilder<\App\Models\ChurchGroupView>
  */
-class GroupViews extends EntityQueryBuilder
+class GroupViews extends ChurchGroups
 {
     public const TABLE = 'v_groups';
 

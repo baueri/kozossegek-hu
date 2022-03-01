@@ -6,7 +6,6 @@ use App\Helpers\FileHelper;
 use App\Helpers\GroupHelper;
 use App\QueryBuilders\GroupViews;
 use App\Repositories\Groups;
-use App\Repositories\Institutes;
 use App\Services\RebuildSearchEngine;
 use App\Storage\Base64Image;
 use Framework\Exception\FileTypeNotAllowedException;
@@ -15,6 +14,7 @@ use Framework\File\File;
 use Framework\File\FileManager;
 use Framework\Traits\ManagesErrors;
 use Legacy\Group;
+use Legacy\Institutes;
 
 abstract class BaseGroupService
 {
