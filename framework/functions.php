@@ -124,7 +124,7 @@ function builder(?string $table = null): Builder
  */
 function route(string $route, mixed $args = null): string
 {
-    return app()->get(RouterInterface::class)->route($route, $args);
+    return resolve(RouterInterface::class)->route($route, $args);
 }
 
 function route_is(string $routeName): bool
@@ -148,10 +148,6 @@ function redirect_route(string $route, $args = null): never
 
 function collect($values = []): Collection
 {
-    if ($values instanceof Collection) {
-        return $values;
-    }
-
     return new Collection($values);
 }
 
@@ -410,4 +406,10 @@ function report($exception): void
 function resolve($class, $args = null)
 {
     return app()->make($class, $args);
+}
+
+function tap($value, $callback)
+{
+    $callback($value);
+    return $value;
 }

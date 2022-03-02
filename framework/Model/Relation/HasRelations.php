@@ -4,14 +4,15 @@ namespace Framework\Model\Relation;
 
 trait HasRelations
 {
-    use BelongsTo;
     use HasMany;
+
+    private array $relationCounts = [];
+    protected array $preparedRelations = ['hasMany' => [], 'belongsTo' => []];
+    protected array $preparedCallbacks = [];
 
     protected function loadRelations($instances)
     {
-        $this->loadBelongsToRelations($instances);
-        $this->loadHasManyRelations($instances);
-        return $instances;
+        return tap($instances, fn ($instances) => $this->loadHasManyRelations($instances));
     }
 
     protected function getRelationName(): string
@@ -20,15 +21,21 @@ trait HasRelations
         return $bactrace[2]['function'];
     }
 
-    public function with(string $relation)
+    public function with(string $relation, $callback = null): static
     {
         $this->{$relation}();
+
+        if ($callback) {
+            $this->preparedCallbacks[$relation][] = $callback;
+        }
 
         return $this;
     }
 
-    public function hasRelations(): bool
+    public function withCount(string $relation, $callback = null): static
     {
-        return !empty($this->preparedRelations);
+        $this->with($relation, $callback);
+        $this->relationCounts[] = $relation;
+        return $this;
     }
 }

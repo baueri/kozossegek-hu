@@ -9,7 +9,7 @@ use Framework\Support\Collection;
 class OnDaysSelector extends Component
 {
     /**
-     * @param \Framework\Support\Collection<WeekDay> $group_days
+     * @param Collection<WeekDay> $group_days
      */
     public function __construct(
         private readonly Collection $group_days
@@ -19,6 +19,6 @@ class OnDaysSelector extends Component
     public function render(): string
     {
         $days = WeekDay::cases();
-        return view('partials.components.on_days_selector', ['days' => $days, 'group_days' => $this->group_days->pluck('name')->all()]);
+        return view('partials.components.on_days_selector', ['days' => $days, 'group_days' => $this->group_days->map->name->all()]);
     }
 }

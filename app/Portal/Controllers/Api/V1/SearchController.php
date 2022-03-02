@@ -3,15 +3,15 @@
 namespace App\Portal\Controllers\Api\V1;
 
 use App\Auth\Auth;
-use Framework\Http\Request;
-use App\Repositories\Cities;
-use App\Repositories\Districts;
-use App\Repositories\Institutes;
-use App\Repositories\UsersLegacy;
-use App\Portal\Responses\DistrictResponse;
 use App\Portal\Responses\CitySearchResponse;
+use App\Portal\Responses\DistrictResponse;
 use App\Portal\Responses\InstituteSearchResponse;
 use App\Portal\Responses\UserResponse;
+use App\Repositories\Cities;
+use App\Repositories\Districts;
+use App\Repositories\UsersLegacy;
+use Framework\Http\Request;
+use Legacy\Institutes;
 
 class SearchController
 {

@@ -3,8 +3,8 @@
 namespace App\Portal\Controllers;
 
 use App\Auth\Auth;
-use App\Helpers\SpiritualMovementHelper;
 use App\Models\SpiritualMovement;
+use App\QueryBuilders\ChurchGroups;
 use App\QueryBuilders\GroupViews;
 use App\QueryBuilders\SpiritualMovements;
 use Framework\Http\Exception\PageNotFoundException;
@@ -23,11 +23,12 @@ class SpiritualMovementController extends PortalController
     public function list(): string
     {
         use_default_header_bg();
+
         $spiritualMovements = $this->repository
             ->where('highlighted', 1)
-            ->orderBy('name')->get();
-
-        SpiritualMovementHelper::loadGroupsCount($spiritualMovements);
+            ->orderBy('name')
+            ->withCount('groups', fn(ChurchGroups $query) => $query->active())
+            ->get();
 
         return view('portal.spiritual_movement.list', compact('spiritualMovements'));
     }

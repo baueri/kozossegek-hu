@@ -4,8 +4,9 @@ namespace App\Admin\Group\Services;
 
 use App\Admin\Group\GroupTable;
 use App\Enums\AgeGroup;
+use App\QueryBuilders\SpiritualMovements;
 use App\Repositories\GroupStatusRepository;
-use App\Repositories\UsersLegacy;
+use App\Repositories\Users;
 use Framework\Http\Request;
 
 class ListGroups
@@ -30,7 +31,7 @@ class ListGroups
         $filter = $this->request->collect();
         $table = $this->table;
         $current_page = $this->getCurrentPage();
-        $karbantarto = $filter->has('user_id') ? app()->make(UsersLegacy::class)->find($filter['user_id'])->name : null;
+        $karbantarto = $filter->get('user_id') ? Users::query()->find($filter['user_id'])->name : null;
 
         $filter['pending'] = $current_page === 'pending';
 

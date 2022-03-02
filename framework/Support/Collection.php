@@ -22,11 +22,16 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
      */
     protected array $items = [];
 
-    public function __construct(?array $items = [])
+    /**
+     * @param array<T>|null|T[]|T $items
+     */
+    public function __construct($items = null)
     {
-        if ($items) {
-            $this->items = $items;
+        if ($items instanceof Collection) {
+            return $this->items = $items->all();
         }
+
+        $this->items = Arr::wrap($items);
     }
 
     public function put($item, int|string|null $key = null): self
@@ -150,6 +155,11 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         }
 
         return new self(Arr::filter($this->items, $func));
+    }
+
+    public function filterByKey($func): self
+    {
+        return new self(Arr::filterByKey($this->items, $func));
     }
 
     /**
@@ -283,9 +293,9 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         return new self(array_values($this->items));
     }
 
-    public function pluck($key): self
+    public function pluck($key, $keyBy = null): self
     {
-        return new self(Arr::pluck($this->items, $key));
+        return new self(Arr::pluck($this->items, $key, $keyBy));
     }
 
     public function map($func, bool $keepKeys = false): self

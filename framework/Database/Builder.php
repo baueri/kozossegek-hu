@@ -45,6 +45,15 @@ class Builder
         return $this->db->select(...$this->getBaseSelect());
     }
 
+    public function pluck(string $key, ?string $keyBy = null): array
+    {
+        if (!$this->select) {
+            $this->select(array_filter([$key, $keyBy]));
+        }
+
+        return Arr::pluck($this->get(), $key, $keyBy);
+    }
+
     /**
      * @return int
      */
@@ -94,6 +103,11 @@ class Builder
         }
 
         return $this;
+    }
+
+    public function getSelect(): array
+    {
+        return $this->select;
     }
 
     private function getBaseSelect(): array
@@ -236,7 +250,7 @@ class Builder
 
     public function select($select = '*', $bindings = []): self
     {
-        $this->select = [$select];
+        $this->select = (array) $select;
         $this->selectBindings = array_merge($this->selectBindings, $bindings);
 
         return $this;
@@ -302,11 +316,12 @@ class Builder
 
     public function whereIn($column, $values, $clause = 'and'): self
     {
-        if (!$values) {
+        $collected = collect($values);
+        if ($collected->isEmpty()) {
             return $this->whereRaw('1 = 2');
         }
 
-        return $this->where($column, 'in', collect($values)->all(), $clause);
+        return $this->where($column, 'in', $collected->all(), $clause);
     }
 
     public function orWhere($column, $operator = null, $value = null): self
