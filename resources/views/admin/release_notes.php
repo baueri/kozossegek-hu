@@ -1,9 +1,10 @@
 @title('Verzióinformáció')
 @extends('admin')
-<h3>v2.0.3 (2022.03.01)</h3>
+<h3>v2.0.3 (2022.03.02)</h3>
 <ul>
     <li>[FIXED]: Lelkiségi mozgalmak oldalon a közösségek száma 0-t írt ki, javítva</li>
-    <li>[NEW]: a közösségi oldal felnyitásának eseménynaplójába bekerül a user agent</li>
+    <li>[NEW]: A közösségi oldal felnyitásának eseménynaplójába bekerül a user agent</li>
+    <li>[NEW]: Statisztikát lehet frissíteni gombnyomásra</li>
     <li>
         <b>Gépház</b>
         <ul>
