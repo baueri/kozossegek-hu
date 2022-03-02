@@ -77,9 +77,9 @@ class LoginController extends PortalController
      */
     public function register(CreateUser $service, UserTokens $tokens, Mailer $mailer, LegalNoticeService $legalNoticeService): string
     {
+
         $request = $this->request;
         use_default_header_bg();
-
         $model = [
             'name' => $request['name'],
             'email' => $request['email'],
@@ -100,7 +100,7 @@ class LoginController extends PortalController
                 }
             }
             return view('portal.register', $model);
-        } catch (EmailTakenException $e) {
+        } catch (EmailTakenException) {
             Message::danger('Ez az email cím már foglalt!');
             return view('portal.register', $model);
         }

@@ -83,7 +83,7 @@ class GroupSearchRepository
             $builder->notDeleted();
         }
 
-        if ($spiritualMovementID = $filter['spiritual_movement']) {
+        if ($spiritualMovementID = $filter['spiritual_movement_id']) {
             $builder->where('spiritual_movement_id', $spiritualMovementID);
         }
 
