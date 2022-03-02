@@ -3,7 +3,7 @@
 <div class="row">
     <div class="col-md-3">
         @alert('info')
-            A statisztikai adatok naponta frissülnek.
+            A statisztikai adatok naponta frissülnek. <a href="@route('api.admin.statistics.sync')"><b>frissítés most</b></a>
         @endalert
     </div>
 </div>
@@ -19,6 +19,7 @@
             <label>Periódus</label>
             <select class="form-control" name="periodus">
                 <option value="" @selected(!$periodus)>Összesen</option>
+                <option value="today" @selected($periodus === 'today')>Mai nap</option>
                 <option value="yesterday" @selected($periodus === 'yesterday')>Előző nap</option>
                 <option value="week" @selected($periodus === 'week')>Ez a hét</option>
                 <option value="month" @selected($periodus === 'month')>Ez a hónap</option>
