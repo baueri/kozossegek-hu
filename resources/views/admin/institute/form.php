@@ -5,7 +5,7 @@
 @endsection
 @extends('admin')
 <form method="post" id="institute-form" action="{{ $action }}">
-    @if($institute->isFromMiserend())
+    @if($institute->miserend_id)
         @alert('warning')
             <b>Ez az intézmény a miserend.hu adatbázisból lett importálva.</b>
         @endalert

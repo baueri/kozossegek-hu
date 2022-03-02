@@ -16,9 +16,9 @@ use Framework\Model\TimeStamps;
  * @property string $user_group
  * @property string $activated_at
  * @property string $phone_number
+ * @mixin TimeStamps
  */
 class User extends Entity implements AuthUser
 {
-    use TimeStamps;
     use UserTrait;
 }

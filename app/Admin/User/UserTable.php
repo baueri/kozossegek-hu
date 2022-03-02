@@ -3,11 +3,12 @@
 namespace App\Admin\User;
 
 use App\Enums\UserRole;
+use App\Models\User;
 use App\Models\UserLegacy;
 use App\Repositories\Groups;
+use App\Repositories\Users;
 use Framework\Database\Builder;
 use Framework\Database\PaginatedResultSetInterface;
-use App\Repositories\UsersLegacy;
 use Framework\Http\Request;
 use App\Admin\Components\AdminTable\ {
     AdminTable, Deletable, Editable
@@ -26,11 +27,11 @@ class UserTable extends AdminTable implements Deletable, Editable
         'created_at' => 'Regisztráció',
     ];
 
-    private UsersLegacy $repository;
+    private Users $repository;
 
     private Groups $groups;
 
-    public function __construct(UsersLegacy $repository, Groups $groups, Request $request)
+    public function __construct(Users $repository, Groups $groups, Request $request)
     {
         $this->repository = $repository;
         $this->groups = $groups;
@@ -66,16 +67,16 @@ class UserTable extends AdminTable implements Deletable, Editable
         return static::getBanIcon();
     }
 
-    public function getCreatedAt($date): string
+    public function getCreatedAt($date, User $user): string
     {
         return date('Y.m.d', strtotime($date));
     }
 
-    public function getGroups($g, UserLegacy $user): string
+    public function getGroups($g, User $user): string
     {
         $icon = static::getIcon('fa fa-comments');
         $route = route('admin.group.list', ['user_id' => $user->id]);
-        $groupCount = (int) $user->group_count;
+        $groupCount = (int) $user->groups_count;
         return static::getLink(
             $route,
             "{$icon} ({$groupCount})",
@@ -90,15 +91,6 @@ class UserTable extends AdminTable implements Deletable, Editable
         $filter['order_by'] = $this->request['order_by'] ?: 'id';
 
         return $this->getUsers($filter);
-    }
-
-    private function getNumberOfGroups(Collection $users)
-    {
-        if ($users->isEmpty()) {
-            return [];
-        }
-        $ids = $users->pluck('id')->implode(',');
-        return db()->select("select count(*) as cnt, user_id from church_groups where user_id in ($ids) and deleted_at is null group by user_id");
     }
 
     private function getUsers(Collection $filter)
@@ -127,8 +119,8 @@ class UserTable extends AdminTable implements Deletable, Editable
             $query->where('user_group', $userGroup);
         }
 
-        $users = $query->paginate($this->perpage);
+        $query->withCount('groups');
 
-        return $users->withCount($this->getNumberOfGroups($users), 'group_count', 'id', 'user_id');
+        return $query->paginate($this->perpage);
     }
 }

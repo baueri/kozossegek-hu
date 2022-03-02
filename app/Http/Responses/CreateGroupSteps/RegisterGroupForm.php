@@ -4,10 +4,9 @@ namespace App\Http\Responses\CreateGroupSteps;
 
 use App\Auth\Auth;
 use App\Models\ChurchGroupView;
-use App\Models\Institute;
-use App\Repositories\Institutes;
 use App\QueryBuilders\SpiritualMovements;
 use Framework\Http\Request;
+use Legacy\Institutes;
 
 class RegisterGroupForm extends AbstractGroupStep
 {
@@ -25,7 +24,7 @@ class RegisterGroupForm extends AbstractGroupStep
     protected function getModel(): array
     {
         $request = $this->request;
-        /* @var $institute Institute */
+        /* @var $institute \Legacy\Institute */
         $data = collect($request->only(
             'occasion_frequency',
             'institute_id',
