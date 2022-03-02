@@ -124,7 +124,7 @@ function builder(?string $table = null): Builder
  */
 function route(string $route, mixed $args = null): string
 {
-    return app()->get(RouterInterface::class)->route($route, $args);
+    return resolve(RouterInterface::class)->route($route, $args);
 }
 
 function route_is(string $routeName): bool

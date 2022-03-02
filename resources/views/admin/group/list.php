@@ -61,7 +61,7 @@
         </div>
         <div class="col-md-2">
             <div class="form-group">
-                @spiritual_movement_selector($filter['spiritual_movement'])
+                @spiritual_movement_selector($filter['spiritual_movement_id'])
             </div>
         </div>
         <div class="col-md-2">

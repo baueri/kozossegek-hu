@@ -93,15 +93,6 @@ class UserTable extends AdminTable implements Deletable, Editable
         return $this->getUsers($filter);
     }
 
-    private function getNumberOfGroups(Collection $users)
-    {
-        if ($users->isEmpty()) {
-            return [];
-        }
-        $ids = $users->pluck('id')->implode(',');
-        return db()->select("select count(*) as cnt, user_id from church_groups where user_id in ($ids) and deleted_at is null group by user_id");
-    }
-
     private function getUsers(Collection $filter)
     {
         $query = $this->repository->query();

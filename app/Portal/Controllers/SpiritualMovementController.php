@@ -4,6 +4,7 @@ namespace App\Portal\Controllers;
 
 use App\Auth\Auth;
 use App\Models\SpiritualMovement;
+use App\QueryBuilders\ChurchGroups;
 use App\QueryBuilders\GroupViews;
 use App\QueryBuilders\SpiritualMovements;
 use Framework\Http\Exception\PageNotFoundException;
@@ -26,7 +27,7 @@ class SpiritualMovementController extends PortalController
         $spiritualMovements = $this->repository
             ->where('highlighted', 1)
             ->orderBy('name')
-            ->withCount('groups')
+            ->withCount('groups', fn(ChurchGroups $query) => $query->active())
             ->get();
 
         return view('portal.spiritual_movement.list', compact('spiritualMovements'));

@@ -107,9 +107,9 @@ class XmlRouter implements RouterInterface
     }
 
     /**
-     * @return RouteInterface[]|Collection
+     * @return Collection
      */
-    public function getRoutes()
+    public function getRoutes(): Collection
     {
         return $this->routes;
     }
@@ -117,9 +117,9 @@ class XmlRouter implements RouterInterface
     /**
      * @param string $method
      * @param string $uri
-     * @return Route|RouteInterface|mixed|null
+     * @return string|null
      */
-    public function find(string $method, string $uri)
+    public function find(string $method, string $uri): ?string
     {
         if ($method === 'HEAD') {
             $method = 'GET';

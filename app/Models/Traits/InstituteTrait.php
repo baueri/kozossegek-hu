@@ -8,12 +8,7 @@ trait InstituteTrait
 {
     public function getImageRelPath(): string
     {
-        return $this->image_ur ?: InstituteHelper::getImageRelPath($this->id);
-    }
-
-    public function isFromMiserend(): bool
-    {
-        return !is_null($this->miserend_id);
+        return $this->image_url ?? InstituteHelper::getImageRelPath($this->id);
     }
 
     public function getImageStoragePath(): string
