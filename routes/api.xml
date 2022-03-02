@@ -29,5 +29,6 @@
     <!--  ADMIN API  -->
     <route-group middleware="App\Middleware\AdminMiddleware" prefix="admin" as="admin" namespace="App\Admin\Controllers\Api">
         <route method="get" uri="statistics/export" controller="ExportStatisticsController" as="statistics.export"/>
+        <route method="get" uri="statistics/sync" controller="SyncStatisticsController" as="statistics.sync"/>
     </route-group>
 </routes>

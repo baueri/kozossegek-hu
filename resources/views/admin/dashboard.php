@@ -20,7 +20,11 @@
                     <h2>{{ $groups_count }}</h2>
                 </div>
             </div>
-            <h6 class="text-dark border-bottom pb-1 mt-4"><i class="fa fa-chart-line"></i> Statisztika <small>(ebben a hónapban)</small></h6>
+            <h6 class="text-dark border-bottom pb-1 mt-4">
+                <a href="@route('admin.statistics')">
+                    <i class="fa fa-chart-line"></i> Statisztika
+                </a> <small>(ebben a hónapban)</small>
+            </h6>
             <div class="row">
                 <div class="col-xl-4 col-lg-12 text-center">
                     Keresések<br/>
