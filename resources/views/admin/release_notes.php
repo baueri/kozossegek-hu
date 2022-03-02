@@ -1,5 +1,19 @@
 @title('Verzióinformáció')
 @extends('admin')
+<h3>v2.0.3 (2022.03.01)</h3>
+<ul>
+    <li>[FIXED]: Lelkiségi mozgalmak oldalon a közösségek száma 0-t írt ki, javítva</li>
+    <li>[NEW]: a közösségi oldal felnyitásának eseménynaplójába bekerül a user agent</li>
+    <li>
+        <b>Gépház</b>
+        <ul>
+            <li>[CHANGE]: <code>hasMany</code> relációk</li>
+            <li>[NEW]: <code>WithCount</code> relációk</li>
+            <li>[NEW]: <code>Builder</code> és <code>EntityQueryBuilder</code> <code>pluck($key, $keyBy)</code> implementálása</li>
+            <li>[NEW]: <code>Collection::filterByKey($key)</code> implementálása</li>
+        </ul>
+    </li>
+</ul>
 <h3>v2.0.1 (2022.02.27)</h3>
 <ul>
     <li>[NEW]: Városokra bontott statisztika. <a href="/admin/statistics">Ugrás az oldalra</a></li>

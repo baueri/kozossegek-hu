@@ -47,20 +47,26 @@ class Arr
         return $result;
     }
 
-    public static function filter($items, $callback): array
+    public static function filter($items, $callback, bool $byKey = false): array
     {
         if ($items instanceof Collection) {
             return $items->filter($callback)->all();
         }
 
         $result = [];
+
         foreach ($items as $key => $item) {
-            if ($callback($item, $key, $items)) {
+            if ($byKey ? $callback($key) : $callback($item, $key, $items)) {
                 $result[$key] = $item;
             }
         }
 
         return $result;
+    }
+
+    public static function filterByKey(array $items, $callback): array
+    {
+        return static::filter($items, $callback, true);
     }
 
     public static function get($item, $key, $default = null)
@@ -100,21 +106,22 @@ class Arr
         return $items[array_rand($items)];
     }
 
-    /**
-     * @param Collection|array $items
-     * @param $key
-     * @return array
-     */
-    public static function pluck($items, $key): array
+    public static function pluck($items, $key, $keyBy = null): array
     {
         if ($items instanceof Collection) {
-            return $items->pluck($key)->all();
+            return $items->pluck($key, $keyBy)->all();
         }
 
-        return static::map(
-            $items,
-            fn($item) => static::getItemValue($item, $key),
-        );
+        $return = [];
+        foreach ($items as $item) {
+            if ($keyBy) {
+                $return[static::getItemValue($item, $keyBy)] = static::getItemValue($item, $key);
+            } else {
+                $return[] = static::getItemValue($item, $key);
+            }
+        }
+
+        return $return;
     }
 
     public static function getItemValue($item, $key = null)
@@ -152,6 +159,10 @@ class Arr
     {
         if (is_null($value)) {
             return [];
+        }
+
+        if (is_object($value) || is_callable($value)) {
+            return [$value];
         }
 
         return (array) $value;

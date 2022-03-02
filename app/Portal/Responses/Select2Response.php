@@ -3,11 +3,12 @@
 namespace App\Portal\Responses;
 
 use Framework\Support\Collection;
-use JetBrains\PhpStorm\ArrayShape;
 
+/**
+ * @template T
+ */
 abstract class Select2Response
 {
-
     private Collection $collection;
 
     public function __construct($collection)
@@ -20,11 +21,15 @@ abstract class Select2Response
     }
 
     /**
-     * @param mixed $model
+     * @param T $model
      * @return mixed
      */
     abstract public function getText($model);
 
+    /**
+     * @param T $model
+     * @return mixed
+     */
     public function getId($model)
     {
         return $this->getText($model);

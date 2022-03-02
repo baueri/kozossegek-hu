@@ -3,46 +3,31 @@
 namespace Framework\Model\Relation;
 
 use Framework\Model\EntityQueryBuilder;
+use Framework\Support\Collection;
 
 class Relation
 {
-    private EntityQueryBuilder $builder;
+    public readonly ?string $foreginKey;
 
-    private string $relationName;
-
-    private ?string $foreginKey;
-
-    private ?string $localKey;
+    public readonly ?string $localKey;
 
     public function __construct(
-        EntityQueryBuilder $builder,
-        string $relationName,
+        private readonly EntityQueryBuilder $builder,
+        public readonly string $relationName,
         ?string $foreginKey = null,
         ?string $localKey = null
     ) {
-        $this->builder = $builder;
-        $this->relationName = $relationName;
-        $this->foreginKey = $foreginKey;
-        $this->localKey = $localKey;
+        $this->localKey = $localKey ?? $builder::primaryCol();
+        $this->foreginKey = $foreginKey ?? $this->relationName . '_id';
     }
 
-    public function getBuilder()
+    public function applyQueryCallbacks(array $callbacks)
     {
-        return $this->builder;
+        array_walk($callbacks, fn ($callback) => $callback($this->builder));
     }
 
-    public function relationName()
+    public function buildQuery(Collection $instances): EntityQueryBuilder
     {
-        return $this->relationName;
-    }
-
-    public function getForeignKey()
-    {
-        return $this->foreginKey;
-    }
-
-    public function getLocalKey()
-    {
-        return $this->localKey;
+        return $this->builder->whereIn($this->foreginKey, $instances->map->{$this->localKey});
     }
 }

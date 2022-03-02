@@ -12,7 +12,6 @@ use App\Portal\Services\PortalUpdateGroup;
 use App\Portal\Services\SendGroupContactMessage;
 use App\QueryBuilders\GroupViews;
 use App\Repositories\Groups;
-use App\Repositories\Institutes;
 use App\Services\GroupSearchRepository;
 use Error;
 use ErrorException;
@@ -25,6 +24,7 @@ use Framework\Model\ModelNotFoundException;
 use Framework\Support\Arr;
 use Jaybizzle\CrawlerDetect\CrawlerDetect;
 use Legacy\Group;
+use Legacy\Institutes;
 use Throwable;
 
 class GroupController extends PortalController
@@ -206,7 +206,7 @@ class GroupController extends PortalController
                 'age_group',
                 'occasion_frequency',
                 'on_days',
-                'spiritual_movement',
+                'spiritual_movement_id',
                 'tags',
                 'group_leaders',
                 'description',
