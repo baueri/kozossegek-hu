@@ -2,11 +2,6 @@
 
 namespace App\Http\Responses\CreateGroupSteps;
 
-/**
- * Description of UploadDocument
- *
- * @author ivan
- */
 class FinishRegistration extends RegisterGroupForm
 {
     protected function getModel(): array

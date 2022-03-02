@@ -6,12 +6,12 @@ use App\Enums\AgeGroup;
 use App\Enums\JoinMode;
 use App\Enums\OccasionFrequency;
 use App\Models\ChurchGroupView;
-use App\Repositories\GroupStatusRepository;
-use Framework\Http\Request;
 use App\Repositories\Groups;
-use App\Repositories\Institutes;
+use App\Repositories\GroupStatusRepository;
 use App\Repositories\UsersLegacy;
-use App\Models\Institute;
+use Framework\Http\Request;
+use Legacy\Institute;
+use Legacy\Institutes;
 
 class BaseGroupForm
 {

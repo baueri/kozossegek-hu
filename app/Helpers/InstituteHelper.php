@@ -2,7 +2,7 @@
 
 namespace App\Helpers;
 
-use App\Models\Institute;
+use Legacy\Institute;
 
 class InstituteHelper
 {

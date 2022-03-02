@@ -2,22 +2,13 @@
 
 namespace App\Portal\Responses;
 
-use App\Models\Institute;
-
 /**
- * Description of InstituteSearchResponse
- *
- * @author ivan
+ * @phpstan-extends Select2Response<\App\Models\Institute>
  */
 class InstituteSearchResponse extends Select2Response
 {
-    private $admin = false;
+    private bool $admin = false;
 
-    /**
-     *
-     * @param Institute $institute
-     * @return string
-     */
     public function getText($institute)
     {
         $miserend_info = $this->admin && $institute->miserend_id ? ' -- miserend.hu --' : '';
@@ -30,7 +21,7 @@ class InstituteSearchResponse extends Select2Response
         return $model->id;
     }
 
-    public function asAdmin(bool $asAdmin)
+    public function asAdmin(bool $asAdmin): static
     {
         $this->admin = $asAdmin;
         return $this;

@@ -78,9 +78,13 @@ class GroupSearchRepository
         }
 
         if ($filter['deleted']) {
-            $builder->apply('deleted');
+            $builder->trashed();
         } else {
-            $builder->apply('notDeleted');
+            $builder->notDeleted();
+        }
+
+        if ($spiritualMovementID = $filter['spiritual_movement_id']) {
+            $builder->where('spiritual_movement_id', $spiritualMovementID);
         }
 
         $builder->orderBy($filter['order_by'] ?: 'id', $filter['sort'] ?: 'desc');
