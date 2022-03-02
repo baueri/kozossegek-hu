@@ -11,7 +11,7 @@ interface RouterInterface
      */
     public function getRoutes(): Collection;
 
-    public function find(string $method, string $uri): ?string;
+    public function find(string $method, string $uri): ?RouteInterface;
 
     /**
      * @param string $name
