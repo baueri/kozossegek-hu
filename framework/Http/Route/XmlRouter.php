@@ -114,11 +114,6 @@ class XmlRouter implements RouterInterface
         return $this->routes;
     }
 
-    /**
-     * @param string $method
-     * @param string $uri
-     * @return RouteInterface|null
-     */
     public function find(string $method, string $uri): ?RouteInterface
     {
         if ($method === 'HEAD') {
