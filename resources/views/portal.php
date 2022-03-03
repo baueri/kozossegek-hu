@@ -94,9 +94,6 @@
         </div>
     </footer>
     @yield('footer')
-    @if($show_debugbar)
-    {{ debugbar()->render() }}
-    @endif
     <div class="alert text-center cookiealert" role="alert">
         <b>Kedves látogató!</b> &#x1F36A; A honlapon a felhasználói élmény fokozásának érdekében cookie-kat használunk. <a href="/cookie-tajekoztato" target="_blank">További információ</a>
         <button type="button" class="btn btn-primary btn-sm acceptcookies">

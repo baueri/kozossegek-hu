@@ -43,7 +43,7 @@ class Mailer
      */
     public function send(Mailable $mailable): bool
     {
-        if (app()->envIs('test')) {
+        if (app()->isTest()) {
             $this->setMailableForTest($mailable);
         } else {
             if ($mailable->from) {
