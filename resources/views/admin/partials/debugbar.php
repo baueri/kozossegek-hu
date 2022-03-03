@@ -13,7 +13,7 @@
         @foreach($tab_contents as $id => $tab_content)
         <div>
             <input type="radio" id="{{ $id }}" value="1" style="display: none;" name="debug-tab">
-            <div>{{ $tab_content }}</div>
+            <div class="p-2">{{ $tab_content }}</div>
         </div>
         @endforeach
     </div>

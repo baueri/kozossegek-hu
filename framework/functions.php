@@ -15,6 +15,7 @@ use Framework\Database\Builder;
 use Framework\Database\Database;
 use Framework\Dispatcher\Dispatcher;
 use Framework\Dispatcher\HttpDispatcher;
+use Framework\Enums\Environment;
 use Framework\Http\ApiResponse;
 use Framework\Http\Message;
 use Framework\Http\Request;
@@ -208,7 +209,7 @@ function widget($uniqid)
 
 function is_prod(): bool
 {
-    return app()->envIs('production');
+    return app()->envIs(Environment::production);
 }
 
 function debugbar(): DebugBar
@@ -405,7 +406,7 @@ function report($exception): void
  */
 function resolve($class, $args = null)
 {
-    return app()->make($class, $args);
+    return app()->get($class, $args);
 }
 
 function tap($value, $callback)

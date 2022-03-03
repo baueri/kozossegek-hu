@@ -34,7 +34,6 @@ class AdminMiddleware implements Middleware
             Message::danger('Nem vagy belépve!');
             redirect_route('login');
         }
-
         $user = Auth::user();
 
         if (!$user->can(UserRight::ACCESS_BACKEND)) {

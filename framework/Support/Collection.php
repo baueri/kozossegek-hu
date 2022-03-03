@@ -537,4 +537,9 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     {
         return new CollectionProxy($this, $name);
     }
+
+    public function dd(): never
+    {
+        dd($this->items);
+    }
 }
