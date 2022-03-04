@@ -4,6 +4,7 @@ use App\Admin\Components\DebugBar\DebugBar;
 use App\Auth\Auth;
 use App\Auth\AuthUser;
 use App\HttpKernel;
+use App\Services\MileStone;
 use Framework\Dispatcher\Dispatcher;
 use Framework\Dispatcher\HttpDispatcher;
 
@@ -24,7 +25,11 @@ try {
     $app->bind(AuthUser::class, function () {
         return Auth::user();
     });
+
+    MileStone::measure('dispatch', 'Dispatching');
     $app->run($app->get(Dispatcher::class));
+    MileStone::endMeasure('dispatch');
+    print debugbar()->render();
 } catch (Error | Exception | Throwable $e) {
     ob_get_clean();
     $app->handleError($e);

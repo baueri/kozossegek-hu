@@ -3,6 +3,7 @@
 use App\Bootstrapper\RegisterDirectives;
 use App\Repositories\EventLogRepository;
 use App\Services\EventLogger;
+use App\Services\MileStone;
 use Arrilot\DotEnv\DotEnv;
 use Framework\Application;
 use Framework\Database\Database;
@@ -24,7 +25,7 @@ const APP = ROOT . 'app' . DS;
 const RESOURCES = ROOT . 'resources' . DS;
 const VIEWS = RESOURCES . 'views' . DS;
 const CACHE = ROOT . 'cache' . DS;
-const APP_VERSION = 'v2.0.3';
+const APP_VERSION = 'v2.0.4';
 
 // Config constants for faster development
 const APP_CFG_LEGAL_NOTICE_VERSION = 'app.legal_notice_version';
@@ -41,6 +42,7 @@ if (!_env('DEBUG')) {
     error_reporting(E_ALL);
 }
 
+MileStone::measure('init', 'Initialize');
 $application = new Application();
 
 $application->bind(RouteInterface::class, Route::class);
@@ -48,6 +50,8 @@ $application->bind(ViewInterface::class, View::class);
 $application->singleton(Config::class);
 $application->singleton(RouterInterface::class, XmlRouter::class);
 $application->singleton(EventLogger::class, EventLogRepository::class);
+$application->on('booting', function () { MileStone::measure('bootstrap'); });
+$application->on('booted', function () { MileStone::endMeasure('bootstrap'); });
 
 $application->singleton(Database::class, function () {
     $configuration = config('db');
@@ -71,5 +75,7 @@ $application->singleton(Database::class, function () {
 
 $application->boot(RegisterDirectives::class);
 $application->singleton(App\Repositories\Widgets::class);
+
+MileStone::endMeasure('init');
 
 include APP . 'macros.php';

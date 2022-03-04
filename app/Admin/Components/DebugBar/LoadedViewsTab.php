@@ -4,7 +4,7 @@ namespace App\Admin\Components\DebugBar;
 
 class LoadedViewsTab extends DebugBarTab
 {
-    protected static $loadedViews = [];
+    protected static array $loadedViews = [];
 
     public static function addView(string $filePath, string $cachedFilePath)
     {
@@ -18,9 +18,8 @@ class LoadedViewsTab extends DebugBarTab
 
     public function render(): string
     {
-        $views = '<li>' . collect(static::$loadedViews)
-                ->map(fn(array $row) => "{$row[0]} --> {$row[1]}")
-                ->implode('<li></li>') . '</li>';
-        return "<ul style='list-style: none;'>$views</ul>";
+        return collect(static::$loadedViews)
+            ->map(fn(array $row) => "<code>{$row[0]}</code> --> {$row[1]}<br/>")
+            ->implode('');
     }
 }

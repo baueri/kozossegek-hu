@@ -5,7 +5,6 @@ namespace Framework\Container;
 use Closure;
 use Framework\Container\Exceptions\AbstractionAlreadySharedException;
 use Framework\Container\Exceptions\AlreadyBoundException;
-use Framework\Http\Controller;
 use InvalidArgumentException;
 use Psr\Container\ContainerInterface;
 use ReflectionFunction;
@@ -15,19 +14,17 @@ use ReflectionParameter;
 
 class Container implements ContainerInterface
 {
-    protected $bindings = [];
+    protected array $bindings = [];
 
-    protected $singletons = [];
+    protected array $singletons = [];
 
-    protected $shared = [];
+    protected array $shared = [];
 
     /**
-     * @param string $abstraction
-     * @param mixed $concrete
      * @throws AbstractionAlreadySharedException
      * @throws AlreadyBoundException
      */
-    public function singleton($abstraction, $concrete = null): void
+    public function singleton(string $abstraction, Closure|string|null $concrete = null): void
     {
         if ($this->isSingletonRegistered($abstraction)) {
             throw new AbstractionAlreadySharedException("$abstraction is already registered");
@@ -76,7 +73,7 @@ class Container implements ContainerInterface
             return $this->getShared($id);
         }
 
-        return $this->make($id);
+        return $this->make($id, func_get_args()[1] ?? []);
     }
 
     public function put($key, $value)
