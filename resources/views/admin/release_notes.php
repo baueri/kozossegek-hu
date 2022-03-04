@@ -1,55 +1,48 @@
 @title('Verzióinformáció')
 @extends('admin')
+<h3>v2.0.4 (2022.03.04)</h3>
+<ul>
+    <li><b>Gépház:</b></li>
+    <li>[FIXED]: teljesítmény lassulás javítása</li>
+    <li>[NEW]: Timeline a debug bar-ba a lassulások monitorozására</li>
+</ul>
 <h3>v2.0.3 (2022.03.02)</h3>
 <ul>
     <li>[FIXED]: Lelkiségi mozgalmak oldalon a közösségek száma 0-t írt ki, javítva</li>
     <li>[NEW]: A közösségi oldal felnyitásának eseménynaplójába bekerül a user agent</li>
     <li>[NEW]: Statisztikát lehet frissíteni gombnyomásra</li>
-    <li>
-        <b>Gépház</b>
-        <ul>
-            <li>[CHANGE]: <code>hasMany</code> relációk</li>
-            <li>[NEW]: <code>WithCount</code> relációk</li>
-            <li>[NEW]: <code>Builder</code> és <code>EntityQueryBuilder</code> <code>pluck($key, $keyBy)</code> implementálása</li>
-            <li>[NEW]: <code>Collection::filterByKey($key)</code> implementálása</li>
-        </ul>
-    </li>
+    <li><b>Gépház:</b></li>
+    <li>[CHANGE]: <code>hasMany</code> relációk</li>
+    <li>[NEW]: <code>WithCount</code> relációk</li>
+    <li>[NEW]: <code>Builder</code> és <code>EntityQueryBuilder</code> <code>pluck($key, $keyBy)</code> implementálása</li>
+    <li>[NEW]: <code>Collection::filterByKey($key)</code> implementálása</li>
 </ul>
 <h3>v2.0.1 (2022.02.27)</h3>
 <ul>
     <li>[NEW]: Városokra bontott statisztika. <a href="/admin/statistics">Ugrás az oldalra</a></li>
     <li>[FIXED]: ÁSZF komponens javítása.</li>
-    <li>
-        <b>Gépház</b>
-        <ul>
-            <li>[CHANGED]: <code>Builder::whereRaw()</code> bindings paraméter ne csak tömböt várjon.</li>
-            <li>[NEW]: <code>Arr::wrap()</code> függvény</li>
-        </ul>
-    </li>
+    <li><b>Gépház</b></li>
+    <li>[CHANGED]: <code>Builder::whereRaw()</code> bindings paraméter ne csak tömböt várjon.</li>
+    <li>[NEW]: <code>Arr::wrap()</code> függvény</li>
 </ul>
 <h3>v2.0 (2022.02.22)</h3>
 <ul>
     <li>[CHANGED]: Admin oldali intézmény kereső felokosítása</li>
     <li>[FIXED]: keresőmotor generáló optimalizálás</li>
+    <li><b>Gépház</b></li>
+    <li>[CHANGED]: Komponens (&#64;component('...')) használatának átalakítása</li>
     <li>
-        <b>Gépház</b>
+        [CHANGED]: Átállás php8.1-re
         <ul>
-            <li>[CHANGED]: Komponens (&#64;component('...')) használatának átalakítása</li>
-            <li>
-                [CHANGED]: Átállás php8.1-re
-                <ul>
-                    <li>warning-ok, error-ok javítása</li>
-                    <li>szintaxis átírása</li>
-                    <li>enum-ok bevezetése</li>
-                </ul>
-            </li>
-            <li>[FIXED]: `v_groups` nézettábla javítása</li>
-            <li>[NEW]: query builder-be új függvény (`each`)</li>
-            <li>[NEW]: Új ORM implementáció</li>
-            <li>[NEW]: Collection proxy</li>
+            <li>warning-ok, error-ok javítása</li>
+            <li>szintaxis átírása</li>
+            <li>enum-ok bevezetése</li>
         </ul>
     </li>
-
+    <li>[FIXED]: `v_groups` nézettábla javítása</li>
+    <li>[NEW]: query builder-be új függvény (`each`)</li>
+    <li>[NEW]: Új ORM implementáció</li>
+    <li>[NEW]: Collection proxy</li>
 </ul>
 <h3>v1.4.6 (2021.11.18)</h3>
 <ul>

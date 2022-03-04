@@ -1,7 +1,7 @@
 @title('Statisztika')
 @extends('admin')
 <div class="row">
-    <div class="col-md-3">
+    <div class="col-md-3 col-sm-6">
         @alert('info')
             A statisztikai adatok naponta frissülnek. <a href="@route('api.admin.statistics.sync')"><b>frissítés most</b></a>
         @endalert
