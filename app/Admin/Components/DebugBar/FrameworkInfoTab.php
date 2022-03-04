@@ -19,13 +19,13 @@ class FrameworkInfoTab extends DebugBarTab
         $env = app()->getEnvironment();
 
         return <<<EOT
-            <div class="p-3">
+            <code>
                 <b>Környezet:</b> $env<br/>
                 <b>URI maszk:</b> $uriMask<br/>
                 <b>Controller:</b> $controller<br/>
                 <b>Alias:</b> $alias<br/>
                 <b>Middleware</b> $middleware<br/>
-            </div>
+            </code>
         EOT;
     }
 }

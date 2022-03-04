@@ -3,17 +3,12 @@
 namespace Framework\Middleware;
 
 use App\Auth\Authenticate;
+use App\Services\MileStone;
 
 class AuthMiddleware implements Middleware
 {
-    /**
-     * @var Authenticate
-     */
     private Authenticate $service;
 
-    /**
-     * @param Authenticate $service
-     */
     public function __construct(Authenticate $service)
     {
         $this->service = $service;
@@ -21,6 +16,8 @@ class AuthMiddleware implements Middleware
 
     public function handle(): void
     {
+        MileStone::measure('auth', 'Authenticate');
         $this->service->authenticateBySession();
+        MileStone::endMeasure('auth');
     }
 }

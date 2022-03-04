@@ -14,33 +14,24 @@ use Framework\Http\Request;
 
 class PageController extends AdminController
 {
-    /**
-     * @var PageRepository
-     */
-    private $repository;
-
-    /**
-     *
-     * @param Request $request
-     * @param AdminPageRepository $repository
-     */
-    public function __construct(Request $request, AdminPageRepository $repository)
-    {
+    public function __construct(
+        Request $request,
+        private readonly AdminPageRepository $repository
+    ) {
         parent::__construct($request);
-        $this->repository = $repository;
     }
 
-    public function list(PageTable $table, PageListService $service)
+    public function list(PageTable $table, PageListService $service): string
     {
         return $service->show($table);
     }
 
-    public function trash(TrashPageTable $table, PageListService $service)
+    public function trash(TrashPageTable $table, PageListService $service): string
     {
         return $service->show($table);
     }
 
-    public function emptyTrash(PageRepository $repository)
+    public function emptyTrash(PageRepository $repository): never
     {
         $repository->getBuilder()->whereNotNull('deleted_at')->delete();
 
@@ -49,14 +40,14 @@ class PageController extends AdminController
         redirect_route('admin.page.trash');
     }
 
-    public function create()
+    public function create(): string
     {
         $page = new Page();
         $action = route('admin.page.do_create');
         return view('admin.page.create', compact('action', 'page'));
     }
 
-    public function doCreate()
+    public function doCreate(): never
     {
         $data = $this->request->only('title', 'slug', 'content', 'status');
         $data['user_id'] = Auth::user()->id;
@@ -68,14 +59,14 @@ class PageController extends AdminController
         redirect_route('admin.page.edit', ['id' => $page->id]);
     }
 
-    public function edit()
+    public function edit(): string
     {
         $page = $this->repository->findOrFail($this->request['id']);
         $action = route('admin.page.update', ['id' => $page->id]);
         return view('admin.page.edit', compact('page', 'action'));
     }
 
-    public function update()
+    public function update(): never
     {
         $page = $this->repository->find($this->request['id']);
 
@@ -88,7 +79,7 @@ class PageController extends AdminController
         redirect_route('admin.page.edit', $page);
     }
 
-    public function delete()
+    public function delete(): never
     {
         $this->repository->deleteById($this->request['id']);
 
@@ -97,7 +88,7 @@ class PageController extends AdminController
         redirect_route('admin.page.list');
     }
 
-    public function forceDelete()
+    public function forceDelete(): never
     {
         $this->repository->deleteById($this->request['id'], true);
 

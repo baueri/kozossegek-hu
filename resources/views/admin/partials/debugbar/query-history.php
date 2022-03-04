@@ -7,14 +7,8 @@
     </thead>
     @foreach($queries as $row)
         <tr>
-            <td>{{ $row[0] }}</td>
-            <td>{{ round($row[2], 3) }}</td>
+            <td><code>{{ $row[0] }}</code></td>
+            <td><code><b>{{ $row[2] }}</b><i>μ</i></code></td>
         </tr>
     @endforeach
 </table>
-
-<style>
-    #query-history {
-        color: var(--red);
-    }
-</style>
