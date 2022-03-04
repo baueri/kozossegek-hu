@@ -87,9 +87,6 @@
         </footer>
     </div>
 </div>
-@if($show_debugbar)
-    {{ debugbar()->render() }}
-@endif
 @yield('footer')
 
 <script>

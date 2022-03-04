@@ -12,28 +12,26 @@ class DebugBar
      */
     private array $tabs;
 
-    public function __construct(FrameworkInfoTab $frameworkInfoTab, QueryHistoryTab $queryHistoryTab, LoadedViewsTab $loadedViewsTab)
-    {
+    public function __construct(
+        FrameworkInfoTab $frameworkInfoTab,
+        QueryHistoryTab $queryHistoryTab,
+        LoadedViewsTab $loadedViewsTab,
+        MileStoneTab $timeLineTab
+    ) {
         $this->tabs = [
             $frameworkInfoTab,
             $queryHistoryTab,
             $loadedViewsTab,
+            $timeLineTab
         ];
-    }
-
-    public function tab(string $tabClassName): DebugBarTab
-    {
-        foreach ($this->tabs as $tab) {
-            if (get_class($tab) == $tabClassName) {
-                return $tab;
-            }
-        }
-
-        throw new InvalidArgumentException("tab $tabClassName does not exists");
     }
 
     public function render(): string
     {
+        if (!$this->enabled()) {
+            return '';
+        }
+
         $headers = [];
         $tab_contents = [];
         foreach ($this->tabs as $tab) {
