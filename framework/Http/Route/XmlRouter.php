@@ -27,7 +27,7 @@ class XmlRouter implements RouterInterface
      */
     protected static array $globalArgs = [];
 
-    public function __construct(protected Request $request, private Application $application)
+    public function __construct(private Application $application)
     {
         $this->load();
     }
@@ -155,7 +155,7 @@ class XmlRouter implements RouterInterface
 
         foreach ($this->routes as $route) {
             if ($route->getAs() == $name) {
-                return $route->getWithArgs($args);
+                return get_site_url() . '/' . ltrim($route->getWithArgs($args), '/');
             }
         }
 

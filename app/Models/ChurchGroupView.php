@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Models\Traits\GroupTrait;
+use App\Services\SystemAdministration\SiteMap\ChangeFreq;
+use App\Services\SystemAdministration\SiteMap\EntitySiteMappable;
 use Framework\Model\Entity;
 use Framework\Support\StringHelper;
 
@@ -27,6 +29,7 @@ use Framework\Support\StringHelper;
 class ChurchGroupView extends Entity
 {
     use GroupTrait;
+    use EntitySiteMappable;
 
     private ?string $cachedUrl = null;
 
@@ -49,6 +52,21 @@ class ChurchGroupView extends Entity
         $varos = StringHelper::slugify($this->city);
 
         $data = ['varos' => $varos, 'intezmeny' => $intezmeny, 'kozosseg' => $this->slug()];
-        return $this->cachedUrl = get_site_url() . route('kozosseg', $data);
+        return $this->cachedUrl = route('kozosseg', $data);
+    }
+
+    public function getUrl(): string
+    {
+        return $this->url();
+    }
+
+    public function changeFreq(): ChangeFreq
+    {
+        return ChangeFreq::monthly;
+    }
+
+    public function priority(): ?string
+    {
+        return '0.7';
     }
 }

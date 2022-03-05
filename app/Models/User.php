@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Auth\AuthUser;
 use App\Models\Traits\UserTrait;
 use Framework\Model\Entity;
-use Framework\Model\TimeStamps;
+use Legacy\TimeStamps;
 
 /**
  * @property string $name

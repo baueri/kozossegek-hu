@@ -1,7 +1,6 @@
 <?php
 
-
-namespace Framework\Model;
+namespace Legacy;
 
 trait TimeStamps
 {

@@ -106,7 +106,7 @@ trait GroupTrait
 
     public function getEditUrl(): string
     {
-        return get_site_url() . route('portal.edit_group', $this);
+        return route('portal.edit_group', $this);
     }
 
     public function isEditableBy(?UserLegacy $user): bool

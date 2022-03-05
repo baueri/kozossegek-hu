@@ -13,3 +13,4 @@ email_templates/
 tests/
 .php_cs.cache
 psalm.xml
+public/sitemap.xml

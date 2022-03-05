@@ -207,7 +207,7 @@ class GroupController extends AdminController
 
             $group = $this->findOrFailById();
 
-            $groups->delete($group);
+            $groups->deleteModel($group);
 
             $mailable = app()->make(DefaultMailable::class)
                 ->setMessage($this->request['message'])

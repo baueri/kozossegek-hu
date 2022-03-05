@@ -5,15 +5,16 @@ namespace App\Admin\Page;
 use App\Admin\Components\AdminTable\AdminTable;
 use App\Admin\Components\AdminTable\Deletable;
 use App\Admin\Components\AdminTable\Editable;
+use App\Models\Page;
 use App\Models\PageStatus;
-use App\Repositories\AdminPageRepository;
+use App\QueryBuilders\Pages;
 use App\Repositories\Users;
 use Framework\Database\PaginatedResultSetInterface;
-use Framework\Http\Request;
+use Framework\Model\PaginatedModelCollection;
+use Framework\Support\Collection;
 
 class PageTable extends AdminTable implements Deletable, Editable
 {
-
     protected array $columns = [
         'id' => '#',
         'title' => 'Oldal címe',
@@ -24,15 +25,9 @@ class PageTable extends AdminTable implements Deletable, Editable
         'updated_at' => 'Utoljára módosítva',
     ];
 
-    public function __construct(Request $request, private AdminPageRepository $repository)
+    public function getSlug($slug, Page $page): string
     {
-        parent::__construct($request);
-    }
-
-    public function getSlug($slug): string
-    {
-        $url = route('portal.page', compact('slug')) ;
-        return "<a href='$url' target='_blank'>$url</a>";
+        return "<a href='{$page->getUrl()}' target='_blank'>{$slug}</a>";
     }
 
     public function getStatus($status): string
@@ -54,7 +49,7 @@ class PageTable extends AdminTable implements Deletable, Editable
             $filter['deleted'] = true;
         }
 
-        $pages = $this->repository->getPages($filter);
+        $pages = $this->getPages($filter);
 
         $userIds = $pages->pluck('user_id')->unique()->all();
 
@@ -77,5 +72,21 @@ class PageTable extends AdminTable implements Deletable, Editable
     public function getEditColumn(): string
     {
         return 'title';
+    }
+
+    private function getPages(Collection $filter): PaginatedModelCollection
+    {
+        $query = Pages::query()
+            ->when($filter['status'], fn ($query, $status) => $query->where('status', $status))
+            ->when($filter['search'], fn ($query, $search) => $query->where('title', 'like', "%$search%"))
+        ;
+
+        if ($filter['deleted']) {
+            $query->whereNotNull('deleted_at');
+        } else {
+            $query->whereNull('deleted_at');
+        }
+
+        return $query->paginate();
     }
 }
