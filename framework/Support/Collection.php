@@ -451,6 +451,12 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         return prev($this->items);
     }
 
+    public function unshift($item): static
+    {
+        array_unshift($this->items, $item);
+        return $this;
+    }
+
     public function __toString(): string
     {
         return $this->toJson(JSON_UNESCAPED_UNICODE);

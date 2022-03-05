@@ -20,6 +20,11 @@ class SpiritualMovements extends EntityQueryBuilder
         return SpiritualMovement::class;
     }
 
+    public function hightLighted(): self
+    {
+        return $this->where('highlighted', 1);
+    }
+
     public function forUser(UserLegacy $user): self
     {
         return $this->whereRaw('id in (SELECT spiritual_movement_id FROM spiritual_movement_administrators WHERE user_id = ?)', [$user->id]);

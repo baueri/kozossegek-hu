@@ -164,9 +164,9 @@ class Container implements ContainerInterface
         $parameters = $reflectionMethod->getParameters();
 
         foreach ($parameters as $i => $parameter) {
-            if (isset($resolvedDependencies[$i]) && key($resolvedDependencies) === 0) {
+            if (array_key_exists($i, $resolvedDependencies) && key($resolvedDependencies) === 0) {
                 $dependencies[] = $resolvedDependencies[$i];
-            } elseif (isset($resolvedDependencies[$parameter->name])) {
+            } elseif (array_key_exists($parameter->name, $resolvedDependencies)) {
                 $dependencies[] = $resolvedDependencies[$parameter->name];
             } elseif ($this->isResolvable($parameter)) {
                 $dependencies[] = $this->getDependencyResourceValue($parameter);

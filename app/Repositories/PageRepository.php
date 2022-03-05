@@ -2,7 +2,6 @@
 
 namespace App\Repositories;
 
-use App\Models\Page;
 use Framework\Database\PaginatedResultSet;
 use Framework\Model\Model;
 use Framework\Model\ModelCollection;
@@ -10,6 +9,7 @@ use Framework\Model\ModelNotFoundException;
 use Framework\Model\PaginatedModelCollection;
 use Framework\Repository;
 use Framework\Support\Collection;
+use Legacy\Page;
 
 class PageRepository extends Repository
 {

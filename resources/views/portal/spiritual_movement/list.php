@@ -18,7 +18,7 @@
             <div class="no-gutters d-md-flex flex-row">
                 <div style="max-width: 150px; margin: auto;" class="w-100 p-2"><img src="{{ $spiritualMovement->image_url }}"></div>
                 <div class="p-3 flex-grow-1 text-center text-md-left">
-                    <h5 class="card-title"><a href="@route('portal.spiritual_movement.view', ['slug' => $spiritualMovement->slug])">{{ $spiritualMovement->name }}</a></h5>
+                    <h5 class="card-title"><a href="{{ $spiritualMovement->getUrl() }}">{{ $spiritualMovement->name }}</a></h5>
                     <div class="card-text">{{ $spiritualMovement->excerpt() }}</div>
                     <p class="card-text">
                         <small class="text-muted">Regisztrált közösségek: {{ $spiritualMovement->groups_count ?? 0 }}</small>

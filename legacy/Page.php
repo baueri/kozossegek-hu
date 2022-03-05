@@ -1,27 +1,31 @@
 <?php
 
-namespace App\Models;
+namespace Legacy;
 
 use App\Auth\Auth;
-use App\Services\SystemAdministration\SiteMap\ChangeFreq;
-use App\Services\SystemAdministration\SiteMap\EntitySiteMappable;
-use Framework\Model\Entity;
-use Framework\Model\HasTimestamps;
+use App\Models\User;
+use Framework\Model\Model;
 use Framework\Support\StringHelper;
 
-/**
- * @property string $title
- * @property string $slug
- * @property string $content
- * @property string $user_id
- * @property string $status
- * @property null|string $header_image
- * @property string $priority
- */
-class Page extends Entity
+class Page extends Model
 {
-    use HasTimestamps;
-    use EntitySiteMappable;
+    use TimeStamps;
+
+    public $id;
+
+    public $title;
+
+    public $content;
+
+    public $user_id;
+
+    public $status;
+
+    public $slug;
+
+    public $header_image;
+
+    public ?User $user = null;
 
     public function getUrl(): string
     {
@@ -42,10 +46,5 @@ class Page extends Entity
         }
 
         return "{$this->title} {$link}";
-    }
-
-    public function changeFreq(): ChangeFreq
-    {
-        return ChangeFreq::yearly;
     }
 }

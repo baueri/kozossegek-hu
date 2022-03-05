@@ -1,5 +1,11 @@
 @title('Verzióinformáció')
 @extends('admin')
+<h3>v2.1.0 (2022.03.05)</h3>
+<ul>
+    <li>[NEW]: Lelkiségi mozgalmak adatbázis táblába időbélyeg (create, update) létrehozás</li>
+    <li>[NEW]: Statikus oldalak oldaltérkép priorizálása</li>
+    <li>[NEW]: Oldaltérkép generátor</li>
+</ul>
 <h3>v2.0.4 (2022.03.04)</h3>
 <ul>
     <li><b>Gépház:</b></li>
