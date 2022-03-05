@@ -6,10 +6,10 @@ use App\Admin\Page\PageTable;
 use App\Admin\Page\Services\PageListService;
 use App\Admin\Page\TrashPageTable;
 use App\Auth\Auth;
+use App\Models\Page;
 use App\QueryBuilders\Pages;
 use Framework\Http\Message;
 use Framework\Http\Request;
-use Legacy\Page;
 
 class PageController extends AdminController
 {
