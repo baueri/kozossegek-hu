@@ -11,7 +11,6 @@ return [
     'DB_NAME' => 'kozossegek',
     'DB_PORT' => '3306',
     'BASE_AUTH' => true,
-    'SANITIZE_OUTPUT' => true,
     'COMING_SOON' => true,
 
     //EMAIL beállítások

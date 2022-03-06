@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use App\Models\Traits\GroupTrait;
+use App\Services\SystemAdministration\SiteMap\ChangeFreq;
 use Framework\Model\Entity;
-use Framework\Support\StringHelper;
 
 /**
  * @property-read null|string $name
@@ -28,8 +28,6 @@ class ChurchGroupView extends Entity
 {
     use GroupTrait;
 
-    private ?string $cachedUrl = null;
-
     public function getThumbnail(): string
     {
         if ($this->image_url) {
@@ -39,16 +37,13 @@ class ChurchGroupView extends Entity
         return $this->institute_image ?: '/images/default_thumbnail.jpg';
     }
 
-    public function url(): string
+    public function changeFreq(): ChangeFreq
     {
-        if ($this->cachedUrl) {
-            return $this->cachedUrl;
-        }
+        return ChangeFreq::monthly;
+    }
 
-        $intezmeny = StringHelper::slugify($this->institute_name);
-        $varos = StringHelper::slugify($this->city);
-
-        $data = ['varos' => $varos, 'intezmeny' => $intezmeny, 'kozosseg' => $this->slug()];
-        return $this->cachedUrl = get_site_url() . route('kozosseg', $data);
+    public function priority(): ?string
+    {
+        return '0.7';
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\GroupTrait;
 use Framework\Model\Entity;
 
 /**
@@ -9,5 +10,5 @@ use Framework\Model\Entity;
  */
 class ChurchGroup extends Entity
 {
-
+    use GroupTrait;
 }

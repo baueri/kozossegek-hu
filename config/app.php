@@ -8,7 +8,6 @@ return [
     'base_auth.user' => 'kozossegek',
     'base_auth.password' => '***REMOVED***',
     'docache' => _env('ENVIRONMENT') != 'production',
-    'sanitize' => _env('SANITIZE_OUTPUT', false),
     'debug' => _env('DEBUG', false),
     'coming_soon' => _env('COMING_SOON', false),
 

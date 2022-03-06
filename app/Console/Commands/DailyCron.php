@@ -8,12 +8,6 @@ use Framework\Console\Command;
 
 class DailyCron implements Command
 {
-    public function __construct(
-        private readonly ClearUserSession $clearUserSession,
-        private readonly EventLogAggregator $eventLogAggregator
-    ) {
-    }
-
     public static function signature(): string
     {
         return 'cron:daily';
@@ -21,7 +15,8 @@ class DailyCron implements Command
 
     public function handle(): void
     {
-        $this->clearUserSession->run();
-        $this->eventLogAggregator->run();
+        resolve(ClearUserSession::class)->run();
+        resolve(EventLogAggregator::class)->run();
+        resolve(\App\Services\SystemAdministration\SiteMap\SiteMapGenerator::class)->run();
     }
 }

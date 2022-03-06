@@ -45,6 +45,6 @@ class DebugBar
 
     public function enabled(): bool
     {
-        return (bool) _env('DEBUG');
+        return _env('DEBUG') && strtolower($_SERVER['HTTP_X_REQUESTED_WITH'] ?? '') !== 'xmlhttprequest';
     }
 }

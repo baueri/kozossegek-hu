@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Auth\AuthUser;
 use App\Models\Traits\UserTrait;
 use Framework\Model\Model;
-use Framework\Model\TimeStamps;
+use Legacy\TimeStamps;
 
 class UserLegacy extends Model implements AuthUser
 {

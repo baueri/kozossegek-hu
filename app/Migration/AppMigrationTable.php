@@ -54,4 +54,15 @@ class AppMigrationTable extends Table
 
         return $this;
     }
+
+    public function dropTimeStamps(): static
+    {
+        foreach (['created_at', 'updated_at', 'deleted_at'] as $column) {
+            if ($this->hasColumn($column)) {
+                $this->removeColumn($column);
+            }
+        }
+
+        return $this;
+    }
 }

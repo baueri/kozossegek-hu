@@ -2,7 +2,9 @@
 
 namespace App\Migration;
 
-class AppMigration extends \Phinx\Migration\AbstractMigration
+use Phinx\Migration\AbstractMigration;
+
+class AppMigration extends AbstractMigration
 {
     /**
      *

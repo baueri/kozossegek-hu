@@ -7,8 +7,7 @@ use App\Admin\Page\Services\PageListService;
 use App\Admin\Page\TrashPageTable;
 use App\Auth\Auth;
 use App\Models\Page;
-use App\Repositories\AdminPageRepository;
-use App\Repositories\PageRepository;
+use App\QueryBuilders\Pages;
 use Framework\Http\Message;
 use Framework\Http\Request;
 
@@ -16,7 +15,7 @@ class PageController extends AdminController
 {
     public function __construct(
         Request $request,
-        private readonly AdminPageRepository $repository
+        private readonly Pages $repository
     ) {
         parent::__construct($request);
     }
@@ -31,9 +30,9 @@ class PageController extends AdminController
         return $service->show($table);
     }
 
-    public function emptyTrash(PageRepository $repository): never
+    public function emptyTrash(Pages $repository): never
     {
-        $repository->getBuilder()->whereNotNull('deleted_at')->delete();
+        $this->repository->trashed()->delete();
 
         Message::warning('Lomtár kiürítve.');
 
@@ -68,11 +67,9 @@ class PageController extends AdminController
 
     public function update(): never
     {
-        $page = $this->repository->find($this->request['id']);
+        $page = $this->repository->findOrFail($this->request['id']);
 
-        $page->update($this->request->only('title', 'slug', 'content', 'status', 'header_image'));
-
-        $this->repository->save($page);
+        $this->repository->save($page, $this->request->only('title', 'slug', 'content', 'status', 'header_image'));
 
         Message::success('Oldal frissítve');
 
@@ -81,7 +78,7 @@ class PageController extends AdminController
 
     public function delete(): never
     {
-        $this->repository->deleteById($this->request['id']);
+        $this->repository->deleteModel($this->request['id']);
 
         Message::warning('Oldal lomtárba helyezve');
 
@@ -90,17 +87,17 @@ class PageController extends AdminController
 
     public function forceDelete(): never
     {
-        $this->repository->deleteById($this->request['id'], true);
+        $this->repository->deleteModel($this->request['id'], true);
 
         Message::warning('Oldal véglegesen törölve');
 
         redirect_route('admin.page.trash');
     }
 
-    public function restore(Request $request, PageRepository $repository)
+    public function restore(Request $request)
     {
         try {
-            $repository->restorePageById($request['id']);
+            $this->repository->where('id', $request['id'])->update(['deleted_at' => null]);
             Message::success('Sikeres visszaállítás');
         } catch (\Exception $e) {
             Message::danger('Sikertelen visszaállítás');
