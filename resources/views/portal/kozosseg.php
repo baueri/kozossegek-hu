@@ -178,8 +178,13 @@
                     dialog.danger({
                         message: 'Nem sikerült elküldeni az üzenetet, kérjük, próbáld meg később!',
                         size: 'md'
-                    });
+                    }, m => m.closeAll());
                 }
+            }).fail(() => {
+                dialog.danger({
+                    message: 'Nem sikerült elküldeni az üzenetet, kérjük, próbáld meg később!',
+                    size: 'md'
+                }, m => m.closeAll());
             });
         });
     })

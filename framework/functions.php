@@ -414,3 +414,13 @@ function tap($value, $callback)
     $callback($value);
     return $value;
 }
+
+function selected($expression): string
+{
+    return attr('selected')($expression);
+}
+
+function attr(string $name): Closure
+{
+    return fn ($expression) => $expression ? $name : '';
+}

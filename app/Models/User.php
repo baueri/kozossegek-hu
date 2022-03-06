@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Auth\AuthUser;
 use App\Models\Traits\UserTrait;
 use Framework\Model\Entity;
-use Framework\Model\TimeStamps;
+use Framework\Model\HasTimestamps;
 
 /**
  * @property string $name
@@ -16,9 +16,9 @@ use Framework\Model\TimeStamps;
  * @property string $user_group
  * @property string $activated_at
  * @property string $phone_number
- * @mixin TimeStamps
  */
 class User extends Entity implements AuthUser
 {
     use UserTrait;
+    use HasTimestamps;
 }

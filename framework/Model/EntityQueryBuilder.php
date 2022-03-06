@@ -84,6 +84,11 @@ abstract class EntityQueryBuilder
         );
     }
 
+    public function delete(): int
+    {
+        return $this->builder->delete();
+    }
+
     /**
      * @param array|null $values
      * @return T|null
@@ -257,6 +262,15 @@ abstract class EntityQueryBuilder
         return $this;
     }
 
+    public function when($expression, Closure $callback)
+    {
+        if ($expression) {
+            $callback($this);
+        }
+
+        return $this;
+    }
+
     public function join(string $table, string $on, string $joinMode = '')
     {
         $this->builder->join($table, $on, $joinMode);
@@ -296,7 +310,7 @@ abstract class EntityQueryBuilder
         return $this->builder->updateOrInsert($where, $values);
     }
 
-    public function delete($model, bool $hardDelete = false)
+    public function deleteModel($model, bool $hardDelete = false)
     {
         if (is_numeric($model)) {
             $model = $this->find($model);

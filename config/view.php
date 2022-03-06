@@ -12,6 +12,7 @@ use App\Http\Components\Selectors\OccasionFrequencySelector;
 use App\Http\Components\Selectors\OnDaysSelector;
 use App\Http\Components\Selectors\SpiritualMovementSelector;
 use App\Http\Components\Selectors\UserGroupSelector;
+use App\Services\SystemAdministration\SiteMap\PrioritySelector;
 
 return [
     'view_sources' => [
@@ -73,6 +74,7 @@ return [
         'aszf' => AszfCheckBox::class,
         'day_selector' => OnDaysSelector::class,
         'age_group_selector' => AgeGroupSelector::class,
-        'occasion_frequency_selector' => OccasionFrequencySelector::class
+        'occasion_frequency_selector' => OccasionFrequencySelector::class,
+        'priority_selector' => PrioritySelector::class
     ]
 ];

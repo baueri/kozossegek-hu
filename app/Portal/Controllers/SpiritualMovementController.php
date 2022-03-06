@@ -25,7 +25,7 @@ class SpiritualMovementController extends PortalController
         use_default_header_bg();
 
         $spiritualMovements = $this->repository
-            ->where('highlighted', 1)
+            ->hightLighted()
             ->orderBy('name')
             ->withCount('groups', fn(ChurchGroups $query) => $query->active())
             ->get();

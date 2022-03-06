@@ -10,12 +10,17 @@ use App\Enums\GroupStatusEnum;
 use App\Enums\JoinMode;
 use App\Helpers\GroupHelper;
 use App\Models\UserLegacy;
+use App\Services\SystemAdministration\SiteMap\EntitySiteMappable;
 use Framework\File\File;
 use Framework\Support\Collection;
 use Framework\Support\StringHelper;
 
 trait GroupTrait
 {
+    use EntitySiteMappable;
+
+    private ?string $cachedUrl = null;
+
     public function ageGroup(): string
     {
         if ($this->getAgeGroups()->count() > 1) {
@@ -106,7 +111,7 @@ trait GroupTrait
 
     public function getEditUrl(): string
     {
-        return get_site_url() . route('portal.edit_group', $this);
+        return route('portal.edit_group', $this);
     }
 
     public function isEditableBy(?UserLegacy $user): bool
@@ -153,5 +158,15 @@ trait GroupTrait
             return false;
         }
         return (int) $this->pending === $status;
+    }
+
+    public function url(): string
+    {
+        return $this->cachedUrl ??= route('kozosseg', ['kozosseg' => $this->slug()]);
+    }
+
+    public function getUrl(): string
+    {
+        return $this->url();
     }
 }

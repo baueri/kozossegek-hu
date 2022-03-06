@@ -34,14 +34,18 @@
             <div class="form-group">
                 <label>Állapot</label>
                 <select name="status" class="form-control">
-                    <option value="PUBLISHED" {{ $page->status == "PUBLISHED" ? "selected" : "" }}>Közzétéve</option>
-                    <option value="DRAFT" {{ $page->status == "DRAFT" ? "selected" : "" }}>Piszkozat</option>
+                    <option value="PUBLISHED" @selected($page->status == "PUBLISHED")>Közzétéve</option>
+                    <option value="DRAFT" @selected($page->status == "DRAFT")>Piszkozat</option>
                 </select>
             </div>
 
             <div class="form-group">
                 <label>Fejléc háttérkép</label>
                 <input type="text" class="form-control" name="header_image" value="{{ $page->header_image }}"/>
+            </div>
+            <div class="form-group">
+                <label>Oldaltérkép prioritás</label>
+                @component('priority_selector', ['priority' => $page->priority])
             </div>
             @if($page)
                 <p>

@@ -4,7 +4,6 @@ namespace Legacy;
 
 use App\Models\Traits\InstituteTrait;
 use Framework\Model\Model;
-use Framework\Model\TimeStamps;
 
 class Institute extends Model
 {

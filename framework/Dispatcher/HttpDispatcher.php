@@ -8,6 +8,7 @@ use Framework\Http\Cookie;
 use Framework\Http\Exception\RouteNotFoundException;
 use Framework\Http\HttpKernel;
 use Framework\Http\Request;
+use Framework\Http\Response;
 use Framework\Http\Route\RouteInterface;
 use Framework\Http\Route\RouterInterface;
 use Framework\Middleware\MiddlewareResolver;
@@ -49,7 +50,7 @@ class HttpDispatcher implements Dispatcher
                 echo json_encode(is_object($response) && method_exists($response, 'valuesToArray') ? $response->valuesToArray() : $response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
             }
         } else {
-            echo config('app.sanitize') ? StringHelper::sanitize($response) : $response;
+            echo $response;
         }
     }
 

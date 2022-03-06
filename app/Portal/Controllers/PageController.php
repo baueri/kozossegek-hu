@@ -2,17 +2,17 @@
 
 namespace App\Portal\Controllers;
 
-use App\Repositories\PageRepository;
+use App\QueryBuilders\Pages;
 use Framework\Http\Request;
 use Framework\Http\View\View;
 
 class PageController extends PortalController
 {
-    public function page(Request $request, PageRepository $repository): string
+    public function page(Request $request, Pages $repository): string
     {
         use_default_header_bg();
 
-        $page = $repository->findBySlug($request['slug']);
+        $page = $repository->whereSlug($request['slug'])->first();
 
         if (!$page) {
             raise_404();
