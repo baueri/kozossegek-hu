@@ -20,6 +20,7 @@ use Framework\Exception\FileTypeNotAllowedException;
 use Framework\Http\Exception\PageNotFoundException;
 use Framework\Http\Message;
 use Framework\Http\Request;
+use Framework\Http\Response;
 use Framework\Model\ModelNotFoundException;
 use Framework\Support\Arr;
 use Jaybizzle\CrawlerDetect\CrawlerDetect;
