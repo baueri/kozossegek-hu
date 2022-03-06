@@ -34,6 +34,7 @@ class SiteMapGenerator
                 resolve($repository)->getSiteMapUrls()
             );
         }
+        $urls->sort('priority', 'desc');
 
         file_put_contents(ROOT . 'public/sitemap.xml', $this->generateSiteMap($urls));
     }

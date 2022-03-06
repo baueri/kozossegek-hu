@@ -49,7 +49,7 @@ class ChurchGroupView extends Entity
         }
 
         $intezmeny = StringHelper::slugify($this->institute_name);
-        $varos = StringHelper::slugify($this->city);
+        $varos = StringHelper::slugify($this->city ?: 'orszagos');
 
         $data = ['varos' => $varos, 'intezmeny' => $intezmeny, 'kozosseg' => $this->slug()];
         return $this->cachedUrl = route('kozosseg', $data);

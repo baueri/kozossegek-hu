@@ -241,8 +241,17 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         return $this->toJson(JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
     }
 
-    public function sort(): self
+    public function sort($by = null, string $order = 'asc'): self
     {
+        if ($by) {
+            uasort(
+                $this->items,
+                $by instanceof Closure ? $by :
+                    fn ($a, $b) => strcmp(static::getItemVal($order === 'asc' ? $a : $b, $by), static::getItemVal($order === 'asc' ? $b : $a, $by))
+            );
+            return $this;
+        }
+
         sort($this->items);
         return $this;
     }

@@ -25,9 +25,11 @@ class SiteMapGenerator implements Command
 
         $this->generator->run();
 
+        Out::info('sitemap successfully generated.');
+
         if ((new In())->confirm('Ping google?')) {
             $url = get_site_url() . '/sitemap.xml';
-            http_get("https://www.google.com/ping?sitemap={$url}");
+            file_get_contents("https://www.google.com/ping?sitemap={$url}");
         }
 
         Out::success('Done!');
