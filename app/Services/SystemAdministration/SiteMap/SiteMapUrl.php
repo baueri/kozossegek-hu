@@ -9,9 +9,9 @@ class SiteMapUrl
 {
     public function __construct(
         public readonly string $loc,
-        public readonly ?string $lastmod = null,
         public readonly ?string $priority = '0.5',
-        public readonly ?ChangeFreq $changefreq = null
+        public readonly ?ChangeFreq $changefreq = null,
+        public readonly ?string $lastmod = null
     ) {
     }
 

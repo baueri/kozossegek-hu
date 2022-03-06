@@ -3,6 +3,7 @@
 namespace App\Services\SystemAdministration\SiteMap;
 
 use App\Services\SystemAdministration\SiteMap\Repositories\ChurchGroups;
+use App\Services\SystemAdministration\SiteMap\Repositories\PopularCities;
 use App\Services\SystemAdministration\SiteMap\Repositories\SpiritualMovementRepository;
 use App\Services\SystemAdministration\SiteMap\Repositories\Repository;
 use App\Services\SystemAdministration\SiteMap\Repositories\StaticPages;
@@ -21,7 +22,8 @@ class SiteMapGenerator
         $this->repositories = [
             StaticPages::class,
             SpiritualMovementRepository::class,
-            ChurchGroups::class
+            ChurchGroups::class,
+            PopularCities::class
         ];
     }
 

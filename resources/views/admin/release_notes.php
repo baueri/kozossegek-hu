@@ -5,6 +5,7 @@
     <li>[NEW]: Lelkiségi mozgalmak adatbázis táblába időbélyeg (create, update) létrehozás</li>
     <li>[NEW]: Statikus oldalak oldaltérkép priorizálása</li>
     <li>[NEW]: Oldaltérkép generátor</li>
+    <li>[CHANGED]: Közösségek keresőbarát url-je rövidítve lett</li>
 </ul>
 <h3>v2.0.4 (2022.03.04)</h3>
 <ul>
