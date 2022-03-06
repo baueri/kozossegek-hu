@@ -4,9 +4,7 @@ namespace App\Models;
 
 use App\Models\Traits\GroupTrait;
 use App\Services\SystemAdministration\SiteMap\ChangeFreq;
-use App\Services\SystemAdministration\SiteMap\EntitySiteMappable;
 use Framework\Model\Entity;
-use Framework\Support\StringHelper;
 
 /**
  * @property-read null|string $name
@@ -29,9 +27,6 @@ use Framework\Support\StringHelper;
 class ChurchGroupView extends Entity
 {
     use GroupTrait;
-    use EntitySiteMappable;
-
-    private ?string $cachedUrl = null;
 
     public function getThumbnail(): string
     {
@@ -40,24 +35,6 @@ class ChurchGroupView extends Entity
         }
 
         return $this->institute_image ?: '/images/default_thumbnail.jpg';
-    }
-
-    public function url(): string
-    {
-        if ($this->cachedUrl) {
-            return $this->cachedUrl;
-        }
-
-        $intezmeny = StringHelper::slugify($this->institute_name);
-        $varos = StringHelper::slugify($this->city ?: 'orszagos');
-
-        $data = ['varos' => $varos, 'intezmeny' => $intezmeny, 'kozosseg' => $this->slug()];
-        return $this->cachedUrl = route('kozosseg', $data);
-    }
-
-    public function getUrl(): string
-    {
-        return $this->url();
     }
 
     public function changeFreq(): ChangeFreq

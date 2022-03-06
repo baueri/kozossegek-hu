@@ -33,7 +33,7 @@ class SpiritualMovement extends Entity
 
     public function priority(): ?string
     {
-        return $this->highlighted ? '0.8' : '0.7';
+        return '0.8';
     }
 
     public function changeFreq(): ChangeFreq

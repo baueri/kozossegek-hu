@@ -6,7 +6,7 @@ trait EntitySiteMappable
 {
     public function toSiteMapUrl(): SiteMapUrl
     {
-        return new SiteMapUrl($this->getUrl(), $this->lastmod(), $this->priority(), $this->changeFreq());
+        return new SiteMapUrl($this->getUrl(), $this->priority(), $this->changeFreq(), $this->lastmod());
     }
 
     public function lastmod(): ?string
@@ -16,7 +16,7 @@ trait EntitySiteMappable
 
     public function priority(): ?string
     {
-        return $this->priority;
+        return $this->priority ?? '0.5';
     }
 
     public function changeFreq(): ChangeFreq

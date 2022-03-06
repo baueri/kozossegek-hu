@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\ChurchGroupView;
 use App\Models\UserLegacy;
 use App\QueryBuilders\GroupViews;
+use Framework\Model\ModelCollection;
 use Framework\Support\StringHelper;
 
 class GroupSearchRepository
@@ -102,10 +103,10 @@ class GroupSearchRepository
 
         $builder = $this->repository->query();
 
-        return $builder->where('id', $id)->apply('notDeleted')->first();
+        return $builder->where('id', $id)->notDeleted()->first();
     }
 
-    public function findSimilarGroups(ChurchGroupView $group, $tags, int $take = 4): array|\Framework\Model\ModelCollection
+    public function findSimilarGroups(ChurchGroupView $group, $tags, int $take = 4): array|ModelCollection
     {
         $builder = $this->repository->query()
             ->where('id', '<>', $group->id)
