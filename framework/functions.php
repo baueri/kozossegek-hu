@@ -30,7 +30,6 @@ use Framework\Model\Entity;
 use Framework\Model\Model;
 use Framework\Support\Collection;
 use Framework\Translator;
-use PHPDeploy\PHPDeploy;
 
 /**
  * @return Application|null|mixed
@@ -320,14 +319,6 @@ function rcopy($src, $dst, $excludeSymlinks = false): void
     if (file_exists($src)) {
         copy($src, $dst);
     }
-}
-
-/**
- * @throws Exception
- */
-function php_deploy(string $env, ?string $cwd = null): PHPDeploy
-{
-    return new PHPDeploy($env, $cwd);
 }
 
 function set_header_bg(string $bg)
