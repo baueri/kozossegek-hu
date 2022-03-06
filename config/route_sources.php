@@ -1,8 +1,8 @@
 <?php
 return [
-    ROOT . 'routes' . DS . 'admin',
-    ROOT . 'routes' . DS . 'web',
-    ROOT . 'routes' . DS . 'api',
-    ROOT . 'routes' . DS . 'admin_api',
+    RESOURCES . 'routes' . DS . 'admin',
+    RESOURCES . 'routes' . DS . 'web',
+    RESOURCES . 'routes' . DS . 'api',
+    RESOURCES . 'routes' . DS . 'admin_api',
     APP . 'Components' . DS . 'widget_routes',
 ];
