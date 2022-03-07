@@ -90,7 +90,6 @@ abstract class EntityQueryBuilder
     }
 
     /**
-     * @param array|null $values
      * @return T|null
      */
     public function getInstance(?array $values = null)
@@ -111,7 +110,7 @@ abstract class EntityQueryBuilder
      */
     public function find($id): ?Entity
     {
-        return $this->where(static::primaryCol(), $id)->first();
+        return $this->wherePK($id)->first();
     }
 
     /**
@@ -224,14 +223,19 @@ abstract class EntityQueryBuilder
         return $this;
     }
 
-    public function whereRaw($where, $bindings = [], $clause = 'and'): EntityQueryBuilder
+    public function whereRaw($where, $bindings = [], $clause = 'and'): static
     {
         $this->builder->whereRaw($where, $bindings, $clause);
 
         return $this;
     }
 
-    public function orWhereRaw($where, $bindings = []): EntityQueryBuilder
+    public function wherePK($value): static
+    {
+        return $this->where(static::primaryCol(), $value);
+    }
+
+    public function orWhereRaw($where, $bindings = []): static
     {
         $this->builder->whereRaw($where, $bindings, 'or');
         return $this;
@@ -262,7 +266,7 @@ abstract class EntityQueryBuilder
         return $this;
     }
 
-    public function when($expression, Closure $callback)
+    public function when($expression, Closure $callback): static
     {
         if ($expression) {
             $callback($this);
@@ -271,7 +275,7 @@ abstract class EntityQueryBuilder
         return $this;
     }
 
-    public function join(string $table, string $on, string $joinMode = '')
+    public function join(string $table, string $on, string $joinMode = ''): static
     {
         $this->builder->join($table, $on, $joinMode);
 
