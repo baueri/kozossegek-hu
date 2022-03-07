@@ -103,7 +103,7 @@ class GroupSearchRepository
 
         $builder = $this->repository->query();
 
-        return $builder->where('id', $id)->notDeleted()->first();
+        return $builder->wherePK($id)->notDeleted()->first();
     }
 
     public function findSimilarGroups(ChurchGroupView $group, $tags, int $take = 4): array|ModelCollection
