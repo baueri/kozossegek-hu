@@ -1,5 +1,11 @@
 @title('Verzióinformáció')
 @extends('admin')
+<h3>v2.1.1 (2022.03.10)</h3>
+<ul>
+    <li>[NEW]: Open Streetmap integrálása</li>
+    <li><b>Gépház</b></li>
+    <li>[CHANGED]: Adatbázis relációk átalakítás</li>
+</ul>
 <h3>v2.1.0 (2022.03.05)</h3>
 <ul>
     <li>[NEW]: Lelkiségi mozgalmak adatbázis táblába időbélyeg (create, update) létrehozás</li>
