@@ -5,14 +5,7 @@ namespace Framework\Http\View\Directives;
 
 interface Directive
 {
-    /**
-     * @return string
-     */
-    public function getPattern();
+    public function getPattern(): string;
 
-    /**
-     * @param array $matches
-     * @return string
-     */
-    public function getReplacement(array $matches);
+    public function getReplacement(array $matches): string;
 }

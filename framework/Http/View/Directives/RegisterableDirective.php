@@ -24,7 +24,7 @@ class RegisterableDirective extends AtDirective
         return $this->name;
     }
 
-    public function getReplacement(array $matches)
+    public function getReplacement(array $matches): string
     {
         return call_user_func($this->replacementCallback, $matches);
     }

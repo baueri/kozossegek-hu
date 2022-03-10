@@ -6,6 +6,7 @@ use App\Http\Components\FacebookShareButton;
 use App\Http\Components\FeaturedTitle;
 use App\Http\Components\FontawesomeIcon;
 use App\Http\Components\HoneyPotComponent;
+use App\Http\Components\OpenStreeMap;
 use App\Http\Components\Selectors\AgeGroupSelector;
 use App\Http\Components\Selectors\JoinModeSelector;
 use App\Http\Components\Selectors\OccasionFrequencySelector;
@@ -75,6 +76,7 @@ return [
         'day_selector' => OnDaysSelector::class,
         'age_group_selector' => AgeGroupSelector::class,
         'occasion_frequency_selector' => OccasionFrequencySelector::class,
-        'priority_selector' => PrioritySelector::class
+        'priority_selector' => PrioritySelector::class,
+        'open_street_map' => OpenStreeMap::class
     ]
 ];

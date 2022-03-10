@@ -7,15 +7,12 @@ namespace Framework\Http\View\Directives;
 class EchoDirective implements Directive
 {
 
-    /**
-     * @return string
-     */
-    public function getPattern()
+    public function getPattern(): string
     {
         return '/\{\{([^\}\}]+?)\}\}/';
     }
 
-    public function getReplacement(array $matches)
+    public function getReplacement(array $matches): string
     {
         return trim('<?php echo ' . $matches[1] . '; ?>');
     }

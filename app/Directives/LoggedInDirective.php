@@ -6,12 +6,12 @@ use Framework\Http\View\Directives\Directive;
 
 class LoggedInDirective implements Directive
 {
-    public function getPattern()
+    public function getPattern(): string
     {
         return '/\@auth|\@endauth/';
     }
 
-    public function getReplacement(array $matches)
+    public function getReplacement(array $matches): string
     {
         if ($matches[0] == '@endauth') {
             return '<?php endif; ?>';

@@ -97,7 +97,11 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         }
 
         foreach ($this->items as $key => $val) {
-            if ((is_callable($callback) && $callback($val, $key)) || static::getItemVal($val, $callback)) {
+            if (is_callable($callback)) {
+                if ($callback($val, $key)) {
+                    return $val;
+                }
+            } elseif (static::getItemVal($val, $callback)) {
                 return $val;
             }
         }
@@ -234,11 +238,6 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     public function toJson($options = 0, $depth = 512): string
     {
         return (string) json_encode($this->items, $options, $depth);
-    }
-
-    public function prettyJson(): string
-    {
-        return $this->toJson(JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
     }
 
     public function sort($by = null, string $order = 'asc'): self
@@ -473,19 +472,11 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
 
     public function only(...$keys): array
     {
-        $values = [];
-
         if (is_array($keys[0])) {
             $keys = $keys[0];
         }
 
-        foreach ($keys as $key) {
-            if ($this->exists($key)) {
-                $values[$key] = $this->get($key);
-            }
-        }
-
-        return $values;
+        return Arr::only($this->items, $keys);
     }
 
     public function isEmpty(...$except): bool
@@ -542,10 +533,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
 
     public static function fromList(?string $text, string $separator = ','): Collection
     {
-        return new self(match ($text) {
-            null, '' => [],
-            default => explode($separator, $text)
-        });
+        return new self(Arr::fromList($text, $separator));
     }
 
     public function __get(string $name)
@@ -556,5 +544,16 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     public function dd(): never
     {
         dd($this->items);
+    }
+
+    public function firstNonEmpty(Closure $callback)
+    {
+        foreach ($this->items as $item) {
+            if ($val = $callback($item)) {
+                return $val;
+            }
+        }
+
+        return null;
     }
 }

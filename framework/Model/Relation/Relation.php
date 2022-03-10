@@ -12,22 +12,18 @@ class Relation
     public readonly ?string $localKey;
 
     public function __construct(
-        private readonly EntityQueryBuilder $builder,
+        public readonly RelationType $relationType,
+        public readonly EntityQueryBuilder $entityQueryBuilder,
         public readonly string $relationName,
         ?string $foreginKey = null,
-        ?string $localKey = null
+        ?string $localKey = null,
     ) {
-        $this->localKey = $localKey ?? $builder::primaryCol();
+        $this->localKey = $localKey ?? $entityQueryBuilder::primaryCol();
         $this->foreginKey = $foreginKey ?? $this->relationName . '_id';
-    }
-
-    public function applyQueryCallbacks(array $callbacks)
-    {
-        array_walk($callbacks, fn ($callback) => $callback($this->builder));
     }
 
     public function buildQuery(Collection $instances): EntityQueryBuilder
     {
-        return $this->builder->whereIn($this->foreginKey, $instances->map->{$this->localKey});
+        return $this->entityQueryBuilder->whereIn($this->foreginKey, $instances->map->{$this->localKey});
     }
 }

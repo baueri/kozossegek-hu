@@ -14,7 +14,7 @@ class SectionDirective extends AtDirective
      * @param array $matches
      * @return string
      */
-    public function getReplacement(array $matches)
+    public function getReplacement(array $matches): string
     {
         if (strpos($matches[0], '@end') === 0) {
             return '<?php }); ?>';

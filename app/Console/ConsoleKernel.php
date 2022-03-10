@@ -8,6 +8,7 @@ use App\Console\Commands\DailyCron;
 use App\Console\Commands\PublishApp;
 use App\Console\Commands\RebuildSearchEngineCommand;
 use App\Console\Commands\SiteMapGenerator;
+use App\Services\SystemAdministration\OpenStreetMap\OpenStreetMapSync;
 use Framework\Console\ConsoleKernel as Kernel;
 
 class ConsoleKernel extends Kernel
@@ -18,6 +19,7 @@ class ConsoleKernel extends Kernel
         RebuildSearchEngineCommand::class,
         PublishApp::class,
         AggregateLogsCommand::class,
-        SiteMapGenerator::class
+        SiteMapGenerator::class,
+        OpenStreetMapSync::class
     ];
 }
