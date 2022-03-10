@@ -24,12 +24,12 @@ class RegisterDirectives implements Bootstrapper
         }
 
         ViewParser::registerDirective(new class () implements Directive {
-            public function getPattern()
+            public function getPattern(): string
             {
                 return '/\@auth|\@endauth/';
             }
 
-            public function getReplacement(array $matches)
+            public function getReplacement(array $matches): string
             {
                 if ($matches[0] == '@endauth') {
                     return '<?php endif; ?>';

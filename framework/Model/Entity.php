@@ -2,6 +2,7 @@
 
 namespace Framework\Model;
 
+use Framework\Support\Arr;
 use Framework\Support\StringHelper;
 
 /**
@@ -71,8 +72,17 @@ abstract class Entity
         $this->attributes[$name] = $value;
     }
 
-    public function getAttributes(): array
+    public function getAttributes($only = null): array
     {
-        return $this->attributes;
+        if (!$only) {
+            return $this->attributes;
+        }
+
+        return Arr::only($this->attributes, $only);
+    }
+
+    public function only($only): array
+    {
+        return $this->getAttributes($only);
     }
 }

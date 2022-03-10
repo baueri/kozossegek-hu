@@ -4,6 +4,8 @@ namespace App\Console\Commands;
 
 use App\Services\Statistics\EventLogAggregator;
 use App\Services\SystemAdministration\ClearUserSession;
+use App\Services\SystemAdministration\OpenStreetMap\OpenStreetMapSync;
+use App\Services\SystemAdministration\SiteMap\SiteMapGenerator as SiteMapGeneratorService;
 use Framework\Console\Command;
 
 class DailyCron implements Command
@@ -17,6 +19,7 @@ class DailyCron implements Command
     {
         resolve(ClearUserSession::class)->run();
         resolve(EventLogAggregator::class)->run();
-        resolve(\App\Services\SystemAdministration\SiteMap\SiteMapGenerator::class)->run();
+        resolve(SiteMapGeneratorService::class)->run();
+        resolve(OpenStreetMapSync::class)->run();
     }
 }
