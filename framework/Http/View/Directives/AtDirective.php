@@ -6,10 +6,7 @@ abstract class AtDirective implements Directive
 {
     abstract public function getName();
 
-    /**
-     * @inheritDoc
-     */
-    public function getPattern()
+    public function getPattern(): string
     {
         return '/@' . $this->getName() . '\(?((?:[^\)]+?)\)?)\)|@end' . $this->getName() . '/';
     }

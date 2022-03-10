@@ -240,11 +240,6 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         return (string) json_encode($this->items, $options, $depth);
     }
 
-    public function prettyJson(): string
-    {
-        return $this->toJson(JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-    }
-
     public function sort($by = null, string $order = 'asc'): self
     {
         if ($by) {
@@ -477,19 +472,11 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
 
     public function only(...$keys): array
     {
-        $values = [];
-
         if (is_array($keys[0])) {
             $keys = $keys[0];
         }
 
-        foreach ($keys as $key) {
-            if ($this->exists($key)) {
-                $values[$key] = $this->get($key);
-            }
-        }
-
-        return $values;
+        return Arr::only($this->items, $keys);
     }
 
     public function isEmpty(...$except): bool
@@ -546,10 +533,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
 
     public static function fromList(?string $text, string $separator = ','): Collection
     {
-        return new self(match ($text) {
-            null, '' => [],
-            default => explode($separator, $text)
-        });
+        return new self(Arr::fromList($text, $separator));
     }
 
     public function __get(string $name)

@@ -11,7 +11,15 @@
 <meta property="og:image" content="{{ get_site_url() . $header_background }}"/>
 <meta property="og:locale" content="hu_HU"/>
 <link rel="canonical" href="{{ get_site_url() }}"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+      integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+      crossorigin=""/>
 @include('asset_groups.select2')
+@endsection
+@section('footer')
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        crossorigin=""></script>
 @endsection
 @section('header_content')
 <div id="main-finder" class="p-4 p-lg-5">
@@ -87,11 +95,21 @@
 </div>
 <div class="container main-block">
     <div class="row">
-        <div class="col-md-6"><img style="width: 100%;" src=" /storage/uploads/kozosseget_vezetek.jpg" alt="" /></div>
+        <div class="col-md-6"><img style="width: 100%;" src="/storage/uploads/kozosseget_vezetek.jpg" alt="" /></div>
         <div class="col-md-6 align-middle h-100 mt-3 mt-md-0">
             <h3 class="text-center title-secondary mb-4">Közösséget vezetek, szeretném hirdetni.<br/> Mit tegyek?</h3>
-            <p align="justify">Nagyon örülünk annak, ha te is hirdetnéd nálunk a közösséged! Ehhez nem kell mást tenned, mint ellátogatnod a <a href="https://kozossegek.hu/kozosseg-regisztracio" target="_blank">közösséget vezetek</a> oldalra, majd az ott található űrlapot kitölteni és elküldeni nekünk. A regisztrációt követően, jóváhagyás után, közösséged a látogatók számára is elérhető lesz.</p>
-            <p class="text-center"><a class="btn btn-darkblue" href="/kozosseg-regisztracio">Közösséget vezetek</a></p>
+            <p class="text-justify">Nagyon örülünk annak, ha te is hirdetnéd nálunk a közösséged! Ehhez nem kell mást tenned, mint ellátogatnod a <a href="@route('portal.register_group')" target="_blank">közösséget vezetek</a> oldalra, majd az ott található űrlapot kitölteni és elküldeni nekünk. A regisztrációt követően, jóváhagyás után, közösséged a látogatók számára is elérhető lesz.</p>
+            <p class="text-center"><a class="btn btn-darkblue" href="@route('portal.register_group')">Közösséget vezetek</a></p>
         </div>
+    </div>
+</div>
+<div class="jumbotron main-block mt-0 mb-0 pt-0 pb-0">
+    <div class="container">
+        <div class="text-center py-4">
+            <h2 class="title-secondary">Sok jó közösség kis térképen is elfér ;)</h2>
+            <h4 class="my-4">Idáig <b>18</b> város <b>40</b> plébániájáról több, mint <b>80</b> közösség regisztrált be a honlapunkra!</h4>
+            <h4>Legyen a <b>TE</b> közösséged a következő!</h4>
+        </div>
+        @component('open_street_map')
     </div>
 </div>

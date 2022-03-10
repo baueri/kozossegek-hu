@@ -16,7 +16,7 @@ class YieldDirective extends AtDirective
      * @param array $matches
      * @return string
      */
-    public function getReplacement(array $matches)
+    public function getReplacement(array $matches): string
     {
         return '<?php echo $__env->getSection()->yield(' . $matches[1] . ', $args); ?>';
     }

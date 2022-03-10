@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Traits\InstituteTrait;
 use Framework\Model\Entity;
 use Framework\Model\HasTimestamps;
+use Framework\Support\StringHelper;
 
 /**
  * @property string $name
@@ -26,4 +27,9 @@ class Institute extends Entity
 {
     use InstituteTrait;
     use HasTimestamps;
+
+    public function groupsUrl(): string
+    {
+        return route('portal.institute_groups', ['varos' => StringHelper::slugify($this->city), 'intezmeny' => StringHelper::slugify($this->name)]);
+    }
 }

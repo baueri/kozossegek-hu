@@ -10,7 +10,7 @@ class RouteDirective extends AtDirective
         return 'route';
     }
 
-    public function getReplacement(array $matches)
+    public function getReplacement(array $matches): string
     {
         return '<?php echo route(' . $matches[1] . '); ?>';
     }
