@@ -3,11 +3,12 @@
 namespace App\QueryBuilders\Relations;
 
 use App\QueryBuilders\GroupViews;
+use Framework\Model\Relation\Relation;
 
 trait HasManyChurchGroupViews
 {
-    public function groups()
+    public function groups(): Relation
     {
-        $this->hasMany(GroupViews::class);
+        return $this->hasMany(GroupViews::class);
     }
 }

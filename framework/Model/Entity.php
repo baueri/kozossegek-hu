@@ -2,7 +2,6 @@
 
 namespace Framework\Model;
 
-use App\Models\Institute;
 use Framework\Support\StringHelper;
 
 /**
@@ -60,7 +59,11 @@ abstract class Entity
             return $this->relations_count[$relation] = count($this->relations[$relation]);
         }
 
-        return $this->attributes[$name] ?? $this->relations[$name] ?? null;
+        if (isset($this->attributes[$name])) {
+            return $this->attributes[$name];
+        }
+
+        return $this->relations[$name] ?? null;
     }
 
     public function __set($name, $value)
@@ -71,10 +74,5 @@ abstract class Entity
     public function getAttributes(): array
     {
         return $this->attributes;
-    }
-
-    public function isDeleted(): bool
-    {
-        return (bool) $this->deleted_at;
     }
 }

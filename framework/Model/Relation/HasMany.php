@@ -11,15 +11,13 @@ trait HasMany
     public function loadHasManyRelations($instances): void
     {
         $instances = collect($instances);
-        $relations = $this->preparedRelations['hasMany'];
-        if (!$relations || $instances->isEmpty()) {
+        $relations = $this->getPreparedRelations()->filter(fn (Relation $relation) => $relation->relationType === RelationType::HasMany);
+        if ($relations->isEmpty() || $instances->isEmpty()) {
             return;
         }
 
         /* @var $relations Relation[] */
         foreach ($relations as $relation) {
-            $relation->applyQueryCallbacks($this->preparedCallbacks[$relation->relationName] ?? []);
-
             if (in_array($relation->relationName, $this->relationCounts)) {
                 $this->fillCounts($relation, $instances);
                 return;
@@ -38,7 +36,6 @@ trait HasMany
     /**
      * @param Relation $relation
      * @param Collection<Entity> $instances
-     * @return void
      */
     private function fillCounts(Relation $relation, Collection $instances): void
     {
@@ -48,15 +45,14 @@ trait HasMany
         }
     }
 
-    public function hasMany(string $repositoryClass, ?string $foreingkey = null, ?string $localKey = null): self
+    public function hasMany(string $repositoryClass, ?string $foreingkey = null, ?string $localKey = null): Relation
     {
-        $this->preparedRelations['hasMany'][$this->getRelationName()] = new Relation(
-            app($repositoryClass),
-            $this->getRelationName(),
-            $foreingkey ?? StringHelper::snake(get_class_name(static::getModelClass())) . '_id',
-            $localKey
+        return new Relation(
+            relationType: RelationType::HasMany,
+            entityQueryBuilder: app($repositoryClass),
+            relationName: $this->getRelationName(),
+            foreginKey: $foreingkey ?? StringHelper::snake(get_class_name(static::getModelClass())) . '_id',
+            localKey: $localKey
         );
-
-        return $this;
     }
 }

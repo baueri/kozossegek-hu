@@ -20,7 +20,7 @@ abstract class EntityQueryBuilder
 
     public const TABLE = null;
 
-    protected Builder $builder;
+    public readonly Builder $builder;
 
     final public function __construct()
     {
@@ -241,15 +241,9 @@ abstract class EntityQueryBuilder
         return $this;
     }
 
-    /**
-     * @param string $table
-     * @param Closure $callback
-     * @param string $clause
-     * @return static
-     */
-    public function whereExists(string $table, Closure $callback, string $clause = 'and'): EntityQueryBuilder
+    public function whereExists(string|Builder|EntityQueryBuilder $table, ?Closure $callback = null, string $clause = 'and'): static
     {
-        $this->builder->whereExists($table, $callback, $clause);
+        $this->builder->whereExists($table instanceof EntityQueryBuilder ? $table->builder : $table, $callback, $clause);
         return $this;
     }
 
@@ -373,6 +367,11 @@ abstract class EntityQueryBuilder
         EventDisptatcher::dispatch(new ModelCreated($model));
 
         return $model;
+    }
+
+    public static function truncate()
+    {
+        static::query()->builder->truncate();
     }
 
     public function getTable(): string

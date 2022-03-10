@@ -97,7 +97,11 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         }
 
         foreach ($this->items as $key => $val) {
-            if ((is_callable($callback) && $callback($val, $key)) || static::getItemVal($val, $callback)) {
+            if (is_callable($callback)) {
+                if ($callback($val, $key)) {
+                    return $val;
+                }
+            } elseif (static::getItemVal($val, $callback)) {
                 return $val;
             }
         }
@@ -556,5 +560,16 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     public function dd(): never
     {
         dd($this->items);
+    }
+
+    public function firstNonEmpty(Closure $callback)
+    {
+        foreach ($this->items as $item) {
+            if ($val = $callback($item)) {
+                return $val;
+            }
+        }
+
+        return null;
     }
 }
