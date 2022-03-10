@@ -12,7 +12,7 @@ class TitleDirective extends AtDirective
         return 'title';
     }
 
-    public function getReplacement(array $matches)
+    public function getReplacement(array $matches): string
     {
         return '<?php $__env->getSection()->add("title", ' . $matches[1] . ') ?>';
     }

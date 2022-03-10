@@ -1,21 +1,16 @@
 <?php
 
-
 namespace Framework\Http\View\Directives;
-
 
 class LangDirective implements Directive
 {
 
-    /**
-     * @return string
-     */
-    public function getPattern()
+    public function getPattern(): string
     {
         return '/@(lang(_f)?)\(\s*([^\)]+?)\s*\)/';
     }
 
-    public function getReplacement(array $matches)
+    public function getReplacement(array $matches): string
     {
         $method = $matches[1];
 

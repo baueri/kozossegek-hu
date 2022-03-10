@@ -5,11 +5,7 @@ namespace Framework\Http\View\Directives;
 class ExtendsDirective implements Directive
 {
 
-    /**
-     * @param array $matches
-     * @return string
-     */
-    public function getReplacement(array $matches)
+    public function getReplacement(array $matches): string
     {
         $content = preg_replace('/@extends\(\s*([^\)]+?)\s*\)/', '', $matches[0]);
         $view = $matches[1];
@@ -18,10 +14,7 @@ class ExtendsDirective implements Directive
         return $sectionCommand . $viewCommand;
     }
 
-    /**
-     * @return string
-     */
-    public function getPattern()
+    public function getPattern(): string
     {
         return '/@extends\(\s*([^\)]+?)\s*\).*/s';
     }

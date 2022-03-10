@@ -64,7 +64,7 @@ class Arr
         return $result;
     }
 
-    public static function filterByKey(array $items, $callback): array
+    public static function filterByKey($items, $callback): array
     {
         return static::filter($items, $callback, true);
     }
@@ -124,6 +124,12 @@ class Arr
         return $return;
     }
 
+    public static function only(array $items,$only): array
+    {
+        $only = Arr::wrap($only);
+        return static::filterByKey($items, fn ($key) => in_array($key, $only));
+    }
+
     public static function getItemValue($item, $key = null)
     {
         if (!$key) {
@@ -141,7 +147,7 @@ class Arr
         return $item;
     }
 
-    public static function sum(array $results, string $column = null)
+    public static function sum(array $results, string $column = null): float|int
     {
         if (is_numeric(Arr::first($results))) {
             return array_sum($results);
@@ -166,5 +172,13 @@ class Arr
         }
 
         return (array) $value;
+    }
+
+    public static function fromList(?string $text, string $separator = ','): array
+    {
+        return match ($text) {
+            null, '' => [],
+            default => explode($separator, $text)
+        };
     }
 }
