@@ -6,6 +6,7 @@ cache/
 error.log
 storage/
 public/media
+public/storage
 tmp_deploy
 email_templates/
 tests/

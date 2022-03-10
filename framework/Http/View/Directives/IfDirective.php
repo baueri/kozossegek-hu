@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Framework\Http\View\Directives;
-
 
 class IfDirective implements Directive
 {
@@ -12,13 +10,9 @@ class IfDirective implements Directive
         return 'if';
     }
 
-    /**
-     * @param array $matches
-     * @return string
-     */
-    public function getReplacement(array $matches)
+    public function getReplacement(array $matches): string
     {
-        if (strpos($matches[0], '@end') === 0) {
+        if (str_starts_with($matches[0], '@end')) {
             return '<?php endif; ?>';
         }
 
@@ -33,10 +27,7 @@ class IfDirective implements Directive
         return '<?php if(' . $matches[1] . '): ?>';
     }
 
-    /**
-     * @return string
-     */
-    public function getPattern()
+    public function getPattern(): string
     {
         return '/@if\((.*)\)|@elseif\((.*)\)|(@else)|(@endif)/';
     }

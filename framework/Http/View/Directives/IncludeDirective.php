@@ -4,16 +4,12 @@ namespace Framework\Http\View\Directives;
 
 class IncludeDirective implements Directive
 {
-
-    /**
-     * @return string
-     */
-    public function getPattern()
+    public function getPattern(): string
     {
         return '/@include\(\s*([^\)]+?)\s*\)/';
     }
 
-    public function getReplacement(array $matches)
+    public function getReplacement(array $matches): string
     {
         $arguments = $matches[1];
         preg_match('/[\'\"], (.*)/', $arguments);

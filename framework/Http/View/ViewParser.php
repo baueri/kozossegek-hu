@@ -16,11 +16,9 @@ class ViewParser
     protected static array $directives = [];
 
     /**
-     * @param string $content
-     * @return string|null
      * @throws Exception
      */
-    public function parse(string $content)
+    public function parse(string $content): string
     {
         foreach (static::$directives as $directive) {
             $content = preg_replace_callback($directive->getPattern(), [$directive, 'getReplacement'], $content);
@@ -33,15 +31,11 @@ class ViewParser
         return $content;
     }
 
-    /**
-     * @param Directive|string $directive
-     * @param Closure|null $callback
-     */
-    public static function registerDirective($directive, $callback = null)
+    public static function registerDirective(string|Directive $directive, ?Closure $callback = null)
     {
         if ($directive instanceof Directive) {
             static::$directives[get_class($directive)] = $directive;
-        } elseif (is_string($directive) && is_callable($callback)) {
+        } elseif (is_callable($callback)) {
             static::$directives[$directive] = new RegisterableDirective($directive, $callback);
         } else {
             throw new InvalidArgumentException('invalid directive');
