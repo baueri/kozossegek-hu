@@ -8,7 +8,6 @@ use Framework\Console\Exception\CommandNotFoundException;
 
 class CliDispatcher implements Dispatcher
 {
-
     private ConsoleKernel $kernel;
 
     public function __construct(ConsoleKernel $kernel)

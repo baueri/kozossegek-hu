@@ -339,15 +339,13 @@ class Builder
         return $this->whereInSet($column, $value, 'or');
     }
 
-    /**
-     * @param string $table
-     * @param Closure $callback
-     * @param string $clause
-     * @return $this
-     */
-    public function whereExists(string $table, Closure $callback, string $clause = 'and'): self
+    public function whereExists(string|Builder $table, ?Closure $callback = null, string $clause = 'and'): static
     {
-        $callback($builder = (new self($this->db))->select('1')->from($table));
+        if ($table instanceof Builder) {
+            $builder = $table;
+        } else {
+            $callback($builder = (new self($this->db))->select('1')->from($table));
+        }
 
         [$query, $bindings] = $builder->getBaseSelect();
         $this->whereRaw("EXISTS ({$query})", $bindings, $clause);
@@ -443,6 +441,11 @@ class Builder
         $this->select('1 as `exists`');
 
         return isset($this->first()['exists']);
+    }
+
+    public function truncate()
+    {
+        $this->db->execute("TRUNCATE {$this->getTable()}");
     }
 
     public function toSql($withBindings = false): string

@@ -12,12 +12,14 @@ use App\Helpers\GroupHelper;
 use App\Models\UserLegacy;
 use App\Services\SystemAdministration\SiteMap\EntitySiteMappable;
 use Framework\File\File;
+use Framework\Model\HasTimestamps;
 use Framework\Support\Collection;
 use Framework\Support\StringHelper;
 
 trait GroupTrait
 {
     use EntitySiteMappable;
+    use HasTimestamps;
 
     private ?string $cachedUrl = null;
 
