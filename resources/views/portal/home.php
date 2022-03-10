@@ -103,12 +103,10 @@
         </div>
     </div>
 </div>
-<div class="jumbotron main-block mt-0 mb-0 pt-0 pb-0">
+<div class="jumbotron main-block mt-0  pt-0 pb-0">
     <div class="container">
-        <div class="text-center py-4">
-            <h2 class="title-secondary">Sok jó közösség kis térképen is elfér ;)</h2>
-            <h4 class="my-4">Idáig <b>18</b> város <b>40</b> plébániájáról több, mint <b>80</b> közösség regisztrált be a honlapunkra!</h4>
-            <h4>Legyen a <b>TE</b> közösséged a következő!</h4>
+        <div class="text-center py-5">
+            <h2 class="title-secondary">Közösségek Magyarországon</h2>
         </div>
         @component('open_street_map')
     </div>
