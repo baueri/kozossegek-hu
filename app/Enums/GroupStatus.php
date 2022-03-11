@@ -2,23 +2,19 @@
 
 namespace App\Enums;
 
-enum GroupStatus: int
+enum GroupStatus: string
 {
-    case PENDING = 1;
-    case REJECTED = -1;
-    case APPROVED = 0;
+    use HasTranslation;
+    use EnumTrait;
 
-    public function icon(): string
+    case active = 'active';
+    case inactive = 'inactive';
+
+    public function class(): string
     {
-        return match ($this->value) {
-            self::PENDING->value => $this->getIcon('fa fa-sync text-warning', 'jóváhagyásra vár'),
-            self::REJECTED->value => $this->getIcon('fa fa-ban text-danger', 'jóváhagyás visszautasítva'),
-            self::APPROVED->value => $this->getIcon('fa fa-check-circle text-success', 'jóváhagyva')
+        return match($this) {
+            self::active => 'fa fa-check-circle text-success',
+            self::inactive => 'fa fa-moon text-muted'
         };
-    }
-
-    private function getIcon(string $class, string $title = ''): string
-    {
-        return "<i class='{$class}' title='$title'></i>";
     }
 }

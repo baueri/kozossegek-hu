@@ -6,7 +6,7 @@ use App\Enums\AgeGroup;
 use App\Enums\Denomination;
 use App\Enums\OccasionFrequency;
 use App\Enums\WeekDay;
-use App\Enums\GroupStatusEnum;
+use App\Enums\GroupStatus;
 use App\Enums\JoinMode;
 use App\Helpers\GroupHelper;
 use App\Models\User;
@@ -104,7 +104,7 @@ trait GroupTrait
             return true;
         }
 
-        if ($this->pending == 0 && $this->status == GroupStatusEnum::ACTIVE) {
+        if ($this->pending == 0 && $this->status == GroupStatus::active) {
             return true;
         }
 

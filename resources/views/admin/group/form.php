@@ -110,8 +110,8 @@
             <div class="form-group">
                 <label for="status">Állapot</label>
                 <select id="status" name="status" class="form-control">
-                    @foreach($statuses as $status)
-                    <option value="{{ $status->name }}"  @selected($group->status == $status->name)>{{ $status }}</option>
+                    @foreach($statuses as $status => $name)
+                    <option value="{{ $status }}"  @selected($group->status == $status)>{{ $name }}</option>
                     @endforeach
                 </select>
             </div>
