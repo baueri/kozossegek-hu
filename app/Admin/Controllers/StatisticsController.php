@@ -11,7 +11,7 @@ class StatisticsController extends AdminController
 {
     public function __invoke(Request $request): string
     {
-        return view('admin.statistics', ['table' => $this->table(), 'varos' => $request['varos'] ?? '', 'periodus' => $request['periodus']]);
+        return view('admin.statistics.index', ['table' => $this->table(), 'varos' => $request['varos'] ?? '', 'periodus' => $request['periodus']]);
     }
 
     private function table(): AdminTable

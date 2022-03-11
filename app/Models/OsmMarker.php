@@ -9,6 +9,6 @@ use Framework\Model\Entity;
  * @property string $latlon
  * @property string $popup_html
  */
-class OsmInstitute extends Entity
+class OsmMarker extends Entity
 {
 }

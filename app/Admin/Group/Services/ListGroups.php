@@ -5,7 +5,7 @@ namespace App\Admin\Group\Services;
 use App\Admin\Group\GroupTable;
 use App\Enums\AgeGroup;
 use App\QueryBuilders\Users;
-use App\Repositories\GroupStatusRepository;
+use App\Enums\GroupStatus;
 use Framework\Http\Request;
 
 class ListGroups
@@ -19,7 +19,7 @@ class ListGroups
     public function show(): string
     {
         $age_groups = AgeGroup::cases();
-        $statuses = (new GroupStatusRepository())->all();
+        $statuses = GroupStatus::mapTranslated();
 
         $institute = null;
 
