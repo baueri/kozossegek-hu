@@ -2,6 +2,7 @@
 
 namespace Framework\Model\Relation;
 
+use Framework\Database\Builder;
 use Framework\Model\EntityQueryBuilder;
 use Framework\Support\Collection;
 
@@ -13,17 +14,17 @@ class Relation
 
     public function __construct(
         public readonly RelationType $relationType,
-        public readonly EntityQueryBuilder $entityQueryBuilder,
+        public readonly EntityQueryBuilder|Builder $queryBuilder,
         public readonly string $relationName,
         ?string $foreginKey = null,
         ?string $localKey = null,
     ) {
-        $this->localKey = $localKey ?? $entityQueryBuilder::primaryCol();
+        $this->localKey = $localKey ?? $queryBuilder::primaryCol();
         $this->foreginKey = $foreginKey ?? $this->relationName . '_id';
     }
 
-    public function buildQuery(Collection $instances): EntityQueryBuilder
+    public function buildQuery(Collection $instances): EntityQueryBuilder|Builder
     {
-        return $this->entityQueryBuilder->whereIn($this->foreginKey, $instances->map->{$this->localKey});
+        return $this->queryBuilder->whereIn($this->foreginKey, $instances->pluck($this->localKey));
     }
 }

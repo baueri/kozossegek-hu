@@ -42,7 +42,7 @@
                 </h1>
 <!--                <h2 class="subtitle h5">{{  $group->city . ($group->district ? ', ' . $group->district : '')  }}</h2>-->
                 <div class="group-tags float-left">
-                    @foreach($tag_names as $tag)
+                    @foreach($group->tags as $tag)
                     <a href="@route('portal.groups', ['tags' => $tag['tag']])" class="tag align-bottom">
                         <span class="tag-img" title="{{ $tag['tag_name'] }}" style="background: url('/images/tag/{{ $tag['tag'] }}.png'); background-size: cover;"></span>
                     </a>

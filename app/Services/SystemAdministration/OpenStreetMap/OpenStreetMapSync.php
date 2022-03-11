@@ -60,7 +60,7 @@ class OpenStreetMapSync implements Command
         <br/>
         $zip $institute->city, $institute->address<br/>
         <p>Regisztrált Közösségek száma: <b>$institute->groups_count</b></p>
-        <a href="{$institute->groupsUrl()}">Megnézem</a>
+        <a href="{$institute->groupsUrl('terkep')}">Megnézem</a>
         HTML;
     }
 }

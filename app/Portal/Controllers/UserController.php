@@ -3,9 +3,9 @@
 namespace App\Portal\Controllers;
 
 use App\Mail\ResetPasswordEmail;
+use App\QueryBuilders\Users;
 use App\Repositories\UserTokens;
 use Framework\Http\Request;
-use App\Repositories\UsersLegacy;
 use App\Auth\Auth;
 use App\Services\UpdateUser;
 use Framework\Http\Message;
@@ -44,16 +44,12 @@ class UserController extends PortalController
     }
 
     /**
-     * @param Request $request
-     * @param UsersLegacy $users
-     * @param Mailer $mailer
-     * @param UserTokens $userTokens
      * @throws Exception
      * @throws \Exception
      */
-    public function resetPassword(Request $request, UsersLegacy $users, Mailer $mailer, UserTokens $userTokens)
+    public function resetPassword(Request $request, Users $users, Mailer $mailer, UserTokens $userTokens)
     {
-        $user = $users->getUserByEmail($request['email']);
+        $user = $users->byEmail($request['email'])->first();
 
         if ($user) {
             $userToken = $userTokens->createUserToken($user, route('portal.recover_password'));
@@ -72,7 +68,7 @@ class UserController extends PortalController
         redirect_route('portal.forgot_password');
     }
 
-    public function recoverPassword(Request $request, UsersLegacy $users, UpdateUser $service, UserTokens $userTokens): string
+    public function recoverPassword(Request $request, Users $users, UpdateUser $service, UserTokens $userTokens): string
     {
         $token = $userTokens->getByToken($request['token']);
 
@@ -84,7 +80,7 @@ class UserController extends PortalController
             return view('portal.error', ['message2' => 'Ennek a tokennek az érvényességi ideje lejárt!']);
         }
 
-        $user = $users->getUserByEmail($token->email);
+        $user = $users->byEmail($token->email)->first();
 
         if ($request->isPostRequestSent()) {
             $ok = $service->changePassword($user, $request->only('new_password', 'new_password_again'));
@@ -104,7 +100,7 @@ class UserController extends PortalController
     }
 
 
-    public function activateUser(Request $request, UsersLegacy $users, UserTokens $userTokens)
+    public function activateUser(Request $request, Users $users, UserTokens $userTokens)
     {
         try {
             $token = $userTokens->getByToken($request['token']);
@@ -117,14 +113,13 @@ class UserController extends PortalController
                 return view('portal.error', ['message2' => 'Ennek a linknek az érvényességi ideje lejárt!']);
             }
 
-            $user = $users->getUserByEmail($token->email);
+            $user = $users->byEmail($token->email)->first();
 
             if (!$user) {
                 return view('portal.error', ['message2' => 'Nem létező, vagy törölt felhasználó!']);
             }
 
-            $user->activated_at = date('Y-m-d H:i:s');
-            $users->save($user);
+            $users->save($user, ['activated_at' => date('Y-m-d H:i:s')]);
             $userTokens->delete($token);
             Auth::logout();
             Auth::login($user);
