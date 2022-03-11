@@ -28,8 +28,9 @@ class Institute extends Entity
     use InstituteTrait;
     use HasTimestamps;
 
-    public function groupsUrl(): string
+    public function groupsUrl(?string $ref = null): string
     {
-        return route('portal.institute_groups', ['varos' => StringHelper::slugify($this->city), 'intezmeny' => StringHelper::slugify($this->name)]);
+        $data = ['varos' => StringHelper::slugify($this->city), 'intezmeny' => StringHelper::slugify($this->name), 'ref' => $ref];
+        return route('portal.institute_groups', array_filter($data));
     }
 }

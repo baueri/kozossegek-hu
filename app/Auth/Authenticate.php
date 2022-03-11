@@ -2,8 +2,8 @@
 
 namespace App\Auth;
 
-use App\Models\UserLegacy;
-use App\Repositories\UsersLegacy;
+use App\Models\User;
+use App\QueryBuilders\Users;
 use Framework\Support\Password;
 use Framework\Traits\ManagesErrors;
 
@@ -11,16 +11,14 @@ class Authenticate
 {
     use ManagesErrors;
 
-    private UsersLegacy $repository;
-
-    public function __construct(UsersLegacy $repository)
-    {
-        $this->repository = $repository;
+    public function __construct(
+        private Users $repository
+    ) {
     }
 
-    public function authenticate(?string $username, ?string $password): ?UserLegacy
+    public function authenticate(?string $username, ?string $password): ?User
     {
-        $user = $this->repository->findByAuth($username);
+        $user = $this->repository->byAuth($username)->first();
 
         if (!$user || ! Password::verify($password, $user->password)) {
             $this->pushError('Hibás felhasználónév vagy jelszó!');
@@ -44,7 +42,6 @@ class Authenticate
         $result = db()->first('select user_id from user_sessions where unique_id=?', [session_id()]);
 
         if ($result && $userId = $result['user_id']) {
-            /* @var $user UserLegacy */
             $user = $this->repository->find($userId);
             Auth::setUser($user);
         }

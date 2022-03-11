@@ -5,7 +5,7 @@ namespace App\Admin\Institute;
 use App\Admin\Components\AdminTable\AdminTable;
 use App\Admin\Components\AdminTable\Deletable;
 use App\Admin\Components\AdminTable\Editable;
-use App\Repositories\UsersLegacy;
+use App\QueryBuilders\Users;
 use Framework\Database\PaginatedResultSetInterface;
 use Framework\Http\Request;
 use Framework\Support\StringHelper;
@@ -28,7 +28,7 @@ class InstituteAdminTable extends AdminTable implements Deletable, Editable
 
     protected array $centeredColumns = ['image', 'groups_count'];
 
-    public function __construct(Request $request, private InstituteRepository $repository, private UsersLegacy $userRepository)
+    public function __construct(Request $request, private InstituteRepository $repository, private Users $userRepository)
     {
         parent::__construct($request);
     }
@@ -43,7 +43,7 @@ class InstituteAdminTable extends AdminTable implements Deletable, Editable
         $filter = $this->request;
         $institutes = $this->repository->getInstitutes($filter);
         $userIds = $institutes->pluck('user_id')->filter()->unique()->all();
-        $users = $this->userRepository->getUsersByIds($userIds);
+        $users = $this->userRepository->whereIn('id', $userIds)->get();
         $institutes->with($users, 'user', 'user_id');
         return $institutes;
     }

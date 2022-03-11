@@ -9,7 +9,7 @@ use App\Enums\WeekDay;
 use App\Enums\GroupStatusEnum;
 use App\Enums\JoinMode;
 use App\Helpers\GroupHelper;
-use App\Models\UserLegacy;
+use App\Models\User;
 use App\Services\SystemAdministration\SiteMap\EntitySiteMappable;
 use Framework\File\File;
 use Framework\Model\HasTimestamps;
@@ -98,7 +98,7 @@ trait GroupTrait
         return false;
     }
 
-    public function isVisibleBy(?UserLegacy $user): bool
+    public function isVisibleBy(?User $user): bool
     {
         if ($user && ($user->isAdmin() || $this->user_id == $user->id)) {
             return true;
@@ -116,7 +116,7 @@ trait GroupTrait
         return route('portal.edit_group', $this);
     }
 
-    public function isEditableBy(?UserLegacy $user): bool
+    public function isEditableBy(?User $user): bool
     {
         if (!$user) {
             return false;

@@ -6,7 +6,7 @@ use App\Admin\Group\Services\CreateGroup;
 use App\Enums\Denomination;
 use App\Exception\EmailTakenException;
 use App\Mail\NewGroupEmail;
-use App\Models\UserLegacy;
+use App\Models\User;
 use App\Repositories\UserTokens;
 use Framework\Exception\FileTypeNotAllowedException;
 use Framework\Mail\Mailer;
@@ -37,7 +37,7 @@ class PortalCreateGroup
      * @throws EmailTakenException|FileTypeNotAllowedException
      * @throws \Exception
      */
-    public function createGroup(Collection $requestData, ?array $fileData, ?UserLegacy $user): ?Group
+    public function createGroup(Collection $requestData, ?array $fileData, ?User $user): ?Group
     {
         $data = $requestData->only(
             'status',

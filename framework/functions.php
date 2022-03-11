@@ -4,7 +4,6 @@ use App\Admin\Components\DebugBar\DebugBar;
 use App\Auth\Auth;
 use App\Mailable\ThrowableCriticalErrorEmail;
 use App\Middleware\AdminMiddleware;
-use App\Models\UserLegacy;
 use App\Repositories\EventLogRepository;
 use App\Repositories\Widgets;
 use App\Services\EventLogger;
@@ -356,9 +355,9 @@ function event_logger(): EventLogger
     return app()->get(EventLogRepository::class);
 }
 
-function log_event(string $type, array $data = [], ?UserLegacy $user = null)
+function log_event(string $type, array $data = [])
 {
-    event_logger()->logEvent($type, $data, $user);
+    event_logger()->logEvent($type, $data);
 }
 
 function site_name(): string

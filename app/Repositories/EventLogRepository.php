@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\EventLog;
-use App\Models\UserLegacy;
+use App\Models\User;
 use App\Services\EventLogger;
 use Framework\Repository;
 
@@ -12,7 +12,7 @@ use Framework\Repository;
  */
 class EventLogRepository extends Repository implements EventLogger
 {
-    public function logEvent(string $type, array $data = [], ?UserLegacy $user = null): EventLog
+    public function logEvent(string $type, array $data = [], ?User $user = null): EventLog
     {
         return $this->create([
             'type' => $type,

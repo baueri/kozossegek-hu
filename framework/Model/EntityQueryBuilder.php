@@ -293,8 +293,13 @@ abstract class EntityQueryBuilder
         return $this->builder->update($values);
     }
 
-    public function save(Entity $entity, array $values): int
+    public function save(Entity $entity, ?array $values = null): int
     {
+        if (!$values) {
+            $values = $entity->getAttributes();
+        } else {
+            $entity->update($values);
+        }
         return $this->query()->where(static::primaryCol(), $entity->getId())->update($values);
     }
 
