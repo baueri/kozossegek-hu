@@ -13,9 +13,9 @@ class CityStatAggregator extends StatAggregator
     public function add(array $row): void
     {
         if (!in_array($row['type'], [
-            EventType::search->value,
-            EventType::group_profile_opened->value,
-            EventType::group_contact->value
+            EventType::search->name,
+            EventType::group_profile_opened->name,
+            EventType::group_contact->name
         ]) || !$this->getCity($row)) {
             return;
         }
@@ -30,15 +30,15 @@ class CityStatAggregator extends StatAggregator
                 'date' => Carbon::parse($row['created_at'])->toDateString()
             ];
         }
-        if ($row['type'] === EventType::search->value) {
+        if ($row['type'] === EventType::search->name) {
             $this->aggregated[$key]['search_count']++;
         }
 
-        if ($row['type'] === EventType::group_profile_opened->value) {
+        if ($row['type'] === EventType::group_profile_opened->name) {
             $this->aggregated[$key]['opened_groups_count']++;
         }
 
-        if ($row['type'] === EventType::group_contact->value) {
+        if ($row['type'] === EventType::group_contact->name) {
             $this->aggregated[$key]['contacted_groups_count']++;
         }
     }
