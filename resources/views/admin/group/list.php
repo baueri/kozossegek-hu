@@ -38,8 +38,8 @@
         <div class="col-md-2">
             <select id="status" name="status" class="form-control" data-placeholder="Állapot">
                 <option></option>
-                @foreach($statuses as $status)
-                    <option value="{{ $status->name }}" {{ $filter['status'] == $status->name ? 'selected' : '' }}>{{ $status }}</option>
+                @foreach($statuses as $value => $status)
+                    <option value="{{ $value }}" @selected($filter['status'] == $value)>{{ $status }}</option>
                 @endforeach
             </select>
         </div>

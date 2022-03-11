@@ -5,7 +5,7 @@ namespace App\Enums;
 enum OccasionFrequency: string
 {
     use HasTranslation;
-    use ConvertsToSimpleArray;
+    use EnumTrait;
 
     case hetente_tobbszor = 'hetente_tobbszor';
     case hetente = 'hetente';

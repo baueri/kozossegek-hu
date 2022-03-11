@@ -3,8 +3,9 @@
 namespace App\Enums;
 
 use BackedEnum;
+use Framework\Support\Collection;
 
-trait ConvertsToSimpleArray
+trait EnumTrait
 {
     /**
      * @return array<string, mixed>
@@ -28,6 +29,19 @@ trait ConvertsToSimpleArray
     public static function values(): array
     {
         return array_map(fn ($enum) => static::getVal($enum), static::cases());
+    }
+
+    /**
+     * @return Collection<static>
+     */
+    public static function collect(): Collection
+    {
+        return collect(static::cases());
+    }
+
+    final public function value()
+    {
+        return static::getVal($this);
     }
 
     private static function getVal($case): string

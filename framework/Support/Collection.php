@@ -76,11 +76,12 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     /**
      * @phpstan-return self<T>
      */
-    public function keyBy(int|string $key): self
+    public function keyBy(int|string|Closure $by): self
     {
         $items = [];
         foreach ($this->items as $item) {
-            $items[static::getItemVal($item, $key)] = $item;
+            $key = $by instanceof Closure ? $by($item) : static::getItemVal($item, $by);
+            $items[$key] = $item;
         }
 
         return new self($items);
@@ -306,7 +307,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         return new self(Arr::pluck($this->items, $key, $keyBy));
     }
 
-    public function map($func, bool $keepKeys = false): self
+    public function map($func, bool $keepKeys = true): self
     {
         return new self(Arr::map($this->items, $func, $keepKeys));
     }
@@ -534,6 +535,16 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     public static function fromList(?string $text, string $separator = ','): Collection
     {
         return new self(Arr::fromList($text, $separator));
+    }
+
+    public static function fromJson(): static
+    {
+        return new self(json_decode(...func_get_args()));
+    }
+
+    public static function fromJsonFile(string $fileName, ...$params): static
+    {
+        return static::fromJson(file_get_contents($fileName), ...$params);
     }
 
     public function __get(string $name)

@@ -25,7 +25,7 @@ class QueryHistory
 
     public function getLastQuery(): array
     {
-        return $this->queryHistory->last();
+        return $this->queryHistory->last() ?: [];
     }
 
     public function getExecutionTime()
