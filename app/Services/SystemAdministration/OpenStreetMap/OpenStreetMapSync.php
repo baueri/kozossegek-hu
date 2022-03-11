@@ -5,13 +5,15 @@ namespace App\Services\SystemAdministration\OpenStreetMap;
 use App\Models\Institute;
 use App\QueryBuilders\ChurchGroups;
 use App\QueryBuilders\Institutes;
-use App\QueryBuilders\OsmInstitutes;
+use App\QueryBuilders\OsmMarkers;
 use Framework\Console\Command;
-use GuzzleHttp\Client;
 
 class OpenStreetMapSync implements Command
 {
-    private const API = 'https://nominatim.openstreetmap.org/search?q=%s&format=json';
+    public function __construct(
+        private readonly OpenStreetMapQuery $openStreetMapQuery
+    ) {
+    }
 
     public static function signature(): string
     {
@@ -20,7 +22,7 @@ class OpenStreetMapSync implements Command
 
     public function handle(): void
     {
-        OsmInstitutes::truncate();
+        OsmMarkers::truncate();
 
         Institutes::query()
             ->where('address', '<>', '')
@@ -32,35 +34,27 @@ class OpenStreetMapSync implements Command
                     return $this->getAddress($institute->city, $address);
                 });
                 preg_match('/([\d]{4})/', $address['display_name'], $matches);
-                OsmInstitutes::query()->updateOrInsert(
-                    [
-                    'institute_id' => $institute->getId(),
-                    ],
-                    [
-                        'latlon' => trim(($address['lat'] ?? '') . ',' . ($address['lon'] ?? ''), ','),
-                        'popup_html' => addslashes($this->getHtml($institute, $matches[0]))
-                    ]
-                );
+                OsmMarkers::query()->insert([
+                    'latlon' => trim(($address['lat'] ?? '') . ',' . ($address['lon'] ?? ''), ','),
+                    'popup_html' => addslashes($this->getHtml($institute, $matches[0]))
+                ]);
             });
 
     }
 
     private function getAddress(string $city, string $address)
     {
-        static $client;
-        $client ??= new Client();
-        $url = sprintf(self::API, "{$city},{$address}");
-        return json_decode($client->get($url)->getBody(), true)[0] ?? [];
+        return $this->openStreetMapQuery->search("{$city},{$address}")[0] ?? [];
     }
 
     private function getHtml(Institute $institute, $zip): string
     {
         return <<<HTML
-        <b>$institute->name</b>
-        <br/>
-        $zip $institute->city, $institute->address<br/>
-        <p>Regisztrált Közösségek száma: <b>$institute->groups_count</b></p>
-        <a href="{$institute->groupsUrl()}">Megnézem</a>
+            <b>$institute->name</b>
+            <br/>
+            $zip $institute->city, $institute->address<br/>
+            <p>Regisztrált Közösségek száma: <b>$institute->groups_count</b></p>
+            <a href="{$institute->groupsUrl()}">Megnézem</a>
         HTML;
     }
 }

@@ -131,6 +131,11 @@ return [
                 'title' => 'Város alapján',
                 'icon' => 'city',
                 'as' => 'admin.statistics',
+            ],
+            [
+                'title' => 'Térkép (lefedettség)',
+                'icon' => 'map-marked-alt',
+                'as' => 'admin.statistics.map',
             ]
         ]
     ],
