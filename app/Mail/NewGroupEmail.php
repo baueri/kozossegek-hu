@@ -2,7 +2,7 @@
 
 namespace App\Mail;
 
-use App\Models\UserLegacy;
+use App\Models\User;
 use App\Models\UserToken;
 use Framework\Mail\Mailable;
 
@@ -12,12 +12,12 @@ class NewGroupEmail extends Mailable
 
     public string $subject = 'kozossegek.hu - Új csoport';
 
-    public function __construct(UserLegacy $user)
+    public function __construct(User $user)
     {
         $this->withUser($user);
     }
 
-    private function withUser(UserLegacy $user)
+    private function withUser(User $user)
     {
         $this->with(['user_name' => $user->name]);
     }

@@ -3,6 +3,7 @@
 namespace Framework\Model\Relation;
 
 use Framework\Model\Entity;
+use Framework\Support\Arr;
 use Framework\Support\Collection;
 use Framework\Support\StringHelper;
 
@@ -22,12 +23,11 @@ trait HasMany
                 $this->fillCounts($relation, $instances);
                 return;
             }
-
-            $rows = $relation->buildQuery($instances)->get();
+            $rows = collect($relation->buildQuery($instances)->get());
 
             foreach ($instances as $actualInstance) {
                 $actualInstance->relations[$relation->relationName] = $rows->filter(
-                    fn ($relationInstance) => $relationInstance->{$relation->foreginKey} == $actualInstance->{$relation->localKey}
+                    fn ($relationInstance) => Arr::get($relationInstance, $relation->foreginKey) == Arr::get($actualInstance, $relation->localKey)
                 );
             }
         }
@@ -49,7 +49,7 @@ trait HasMany
     {
         return new Relation(
             relationType: RelationType::HasMany,
-            entityQueryBuilder: app($repositoryClass),
+            queryBuilder: app($repositoryClass),
             relationName: $this->getRelationName(),
             foreginKey: $foreingkey ?? StringHelper::snake(get_class_name(static::getModelClass())) . '_id',
             localKey: $localKey

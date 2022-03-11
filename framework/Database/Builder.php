@@ -27,9 +27,14 @@ class Builder
 
     private static array $macros = [];
 
+    public const PRIMARY = 'id';
+
+    public const TABLE = '';
+
     public function __construct(
         private Database $db
     ) {
+        $this->table = Arr::wrap(static::TABLE);
     }
 
     public static function query(): static
@@ -513,6 +518,11 @@ class Builder
         }
 
         return null;
+    }
+
+    public static function primaryCol(): string
+    {
+        return self::PRIMARY;
     }
 
     public function dd(bool $withBinding = false): never

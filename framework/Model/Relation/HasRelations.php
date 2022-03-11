@@ -2,7 +2,6 @@
 
 namespace Framework\Model\Relation;
 
-use Framework\Database\Builder;
 use Framework\Support\Collection;
 
 trait HasRelations
@@ -43,8 +42,8 @@ trait HasRelations
     public function whereHas(string $relationName, $callback): static
     {
         $relation = $this->getRelation($relationName, $callback);
-        $relation->entityQueryBuilder->whereRaw("{$relation->entityQueryBuilder->getTable()}.{$relation->foreginKey}={$this->getTable()}.{$relation->localKey}");
-        $this->whereExists($relation->entityQueryBuilder);
+        $relation->queryBuilder->whereRaw("{$relation->queryBuilder->getTable()}.{$relation->foreginKey}={$this->getTable()}.{$relation->localKey}");
+        $this->whereExists($relation->queryBuilder);
         return $this;
     }
 
@@ -64,7 +63,9 @@ trait HasRelations
     {
         /** @var \Framework\Model\Relation\Relation $rel */
         $rel = $this->{$relation}();
-        $callback($rel->entityQueryBuilder);
+        if ($callback) {
+            $callback($rel->queryBuilder);
+        }
         return $rel;
     }
 

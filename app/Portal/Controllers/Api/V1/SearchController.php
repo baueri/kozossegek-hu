@@ -7,9 +7,9 @@ use App\Portal\Responses\CitySearchResponse;
 use App\Portal\Responses\DistrictResponse;
 use App\Portal\Responses\InstituteSearchResponse;
 use App\Portal\Responses\UserResponse;
+use App\QueryBuilders\Users;
 use App\Repositories\Cities;
 use App\Repositories\Districts;
-use App\Repositories\UsersLegacy;
 use Framework\Http\Request;
 use Legacy\Institutes;
 
@@ -45,8 +45,8 @@ class SearchController
         return new DistrictResponse($repository->searchDistrict($this->request['term'], $this->request['city']));
     }
 
-    public function searchUser(UsersLegacy $users): UserResponse
+    public function searchUser(Users $users): UserResponse
     {
-        return new UserResponse($users->searchUsers($this->request['term']));
+        return new UserResponse($users->search($this->request['term'])->get());
     }
 }

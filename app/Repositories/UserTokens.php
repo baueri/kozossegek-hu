@@ -2,8 +2,8 @@
 
 namespace App\Repositories;
 
+use App\Models\User;
 use App\Models\UserToken;
-use App\Models\UserLegacy;
 use DateTime;
 use Framework\Repository;
 
@@ -20,7 +20,7 @@ class UserTokens extends Repository
     /**
      * @throws \Exception
      */
-    public function createUserToken(UserLegacy $user, string $page): UserToken
+    public function createUserToken(User $user, string $page): UserToken
     {
         $instance = $this->make($user, $page);
 
@@ -32,7 +32,7 @@ class UserTokens extends Repository
     /**
      * @throws \Exception
      */
-    public function createActivationToken(UserLegacy $user): UserToken
+    public function createActivationToken(User $user): UserToken
     {
         return $this->createUserToken($user, route('portal.user.activate'));
     }
@@ -40,7 +40,7 @@ class UserTokens extends Repository
     /**
      * @throws \Exception
      */
-    public function make(UserLegacy $user, string $page): UserToken
+    public function make(User $user, string $page): UserToken
     {
         return $this->getInstance([
             'token' => bin2hex(random_bytes(20)),
