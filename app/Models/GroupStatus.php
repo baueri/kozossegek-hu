@@ -4,7 +4,7 @@
 namespace App\Models;
 
 
-use App\Enums\GroupStatusEnum;
+use App\Enums\GroupStatus;
 
 class GroupStatus extends AbstractSimpleTranslatable
 {
@@ -13,9 +13,9 @@ class GroupStatus extends AbstractSimpleTranslatable
      */
     public function getClass()
     {
-        if ($this->name == GroupStatusEnum::ACTIVE) {
+        if ($this->name == GroupStatus::active->name) {
             return 'fa fa-check-circle text-success';
-        } elseif($this->name == GroupStatusEnum::INACTIVE) {
+        } elseif($this->name == GroupStatus::inactive->name) {
             return 'fa fa-moon text-muted';
         }
 

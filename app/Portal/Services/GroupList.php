@@ -2,9 +2,8 @@
 
 namespace App\Portal\Services;
 
-use App\Enums\GroupStatusEnum;
+use App\Enums\GroupStatus;
 use App\Enums\AgeGroup;
-use App\Repositories\GroupStatusRepository;
 use Framework\Support\Collection;
 
 class GroupList
@@ -22,9 +21,9 @@ class GroupList
         $filter = $baseFilter;
 
         $filter['pending'] = 0;
-        $filter['status'] = GroupStatusEnum::ACTIVE;
+        $filter['status'] = GroupStatus::active;
 
-        $statuses = (new GroupStatusRepository())->all();
+        $statuses = GroupStatus::mapTranslated();
 
         $korosztaly = $filter['korosztaly'] ?? null;
 

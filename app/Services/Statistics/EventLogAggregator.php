@@ -26,7 +26,6 @@ class EventLogAggregator
                 }
                 $this->cityStatAggregator->add($row);
             });
-
         return $this->cityStatAggregator->save();
     }
 }

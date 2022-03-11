@@ -5,8 +5,8 @@ namespace App\Admin\Group;
 use App\Admin\Components\AdminTable\AdminTable;
 use App\Admin\Components\AdminTable\Deletable;
 use App\Admin\Components\AdminTable\Editable;
+use App\Enums\GroupStatus;
 use App\Models\ChurchGroupView;
-use App\Models\GroupStatus;
 use App\Services\GroupSearchRepository;
 use Framework\Database\PaginatedResultSetInterface;
 use Framework\Http\Request;
@@ -54,10 +54,9 @@ class GroupTable extends AdminTable implements Editable, Deletable
 
     public function getStatus($status): string
     {
-        $status = new GroupStatus($status);
-        $class = $status->getClass();
+        $status = GroupStatus::from($status);
 
-        return "<i class='$class'></i>";
+        return "<i class='{$status->class()}'></i>";
     }
 
     public function getInstituteName($instituteName, ChurchGroupView $group): string

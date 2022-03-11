@@ -5,7 +5,7 @@ namespace App\Enums;
 enum AgeGroup: string
 {
     use HasTranslation;
-    use ConvertsToSimpleArray;
+    use EnumTrait;
 
     case tinedzser = 'tinedzser';
     case fiatal_felnott = 'fiatal_felnott';
