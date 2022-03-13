@@ -5,6 +5,7 @@ namespace App\QueryBuilders;
 use App\Models\ChurchGroup;
 use App\Models\ChurchGroupView;
 use Framework\Model\EntityQueryBuilder;
+use Framework\Model\Relation\Has;
 use Framework\Model\Relation\Relation;
 use Framework\Model\SoftDeletes;
 
@@ -22,7 +23,7 @@ class ChurchGroups extends EntityQueryBuilder
 
     public function tags(): Relation
     {
-        return $this->hasMany(GroupTags::class);
+        return $this->has(Has::many, GroupTags::class);
     }
 
     public function active(): static
@@ -53,7 +54,9 @@ class ChurchGroups extends EntityQueryBuilder
             ->active();
 
         if ($group->tags) {
-            $this->withWhereHas('tags', fn (GroupTags $query) => $query->whereIn('tag', $group->tags->map->tag));
+            $tagQuery = fn (GroupTags $query) => $query->whereIn('tag', $group->tags->map->tag);
+            $this->with('tags', $tagQuery);
+            $this->whereHas('tags', $tagQuery);
         }
 
         return $this;

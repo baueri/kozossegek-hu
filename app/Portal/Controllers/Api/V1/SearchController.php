@@ -7,8 +7,8 @@ use App\Portal\Responses\CitySearchResponse;
 use App\Portal\Responses\DistrictResponse;
 use App\Portal\Responses\InstituteSearchResponse;
 use App\Portal\Responses\UserResponse;
+use App\QueryBuilders\Cities;
 use App\QueryBuilders\Users;
-use App\Repositories\Cities;
 use App\Repositories\Districts;
 use Framework\Http\Request;
 use Legacy\Institutes;
@@ -21,12 +21,7 @@ class SearchController
 
     public function searchCity(Cities $repository): CitySearchResponse
     {
-        return new CitySearchResponse($repository->search($this->request['term']));
-    }
-
-    public function searchCitiesByExistingInstitutes(Cities $repository): CitySearchResponse
-    {
-        return new CitySearchResponse($repository->search($this->request['term']));
+        return new CitySearchResponse($repository->search($this->request['term'])->get());
     }
 
     public function searchInstitute(Institutes $repository): array|InstituteSearchResponse

@@ -12,7 +12,8 @@ trait HasMany
     public function loadHasManyRelations($instances): void
     {
         $instances = collect($instances);
-        $relations = $this->getPreparedRelations()->filter(fn (Relation $relation) => $relation->relationType === RelationType::HasMany);
+        $relations = $this->getPreparedRelations();
+
         if ($relations->isEmpty() || $instances->isEmpty()) {
             return;
         }
@@ -21,14 +22,18 @@ trait HasMany
         foreach ($relations as $relation) {
             if (in_array($relation->relationName, $this->relationCounts)) {
                 $this->fillCounts($relation, $instances);
-                return;
+                continue;
             }
             $rows = collect($relation->buildQuery($instances)->get());
 
             foreach ($instances as $actualInstance) {
-                $actualInstance->relations[$relation->relationName] = $rows->filter(
-                    fn ($relationInstance) => Arr::get($relationInstance, $relation->foreginKey) == Arr::get($actualInstance, $relation->localKey)
-                );
+                $actualInstanceValue = Arr::get($actualInstance, $relation->localKey);
+                $isSame = fn($relationInstance) => Arr::get($relationInstance, $relation->foreginKey) == $actualInstanceValue;
+                if ($relation->relationType == Has::many) {
+                    $actualInstance->relations[$relation->relationName] = $rows->filter($isSame)->values();
+                } else {
+                    $actualInstance->relations[$relation->relationName] = $rows->first($isSame);
+                }
             }
         }
     }
@@ -41,17 +46,27 @@ trait HasMany
     {
         $rows = $relation->buildQuery($instances)->countBy($relation->foreginKey);
         foreach ($instances as $actualInstance) {
-            $actualInstance->relations_count[$relation->relationName] = $rows[$actualInstance->getId()] ?? 0;
+            $actualInstance->relations_count[$relation->relationName] = $rows[Arr::getItemValue($actualInstance, $relation->localKey)] ?? 0;
         }
     }
 
-    public function hasMany(string $repositoryClass, ?string $foreingkey = null, ?string $localKey = null): Relation
+    public function hasMany(string $repositoryClass, ?string $foreignKey = null, ?string $localKey = null): Relation
+    {
+        return $this->has(Has::many, $repositoryClass, $foreignKey, $localKey);
+    }
+
+    public function hasOne(string $repositoryClass, ?string $foreignKey = null, ?string $localKey = null): Relation
+    {
+        return $this->has(Has::one, $repositoryClass, $foreignKey, $localKey);
+    }
+
+    public function has(Has $relationType, string $repositoryClass, ?string $foreignKey = null, ?string $localKey = null): Relation
     {
         return new Relation(
-            relationType: RelationType::HasMany,
+            relationType: $relationType,
             queryBuilder: app($repositoryClass),
             relationName: $this->getRelationName(),
-            foreginKey: $foreingkey ?? StringHelper::snake(get_class_name(static::getModelClass())) . '_id',
+            foreignKey: $foreignKey ?? StringHelper::snake(get_class_name(static::getModelClass())) . '_id',
             localKey: $localKey
         );
     }

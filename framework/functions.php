@@ -12,6 +12,8 @@ use Carbon\Carbon;
 use Framework\Application;
 use Framework\Database\Builder;
 use Framework\Database\Database;
+use Framework\Database\DatabaseHelper;
+use Framework\Database\QueryHistory;
 use Framework\Dispatcher\Dispatcher;
 use Framework\Dispatcher\HttpDispatcher;
 use Framework\Enums\Environment;
@@ -108,12 +110,12 @@ function getLang(): string
 
 function db(): Database
 {
-    return app()->make(Database::class);
+    return app()->get(Database::class);
 }
 
 function builder(?string $table = null): Builder
 {
-    return app()->make(Builder::class)->from($table);
+    return app()->get(Builder::class)->from($table);
 }
 
 /**
@@ -167,7 +169,7 @@ function now($tz = null): Carbon
 
 function view(string $view, array $args = []): string
 {
-    return app()->make(ViewInterface::class)->view($view, $args);
+    return app()->get(ViewInterface::class)->view($view, $args);
 }
 
 function view_path(string $view): string
@@ -177,12 +179,12 @@ function view_path(string $view): string
 
 function current_route(): RouteInterface
 {
-    return app()->make(HttpDispatcher::class)->getCurrentRoute();
+    return app()->get(HttpDispatcher::class)->getCurrentRoute();
 }
 
 function dispatcher(): Dispatcher
 {
-    return app()->make(Dispatcher::class);
+    return app()->get(Dispatcher::class);
 }
 
 function get_site_url(): string
@@ -413,4 +415,16 @@ function selected($expression): string
 function attr(string $name): Closure
 {
     return fn ($expression) => $expression ? $name : '';
+}
+
+function query_history(): Collection
+{
+    return app(QueryHistory::class)->queryHistory;
+}
+
+function query_history_bound(): array
+{
+    return query_history()->map(function ($query) {
+        return DatabaseHelper::getQueryWithBindings($query[0], $query[1]);
+    })->all();
 }

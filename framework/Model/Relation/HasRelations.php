@@ -39,24 +39,12 @@ trait HasRelations
         return $this;
     }
 
-    public function whereHas(string $relationName, $callback): static
+    public function whereHas(string $relationName, $callback = null): static
     {
         $relation = $this->getRelation($relationName, $callback);
         $relation->queryBuilder->whereRaw("{$relation->queryBuilder->getTable()}.{$relation->foreginKey}={$this->getTable()}.{$relation->localKey}");
         $this->whereExists($relation->queryBuilder);
         return $this;
-    }
-
-    public function withWhereHas(string $relation, $callback = null): static
-    {
-        $this->with($relation, $callback);
-        return $this->whereHas($relation, $callback);
-    }
-
-    public function withCountWhereHas(string $relation, $callback = null): static
-    {
-        $this->withCount($relation, $callback);
-        return $this->whereHas($relation, $callback);
     }
 
     public function getRelation(string $relation, $callback = null): Relation
