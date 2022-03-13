@@ -2,7 +2,7 @@
 <routes as="api">
     <route-group middleware="Framework\Middleware\JsonApi" prefix="api/v1">
         <route-group  namespace="App\Portal\Controllers\Api\V1">
-            <route method="all" controller="SearchController" uri="search-city" use="searchCitiesByExistingInstitutes" as="search-city"/>
+            <route method="all" controller="SearchController" uri="search-city" use="searchCity" as="search-city"/>
             <route method="all" controller="SearchController" uri="search-institute" use="searchInstitute" as="search-institute"/>
             <route method="all" controller="SearchController" uri="search-district" use="searchDistrict" as="search-district"/>
             <route method="all" controller="SearchController" uri="search-user" use="searchUser" as="search-user" middleware="App\Middleware\AdminMiddleware"/>

@@ -6,7 +6,7 @@ use Framework\Support\Collection;
 
 class QueryHistory
 {
-    protected Collection $queryHistory;
+    public readonly Collection $queryHistory;
 
     public function __construct()
     {
