@@ -47,22 +47,13 @@ class Section
         return $out;
     }
 
-    /**
-     * @param string $name
-     * @return array|mixed
-     */
     public static function get(string $name)
     {
         return static::$sections[$name] ?? [];
     }
 
 
-    /**
-     * @param string|Closure $content
-     * @param array $args
-     * @return Closure|false|string
-     */
-    private static function parseContent($content, array $args)
+    private static function parseContent($content, array $args): string
     {
         if ($content instanceof Closure) {
             ob_start();

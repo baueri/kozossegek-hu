@@ -2,8 +2,11 @@
 
 namespace App\Enums;
 
-enum OsmType
+enum OsmType: string
 {
-    case city;
-    case institute;
+    use EnumTrait;
+
+    case city = 'city';
+    case institute = 'institute';
+    case city_stat = 'city_stat';
 }

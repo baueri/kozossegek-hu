@@ -2,25 +2,24 @@
 
 namespace App\Auth;
 
-use App\Models\UserLegacy;
+use App\Models\User;
 use App\Services\User\LegalNoticeService;
 
 final class Auth
 {
-    private static ?UserLegacy $user = null;
+    private static ?User $user = null;
 
-    public static function setUser(UserLegacy $user): void
+    public static function setUser(User $user): void
     {
         self::$user = $user;
     }
 
-    public static function login(UserLegacy $user): void
+    public static function login(User $user): void
     {
         app()->make(LegalNoticeService::class)->setLegalNoticeSessionFor($user);
 
         db()->execute(
-            'replace into user_sessions (unique_id, user_id, created_at)
-                    values(?, ?, CURRENT_TIMESTAMP)',
+            'replace into user_sessions (unique_id, user_id, created_at) values(?, ?, CURRENT_TIMESTAMP)',
             session_id(),
             $user->id
         );
@@ -47,7 +46,7 @@ final class Auth
         return (bool) self::$user;
     }
 
-    public static function user(): ?UserLegacy
+    public static function user(): ?User
     {
         return self::$user;
     }

@@ -9,7 +9,6 @@ use Framework\Console\BaseCommands\SiteUp;
 use Framework\Console\BaseCommands\SiteDown;
 use Framework\Console\Exception\CommandNotFoundException;
 use Framework\Kernel;
-use function PHPUnit\Framework\throwException;
 
 class ConsoleKernel implements Kernel
 {
