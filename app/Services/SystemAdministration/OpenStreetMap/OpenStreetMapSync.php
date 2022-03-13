@@ -11,7 +11,6 @@ use App\QueryBuilders\Institutes;
 use App\QueryBuilders\OsmMarkers;
 use App\Repositories\CityStatistics;
 use Framework\Console\Command;
-use Framework\Console\Out;
 
 class OpenStreetMapSync implements Command
 {
@@ -29,20 +28,20 @@ class OpenStreetMapSync implements Command
     {
         OsmMarkers::truncate();
 
-//        $groups = fn (ChurchGroups $query) => $query->active();
-//        Institutes::query()
-//            ->where('address', '<>', '')
-//            ->notDeleted()
-//            ->withCount('groups', $groups)
-//            ->whereHas('groups', $groups)
-//            ->get()
-//            ->map(function (Institute $institute) {
-//                OsmMarkers::query()->insert([
-//                    'type' => 'institute',
-//                    'latlon' => $institute->latlon(),
-//                    'popup_html' => addslashes($this->getHtml($institute))
-//                ]);
-//            });
+        $groups = fn (ChurchGroups $query) => $query->active();
+        Institutes::query()
+            ->where('address', '<>', '')
+            ->notDeleted()
+            ->withCount('groups', $groups)
+            ->whereHas('groups', $groups)
+            ->get()
+            ->map(function (Institute $institute) {
+                OsmMarkers::query()->insert([
+                    'type' => 'institute',
+                    'latlon' => $institute->latlon(),
+                    'popup_html' => addslashes($this->getHtml($institute))
+                ]);
+            });
 
         Cities::query()
             ->select(['name', 'lat', 'lon'])
