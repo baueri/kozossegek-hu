@@ -2,13 +2,13 @@
 
 namespace App\QueryBuilders;
 
-use App\Models\OsmInstitute;
+use App\Models\OsmMarker;
 use Framework\Model\EntityQueryBuilder;
 
-class OsmInstitutes extends EntityQueryBuilder
+class OsmMarkers extends EntityQueryBuilder
 {
     protected static function getModelClass(): string
     {
-        return OsmInstitute::class;
+        return OsmMarker::class;
     }
 }

@@ -5,6 +5,7 @@ namespace App\Enums;
 enum WeekDay: string
 {
     use HasTranslation;
+    use EnumTrait;
 
     case he = 'he';
     case ke = 'ke';

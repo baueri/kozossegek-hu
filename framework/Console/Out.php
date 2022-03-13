@@ -79,7 +79,7 @@ class Out
 
     public static function dump($data)
     {
-        $color = is_bool($data) ? Color::cyan : null;
+        $color = is_bool($data) ? Color::cyan : Color::white;
         static::write(print_r($data, true), $color);
     }
 }

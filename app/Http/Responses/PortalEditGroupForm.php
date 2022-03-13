@@ -3,10 +3,10 @@
 namespace App\Http\Responses;
 
 use App\Enums\AgeGroup;
+use App\Enums\GroupStatus;
 use App\Enums\OccasionFrequency;
 use App\Enums\WeekDay;
 use App\Models\ChurchGroupView;
-use App\Repositories\GroupStatusRepository;
 use Legacy\Institutes;
 
 class PortalEditGroupForm
@@ -20,7 +20,7 @@ class PortalEditGroupForm
 
     public function __invoke(ChurchGroupView $group): string
     {
-        $statuses = (new GroupStatusRepository())->all();
+        $statuses = GroupStatus::mapTranslated();
         $tags = builder('tags')->select()->get();
         $occasion_frequencies = OccasionFrequency::cases();
         $age_groups = AgeGroup::cases();

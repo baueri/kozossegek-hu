@@ -2,21 +2,21 @@
 
 namespace App\Services;
 
-use App\Models\UserLegacy;
+use App\Models\User;
 use Framework\Support\Csv;
 use Legacy\Institutes;
 
 class InstituteImporter
 {
-
-    public function __construct(private Institutes $institutes)
-    {
+    public function __construct(
+        private Institutes $institutes
+    ) {
     }
 
     /**
      * @return int[]
      */
-    public function run(string $filePath, UserLegacy $user): array
+    public function run(string $filePath, User $user): array
     {
         $rows = Csv::parse($filePath, ';');
 

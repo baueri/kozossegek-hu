@@ -3,8 +3,7 @@
 namespace App\Admin\Group\Services;
 
 use App\Models\ChurchGroupView;
-use App\Repositories\Users;
-use App\Repositories\UsersLegacy;
+use App\QueryBuilders\Users;
 
 class ValidateGroupForm
 {

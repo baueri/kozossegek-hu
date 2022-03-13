@@ -3,14 +3,13 @@
 namespace App\Admin\Components\DebugBar;
 
 use Framework\Support\StringHelper;
-use InvalidArgumentException;
 
 class DebugBar
 {
     /**
      * @var DebugBarTab[]
      */
-    private array $tabs;
+    public readonly array $tabs;
 
     public function __construct(
         FrameworkInfoTab $frameworkInfoTab,
@@ -19,10 +18,10 @@ class DebugBar
         MileStoneTab $timeLineTab
     ) {
         $this->tabs = [
-            $frameworkInfoTab,
-            $queryHistoryTab,
-            $loadedViewsTab,
-            $timeLineTab
+            FrameworkInfoTab::class => $frameworkInfoTab,
+            QueryHistoryTab::class => $queryHistoryTab,
+            LoadedViewsTab::class => $loadedViewsTab,
+            MileStoneTab::class => $timeLineTab
         ];
     }
 

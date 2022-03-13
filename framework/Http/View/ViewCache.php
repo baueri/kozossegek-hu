@@ -4,32 +4,20 @@ namespace Framework\Http\View;
 
 class ViewCache
 {
-    /**
-     * @var string
-     */
     protected static string $cacheDir = CACHE . 'views' . DS;
 
-    /**
-     * @param string $fileName
-     * @param string $content
-     * @return bool|int
-     */
-    public function cache(string $fileName, ?string $content)
+    public function cache(string $fileName, ?string $content): bool
     {
         $cachedFileName = $this->getCacheFilename($fileName);
 
         $this->createDirIfNotExists($cachedFileName);
 
-        $content = $content = "<?php //this is the cache file of " . $fileName . " ?>\n" . $content;
+        $content = "<?php //this is the cache file of " . $fileName . " ?>\n" . $content;
 
-        return file_put_contents($cachedFileName, $content);
+        return file_put_contents($cachedFileName, $content) !== false;
     }
 
-    /**
-     * @param string $fileName
-     * @return string
-     */
-    public function getCacheFilename(string $fileName)
+    public function getCacheFilename(string $fileName): string
     {
         $hashedFilename = md5($fileName);
         return static::$cacheDir . substr($hashedFilename, 0, 2) . DS . md5($fileName) . '.php';
@@ -42,9 +30,6 @@ class ViewCache
         }
     }
 
-    /**
-     * @return bool
-     */
     public function shouldUpdateFile(string $fileName): bool
     {
         $cacheFilePath = $this->getCacheFilename($fileName);

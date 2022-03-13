@@ -22,14 +22,22 @@ use Framework\Support\StringHelper;
  * @property null|int $miserend_id
  * @property null|string $image_url
  * @property null|string $website
+ * @property string $lat
+ * @property string $lon
  */
 class Institute extends Entity
 {
     use InstituteTrait;
     use HasTimestamps;
 
-    public function groupsUrl(): string
+    public function groupsUrl(?string $ref = null): string
     {
-        return route('portal.institute_groups', ['varos' => StringHelper::slugify($this->city), 'intezmeny' => StringHelper::slugify($this->name)]);
+        $data = ['varos' => StringHelper::slugify($this->city), 'intezmeny' => StringHelper::slugify($this->name), 'ref' => $ref];
+        return route('portal.institute_groups', array_filter($data));
+    }
+
+    public function latlon(): string
+    {
+        return "{$this->lat},{$this->lon}";
     }
 }

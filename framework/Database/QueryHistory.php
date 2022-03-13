@@ -6,7 +6,7 @@ use Framework\Support\Collection;
 
 class QueryHistory
 {
-    protected Collection $queryHistory;
+    public readonly Collection $queryHistory;
 
     public function __construct()
     {
@@ -25,7 +25,7 @@ class QueryHistory
 
     public function getLastQuery(): array
     {
-        return $this->queryHistory->last();
+        return $this->queryHistory->last() ?: [];
     }
 
     public function getExecutionTime()
