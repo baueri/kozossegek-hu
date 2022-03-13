@@ -8,7 +8,6 @@ use Framework\Http\View\Exception\ViewNotFoundException;
 
 class View implements ViewInterface
 {
-
     /**
      * @var array
      */
@@ -29,19 +28,12 @@ class View implements ViewInterface
      */
     private ViewParser $parser;
 
-    /**
-     * View constructor.
-     * @param ViewCache $cacheDriver
-     * @param Section $section
-     * @param ViewParser $parser
-     */
     public function __construct(ViewCache $cacheDriver, Section $section, ViewParser $parser)
     {
         $this->cacheDriver = $cacheDriver;
         $this->section = $section;
         $this->parser = $parser;
     }
-
 
     /**
      * @throws ViewNotFoundException

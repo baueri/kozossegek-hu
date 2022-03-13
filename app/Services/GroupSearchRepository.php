@@ -2,10 +2,8 @@
 
 namespace App\Services;
 
-use App\Models\ChurchGroupView;
-use App\Models\UserLegacy;
+use App\Models\User;
 use App\QueryBuilders\GroupViews;
-use Framework\Model\ModelCollection;
 use Framework\Support\StringHelper;
 
 class GroupSearchRepository
@@ -97,48 +95,8 @@ class GroupSearchRepository
         return $builder->paginate($perPage);
     }
 
-    public function findBySlug(string $slug)
+    public function getNotDeletedGroupsByUser(User $user)
     {
-        $id = substr($slug, strrpos($slug, '-') + 1);
-
-        $builder = $this->repository->query();
-
-        return $builder->wherePK($id)->notDeleted()->first();
-    }
-
-    public function findSimilarGroups(ChurchGroupView $group, $tags, int $take = 4): array|ModelCollection
-    {
-        $builder = $this->repository->query()
-            ->where('id', '<>', $group->id)
-            ->where('city', $group->city)
-            ->whereNull('deleted_at')
-            ->where('pending', 0)
-            ->where('status', 'active')
-            ->limit($take);
-
-        if ($tags) {
-            $builder->apply('whereGroupTag', collect($tags)->pluck('tag')->all());
-        }
-
-        $groups = $builder->get();
-
-        $groupids = $groups->pluck('id');
-
-        if ($groupids->isNotEmpty()) {
-            $group_tags = builder('v_group_tags')
-                ->whereIn('group_id', $groupids->all())
-                ->get();
-
-            if ($group_tags) {
-                $groups->withMany($group_tags, 'tags', 'id', 'group_id');
-            }
-        }
-
-        return $groups;
-    }
-
-    public function getNotDeletedGroupsByUser(UserLegacy $user)
-    {
-        return $this->repository->query()->forUser($user)->whereNull('deleted_at')->get();
+        return $this->repository->query()->forUser($user)->notDeleted()->get();
     }
 }

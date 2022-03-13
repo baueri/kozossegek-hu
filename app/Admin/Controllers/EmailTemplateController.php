@@ -8,7 +8,7 @@ use App\Mail\RegistrationByGroupEmailForFirstUsers;
 use App\Mail\RegistrationEmail;
 use App\Mail\ResetPasswordEmail;
 use App\Models\ChurchGroupView;
-use App\Models\UserLegacy;
+use App\Models\User;
 use App\Repositories\UserTokens;
 use Framework\Http\Request;
 use Framework\Http\Response;
@@ -22,7 +22,7 @@ class EmailTemplateController extends AdminController
      */
     public function registration(UserTokens $userTokens): string
     {
-        $user = new UserLegacy(['name' => 'Minta János', 'email' => 'minta_janos@kozossegek.hu']);
+        $user = new User(['name' => 'Minta János', 'email' => 'minta_janos@kozossegek.hu']);
         $user_token = $userTokens->make($user, route('portal.user.activate'));
         $mailable = new RegistrationEmail($user, $user_token);
         $title = 'Regisztrációs email sablon';
@@ -35,7 +35,7 @@ class EmailTemplateController extends AdminController
      */
     public function registrationByGroup(UserTokens $userTokens): string
     {
-        $user = new UserLegacy(['name' => 'Minta János', 'email' => 'minta_janos@kozossegek.hu']);
+        $user = new User(['name' => 'Minta János', 'email' => 'minta_janos@kozossegek.hu']);
         $password = (new PasswordGenerator(6))->setOpt(PasswordGenerator::OPTION_LOWER, false)->generate();
 
         $group = new ChurchGroupView(['name' => 'Minta Közösség', 'city' => 'Szeged']);
@@ -52,7 +52,7 @@ class EmailTemplateController extends AdminController
      */
     public function passwordReset(UserTokens $userTokens): string
     {
-        $user = new UserLegacy(['name' => 'Minta János', 'email' => 'minta_janos@kozossegek.hu']);
+        $user = new User(['name' => 'Minta János', 'email' => 'minta_janos@kozossegek.hu']);
         $user_token = $userTokens->make($user, route('portal.user.activate'));
         $mailable = new ResetPasswordEmail($user, $user_token);
         $title = 'Jelszó visszaállító email sablon';
@@ -77,7 +77,7 @@ class EmailTemplateController extends AdminController
 
     public function createdGroup(): string
     {
-        $mailable = (new NewGroupEmail(new UserLegacy(['name' => 'Minta János', 'email' => 'minta_janos@kozossegek.hu'])));
+        $mailable = (new NewGroupEmail(new User(['name' => 'Minta János', 'email' => 'minta_janos@kozossegek.hu'])));
         $title = 'Új közösség létrehozása (létező fiókkal)';
         return view('admin.email_template', compact('mailable', 'title'));
     }
@@ -87,7 +87,7 @@ class EmailTemplateController extends AdminController
      */
     public function createdGroupWithNewUser(UserTokens $userTokens): string
     {
-        $user = new UserLegacy(['name' => 'Minta János', 'email' => 'minta_janos@kozossegek.hu']);
+        $user = new User(['name' => 'Minta János', 'email' => 'minta_janos@kozossegek.hu']);
         $token = $userTokens->make($user, route('portal.user.activate'));
         $mailable = (new NewGroupEmail($user))
             ->withNewUserMessage($token);

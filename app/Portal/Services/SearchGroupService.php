@@ -48,6 +48,7 @@ class SearchGroupService
 
         if ($this->shouldLog($data)) {
             $data['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
+            $data['ref'] = request()->get('ref');
             EventDisptatcher::dispatch(new SearchTriggered('search', $data));
         }
     }

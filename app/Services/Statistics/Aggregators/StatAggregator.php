@@ -9,7 +9,7 @@ abstract class StatAggregator
     protected function getCity(array $row): string
     {
         if ($city = $row['log']['varos'] ?? null) {
-            return ucfirst($city);
+            return str_replace(['*'], [''], trim(ucfirst($city)));
         }
 
         return $this->getGroup($row)['city'] ?? '';

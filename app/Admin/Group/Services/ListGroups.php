@@ -4,8 +4,8 @@ namespace App\Admin\Group\Services;
 
 use App\Admin\Group\GroupTable;
 use App\Enums\AgeGroup;
+use App\QueryBuilders\Users;
 use App\Enums\GroupStatus;
-use App\Repositories\Users;
 use Framework\Http\Request;
 
 class ListGroups
