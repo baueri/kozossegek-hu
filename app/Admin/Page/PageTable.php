@@ -8,7 +8,7 @@ use App\Admin\Components\AdminTable\Editable;
 use App\Models\Page;
 use App\Models\PageStatus;
 use App\QueryBuilders\Pages;
-use App\Repositories\Users;
+use App\QueryBuilders\Users;
 use Framework\Database\PaginatedResultSetInterface;
 use Framework\Model\PaginatedModelCollection;
 use Framework\Support\Collection;

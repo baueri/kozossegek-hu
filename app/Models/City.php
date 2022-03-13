@@ -2,22 +2,16 @@
 
 namespace App\Models;
 
-use Framework\Model\Model;
+use Framework\Model\Entity;
 
 /**
- * Description of City
- *
- * @author ivan
+ * @property string $name
+ * @property int $county_id
+ * @property string $country_code
+ * @property string $lat
+ * @property string $lon
  */
-class City extends Model
+class City extends Entity
 {
-    public $id;
 
-    public $name;
-
-    public $county_id;
-
-    public $country_code;
-
-    public $county;
 }

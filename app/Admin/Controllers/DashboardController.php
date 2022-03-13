@@ -5,7 +5,6 @@ namespace App\Admin\Controllers;
 use App\Admin\Dashboard\Dashboard;
 use App\Auth\AuthUser;
 use App\Enums\UserRight;
-use Framework\Http\Controller;
 
 class DashboardController extends AdminController
 {

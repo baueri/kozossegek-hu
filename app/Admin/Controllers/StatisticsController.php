@@ -11,7 +11,7 @@ class StatisticsController extends AdminController
 {
     public function __invoke(Request $request): string
     {
-        return view('admin.statistics', ['table' => $this->table(), 'varos' => $request['varos'] ?? '', 'periodus' => $request['periodus']]);
+        return view('admin.statistics.index', ['table' => $this->table(), 'varos' => $request['varos'] ?? '', 'periodus' => $request['periodus']]);
     }
 
     private function table(): AdminTable
@@ -32,7 +32,7 @@ class StatisticsController extends AdminController
             protected function getData(): PaginatedResultSetInterface
             {
                 return CityStatistics::query()
-                    ->when(request()->get('varos'), fn ($query, $city) => $query->where('city', 'like', "%{$city}%"))
+                    ->when(request()->get('varos'), fn ($query, $city) => $query->where('lower(city)', 'like', '%' . mb_strtolower($city) . '%'))
                     ->onPeriod(request()->get('periodus'))
                     ->selectSums()
                     ->orderBy("sum({$this->order[0]})", $this->order[1])

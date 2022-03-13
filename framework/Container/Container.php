@@ -5,6 +5,7 @@ namespace Framework\Container;
 use Closure;
 use Framework\Container\Exceptions\AbstractionAlreadySharedException;
 use Framework\Container\Exceptions\AlreadyBoundException;
+use Framework\Database\Database;
 use InvalidArgumentException;
 use Psr\Container\ContainerInterface;
 use ReflectionFunction;

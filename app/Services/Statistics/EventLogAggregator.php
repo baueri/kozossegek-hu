@@ -4,6 +4,7 @@ namespace App\Services\Statistics;
 
 use App\Repositories\CityStatistics;
 use App\Services\Statistics\Aggregators\CityStatAggregator;
+use Framework\Database\Builder;
 use Jaybizzle\CrawlerDetect\CrawlerDetect;
 
 class EventLogAggregator
@@ -16,8 +17,9 @@ class EventLogAggregator
 
     public function run(): int
     {
+        $lastAggregated = CityStatistics::query()->select('max(date)')->fetchFirst();
         builder('event_logs')
-            ->whereRaw('date(created_at) > (select max(date) from ' . CityStatistics::query()->getTable() . ')')
+            ->when($lastAggregated, fn (Builder $query) => $query->where('date(created_at)', '>', $lastAggregated))
             ->orderBy('id')
             ->each(function (array $row) use (&$uas) {
                 $row['log'] = json_decode($row['log'], true);
@@ -25,8 +27,7 @@ class EventLogAggregator
                     return;
                 }
                 $this->cityStatAggregator->add($row);
-            });
-
+            }, 100);
         return $this->cityStatAggregator->save();
     }
 }

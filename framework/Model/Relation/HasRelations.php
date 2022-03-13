@@ -2,7 +2,6 @@
 
 namespace Framework\Model\Relation;
 
-use Framework\Database\Builder;
 use Framework\Support\Collection;
 
 trait HasRelations
@@ -40,31 +39,21 @@ trait HasRelations
         return $this;
     }
 
-    public function whereHas(string $relationName, $callback): static
+    public function whereHas(string $relationName, $callback = null): static
     {
         $relation = $this->getRelation($relationName, $callback);
-        $relation->entityQueryBuilder->whereRaw("{$relation->entityQueryBuilder->getTable()}.{$relation->foreginKey}={$this->getTable()}.{$relation->localKey}");
-        $this->whereExists($relation->entityQueryBuilder);
+        $relation->queryBuilder->whereRaw("{$relation->queryBuilder->getTable()}.{$relation->foreginKey}={$this->getTable()}.{$relation->localKey}");
+        $this->whereExists($relation->queryBuilder);
         return $this;
-    }
-
-    public function withWhereHas(string $relation, $callback = null): static
-    {
-        $this->with($relation, $callback);
-        return $this->whereHas($relation, $callback);
-    }
-
-    public function withCountWhereHas(string $relation, $callback = null): static
-    {
-        $this->withCount($relation, $callback);
-        return $this->whereHas($relation, $callback);
     }
 
     public function getRelation(string $relation, $callback = null): Relation
     {
         /** @var \Framework\Model\Relation\Relation $rel */
         $rel = $this->{$relation}();
-        $callback($rel->entityQueryBuilder);
+        if ($callback) {
+            $callback($rel->queryBuilder);
+        }
         return $rel;
     }
 

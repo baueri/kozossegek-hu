@@ -2,7 +2,7 @@
 
 namespace Legacy;
 
-use App\Enums\GroupStatusEnum;
+use App\Enums\GroupStatus;
 use App\Helpers\InstituteHelper;
 use App\Models\Traits\GroupTrait;
 use Framework\Model\Model;
@@ -63,7 +63,7 @@ class Group extends Model
 
     /**
      * Megjelenési állapot
-     * @see GroupStatusEnum
+     * @see GroupStatus
      * @var string
      */
     public $status;

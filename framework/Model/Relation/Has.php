@@ -2,7 +2,8 @@
 
 namespace Framework\Model\Relation;
 
-enum RelationType
+enum Has
 {
-    case HasMany;
+    case many;
+    case one;
 }

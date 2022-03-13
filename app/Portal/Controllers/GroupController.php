@@ -10,6 +10,7 @@ use App\Portal\Services\GroupList;
 use App\Portal\Services\PortalCreateGroup;
 use App\Portal\Services\PortalUpdateGroup;
 use App\Portal\Services\SendGroupContactMessage;
+use App\QueryBuilders\ChurchGroups;
 use App\QueryBuilders\GroupViews;
 use App\Repositories\Groups;
 use App\Services\GroupSearchRepository;
@@ -20,7 +21,6 @@ use Framework\Exception\FileTypeNotAllowedException;
 use Framework\Http\Exception\PageNotFoundException;
 use Framework\Http\Message;
 use Framework\Http\Request;
-use Framework\Http\Response;
 use Framework\Model\ModelNotFoundException;
 use Framework\Support\Arr;
 use Jaybizzle\CrawlerDetect\CrawlerDetect;
@@ -66,7 +66,7 @@ class GroupController extends PortalController
      * Közösség adatlap
      * @throws \Framework\Http\Exception\PageNotFoundException
      */
-    public function kozosseg(Request $request, GroupSearchRepository $repo, Institutes $instituteRepo): string
+    public function kozosseg(Request $request, GroupViews $repo, Institutes $instituteRepo): string
     {
         use_default_header_bg();
         $backUrl = null;
@@ -78,7 +78,7 @@ class GroupController extends PortalController
         }
 
         $slug = $request['kozosseg'];
-        $group = $repo->findBySlug($slug);
+        $group = $repo->with('tags')->bySlug($slug)->first();
 
         if (!$group || !$group->isVisibleBy($user)) {
             throw new PageNotFoundException();
@@ -86,8 +86,7 @@ class GroupController extends PortalController
 
         $institute = $instituteRepo->find($group->institute_id);
 
-        $tag_names = builder('v_group_tags')->where('group_id', $group->getId())->get();
-        $similar_groups = $repo->findSimilarGroups($group, $tag_names)->all();
+        $similar_groups = GroupViews::query()->similarTo($group)->limit(4)->get();
         $slug = $group->slug();
         $keywords = builder('search_engine')->where('group_id', $group->getId())->first()['keywords'];
 
@@ -103,7 +102,6 @@ class GroupController extends PortalController
             'group',
             'institute',
             'backUrl',
-            'tag_names',
             'similar_groups',
             'slug',
             'keywords',
@@ -114,10 +112,10 @@ class GroupController extends PortalController
     /**
      * kapcsolatfelvételi űrlap html
      */
-    public function groupContactForm(Request $request, GroupSearchRepository $repo): string
+    public function groupContactForm(Request $request, ChurchGroups $repo): string
     {
         $slug = $request['kozosseg'];
-        $group = $repo->findBySlug($slug);
+        $group = $repo->bySlug($slug)->firstOrFail();
 
         return view('portal.partials.group-contact-form', compact('group'));
     }

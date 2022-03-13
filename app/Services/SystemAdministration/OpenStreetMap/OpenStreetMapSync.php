@@ -2,16 +2,22 @@
 
 namespace App\Services\SystemAdministration\OpenStreetMap;
 
+use App\Models\City;
 use App\Models\Institute;
 use App\QueryBuilders\ChurchGroups;
+use App\QueryBuilders\Cities;
+use App\QueryBuilders\GroupViews;
 use App\QueryBuilders\Institutes;
-use App\QueryBuilders\OsmInstitutes;
+use App\QueryBuilders\OsmMarkers;
+use App\Repositories\CityStatistics;
 use Framework\Console\Command;
-use GuzzleHttp\Client;
 
 class OpenStreetMapSync implements Command
 {
-    private const API = 'https://nominatim.openstreetmap.org/search?q=%s&format=json';
+    public function __construct(
+        private readonly OpenStreetMapQuery $openStreetMapQuery
+    ) {
+    }
 
     public static function signature(): string
     {
@@ -20,47 +26,66 @@ class OpenStreetMapSync implements Command
 
     public function handle(): void
     {
-        OsmInstitutes::truncate();
+        OsmMarkers::truncate();
 
+        $groups = fn (ChurchGroups $query) => $query->active();
         Institutes::query()
             ->where('address', '<>', '')
             ->notDeleted()
-            ->withCountWhereHas('groups', fn (ChurchGroups $query) => $query->active())
+            ->withCount('groups', $groups)
+            ->whereHas('groups', $groups)
             ->get()
             ->map(function (Institute $institute) {
-                $address = collect([$institute->address, $institute->name, $institute->name2])->firstNonEmpty(function ($address) use ($institute) {
-                    return $this->getAddress($institute->city, $address);
-                });
-                preg_match('/([\d]{4})/', $address['display_name'], $matches);
-                OsmInstitutes::query()->updateOrInsert(
-                    [
-                    'institute_id' => $institute->getId(),
-                    ],
-                    [
-                        'latlon' => trim(($address['lat'] ?? '') . ',' . ($address['lon'] ?? ''), ','),
-                        'popup_html' => addslashes($this->getHtml($institute, $matches[0]))
-                    ]
-                );
+                OsmMarkers::query()->insert([
+                    'type' => 'institute',
+                    'latlon' => $institute->latlon(),
+                    'popup_html' => addslashes($this->getHtml($institute))
+                ]);
             });
 
+        Cities::query()
+            ->select(['name', 'lat', 'lon'])
+            ->with('statistics', fn (CityStatistics $query) => $query->selectSums())
+            ->withCount('groups', fn (GroupViews $query) => $query->active())
+            ->get()
+            ->each(function (City $city) {
+                $searches = $city->statistics['search_count'] ?? 0;
+                $openedGroups = $city->statistics['opened_groups_count'] ?? 0;
+                $contactGroups = $city?->statistics['contacted_groups_count'] ?? 0;
+                $totalActivity = $searches + $openedGroups + $contactGroups;
+                if ($totalActivity < CityStatistics::INTERACTION_MIN_WEIGHT && !$city->groups_count) {
+                    return;
+                }
+
+                $marker = '/images/marker_red.png';
+                if ($city->groups_count && $totalActivity) {
+                    $marker = '/images/marker_green.png';
+                } elseif ($city->groups_count) {
+                    $marker = '/images/marker_blue.png';
+                }
+                OsmMarkers::query()->insert([
+                    'marker' => $marker,
+                    'type' => 'city_stat',
+                    'latlon' => "{$city->lat},{$city->lon}",
+                    'popup_html' => <<<HTML
+                        <p><b>{$city->name}</b></p>
+                        <b>Közösségek:</b> {$city->groups_count}<br/>
+                        <b>Keresések:</b> {$searches}<br/>
+                        <b>Közi megtekintések:</b> {$openedGroups}<br/>
+                        <b>Kapcsolatfelvétel:</b> {$contactGroups}<br/>
+                    HTML
+                ]);
+            });
     }
 
-    private function getAddress(string $city, string $address)
-    {
-        static $client;
-        $client ??= new Client();
-        $url = sprintf(self::API, "{$city},{$address}");
-        return json_decode($client->get($url)->getBody(), true)[0] ?? [];
-    }
-
-    private function getHtml(Institute $institute, $zip): string
+    private function getHtml(Institute $institute, $zip = null): string
     {
         return <<<HTML
         <b>$institute->name</b>
         <br/>
         $zip $institute->city, $institute->address<br/>
         <p>Regisztrált Közösségek száma: <b>$institute->groups_count</b></p>
-        <a href="{$institute->groupsUrl()}">Megnézem</a>
+        <a href="{$institute->groupsUrl('terkep')}">Megnézem</a>
         HTML;
     }
 }
