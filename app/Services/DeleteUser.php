@@ -2,32 +2,25 @@
 
 namespace App\Services;
 
-use App\Models\UserLegacy;
+use App\Models\User;
+use App\QueryBuilders\Users;
 use App\Repositories\Groups;
-use App\Repositories\UsersLegacy;
 
 class DeleteUser
 {
     public function __construct(
         private Groups $groups,
-        private UsersLegacy $users
+        private Users $users
     ) {
     }
 
-    public function softDelete(UserLegacy $user): bool
+    public function softDelete(User $user): bool
     {
         $user->name .= "#{$user->email}";
         $user->email = null;
 
         $this->groups->deleteMultiple($this->groups->getGroupsByUser($user));
 
-        return $this->users->delete($user);
-    }
-
-    public function hardDelete(UserLegacy $user): bool
-    {
-        $this->groups->deleteMultiple($this->groups->getGroupsByUser($user), true);
-
-        return $this->users->delete($user, true);
+        return $this->users->deleteModel($user);
     }
 }

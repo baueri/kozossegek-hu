@@ -2,17 +2,14 @@
 
 namespace App\Admin\User;
 
+use App\Admin\Components\AdminTable\{AdminTable, Deletable, Editable};
 use App\Enums\UserRole;
 use App\Models\User;
-use App\Models\UserLegacy;
+use App\QueryBuilders\Users;
 use App\Repositories\Groups;
-use App\Repositories\Users;
 use Framework\Database\Builder;
 use Framework\Database\PaginatedResultSetInterface;
 use Framework\Http\Request;
-use App\Admin\Components\AdminTable\ {
-    AdminTable, Deletable, Editable
-};
 use Framework\Support\Collection;
 
 class UserTable extends AdminTable implements Deletable, Editable

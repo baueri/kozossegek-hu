@@ -8,7 +8,8 @@ use Framework\Model\Entity;
  * @property int $institute_id
  * @property string $latlon
  * @property string $popup_html
+ * @property string $marker
  */
-class OsmInstitute extends Entity
+class OsmMarker extends Entity
 {
 }

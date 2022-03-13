@@ -1,5 +1,15 @@
 @title('Verzióinformáció')
 @extends('admin')
+<h3>v2.1.2 (2022.03.13)</h3>
+<ul>
+    <li>[NEW]: Közösség "kereslet-kínálat" megjelenítése <a href="@route('admin.statistics.map')">térképen</a></li>
+    <li><b>Gépház</b></li>
+    <li>[CHANGED]: Nem használt könyvtárak törlése</li>
+    <li>[CHANGED]: Városok és intézmények koordinátáinak tárolása</li>
+    <li>[FIX]: szóközök kiszedése a városok végéről a kereső statisztikában</li>
+    <li>[FIX]: Város (city) mező karakterillesztés csere utf8_bin-re</li>
+    <li>[FIX]: <code>View</code> class csak egyszer legyen példányosítva</li>
+</ul>
 <h3>v2.1.1 (2022.03.10)</h3>
 <ul>
     <li>[NEW]: Open Streetmap integrálása</li>

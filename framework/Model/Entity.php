@@ -72,6 +72,11 @@ abstract class Entity
         $this->attributes[$name] = $value;
     }
 
+    public function update(array $values)
+    {
+        $this->attributes = array_merge($this->attributes, $values);
+    }
+
     public function getAttributes($only = null): array
     {
         if (!$only) {

@@ -3,40 +3,28 @@
 namespace App\Admin\Group\Services;
 
 use App\Enums\AgeGroup;
+use App\Enums\GroupStatus;
 use App\Enums\JoinMode;
 use App\Enums\OccasionFrequency;
 use App\Models\ChurchGroupView;
-use App\Repositories\Groups;
-use App\Repositories\GroupStatusRepository;
-use App\Repositories\UsersLegacy;
+use App\QueryBuilders\Users;
 use Framework\Http\Request;
 use Legacy\Institute;
 use Legacy\Institutes;
 
 class BaseGroupForm
 {
-    protected Institutes $institutes;
-
-    protected Groups $repository;
-
-    protected UsersLegacy $users;
-
-    protected Request $request;
-
     public function __construct(
-        Request $request,
-        Institutes $institutes,
-        UsersLegacy $users
+        protected Request $request,
+        protected Institutes $institutes,
+        protected Users $users
     ) {
-        $this->request = $request;
-        $this->institutes = $institutes;
-        $this->users = $users;
     }
 
     protected function getFormData(ChurchGroupView $group): array
     {
         $institute = $this->institutes->find($group->institute_id) ?: new Institute();
-        $statuses = (new GroupStatusRepository())->all();
+        $statuses = GroupStatus::mapTranslated();
         $occasion_frequencies = OccasionFrequency::cases();
         $age_groups = AgeGroup::cases();
         $action = $this->getAction($group);

@@ -8,7 +8,7 @@ use App\Exception\EmailTakenException;
 use App\Helpers\HoneyPot;
 use App\Mail\RegistrationEmail;
 use App\Portal\Services\CreateUser;
-use App\Repositories\UsersLegacy;
+use App\QueryBuilders\Users;
 use App\Repositories\UserTokens;
 use App\Services\User\LegalNoticeService;
 use Exception;
@@ -53,9 +53,8 @@ class LoginController extends PortalController
             $route = $request['redirect'] ?? route('home');
 
             redirect(Session::flash('last_visited', $route));
-
-            exit;
         } catch (Exception $e) {
+            report($e);
             Message::danger('Váratlan hiba történt.');
             return view('portal.login');
         }
@@ -110,9 +109,9 @@ class LoginController extends PortalController
      * @throws \PHPMailer\PHPMailer\Exception
      * @throws Exception
      */
-    public function resendActivationEmail(Mailer $mailer, UsersLegacy $users, UserTokens $userTokens): array
+    public function resendActivationEmail(Mailer $mailer, Users $users, UserTokens $userTokens): array
     {
-        $user = $users->getUserByEmail($this->request['email']);
+        $user = $users->byEmail($this->request['email'])->first();
 
         if (!$user) {
             return api()->error();

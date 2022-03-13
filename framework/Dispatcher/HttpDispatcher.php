@@ -8,11 +8,9 @@ use Framework\Http\Cookie;
 use Framework\Http\Exception\RouteNotFoundException;
 use Framework\Http\HttpKernel;
 use Framework\Http\Request;
-use Framework\Http\Response;
 use Framework\Http\Route\RouteInterface;
 use Framework\Http\Route\RouterInterface;
 use Framework\Middleware\MiddlewareResolver;
-use Framework\Support\StringHelper;
 use Framework\Http\Exception\PageNotFoundException;
 
 class HttpDispatcher implements Dispatcher
