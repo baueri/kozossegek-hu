@@ -21,7 +21,7 @@ class GroupList
         $filter = $baseFilter;
 
         $filter['pending'] = 0;
-        $filter['status'] = GroupStatus::active;
+        $filter['status'] = GroupStatus::active->value();
 
         $statuses = GroupStatus::mapTranslated();
 

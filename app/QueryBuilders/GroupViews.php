@@ -4,6 +4,7 @@ namespace App\QueryBuilders;
 
 use App\Models\ChurchGroupView;
 use App\Models\User;
+use Framework\Model\Relation\Has;
 use Framework\Model\Relation\Relation;
 
 /**
@@ -20,7 +21,7 @@ class GroupViews extends ChurchGroups
 
     public function tags(): Relation
     {
-        return $this->hasMany(GroupTags::class, 'group_id', 'id');
+        return $this->has(Has::many, GroupTags::class, 'group_id');
     }
 
     public function forUser(User $user): self

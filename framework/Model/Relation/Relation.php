@@ -13,14 +13,14 @@ class Relation
     public readonly ?string $localKey;
 
     public function __construct(
-        public readonly RelationType $relationType,
+        public readonly Has $relationType,
         public readonly EntityQueryBuilder|Builder $queryBuilder,
         public readonly string $relationName,
-        ?string $foreginKey = null,
+        ?string $foreignKey = null,
         ?string $localKey = null,
     ) {
         $this->localKey = $localKey ?? $queryBuilder::primaryCol();
-        $this->foreginKey = $foreginKey ?? $this->relationName . '_id';
+        $this->foreginKey = $foreignKey ?? $this->relationName . '_id';
     }
 
     public function buildQuery(Collection $instances): EntityQueryBuilder|Builder

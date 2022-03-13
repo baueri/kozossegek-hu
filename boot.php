@@ -42,11 +42,11 @@ if (!_env('DEBUG')) {
     error_reporting(E_ALL);
 }
 
+$application = new Application(ROOT);
 MileStone::measure('init', 'Initialize');
-$application = new Application();
 
 $application->bind(RouteInterface::class, Route::class);
-$application->bind(ViewInterface::class, View::class);
+$application->singleton(ViewInterface::class, View::class);
 $application->singleton(Config::class);
 $application->singleton(RouterInterface::class, XmlRouter::class);
 $application->singleton(EventLogger::class, EventLogRepository::class);
