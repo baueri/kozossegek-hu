@@ -7,7 +7,9 @@
         const markerBounds = [];
 
         map.attributionControl.setPrefix('');
-        L.tileLayer('https://tile-c.openstreetmap.fr/hot/{z}/{x}/{y}.png').addTo(map);
+        L.tileLayer('https://tile-c.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+            minZoom: 7
+        }).addTo(map);
 
         markers.map(marker => {
             const icon = L.icon({
