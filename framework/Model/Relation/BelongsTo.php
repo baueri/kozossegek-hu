@@ -2,23 +2,22 @@
 
 namespace Framework\Model\Relation;
 
-use Framework\Support\Collection;
+use Framework\Support\StringHelper;
 
 /**
  * @deprecated do not use
  */
 trait BelongsTo
 {
-    public function belongsTo(string $repositoryClass, ?string $foreingkey = null, ?string $localKey = null): self
+    public function belongsTo(string $repositoryClass, ?string $localKey = null, ?string $foreignKey = null)
     {
-//        $this->preparedRelations['belongsTo'][$this->getRelationName()]['relation'] = new Relation(
-//            app($repositoryClass),
-//            $this->getRelationName(),
-//            $foreingkey,
-//            $localKey
-//        );
-//
-//        return $this;
+        return new Relation(
+            relationType: Has::many,
+            queryBuilder: app($repositoryClass),
+            relationName: $this->getRelationName(),
+            foreignKey: $foreignkey ?? StringHelper::snake(get_class_name(static::getModelClass())) . '_id',
+            localKey: $localKey
+        );
     }
 
     protected function loadBelongsToRelations($instances): void

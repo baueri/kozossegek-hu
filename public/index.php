@@ -20,6 +20,7 @@ try {
 
     $app->singleton(Framework\Http\Request::class);
     $app->singleton(\Framework\Http\HttpKernel::class, HttpKernel::class);
+    $app->singleton(HttpDispatcher::class);
     $app->singleton(Dispatcher::class, HttpDispatcher::class);
     $app->singleton(DebugBar::class);
     $app->bind(AuthUser::class, function () {
@@ -27,7 +28,7 @@ try {
     });
 
     MileStone::measure('dispatch', 'Dispatching');
-    $app->run($app->get(Dispatcher::class));
+    $app->run($app->get(HttpDispatcher::class));
     MileStone::endMeasure('dispatch');
     print debugbar()->render();
 } catch (Error | Exception | Throwable $e) {

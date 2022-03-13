@@ -6,9 +6,9 @@ use App\Admin\User\UserTable;
 use App\Auth\Auth;
 use App\Enums\UserRole;
 use App\Mail\RegistrationEmail;
-use App\Models\UserLegacy;
+use App\Models\User;
+use App\QueryBuilders\Users;
 use App\Repositories\UserTokens;
-use App\Repositories\UsersLegacy;
 use App\Services\DeleteUser;
 use Exception;
 use Framework\Exception\DuplicateEntryException;
@@ -29,14 +29,14 @@ class UserController extends AdminController
 
     public function create(): string
     {
-        $user = new UserLegacy(Session::flash('admin.reg.user'));
+        $user = new User(Session::flash('admin.reg.user'));
         $action = route('admin.user.create');
         $groups = UserRole::getTranslated();
 
         return view('admin.user.create', compact('user', 'action', 'groups'));
     }
 
-    public function doCreate(Request $request, UsersLegacy $repository, UserTokens $passwordResetRepository)
+    public function doCreate(Request $request, Users $repository, UserTokens $passwordResetRepository)
     {
         $data = $request->only('username', 'name', 'email', 'user_group');
         try {
@@ -55,7 +55,6 @@ class UserController extends AdminController
             }
 
             $data['password'] = Password::hash(time());
-            /* @var $user UserLegacy */
             $user = $repository->create($data);
             $passwordReset = $passwordResetRepository->createActivationToken($user);
 
@@ -79,7 +78,7 @@ class UserController extends AdminController
     /**
      * @throws ModelNotFoundException
      */
-    public function edit(Request $request, UsersLegacy $repository): string
+    public function edit(Request $request, Users $repository): string
     {
         $user = $repository->findOrFail($request['id']);
         $my_profile = $user->is(Auth::user());
@@ -96,9 +95,8 @@ class UserController extends AdminController
     /**
      * @throws ModelNotFoundException
      */
-    public function update(Request $request, UsersLegacy $repository): void
+    public function update(Request $request, Users $repository): void
     {
-        /* @var $user UserLegacy */
         $user = $repository->findOrFail($request['id']);
         $data = $request->only('name', 'email', 'user_group', 'username', 'phone_number');
 
@@ -111,8 +109,7 @@ class UserController extends AdminController
             $data['password'] = Password::hash($password);
         }
 
-        $user->update($data);
-        $repository->save($user);
+        $repository->save($user, $data);
 
         if ($spiritualMovementId = $request['spiritual_movement_id']) {
             db()->execute('REPLACE INTO spiritual_movement_administrators (user_id, spiritual_movement_id) VALUES (?, ?)', $user->id, $spiritualMovementId);
@@ -131,20 +128,18 @@ class UserController extends AdminController
         return view('admin.user.profile', compact('user', 'my_profile', 'action'));
     }
 
-    public function updateProfile(Request $request, UsersLegacy $repository): void
+    public function updateProfile(Request $request, Users $repository): void
     {
         $user = Auth::user();
 
-        $user->update($request->only('name', 'email'));
-
-        $repository->save($user);
+        $repository->save($user, $request->only('name', 'email'));
 
         Message::success('Sikeres mentés');
 
         redirect_route('admin.user.profile');
     }
 
-    public function changeMyPassword(Request $request, UsersLegacy $repository)
+    public function changeMyPassword(Request $request, Users $repository)
     {
         $password1 = $request['new_password'];
         $password2 = $request['new_password_again'];
@@ -161,9 +156,7 @@ class UserController extends AdminController
             redirect_route('admin.user.profile');
         }
 
-        $user->update(['password' => Password::hash($request['new_password'])]);
-
-        $repository->save($user);
+        $repository->save($user, ['password' => Password::hash($request['new_password'])]);
 
         Message::success('Sikeres jelszócsere');
 
@@ -173,7 +166,7 @@ class UserController extends AdminController
     /**
      * @throws \Framework\Model\ModelNotFoundException
      */
-    public function delete(Request $request, UsersLegacy $repository, DeleteUser $service): void
+    public function delete(Request $request, Users $repository, DeleteUser $service): void
     {
         $user = $repository->findOrFail($request['id']);
 

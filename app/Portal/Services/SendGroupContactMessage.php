@@ -28,9 +28,7 @@ class SendGroupContactMessage
 
         $success = $this->mailer->to($group->group_leader_email)->send($mail);
 
-        log_event('group_contact', [
-            'group_id' => $group->id
-        ]);
+        log_event('group_contact', ['group_id' => $group->id]);
 
         return $success;
     }

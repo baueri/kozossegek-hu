@@ -108,6 +108,6 @@
         <div class="text-center py-5">
             <h2 class="title-secondary">Közösségek Magyarországon</h2>
         </div>
-        @component('open_street_map')
+        @component('open_street_map', ['types' => ['institute']])
     </div>
 </div>

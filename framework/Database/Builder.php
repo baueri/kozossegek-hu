@@ -9,7 +9,7 @@ class Builder
 {
     private array $select = [];
 
-    private array $table = [];
+    private array $table;
 
     private array $where = [];
 
@@ -19,6 +19,8 @@ class Builder
 
     private array $groupBy = [];
 
+    private array $having = [];
+
     private string $limit = '';
 
     private bool $distinct = false;
@@ -27,9 +29,14 @@ class Builder
 
     private static array $macros = [];
 
+    public const PRIMARY = 'id';
+
+    public const TABLE = '';
+
     public function __construct(
-        private Database $db
+        public readonly Database $db
     ) {
+        $this->table = Arr::wrap(static::TABLE);
     }
 
     public static function query(): static
@@ -83,15 +90,21 @@ class Builder
         return (int) $count;
     }
 
+    public function countBy(string $column): array
+    {
+        return $this->select("count(*) as cnt, {$column}")
+            ->groupBy($column)
+            ->pluck('cnt', $column);
+    }
+
     public function each(Closure $callback, int $chunks = 1000): void
     {
         $limit = 0;
-        $builder = clone $this;
-        $builder->limit("0, {$chunks}");
+        $this->limit("0, {$chunks}");
 
-        while (count($rows = $builder->get()) > 0) {
+        while (count($rows = $this->get()) > 0) {
             $offset = (++$limit) * $chunks;
-            $builder->limit("{$offset}, {$chunks}");
+            $this->limit("{$offset}, {$chunks}");
             array_walk($rows, fn ($row) => $callback($row));
         }
     }
@@ -146,6 +159,11 @@ class Builder
 
         if ($this->orderBy) {
             $query .= sprintf(' order by %s', implode(', ', $this->orderBy));
+        }
+
+        if ($this->having) {
+            $query .= " having {$this->having[0]}";
+            $bindings = array_merge($bindings, $this->having[1]);
         }
 
         $query .= $this->limit;
@@ -207,6 +225,11 @@ class Builder
         return $this->db->first(...$this->getBaseSelect());
     }
 
+    public function fetchFirst(?string $column = null)
+    {
+        return $this->first()[$column ?? $this->select[0]] ?? null;
+    }
+
     public function limit(int|string $limit): self
     {
         $this->limit = " limit {$limit}";
@@ -241,6 +264,12 @@ class Builder
         return $this;
     }
 
+    public function having(string $having, $bindings = []): static
+    {
+        $this->having = [$having, Arr::wrap($bindings)];
+        return $this;
+    }
+
     public function from($table): self
     {
         $this->table = [$table];
@@ -250,7 +279,7 @@ class Builder
 
     public function select($select = '*', $bindings = []): self
     {
-        $this->select = (array) $select;
+        $this->select = Arr::wrap($select);
         $this->selectBindings = array_merge($this->selectBindings, $bindings);
 
         return $this;
@@ -264,7 +293,7 @@ class Builder
 
     public function addSelect($select, $bindings = []): self
     {
-        $this->select[] = $select;
+        $this->select = array_merge($this->select, Arr::wrap($select));
         $this->selectBindings = array_merge($this->selectBindings, $bindings);
 
         return $this;
@@ -351,11 +380,6 @@ class Builder
         $this->whereRaw("EXISTS ({$query})", $bindings, $clause);
 
         return $this;
-    }
-
-    public function orWhereExists(string $table, Closure $callback): self
-    {
-        return $this->whereExists($table, $callback, 'or');
     }
 
     public function join(string $table, string $on, string $joinMode = ''): self
@@ -513,6 +537,11 @@ class Builder
         }
 
         return null;
+    }
+
+    public static function primaryCol(): string
+    {
+        return self::PRIMARY;
     }
 
     public function dd(bool $withBinding = false): never

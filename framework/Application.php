@@ -37,7 +37,7 @@ class Application extends Container
     /**
      * @throws Exception
      */
-    public function __construct()
+    public function __construct(public readonly string $root)
     {
         $this->locale = 'hu';
         $this->singleton(static::class, function () {

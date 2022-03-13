@@ -5,6 +5,7 @@ namespace App\Admin\Controllers;
 use App\Admin\Institute\InstituteAdminTable;
 use App\Auth\Auth;
 use App\Helpers\InstituteHelper;
+use App\Services\InstituteImporter;
 use App\Storage\Base64Image;
 use Framework\Http\Message;
 use Framework\Http\Request;
@@ -46,7 +47,6 @@ class InstituteController extends AdminController
     public function update(Request $request, Institutes $repository)
     {
         $institute = $repository->findOrFail($request['id']);
-        $a = $institute->name;
 
         if ($imageSource = $request['image']) {
             $image = new Base64Image($imageSource);
@@ -114,12 +114,12 @@ class InstituteController extends AdminController
         return view('admin.institute.import');
     }
 
-    public function doImport(Request $request, \App\Auth\Auth $auth, \App\Services\InstituteImporter $service)
+    public function doImport(Request $request, InstituteImporter $service)
     {
         try {
             $file = $request->files['import_file'];
 
-            [$imported, $skipped] = $service->run($file['tmp_name'], $auth->user());
+            [$imported, $skipped] = $service->run($file['tmp_name'], Auth::user());
 
             Message::success("Sikeres importálás. <b>$imported</b> intézmény importálva, <b>$skipped</b> kihagyva duplikáció miatt");
         } catch (\Exception $e) {

@@ -20,7 +20,7 @@ abstract class EntityQueryBuilder
 
     public const TABLE = null;
 
-    public readonly Builder $builder;
+    protected Builder $builder;
 
     final public function __construct()
     {
@@ -57,9 +57,7 @@ abstract class EntityQueryBuilder
 
     public function countBy(string $column): Collection
     {
-        return $this->select("count(*) as cnt, {$column}")
-            ->groupBy($column)
-            ->pluck('cnt', $column);
+        return collect($this->builder->countBy($column));
     }
 
     public function pluck(string $key, ?string $keyBy = null): Collection
@@ -241,15 +239,9 @@ abstract class EntityQueryBuilder
         return $this;
     }
 
-    public function whereExists(string|Builder|EntityQueryBuilder $table, ?Closure $callback = null, string $clause = 'and'): static
+    public function whereExists(Builder|EntityQueryBuilder $table, ?Closure $callback = null, string $clause = 'and'): static
     {
         $this->builder->whereExists($table instanceof EntityQueryBuilder ? $table->builder : $table, $callback, $clause);
-        return $this;
-    }
-
-    public function orWhereExists(string $table, $callback): EntityQueryBuilder
-    {
-        $this->builder->orWhereExists($table, $callback);
         return $this;
     }
 
@@ -293,8 +285,13 @@ abstract class EntityQueryBuilder
         return $this->builder->update($values);
     }
 
-    public function save(Entity $entity, array $values): int
+    public function save(Entity $entity, ?array $values = null): int
     {
+        if (!$values) {
+            $values = $entity->getAttributes();
+        } else {
+            $entity->update($values);
+        }
         return $this->query()->where(static::primaryCol(), $entity->getId())->update($values);
     }
 
@@ -377,6 +374,16 @@ abstract class EntityQueryBuilder
     public function getTable(): string
     {
         return $this->builder->getTable();
+    }
+
+    public function getSelect(): array
+    {
+        return $this->builder->getSelect();
+    }
+
+    public function getWhere(): array
+    {
+        return $this->builder->getWhere();
     }
 
     public function each(Closure $callback, int $chunks = 1000): void
