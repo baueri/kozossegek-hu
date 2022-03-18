@@ -10,6 +10,7 @@ use App\Models\ChurchGroupView;
 use App\Services\GroupSearchRepository;
 use Framework\Database\PaginatedResultSetInterface;
 use Framework\Http\Request;
+use Framework\Model\Entity;
 use Framework\Support\StringHelper;
 
 class GroupTable extends AdminTable implements Editable, Deletable
@@ -63,14 +64,18 @@ class GroupTable extends AdminTable implements Editable, Deletable
     {
         return $this->getLink(
             $this->getListUrl(['institute_id' => $group->institute_id]),
-            static::excerpt($instituteName, true, 45),
+            static::excerpt((string) $instituteName, true, 45),
             'szűrés erre az intézményre'
         );
     }
 
-    public function getCity($cityName): string
+    public function getCity($cityName, Entity $group): string
     {
-        return $cityName;
+        if ($cityName) {
+            return $cityName;
+        }
+        report("ennek a közösségnek nincs városa: {$group->getId()}");
+        return '';
     }
 
     public function getPending($pending, $group): string
