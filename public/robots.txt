@@ -1,6 +1,5 @@
 User-Agent: *
 Allow: /
-Disallow: /
 Disallow: /admin
 
 Sitemap: sitemap.xml
