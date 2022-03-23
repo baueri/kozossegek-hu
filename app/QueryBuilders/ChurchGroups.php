@@ -33,6 +33,11 @@ class ChurchGroups extends EntityQueryBuilder
             ->notDeleted();
     }
 
+    public function maintainer()
+    {
+        return $this->has(Has::one, Users::class, 'id', 'user_id');
+    }
+
     public function bySlug(string $slug): static
     {
         $id = substr($slug, strrpos($slug, '-') + 1);
@@ -60,5 +65,10 @@ class ChurchGroups extends EntityQueryBuilder
         }
 
         return $this;
+    }
+
+    public function shouldNotify(): static
+    {
+        return $this->whereRaw('DATE(notified_at) < DATE_SUB(NOW(), INTERVAL 6 MONTH)');
     }
 }

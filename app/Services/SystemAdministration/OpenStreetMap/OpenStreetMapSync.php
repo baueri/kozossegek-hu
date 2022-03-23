@@ -14,11 +14,6 @@ use Framework\Console\Command;
 
 class OpenStreetMapSync implements Command
 {
-    public function __construct(
-        private readonly OpenStreetMapQuery $openStreetMapQuery
-    ) {
-    }
-
     public static function signature(): string
     {
         return 'osm:sync';
