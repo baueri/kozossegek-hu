@@ -4,7 +4,11 @@ namespace App\Services\Statistics\Aggregators;
 
 abstract class StatAggregator
 {
-    private array $groups = [];
+    private static array $groups = [];
+
+    abstract public function add(array $row): void;
+
+    abstract public function save(): int;
 
     protected function getCity(array $row): string
     {
@@ -18,7 +22,7 @@ abstract class StatAggregator
     protected function getGroup(array $row): ?array
     {
         if ($groupId = $row['log']['group_id'] ?? null) {
-            return $this->groups[$groupId] ??= builder('v_groups')->where('id', $groupId)->first();
+            return static::$groups[$groupId] ??= builder('v_groups')->where('id', $groupId)->first();
         }
 
         return null;

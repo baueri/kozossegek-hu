@@ -2,14 +2,16 @@
 
 namespace Framework\Model\Relation;
 
+use Framework\Database\Builder;
 use Framework\Model\Entity;
+use Framework\Model\EntityQueryBuilder;
 use Framework\Support\Arr;
 use Framework\Support\Collection;
 use Framework\Support\StringHelper;
 
 trait HasMany
 {
-    public function loadHasManyRelations($instances): void
+    public function loadHasRelations($instances): void
     {
         $instances = collect($instances);
         $relations = $this->getPreparedRelations();
@@ -60,13 +62,13 @@ trait HasMany
         return $this->has(Has::one, $repositoryClass, $foreignKey, $localKey);
     }
 
-    public function has(Has $relationType, string $repositoryClass, ?string $foreignKey = null, ?string $localKey = null): Relation
+    public function has(Has $relationType, string|EntityQueryBuilder|Builder $repositoryClass, ?string $foreignKey = null, ?string $localKey = null): Relation
     {
         return new Relation(
             relationType: $relationType,
-            queryBuilder: app($repositoryClass),
+            queryBuilder: is_string($repositoryClass) ? app($repositoryClass) : $repositoryClass,
             relationName: $this->getRelationName(),
-            foreignKey: $foreignKey ?? StringHelper::snake(get_class_name(static::getModelClass())) . '_id',
+            foreignKey: $foreignKey ?: StringHelper::snake(get_class_name(static::getModelClass())) . '_id',
             localKey: $localKey
         );
     }

@@ -3,17 +3,21 @@
 namespace App\Repositories;
 
 use App\Enums\CityStatOrderColumn;
+use App\Models\CityStat;
 use Framework\Database\Builder;
-use Framework\Database\Database;
+use Framework\Model\EntityQueryBuilder;
+use Framework\Model\Relation\Has;
+use Framework\Model\Relation\Relation;
 
-final class CityStatistics extends Builder
+final class CityStatistics extends EntityQueryBuilder
 {
     public const INTERACTION_MIN_WEIGHT = 10;
 
-    public function __construct(Database $db)
+    public const TABLE = 'stat_city';
+
+    protected static function getModelClass(): string
     {
-        parent::__construct($db);
-        $this->from('stat_city');
+        return CityStat::class;
     }
 
     public function selectSums(): self
