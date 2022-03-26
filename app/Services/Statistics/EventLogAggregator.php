@@ -12,7 +12,7 @@ use Jaybizzle\CrawlerDetect\CrawlerDetect;
 class EventLogAggregator
 {
     private array $aggregators = [
-//        CityStatAggregator::class,
+        CityStatAggregator::class,
         CityKeywordCountAggregator::class
     ];
 
@@ -23,14 +23,13 @@ class EventLogAggregator
 
     public function run(): int
     {
-        /** @var StatAggregator[] $aggregators */
-        $aggregators = array_map(fn ($aggregator) => resolve($aggregator), $this->aggregators);
+        $aggregators = array_map(fn ($aggregator): StatAggregator => resolve($aggregator), $this->aggregators);
 
         $lastAggregated = CityStatistics::query()->select('max(date)')->fetchFirst();
         builder('event_logs')
-//            ->when($lastAggregated, fn (Builder $query) => $query->where('date(created_at)', '>', $lastAggregated))
+            ->when($lastAggregated, fn (Builder $query) => $query->where('date(created_at)', '>', $lastAggregated))
             ->orderBy('id')
-            ->each(function (array $row) use ($aggregators, &$uas) {
+            ->each(function (array $row) use ($aggregators) {
                 $row['log'] = json_decode($row['log'], true);
                 if ($this->crawlerDetect->isCrawler($row['log']['user_agent'] ?? null)) {
                     return;
