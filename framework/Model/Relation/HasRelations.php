@@ -17,7 +17,7 @@ trait HasRelations
 
     protected function loadRelations($instances)
     {
-        return tap($instances, fn ($instances) => $this->loadHasManyRelations($instances));
+        return tap($instances, fn ($instances) => $this->loadHasRelations($instances));
     }
 
     protected function getRelationName(): string
