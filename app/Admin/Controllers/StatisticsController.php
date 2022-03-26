@@ -3,14 +3,10 @@
 namespace App\Admin\Controllers;
 
 use App\Admin\Components\AdminTable\AdminTable;
-use App\Models\City;
-use App\Models\CityStat;
 use App\Repositories\CityStatistics;
 use Framework\Database\Builder;
 use Framework\Database\PaginatedResultSetInterface;
 use Framework\Http\Request;
-use Framework\Http\View\View;
-use Framework\Model\ModelCollection;
 
 class StatisticsController extends AdminController
 {
@@ -52,9 +48,20 @@ class StatisticsController extends AdminController
         };
     }
 
-    public function keywords()
+    public function keywords(): string
     {
-        return view('admin/statistics/keywords', ['table' => $this->keywordsTable()]);
+        $popularKeywords = Builder::query()
+            ->from('stat_city_keywords')
+            ->select(['keyword', 'sum(cnt) as cnt'])
+            ->groupBy('keyword')
+            ->orderBy('sum(cnt) desc')
+            ->having('sum(cnt) >= 10')
+            ->collect()
+            ->map(function (array $row) {
+                return "{$row['keyword']} <span class='text-danger'>({$row['cnt']})</span>";
+            })->implode(', ');
+
+        return view('admin/statistics/keywords', ['table' => $this->keywordsTable(), 'popularKeywords' => $popularKeywords]);
     }
 
     private function keywordsTable(): AdminTable
@@ -64,13 +71,12 @@ class StatisticsController extends AdminController
             protected array $columns = [
                 'city' => 'Város',
                 'keyword' => 'Keresőszavak',
-                'age_group' => 'Korosztályok',
-                'tag' => 'Kulcsszavak'
+                'tag' => 'Címkék',
+                'age_group' => 'Korosztályok'
             ];
 
             protected array $columnClasses = [
-                'keyword' => 'w-25',
-                'age_group' => 'w-25',
+                'keyword' => 'w-50'
             ];
 
             /**
@@ -78,6 +84,7 @@ class StatisticsController extends AdminController
              */
             protected function getData(): PaginatedResultSetInterface
             {
+                db()->execute('SET SESSION group_concat_max_len = 1000000;');
                 return Builder::query()
                     ->from('stat_city_keywords')
                     ->select([
@@ -92,11 +99,31 @@ class StatisticsController extends AdminController
                     ->paginate();
             }
 
-            private function concatField(string $fieldName)
+            private function concatField(string $fieldName): string
             {
                 return <<<STRING
-                    GROUP_CONCAT(case when type="{$fieldName}" then concat(keyword, " <span class='text-danger'>(", cnt, ")</span>") end SEPARATOR ", ") as {$fieldName}
+                    GROUP_CONCAT(case when type="{$fieldName}" then concat(keyword, " (", cnt, ")") end ORDER BY cnt DESC SEPARATOR ", ") as {$fieldName}
                 STRING;
+            }
+
+            public function getKeyword($keyword): string
+            {
+                return $this->setColor($keyword);
+            }
+
+            public function getTag($keyword): string
+            {
+                return $this->setColor($keyword);
+            }
+
+            public function getAgeGroup($keyword): string
+            {
+                return $this->setColor($keyword);
+            }
+
+            private function setColor($keyword): string
+            {
+                return preg_replace('/(\(\d+\))/', '<span class="text-danger">$1</span>', $keyword ?? '');
             }
         };
     }
