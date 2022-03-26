@@ -148,6 +148,11 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         return new self(array_chunk($this->items, $size, $preserve_keys));
     }
 
+    public function take(int $limit)
+    {
+        return new self(array_slice($this->items, 0, $limit));
+    }
+
     public function diff(array $array): Collection
     {
         return new self(array_diff($this->items, $array));
@@ -247,7 +252,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
             uasort(
                 $this->items,
                 $by instanceof Closure ? $by :
-                    fn ($a, $b) => strcmp(static::getItemVal($order === 'asc' ? $a : $b, $by), static::getItemVal($order === 'asc' ? $b : $a, $by))
+                    fn ($a, $b) => static::getItemVal($order === 'asc' ? $a : $b, $by) <=> static::getItemVal($order === 'asc' ? $b : $a, $by)
             );
             return $this;
         }
