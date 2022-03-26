@@ -1,5 +1,13 @@
 @title('Verzióinformáció')
 @extends('admin')
+<h3>v2.2.0 (2022.03.26)</h3>
+<ul>
+    <li>[NEW]: Kulcsszavas statisztikák népszerűségre és városokra bontva</li>
+    <li>[FIX]: A közösségek nem voltak megtekinthetők</li>
+    <li><b>Gépház</b></li>
+    <li>[FIX]: <code>Having</code> SQL rossz pozíción volt</li>
+    <li>[NEW]: <code>Builder::collect()</code> metódus</li>
+</ul>
 <h3>v2.1.2 (2022.03.13)</h3>
 <ul>
     <li>[NEW]: Közösség "kereslet-kínálat" megjelenítése <a href="@route('admin.statistics.map')">térképen</a></li>
