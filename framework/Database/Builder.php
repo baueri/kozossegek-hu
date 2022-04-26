@@ -4,6 +4,7 @@ namespace Framework\Database;
 
 use Closure;
 use Framework\Support\Arr;
+use Framework\Support\Collection;
 
 class Builder
 {
@@ -50,6 +51,11 @@ class Builder
     public function get(): array
     {
         return $this->db->select(...$this->getBaseSelect());
+    }
+
+    public function collect(): Collection
+    {
+        return collect($this->get());
     }
 
     public function pluck(string $key, ?string $keyBy = null): array
@@ -157,13 +163,13 @@ class Builder
             $query .= ' group by ' . implode(', ', $this->groupBy);
         }
 
-        if ($this->orderBy) {
-            $query .= sprintf(' order by %s', implode(', ', $this->orderBy));
-        }
-
         if ($this->having) {
             $query .= " having {$this->having[0]}";
             $bindings = array_merge($bindings, $this->having[1]);
+        }
+
+        if ($this->orderBy) {
+            $query .= sprintf(' order by %s', implode(', ', $this->orderBy));
         }
 
         $query .= $this->limit;
