@@ -12,11 +12,10 @@ class CityStatAggregator extends StatAggregator
 
     public function add(array $row): void
     {
-        if (!in_array($row['type'], [
-            EventType::search->name,
-            EventType::group_profile_opened->name,
-            EventType::group_contact->name
-        ]) || !$this->getCity($row)) {
+        if (
+            !in_array(EventType::tryFrom($row['type']), [EventType::search, EventType::group_profile_opened, EventType::group_contact])
+            || !$this->getCity($row)
+        ) {
             return;
         }
 

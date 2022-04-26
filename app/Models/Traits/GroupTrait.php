@@ -104,7 +104,7 @@ trait GroupTrait
             return true;
         }
 
-        if ($this->pending == 0 && $this->status == GroupStatus::active) {
+        if ($this->pending == 0 && $this->status == GroupStatus::active->value) {
             return true;
         }
 

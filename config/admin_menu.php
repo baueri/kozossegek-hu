@@ -136,6 +136,11 @@ return [
                 'title' => 'Térkép (lefedettség)',
                 'icon' => 'map-marked-alt',
                 'as' => 'admin.statistics.map',
+            ],
+            [
+                'title' => 'Kulcsszavak városonként',
+                'icon' => 'tag',
+                'as' => 'admin.statistics.keywords',
             ]
         ]
     ],
