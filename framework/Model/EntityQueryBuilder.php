@@ -111,6 +111,11 @@ abstract class EntityQueryBuilder
         return $this->wherePK($id)->first();
     }
 
+    public function fetchFirst(?string $column = null)
+    {
+        return $this->builder->fetchFirst($column);
+    }
+
     /**
      * @throws \Framework\Model\ModelNotFoundException
      * @phpstan-return T
