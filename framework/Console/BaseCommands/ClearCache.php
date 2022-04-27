@@ -19,7 +19,7 @@ class ClearCache implements Command
      */
     public function handle(): void
     {
-        if (!rrmdir(CACHE . '/')) {
+        if (!rrmdir(CACHE)) {
             Out::fatal('Nem sikerült a cache törlés');
         }
 

@@ -69,7 +69,7 @@ return [
         },
         'component' => ComponentParser::class,
         'selected' => fn ($matches) => "<?php if($matches[1]): echo 'selected'; endif; ?>",
-        'dump' => fn($matches) => "<?php d($matches[1]); ?>"
+        'dump' => fn($matches) => "<?php d($matches[1]); ?>",
     ],
     'components' => [
         'aszf' => AszfCheckBox::class,

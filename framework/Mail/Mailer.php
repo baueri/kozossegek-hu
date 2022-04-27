@@ -9,7 +9,7 @@ class Mailer
 {
     private PHPMailer $phpMailer;
 
-    public function __construct(string $to = '', string $name = '')
+    public function __construct(string $address = '', string $name = '')
     {
         $phpMailer = new PHPMailer(true);
         $phpMailer->isSMTP();
@@ -23,17 +23,17 @@ class Mailer
         $phpMailer->CharSet = 'UTF-8';
         $this->phpMailer = $phpMailer;
 
-        if ($to) {
-            $this->to($to, $name);
+        if ($address) {
+            $this->to($address, $name);
         }
     }
 
     /**
      * @throws Exception
      */
-    public function to(string $to, ?string $name = ''): self
+    public function to(string $address, ?string $name = ''): self
     {
-        $this->phpMailer->addAddress($to, $name);
+        $this->phpMailer->addAddress($address, $name);
 
         return $this;
     }

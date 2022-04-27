@@ -419,7 +419,7 @@ function attr(string $name): Closure
 
 function query_history(): Collection
 {
-    return app(QueryHistory::class)->queryHistory;
+    return resolve(QueryHistory::class)->queryHistory;
 }
 
 function query_history_bound(): array

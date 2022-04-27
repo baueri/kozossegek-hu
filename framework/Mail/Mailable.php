@@ -94,4 +94,9 @@ class Mailable
 
         return $this;
     }
+
+    public function send(string $email, ?string $name = null): void
+    {
+        (new Mailer($email, $name))->send($this);
+    }
 }

@@ -6,13 +6,15 @@ use App\Models\Traits\GroupTrait;
 use Framework\Model\Entity;
 
 /**
- * @property $name
- * @property $user_id
- * @property $on_days
- * @property $group_leaders
- * @property $age_group
- *
+ * @property string $name
+ * @property string|int $user_id
+ * @property string $on_days
+ * @property string $group_leaders
+ * @property string $age_group
+ * @property string $confirmed_at
+ * @property string $notified_at
  * @property int $institute_id
+ * @property User $maintainer
  */
 class ChurchGroup extends Entity
 {

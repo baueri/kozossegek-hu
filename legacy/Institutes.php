@@ -37,12 +37,6 @@ class Institutes extends Repository
         return $this->getInstances($rows);
     }
 
-    public function getInstitutes()
-    {
-        return $this->getInstances($this->getBuilder()->paginate(30));
-    }
-
-    //put your code here
     public static function getModelClass(): string
     {
         return Institute::class;

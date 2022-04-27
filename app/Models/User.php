@@ -16,6 +16,7 @@ use Framework\Model\HasTimestamps;
  * @property string $user_group
  * @property string $activated_at
  * @property string $phone_number
+ * @property \Framework\Support\Collection<\App\Models\ChurchGroup> $groups
  */
 class User extends Entity implements AuthUser
 {
