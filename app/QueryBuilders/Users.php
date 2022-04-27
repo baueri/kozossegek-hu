@@ -5,6 +5,8 @@ namespace App\QueryBuilders;
 use App\Models\User;
 use App\QueryBuilders\Relations\HasManyChurchGroupViews;
 use Framework\Model\EntityQueryBuilder;
+use Framework\Model\Relation\Has;
+use Framework\Model\Relation\Relation;
 use Framework\Model\SoftDeletes;
 use Framework\Support\StringHelper;
 
@@ -16,6 +18,11 @@ class Users extends EntityQueryBuilder
     protected static function getModelClass(): string
     {
         return User::class;
+    }
+
+    public function groups(): Relation
+    {
+        return $this->has(Has::many, ChurchGroups::class, 'user_id');
     }
 
     public function byAuth(?string $username): static

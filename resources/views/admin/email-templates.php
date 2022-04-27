@@ -31,4 +31,8 @@
         <td><a href="@route('admin.email_template.created_group')">Új közösség létrehozása (létező fiókkal)</a></td>
         <td>Felhasználói oldalon a már regisztrált és belépett felhasználónak küldjük ki, amikor új közösséget regisztrál</td>
     </tr>
+    <tr>
+        <td><a href="@route('admin.email_template.seasonal_notification')">Aktív közösség megerősítése (félévente)</a></td>
+        <td>Félévente kiküldésre kerülő üzenet</td>
+    </tr>
 </table>

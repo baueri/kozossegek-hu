@@ -11,7 +11,7 @@ class AppMigrationTable extends Table
     public function timestamps(bool $withDeletedAt = true): static
     {
         $this->createdAt();
-        $this->timestamp('updated_at', ['null' => true, 'update' => 'CURRENT_TIMESTAMP']);
+        $this->timestamp('updated_at', ['null' => true]);
 
         if ($withDeletedAt) {
             $this->deletedAt();

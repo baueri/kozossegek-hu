@@ -1,9 +1,8 @@
 <?php
 
-
 namespace App\Models;
 
-
+use Carbon\Carbon;
 use Framework\Model\Model;
 
 class UserToken extends Model
@@ -18,8 +17,34 @@ class UserToken extends Model
 
     public $expires_at;
 
-    public function getUrl()
+    public $data;
+
+    public function getUrl(array $additionalQueryParams = []): string
     {
-        return config('app.site_url') . "{$this->page}?token={$this->token}";
+        return "{$this->page}?{$this->buildQuery($additionalQueryParams)}";
+    }
+
+    public function getUrlWithEncodedParams(array $additionalQueryParams = [])
+    {
+        $query = 'verify=' . base64_encode($this->buildQuery($additionalQueryParams));
+        return "{$this->page}?{$query}";
+    }
+
+    public function expired(): bool
+    {
+        return Carbon::parse($this->expires_at)->isPast();
+    }
+
+    public function data(string $key)
+    {
+        if (!$this->data) {
+            return null;
+        }
+        return json_decode($this->data)->{$key} ?? null;
+    }
+
+    private function buildQuery(array $additionalQueryParams = []): string
+    {
+        return collect(['token' => $this->token])->merge($additionalQueryParams)->buildQuery();
     }
 }

@@ -33,7 +33,7 @@ class ChurchGroups extends EntityQueryBuilder
             ->notDeleted();
     }
 
-    public function maintainer()
+    public function maintainer(): Relation
     {
         return $this->has(Has::one, Users::class, 'id', 'user_id');
     }
@@ -69,6 +69,7 @@ class ChurchGroups extends EntityQueryBuilder
 
     public function shouldNotify(): static
     {
-        return $this->whereRaw('DATE(notified_at) < DATE_SUB(NOW(), INTERVAL 6 MONTH)');
+        return $this->whereRaw('DATE(confirmed_at) < DATE_SUB(NOW(), INTERVAL 6 MONTH) AND DATE(notified_at) < DATE(confirmed_at)')
+            ->active();
     }
 }

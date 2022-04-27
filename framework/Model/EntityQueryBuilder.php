@@ -70,8 +70,8 @@ abstract class EntityQueryBuilder
     }
 
     /**
-     * @return Entity[]|ModelCollection
-     * @phpstan-return T[]|\Framework\Model\ModelCollection
+     * @return Entity[]|ModelCollection<Entity>
+     * @phpstan-return T[]|\Framework\Model\ModelCollection<T>
      */
     public function get(): ModelCollection
     {
@@ -296,6 +296,11 @@ abstract class EntityQueryBuilder
             $values = $entity->getAttributes();
         } else {
             $entity->update($values);
+        }
+
+        if ($entity->hasAttribute('updated_at')) {
+            $values['updated_at'] = now()->toDateTimeString();
+            $entity->updated_at = $values['updated_at'];
         }
         return $this->query()->where(static::primaryCol(), $entity->getId())->update($values);
     }

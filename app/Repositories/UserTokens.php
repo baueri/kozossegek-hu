@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\Models\User;
 use App\Models\UserToken;
-use DateTime;
+use Carbon\Carbon;
 use Framework\Repository;
 
 /**
@@ -12,17 +12,20 @@ use Framework\Repository;
  */
 class UserTokens extends Repository
 {
-    public function getByToken(string $token)
+    public function getByToken(string $token): ?UserToken
     {
+        if (!$token) {
+            return null;
+        }
         return $this->getInstance($this->getBuilder()->where('token', $token)->first());
     }
 
     /**
      * @throws \Exception
      */
-    public function createUserToken(User $user, string $page): UserToken
+    public function createUserToken(User $user, string $page, ?Carbon $expireDate = null, string|array $data = null): UserToken
     {
-        $instance = $this->make($user, $page);
+        $instance = $this->make($user, $page, $expireDate, $data);
 
         $this->save($instance);
 
@@ -40,13 +43,14 @@ class UserTokens extends Repository
     /**
      * @throws \Exception
      */
-    public function make(User $user, string $page): UserToken
+    public function make(User $user, string $page, ?Carbon $exireDate = null, string|array $data = null): UserToken
     {
         return $this->getInstance([
             'token' => bin2hex(random_bytes(20)),
             'email' => $user->email,
             'page' => $page,
-            'expires_at' => (new DateTime())->modify('+1 day')->format('Y-m-d H:i:s')
+            'expires_at' => $exireDate ? $exireDate->toDateTimeString() : now()->modify('+1 day')->toDateTimeString(),
+            'data' => is_array($data) ? json_encode($data) : $data
         ]);
     }
 
