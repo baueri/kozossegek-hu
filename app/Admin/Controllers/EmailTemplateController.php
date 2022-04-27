@@ -2,11 +2,13 @@
 
 namespace App\Admin\Controllers;
 
+use App\Mail\ActiveGroupConfirmEmail;
 use App\Mail\GroupContactMail;
 use App\Mail\NewGroupEmail;
 use App\Mail\RegistrationByGroupEmailForFirstUsers;
 use App\Mail\RegistrationEmail;
 use App\Mail\ResetPasswordEmail;
+use App\Models\ChurchGroup;
 use App\Models\ChurchGroupView;
 use App\Models\User;
 use App\Repositories\UserTokens;
@@ -92,6 +94,19 @@ class EmailTemplateController extends AdminController
         $mailable = (new NewGroupEmail($user))
             ->withNewUserMessage($token);
         $title = 'Új közösség létrehozása (új fiókkal)';
+        return view('admin.email_template', compact('mailable', 'title'));
+    }
+
+    public function seasonalNotification(): string
+    {
+        $user = new User(['name' => 'Minta János', 'email' => 'minta_janos@kozossegek.hu']);
+        $user->setRelation('groups', collect([
+            new ChurchGroup(['name' => 'Teszt közösség', 'id' => 123]),
+            new ChurchGroup(['name' => 'Másik közi', 'id' => 456]),
+        ]));
+        $token = (new UserTokens())->make($user, route('confirm_group', ['group' => $user->groups->map->getId()]));
+        $mailable = new ActiveGroupConfirmEmail($user, $token);
+        $title = 'Aktív közösség megerősítése';
         return view('admin.email_template', compact('mailable', 'title'));
     }
 

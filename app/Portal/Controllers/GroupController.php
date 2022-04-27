@@ -6,6 +6,8 @@ use App\Auth\Auth;
 use App\Exception\EmailTakenException;
 use App\Http\Responses\CreateGroupSteps\RegisterGroupForm;
 use App\Http\Responses\PortalEditGroupForm;
+use App\Models\ChurchGroup;
+use App\Models\UserToken;
 use App\Portal\Services\GroupList;
 use App\Portal\Services\PortalCreateGroup;
 use App\Portal\Services\PortalUpdateGroup;
@@ -13,6 +15,7 @@ use App\Portal\Services\SendGroupContactMessage;
 use App\QueryBuilders\ChurchGroups;
 use App\QueryBuilders\GroupViews;
 use App\Repositories\Groups;
+use App\Repositories\UserTokens;
 use App\Services\GroupSearchRepository;
 use Error;
 use ErrorException;
@@ -23,6 +26,7 @@ use Framework\Http\Message;
 use Framework\Http\Request;
 use Framework\Model\ModelNotFoundException;
 use Framework\Support\Arr;
+use InvalidArgumentException;
 use Jaybizzle\CrawlerDetect\CrawlerDetect;
 use Legacy\Group;
 use Legacy\Institutes;
@@ -270,5 +274,38 @@ class GroupController extends PortalController
         header("Content-Transfer-Encoding: Binary");
         header("Content-disposition: attachment; filename=\"" . basename($file_url) . "\"");
         readfile($file_url);
+    }
+
+    public function confirmGroup(UserTokens $tokens, ChurchGroups $groups)
+    {
+        parse_str(base64_decode(request()->get('verify')), $decoded);
+        $token = $tokens->getByToken($decoded['token'] ?? '');
+
+        if (!$token) {
+            return view('portal.error', ['message2' => 'Közösség megerősítése sikertelen! Hibás token.']);
+        }
+
+        if ($token->expired()) {
+            return view('portal.error', ['message2' => 'Ennek a tokennek az érvényességi ideje lejárt!']);
+        }
+
+        /** @var ChurchGroup $group */
+        $group = $groups->findOrFail($decoded['group_id']);
+        if ((int) $token->data('group_id') !== (int) $group->getId()) {
+            return view('portal.error', ['message2' => 'Közösség megerősítése sikertelen! Hibás token.']);
+        }
+
+        if ($decoded['action'] === 'confirm') {
+            $groups->save($group, ['confirmed_at' => now()]);
+            $view = view('portal.error', ['message2' => 'Közösség sikeresen megerősítve!']);
+        } elseif ($decoded['action'] === 'deactivate') {
+            $groups->save($group, ['active' => 0]);
+            $view = view('portal.error', ['message2' => 'Közösség inaktiválva. Közösséget bármikor újra aktiválhatsz belépés után a közösség adatlapján.']);
+        } else {
+            throw new InvalidArgumentException('Invalid confirm action');
+        }
+
+        $tokens->delete($token);
+        return $view;
     }
 }

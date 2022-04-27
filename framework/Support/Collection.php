@@ -572,4 +572,9 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
 
         return null;
     }
+
+    public function buildQuery(): string
+    {
+        return http_build_query($this->items);
+    }
 }

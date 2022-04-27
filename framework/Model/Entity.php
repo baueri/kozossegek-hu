@@ -72,6 +72,11 @@ abstract class Entity
         $this->attributes[$name] = $value;
     }
 
+    public function setRelation(string $relation, $value)
+    {
+        $this->relations[$relation] = $value;
+    }
+
     public function update(array $values)
     {
         $this->attributes = array_merge($this->attributes, $values);
@@ -84,6 +89,11 @@ abstract class Entity
         }
 
         return Arr::only($this->attributes, $only);
+    }
+
+    public function hasAttribute(string $column): bool
+    {
+        return array_key_exists($column, $this->originalAttributes);
     }
 
     public function only($only): array

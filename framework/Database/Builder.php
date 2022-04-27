@@ -382,6 +382,10 @@ class Builder
             $callback($builder = (new self($this->db))->select('1')->from($table));
         }
 
+        if (!$builder->select) {
+            $builder->addSelect('1');
+        }
+
         [$query, $bindings] = $builder->getBaseSelect();
         $this->whereRaw("EXISTS ({$query})", $bindings, $clause);
 

@@ -86,6 +86,7 @@
                 <route method="get" uri="email-template/register-by-group" use="registrationByGroup" as="register_by_group"/>
                 <route method="get" uri="email-template/created-group" use="createdGroup" as="created_group"/>
                 <route method="get" uri="email-template/created-group-with-new-user" use="createdGroupWithNewUser" as="created_group_with_new_user"/>
+                <route method="get" uri="email-template/seasonal-notification" use="seasonalNotification" as="seasonal_notification"/>
 
                 <route method="post" uri="email-template/save" use="saveTemplate" as="save_template"/>
             </route-group>
