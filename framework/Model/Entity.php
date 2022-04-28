@@ -2,8 +2,11 @@
 
 namespace Framework\Model;
 
+use Framework\Exception\MethodNotFoundException;
+use Framework\Model\Relation\Relation;
 use Framework\Support\Arr;
 use Framework\Support\StringHelper;
+use ReflectionMethod;
 
 /**
  * @property null|string $id
@@ -17,6 +20,8 @@ abstract class Entity
     public array $relations = [];
 
     public array $relations_count = [];
+
+    protected ?string $builder = null;
 
     public function __construct(protected ?array $attributes = [])
     {
@@ -56,7 +61,7 @@ abstract class Entity
             return $this->relations_count[$relation];
         }
 
-        if (StringHelper::endsWith($name, '_count') && isset($this->relations[$relation])) {
+        if (str_ends_with($name, '_count') && isset($this->relations[$relation])) {
             return $this->relations_count[$relation] = count($this->relations[$relation]);
         }
 
@@ -64,7 +69,35 @@ abstract class Entity
             return $this->attributes[$name];
         }
 
-        return $this->relations[$name] ?? null;
+        if (isset($this->relations[$name])) {
+            return $this->relations[$name] ?? null;
+        }
+
+        if ($this->builder && method_exists($this->builder, $relation)) {
+            $method = new ReflectionMethod($this->builder, $relation);
+            $returnType = $method->getReturnType();
+            if ($returnType->getName() === Relation::class) {
+                /** @var \Framework\Model\EntityQueryBuilder $builder */
+                $builder = new $this->builder;
+                $queryRelation = $builder->getRelation($relation);
+                $builder->fillRelations($this, $queryRelation, str_ends_with($name, '_count'));
+                if (str_ends_with($name, '_count')) {
+                    return $this->relations_count[$relation] ?? 0;
+                } else {
+                    return $this->relations[$relation] ?? null;
+                }
+            }
+        }
+        return null;
+    }
+
+    public function __call(string $name, array $arguments)
+    {
+        if ($this->builder && method_exists($this->builder, $name)) {
+            return (new $this->builder)->{$name}()->buildQuery($this);
+        }
+
+        throw new MethodNotFoundException();
     }
 
     public function __set($name, $value)
@@ -72,12 +105,12 @@ abstract class Entity
         $this->attributes[$name] = $value;
     }
 
-    public function setRelation(string $relation, $value)
+    public function setRelation(string $relation, $value): void
     {
         $this->relations[$relation] = $value;
     }
 
-    public function update(array $values)
+    public function update(array $values): void
     {
         $this->attributes = array_merge($this->attributes, $values);
     }

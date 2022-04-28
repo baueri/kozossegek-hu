@@ -97,14 +97,14 @@ class EmailTemplateController extends AdminController
         return view('admin.email_template', compact('mailable', 'title'));
     }
 
-    public function seasonalNotification(): string
+    public function seasonalNotification(UserTokens $tokens): string
     {
         $user = new User(['name' => 'Minta János', 'email' => 'minta_janos@kozossegek.hu']);
         $user->setRelation('groups', collect([
             new ChurchGroup(['name' => 'Teszt közösség', 'id' => 123]),
             new ChurchGroup(['name' => 'Másik közi', 'id' => 456]),
         ]));
-        $token = (new UserTokens())->make($user, route('confirm_group', ['group' => $user->groups->map->getId()]));
+        $tokens = $user->groups;
         $mailable = new ActiveGroupConfirmEmail($user, $token);
         $title = 'Aktív közösség megerősítése';
         return view('admin.email_template', compact('mailable', 'title'));

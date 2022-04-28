@@ -5,8 +5,8 @@ namespace App\Admin\User;
 use App\Admin\Components\AdminTable\{AdminTable, Deletable, Editable};
 use App\Enums\UserRole;
 use App\Models\User;
+use App\QueryBuilders\ChurchGroups;
 use App\QueryBuilders\Users;
-use App\Repositories\Groups;
 use Framework\Database\Builder;
 use Framework\Database\PaginatedResultSetInterface;
 use Framework\Http\Request;
@@ -26,12 +26,9 @@ class UserTable extends AdminTable implements Deletable, Editable
 
     private Users $repository;
 
-    private Groups $groups;
-
-    public function __construct(Users $repository, Groups $groups, Request $request)
+    public function __construct(Users $repository, Request $request)
     {
         $this->repository = $repository;
-        $this->groups = $groups;
         parent::__construct($request);
     }
 
@@ -73,7 +70,7 @@ class UserTable extends AdminTable implements Deletable, Editable
     {
         $icon = static::getIcon('fa fa-comments');
         $route = route('admin.group.list', ['user_id' => $user->id]);
-        $groupCount = (int) $user->groups_count;
+        $groupCount = $user->groups_count;
         return static::getLink(
             $route,
             "{$icon} ({$groupCount})",
@@ -90,7 +87,7 @@ class UserTable extends AdminTable implements Deletable, Editable
         return $this->getUsers($filter);
     }
 
-    private function getUsers(Collection $filter)
+    private function getUsers(Collection $filter): PaginatedResultSetInterface
     {
         $query = $this->repository->query();
 
@@ -115,8 +112,7 @@ class UserTable extends AdminTable implements Deletable, Editable
         if ($userGroup = $filter['user_group']) {
             $query->where('user_group', $userGroup);
         }
-
-        $query->withCount('groups');
+        $query->withCount('groups', fn (ChurchGroups $query) => $query->notDeleted());
 
         return $query->paginate($this->perpage);
     }
