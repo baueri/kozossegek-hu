@@ -24,6 +24,7 @@ use Framework\Support\StringHelper;
  * @property null|string $website
  * @property string $lat
  * @property string $lon
+ * @property null|User $user
  */
 class Institute extends Entity
 {

@@ -7,7 +7,7 @@ use App\Middleware\ListenViewLoading;
 use Framework\Middleware\BaseAuthMiddleware;
 use Framework\Middleware\TranslationRoute;
 use Framework\Middleware\AuthMiddleware;
-use App\Components\Widget\AppServiceProvider;
+use App\Providers\AppServiceProvider;
 use Framework\Middleware\CheckMaintenance;
 
 class HttpKernel extends \Framework\Http\HttpKernel
@@ -19,7 +19,7 @@ class HttpKernel extends \Framework\Http\HttpKernel
         TranslationRoute::class,
         CheckMaintenance::class,
         AuthMiddleware::class,
-        AppServiceProvider::class,
+        AppServiceProvider::class
     ];
 
     public function handleMaintenance()

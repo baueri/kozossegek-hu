@@ -11,13 +11,13 @@ trait BelongsTo
 {
     public function belongsTo(string $repositoryClass, ?string $localKey = null, ?string $foreignKey = null)
     {
-        return new Relation(
-            relationType: Has::many,
-            queryBuilder: app($repositoryClass),
-            relationName: $this->getRelationName(),
-            foreignKey: $foreignkey ?? StringHelper::snake(get_class_name(static::getModelClass())) . '_id',
-            localKey: $localKey
-        );
+//        return new Relation(
+//            relationType: Has::many,
+//            queryBuilder: app($repositoryClass),
+//            relationName: $this->getRelationName(),
+//            foreignKey: $foreignkey ?? StringHelper::snake(get_class_name(static::getModelClass())) . '_id',
+//            localKey: $localKey
+//        );
     }
 
     protected function loadBelongsToRelations($instances): void

@@ -8,7 +8,7 @@ use Framework\Model\Relation\Has;
 use Framework\Model\Relation\Relation;
 
 /**
- * @phpstan-extends \Framework\Model\EntityQueryBuilder<\App\Models\ChurchGroupView>
+ * @phpstan-extends ChurchGroups<ChurchGroupView>
  */
 class GroupViews extends ChurchGroups
 {

@@ -13,6 +13,9 @@ class BaseAuthMiddleware implements Middleware
         $this->auth = $auth;
     }
 
+    /**
+     * @throws \Framework\Exception\UnauthorizedException
+     */
     public function handle(): void
     {
         if (!config('app.base_auth')) {

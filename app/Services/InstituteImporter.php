@@ -9,7 +9,7 @@ use Legacy\Institutes;
 class InstituteImporter
 {
     public function __construct(
-        private Institutes $institutes
+        private readonly Institutes $institutes
     ) {
     }
 
