@@ -40,7 +40,7 @@
         @if(isset($current_menu_item['submenu']))
             @foreach($current_menu_item['submenu'] as $submenuItem)
             <li class="nav-item  {{ $submenuItem['active'] ? 'active' : '' }}">
-                <a class="nav-link" href="{{ $submenuItem['uri'] }}"><i class="fa fa-{{ $submenuItem['icon'] }}"></i>
+                <a class="nav-link" href="{{ $submenuItem['uri'] }}"><i class="fa fa-{{ $submenuItem['icon'] }} {{ $submenuItem['active'] ? 'text-primary' : '' }}"></i>
                     <span>{{ $submenuItem['title'] }}</a></span>
             </li>
             <li class="nav-item divider"></li>

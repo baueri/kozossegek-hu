@@ -3,6 +3,7 @@
 namespace Framework\Model\Relation;
 
 use Framework\Database\Builder;
+use Framework\Model\Entity;
 use Framework\Model\EntityQueryBuilder;
 use Framework\Support\Collection;
 
@@ -23,8 +24,13 @@ class Relation
         $this->foreginKey = $foreignKey ?? $this->relationName . '_id';
     }
 
-    public function buildQuery(Collection $instances): EntityQueryBuilder|Builder
+    public function buildQuery(Collection|Entity $instances): EntityQueryBuilder|Builder
     {
-        return $this->queryBuilder->whereIn($this->foreginKey, $instances->pluck($this->localKey));
+        return $this->queryBuilder->whereIn($this->foreginKey, collect($instances)->pluck($this->localKey));
+    }
+
+    public function __call(string $name, array $arguments)
+    {
+        // TODO: Implement __call() method.
     }
 }

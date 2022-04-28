@@ -40,7 +40,7 @@ class GroupActivityConfirmNotifier implements Command
     }
 
     /**
-     * @return \Framework\Model\ModelCollection<\App\Models\User>
+     * @return \App\Models\User[]|ModelCollection<\App\Models\User>
      */
     private function getUsers(): ModelCollection
     {

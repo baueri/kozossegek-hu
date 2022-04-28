@@ -4,6 +4,7 @@ namespace App\QueryBuilders;
 
 use App\Models\ChurchGroup;
 use App\Models\ChurchGroupView;
+use Framework\Database\Builder;
 use Framework\Model\EntityQueryBuilder;
 use Framework\Model\Relation\Has;
 use Framework\Model\Relation\Relation;
@@ -47,9 +48,7 @@ class ChurchGroups extends EntityQueryBuilder
 
     public function whereGroupTag(array $tags): static
     {
-        $innerQuery = builder('group_tags')->distinct()->select('group_id')->whereIn('tag', $tags);
-        $this->whereRaw("id in ($innerQuery)", $tags);
-        return $this;
+        return $this->whereHas('tags', fn (Builder $query) => $query->whereIn('tag', $tags));
     }
 
     public function similarTo(ChurchGroupView $group): static
