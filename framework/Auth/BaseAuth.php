@@ -7,13 +7,9 @@ use Framework\Exception\UnauthorizedException;
 class BaseAuth
 {
     /**
-     * @param $realm
-     * @param $user
-     * @param $password
-     * @return bool
      * @throws UnauthorizedException
      */
-    public function authenticate($realm, $user, $password): void
+    public function authenticate(string $realm, ?string $user, ?string $password): void
     {
         $validated = $user == $_SERVER['PHP_AUTH_USER'] && $password === $_SERVER['PHP_AUTH_PW'];
 

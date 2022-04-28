@@ -28,7 +28,8 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     public function __construct($items = null)
     {
         if ($items instanceof Collection) {
-            return $this->items = $items->all();
+            $this->items = $items->all();
+            return;
         }
 
         $this->items = Arr::wrap($items);
@@ -337,7 +338,6 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     {
         return $this->unique($key)->pluck($key);
     }
-
 
     public function zip(array $array): self
     {

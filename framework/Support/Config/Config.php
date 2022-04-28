@@ -8,5 +8,5 @@ use Framework\Support\DataFile\PhpDataFile;
 
 class Config extends PhpDataFile
 {
-    protected static $basePath = 'config' . DS;
+    protected static ?string $basePath = 'config' . DS;
 }

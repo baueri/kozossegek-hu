@@ -49,22 +49,16 @@ class SpiritualMovementTable extends AdminTable implements Editable, Deletable
         return $query->paginate($this->perpage);
     }
 
-    public function getGroupsCount($count, SpiritualMovement $movement)
+    public function getGroupsCount($count, SpiritualMovement $movement): string
     {
         return $this->getLink(route('admin.group.list', ['spiritual_movement_id' => $movement->getId()]), $count);
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getDeleteUrl($model): string
     {
         return route('admin.spiritual_movement.delete', $model);
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getEditUrl($model): string
     {
         return route('admin.spiritual_movement.edit', $model);

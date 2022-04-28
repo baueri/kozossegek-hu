@@ -85,7 +85,7 @@ class GroupController extends AdminController
      */
     public function delete(DeleteGroup $service)
     {
-        $service->delete($this->request['id']);
+        $service->delete((int) $this->request['id']);
 
         redirect_route('admin.group.list');
     }

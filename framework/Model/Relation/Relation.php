@@ -2,6 +2,7 @@
 
 namespace Framework\Model\Relation;
 
+use App\QueryBuilders\Users;
 use Framework\Database\Builder;
 use Framework\Model\Entity;
 use Framework\Model\EntityQueryBuilder;
@@ -26,11 +27,6 @@ class Relation
 
     public function buildQuery(Collection|Entity $instances): EntityQueryBuilder|Builder
     {
-        return $this->queryBuilder->whereIn($this->foreginKey, collect($instances)->pluck($this->localKey));
-    }
-
-    public function __call(string $name, array $arguments)
-    {
-        // TODO: Implement __call() method.
+        return $this->queryBuilder->whereIn($this->foreginKey, collect($instances)->pluck($this->localKey)->unique()->filter());
     }
 }

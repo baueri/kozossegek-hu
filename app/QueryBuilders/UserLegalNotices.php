@@ -2,7 +2,7 @@
 
 namespace App\QueryBuilders;
 
-use App\Auth\AuthUser;
+use App\Models\User;
 use App\Models\UserLegalNotice;
 use App\Services\User\LegalNoticeService;
 use Framework\Model\EntityQueryBuilder;
@@ -17,12 +17,12 @@ class UserLegalNotices extends EntityQueryBuilder
         return UserLegalNotice::class;
     }
 
-    public function forUser(AuthUser $user): self
+    public function forUser(User $user): self
     {
         return $this->where('user_id', $user->id);
     }
 
-    public function updateOrInsertCurrentFor(AuthUser $user): int
+    public function updateOrInsertCurrentFor(User $user): int
     {
         return $this->updateOrInsert(
             ['user_id' => $user->id],

@@ -88,6 +88,8 @@ class GroupSearchRepository
 
         $builder->orderBy($filter['order_by'] ?: 'id', $filter['sort'] ?: 'desc');
 
+        $builder->with('tags');
+
         if ($perPage == -1) {
             return $builder->get();
         }

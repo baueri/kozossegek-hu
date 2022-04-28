@@ -8,7 +8,7 @@ class JsonDataFile extends DataFile
     /**
      * @var string
      */
-    protected static $extension = 'json';
+    protected static ?string $extension = 'json';
 
     /**
      * @param $content

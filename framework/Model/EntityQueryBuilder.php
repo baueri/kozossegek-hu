@@ -102,8 +102,6 @@ abstract class EntityQueryBuilder
     }
 
     /**
-     * @param mixed $id
-     * @return \Framework\Model\Entity|null
      * @phpstan-return \Framework\Model\Entity<T>|T|null
      */
     public function find($id): ?Entity
@@ -188,39 +186,32 @@ abstract class EntityQueryBuilder
         return $this;
     }
 
-    /**
-     * @param mixed $column
-     * @param null $operator
-     * @param null $value
-     * @param string $clause
-     * @return static
-     */
-    public function where($column, $operator = null, $value = null, string $clause = 'and'): EntityQueryBuilder
+    public function where(callable|string $column, ?string $operator = null, string|int|null $value = null, string $clause = 'and'): static
     {
         $this->builder->where($column, $operator, $value, $clause);
 
         return $this;
     }
 
-    public function orWhere($column, $operator = null, $value = null): EntityQueryBuilder
+    public function orWhere($column, $operator = null, $value = null): static
     {
         return $this->where($column, $operator, $value, 'or');
     }
 
-    public function whereIn($column, $values, $clause = 'and'): EntityQueryBuilder
+    public function whereIn($column, $values, $clause = 'and'): static
     {
         $this->builder->whereIn($column, $values, $clause);
 
         return $this;
     }
 
-    public function whereNull($column): EntityQueryBuilder
+    public function whereNull($column): static
     {
         $this->builder->whereNull($column);
         return $this;
     }
 
-    public function whereNotNull($column): EntityQueryBuilder
+    public function whereNotNull($column): static
     {
         $this->builder->whereNotNull($column);
         return $this;
@@ -257,7 +248,7 @@ abstract class EntityQueryBuilder
         return $this;
     }
 
-    public function having(string $having, array $bindings = []): EntityQueryBuilder
+    public function having(string $having, array $bindings = []): static
     {
         $this->builder->having($having, $bindings);
         return $this;
@@ -279,12 +270,12 @@ abstract class EntityQueryBuilder
         return $this;
     }
 
-    public function leftJoin(string $table, string $on): EntityQueryBuilder
+    public function leftJoin(string $table, string $on): static
     {
         return $this->join($table, $on, 'left');
     }
 
-    public function joinRaw(string $join): EntityQueryBuilder
+    public function joinRaw(string $join): static
     {
         $this->builder->joinRaw($join);
 
@@ -311,24 +302,24 @@ abstract class EntityQueryBuilder
         return $this->query()->where(static::primaryCol(), $entity->getId())->update($values);
     }
 
-    public function insert(array $values)
+    public function insert(array $values): int|string
     {
         return $this->builder->insert($values);
     }
 
-    public function updateOrInsert(array $where, array $values = [])
+    public function updateOrInsert(array $where, array $values = []): int|string
     {
         return $this->builder->updateOrInsert($where, $values);
     }
 
-    public function deleteModel($model, bool $hardDelete = false)
+    public function deleteModel($model, bool $hardDelete = false): bool
     {
         if (is_numeric($model)) {
             $model = $this->find($model);
         }
 
         if (property_exists($model, 'deleted_at') && !$hardDelete) {
-            return $this->save($model, ['deleted_at' => date('Y-m-d H:i:s')]);
+            return (bool) $this->save($model, ['deleted_at' => date('Y-m-d H:i:s')]);
         }
 
         $deleted = $this->query()->builder->where(static::primaryCol(), $model->getId())->delete();
@@ -357,14 +348,14 @@ abstract class EntityQueryBuilder
         return $this->builder->toSql($withBindings);
     }
 
-    public function macro($macroName, $callback): EntityQueryBuilder
+    public function macro($macroName, $callback): static
     {
         $this->builder->macro($macroName, $callback);
 
         return $this;
     }
 
-    public function apply($macro, ...$args): EntityQueryBuilder
+    public function apply($macro, ...$args): static
     {
         $this->builder->apply($macro, ...$args);
 
@@ -382,7 +373,7 @@ abstract class EntityQueryBuilder
         return $model;
     }
 
-    public static function truncate()
+    public static function truncate(): void
     {
         static::query()->builder->truncate();
     }

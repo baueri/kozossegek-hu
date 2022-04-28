@@ -6,5 +6,5 @@ use Framework\Support\DataFile\JsonDataFile;
 
 class JsonConfig extends JsonDataFile
 {
-    protected static $basePath = 'config' . DS;
+    protected static ?string $basePath = 'config' . DS;
 }
