@@ -22,20 +22,25 @@ trait HasMany
 
         /* @var $relations Relation[] */
         foreach ($relations as $relation) {
-            if (in_array($relation->relationName, $this->relationCounts)) {
-                $this->fillCounts($relation, $instances);
-                continue;
-            }
-            $rows = collect($relation->buildQuery($instances)->get());
+            $this->fillRelations($instances, $relation, in_array($relation->relationName, $this->relationCounts));
+        }
+    }
 
-            foreach ($instances as $actualInstance) {
-                $actualInstanceValue = Arr::get($actualInstance, $relation->localKey);
-                $isSame = fn($relationInstance) => Arr::get($relationInstance, $relation->foreginKey) == $actualInstanceValue;
-                if ($relation->relationType == Has::many) {
-                    $actualInstance->relations[$relation->relationName] = $rows->filter($isSame)->values();
-                } else {
-                    $actualInstance->relations[$relation->relationName] = $rows->first($isSame);
-                }
+    public function fillRelations(Collection|Entity $instances, Relation $relation, bool $loadCount = false): void
+    {
+        $instances = collect($instances);
+        if ($loadCount) {
+            $this->fillCounts($relation, $instances);
+            return;
+        }
+        $rows = collect($relation->buildQuery($instances)->get());
+        foreach ($instances as $actualInstance) {
+            $actualInstanceValue = Arr::get($actualInstance, $relation->localKey);
+            $isSame = fn($relationInstance) => Arr::get($relationInstance, $relation->foreginKey) == $actualInstanceValue;
+            if ($relation->relationType == Has::many) {
+                $actualInstance->relations[$relation->relationName] = $rows->filter($isSame)->values();
+            } else {
+                $actualInstance->relations[$relation->relationName] = $rows->first($isSame);
             }
         }
     }
@@ -50,16 +55,6 @@ trait HasMany
         foreach ($instances as $actualInstance) {
             $actualInstance->relations_count[$relation->relationName] = $rows[Arr::getItemValue($actualInstance, $relation->localKey)] ?? 0;
         }
-    }
-
-    public function hasMany(string $repositoryClass, ?string $foreignKey = null, ?string $localKey = null): Relation
-    {
-        return $this->has(Has::many, $repositoryClass, $foreignKey, $localKey);
-    }
-
-    public function hasOne(string $repositoryClass, ?string $foreignKey = null, ?string $localKey = null): Relation
-    {
-        return $this->has(Has::one, $repositoryClass, $foreignKey, $localKey);
     }
 
     public function has(Has $relationType, string|EntityQueryBuilder|Builder $repositoryClass, ?string $foreignKey = null, ?string $localKey = null): Relation

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Traits\GroupTrait;
+use App\QueryBuilders\ChurchGroups;
 use Framework\Model\Entity;
 
 /**
@@ -15,8 +16,11 @@ use Framework\Model\Entity;
  * @property string $notified_at
  * @property int $institute_id
  * @property User $maintainer
+ * @property \Framework\Support\Collection $tags
  */
 class ChurchGroup extends Entity
 {
     use GroupTrait;
+
+    protected ?string $builder = ChurchGroups::class;
 }

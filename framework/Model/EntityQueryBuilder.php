@@ -257,6 +257,12 @@ abstract class EntityQueryBuilder
         return $this;
     }
 
+    public function having(string $having, array $bindings = []): EntityQueryBuilder
+    {
+        $this->builder->having($having, $bindings);
+        return $this;
+    }
+
     public function when($expression, Closure $callback): static
     {
         if ($expression) {

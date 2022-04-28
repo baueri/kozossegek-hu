@@ -44,7 +44,7 @@ abstract class AdminTable
             $request->get('sort', $this->defaultOrder)
         ];
 
-        $this->perpage = $request['per-page'] ?? 20;
+        $this->perpage = (int) ($request['per-page'] ?? 20);
     }
 
     abstract protected function getData(): PaginatedResultSetInterface;

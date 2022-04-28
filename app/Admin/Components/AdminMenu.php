@@ -12,8 +12,8 @@ use Framework\Support\StringHelper;
 class AdminMenu
 {
     public function __construct(
-        private RouterInterface $router,
-        private ?AuthUser $user
+        private readonly RouterInterface $router,
+        private readonly ?AuthUser $user
     ) {
     }
 
