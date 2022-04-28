@@ -1,33 +1,18 @@
 <?php
 
-
 namespace Framework\Support\DataFile;
-
 
 abstract class DataFile
 {
     const ROOT = ROOT;
 
-    /**
-     * @var null|string
-     */
-    protected static $basePath = null;
+    protected static ?string $basePath = null;
 
-    /**
-     * @var null|string
-     */
-    protected static $extension = null;
+    protected static ?string $extension = null;
 
-    /**
-     * @var []
-     */
-    protected $items;
+    protected array $items;
 
-    /**
-     * DataFile constructor.
-     * @param string|null $fileName
-     */
-    public function __construct(string $fileName = null)
+    public function __construct(?string $fileName = null)
     {
         if ($fileName) {
             $this->load($fileName);
@@ -45,12 +30,7 @@ abstract class DataFile
         return static::getValue($this->items[$fileName], $index, $default);
     }
 
-    /**
-     *
-     * @param string $params
-     * @return array
-     */
-    protected static function parseKey($params)
+    protected static function parseKey(string $params): array
     {
         $parsed = explode('.', $params, 2);
         if (!isset($parsed[1])) {
@@ -59,15 +39,11 @@ abstract class DataFile
         return $parsed;
     }
 
-    /**
-     * @param string $baseName
-     * @return string
-     */
-    protected static function getFileName($baseName)
+    protected static function getFileName(string $baseName): string
     {
         $scope = '';
 
-        if (strpos($baseName, '::') !== false) {
+        if (str_contains($baseName, '::')) {
             $scope = substr($baseName, 0, strpos($baseName, '::')) . DS;
             $baseName = substr($baseName, strpos($baseName, '::') + 2);
         }
@@ -75,33 +51,19 @@ abstract class DataFile
         return static::getDir($scope) . $baseName . (static::$extension ? '.' . static::$extension : '');
     }
 
-    /**
-     * @param $scope
-     * @return string
-     */
-    protected static function getDir($scope)
+    protected static function getDir(string $scope): string
     {
         return self::ROOT . $scope . static::$basePath;
     }
 
     abstract protected function parse($content);
 
-    /**
-     * @param $filename
-     * @return false|string
-     */
-    protected static function getContent($filename)
+    protected static function getContent(string $filename)
     {
         return file_get_contents($filename);
     }
 
-    /**
-     * @param array $items
-     * @param mixed $index
-     * @param mixed $default
-     * @return mixed
-     */
-    private static function getValue($items, $index = null, $default = null)
+    private static function getValue(array $items, mixed $index = null, mixed $default = null): mixed
     {
         if (!$index) {
             return $items ?: $default;
@@ -114,21 +76,13 @@ abstract class DataFile
         $nestedKeys = explode('.', $index);
 
         foreach ($nestedKeys as $key) {
-            if (isset($items[$key])) {
-                $items = $items[$key];
-            } else {
-                $items = null;
-            }
+            $items = $items[$key] ?? null;
         }
 
         return $items ?: $default;
     }
 
-    /**
-     * @param $baseName
-     * @return $this
-     */
-    public function load($baseName)
+    public function load($baseName): self
     {
         $fileName = static::getFileName($baseName);
         if (!isset($this->items[$fileName])) {

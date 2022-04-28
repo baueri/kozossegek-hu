@@ -17,6 +17,7 @@ use Framework\Support\StringHelper;
  * @property string $status
  * @property null|string $header_image
  * @property string $priority
+ * @property ?User $user
  */
 class Page extends Entity
 {

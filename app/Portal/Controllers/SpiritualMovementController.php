@@ -48,19 +48,8 @@ class SpiritualMovementController extends PortalController
             $groups = $groupViews->query()
                 ->where('spiritual_movement_id', $spiritualMovement->id)
                 ->apply('active')
+                ->with('tags')
                 ->get();
-
-            $groupids = $groups->getIds();
-
-            if ($groupids->isNotEmpty()) {
-                $group_tags = builder('v_group_tags')
-                    ->whereIn('group_id', $groupids->all())
-                    ->get();
-
-                if ($group_tags) {
-                    $groups->withMany($group_tags, 'tags', 'id', 'group_id');
-                }
-            }
 
             $title = $spiritualMovement->name;
 

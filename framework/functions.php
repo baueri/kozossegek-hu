@@ -5,7 +5,6 @@ use App\Auth\Auth;
 use App\Mailable\ThrowableCriticalErrorEmail;
 use App\Middleware\AdminMiddleware;
 use App\Repositories\EventLogRepository;
-use App\Repositories\Widgets;
 use App\Services\EventLogger;
 use Arrilot\DotEnv\DotEnv;
 use Carbon\Carbon;
@@ -202,11 +201,6 @@ function make($abstraction, $values = [])
     return app()->make($abstraction, ...$values);
 }
 
-function widget($uniqid)
-{
-    return app()->get(Widgets::class)->getByUniqId($uniqid);
-}
-
 function is_prod(): bool
 {
     return app()->envIs(Environment::production);
@@ -239,28 +233,28 @@ function mb_ucfirst($string, $encoding = 'utf-8'): string
     return mb_strtoupper($firstChar, $encoding) . $then;
 }
 
-function raise_error_page(int $code, string $message, string $message2)
+function raise_error_page(int $code, string $message, string $message2): never
 {
     echo view('portal.error', compact('code', 'message', 'message2'));
     exit();
 }
 
-function raise_500(string $message = '', string $message2 = 'Nincs jogosultsága az oldal megtekintéséhez')
+function raise_500(string $message = '', string $message2 = 'Nincs jogosultsága az oldal megtekintéséhez'): never
 {
     raise_error_page(500, $message, $message2);
 }
 
-function raise_404($message = 'A keresett oldal nem található', $message2 = '<i class="text-muted">De azért ne adjátok fel.<br/> Keressetek, és előbb, vagy utóbb találtok ;-)</i>')
+function raise_404($message = 'A keresett oldal nem található', $message2 = '<i class="text-muted">De azért ne adjátok fel.<br/> Keressetek, és előbb, vagy utóbb találtok ;-)</i>'): never
 {
     raise_error_page(404, $message, $message2);
 }
 
-function raise_403($message = '', $message2 = 'Nincs jogosultsága a tartalom megtekintéséhez!')
+function raise_403($message = '', $message2 = 'Nincs jogosultsága a tartalom megtekintéséhez!'): never
 {
     raise_error_page(403, $message, $message2);
 }
 
-function process_error($e)
+function process_error($e): void
 {
     if (!_env('DEBUG')) {
         report($e);
@@ -322,21 +316,17 @@ function rcopy($src, $dst, $excludeSymlinks = false): void
     }
 }
 
-function set_header_bg(string $bg)
+function set_header_bg(string $bg): void
 {
     View::setVariable('header_background', $bg);
 }
 
-function use_default_header_bg()
+function use_default_header_bg(): void
 {
     set_header_bg('/images/main.jpg');
 }
 
-/**
- * @param string|object $class
- * @return mixed|string
- */
-function get_class_name($class)
+function get_class_name(string|object $class): string
 {
     if (is_object($class)) {
         $path = explode('\\', get_class($class));
@@ -357,7 +347,7 @@ function event_logger(): EventLogger
     return app()->get(EventLogRepository::class);
 }
 
-function log_event(string $type, array $data = [])
+function log_event(string $type, array $data = []): void
 {
     event_logger()->logEvent($type, $data);
 }

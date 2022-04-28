@@ -3,7 +3,6 @@
 namespace App\Migration;
 
 use Phinx\Db\Adapter\AdapterInterface;
-use Phinx\Db\Adapter\MysqlAdapter;
 use Phinx\Db\Table;
 
 class AppMigrationTable extends Table
@@ -29,7 +28,7 @@ class AppMigrationTable extends Table
 
     public function timestamp(string $column, array $options = []): static
     {
-        $this->addColumn($column, MysqlAdapter::PHINX_TYPE_DATETIME, $options);
+        $this->addColumn($column, AdapterInterface::PHINX_TYPE_DATETIME, $options);
 
         return $this;
     }

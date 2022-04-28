@@ -74,7 +74,6 @@ $application->singleton(Database::class, function () {
 });
 
 $application->boot(RegisterDirectives::class);
-$application->singleton(App\Repositories\Widgets::class);
 
 MileStone::endMeasure('init');
 

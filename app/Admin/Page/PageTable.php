@@ -49,14 +49,7 @@ class PageTable extends AdminTable implements Deletable, Editable
             $filter['deleted'] = true;
         }
 
-        $pages = $this->getPages($filter);
-
-        $userIds = $pages->pluck('user_id')->unique()->all();
-
-        $users = Users::query()->whereIn('id', $userIds)->get();
-        $pages->with($users, 'user', 'user_id');
-
-        return $pages;
+        return $this->getPages($filter);
     }
 
     public function getDeleteUrl($model): string
@@ -86,6 +79,8 @@ class PageTable extends AdminTable implements Deletable, Editable
         } else {
             $query->whereNull('deleted_at');
         }
+
+        $query->with('user');
 
         return $query->paginate();
     }

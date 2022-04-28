@@ -45,6 +45,9 @@ class Container implements ContainerInterface
         return in_array($abstraction, $this->singletons);
     }
 
+    /**
+     * @throws \Framework\Container\Exceptions\AlreadyBoundException
+     */
     public function bind($abstraction, $concrete): void
     {
         if (!$abstraction) {
@@ -86,7 +89,7 @@ class Container implements ContainerInterface
         $this->shared[$key][] = $value;
     }
 
-    public function has($id)
+    public function has($id): bool
     {
         return isset($this->shared[$id]);
     }
@@ -122,10 +125,6 @@ class Container implements ContainerInterface
         return new $binding(...$args);
     }
 
-    /**
-     * @param $binding
-     * @return mixed
-     */
     protected function getBinding($binding)
     {
         if ($this->isBindingRegistered($binding)) {
@@ -190,10 +189,6 @@ class Container implements ContainerInterface
         return new ReflectionMethod($abstract, $method);
     }
 
-    /**
-     * @param ReflectionParameter $resource
-     * @return mixed
-     */
     private function getDependencyResourceValue(ReflectionParameter $resource)
     {
         $value = null;
@@ -221,10 +216,6 @@ class Container implements ContainerInterface
         return interface_exists($name) || class_exists($name);
     }
 
-    /**
-     * @param string $key
-     * @param mixed $value
-     */
     public function share(string $key, $value): void
     {
         $this->shared[$key] = $value;
@@ -235,10 +226,6 @@ class Container implements ContainerInterface
         return $this->bindings;
     }
 
-    /**
-     * @param mixed $concrete
-     * @return mixed
-     */
     public function resolve($concrete, string $method = '__construct')
     {
         return call_user_func_array([$concrete, $method], $this->getDependencies($concrete, $method));

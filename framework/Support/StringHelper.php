@@ -83,9 +83,9 @@ class StringHelper
     public static function sanitize($buffer): string
     {
         $search = [
-            '/\>[^\S ]+/s',     // strip whitespaces after tags, except space
-            '/[^\S ]+\</s',     // strip whitespaces before tags, except space
-            '/(\s)+/s',         // shorten multiple whitespace sequences
+            '/>[^\S ]+/',     // strip whitespaces after tags, except space
+            '/[^\S ]+</',     // strip whitespaces before tags, except space
+            '/(\s)+/',         // shorten multiple whitespace sequences
             '/<!--(.|\s)*?-->/' // Remove HTML comments
         ];
 
