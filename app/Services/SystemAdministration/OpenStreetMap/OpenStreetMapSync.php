@@ -24,7 +24,7 @@ class OpenStreetMapSync implements Command
         return 'osm:sync';
     }
 
-    public function handle(): void
+    public function handle(): int
     {
         OsmMarkers::truncate();
 
@@ -49,9 +49,9 @@ class OpenStreetMapSync implements Command
             ->withCount('groups', fn (GroupViews $query) => $query->active())
             ->get()
             ->each(function (City $city) {
-                $searches = $city->statistics['search_count'] ?? 0;
-                $openedGroups = $city->statistics['opened_groups_count'] ?? 0;
-                $contactGroups = $city?->statistics['contacted_groups_count'] ?? 0;
+                $searches = $city->statistics->search_count ?? 0;
+                $openedGroups = $city->statistics->opened_groups_count ?? 0;
+                $contactGroups = $city?->statistics->contacted_groups_count ?? 0;
                 $totalActivity = $searches + $openedGroups + $contactGroups;
                 if ($totalActivity < CityStatistics::INTERACTION_MIN_WEIGHT && !$city->groups_count) {
                     return;
@@ -76,6 +76,8 @@ class OpenStreetMapSync implements Command
                     HTML
                 ]);
             });
+
+        return self::SUCCESS;
     }
 
     private function getHtml(Institute $institute, $zip = null): string

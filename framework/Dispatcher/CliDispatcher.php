@@ -3,6 +3,7 @@
 namespace Framework\Dispatcher;
 
 use Exception;
+use Framework\Console\Command;
 use Framework\Console\ConsoleKernel;
 use Framework\Console\Exception\CommandNotFoundException;
 
@@ -18,7 +19,7 @@ class CliDispatcher implements Dispatcher
     /**
      * @throws CommandNotFoundException
      */
-    public function dispatch(): void
+    public function dispatch(): int
     {
         $args = $this->getArgs();
 
@@ -29,9 +30,10 @@ class CliDispatcher implements Dispatcher
         $command = $this->kernel->getCommand($signature);
 
         try {
-            $command->handle();
+            return $command->handle() ?? Command::SUCCESS;
         } catch (Exception $e) {
             $this->handleError($e);
+            return Command::FAILURE;
         }
     }
 
