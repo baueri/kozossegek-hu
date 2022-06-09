@@ -2,6 +2,7 @@
 
 namespace App\Services\SystemAdministration\SiteMap\Repositories;
 
+use App\Models\CityStat;
 use App\Repositories\CityStatistics;
 use App\Services\SystemAdministration\SiteMap\ChangeFreq;
 use App\Services\SystemAdministration\SiteMap\SiteMapUrl;
@@ -18,13 +19,13 @@ class PopularCities extends Repository
                 ->groupBy('city')
                 ->limit(15)
                 ->get()
-        )->map(fn ($row) => $this->createSiteMapUrl($row));
+        )->map(fn (CityStat $row) => $this->createSiteMapUrl($row));
     }
 
-    private function createSiteMapUrl($row): SiteMapUrl
+    private function createSiteMapUrl(CityStat $row): SiteMapUrl
     {
         return new SiteMapUrl(
-            route('portal.groups', ['varos' => $row['city']]),
+            route('portal.groups', ['varos' => $row->city]),
             '0.7',
             ChangeFreq::monthly
         );

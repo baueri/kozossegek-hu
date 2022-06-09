@@ -6,7 +6,9 @@ use App\Services\Statistics\EventLogAggregator;
 use App\Services\SystemAdministration\ClearUserSession;
 use App\Services\SystemAdministration\OpenStreetMap\OpenStreetMapSync;
 use App\Services\SystemAdministration\SiteMap\SiteMapGenerator as SiteMapGeneratorService;
+use Exception;
 use Framework\Console\Command;
+use Framework\Console\Out;
 
 class DailyCron implements Command
 {
@@ -17,9 +19,16 @@ class DailyCron implements Command
 
     public function handle(): void
     {
-        resolve(ClearUserSession::class)->run();
-        resolve(EventLogAggregator::class)->run();
-        resolve(SiteMapGeneratorService::class)->run();
-        resolve(OpenStreetMapSync::class)->run();
+        try {
+            resolve(ClearUserSession::class)->run();
+            resolve(EventLogAggregator::class)->run();
+            resolve(SiteMapGeneratorService::class)->run();
+            resolve(OpenStreetMapSync::class)->handle();
+
+            Out::success('OK');
+        } catch (Exception $e) {
+            report($e);
+            throw $e;
+        }
     }
 }
