@@ -374,17 +374,17 @@ function flash(): ?array
 
 function report($exception): void
 {
-    if (!_env('DEBUG') || ($exception instanceof \Throwable && $exception->getCode() == '404')) {
+    if (!_env('DEBUG') || ($exception instanceof Throwable && $exception->getCode() == '404')) {
         return;
     }
     $mailer = new Mailer();
     $mailer->to(config('app.error_email'));
 
-    if ($exception instanceof \Throwable) {
+    if ($exception instanceof Throwable) {
         $mail = new ThrowableCriticalErrorEmail($exception);
     } else {
         $mail = new Mailable();
-        $mail->setMessage($exception);
+        $mail->setMessage($exception)->subject(get_site_url() . ' - report');
     }
 
     $mailer->send($mail);
