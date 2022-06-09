@@ -12,7 +12,7 @@ use PHPMailer\PHPMailer\Exception;
 class SendGroupContactMessage
 {
     public function __construct(
-        private Mailer $mailer
+        private readonly Mailer $mailer
     ) {
     }
 
@@ -30,6 +30,26 @@ class SendGroupContactMessage
 
         log_event('group_contact', ['group_id' => $group->id]);
 
+        $this->reportRandomWords($data['message']);
+
         return $success;
+    }
+
+    /**
+     * Silently report some random words to ensure no spam messages are sent to group leraders
+     */
+    public function reportRandomWords(string $message): void
+    {
+        try {
+            $randomWords = collect(explode(' ', str_replace(['.', '?', ','], '', $message)))
+                ->filter(fn ($word) => mb_strlen($word) > 3  && $word[0] == mb_strtolower($word[0]))
+                ->shuffle()
+                ->take(10)
+                ->implode(', ');
+
+            report("contact message random words:\n {$randomWords}");
+        } catch (\Exception $e) {
+            report($e);
+        }
     }
 }
