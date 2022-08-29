@@ -2,6 +2,7 @@
 
 namespace App\QueryBuilders;
 
+use App\Models\ChurchGroup;
 use App\Models\Institute;
 use App\QueryBuilders\Relations\HasManyChurchGroupViews;
 use Framework\Model\EntityQueryBuilder;
@@ -22,5 +23,10 @@ class Institutes extends EntityQueryBuilder
     public function cityModel(): Relation
     {
         return $this->has(Has::one, Cities::class, 'name', 'city');
+    }
+
+    public function churchGroups(): Relation
+    {
+        return $this->has(Has::many, ChurchGroups::class);
     }
 }

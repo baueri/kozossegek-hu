@@ -19,6 +19,7 @@
 
             <!-- Közösségek API szolgáltatás -->
             <route method="all" uri="kozossegek" as="portal.kozossegek" controller="ApiGroupController" use="list"/>
+            <route method="all" uri="miserend/{id}" as="portal.miserend" controller="ApiGroupController" use="instituteByMiserendId"/>
 
             <route method="all" uri="accept-legal-notice" controller="LegalNoticeController" use="accept" as="accept_legal_notice"/>
         </route-group>

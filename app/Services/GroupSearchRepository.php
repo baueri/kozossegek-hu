@@ -4,15 +4,17 @@ namespace App\Services;
 
 use App\Models\User;
 use App\QueryBuilders\GroupViews;
+use Framework\Model\ModelCollection;
+use Framework\Model\PaginatedModelCollection;
 use Framework\Support\StringHelper;
 
 class GroupSearchRepository
 {
-    public function __construct(private GroupViews $repository)
+    public function __construct(private readonly GroupViews $repository)
     {
     }
 
-    public function search($filter = [], ?int $perPage = 30)
+    public function search($filter = [], ?int $perPage = 30): PaginatedModelCollection|ModelCollection
     {
         if (is_array($filter)) {
             $filter = collect($filter);
@@ -95,7 +97,7 @@ class GroupSearchRepository
         return $builder->paginate($perPage);
     }
 
-    public function getNotDeletedGroupsByUser(User $user)
+    public function getNotDeletedGroupsByUser(User $user): ModelCollection
     {
         return $this->repository->query()->forUser($user)->notDeleted()->get();
     }
