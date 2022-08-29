@@ -8,6 +8,7 @@ use Framework\Model\Entity;
 
 /**
  * @property-read null|string $name
+ * @property-read null|string $description
  * @property-read null|string $image_url
  * @property-read null|string $institute_image
  * @property-read null|string $institute_name
