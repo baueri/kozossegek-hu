@@ -54,7 +54,7 @@ class ApiGroupController extends Controller
 
     public function instituteByMiserendId(Request $request, Institutes $institutes, GroupViews $churchGroups)
     {
-        $institute = $institutes->find($request['id']);
+        $institute = $institutes->where('miserend_id', $request['id'])->first();
         $instituteData = [
             'miserend_id' => $institute->miserend_id,
             'name' => $institute->name
