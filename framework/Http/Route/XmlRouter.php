@@ -3,17 +3,12 @@
 namespace Framework\Http\Route;
 
 use Framework\Application;
-use Framework\Http\Request;
 use Framework\Misc\XmlObject;
 use Framework\Model\Entity;
 use Framework\Support\Collection;
 use Framework\Model\Model;
 use Framework\Http\Exception\RouteNotFoundException;
 
-/**
- * Class XmlRouter
- * @package Framework\Http\Route
- */
 class XmlRouter implements RouterInterface
 {
 
@@ -22,9 +17,6 @@ class XmlRouter implements RouterInterface
      */
     protected $routes;
 
-    /**
-     * @var array
-     */
     protected static array $globalArgs = [];
 
     public function __construct(private Application $application)
@@ -58,33 +50,18 @@ class XmlRouter implements RouterInterface
         }
     }
 
-    /**
-     * @param $elements
-     * @return RouteInterface
-     */
-    private function buildRoute($elements)
+    private function buildRoute($elements): RouteInterface
     {
         $builder = new XmlRouteBuilder($elements);
         return $builder->build();
     }
 
-    /**
-     * @param $uri
-     * @param array $options
-     * @return RouteInterface
-     */
-    public function get($uri, array $options)
+    public function get($uri, array $options): RouteInterface
     {
         return $this->add('get', $uri, $options);
     }
 
-    /**
-     * @param string $method
-     * @param string $uri
-     * @param array $options
-     * @return RouteInterface
-     */
-    public function add(string $method, string $uri, array $options)
+    public function add(string $method, string $uri, array $options): RouteInterface
     {
         /* @var $route RouteInterface */
         $route = app()->make(RouteInterface::class, array_merge([
@@ -96,19 +73,11 @@ class XmlRouter implements RouterInterface
         return $route;
     }
 
-    /**
-     * @param $uri
-     * @param array $options
-     * @return RouteInterface
-     */
-    public function post($uri, array $options)
+    public function post($uri, array $options): RouteInterface
     {
         return $this->add('post', $uri, $options);
     }
 
-    /**
-     * @return Collection
-     */
     public function getRoutes(): Collection
     {
         return $this->routes;
@@ -139,7 +108,7 @@ class XmlRouter implements RouterInterface
 
     /**
      * @param string $name
-     * @param array|string|Model|\Framework\Model\Entity $args
+     * @param array|string|Model|Entity $args
      * @return string
      * @throws RouteNotFoundException
      */

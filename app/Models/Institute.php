@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Traits\InstituteTrait;
 use Framework\Model\Entity;
 use Framework\Model\HasTimestamps;
+use Framework\Model\Relation\Has;
 use Framework\Support\StringHelper;
 
 /**

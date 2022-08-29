@@ -81,7 +81,7 @@ class UserController extends AdminController
     public function edit(Request $request, Users $repository): string
     {
         $user = $repository->findOrFail($request['id']);
-        $my_profile = $user->is(Auth::user());
+        $my_profile = Auth::is($user);
         $action = route('admin.user.update', $user);
         $groups = UserRole::getTranslated();
         $spiritual_movements = db()->select('select * from spiritual_movements order by name');
