@@ -13,6 +13,7 @@ use App\Services\GroupSearchRepository;
 use Exception;
 use Framework\Http\Controller;
 use Framework\Http\Request;
+use Framework\Http\Response;
 
 class ApiGroupController extends Controller
 {
@@ -55,6 +56,12 @@ class ApiGroupController extends Controller
     public function instituteByMiserendId(Request $request, Institutes $institutes, GroupViews $churchGroups)
     {
         $institute = $institutes->where('miserend_id', $request['id'])->first();
+
+        if (!$institute) {
+            Response::setStatusCode(404);
+            return ['message' => 'not found'];
+        }
+
         $instituteData = [
             'miserend_id' => $institute->miserend_id,
             'name' => $institute->name
