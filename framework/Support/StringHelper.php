@@ -48,22 +48,22 @@ class StringHelper
         return strtolower(preg_replace(['/([A-Z]+)([A-Z][a-z])/', '/([a-z\d])([A-Z])/'], '\1' . $delimiter . '\2', ucfirst($text)));
     }
 
-    public static function slugify($text): string
+    public static function slugify($text, $divider = '-')
     {
-        // replace non letter or digits by -
-        $text = preg_replace('~[^\pL\d]+~u', '-', $text);
+        // replace non letter or digits by divider
+        $text = preg_replace('~[^\pL\d]+~u', $divider, $text);
 
         // transliterate
-        $text = preg_replace("/&([a-z])[a-z]+;/i", "$1", htmlentities($text));
+        $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
 
         // remove unwanted characters
         $text = preg_replace('~[^-\w]+~', '', $text);
 
         // trim
-        $text = trim($text, '-');
+        $text = trim($text, $divider);
 
-        // remove duplicate -
-        $text = preg_replace('~-+~', '-', $text);
+        // remove duplicate divider
+        $text = preg_replace('~-+~', $divider, $text);
 
         // lowercase
         $text = strtolower($text);
