@@ -1,5 +1,13 @@
 @title('Verzióinformáció')
 @extends('admin')
+<h3>v2.2.1</h3>
+<ul>
+    <li>[NEW:] miserend API</li>
+    <li><b>Gépház</b></li>
+    <li>[CHANGED]: templom közösségeinek url-je megváltozott /templom/{varos}/{intezmeny}</li>
+    <li>[CHANGED]: OpenStreetMap-es folyamat db tranzakcióba foglalva, hogy ha valami hiba történik, vissza tudjon állni az eggyel korábbi állapotra</li>
+    <li>[FIX]: keresőbarát url generáló kód ékezetkezelése javítva lett (pl keresztel-szent-janos --> keresztelo-szent-janos)</li>
+</ul>
 <h3>v2.2.0 (2022.03.26)</h3>
 <ul>
     <li>[NEW]: Kulcsszavas statisztikák népszerűségre és városokra bontva</li>
