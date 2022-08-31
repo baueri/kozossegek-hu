@@ -14,6 +14,7 @@ use Exception;
 use Framework\Http\Controller;
 use Framework\Http\Request;
 use Framework\Http\Response;
+use Framework\Support\Arr;
 
 class ApiGroupController extends Controller
 {
@@ -64,10 +65,14 @@ class ApiGroupController extends Controller
 
         $instituteData = [
             'miserend_id' => $institute->miserend_id,
-            'name' => $institute->name
+            'name' => $institute->name,
+            'url' => $institute->groupsUrl(),
+            'city' => $institute->city,
+            'address' => $institute->address
         ];
 
         $data = $churchGroups->where('institute_id', $institute->getId())
+            ->active()
             ->with('tags')
             ->get()
             ->map(fn (ChurchGroupView $churchGroup) => [
