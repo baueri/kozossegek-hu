@@ -15,7 +15,7 @@
 
         <route method="all" uri="[A-Z][a-z]+" as="portal.groups.in_city" controller="GroupController" use="kozossegek"/>
         <route method="get" uri="kozossegek/page/{page}/" as="portal.groups.page" controller="GroupController" use="kozossegek"/>
-        <route method="get" uri="kozosseg/{varos}/{intezmeny}" as="portal.institute_groups" controller="GroupController" use="intezmenyKozossegek"/>
+        <route method="get" uri="templom/{varos}/{intezmeny}" as="portal.institute_groups" controller="GroupController" use="intezmenyKozossegek"/>
 
         <route method="get" uri="kozosseg/{varos}/{intezmeny}/{kozosseg}" as="kozosseg.old" controller="GroupController" use="kozosseg"/>
 
