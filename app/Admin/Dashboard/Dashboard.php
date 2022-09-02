@@ -3,16 +3,16 @@
 namespace App\Admin\Dashboard;
 
 use App\Admin\Settings\Services\ErrorLogParser;
-use App\Repositories\Groups;
+use App\QueryBuilders\ChurchGroups;
 use Carbon\Carbon;
 
 class Dashboard
 {
-    private Groups $groups;
+    private ChurchGroups $groups;
 
     private ErrorLogParser $errorLogParser;
 
-    public function __construct(Groups $groups, ErrorLogParser $errorLogParser)
+    public function __construct(ChurchGroups $groups, ErrorLogParser $errorLogParser)
     {
         $this->groups = $groups;
         $this->errorLogParser = $errorLogParser;
@@ -26,10 +26,11 @@ class Dashboard
 
         $groupsThisMonth = $this->groups->query()
             ->where('created_at', '>=', date('Y-m-01'))
-            ->apply('notDeleted')->count();
+            ->notDeleted()
+            ->count();
 
-        $groupsTotal = $this->groups->query()->apply('notDeleted')->count();
-        $pendingGroups = $this->groups->query()->where('pending', 1)->apply('notDeleted')->count();
+        $groupsTotal = $this->groups->query()->notDeleted()->count();
+        $pendingGroups = $this->groups->query()->where('pending', 1)->notDeleted()->count();
 
         $lastError = $this->errorLogParser->getLastError();
 

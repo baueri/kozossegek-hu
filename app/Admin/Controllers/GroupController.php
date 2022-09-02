@@ -15,7 +15,6 @@ use App\Mail\GroupAcceptedEmail;
 use App\Models\ChurchGroupView;
 use App\QueryBuilders\ChurchGroups;
 use App\QueryBuilders\GroupViews;
-use App\Repositories\Groups;
 use App\Services\RebuildSearchEngine;
 use Exception;
 use Framework\Exception\FileTypeNotAllowedException;
@@ -72,7 +71,7 @@ class GroupController extends AdminController
      * @throws FileTypeNotAllowedException
      * @throws ModelNotFoundException
      */
-    public function update(UpdateGroup $service, Groups $groups)
+    public function update(UpdateGroup $service, ChurchGroups $groups)
     {
         $group = $groups->findOrFail($this->request['id']);
         $service->update($group, $this->request);
