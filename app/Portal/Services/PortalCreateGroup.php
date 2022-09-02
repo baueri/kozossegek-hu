@@ -6,13 +6,13 @@ use App\Admin\Group\Services\CreateGroup;
 use App\Enums\Denomination;
 use App\Exception\EmailTakenException;
 use App\Mail\NewGroupEmail;
+use App\Models\ChurchGroup;
 use App\Models\User;
 use App\Repositories\UserTokens;
 use Framework\Exception\FileTypeNotAllowedException;
 use Framework\Mail\Mailer;
 use Framework\Support\Collection;
 use Framework\Traits\ManagesErrors;
-use Legacy\Group;
 use PHPMailer\PHPMailer\Exception;
 
 class PortalCreateGroup
@@ -37,7 +37,7 @@ class PortalCreateGroup
      * @throws EmailTakenException|FileTypeNotAllowedException
      * @throws \Exception
      */
-    public function createGroup(Collection $requestData, ?array $fileData, ?User $user): ?Group
+    public function createGroup(Collection $requestData, ?array $fileData, ?User $user): ?ChurchGroup
     {
         $data = $requestData->only(
             'status',

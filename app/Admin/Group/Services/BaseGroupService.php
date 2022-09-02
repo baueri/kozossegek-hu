@@ -4,36 +4,37 @@ namespace App\Admin\Group\Services;
 
 use App\Helpers\FileHelper;
 use App\Helpers\GroupHelper;
+use App\Models\ChurchGroup;
+use App\QueryBuilders\ChurchGroups;
 use App\QueryBuilders\GroupViews;
-use App\Repositories\Groups;
+use App\QueryBuilders\Institutes;
 use App\Services\RebuildSearchEngine;
 use App\Storage\Base64Image;
+use Exception;
 use Framework\Exception\FileTypeNotAllowedException;
 use Framework\File\Enums\FileType;
 use Framework\File\File;
 use Framework\File\FileManager;
 use Framework\Traits\ManagesErrors;
-use Legacy\Group;
-use Legacy\Institutes;
 
 abstract class BaseGroupService
 {
     use ManagesErrors;
 
     public function __construct(
-        protected Groups $repository,
-        private RebuildSearchEngine $searchEngineRebuilder,
-        private FileManager $fileManager,
+        protected ChurchGroups $repository,
+        private readonly RebuildSearchEngine $searchEngineBuilder,
+        private readonly FileManager         $fileManager,
         protected Institutes $institutes
     ) {
     }
 
-    protected function updateSearchEngine(Group $group)
+    protected function updateSearchEngine(ChurchGroup $group): void
     {
-        $this->searchEngineRebuilder->updateSearchEngine(GroupViews::query()->find($group->getId()));
+        $this->searchEngineBuilder->updateSearchEngine(GroupViews::query()->find($group->getId()));
     }
 
-    protected function syncTags(Group $group, array $tags = [])
+    protected function syncTags(ChurchGroup $group, array $tags = []): void
     {
         $delete = builder('group_tags')->where('group_id', $group->id);
 
@@ -49,9 +50,9 @@ abstract class BaseGroupService
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
-    protected function syncImages(Group $group, $images)
+    protected function syncImages(ChurchGroup $group, $images)
     {
         $images = array_filter($images);
 
@@ -68,7 +69,7 @@ abstract class BaseGroupService
     /**
      * @throws FileTypeNotAllowedException
      */
-    protected function uploadDocument(Group $group, ?array $document = null): ?File
+    protected function uploadDocument(ChurchGroup $group, ?array $document = null): ?File
     {
         if (!$document || (isset($document['error']) && $document['error'] > 0)) {
             return null;
