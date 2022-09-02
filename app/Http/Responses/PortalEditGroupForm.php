@@ -7,7 +7,7 @@ use App\Enums\GroupStatus;
 use App\Enums\OccasionFrequency;
 use App\Enums\WeekDay;
 use App\Models\ChurchGroupView;
-use Legacy\Institutes;
+use App\QueryBuilders\Institutes;
 
 class PortalEditGroupForm
 {

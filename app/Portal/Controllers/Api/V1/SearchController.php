@@ -8,10 +8,10 @@ use App\Portal\Responses\DistrictResponse;
 use App\Portal\Responses\InstituteSearchResponse;
 use App\Portal\Responses\UserResponse;
 use App\QueryBuilders\Cities;
+use App\QueryBuilders\Institutes;
 use App\QueryBuilders\Users;
 use App\Repositories\Districts;
 use Framework\Http\Request;
-use Legacy\Institutes;
 
 class SearchController
 {
@@ -31,7 +31,12 @@ class SearchController
         }
 
         $user = Auth::user();
-        $response = new InstituteSearchResponse($repository->search($this->request['term'], $this->request['city']));
+        $response = new InstituteSearchResponse(
+            $repository->when($this->request['city'], fn (Institutes $query, $city) => $query->where('city', $city))
+                ->search($this->request['term'])
+                ->orderBy('name', 'asc')
+                ->paginate(15)
+        );
         return $response->asAdmin($user && $user->isAdmin());
     }
 
