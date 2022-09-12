@@ -117,9 +117,4 @@ abstract class Model
         }
         return $changes;
     }
-
-    public function hasChanges(): bool
-    {
-        return !empty($this->getChanges());
-    }
 }
