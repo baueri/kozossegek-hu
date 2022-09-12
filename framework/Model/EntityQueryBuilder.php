@@ -111,6 +111,16 @@ abstract class EntityQueryBuilder
         return $this->wherePK($id)->first();
     }
 
+    /**
+     * @param $id
+     * @return Entity
+     * @phpstan-return T
+     */
+    public function findOrNew($id): Entity
+    {
+        return $this->find($id) ?? $this->getInstance();
+    }
+
     public function fetchFirst(?string $column = null)
     {
         return $this->builder->fetchFirst($column);
@@ -260,7 +270,7 @@ abstract class EntityQueryBuilder
     public function when($expression, Closure $callback): static
     {
         if ($expression) {
-            $callback($this);
+            $callback($this, $expression);
         }
 
         return $this;
@@ -295,7 +305,7 @@ abstract class EntityQueryBuilder
         if (!$values) {
             $values = $entity->getAttributes();
         } else {
-            $entity->update($values);
+            $entity->fill($values);
         }
         return $this->query()->where(static::primaryCol(), $entity->getId())->update($values);
     }

@@ -3,14 +3,14 @@
 namespace App\Services;
 
 use App\Models\User;
+use App\QueryBuilders\ChurchGroups;
 use App\QueryBuilders\Users;
-use App\Repositories\Groups;
 
 class DeleteUser
 {
     public function __construct(
-        private Groups $groups,
-        private Users $users
+        private readonly ChurchGroups $groups,
+        private readonly Users $users
     ) {
     }
 
@@ -19,7 +19,7 @@ class DeleteUser
         $user->name .= "#{$user->email}";
         $user->email = null;
 
-        $this->groups->deleteMultiple($this->groups->getGroupsByUser($user));
+        $this->groups->of($user)->softDelete();
 
         return $this->users->deleteModel($user);
     }

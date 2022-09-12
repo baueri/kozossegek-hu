@@ -5,12 +5,14 @@ namespace App\Admin\Controllers;
 use App\Admin\Institute\InstituteAdminTable;
 use App\Auth\Auth;
 use App\Helpers\InstituteHelper;
+use App\Models\Institute;
+use App\QueryBuilders\Institutes;
 use App\Services\InstituteImporter;
 use App\Storage\Base64Image;
+use Exception;
 use Framework\Http\Message;
 use Framework\Http\Request;
-use Legacy\Institute;
-use Legacy\Institutes;
+use Framework\Model\ModelNotFoundException;
 
 class InstituteController extends AdminController
 {
@@ -28,7 +30,6 @@ class InstituteController extends AdminController
 
     public function edit(Request $request, Institutes $repository): string
     {
-        /* @var $institute \Legacy\Institute */
         $institute = $repository->find($request['id']);
         $images = collect(builder('miserend_photos')->where('church_id', $institute->miserend_id)->get())
             ->map(fn($row) => InstituteHelper::getMiserendImagePath($institute, $row['filename']));
@@ -44,7 +45,10 @@ class InstituteController extends AdminController
         return view('admin.institute.edit', compact('institute', 'action', 'images'));
     }
 
-    public function update(Request $request, Institutes $repository)
+    /**
+     * @throws ModelNotFoundException
+     */
+    public function update(Request $request, Institutes $repository): void
     {
         $institute = $repository->findOrFail($request['id']);
 
@@ -54,26 +58,27 @@ class InstituteController extends AdminController
             $institute->image_url = InstituteHelper::getImageRelPath($institute->id);
         }
 
-        $institute->update($request->only(
-            'name',
-            'name2',
-            'city',
-            'district',
-            'address',
-            'leader_name',
-            'approved',
-            'image_url',
-            'website'
-        ));
-
-        $repository->save($institute);
+        $repository->save(
+            $institute,
+            $request->only([
+                'name',
+                'name2',
+                'city',
+                'district',
+                'address',
+                'leader_name',
+                'approved',
+                'image_url',
+                'website'
+            ])
+        );
 
         Message::success('Sikeres mentés');
 
         redirect_route('admin.institute.edit', $institute);
     }
 
-    public function create()
+    public function create(): string
     {
         $action = route('admin.institute.do_create');
         $institute = new Institute();
@@ -81,7 +86,7 @@ class InstituteController extends AdminController
         return view('admin.institute.create', compact('action', 'institute'));
     }
 
-    public function doCreate(Request $request, Institutes $repository)
+    public function doCreate(Request $request, Institutes $repository): never
     {
         $data = $request->only('name', 'city', 'district', 'address', 'leader_name');
         $data['user_id'] = Auth::user()->id ?? null;
@@ -100,21 +105,21 @@ class InstituteController extends AdminController
         redirect_route('admin.institute.edit', $institute);
     }
 
-    public function delete(Request $request, Institutes $repository)
+    public function delete(Request $request, Institutes $repository): never
     {
-        $repository->delete($repository->findOrFail($request['id']));
+        $repository->where('id', $request['id'])->softDelete();
 
         Message::warning('Intézmény törölve');
 
         redirect_route('admin.institute.list');
     }
 
-    public function import()
+    public function import(): string
     {
         return view('admin.institute.import');
     }
 
-    public function doImport(Request $request, InstituteImporter $service)
+    public function doImport(Request $request, InstituteImporter $service): never
     {
         try {
             $file = $request->files['import_file'];
@@ -122,10 +127,11 @@ class InstituteController extends AdminController
             [$imported, $skipped] = $service->run($file['tmp_name'], Auth::user());
 
             Message::success("Sikeres importálás. <b>$imported</b> intézmény importálva, <b>$skipped</b> kihagyva duplikáció miatt");
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
+            report($e);
             Message::danger('Sikertelen importálás');
         }
 
-        return redirect_route('admin.institute.import');
+        redirect_route('admin.institute.import');
     }
 }
