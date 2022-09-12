@@ -12,7 +12,7 @@ abstract class Entity
 {
     protected static string $primaryCol = 'id';
 
-    protected array $originalAttributes = [];
+    public readonly array $originalAttributes;
 
     public array $relations = [];
 
@@ -72,7 +72,7 @@ abstract class Entity
         $this->attributes[$name] = $value;
     }
 
-    public function update(array $values)
+    public function fill(array $values): void
     {
         $this->attributes = array_merge($this->attributes, $values);
     }
@@ -89,5 +89,18 @@ abstract class Entity
     public function only($only): array
     {
         return $this->getAttributes($only);
+    }
+
+    public function hasChanges(): bool
+    {
+        return !empty($this->getChanges());
+    }
+
+    public function getChanges(): array
+    {
+        $original = $this->originalAttributes;
+        $newValues = $this->attributes;
+
+        return array_diff($newValues, $original);
     }
 }

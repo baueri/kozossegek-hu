@@ -6,7 +6,6 @@ use App\Admin\Components\AdminTable\{AdminTable, Deletable, Editable};
 use App\Enums\UserRole;
 use App\Models\User;
 use App\QueryBuilders\Users;
-use App\Repositories\Groups;
 use Framework\Database\Builder;
 use Framework\Database\PaginatedResultSetInterface;
 use Framework\Http\Request;
@@ -26,12 +25,9 @@ class UserTable extends AdminTable implements Deletable, Editable
 
     private Users $repository;
 
-    private Groups $groups;
-
-    public function __construct(Users $repository, Groups $groups, Request $request)
+    public function __construct(Users $repository, Request $request)
     {
         $this->repository = $repository;
-        $this->groups = $groups;
         parent::__construct($request);
     }
 
