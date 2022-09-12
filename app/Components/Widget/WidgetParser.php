@@ -6,29 +6,11 @@ use App\Models\Widget;
 
 interface WidgetParser
 {
-    
-    /**
-     * @return string
-     */
-    public static function getType();
+    public static function getType(): string;
 
-    /**
-     * @return string
-     */
-    public static function getName();
+    public static function getName(): string;
 
-    /**
-     * @return string
-     */
-    public function getFormView();
+    public function getFormView(): string;
 
-    /**
-     * @return string
-     */
-    public function render(Widget $widget);
-    
-    /**
-     * @param type $data
-     */
-    public function prepareDataForSave(&$data);
+    public function render(Widget $widget): string;
 }
