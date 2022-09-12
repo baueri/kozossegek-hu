@@ -20,7 +20,7 @@ class StringHelper
     public static function more($text, int $numberOfWords, $moreText = ''): string
     {
         $text = strip_tags($text);
-        if (str_word_count($text, 0) > $numberOfWords) {
+        if (str_word_count($text) > $numberOfWords) {
             $words = str_word_count($text, 2);
             $pos = array_keys($words);
             $text = trim(substr($text, 0, $pos[$numberOfWords]), ' ') . $moreText;

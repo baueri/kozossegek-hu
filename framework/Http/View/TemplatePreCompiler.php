@@ -63,9 +63,7 @@ class TemplatePreCompiler
 
         $html = htmlspecialchars_decode($dom->saveHTML($dom->documentElement));
 
-        $html = preg_replace(["/<\\/?html(.|\\s)*?>/", "/<\\/?body(.|\\s)*?>/"], "", $html);
-
-        return $html;
+        return preg_replace(["/<\\/?html(.|\\s)*?>/", "/<\\/?body(.|\\s)*?>/"], "", $html);
     }
 
     private function next(DOMNode $domElement): ?DOMElement

@@ -6,17 +6,17 @@ use App\Models\Widget;
 
 class TextWidget implements WidgetParser
 {
-    public static function getType()
+    public static function getType(): string
     {
         return 'text';
     }
 
-    public static function getName()
+    public static function getName(): string
     {
         return 'Szövegdoboz';
     }
 
-    public function render(Widget $widget)
+    public function render(Widget $widget): string
     {
         return $widget->data;
     }
@@ -25,9 +25,4 @@ class TextWidget implements WidgetParser
     {
         return 'admin.widget.template.text';
     }
-
-    public function prepareDataForSave(&$data): string {
-        $data['data'] = $data['w_text'];
-    }
-
 }
