@@ -3,11 +3,13 @@
 namespace App\Portal\Services;
 
 use App\Admin\Group\Services\UpdateGroup;
-use Legacy\Group;
+use App\Models\ChurchGroup;
+use Framework\Http\Request;
+use Framework\Support\Collection;
 
 class PortalUpdateGroup extends UpdateGroup
 {
-    public function update(Group $group, $request, ?array $document = []): Group
+    public function update(ChurchGroup $group, Request|Collection|array $request, ?array $document = []): ChurchGroup
     {
         if ($group->isDeleted()) {
             raise_404();
@@ -16,7 +18,7 @@ class PortalUpdateGroup extends UpdateGroup
         parent::update($group, $request, $document);
 
         if ($group->isRejected() && $group->hasChanges()) {
-            $this->repository->update($group->setToPending());
+            $this->repository->update(['pending' => '1']);
         }
 
         return $group;

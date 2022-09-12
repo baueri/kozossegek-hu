@@ -1,11 +1,15 @@
 @title('Verzióinformáció')
 @extends('admin')
-<h3>v2.2.1</h3>
+<h3>v2.2.1 (2022.09.02)</h3>
 <ul>
-    <li>[NEW:] miserend API</li>
+    <li>[NEW:] miserend.hu API</li>
+    <li>[NEW:] Közösség adatlapján hivatkozás az intézmény/templom közösségeinek listájára</li>
+    <li>[NEW:] Adott intézmény/templom közösségeinek lista oldalán az intézmény nevének, címének és miserend.hu-s linkjének megjelenítése</li>
     <li><b>Gépház</b></li>
     <li>[CHANGED]: templom közösségeinek url-je megváltozott /templom/{varos}/{intezmeny}</li>
     <li>[CHANGED]: OpenStreetMap-es folyamat db tranzakcióba foglalva, hogy ha valami hiba történik, vissza tudjon állni az eggyel korábbi állapotra</li>
+    <li>[CHANGED]: Legacy institute repo kivezetése</li>
+    <li>[CHANGED]: Legacy group model és repo kivezetése</li>
     <li>[FIX]: keresőbarát url generáló kód ékezetkezelése javítva lett (pl keresztel-szent-janos --> keresztelo-szent-janos)</li>
 </ul>
 <h3>v2.2.0 (2022.03.26)</h3>

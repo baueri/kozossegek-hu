@@ -3,9 +3,9 @@
 namespace App\Admin\Group\Services;
 
 use App\Helpers\GroupHelper;
+use App\Models\ChurchGroup;
 use Framework\Exception\FileTypeNotAllowedException;
 use Framework\Support\Collection;
-use Legacy\Group;
 
 class CreateGroup extends BaseGroupService
 {
@@ -13,7 +13,7 @@ class CreateGroup extends BaseGroupService
      * @throws FileTypeNotAllowedException
      * @throws \Exception
      */
-    public function create(Collection $groupData, ?array $document = null): ?Group
+    public function create(Collection $groupData, ?array $document = null): ?ChurchGroup
     {
         $data = $groupData->filter()->except('files', 'image', 'tags', 'institute')->all();
         $data['age_group'] = implode(',', $data['age_group'] ?? []);
@@ -39,7 +39,6 @@ class CreateGroup extends BaseGroupService
             return null;
         }
 
-        /* @var $group Group */
         $group = $this->repository->create($data);
 
         $this->syncTags($group, (array) $groupData['tags']);

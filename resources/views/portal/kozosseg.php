@@ -40,7 +40,6 @@
                         </a>
                     @endif
                 </h1>
-<!--                <h2 class="subtitle h5">{{  $group->city . ($group->district ? ', ' . $group->district : '')  }}</h2>-->
                 <div class="group-tags float-left">
                     @foreach($group->tags as $tag)
                     <a href="@route('portal.groups', ['tags' => $tag['tag']])" class="tag align-bottom">
@@ -53,7 +52,7 @@
             <p class="kozi-tulajdonsag">
                 @if($institute)
                     <strong>Helyszín</strong><br/>
-                    {{ $institute->name }} ({{ $institute->city }})<br/>
+                    <a href="{{ $institute->groupsUrl() }}" title="{{ $institute->name }} közösségei">{{ $institute->name }} ({{ $institute->city }})</a><br/>
                     @if($institute->name2)
                         <span style="font-size: 13px">({{ $institute->name2 }})</span>
                     @endif

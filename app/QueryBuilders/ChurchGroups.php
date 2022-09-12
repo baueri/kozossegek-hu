@@ -4,6 +4,7 @@ namespace App\QueryBuilders;
 
 use App\Models\ChurchGroup;
 use App\Models\ChurchGroupView;
+use App\Models\User;
 use Framework\Model\EntityQueryBuilder;
 use Framework\Model\Relation\Has;
 use Framework\Model\Relation\Relation;
@@ -60,5 +61,10 @@ class ChurchGroups extends EntityQueryBuilder
         }
 
         return $this;
+    }
+
+    public function of(User $user): static
+    {
+        return $this->where('user_id', $user->getId());
     }
 }

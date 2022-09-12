@@ -93,11 +93,6 @@ class Group extends Model
     public $document;
 
     /**
-     * @var Institute|null
-     */
-    public $institute;
-
-    /**
      * Csatlakozás módja
      *
      * @var string
@@ -113,29 +108,4 @@ class Group extends Model
      * @var string
      */
     public $image_url;
-
-    public function getImages()
-    {
-        $dir = $this->getStorageImageDir();
-
-        $images = collect(glob("$dir*.jpg"))->map(function ($image) {
-            return "/media/groups/images/" . basename($image);
-        });
-
-        if ($images->isNotEmpty()) {
-            return $images->all();
-        }
-
-        if (file_exists(InstituteHelper::getImageStoragePath($this->institute_id))) {
-            return [InstituteHelper::getImageRelPath($this->institute_id)];
-        }
-
-        return ["/images/default_thumbnail.jpg"];
-    }
-
-    public function setToPending(): self
-    {
-        $this->pending = 1;
-        return $this;
-    }
 }
