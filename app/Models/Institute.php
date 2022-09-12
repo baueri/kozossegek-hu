@@ -6,6 +6,7 @@ use App\Models\Traits\InstituteTrait;
 use Framework\Model\Entity;
 use Framework\Model\HasTimestamps;
 use Framework\Model\Relation\Has;
+use Framework\Model\SoftDeletes;
 use Framework\Support\StringHelper;
 
 /**
@@ -30,15 +31,4 @@ class Institute extends Entity
 {
     use InstituteTrait;
     use HasTimestamps;
-
-    public function groupsUrl(?string $ref = null): string
-    {
-        $data = ['varos' => StringHelper::slugify($this->city), 'intezmeny' => StringHelper::slugify($this->name), 'ref' => $ref];
-        return route('portal.institute_groups', array_filter($data));
-    }
-
-    public function latlon(): string
-    {
-        return "{$this->lat},{$this->lon}";
-    }
 }

@@ -7,7 +7,7 @@
                 </label>
             @endforeach
         </div>
-        <label class="float-right text-danger" for="close"><i class="fa fa-times"></i><input type="radio" name="debug-tab" id="close" style="display: none"></label>
+        <label class="float-right mr-4 text-danger" for="close"><i class="fa fa-times"></i><input type="radio" name="debug-tab" id="close" style="display: none"></label>
     </div>
     <div id="debugbar-content">
         @foreach($tab_contents as $id => $tab_content)

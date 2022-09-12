@@ -56,6 +56,7 @@
 
 @extends('portal')
     <div class="container inner">
+        @yield('templom_title')
         @if($total)
             @include('portal.partials.kozossegek-view2')
             @include('partials.simple-pager', ['route' => 'portal.groups.page','total' => $total,'page' => $page,'perpage' => $perpage,'routeparams' => $filter])

@@ -7,6 +7,7 @@ use Framework\Model\Entity;
 
 /**
  * @property int $institute_id
+ * @property $document
  */
 class ChurchGroup extends Entity
 {
