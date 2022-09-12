@@ -14,11 +14,6 @@ use Framework\Console\Command;
 
 class OpenStreetMapSync implements Command
 {
-    public function __construct(
-        private readonly OpenStreetMapQuery $openStreetMapQuery
-    ) {
-    }
-
     public static function signature(): string
     {
         return 'osm:sync';
@@ -81,12 +76,12 @@ class OpenStreetMapSync implements Command
         return self::SUCCESS;
     }
 
-    private function getHtml(Institute $institute, $zip = null): string
+    private function getHtml(Institute $institute): string
     {
         return <<<HTML
         <b>$institute->name</b>
         <br/>
-        $zip $institute->city, $institute->address<br/>
+        $institute->city, $institute->address<br/>
         <p>Regisztrált Közösségek száma: <b>$institute->groups_count</b></p>
         <a href="{$institute->groupsUrl('terkep')}">Megnézem</a>
         HTML;

@@ -49,9 +49,4 @@ final class CityStatistics extends EntityQueryBuilder
             'yesterday' => $this->whereRaw('date = DATE(DATE_SUB(NOW(), INTERVAL 1 DAY))')
         };
     }
-
-    public function havingActivity(int $moreThanOrEquals): self
-    {
-        return $this->having('search_count + opened_groups_count + contacted_groups_count >= ?', $moreThanOrEquals);
-    }
 }

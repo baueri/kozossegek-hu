@@ -239,7 +239,7 @@ function mb_ucfirst($string, $encoding = 'utf-8'): string
     return mb_strtoupper($firstChar, $encoding) . $then;
 }
 
-function raise_error_page(int $code, string $message, string $message2)
+function raise_error_page(int $code, string $message, string $message2): never
 {
     echo view('portal.error', compact('code', 'message', 'message2'));
     exit();
@@ -374,7 +374,7 @@ function flash(): ?array
 
 function report($exception): void
 {
-    if (!_env('DEBUG') || ($exception instanceof Throwable && $exception->getCode() == '404')) {
+    if ($exception instanceof Throwable && $exception->getCode() == '404') {
         return;
     }
     $mailer = new Mailer();

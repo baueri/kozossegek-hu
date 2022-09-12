@@ -26,7 +26,7 @@ class Enum
      */
     public static function get(): Collection
     {
-        return collect(self::asArray())->map(fn ($value, $key) => new static($value, $key), true);
+        return collect(self::asArray())->map(fn ($value, $key) => new static($value, $key));
     }
 
     final public static function asArray(): array
