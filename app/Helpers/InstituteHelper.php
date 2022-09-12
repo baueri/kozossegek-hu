@@ -2,24 +2,23 @@
 
 namespace App\Helpers;
 
-use Legacy\Institute;
+use App\Models\Institute;
 
 class InstituteHelper
 {
-
     public const INSTITUTE_DIR = 'institutes/images/';
 
-    public static function getImageRelPath($instituteId)
+    public static function getImageRelPath($instituteId): string
     {
         return "/media/institutes/images/inst_$instituteId.jpg";
     }
 
-    public static function getImageStoragePath($instituteId)
+    public static function getImageStoragePath($instituteId): string
     {
         return _env('STORAGE_PATH') . self::INSTITUTE_DIR . "/inst_$instituteId.jpg";
     }
 
-    public static function getMiserendImagePath(Institute $institute, string $filename)
+    public static function getMiserendImagePath(Institute $institute, string $filename): string
     {
         return "https://miserend.hu/kepek/templomok/{$institute->miserend_id}/{$filename}";
     }
