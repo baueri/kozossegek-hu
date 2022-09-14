@@ -11,7 +11,7 @@ class Pages extends EntityQueryBuilder
 {
     use SoftDeletes;
 
-    protected static function getModelClass(): string
+    public static function getModelClass(): string
     {
         return Page::class;
     }

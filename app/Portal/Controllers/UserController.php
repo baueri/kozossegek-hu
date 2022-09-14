@@ -4,7 +4,7 @@ namespace App\Portal\Controllers;
 
 use App\Mail\ResetPasswordEmail;
 use App\QueryBuilders\Users;
-use App\Repositories\UserTokens;
+use App\QueryBuilders\UserTokens;
 use Framework\Http\Request;
 use App\Auth\Auth;
 use App\Services\UpdateUser;

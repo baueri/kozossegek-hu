@@ -10,7 +10,7 @@ use Framework\Model\Relation\Relation;
 
 class Cities extends EntityQueryBuilder
 {
-    protected static function getModelClass(): string
+    public static function getModelClass(): string
     {
         return City::class;
     }

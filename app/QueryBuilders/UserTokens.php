@@ -1,36 +1,41 @@
 <?php
 
-namespace App\Repositories;
+declare(strict_types=1);
+
+namespace App\QueryBuilders;
 
 use App\Models\User;
-use App\Models\UserToken;
 use DateTime;
-use Framework\Repository;
+use Exception;
+use Framework\Model\EntityQueryBuilder;
+use App\Models\UserToken;
 
 /**
- * @phpstan-extends \Framework\Repository<\App\Models\UserToken>
+ * @phpstan-extends EntityQueryBuilder<\App\Models\UserToken>
  */
-class UserTokens extends Repository
+class UserTokens extends EntityQueryBuilder
 {
+    public const TABLE = 'user_token';
+
     public function getByToken(string $token)
     {
-        return $this->getInstance($this->getBuilder()->where('token', $token)->first());
+        return $this->query()->where('token', $token)->first();
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function createUserToken(User $user, string $page): UserToken
     {
         $instance = $this->make($user, $page);
 
-        $this->save($instance);
+        $this->create($instance);
 
         return $instance;
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function createActivationToken(User $user): UserToken
     {
@@ -38,7 +43,7 @@ class UserTokens extends Repository
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function make(User $user, string $page): UserToken
     {
@@ -48,15 +53,5 @@ class UserTokens extends Repository
             'page' => $page,
             'expires_at' => (new DateTime())->modify('+1 day')->format('Y-m-d H:i:s')
         ]);
-    }
-
-    public static function getModelClass(): string
-    {
-        return UserToken::class;
-    }
-
-    public static function getTable(): string
-    {
-        return 'user_token';
     }
 }

@@ -14,7 +14,7 @@ class GroupViews extends ChurchGroups
 {
     public const TABLE = 'v_groups';
 
-    protected static function getModelClass(): string
+    public static function getModelClass(): string
     {
         return ChurchGroupView::class;
     }
