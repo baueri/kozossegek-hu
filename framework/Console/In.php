@@ -19,7 +19,6 @@ class In
             $input = fgets(STDIN);
             if ($mandatory && !trim($input)) {
                 $input = null;
-                continue;
             }
         }
 

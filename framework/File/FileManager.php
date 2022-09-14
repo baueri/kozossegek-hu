@@ -172,7 +172,7 @@ class FileManager
     /**
      * @return File[]
      */
-    public function getFiles($subDir = '')
+    public function getFiles($subDir = ''): array
     {
         $files = glob(rtrim($this->rootPath . $subDir, '/') . DS . '*');
         usort($files, function ($a, $b) {

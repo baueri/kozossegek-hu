@@ -33,8 +33,8 @@ const APP_CFG_LEGAL_NOTICE_DATE = 'app.legal_notice_date';
 
 DotEnv::load(ROOT . '.env.php');
 
+ini_set("log_errors", 1);
 if (!_env('DEBUG')) {
-    ini_set("log_errors", 1);
     ini_set("error_log", ROOT . "error.log");
 } else {
     ini_set('display_errors', 1);
