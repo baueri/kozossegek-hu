@@ -15,7 +15,7 @@ final class CityStatistics extends EntityQueryBuilder
 
     public const TABLE = 'stat_city';
 
-    protected static function getModelClass(): string
+    public static function getModelClass(): string
     {
         return CityStat::class;
     }

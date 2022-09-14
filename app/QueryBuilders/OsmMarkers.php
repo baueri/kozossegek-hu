@@ -7,7 +7,7 @@ use Framework\Model\EntityQueryBuilder;
 
 class OsmMarkers extends EntityQueryBuilder
 {
-    protected static function getModelClass(): string
+    public static function getModelClass(): string
     {
         return OsmMarker::class;
     }

@@ -8,7 +8,7 @@ use App\Enums\UserRole;
 use App\Mail\RegistrationEmail;
 use App\Models\User;
 use App\QueryBuilders\Users;
-use App\Repositories\UserTokens;
+use App\QueryBuilders\UserTokens;
 use App\Services\DeleteUser;
 use Exception;
 use Framework\Exception\DuplicateEntryException;
@@ -40,27 +40,21 @@ class UserController extends AdminController
     {
         $data = $request->only('username', 'name', 'email', 'user_group');
         try {
-            $existingUser = $repository->query()
-                ->where('email', $data['email'])
+            $existingUser = $repository->query()->where('email', $data['email'])
                 ->orWhere('username', $data['username'])
                 ->first();
 
             if ($existingUser) {
-                if ($existingUser->email === $data['email']) {
-                    $msg = 'Ez az email cím már foglalt';
-                } else {
-                    $msg = 'Ez a felhasználónév már foglalt';
-                }
-                throw new DuplicateEntryException($msg);
+                throw new DuplicateEntryException($existingUser->email === $data['email'] ? 'Ez az email cím már foglalt' : 'Ez a felhasználónév már foglalt');
             }
 
             $data['password'] = Password::hash(time());
             $user = $repository->create($data);
+
             $passwordReset = $passwordResetRepository->createActivationToken($user);
 
             $mailable = new RegistrationEmail($user, $passwordReset);
             (new Mailer($user->email))->send($mailable);
-
             Message::success('Sikeres létrehozás');
             redirect_route('admin.user.edit', $user);
         } catch (DuplicateEntryException $e) {
@@ -164,7 +158,7 @@ class UserController extends AdminController
     }
 
     /**
-     * @throws \Framework\Model\ModelNotFoundException
+     * @throws ModelNotFoundException
      */
     public function delete(Request $request, Users $repository, DeleteUser $service): void
     {

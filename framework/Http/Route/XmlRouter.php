@@ -2,6 +2,7 @@
 
 namespace Framework\Http\Route;
 
+use Exception;
 use Framework\Application;
 use Framework\Misc\XmlObject;
 use Framework\Model\Entity;
@@ -13,18 +14,25 @@ class XmlRouter implements RouterInterface
 {
 
     /**
-     * @var Collection|Route[]
+     * @var Collection<Route>
+     * @phpstan-var Route[]|Collection
      */
-    protected $routes;
+    protected Collection $routes;
 
     protected static array $globalArgs = [];
 
-    public function __construct(private Application $application)
+    /**
+     * @throws Exception
+     */
+    public function __construct(private readonly Application $application)
     {
         $this->load();
     }
 
-    private function load()
+    /**
+     * @throws Exception
+     */
+    private function load(): void
     {
         $this->routes = new Collection();
 
@@ -109,10 +117,11 @@ class XmlRouter implements RouterInterface
     /**
      * @param string $name
      * @param array|string|Model|Entity $args
+     * @param bool $withHost
      * @return string
      * @throws RouteNotFoundException
      */
-    public function route(string $name, mixed $args = null): string
+    public function route(string $name, mixed $args = null, bool $withHost = true): string
     {
         if ($args instanceof Model || $args instanceof Entity) {
             $args = ['id' => $args->getId()];
@@ -124,7 +133,7 @@ class XmlRouter implements RouterInterface
 
         foreach ($this->routes as $route) {
             if ($route->getAs() == $name) {
-                return get_site_url() . '/' . ltrim($route->getWithArgs($args, static::$globalArgs), '/');
+                return ($withHost ? get_site_url() : '') . '/' . ltrim($route->getWithArgs($args, static::$globalArgs), '/');
             }
         }
 
