@@ -7,6 +7,7 @@ use ArrayAccess;
 use ArrayIterator;
 use Countable;
 use Framework\Http\Route\RouteInterface;
+use Framework\Support\Arr;
 use Framework\Support\Collection;
 use IteratorAggregate;
 use Traversable;
@@ -132,5 +133,10 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
                 throw new RequestParameterException('Missing request value');
             }
         }
+    }
+
+    public function isAjax(): bool
+    {
+        return Arr::get($_SERVER, 'HTTP_X_REQUESTED_WITH') && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'xmlhttprequest';
     }
 }
