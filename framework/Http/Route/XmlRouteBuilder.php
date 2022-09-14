@@ -38,7 +38,7 @@ class XmlRouteBuilder
     public function getUriMask(): string
     {
         $prefixes = $this->getPrefix();
-        array_push($prefixes, $this->element['uri']);
+        $prefixes[] = $this->element['uri'];
         return implode('/', $prefixes);
     }
 

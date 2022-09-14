@@ -23,7 +23,7 @@ class XmlObject extends SimpleXMLElement
 
         $node = $this->getParentNode();
 
-        array_push($parents, $node);
+        $parents[] = $node;
 
         while ($node = $node->getParentNode()) {
             array_unshift($parents, $node);
