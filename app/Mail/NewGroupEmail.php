@@ -22,12 +22,12 @@ class NewGroupEmail extends Mailable
         $this->with(['user_name' => $user->name]);
     }
 
-    private function withToken(UserToken $token)
+    private function withToken(UserToken $token): void
     {
-        return $this->with(['token_url' => $token->getUrl()]);
+        $this->with(['token_url' => $token->getUrl()]);
     }
 
-    public function withNewUserMessage(UserToken $token)
+    public function withNewUserMessage(UserToken $token): self
     {
         $this->withToken($token);
         return $this->view('email_templates:created_group_email.created_group_with_new_user');
