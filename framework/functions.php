@@ -245,17 +245,17 @@ function raise_error_page(int $code, string $message, string $message2): never
     exit();
 }
 
-function raise_500(string $message = '', string $message2 = 'Nincs jogosultsága az oldal megtekintéséhez')
+function raise_500(string $message = '', string $message2 = 'Nincs jogosultsága az oldal megtekintéséhez'): never
 {
     raise_error_page(500, $message, $message2);
 }
 
-function raise_404($message = 'A keresett oldal nem található', $message2 = '<i class="text-muted">De azért ne adjátok fel.<br/> Keressetek, és előbb, vagy utóbb találtok ;-)</i>')
+function raise_404($message = 'A keresett oldal nem található', $message2 = '<i class="text-muted">De azért ne adjátok fel.<br/> Keressetek, és előbb, vagy utóbb találtok ;-)</i>'): never
 {
     raise_error_page(404, $message, $message2);
 }
 
-function raise_403($message = '', $message2 = 'Nincs jogosultsága a tartalom megtekintéséhez!')
+function raise_403($message = '', $message2 = 'Nincs jogosultsága a tartalom megtekintéséhez!'): never
 {
     raise_error_page(403, $message, $message2);
 }
@@ -427,4 +427,14 @@ function query_history_bound(): array
     return query_history()->map(function ($query) {
         return DatabaseHelper::getQueryWithBindings($query[0], $query[1]);
     })->all();
+}
+
+function namespace_split(string $class): array
+{
+    $classPos = strrpos($class, '\\');
+    if ($classPos === false) {
+        return ['', $class];
+    }
+
+    return [substr($class, 0, $classPos), substr($class, $classPos + 1)];
 }

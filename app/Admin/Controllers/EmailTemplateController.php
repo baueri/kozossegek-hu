@@ -9,7 +9,7 @@ use App\Mail\RegistrationEmail;
 use App\Mail\ResetPasswordEmail;
 use App\Models\ChurchGroupView;
 use App\Models\User;
-use App\Repositories\UserTokens;
+use App\QueryBuilders\UserTokens;
 use Framework\Http\Request;
 use Framework\Http\Response;
 use Framework\Http\View\View;

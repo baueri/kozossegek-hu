@@ -8,8 +8,10 @@ use Framework\Database\Repository\Events\ModelCreated;
 use Framework\Database\Repository\Events\ModelDeleted;
 use Framework\Event\EventDisptatcher;
 use Framework\Model\Relation\HasRelations;
+use Framework\Support\Arr;
 use Framework\Support\Collection;
 use Framework\Support\StringHelper;
+use RuntimeException;
 
 /**
  * @phpstan-template T of \Framework\Model\Entity
@@ -43,7 +45,20 @@ abstract class EntityQueryBuilder
     /**
      * @phpstan-return class-string<T>
      */
-    abstract protected static function getModelClass(): string;
+    public static function getModelClass(): string
+    {
+        $singular = substr(static::class, 0, strlen(static::class) -1);
+
+        [, $className] = namespace_split($singular);
+
+        $modelClassName = "App\\Models\\{$className}";
+
+        if (!class_exists($modelClassName)) {
+            throw new RuntimeException("Could not instantiate {$modelClassName} from entity " . static::class);
+        }
+
+        return $modelClassName;
+    }
 
     public static function query(): static
     {
@@ -370,20 +385,33 @@ abstract class EntityQueryBuilder
         return $this;
     }
 
-    public function create(array $values)
+    public static function truncate(): void
     {
-        $values['id'] = $this->insert($values);
+        static::query()->builder->truncate();
+    }
 
-        $model = $this->getInstance($values);
+    /**
+     * @param array|Entity $values
+     * @phpstan-param T|array $values
+     * @return Entity|null
+     * @phpstan-return T
+     */
+    public function create(array|Entity $values)
+    {
+        $model = $values instanceof Entity ? $values : null;
+        $toSave = $model ? $model->getAttributes() : $values;
+
+        $insertId = $this->insert($toSave);
+
+        if (isset($model)) {
+            $model->{self::primaryCol()} = $insertId;
+        } else {
+            $model = $this->getInstance($toSave + [static::primaryCol() => $insertId]);
+        }
 
         EventDisptatcher::dispatch(new ModelCreated($model));
 
         return $model;
-    }
-
-    public static function truncate()
-    {
-        static::query()->builder->truncate();
     }
 
     public function getTable(): string

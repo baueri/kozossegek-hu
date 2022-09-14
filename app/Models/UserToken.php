@@ -1,25 +1,21 @@
 <?php
 
+declare(strict_types=1);
 
 namespace App\Models;
 
+use Framework\Model\Entity;
 
-use Framework\Model\Model;
-
-class UserToken extends Model
+/**
+ * @property $token
+ * @property $email
+ * @property $page
+ * @property $expires_at
+ */
+class UserToken extends Entity
 {
-    public $id;
-
-    public $token;
-
-    public $email;
-
-    public $page;
-
-    public $expires_at;
-
-    public function getUrl()
+    public function getUrl(): string
     {
-        return config('app.site_url') . "{$this->page}?token={$this->token}";
+        return "{$this->page}?token={$this->token}";
     }
 }
