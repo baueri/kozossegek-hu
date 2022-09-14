@@ -33,7 +33,7 @@ class UserRole extends Enum
      */
     public static function getTranslated(): array
     {
-        return UserRole::get()->map(fn (UserRole $group) => $group->text(), true)->all();
+        return UserRole::get()->map(fn (UserRole $group) => $group->text())->all();
     }
 
     public static function can(string $role, $right): bool

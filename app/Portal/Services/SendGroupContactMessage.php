@@ -42,7 +42,7 @@ class SendGroupContactMessage
     {
         try {
             $randomWords = collect(explode(' ', str_replace(['.', '?', ','], '', $message)))
-                ->filter(fn ($word) => mb_strlen($word) > 3  && $word[0] == mb_strtolower($word[0]))
+                ->filter(fn ($word) => mb_strlen($word) > 3  && $word[0] == mb_strtolower($word[0])) // ignore short and upper case words, e.g. names
                 ->shuffle()
                 ->take(10)
                 ->implode(', ');
