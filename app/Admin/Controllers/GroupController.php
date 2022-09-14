@@ -103,7 +103,7 @@ class GroupController extends AdminController
         redirect_route('admin.group.list');
     }
 
-    public function restore(Groups $groups)
+    public function restore(ChurchGroups $groups)
     {
         $group = $groups->find($this->request['id']);
         $group->deleted_at = null;
@@ -171,7 +171,7 @@ class GroupController extends AdminController
      * @throws ModelNotFoundException
      * @throws \PHPMailer\PHPMailer\Exception
      */
-    public function approveGroup(Groups $groupRepo, Mailer $mailer): array
+    public function approveGroup(ChurchGroups $groupRepo, Mailer $mailer): array
     {
         $groupView = $this->groupViews->findOrFail($this->request['id']);
         $groupRepo->query()->where('id', $groupView->id)->update(['pending' => 0]);

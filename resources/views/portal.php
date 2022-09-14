@@ -139,5 +139,6 @@
         </div>
         <div class="modal-backdrop fade show stacked" style="z-index: 1039;"></div>
     </noscript>
+    {{ debugbar()->render() }}
 </body>
 </html>

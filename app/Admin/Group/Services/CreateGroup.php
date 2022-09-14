@@ -32,7 +32,7 @@ class CreateGroup extends BaseGroupService
             $institute['user_id'] = $data['user_id'];
             $instituteId = $this->institutes->create($institute)->id;
             $data['institute_id'] = $instituteId;
-        };
+        }
 
         if (!$instituteId) {
             $this->pushError('Nincs intézmény megadva');

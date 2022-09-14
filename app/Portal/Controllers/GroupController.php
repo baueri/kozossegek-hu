@@ -135,7 +135,7 @@ class GroupController extends PortalController
     {
         try {
             $group = $repo->findOrFail($request['id']);
-            $service->send($group, $request->map('strip_tags', true)->all());
+            $service->send($group, $request->map('strip_tags')->all());
             $msg = '<div class="alert alert-success text-center">Köszönjük! Üzenetedet elküldtük a közösségvezető(k)nek!</div>';
             return [
                 'success' => true,

@@ -51,7 +51,7 @@ class Dashboard
         return $this->getHtml();
     }
 
-    private function getGroupStats(?string $from = null, ?string $to = null): array
+    private function getGroupStats(?string $from = null): array
     {
         $query = builder('event_logs')
             ->select(
@@ -62,10 +62,6 @@ class Dashboard
 
         if ($from) {
             $query->where('created_at', '>=', $from);
-        }
-
-        if ($to) {
-            $query->where('created_at', '<=', $to);
         }
 
         return $query->first();

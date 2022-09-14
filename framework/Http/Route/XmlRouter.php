@@ -118,13 +118,13 @@ class XmlRouter implements RouterInterface
             $args = ['id' => $args->getId()];
         }
 
-        if (is_array($args)) {
-            $args = array_merge(static::$globalArgs, $args);
-        }
+//        if (is_array($args)) {
+//            $args = array_merge(static::$globalArgs, $args);
+//        }
 
         foreach ($this->routes as $route) {
             if ($route->getAs() == $name) {
-                return get_site_url() . '/' . ltrim($route->getWithArgs($args), '/');
+                return get_site_url() . '/' . ltrim($route->getWithArgs($args, static::$globalArgs), '/');
             }
         }
 
