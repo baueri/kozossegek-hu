@@ -7,6 +7,7 @@ use App\Auth\Auth;
 use App\Enums\UserRole;
 use App\Mail\RegistrationEmail;
 use App\Models\User;
+use App\QueryBuilders\GroupViews;
 use App\QueryBuilders\Users;
 use App\QueryBuilders\UserTokens;
 use App\Services\DeleteUser;
@@ -84,6 +85,19 @@ class UserController extends AdminController
 
         $model = compact('user', 'my_profile', 'action', 'groups', 'spiritual_movements', 'user_movement');
         return view('admin.user.edit', $model);
+    }
+
+    public function managedGroups(Request $request, Users $repository, GroupViews $groupViews)
+    {
+        $user = $repository->findOrFail($request['id']);
+        $managedGroups = $groupViews
+            ->select($groupViews->getTable() . '.*')
+            ->leftJoin('managed_church_groups m', $groupViews->getTable() . '.id = m.group_id')
+            ->where('m.user_id', $user->getId())
+            ->orderBy('name')
+            ->get();
+
+        return view('admin.user.managed_groups', compact('user', 'managedGroups'));
     }
 
     /**

@@ -55,4 +55,9 @@ final class Auth
     {
         return self::user()->getId() === $user->getId();
     }
+
+    public static function id()
+    {
+        return self::user()?->getId();
+    }
 }

@@ -47,7 +47,7 @@ class Arr
         return $result;
     }
 
-    public static function filter($items, $callback, bool $byKey = false): array
+    public static function filter($items, $callback = null, bool $byKey = false): array
     {
         if ($items instanceof Collection) {
             return $items->filter($callback)->all();

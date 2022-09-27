@@ -239,15 +239,15 @@ function mb_ucfirst($string, $encoding = 'utf-8'): string
     return mb_strtoupper($firstChar, $encoding) . $then;
 }
 
-function raise_error_page(int $code, string $message, string $message2): never
+function raise_error_page(int $code, string $message, string $message2 = ''): never
 {
     echo view('portal.error', compact('code', 'message', 'message2'));
     exit();
 }
 
-function raise_500(string $message = '', string $message2 = 'Nincs jogosultsága az oldal megtekintéséhez'): never
+function raise_500(string $message = ''): never
 {
-    raise_error_page(500, $message, $message2);
+    raise_error_page(500, $message);
 }
 
 function raise_404($message = 'A keresett oldal nem található', $message2 = '<i class="text-muted">De azért ne adjátok fel.<br/> Keressetek, és előbb, vagy utóbb találtok ;-)</i>'): never

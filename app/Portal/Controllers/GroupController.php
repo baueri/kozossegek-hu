@@ -167,7 +167,7 @@ class GroupController extends PortalController
         }
 
         if (!$group->isEditableBy($user)) {
-            raise_500();
+            raise_403();
         }
 
         return $response($group);
@@ -211,8 +211,10 @@ class GroupController extends PortalController
             Message::danger('Nincs ilyen közösség!');
             redirect_route('portal.my_groups');
         }
+        if (!$group->isEditableBy(Auth::user())) {
+            raise_403();
+        }
         try {
-
             $service->update($group, $request->only(
                 'status',
                 'name',
@@ -250,7 +252,7 @@ class GroupController extends PortalController
         $group = $groups->findOrFail($request['id']);
 
         if (!$group->isEditableBy(Auth::user())) {
-            raise_500();
+            raise_403();
         }
 
         $groups->softDelete($group);

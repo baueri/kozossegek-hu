@@ -26,7 +26,7 @@
             @alert('warning')
                 <b>A közösséged vissza lett dobva.</b><br/> Nézd meg az adataidat, hogy minden rendben van-e, majd kattints a mentés gombra.
             @endalert
-        @elseif($group->status == App\Enums\GroupStatusEnum::INACTIVE)
+        @elseif($group->status == App\Enums\GroupStatus::inactive)
             @alert('warning')
                 <b>A közösséged jelenleg inaktív.</b><br> Nem jelenik meg sem a keresési találatok közzött, illetve az
                 adatlapját se lehet megtekinteni.
@@ -38,7 +38,7 @@
                     <label for="status">Állapot</label>
                     <select id="status" name="status" class="form-control">
                         @foreach($statuses as $status => $name)
-                            <option value="{{ $status }}" @selected($group->status == $status->name)>{{ $name }}</option>
+                            <option value="{{ $status }}" @selected($group->status == $status)>{{ $name }}</option>
                         @endforeach
                     </select>
                 </div>
