@@ -7,6 +7,7 @@ use App\Models\ChurchGroup;
 use Framework\Exception\FileTypeNotAllowedException;
 use Framework\Http\Message;
 use Framework\Http\Request;
+use Framework\Support\Arr;
 use Framework\Support\Collection;
 
 class UpdateGroup extends BaseGroupService
@@ -29,6 +30,8 @@ class UpdateGroup extends BaseGroupService
         $data['group_leaders'] = strip_tags($data['group_leaders']);
         $data['age_group'] = implode(',', (array) $data['age_group']);
         $data['on_days'] = implode(',', $data['on_days'] ?? []);
+        $data['join_mode'] = Arr::get($data, 'join_mode') ?: null;
+        $data['spiritual_movement_id'] = Arr::get($data, 'spiritual_movement_id') ?: null;
 
         if (!$this->validate($data)) {
             Message::danger('A csillaggal jelölt mezők kitöltése kötelező!');
