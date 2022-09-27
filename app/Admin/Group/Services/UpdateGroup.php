@@ -32,6 +32,7 @@ class UpdateGroup extends BaseGroupService
         $data['on_days'] = implode(',', $data['on_days'] ?? []);
         $data['join_mode'] = Arr::get($data, 'join_mode') ?: null;
         $data['spiritual_movement_id'] = Arr::get($data, 'spiritual_movement_id') ?: null;
+        $data['user_id'] = Arr::get($data, 'user_id') ?: null;
 
         if (!$this->validate($data)) {
             Message::danger('A csillaggal jelölt mezők kitöltése kötelező!');

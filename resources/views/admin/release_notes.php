@@ -1,10 +1,16 @@
 @title('Verzióinformáció')
 @extends('admin')
+<h3>v2.4.0 (2022.09.28)</h3>
+<ul>
+    <li>[NEW]: Felhasználónak az admin adatlapján lehetőség van közösségez szerkesztési jogosultságot adni</li>
+    <li>[FIX]: Felhasználóknak kiküldött link elé hibásan kétszer került oda a host.</li>
+</ul>
 <h3>v2.3.0 (2022.09.12)</h3>
 <ul>
     <li><b>Gépház</b></li>
     <li>[FIXED]: Statisztika csv export</li>
     <li>[FIXED]: Error report nem működött élesen</li>
+    <li>[FIXED]: Admin oldalon a felhasználók listájában csak az aktív közösségek számát jelenítjük most már meg</li>
     <li>[CHANGED]: debugbar kiíratásának helye</li>
 </ul>
 <h3>v2.2.1 (2022.09.02)</h3>

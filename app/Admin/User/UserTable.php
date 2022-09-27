@@ -5,6 +5,7 @@ namespace App\Admin\User;
 use App\Admin\Components\AdminTable\{AdminTable, Deletable, Editable};
 use App\Enums\UserRole;
 use App\Models\User;
+use App\QueryBuilders\GroupViews;
 use App\QueryBuilders\Users;
 use Framework\Database\Builder;
 use Framework\Database\PaginatedResultSetInterface;
@@ -112,7 +113,7 @@ class UserTable extends AdminTable implements Deletable, Editable
             $query->where('user_group', $userGroup);
         }
 
-        $query->withCount('groups');
+        $query->withCount('groups', fn(GroupViews $groupViews) => $groupViews->active());
 
         return $query->paginate($this->perpage);
     }
