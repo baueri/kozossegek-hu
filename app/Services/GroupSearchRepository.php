@@ -4,13 +4,14 @@ namespace App\Services;
 
 use App\Models\User;
 use App\QueryBuilders\GroupViews;
+use Framework\Database\Builder;
 use Framework\Model\ModelCollection;
 use Framework\Model\PaginatedModelCollection;
 use Framework\Support\StringHelper;
 
 class GroupSearchRepository
 {
-    public function __construct(private readonly GroupViews $repository)
+    public function __construct(public readonly GroupViews $repository)
     {
     }
 
@@ -99,6 +100,6 @@ class GroupSearchRepository
 
     public function getNotDeletedGroupsByUser(User $user): ModelCollection
     {
-        return $this->repository->query()->forUser($user)->notDeleted()->get();
+        return $this->repository->query()->forUser($user)->editableBy($user)->notDeleted()->get();
     }
 }
