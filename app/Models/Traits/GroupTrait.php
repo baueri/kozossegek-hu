@@ -122,7 +122,8 @@ trait GroupTrait
             return false;
         }
 
-        return $user->isAdmin() || $user->id == $this->user_id;
+        // todo relációval megoldani a szerkesztési jogosultság ellenőrzést
+        return $user->isAdmin() || $user->id == $this->user_id || builder('managed_church_groups')->where('group_id', $this->id)->where('user_id', $user->id)->exists();
     }
 
     public function hasDocument(): bool

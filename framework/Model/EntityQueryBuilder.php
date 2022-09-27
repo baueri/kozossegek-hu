@@ -8,7 +8,6 @@ use Framework\Database\Repository\Events\ModelCreated;
 use Framework\Database\Repository\Events\ModelDeleted;
 use Framework\Event\EventDisptatcher;
 use Framework\Model\Relation\HasRelations;
-use Framework\Support\Arr;
 use Framework\Support\Collection;
 use Framework\Support\StringHelper;
 use RuntimeException;
@@ -272,6 +271,12 @@ abstract class EntityQueryBuilder
     public function whereExists(Builder|EntityQueryBuilder $table, ?Closure $callback = null, string $clause = 'and'): static
     {
         $this->builder->whereExists($table instanceof EntityQueryBuilder ? $table->builder : $table, $callback, $clause);
+        return $this;
+    }
+
+    public function whereDoesnExist(Builder|EntityQueryBuilder $table, ?Closure $callback = null, string $clause = 'and'): static
+    {
+        $this->builder->whereDoesnExist($table instanceof EntityQueryBuilder ? $table->builder : $table, $callback, $clause);
         return $this;
     }
 

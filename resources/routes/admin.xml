@@ -57,6 +57,7 @@
                 <route method="post" uri="create" use="doCreate" as="do_create"/>
 
                 <route method="get" uri="{id}/edit" use="edit" as="edit"/>
+                <route method="get" uri="{id}/managed-groups" use="managedGroups" as="managed_groups"/>
                 <route method="post" uri="{id}/update" use="update" as="update"/>
                 <route method="get" uri="{id}/delete" use="delete" as="delete"/>
             </route-group>
