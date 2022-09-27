@@ -48,6 +48,10 @@ const dialog = (function () {
         let ok = okBtn();
         let cancel = cancelBtn();
 
+        if (typeof options === "string") {
+            options = {message: options};
+        }
+
         this.show($.extend({
             title: "Biztos vagy benne?",
             buttons: [
