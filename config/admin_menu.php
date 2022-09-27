@@ -107,7 +107,7 @@ return [
                 'title' => 'Felhasználók',
                 'icon' => 'users',
                 'as' => 'admin.user.list',
-                'similars' => ['admin.user.edit', 'admin.user.profile'],
+                'similars' => ['admin.user.edit', 'admin.user.profile', 'admin.user.managed_groups'],
             ],
             [
                 'title' => 'Létrehozás',
