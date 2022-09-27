@@ -8,13 +8,15 @@
     <a class="btn active btn-primary" href="@route('admin.user.managed_groups', $user)">Kezelt közösségek</a>
 </div>
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-7">
         <table class="table table-sm">
             @foreach($managedGroups as $group)
             <tr>
-                <td>#{{ $group['id'] }}</td>
-                <td>{{ $group['name'] }}</td>
-                <td><a href="#" onclick="detachGroup({{ $group['id'] }}); return false;"><i class="fa fa-trash-alt text-danger"></i></a></td>
+                <td>#{{ $group->getId() }}</td>
+                <td>
+                    {{ $group->name }} <span class="small"><b>({{ $group->city . ', ' . $group->institute_name }})</b></span>
+                </td>
+                <td><a href="#" onclick="detachGroup("{{ $group->getId() }}"); return false;" title="Eltávolítás"><i class="fa fa-trash-alt text-danger"></i></a></td>
             </tr>
             @endforeach
         </table>

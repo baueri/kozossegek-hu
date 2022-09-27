@@ -238,9 +238,9 @@ abstract class EntityQueryBuilder
         return $this;
     }
 
-    public function whereNull($column): EntityQueryBuilder
+    public function whereNull($column, $clause = 'and'): EntityQueryBuilder
     {
-        $this->builder->whereNull($column);
+        $this->builder->whereNull($column, $clause);
         return $this;
     }
 
