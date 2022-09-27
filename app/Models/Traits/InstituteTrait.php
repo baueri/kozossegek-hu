@@ -24,7 +24,7 @@ trait InstituteTrait
 
     public function groupsUrl(?string $ref = null): string
     {
-        $data = ['varos' => StringHelper::slugify($this->city), 'intezmeny' => StringHelper::slugify($this->name), 'ref' => $ref];
+        $data = ['varos' => StringHelper::slugify($this->city), 'intezmeny' => StringHelper::slugify("{$this->name}-{$this->id}"), 'ref' => $ref];
         return route('portal.institute_groups', array_filter($data));
     }
 
