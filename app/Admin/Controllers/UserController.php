@@ -86,6 +86,14 @@ class UserController extends AdminController
         return view('admin.user.edit', $model);
     }
 
+    public function managedGroups(Request $request, Users $repository)
+    {
+        $user = $repository->findOrFail($request['id']);
+        $managedGroups = db()->select('select * from managed_church_groups m join church_groups g on g.id = m.group_id where m.user_id = ? order by name', [$user->getId()]);
+
+        return view('admin.user.managed_groups', compact('user', 'managedGroups'));
+    }
+
     /**
      * @throws ModelNotFoundException
      */

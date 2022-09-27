@@ -1,11 +1,25 @@
 $.fn.citySelect = function (options) {
-
     $(this).select2($.extend({
         placeholder: "település",
         allowClear: true,
         tags: true,
         ajax: {
             url: '/api/v1/search-city',
+            dataType: 'json',
+            delay: 300
+        }
+    }, options));
+
+    return this;
+}
+
+$.fn.baseSelect = function (url, options) {
+    $(this).select2($.extend({
+        placeholder: "",
+        allowClear: true,
+        tags: true,
+        ajax: {
+            url: url,
             dataType: 'json',
             delay: 300
         }

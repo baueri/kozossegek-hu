@@ -67,4 +67,13 @@ class ChurchGroups extends EntityQueryBuilder
     {
         return $this->where('user_id', $user->getId());
     }
+
+    public function editableBy(User $user): static
+    {
+        return $this->whereExists(
+            builder('managed_church_groups')
+                ->whereRaw("group_id={$this->getTable()}.id")
+                ->where('user_id', $user->getId())
+        , null, 'or');
+    }
 }

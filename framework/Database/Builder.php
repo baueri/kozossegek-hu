@@ -204,7 +204,7 @@ class Builder
                 $bindings[] = $value;
             } else {
                 $where .= $column;
-                if (is_array($value)) {
+                if (is_array($value) && $value) {
                     $bindings = array_merge($bindings, $value);
                 }
             }
@@ -214,7 +214,6 @@ class Builder
                 $where .= " $clause ";
             }
         }
-
 
         return $where;
     }
@@ -336,7 +335,7 @@ class Builder
 
     public function whereNull($column, $clause = 'and'): self
     {
-        return $this->whereRaw("$column IS NULL", [], $clause);
+        return $this->whereRaw("$column IS NULL", null, $clause);
     }
 
     public function whereNotNull($column, $clause = 'and'): self
@@ -374,7 +373,7 @@ class Builder
         return $this->whereInSet($column, $value, 'or');
     }
 
-    public function whereExists(string|Builder $table, ?Closure $callback = null, string $clause = 'and'): static
+    public function whereExists(string|Builder $table, ?Closure $callback = null, string $clause = 'and', bool $exists = true): static
     {
         if ($table instanceof Builder) {
             $builder = $table;
@@ -383,9 +382,17 @@ class Builder
         }
 
         [$query, $bindings] = $builder->getBaseSelect();
-        $this->whereRaw("EXISTS ({$query})", $bindings, $clause);
+
+        $existsPrefix = $exists ? '' : 'NOT ';
+
+        $this->whereRaw("{$existsPrefix}EXISTS ({$query})", $bindings, $clause);
 
         return $this;
+    }
+
+    public function whereDoesnExist(string|Builder $table, ?Closure $callback = null, string $clause = 'and'): static
+    {
+        return $this->whereExists($table, $callback, $clause, false);
     }
 
     public function join(string $table, string $on, string $joinMode = ''): self
