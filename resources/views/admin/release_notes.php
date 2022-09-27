@@ -4,6 +4,7 @@
 <ul>
     <li>[NEW]: Felhasználónak az admin adatlapján lehetőség van közösségez szerkesztési jogosultságot adni</li>
     <li>[FIX]: Felhasználóknak kiküldött link elé hibásan kétszer került oda a host.</li>
+    <li>[FIX]: Adott intézmény közösségeinek lista oldalának linkje végére odakerül az intézmény azonosító, hogy az id alapján legyenek a közösségek leszűrve</li>
 </ul>
 <h3>v2.3.0 (2022.09.12)</h3>
 <ul>
