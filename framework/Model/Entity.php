@@ -72,9 +72,10 @@ abstract class Entity
         $this->attributes[$name] = $value;
     }
 
-    public function fill(array $values): void
+    public function fill(array $values): self
     {
         $this->attributes = array_merge($this->attributes, $values);
+        return $this;
     }
 
     public function getAttributes($only = null): array
