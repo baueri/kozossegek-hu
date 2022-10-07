@@ -41,7 +41,7 @@ class GroupController extends PortalController
         if (preg_match('/-(\d+)$/', $request['intezmeny'], $m)) {
             $institute = $institutes->findOrFail($m[1]);
         } else {
-            $institute = $institutes->where('city', $request['varos'])->where('slug', $request['intezmeny'])->firstOrFail();
+            $institute = $institutes->where('slug', "{$request['varos']}/{$request['intezmeny']}")->firstOrFail();
         }
 
         Section::set('templom_title', function () use ($institute) {
