@@ -47,7 +47,9 @@ class Institute extends Entity
 
     public function groupsUrl(?string $ref = null): string
     {
-        $data = ['varos' => StringHelper::slugify($this->city), 'intezmeny' => $this->slug, 'ref' => $ref];
+        [$varos, $intezmeny] = explode('/', $this->slug);
+
+        $data = compact('varos', 'intezmeny', 'ref');
         return route('portal.institute_groups', array_filter($data));
     }
 
