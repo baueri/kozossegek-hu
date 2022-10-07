@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Components\Widget;
+namespace App\Providers;
 
 use Framework\Http\View\View;
 use Framework\Middleware\Middleware;

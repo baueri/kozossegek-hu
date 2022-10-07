@@ -3,6 +3,5 @@ return [
     RESOURCES . 'routes' . DS . 'admin',
     RESOURCES . 'routes' . DS . 'web',
     RESOURCES . 'routes' . DS . 'api',
-    RESOURCES . 'routes' . DS . 'admin_api',
-    APP . 'Components' . DS . 'widget_routes',
+    RESOURCES . 'routes' . DS . 'admin_api'
 ];
