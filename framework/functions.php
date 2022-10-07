@@ -5,7 +5,6 @@ use App\Auth\Auth;
 use App\Mailable\ThrowableCriticalErrorEmail;
 use App\Middleware\AdminMiddleware;
 use App\Repositories\EventLogRepository;
-use App\Repositories\Widgets;
 use App\Services\EventLogger;
 use Arrilot\DotEnv\DotEnv;
 use Carbon\Carbon;
@@ -200,11 +199,6 @@ function config($key, $default = null)
 function make($abstraction, $values = [])
 {
     return app()->make($abstraction, ...$values);
-}
-
-function widget($uniqid)
-{
-    return app()->get(Widgets::class)->getByUniqId($uniqid);
 }
 
 function is_prod(): bool
