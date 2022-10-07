@@ -38,9 +38,11 @@ class GroupController extends PortalController
 
     public function intezmenyKozossegek(Request $request, GroupList $service, Institutes $institutes): string
     {
-        $instituteId = substr($request['intezmeny'], strrpos($request['intezmeny'], '-') + 1);
-
-        $institute = $institutes->find($instituteId);
+        if (preg_match('/-(\d+)$/', $request['intezmeny'], $m)) {
+            $institute = $institutes->findOrFail($m[1]);
+        } else {
+            $institute = $institutes->where('city', $request['varos'])->where('slug', $request['intezmeny'])->firstOrFail();
+        }
 
         Section::set('templom_title', function () use ($institute) {
             $url = $institute->getMiserendUrl();
