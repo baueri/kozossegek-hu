@@ -4,11 +4,11 @@ namespace App;
 
 use App\Middleware\DebugBarMiddleware;
 use App\Middleware\ListenViewLoading;
-use Framework\Middleware\BaseAuthMiddleware;
-use Framework\Middleware\TranslationRoute;
+use App\Providers\AppServiceProvider;
 use Framework\Middleware\AuthMiddleware;
-use App\Components\Widget\AppServiceProvider;
+use Framework\Middleware\BaseAuthMiddleware;
 use Framework\Middleware\CheckMaintenance;
+use Framework\Middleware\TranslationRoute;
 
 class HttpKernel extends \Framework\Http\HttpKernel
 {
