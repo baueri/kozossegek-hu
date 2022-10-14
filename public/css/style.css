@@ -817,9 +817,9 @@ ul.age-group-select li a:hover {
 
 #kozossegek-list .card-img {
     width:100%;
-    height: 300px;
     overflow: hidden;
     position: relative;
+    aspect-ratio: 1;
 }
 
 #kozossegek-list .card-img div {
