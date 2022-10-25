@@ -16,7 +16,7 @@
                 <td>
                     {{ $group->name }} <span class="small"><b>({{ $group->city . ', ' . $group->institute_name }})</b></span>
                 </td>
-                <td><a href="#" onclick="detachGroup("{{ $group->getId() }}"); return false;" title="Eltávolítás"><i class="fa fa-trash-alt text-danger"></i></a></td>
+                <td><a href="#" onclick="detachGroup('{{ $group->id }}'); return false;" title="Eltávolítás"><i class="fa fa-trash-alt text-danger"></i></a></td>
             </tr>
             @endforeach
         </table>

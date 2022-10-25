@@ -2,11 +2,9 @@
 
 namespace App\Models;
 
-use App\Models\Traits\InstituteTrait;
+use App\Helpers\InstituteHelper;
 use Framework\Model\Entity;
 use Framework\Model\HasTimestamps;
-use Framework\Model\Relation\Has;
-use Framework\Model\SoftDeletes;
 use Framework\Support\StringHelper;
 
 /**
@@ -26,9 +24,46 @@ use Framework\Support\StringHelper;
  * @property null|string $website
  * @property string $lat
  * @property string $lon
+ * @property string $slug
  */
 class Institute extends Entity
 {
-    use InstituteTrait;
     use HasTimestamps;
+
+    public function getImageRelPath(): string
+    {
+        return $this->image_url ?? InstituteHelper::getImageRelPath($this->id);
+    }
+
+    public function getImageStoragePath(): string
+    {
+        return InstituteHelper::getImageStoragePath($this->id);
+    }
+
+    public function hasImage(): bool
+    {
+        return !is_null($this->image_url) || file_exists($this->getImageStoragePath());
+    }
+
+    public function groupsUrl(?string $ref = null): string
+    {
+        [$varos, $intezmeny] = explode('/', $this->slug);
+
+        $data = compact('varos', 'intezmeny', 'ref');
+        return route('portal.institute_groups', array_filter($data));
+    }
+
+    public function getMiserendUrl(): ?string
+    {
+        if (!$this->miserend_id) {
+            return null;
+        }
+
+        return "https://miserend.hu/templom/{$this->miserend_id}";
+    }
+
+    public function latlon(): string
+    {
+        return "{$this->lat},{$this->lon}";
+    }
 }
