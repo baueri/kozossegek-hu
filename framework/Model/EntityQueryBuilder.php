@@ -110,6 +110,11 @@ abstract class EntityQueryBuilder
             return null;
         }
 
+        return $this->makeModel($values);
+    }
+
+    protected function makeModel($values = null)
+    {
         $class = static::getModelClass();
 
         return new $class($values);
@@ -120,7 +125,7 @@ abstract class EntityQueryBuilder
      * @return \Framework\Model\Entity|null
      * @phpstan-return \Framework\Model\Entity<T>|T|null
      */
-    public function find($id): ?Entity
+    public function find(mixed $id): ?Entity
     {
         return $this->wherePK($id)->first();
     }
@@ -132,7 +137,7 @@ abstract class EntityQueryBuilder
      */
     public function findOrNew($id): Entity
     {
-        return $this->find($id) ?? $this->getInstance();
+        return $this->find($id) ?? $this->makeModel();
     }
 
     public function fetchFirst(?string $column = null)
