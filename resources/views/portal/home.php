@@ -52,58 +52,23 @@
 </div>
 @endsection
 @extends('portal')
-<div class="p-5">
-    <div class="container text-center">
+<div class="container text-center">
+    <div class="p-3 p-sm-4">
         <h2 class="mb-4 title-secondary">Mi ez az oldal?</h2>
         <p>A kozossegek.hu egy katolikus közösségkereső portál, amelyet azért hoztunk létre, hogy segítsünk mindenkinek megtalálni a közösségét akárhol is éljen, tanuljon, vagy dolgozzon, nemtől, kortól, életállapottól függetlenül. Hisszük, hogy az ember alapszükséglete a közösséghez tartozás, hiszen ezáltal tud önmaga lenni, így tud megbirkózni az élet nehézségeivel, így válhat az élete teljessé.</p>
         <p>Kívánjuk, hogy ismerd fel azt az erőt, amely a keresztény közösségekben rejlik, találd meg saját helyedet és légy aktív tagja az Egyháznak!</p>
         <p><strong>"Ahol ugyanis ketten vagy hárman összegyűlnek a nevemben, ott vagyok közöttük.” Mt.18,20</strong></p>
     </div>
 </div>
-<div class="bg-lightblue p-5">
+<div class="bg-lightblue">
     <div class="container">
-        <h2 class="text-center title-secondary">Hogyan működik?</h2>
-        <div id="instructions" class="row mt-5 mb-5">
-            <div class="col-lg-4 col-sm-12 mb-lg-0 mb-5">
-                <div class="card shadow text-center h-100">
-                    <div class="pt-3">
-                        <img style="max-width: 100%; width: 128px" src="/images/home-icons/computer.png" alt="Keresd meg!" class="card-img-top" />
-                        <div class="card-body">
-                            <h6 class="text-danger mt-4 mb-3">Keresd meg!</h6>
-                            <p>Keress rá településre, lelkiségi mozgalomra, <br/>a közösség jellegére, vagy arra, ami számodra fontos egy közösségben!</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-sm-12 mb-lg-0 mb-5">
-                <div class="card shadow text-center h-100">
-                    <div class="pt-3">
-                        <img style="max-width: 100%; width: 128px" src="/images/home-icons/mouse.png" alt="Kattints rá!" class="card-img-top" />
-                        <div class="card-body">
-                            <h6 class="text-danger mt-4 mb-3">Kattints rá!</h6>
-                            <p>A listában megtalálható közösségekre kattintva többet megtudhatsz a részletekről!</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-sm-12 mb-lg-0 mb-5">
-                <div class="card shadow text-center h-100">
-                    <div class="pt-3">
-                        <img style="max-width: 100%; width: 128px" src="/images/home-icons/mail.png" alt="" class="card-img-top" />
-                        <div class="card-body">
-                            <h6 class="text-danger mt-4 mb-3">Írj nekik!</h6>
-                            <p>Amennyiben felkeltette az érdeklődésedet egy közösség, az adatlapján keresztül vedd fel a kapcsolatot a közösségvezetővel!</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        @include('portal.partials.instructions')
     </div>
 </div>
 <div class="kozosseghez-tartozni">
     <div class="container">
-        <div class="text-center text-light p-0 p-sm-5">
-            <h2 class="title-secondary display-4 mb-5">Mert közösséghez tartozni jó!</h2>
+        <div class="text-center text-light p-4 p-sm-5">
+            <h2 class="title-secondary mb-5">Mert közösséghez tartozni jó!</h2>
             <p>Közösséghez tartozni lehetőség és felelősség is egyben. Lehetőség a lelki elmélyülésre és az emberi kapcsolatok mélyítésére. Ugyanakkor felelősség is, hogy az Istentől kapott készségeket, képességeket, talentumokat felhasználva mások segítségére lehessünk.</p>
             <p>Kedvcsinálónak olvasd el a <a title="5 érv, hogy elkezdj közösségbe járni" href="https://777blog.hu/2016/09/20/5-erv-hogy-elkezdj-kozossegbe-jarni/" target="_blank" class="text-white" style="text-decoration: underline">777blog.hu írását</a>, hogy miért jó közösségbe járni!</p>
         </div>
@@ -112,9 +77,9 @@
 <div class="container my-5">
     <div class="bg-altblue text-light">
         <div class="row">
-            <div class="col-md-6" style="background: url('/storage/uploads/kozosseget_vezetek.jpg') no-repeat center; background-size: cover"></div>
-            <div class="col-md-6 align-middle h-100">
-                <div class="p-5 my-md-5 my-xs-3">
+            <div class="col-lg-6" style="background: url('/storage/uploads/kozosseget_vezetek.jpg') no-repeat center; background-size: cover"></div>
+            <div class="col-lg-6 align-middle h-100">
+                <div class="px-5 py-3 my-md-5 my-xs-3">
                     <h2 class="text-center title-secondary font-weight-bold mb-4">Közösséget vezetek, szeretném hirdetni.<br/> Mit tegyek?</h2>
                     <p class="text-justify">
                         Nagyon örülünk annak, ha te is hirdetnéd nálunk a közösséged! Ehhez nem kell mást tenned, mint ellátogatnod a <a class="text-light" href="@route('portal.register_group')" target="_blank">közösséget vezetek</a> oldalra, majd az ott található űrlapot kitölteni és elküldeni nekünk. A regisztrációt követően, jóváhagyás után, közösséged a látogatók számára is elérhető lesz.
@@ -131,14 +96,14 @@
 <div class="bg-lightblue p-5">
     <div class="container">
         <div class="row">
-            <div class="col-md-4">
-                <h2 class="title-secondary mb-5 text-right">Közösségek Magyarországon</h2>
-                <div class="text-right">
+            <div class="col-lg-4 col-12">
+                <h2 class="title-secondary mb-5 text-lg-right">Közösségek Magyarországon</h2>
+                <div class="text-lg-right">
                     <p>Országszerte jelenleg több, mint 80 aktív katolikus közösség regisztrált be oldalunkra.</p>
                     <p>Keresd meg a neked való közösséget, vagy amennyiben te is vezetsz egyet, legyen a következő regisztrált közösség a tied!</p>
                 </div>
             </div>
-            <div class="col-md-8">
+            <div class="col-lg-8 col-12">
                 @component('open_street_map', ['types' => ['institute']])
             </div>
         </div>
