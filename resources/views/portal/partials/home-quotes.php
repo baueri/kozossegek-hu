@@ -1,6 +1,6 @@
 <section class="pb-5">
     <div class="container">
-        <h1 class="title-secondary display-4 text-center mb-5">A közösségről mondták</h1>
+        <h1 class="title-secondary text-center mb-5">A közösségről mondták</h1>
         <div class="row">
             <div class="col-lg-10 col-xl-8 mx-auto">
                 <div class="p-5 bg-white shadow rounded">
