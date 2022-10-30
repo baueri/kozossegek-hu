@@ -1,11 +1,26 @@
 :root {
     --darkblue: #3f91b0;
     --light-red: #F06A73;
-    --light-blue: #F7F9FD;
+    --light-blue: #dff2f7;
+    --alt-blue: #0FA3F2;
+}
+
+.bg-altblue {
+    background-color: var(--alt-blue);
 }
 
 .bg-lightblue {
     background-color: var(--light-blue);
+}
+
+.text-altblue {
+    color: var(--alt-blue);
+}
+
+.btn-altblue {
+    color: #fff;
+    background-color: var(--alt-blue);
+    border: 1px solid var(--alt-blue);
 }
 
 .btn-darkblue {

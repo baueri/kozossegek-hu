@@ -7,6 +7,7 @@ a {
 body {
     font-family: "Open Sans", sans-serif;
     color: #555;
+    font-size: 1.25rem;
 }
 
 body:not(.home) {
@@ -55,22 +56,17 @@ body:not(.home) .featured-header {
     filter: brightness(.8);
 }
 
-.featured-header.header-outer #header {
-    transition: background-color ease-in .2s;
-    background: rgba(0,0,0,0.5);
-}
-.header-outer #header.compact {
+.header-outer #header {
     background: #fff;
     box-shadow: 0 0 6px 0;
-    /*font-size: 14px;*/
 }
 
 .header-outer #header.compact .navbar-nav > li .nav-link {
     padding: 4px 8px;
 }
 
-.header-outer.featured-header #header:not(.compact) .navbar-nav > li > .nav-link {
-    color: #fff;
+.header-outer.featured-header .navbar-nav > li > .nav-link {
+    color: #687074;
 }
 
 .header-outer #header:not(.compact) .navbar-nav > li > .nav-link {
@@ -78,10 +74,6 @@ body:not(.home) .featured-header {
     padding-bottom: 1.3rem;
 }
 .header-outer #header:not(.compact) .navbar-nav > li > .nav-link:hover {
-}
-
-.header-outer.featured-header #header:not(.compact) .user-menu {
-    color:#fff !important;
 }
 
 .navbar-brand {
@@ -109,14 +101,6 @@ body:not(.home) .featured-header {
     background-size: 100%;
     float: left;
     transition: all ease-in .1s;
-}
-
-.header-outer:not(.featured-header) #header {
-    background: #fff;
-}
-
-.header-outer.featured-header .navbar-brand > div:first-child {
-    filter: brightness(0) invert(1);
 }
 
 .header-outer #header.compact .navbar-brand {
@@ -198,7 +182,7 @@ nav.navbar .submenu {
 }
 
 .title-secondary {
-    font-weight: 100;
+    font-weight: 700;
     font-family: 'Raleway', sans-serif;
 }
 
@@ -751,16 +735,6 @@ ul.age-group-select li a:hover {
     text-transform: uppercase;
 }
 
-#instructions:before {
-    content: " ";
-    position: absolute;
-    left: 0;
-    width: 100%;
-    top: 50px;
-    border-bottom: 2px dashed;
-    border-color: rgba(0, 0, 0, .3);
-}
-
 .group-tag-badge {
     cursor: pointer;
     font-size: 14px;
@@ -934,22 +908,18 @@ ul.age-group-select li a:hover {
     width: 100%;
     height: 100%;
     background-size: cover !important;
-    color: #fff;
-    background: url("/images/kozossegek5.jpg") no-repeat center;
+    background: url("/images/biblia.jpg") no-repeat center;
+    filter: brightness(.4);
 }
 
 .partner-header-link img {
     width: 22px;
 }
 
-.header-outer.featured-header #header:not(.compact) #toggle_main_menu:not(:checked)~.navbar-nav img {
-    filter: brightness(0) invert(1);
-}
-
 .divider-before a:before {
     content: " ";
     margin-right: 16px;
-    border-left: 1px solid rgba(255, 255, 255, 0.25);
+    border-left: 1px solid rgba(0, 0, 0, 0.25);
 }
 
 @media (max-width: 991px) {
