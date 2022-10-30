@@ -127,6 +127,7 @@
         </div>
     </div>
 </div>
+@include('portal.partials.home-quotes')
 <div class="bg-lightblue p-5">
     <div class="container">
         <div class="row">
