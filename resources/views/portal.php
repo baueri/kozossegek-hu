@@ -38,7 +38,7 @@
     @if($header_background)
         <div class="featured-header header-outer">
             @include('portal.partials.main_menu')
-            <div class="featured-bg" style="background:url('{{ $header_background }}') no-repeat top center"></div>
+            <div class="featured-bg" style="background:url('{{ $header_background }}') no-repeat top 66px center"></div>
             @yield('header_content')
         </div>
     @else
