@@ -220,7 +220,7 @@ nav.navbar .nav-link {
     color: #000;
     /*text-transform: uppercase;*/
     transition: all ease-in .2s;
-    font-family: 'Roboto Condensed', sans-serif;
+    font-family: 'Oswald', sans-serif;
 }
 
 nav.navbar .nav-link:hover {
