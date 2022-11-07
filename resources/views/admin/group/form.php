@@ -46,7 +46,7 @@
             </div>
             <div class="row">
                 <div class="col-md-8">
-                    <div class="form-group">
+                    <div class="form-group required">
                         <label for="user_id">Karbantartó</label>
                         <div style="width: 200px">
                             <select name="user_id" id="user_id" class="form-control">
@@ -238,7 +238,7 @@
 
         $("[name=user_id]").select2({
             placeholder: "karbantartó",
-            allowClear: true,
+            allowClear: false,
             ajax: {
                 url: "@route('api.search-user')",
                 dataType: 'json',
