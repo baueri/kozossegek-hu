@@ -1,7 +1,7 @@
 :root {
     --darkblue: #3f91b0;
     --light-red: #F06A73;
-    --light-blue: #dff2f7;
+    --light-gray: #f2f5fa;
     --alt-blue: #0FA3F2;
 }
 
@@ -10,7 +10,7 @@
 }
 
 .bg-lightblue {
-    background-color: var(--light-blue);
+    background-color: var(--light-gray);
 }
 
 .text-altblue {
