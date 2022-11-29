@@ -2,8 +2,6 @@
 
 namespace App\Services;
 
-use App\Enums\AgeGroup;
-use App\Enums\WeekDay;
 use App\Models\ChurchGroupView;
 use Framework\Support\Collection;
 
