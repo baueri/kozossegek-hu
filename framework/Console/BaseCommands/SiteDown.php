@@ -6,7 +6,7 @@
  use Framework\Console\Out;
  use Framework\Maintenance;
 
-class SiteDown implements Command
+class SiteDown extends Command
 {
     public static function signature(): string
     {
