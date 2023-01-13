@@ -6,7 +6,7 @@ use App\Services\SystemAdministration\ClearUserSession;
 use Framework\Console\Command;
 use Framework\Console\Out;
 
-class ClearUserSessionCommand implements Command
+class ClearUserSessionCommand extends Command
 {
     public static function signature(): string
     {
@@ -15,12 +15,8 @@ class ClearUserSessionCommand implements Command
 
     public function handle(): void
     {
-        $ok = (new ClearUserSession())->run();
+        (new ClearUserSession())->run();
 
-        if ($ok) {
-            Out::success('user session cleared');
-        } else {
-            Out::error('user session clear failed');
-        }
+        Out::success('user session cleared');
     }
 }
