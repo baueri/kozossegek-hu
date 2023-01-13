@@ -11,8 +11,9 @@ use App\QueryBuilders\Institutes;
 use App\QueryBuilders\OsmMarkers;
 use App\Repositories\CityStatistics;
 use Framework\Console\Command;
+use Framework\Console\Out;
 
-class OpenStreetMapSync implements Command
+class OpenStreetMapSync extends Command
 {
     public static function signature(): string
     {
@@ -21,8 +22,10 @@ class OpenStreetMapSync implements Command
 
     public function handle(): int
     {
+        Out::info('Syncing Open Street Map pois...');
+
         db()->transaction(function () {
-            OsmMarkers::truncate();
+            OsmMarkers::query()->delete();
 
             $groups = fn (ChurchGroups $query) => $query->active();
             Institutes::query()
@@ -73,6 +76,8 @@ class OpenStreetMapSync implements Command
                     ]);
                 });
         });
+        Out::success('DONE');
+
         return self::SUCCESS;
     }
 

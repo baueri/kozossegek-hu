@@ -6,7 +6,7 @@
  use Framework\Console\Out;
  use Framework\Maintenance;
 
-class SiteUp implements Command
+class SiteUp extends Command
 {
 
     public static function signature(): string

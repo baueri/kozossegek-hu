@@ -29,6 +29,8 @@ class CliDispatcher implements Dispatcher
 
         $command = $this->kernel->getCommand($signature);
 
+        $command->withArgs($args);
+
         try {
             return $command->handle() ?? Command::SUCCESS;
         } catch (Exception $e) {
