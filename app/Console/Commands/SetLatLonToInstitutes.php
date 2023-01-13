@@ -6,7 +6,7 @@ use App\QueryBuilders\Institutes;
 use App\Services\SystemAdministration\OpenStreetMap\OpenStreetMapQuery;
 use Framework\Console\Command;
 
-class SetLatLonToInstitutes implements Command
+class SetLatLonToInstitutes extends Command
 {
     public static function signature(): string
     {

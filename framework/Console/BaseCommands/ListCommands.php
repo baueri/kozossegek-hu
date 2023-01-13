@@ -6,7 +6,7 @@ use Framework\Console\Command;
 use Framework\Console\ConsoleKernel;
 use Framework\Console\Out;
 
-class ListCommands implements Command
+class ListCommands extends Command
 {
 
     /**

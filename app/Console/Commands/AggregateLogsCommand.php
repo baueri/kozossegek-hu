@@ -6,7 +6,7 @@ use App\Services\Statistics\EventLogAggregator;
 use Framework\Console\Command;
 use Framework\Console\Out;
 
-class AggregateLogsCommand implements Command
+class AggregateLogsCommand extends Command
 {
     public function __construct(
         private readonly EventLogAggregator $aggregator
