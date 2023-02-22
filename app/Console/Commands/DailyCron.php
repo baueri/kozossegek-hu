@@ -36,9 +36,12 @@ class DailyCron extends Command
         });
 
         if (!$hasErrors) {
-            Out::success('DAILY CRON RAN SUCCEFFULLY');
+            Out::success($message = 'DAILY CRON RAN SUCCEFFULLY');
         } else {
-            Out::warning('DAILY CRON RAN WITH SOME ERRORS');
+            Out::warning($message = 'DAILY CRON RAN WITH SOME ERRORS');
         }
+
+        file_put_contents(ROOT . 'daily_cron_last_run', $message);
+        touch(ROOT . '.daily_cron_last_run');
     }
 }
