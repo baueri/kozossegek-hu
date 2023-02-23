@@ -29,7 +29,6 @@ class SearchController
         if (!$this->request['term']) {
             return [];
         }
-
         $user = Auth::user();
         $response = new InstituteSearchResponse(
             $repository->when($this->request['city'], fn (Institutes $query, $city) => $query->where('city', $city))
@@ -37,7 +36,7 @@ class SearchController
                 ->orderBy('name', 'asc')
                 ->paginate(15)
         );
-        return $response->asAdmin($user && $user->isAdmin());
+        return $response->asAdmin((bool) $user?->isAdmin());
     }
 
     public function searchDistrict(Districts $repository): DistrictResponse
