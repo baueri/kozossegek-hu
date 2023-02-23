@@ -1,5 +1,12 @@
 @title('Verzióinformáció')
 @extends('admin')
+<h3>v2.4.1 (2023.01.13)</h3>
+<ul>
+    <li><b>Gépház</b></li>
+    <li>[CHANGE]: Console command-ok képesek kezelni az argumentumokat</li>
+    <li>[CHANGE]: Napi cron egyesével kezeli a hibákat, hogy az adott feladat ne akassza meg a többi folyamatot</li>
+    <li>[FIX]: Open Street Map generáló db tranzakció javítása.</li>
+</ul>
 <h3>v2.4.0 (2022.09.28)</h3>
 <ul>
     <li>[NEW]: Felhasználónak az admin adatlapján lehetőség van közösségez szerkesztési jogosultságot adni</li>
