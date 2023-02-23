@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Services\SystemAdministration\OpenStreetMap\OpenStreetMapSync;
+use Framework\Console\BaseCommands\ClearCache;
 use Framework\Console\Command;
 use Framework\Console\Out;
 use Framework\Enums\Environment;
@@ -21,7 +22,8 @@ class DailyCron extends Command
             resolve(ClearUserSessionCommand::class),
             resolve(AggregateLogsCommand::class),
             resolve(SiteMapGenerator::class)->withArgs('--ping-google=' . (int) app()->envIs(Environment::production)),
-            resolve(OpenStreetMapSync::class)
+            resolve(OpenStreetMapSync::class),
+            resolve(ClearCache::class)
         ];
 
         $hasErrors = false;
