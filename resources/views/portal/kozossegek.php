@@ -11,11 +11,8 @@
             <form method="get" id="finder" action="@route('portal.groups')">
                 <div id="search-group" class="rounded-pill bg-white py-1 px-1">
                     <div class="row">
-                        <div class="col-lg-4 border-right mb-2 mb-lg-0">
-                            <input type="text" class="form-control rounded-pill" placeholder="kulcsszó, pl.:  egyetemista..." name="search" value="{{ $filter['search'] }}">
-                        </div>
-                        <div class="col-lg-3 border-right mb-2 mb-lg-0">
-                            <input type="text" class="form-control rounded-pill" placeholder="város" name="varos" value="{{ $filter['varos'] }}">
+                        <div class="col-lg-7 border-right mb-2 mb-lg-0">
+                            <input type="text" class="form-control rounded-pill" placeholder="Milyen közösséget keresel? pl.: Budapest egyetemista..." name="search" value="{{ $filter['search'] }}">
                         </div>
                         <div class="col-lg-3 mb-2 mb-lg-0">
                             <select class="form-control rounded-pill" style="color:#aaa" name="korosztaly">
@@ -25,7 +22,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-lg-2"><button type="submit" class="btn btn-darkblue rounded-pill px-3 w-100"><i class="fa fa-search"></i> Keresés</button> </div>
+                        <div class="col-lg-2"><button type="submit" class="btn btn-altblue rounded-pill px-3 w-100"><i class="fa fa-search"></i> Keresés</button> </div>
                     </div>
                 </div>
                 <div class="tag-dropdown-menu text-center">

@@ -1,5 +1,4 @@
 @section('header')
-<link href="https://fonts.googleapis.com/css?family=Cardo:400,700|Oswald" rel="stylesheet">
 <meta name="description"
       content="A kozossegek.hu egy katolikus közösségkereső portál, amelyet azért hoztunk létre, hogy segítsünk mindenkinek megtalálni a közösségét akárhol is éljen, tanuljon, vagy dolgozzon, nemtől, kortól, életállapottól függetlenül."/>
 <meta name="keywords" content="közösség, katolikus, közösségkereső, keresztény, karizmatikus, imakör, dicsőítő"/>
@@ -33,7 +32,7 @@
             <div id="search-group" class="rounded-pill bg-white py-1 px-1">
                 <div class="row">
                     <div class="col-lg-7 border-right mb-2 mb-lg-0">
-                        <input type="text" class="form-control rounded-pill" placeholder="kulcsszó, pl.:  Budapest egyetemista..." name="search">
+                        <input type="text" class="form-control rounded-pill" placeholder="Milyen közösséget keresel? pl.: Budapest egyetemista..." name="search">
                     </div>
                     <div class="col-lg-3 mb-2 mb-lg-0">
                         <select class="form-control rounded-pill" style="color:#aaa" name="bármilyen korosztaly">
@@ -74,25 +73,28 @@
         </div>
     </div>
 </div>
-<div class="container my-5">
-    <div class="bg-altblue text-light">
-        <div class="row">
-            <div class="col-lg-6" style="background: url('/storage/uploads/kozosseget_vezetek.jpg') no-repeat center; background-size: cover"></div>
-            <div class="col-lg-6 align-middle h-100">
-                <div class="px-5 py-3 my-md-5 my-xs-3">
-                    <h2 class="text-center title-secondary font-weight-bold mb-4">Közösséget vezetek, szeretném hirdetni.<br/> Mit tegyek?</h2>
-                    <p class="text-justify">
-                        Nagyon örülünk annak, ha te is hirdetnéd nálunk a közösséged! Ehhez nem kell mást tenned, mint ellátogatnod a <a class="text-light" href="@route('portal.register_group')" target="_blank">közösséget vezetek</a> oldalra, majd az ott található űrlapot kitölteni és elküldeni nekünk. A regisztrációt követően, jóváhagyás után, közösséged a látogatók számára is elérhető lesz.
-                    </p>
-                    <p class="text-center mt-4">
-                        <a class="btn btn-outline-light px-5" href="@route('portal.register_group')">Közösséget vezetek</a>
-                    </p>
+<section class="bg-lightblue py-5">
+    <div class="container">
+        <div class="bg-altblue text-light">
+            <div class="row">
+                <div class="col-lg-6" style="background: url('/storage/uploads/kozosseget_vezetek.jpg') no-repeat center; background-size: cover"></div>
+                <div class="col-lg-6 align-middle h-100">
+                    <div class="px-3 px-md-5 py-3 my-md-5 my-xs-3">
+                        <h2 class="text-center title-secondary font-weight-bold mb-4">Közösséget vezetek, szeretném hirdetni.<br/> Mit tegyek?</h2>
+                        <p class="text-justify">
+                            Nagyon örülünk annak, ha te is hirdetnéd nálunk a közösséged! Ehhez nem kell mást tenned, mint ellátogatnod a <a class="text-light" href="@route('portal.register_group')" target="_blank">közösséget vezetek</a> oldalra, majd az ott található űrlapot kitölteni és elküldeni nekünk. A regisztrációt követően, jóváhagyás után, közösséged a látogatók számára is elérhető lesz.
+                        </p>
+                        <p class="text-center mt-4">
+                            <a class="btn btn-outline-light px-5" href="@route('portal.register_group')">Közösséget vezetek</a>
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-@include('portal.partials.home-quotes')
+</section>
+@include('portal.partials.testimonials')
+
 <div class="bg-lightblue p-5">
     <div class="container">
         <div class="row">
