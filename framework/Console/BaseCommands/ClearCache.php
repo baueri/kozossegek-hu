@@ -6,7 +6,7 @@ use Exception;
 use Framework\Console\Command;
 use Framework\Console\Out;
 
-class ClearCache implements Command
+class ClearCache extends Command
 {
 
     public static function signature(): string
