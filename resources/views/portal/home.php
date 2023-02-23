@@ -95,7 +95,7 @@
 </section>
 @include('portal.partials.testimonials')
 
-<div class="bg-lightblue p-5">
+<div class="bg-lightblue px-2 px-sm-5 py-5">
     <div class="container">
         <div class="row">
             <div class="col-lg-4 col-12">
