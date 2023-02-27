@@ -85,7 +85,7 @@ class GroupTable extends AdminTable implements Editable, Deletable
         } elseif ($pending == -1) {
             $icon = static::getBanIcon('jóváhagyás visszautasítva');
         } else {
-            $icon = self::getCheckIcon('jóváhagyva');
+            $icon = static::getCheckIcon('jóváhagyva');
         }
 
         return $this->getLink(route('admin.group.validate', $group), $icon);

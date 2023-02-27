@@ -22,7 +22,7 @@ use Framework\Http\Exception\PageNotFoundException;
 use Framework\Http\Message;
 use Framework\Http\Request;
 use Framework\Http\View\Section;
-use Framework\Model\ModelNotFoundException;
+use Framework\Model\Exceptions\ModelNotFoundException;
 use Framework\Support\Arr;
 use Jaybizzle\CrawlerDetect\CrawlerDetect;
 use Throwable;
@@ -270,7 +270,7 @@ class GroupController extends PortalController
     }
 
     /**
-     * @throws \Framework\Model\ModelNotFoundException
+     * @throws ModelNotFoundException
      */
     public function downloadDocument(Request $request, GroupViews $groups)
     {

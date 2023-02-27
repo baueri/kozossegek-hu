@@ -69,6 +69,7 @@ return [
         },
         'component' => ComponentParser::class,
         'selected' => fn ($matches) => "<?php if($matches[1]): echo 'selected'; endif; ?>",
+        'checked' => fn ($matches) => "<?php if($matches[1]): echo 'checked'; endif; ?>",
         'dump' => fn($matches) => "<?php d($matches[1]); ?>"
     ],
     'components' => [

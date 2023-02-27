@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use App\Services\SystemAdministration\OpenStreetMap\OpenStreetMapSync;
@@ -43,7 +45,6 @@ class DailyCron extends Command
             Out::warning($message = 'DAILY CRON RAN WITH SOME ERRORS');
         }
 
-        file_put_contents(ROOT . 'daily_cron_last_run', $message);
-        touch(ROOT . '.daily_cron_last_run');
+        file_put_contents(ROOT . '.daily_cron_last_run', date('Y-m-d H:i:s') . ' - ' . $message, FILE_APPEND);
     }
 }

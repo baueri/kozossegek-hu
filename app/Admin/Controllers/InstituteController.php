@@ -12,7 +12,7 @@ use App\Storage\Base64Image;
 use Exception;
 use Framework\Http\Message;
 use Framework\Http\Request;
-use Framework\Model\ModelNotFoundException;
+use Framework\Model\Exceptions\ModelNotFoundException;
 
 class InstituteController extends AdminController
 {
