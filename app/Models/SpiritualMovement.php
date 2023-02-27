@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
+use App\Enums\SpiritualMovementType;
 use App\Services\SystemAdministration\SiteMap\ChangeFreq;
 use App\Services\SystemAdministration\SiteMap\EntitySiteMappable;
 use Framework\Model\Entity;
@@ -16,6 +19,7 @@ use Framework\Support\StringHelper;
  * @property null|string $highlighted
  * @property string $created_at
  * @property null|string $updated_at
+ * @property null|string $type
  */
 class SpiritualMovement extends Entity
 {
@@ -28,7 +32,7 @@ class SpiritualMovement extends Entity
 
     public function getUrl(): string
     {
-        return route('portal.spiritual_movement.view', ['slug' => $this->slug]);
+        return route("portal.{$this->type}.view", ['slug' => $this->slug]);
     }
 
     public function priority(): ?string
@@ -39,5 +43,10 @@ class SpiritualMovement extends Entity
     public function changeFreq(): ChangeFreq
     {
         return ChangeFreq::monthly;
+    }
+
+    public function type(): string
+    {
+        return SpiritualMovementType::from($this->type)->translate();
     }
 }

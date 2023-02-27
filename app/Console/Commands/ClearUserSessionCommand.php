@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use App\Services\SystemAdministration\ClearUserSession;
@@ -8,6 +10,11 @@ use Framework\Console\Out;
 
 class ClearUserSessionCommand extends Command
 {
+    public function __construct(
+        private readonly ClearUserSession $service
+    ) {
+    }
+
     public static function signature(): string
     {
         return 'clear:session';
@@ -15,8 +22,10 @@ class ClearUserSessionCommand extends Command
 
     public function handle(): void
     {
-        (new ClearUserSession())->run();
-
-        Out::success('user session cleared');
+        if($this->service->run()) {
+            Out::success('user session cleared.');
+        } else {
+            Out::error('could not delete user session.');
+        }
     }
 }

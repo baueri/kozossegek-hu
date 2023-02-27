@@ -8,7 +8,6 @@ use Framework\Console\Out;
 
 class ClearCache extends Command
 {
-
     public static function signature(): string
     {
         return 'cache:clear';

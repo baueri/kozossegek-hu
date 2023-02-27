@@ -1,5 +1,17 @@
 @title('Verzióinformáció')
 @extends('admin')
+<h3>v3.0 (2023.02.27</h3>
+<ul>
+    <li>[NEW]: Szerzetesrendek menedzselése admin oldalon</li>
+    <li>[NEW]: "Közösségekről mondták" rész a főoldalon</li>
+    <li>[NEW]: Főoldal redesign</li>
+    <li>[NEW]: Felhasználó admin oldalon "online" mező</li>
+    <li>[CHANGE]: Lelkiségi mozgalmak oldal redesign</li>
+    <li><b>Gépház</b></li>
+    <li>[NEW]: módosítás dátuma automatikus frissítése olyan tábla mentésekor, ahol ez a mező jelen van</li>
+    <li>[NEW]: touch függvény az entity query builderbe</li>
+    <li>[NEW]: Carbon típusú model mezők datetime-má alakítása db íráskor</li>
+</ul>
 <h3>v2.4.1 (2023.01.13)</h3>
 <ul>
     <li><b>Gépház</b></li>

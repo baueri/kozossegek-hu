@@ -5,7 +5,7 @@ namespace App\Admin\Group\Services;
 use App\Helpers\GroupHelper;
 use App\QueryBuilders\ChurchGroups;
 use Framework\Http\Message;
-use Framework\Model\ModelNotFoundException;
+use Framework\Model\Exceptions\ModelNotFoundException;
 
 class DeleteGroup
 {
