@@ -8,7 +8,7 @@ final class AddSpiritualMovementType extends AppMigration
     public function up(): void
     {
         $this->table('spiritual_movements')
-            ->enum('type', ['spiritual_movement', 'monastic_community'])
+            ->enum('type', ['spiritual_movement', 'monastic_community'], ['default' => 'spiritual_movement'])
             ->save();
     }
 
