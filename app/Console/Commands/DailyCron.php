@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use App\Services\SystemAdministration\OpenStreetMap\OpenStreetMapSync;
+use Framework\Console\BaseCommands\ClearCache;
 use Framework\Console\Command;
 use Framework\Console\Out;
 use Framework\Enums\Environment;
@@ -21,7 +24,8 @@ class DailyCron extends Command
             resolve(ClearUserSessionCommand::class),
             resolve(AggregateLogsCommand::class),
             resolve(SiteMapGenerator::class)->withArgs('--ping-google=' . (int) app()->envIs(Environment::production)),
-            resolve(OpenStreetMapSync::class)
+            resolve(OpenStreetMapSync::class),
+            resolve(ClearCache::class)
         ];
 
         $hasErrors = false;
@@ -36,9 +40,11 @@ class DailyCron extends Command
         });
 
         if (!$hasErrors) {
-            Out::success('DAILY CRON RAN SUCCEFFULLY');
+            Out::success($message = 'DAILY CRON RAN SUCCEFFULLY');
         } else {
-            Out::warning('DAILY CRON RAN WITH SOME ERRORS');
+            Out::warning($message = 'DAILY CRON RAN WITH SOME ERRORS');
         }
+
+        file_put_contents(ROOT . '.daily_cron_last_run', date('Y-m-d H:i:s') . ' - ' . $message, FILE_APPEND);
     }
 }

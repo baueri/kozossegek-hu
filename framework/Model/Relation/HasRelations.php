@@ -11,7 +11,7 @@ trait HasRelations
     private array $relationCounts = [];
 
     /**
-     * @var \Framework\Support\Collection<\Framework\Model\Relation\Relation>
+     * @var Collection<Relation>
      */
     protected Collection $preparedRelations;
 
@@ -49,7 +49,7 @@ trait HasRelations
 
     public function getRelation(string $relation, $callback = null): Relation
     {
-        /** @var \Framework\Model\Relation\Relation $rel */
+        /** @var Relation $rel */
         $rel = $this->{$relation}();
         if ($callback) {
             $callback($rel->queryBuilder);

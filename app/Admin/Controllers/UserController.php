@@ -17,15 +17,16 @@ use Framework\Http\Message;
 use Framework\Http\Request;
 use Framework\Http\Session;
 use Framework\Mail\Mailer;
-use Framework\Model\ModelNotFoundException;
+use Framework\Model\Exceptions\ModelNotFoundException;
 use Framework\Support\Password;
 
 class UserController extends AdminController
 {
     public function list(UserTable $table): string
     {
-        $selected_user_group = request()['user_group'];
-        return view('admin.user.list', compact('table', 'selected_user_group'));
+        $selected_user_group = $this->request->get('user_group');
+        $online = $this->request->get('online');
+        return view('admin.user.list', compact('table', 'selected_user_group', 'online'));
     }
 
     public function create(): string

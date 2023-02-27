@@ -8,6 +8,7 @@ use App\Http\Components\FontawesomeIcon;
 use App\Http\Components\HoneyPotComponent;
 use App\Http\Components\OpenStreeMap;
 use App\Http\Components\Selectors\AgeGroupSelector;
+use App\Http\Components\Selectors\BaseSelector;
 use App\Http\Components\Selectors\JoinModeSelector;
 use App\Http\Components\Selectors\OccasionFrequencySelector;
 use App\Http\Components\Selectors\OnDaysSelector;
@@ -21,7 +22,7 @@ return [
     ],
     'directives' => [
         'header' => function ($matches) {
-            if (strpos($matches[0], '@endheader') !== false) {
+            if (str_contains($matches[0], '@endheader')) {
                 return '<?php }); ?>';
             }
 
@@ -69,6 +70,7 @@ return [
         },
         'component' => ComponentParser::class,
         'selected' => fn ($matches) => "<?php if($matches[1]): echo 'selected'; endif; ?>",
+        'checked' => fn ($matches) => "<?php if($matches[1]): echo 'checked'; endif; ?>",
         'dump' => fn($matches) => "<?php d($matches[1]); ?>"
     ],
     'components' => [
@@ -77,6 +79,7 @@ return [
         'age_group_selector' => AgeGroupSelector::class,
         'occasion_frequency_selector' => OccasionFrequencySelector::class,
         'priority_selector' => PrioritySelector::class,
-        'open_street_map' => OpenStreeMap::class
+        'open_street_map' => OpenStreeMap::class,
+        'base_selector' => BaseSelector::class
     ]
 ];

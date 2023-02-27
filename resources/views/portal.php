@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="/assets/fontawesome/css/all.min.css">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:wght@200|Open+Sans:300,400,600|Work+Sans:400,700|Raleway|Roboto+Condensed:wght@100,300;400|Poppins" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Cardo:400,700|Oswald" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="search" type="application/opensearchdescription+xml" title="kozossegek.hu" href="/opensearch.xml">
 
@@ -38,7 +39,7 @@
     @if($header_background)
         <div class="featured-header header-outer">
             @include('portal.partials.main_menu')
-            <div class="featured-bg" style="background:url('{{ $header_background }}') no-repeat top center"></div>
+            <div class="featured-bg" style="background:url('{{ $header_background }}') no-repeat top 66px center"></div>
             @yield('header_content')
         </div>
     @else
