@@ -137,8 +137,8 @@ class UserTable extends AdminTable implements Deletable, Editable
         }
 
         $query->withCount('groups', fn(GroupViews $groupViews) => $groupViews->active());
-        $online = ['sessions', fn (UserSessions $query) => $query->online()];
-        $query->with(...$online)->orderBy('updated_at', 'desc');
+        $online = ['sessions', fn (UserSessions $query) => $query->online()->orderBy('updated_at', 'desc')];
+        $query->with(...$online);
 
         if ($this->request->get('online')) {
             $query->whereHas(...$online);
