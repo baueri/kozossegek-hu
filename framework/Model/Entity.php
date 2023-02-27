@@ -12,6 +12,11 @@ abstract class Entity
 {
     protected static string $primaryCol = 'id';
 
+    public static function updatedCol(): ?string
+    {
+        return null;
+    }
+
     public readonly array $originalAttributes;
 
     public array $relations = [];
@@ -103,5 +108,10 @@ abstract class Entity
         $newValues = $this->attributes;
 
         return array_diff($newValues, $original);
+    }
+
+    public function setRelation(string $name, $relation): void
+    {
+        $this->relations[$name] = $relation;
     }
 }

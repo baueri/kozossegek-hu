@@ -7,6 +7,8 @@ use Framework\Database\Builder;
 use Framework\Database\Repository\Events\ModelCreated;
 use Framework\Database\Repository\Events\ModelDeleted;
 use Framework\Event\EventDisptatcher;
+use Framework\Model\Exceptions\ModelNotFoundException;
+use Framework\Model\Exceptions\QueryBuilderException;
 use Framework\Model\Relation\HasRelations;
 use Framework\Support\Collection;
 use Framework\Support\StringHelper;
@@ -102,7 +104,7 @@ abstract class EntityQueryBuilder
     }
 
     /**
-     * @return T|null
+     * @return Entity|T|null
      */
     public function getInstance(?array $values = null)
     {
@@ -146,7 +148,7 @@ abstract class EntityQueryBuilder
     }
 
     /**
-     * @throws \Framework\Model\ModelNotFoundException
+     * @throws ModelNotFoundException
      * @phpstan-return T
      */
     public function findOrFail($id): Entity
@@ -325,14 +327,32 @@ abstract class EntityQueryBuilder
         return $this->builder->update($values);
     }
 
+    /**
+     * @throws QueryBuilderException
+     */
+    public function touch(Entity $entity): int
+    {
+        if (!$entity::updatedCol()) {
+            throw new QueryBuilderException('method updatedCol must return a valid column name.');
+        }
+
+        return static::query()->where(static::primaryCol(), $entity->getId())
+            ->update([$entity::updatedCol() => now()->format('Y-m-d H:i:s')]);
+    }
+
     public function save(Entity $entity, ?array $values = null): int
     {
-        if (!$values) {
-            $values = $entity->getAttributes();
-        } else {
+        $toUpdate = $values ?: $entity->getAttributes();
+        if ($values) {
             $entity->fill($values);
         }
-        return $this->query()->where(static::primaryCol(), $entity->getId())->update($values);
+
+        $col = $entity::updatedCol();
+        if ($col && !array_key_exists($col, $values)) {
+            $toUpdate[$col] = $entity->{$col} = now();
+        }
+
+        return $this->query()->where(static::primaryCol(), $entity->getId())->update($toUpdate);
     }
 
     public function insert(array $values)

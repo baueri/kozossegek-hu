@@ -17,7 +17,7 @@ use Framework\Http\Message;
 use Framework\Http\Request;
 use Framework\Http\Session;
 use Framework\Mail\Mailer;
-use Framework\Model\ModelNotFoundException;
+use Framework\Model\Exceptions\ModelNotFoundException;
 use Framework\Support\Password;
 
 class UserController extends AdminController

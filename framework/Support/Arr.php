@@ -181,4 +181,16 @@ class Arr
             default => explode($separator, $text)
         };
     }
+
+    public static function except(array $list, array|string|int $except): array
+    {
+        $except = (array) $except;
+        foreach ($list as $key => $item) {
+            if (in_array($key, $except)) {
+                unset($list[$key]);
+            }
+        }
+
+        return $list;
+    }
 }
