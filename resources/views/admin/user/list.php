@@ -4,12 +4,31 @@
     @filter_box()
         <div class="row">
             <div class="col-md-3">
-                <input type="text" class="form-control" placeholder="keresés névre, email címre" name="search" value="{{ $table->request['search'] }}">
+                <div class="form-group">
+                    <label>Keresés névre, email címre</label>
+                    <input type="text" class="form-control" name="search" value="{{ $table->request['search'] }}">
+                </div>
             </div>
             <div class="col-md-2">
-                @user_group_selector($selected_user_group)
+                <div class="form-group">
+                    <label>Jogosultság</label>
+                    @user_group_selector($selected_user_group)
+                </div>
             </div>
             <div class="col-md-2">
+                <div class="form-group">
+                    <label>Online</label>
+                    @component('base_selector', [
+                        'name' => 'online',
+                        'placeholder' => '-- Mind --',
+                        'values' => ['logged_in' => 'Belépve'],
+                        'selected_value' => $online
+                    ])
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
                 <button class="btn btn-primary" type="submit">keresés</button>
             </div>
         </div>

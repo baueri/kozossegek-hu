@@ -17,4 +17,9 @@ class UserSessions extends EntityQueryBuilder
     {
         return $this->has(Has::one, Users::class, 'id', 'user_id');
     }
+
+    public function online(): self
+    {
+        return $this->where('updated_at', '>=', now()->subHours(2));
+    }
 }
