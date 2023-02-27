@@ -57,12 +57,12 @@ return [
         ],
     ],
     [
-        'title' => 'Lelkiségi mozgalmak',
+        'title' => 'Mozgalmak, rendek',
         'icon' => 'landmark',
         'as' => 'admin.spiritual_movement.list',
         'submenu' => [
             [
-                'title' => 'Lelkiségi mozgalmak',
+                'title' => 'Mozgalmak, rendek',
                 'icon' => 'landmark',
                 'as' => 'admin.spiritual_movement.list',
                 'similars' => ['admin.spiritual_movement.edit'],

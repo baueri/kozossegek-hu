@@ -3,22 +3,28 @@
 namespace App\Admin\Controllers;
 
 use App\Admin\SpiritualMovement\SpiritualMovementTable;
-use App\QueryBuilders\SpiritualMovements;
 use App\Models\SpiritualMovement;
+use App\QueryBuilders\SpiritualMovements;
+use Exception;
 use Framework\Http\Message;
 use Framework\Http\Request;
+use Framework\Model\Exceptions\ModelNotFoundException;
 use Framework\Support\StringHelper;
 
 class SpiritualMovementController
 {
-    public function spiritualMovements(SpiritualMovementTable $table)
+    public function spiritualMovements(Request $request, SpiritualMovementTable $table): string
     {
-        $name = request()->get('name');
-        return view('admin.spiritual_movement.spiritual_movements', compact('table', 'name'));
+        $name = $request->get('name');
+        $type = $table->type;
+        return view(
+            'admin.spiritual_movement.spiritual_movements',
+            compact('table', 'name', 'type')
+        );
     }
 
     /**
-     * @throws \Framework\Model\ModelNotFoundException
+     * @throws ModelNotFoundException
      */
     public function edit(SpiritualMovements $query): string
     {
@@ -27,7 +33,7 @@ class SpiritualMovementController
         return view('admin.spiritual_movement.edit', compact('spiritualMovement', 'action'));
     }
 
-    public function update(Request $request, SpiritualMovements $repo)
+    public function update(Request $request, SpiritualMovements $repo): void
     {
         try {
             $data = $request->only(
@@ -35,12 +41,13 @@ class SpiritualMovementController
                 'description',
                 'website',
                 'image_url',
-                'highlighted'
+                'highlighted',
+                'type'
             );
 
             $repo->where('id', $request['id'])->update($data);
             Message::success('Sikeres mentés');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             process_error($e);
             Message::danger('Hiba történt a mentés során');
         } finally {
@@ -56,9 +63,9 @@ class SpiritualMovementController
         ]);
     }
 
-    public function doCreate(Request $request, SpiritualMovements $repo)
+    public function doCreate(Request $request, SpiritualMovements $repo): ?string
     {
-        $data = $request->only('name', 'description', 'website', 'image_url');
+        $data = $request->only('name', 'description', 'website', 'image_url', 'type', 'highlighted');
         if ($repo->where('name', $request['name'])->exists()) {
             Message::danger('Ez a lelkiségi mozgalom már létezik!');
 
@@ -77,7 +84,7 @@ class SpiritualMovementController
     }
 
 
-    public function delete(Request $request)
+    public function delete(Request $request): void
     {
         builder('spiritual_movements')->where('id', $request['id'])->delete();
 

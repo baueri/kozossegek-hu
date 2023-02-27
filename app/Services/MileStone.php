@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use Exception;
+
 final class MileStone
 {
     private static array $mileStones = [];
@@ -13,7 +15,7 @@ final class MileStone
         }
 
         if (isset(self::$mileStones[$name])) {
-            throw new \Exception("Measuring {$name} already started");
+            throw new Exception("Measuring {$name} already started");
         }
 
         self::$mileStones[$name] = [
