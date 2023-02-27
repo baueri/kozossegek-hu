@@ -3,6 +3,7 @@
 namespace Framework\Database;
 
 use Closure;
+use DateTimeInterface;
 use Framework\Support\Arr;
 use Framework\Support\Collection;
 
@@ -434,7 +435,18 @@ class Builder
 
         [$query, $bindings] = $this->build();
         $table = implode(', ', $this->table);
-        $allBindings = array_merge(array_values($values), $bindings);
+        $allBindings = array_map(
+            function ($value) {
+                if ($value instanceof DateTimeInterface) {
+                    return $value->format('Y-m-d H:i:s');
+                }
+                return $value;
+            },
+            array_merge(
+                array_values($values),
+                $bindings
+            ));
+
         return $this->db->update("update {$table} set {$set} {$query}", ...$allBindings);
     }
 

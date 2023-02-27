@@ -4,12 +4,12 @@ namespace Framework\Http;
 
 use Error;
 use Exception;
+use Framework\Exception\UnauthorizedException;
 use Framework\Http\Exception\PageNotFoundException;
 use Framework\Http\Exception\RouteNotFoundException;
-use Framework\Middleware\Middleware;
-use Framework\Exception\UnauthorizedException;
 use Framework\Kernel;
-use Framework\Model\ModelNotFoundException;
+use Framework\Middleware\Middleware;
+use Framework\Model\Exceptions\ModelNotFoundException;
 use Throwable;
 
 class HttpKernel implements Kernel

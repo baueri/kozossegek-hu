@@ -1,12 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Components\Selectors;
 
-/**
- * Description of SpiritualMovementSelector
- *
- * @author ivan
- */
 class SpiritualMovementSelector
 {
     public function render($selected_spiritual_movement)

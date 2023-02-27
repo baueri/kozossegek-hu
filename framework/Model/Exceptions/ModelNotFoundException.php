@@ -1,10 +1,10 @@
 <?php
 
-namespace Framework\Model;
+namespace Framework\Model\Exceptions;
 
 use Throwable;
 
-class ModelNotFoundException extends \Exception
+class ModelNotFoundException extends QueryBuilderException
 {
     public function __construct($message = "", $code = 404, Throwable $previous = null)
     {

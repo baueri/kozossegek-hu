@@ -21,7 +21,7 @@ use Framework\Exception\FileTypeNotAllowedException;
 use Framework\Http\Message;
 use Framework\Http\Request;
 use Framework\Mail\Mailer;
-use Framework\Model\ModelNotFoundException;
+use Framework\Model\Exceptions\ModelNotFoundException;
 use Throwable;
 
 class GroupController extends AdminController

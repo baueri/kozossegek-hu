@@ -3,6 +3,7 @@
 namespace Framework\Model;
 
 use Framework\Database\Builder;
+use Framework\Model\Exceptions\ModelNotFoundException;
 use Framework\Repository;
 use RuntimeException;
 

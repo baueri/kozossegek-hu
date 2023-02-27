@@ -1,5 +1,4 @@
 @section('header')
-<link href="https://fonts.googleapis.com/css?family=Cardo:400,700|Oswald" rel="stylesheet">
 <meta name="description"
       content="A kozossegek.hu egy katolikus közösségkereső portál, amelyet azért hoztunk létre, hogy segítsünk mindenkinek megtalálni a közösségét akárhol is éljen, tanuljon, vagy dolgozzon, nemtől, kortól, életállapottól függetlenül."/>
 <meta name="keywords" content="közösség, katolikus, közösségkereső, keresztény, karizmatikus, imakör, dicsőítő"/>
@@ -32,22 +31,19 @@
         <form method="get" id="finder" class="mt-5 text-center" action="@route('portal.groups')">
             <div id="search-group" class="rounded-pill bg-white py-1 px-1">
                 <div class="row">
-                    <div class="col-lg-4 border-right mb-2 mb-lg-0">
-                        <input type="text" class="form-control rounded-pill" placeholder="kulcsszó, pl.:  egyetemista..." name="search">
-                    </div>
-                    <div class="col-lg-3 border-right mb-2 mb-lg-0">
-                        <input type="text" class="form-control rounded-pill" placeholder="város" name="varos">
+                    <div class="col-lg-7 border-right mb-2 mb-lg-0">
+                        <input type="text" class="form-control rounded-pill" placeholder="Milyen közösséget keresel? pl.: Budapest egyetemista..." name="search">
                     </div>
                     <div class="col-lg-3 mb-2 mb-lg-0">
-                        <select class="form-control rounded-pill" style="color:#aaa" name="korosztaly">
-                            <option value="">-- korosztály --</option>
+                        <select class="form-control rounded-pill" style="color:#aaa" name="bármilyen korosztaly">
+                            <option value="">-- bármilyen korosztály --</option>
                             <option value="tinedzser">tinédzser</option>
                             <option value="fiatal_felnott">fiatal felnőtt</option>
                             <option value="kozepkoru">középkorú</option>
                             <option value="nyugdijas">nyugdíjas</option>
                         </select>
                     </div>
-                    <div class="col-lg-2"><button type="submit" class="btn btn-darkblue rounded-pill px-3 w-100"><i class="fa fa-search"></i> Keresés</button> </div>
+                    <div class="col-lg-2"><button type="submit" class="btn btn-altblue rounded-pill px-3 w-100"><i class="fa fa-search"></i> Keresés</button> </div>
                 </div>
             </div>
         </form>
@@ -55,59 +51,63 @@
 </div>
 @endsection
 @extends('portal')
-<div class="jumbotron main-block mt-0">
-    <div class="container text-center">
+<div class="container text-center">
+    <div class="p-3 p-sm-4">
         <h2 class="mb-4 title-secondary">Mi ez az oldal?</h2>
         <p>A kozossegek.hu egy katolikus közösségkereső portál, amelyet azért hoztunk létre, hogy segítsünk mindenkinek megtalálni a közösségét akárhol is éljen, tanuljon, vagy dolgozzon, nemtől, kortól, életállapottól függetlenül. Hisszük, hogy az ember alapszükséglete a közösséghez tartozás, hiszen ezáltal tud önmaga lenni, így tud megbirkózni az élet nehézségeivel, így válhat az élete teljessé.</p>
         <p>Kívánjuk, hogy ismerd fel azt az erőt, amely a keresztény közösségekben rejlik, találd meg saját helyedet és légy aktív tagja az Egyháznak!</p>
         <p><strong>"Ahol ugyanis ketten vagy hárman összegyűlnek a nevemben, ott vagyok közöttük.” Mt.18,20</strong></p>
     </div>
 </div>
-<div class="container main-block">
-    <h2 class="text-center title-secondary">Hogyan működik?</h2>
-    <div id="instructions" class="row mt-5 mb-5">
-        <div class="col-md-4 text-center"><img style="width: 100px;" src="/images/search.png" alt="" />
-            <h6 class="text-danger mt-4 mb-3">Keresd meg!</h6>
-            <p>Keress rá településre, lelkiségi mozgalomra, <br/>a közösség jellegére, vagy arra, ami számodra fontos egy közösségben!</p>
-        </div>
-        <div class="col-md-4 text-center"><img style="width: 100px;" src="/images/mouse.png" alt="" />
-            <h6 class="text-danger mt-4 mb-3">Kattints rá!</h6>
-            <p>A listában megtalálható közösségekre kattintva többet megtudhatsz a részletekről!</p>
-        </div>
-        <div class="col-md-4 text-center"><img style="width: 100px;" src="/images/contact.png" alt="" />
-            <h6 class="text-danger mt-4 mb-3">Írj nekik!</h6>
-            <p>Amennyiben felkeltette az érdeklődésedet egy közösség, az adatlapján keresztül vedd fel a kapcsolatot a közösségvezetővel!</p>
+<div class="bg-lightblue">
+    <div class="container">
+        @include('portal.partials.instructions')
+    </div>
+</div>
+<div class="kozosseghez-tartozni">
+    <div class="container">
+        <div class="text-center text-light p-4 p-sm-5">
+            <h2 class="title-secondary mb-5">Mert közösséghez tartozni jó!</h2>
+            <p>Közösséghez tartozni lehetőség és felelősség is egyben. Lehetőség a lelki elmélyülésre és az emberi kapcsolatok mélyítésére. Ugyanakkor felelősség is, hogy az Istentől kapott készségeket, képességeket, talentumokat felhasználva mások segítségére lehessünk.</p>
+            <p>Kedvcsinálónak olvasd el a <a title="5 érv, hogy elkezdj közösségbe járni" href="https://777blog.hu/2016/09/20/5-erv-hogy-elkezdj-kozossegbe-jarni/" target="_blank" class="text-white" style="text-decoration: underline">777blog.hu írását</a>, hogy miért jó közösségbe járni!</p>
         </div>
     </div>
 </div>
-<div class="jumbotron main-block mt-0 pt-0 pb-0 kozosseghez-tartozni">
+<section class="bg-lightblue py-5">
     <div class="container">
-        <div class="row">
-            <div class="col-lg-6 offset-lg-6 col-12 pt-5">
-                <div class="shadowed">
-                    <h2 class="title-secondary display-5">Mert közösséghez tartozni jó!</h2>
-                    <p>Közösséghez tartozni lehetőség és felelősség is egyben. Lehetőség a lelki elmélyülésre és az emberi kapcsolatok mélyítésére. Ugyanakkor felelősség is, hogy az Istentől kapott készségeket, képességeket, talentumokat felhasználva mások segítségére lehessünk.</p>
-                    <p>Kedvcsinálónak olvasd el a <a title="" href="https://777blog.hu/2016/09/20/5-erv-hogy-elkezdj-kozossegbe-jarni/" target="_blank" data-original-title="5 érv, hogy elkezdj közösségbe járni">777blog.hu írását,</a> hogy miért jó közösségbe járni!</p>
+        <div class="bg-altblue text-light">
+            <div class="row">
+                <div class="col-lg-6" style="background: url('/storage/uploads/kozosseget_vezetek.jpg') no-repeat center; background-size: cover"></div>
+                <div class="col-lg-6 align-middle h-100">
+                    <div class="px-3 px-md-5 py-3 my-md-5 my-xs-3">
+                        <h2 class="text-center title-secondary font-weight-bold mb-4">Közösséget vezetek, szeretném hirdetni.<br/> Mit tegyek?</h2>
+                        <p class="text-justify">
+                            Nagyon örülünk annak, ha te is hirdetnéd nálunk a közösséged! Ehhez nem kell mást tenned, mint ellátogatnod a <a class="text-light" href="@route('portal.register_group')" target="_blank">közösséget vezetek</a> oldalra, majd az ott található űrlapot kitölteni és elküldeni nekünk. A regisztrációt követően, jóváhagyás után, közösséged a látogatók számára is elérhető lesz.
+                        </p>
+                        <p class="text-center mt-4">
+                            <a class="btn btn-outline-light px-5" href="@route('portal.register_group')">Közösséget vezetek</a>
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<div class="container main-block">
-    <div class="row">
-        <div class="col-md-6"><img style="width: 100%;" src="/storage/uploads/kozosseget_vezetek.jpg" alt="" /></div>
-        <div class="col-md-6 align-middle h-100 mt-3 mt-md-0">
-            <h3 class="text-center title-secondary mb-4">Közösséget vezetek, szeretném hirdetni.<br/> Mit tegyek?</h3>
-            <p class="text-justify">Nagyon örülünk annak, ha te is hirdetnéd nálunk a közösséged! Ehhez nem kell mást tenned, mint ellátogatnod a <a href="@route('portal.register_group')" target="_blank">közösséget vezetek</a> oldalra, majd az ott található űrlapot kitölteni és elküldeni nekünk. A regisztrációt követően, jóváhagyás után, közösséged a látogatók számára is elérhető lesz.</p>
-            <p class="text-center"><a class="btn btn-darkblue" href="@route('portal.register_group')">Közösséget vezetek</a></p>
-        </div>
-    </div>
-</div>
-<div class="jumbotron main-block mt-0  pt-0 pb-0">
+</section>
+@include('portal.partials.testimonials')
+
+<div class="bg-lightblue px-2 px-sm-5 py-5">
     <div class="container">
-        <div class="text-center py-5">
-            <h2 class="title-secondary">Közösségek Magyarországon</h2>
+        <div class="row">
+            <div class="col-lg-4 col-12">
+                <h2 class="title-secondary mb-5 text-lg-right">Közösségek Magyarországon</h2>
+                <div class="text-lg-right">
+                    <p>Országszerte jelenleg több, mint 80 aktív katolikus közösség regisztrált be oldalunkra.</p>
+                    <p>Keresd meg a neked való közösséget, vagy amennyiben te is vezetsz egyet, legyen a következő regisztrált közösség a tied!</p>
+                </div>
+            </div>
+            <div class="col-lg-8 col-12">
+                @component('open_street_map', ['types' => ['institute']])
+            </div>
         </div>
-        @component('open_street_map', ['types' => ['institute']])
     </div>
 </div>

@@ -4,6 +4,7 @@ namespace App\Auth;
 
 use App\Models\User;
 use App\QueryBuilders\Users;
+use App\QueryBuilders\UserSessions;
 use Framework\Support\Password;
 use Framework\Traits\ManagesErrors;
 
@@ -12,7 +13,7 @@ class Authenticate
     use ManagesErrors;
 
     public function __construct(
-        private Users $repository
+        private readonly Users $repository
     ) {
     }
 
@@ -37,13 +38,14 @@ class Authenticate
         return $user;
     }
 
-    public function authenticateBySession()
+    public function authenticateBySession(): void
     {
-        $result = db()->first('select user_id from user_sessions where unique_id=?', [session_id()]);
+        $query = UserSessions::query();
+        $session = $query->where('unique_id', session_id())->with('user')->first();
 
-        if ($result && $userId = $result['user_id']) {
-            $user = $this->repository->find($userId);
-            Auth::setUser($user);
+        if ($session && $session->user) {
+            $query->touch($session);
+            Auth::setUser($session->user);
         }
     }
 }

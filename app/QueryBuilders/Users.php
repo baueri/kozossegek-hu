@@ -5,6 +5,8 @@ namespace App\QueryBuilders;
 use App\Models\User;
 use App\QueryBuilders\Relations\HasManyChurchGroupViews;
 use Framework\Model\EntityQueryBuilder;
+use Framework\Model\Relation\Has;
+use Framework\Model\Relation\Relation;
 use Framework\Model\SoftDeletes;
 use Framework\Support\StringHelper;
 
@@ -52,5 +54,10 @@ class Users extends EntityQueryBuilder
         }
 
         return $this;
+    }
+
+    public function sessions(): Relation
+    {
+        return $this->has(Has::many, UserSessions::class);
     }
 }
