@@ -11,4 +11,11 @@ final class AddUpdatedAtToUserSessionsTable extends AppMigration
             ->updatedAt()
             ->save();
     }
+
+    public function down()
+    {
+        $this->table('user_sessions')
+            ->removeColumn('updated_at')
+            ->save();
+    }
 }
