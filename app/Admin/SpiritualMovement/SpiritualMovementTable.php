@@ -9,6 +9,7 @@ use App\Enums\SpiritualMovementType;
 use App\Models\SpiritualMovement;
 use App\QueryBuilders\ChurchGroups;
 use App\QueryBuilders\SpiritualMovements;
+use Framework\Database\Builder;
 use Framework\Http\Request;
 use Framework\Model\PaginatedModelCollection;
 
@@ -46,7 +47,7 @@ class SpiritualMovementTable extends AdminTable implements Editable, Deletable
             ->withCount('groups', fn (ChurchGroups $query) => $query->active());
 
         if ($name = $this->request['name']) {
-            $query->where(function (SpiritualMovements $query) use ($name) {
+            $query->where(function (Builder $query) use ($name) {
                 return $query->where('name', 'like', "%{$name}%")
                     ->orWhere('website', 'like', "%{$name}%");
             });

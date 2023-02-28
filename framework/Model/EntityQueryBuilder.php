@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Framework\Model;
 
 use Closure;
@@ -23,7 +25,7 @@ abstract class EntityQueryBuilder
 
     public const TABLE = null;
 
-    protected Builder $builder;
+    public readonly Builder $builder;
 
     final public function __construct()
     {

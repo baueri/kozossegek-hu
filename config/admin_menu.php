@@ -164,6 +164,11 @@ return [
                 'icon' => 'exclamation-circle ' . (site_has_error_logs() ? 'text-danger' : ''),
                 'as' => 'admin.error_log',
             ],
+            [
+                'title' => 'Todo',
+                'as' => 'admin.todo',
+                'icon' => 'clipboard-list'
+            ]
         ],
     ],
     [
