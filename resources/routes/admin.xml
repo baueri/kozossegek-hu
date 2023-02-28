@@ -148,6 +148,6 @@
         <route method="get" uri="statistics/map" as="statistics.map" controller="StatisticsMapController"/>
 
         <route method="get" uri="" controller="DashboardController" use="dashboard" as="dashboard"/>
-
+        <route method="get" uri="todo" view="admin.todos" as="todo"/>
     </route-group>
 </routes>
