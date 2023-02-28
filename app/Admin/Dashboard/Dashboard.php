@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Admin\Dashboard;
 
 use App\Admin\Settings\Services\ErrorLogParser;
@@ -77,7 +79,8 @@ class Dashboard
             return null;
         }
 
-        [$version, $date] = explode(' ', $matches[1]);
+        $header = $matches[1];
+        [, $date] = explode(' ', $header);
 
         $date = str_replace(['(', ')', '.'], ['', '', '-'], $date);
 
@@ -88,15 +91,11 @@ class Dashboard
             return null;
         }
 
-        $dom = new \DOMDocument();
-        $dom->loadHTML($page);
-
-        /* @var $ul \DOMElement */
-        $ul = $dom->getElementsByTagName('ul')[0];
+        preg_match('~<ul>(.*?)</ul>~s', $page, $notes);
 
         return [
-            'header' => $matches[1],
-            'notes' => htmlspecialchars_decode(utf8_decode($ul->ownerDocument->saveHTML($ul)))
+            'header' => $header,
+            'notes' => $notes[0]
         ];
     }
 }
