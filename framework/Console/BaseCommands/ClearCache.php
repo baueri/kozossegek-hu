@@ -4,7 +4,6 @@ namespace Framework\Console\BaseCommands;
 
 use Exception;
 use Framework\Console\Command;
-use Framework\Console\Out;
 
 class ClearCache extends Command
 {
@@ -19,9 +18,9 @@ class ClearCache extends Command
     public function handle(): void
     {
         if (!rrmdir(CACHE . '/')) {
-            Out::fatal('Nem sikerült a cache törlés');
+            $this->output->fatal('Nem sikerült a cache törlés');
         }
 
-        Out::success('Sikeres cache törlés');
+        $this->output->success('Sikeres cache törlés');
     }
 }

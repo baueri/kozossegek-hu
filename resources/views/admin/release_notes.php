@@ -1,5 +1,12 @@
 @title('Verzióinformáció')
 @extends('admin')
+<h3>v3.0 (2023.03.02)</h3>
+<ul>
+    <li><b>Gépház</b></li>
+    <li>[NEW]: console parancs futtatás "silent" módban</li>
+    <li>[CHANGE]: default console color</li>
+    <li>[FIX]: console command futása alatt küldött hiba email javítása</li>
+</ul>
 <h3>v3.0 (2023.02.27)</h3>
 <ul>
     <li>[NEW]: Szerzetesrendek menedzselése admin oldalon</li>
@@ -12,7 +19,7 @@
     <li>[NEW]: módosítás dátuma automatikus frissítése olyan tábla mentésekor, ahol ez a mező jelen van</li>
     <li>[NEW]: touch függvény az entity query builderbe</li>
     <li>[NEW]: Carbon típusú model mezők datetime-má alakítása db íráskor</li>
-    <li>[FIX]: Deprecated `utf8_encode` lecserélése</li>
+    <li>[FIX]: Deprecated `utf8_encode` lecserélése</li>ű
 </ul>
 <h3>v2.4.1 (2023.01.13)</h3>
 <ul>
