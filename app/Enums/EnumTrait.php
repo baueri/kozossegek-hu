@@ -4,6 +4,7 @@ namespace App\Enums;
 
 use BackedEnum;
 use Framework\Support\Collection;
+use UnitEnum;
 
 trait EnumTrait
 {
@@ -44,7 +45,7 @@ trait EnumTrait
         return static::getVal($this);
     }
 
-    private static function getVal($case): string
+    private static function getVal(UnitEnum $case)
     {
         if ($case instanceof BackedEnum) {
             return $case->value;

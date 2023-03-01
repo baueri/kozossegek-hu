@@ -6,13 +6,13 @@ namespace App\Console\Commands;
 
 use App\Services\SystemAdministration\ClearUserSession;
 use Framework\Console\Command;
-use Framework\Console\Out;
 
 class ClearUserSessionCommand extends Command
 {
     public function __construct(
         private readonly ClearUserSession $service
     ) {
+        parent::__construct();
     }
 
     public static function signature(): string
@@ -22,10 +22,7 @@ class ClearUserSessionCommand extends Command
 
     public function handle(): void
     {
-        if($this->service->run()) {
-            Out::success('user session cleared.');
-        } else {
-            Out::error('could not delete user session.');
-        }
+        $this->service->run();
+        $this->output->success('user session cleared.');
     }
 }

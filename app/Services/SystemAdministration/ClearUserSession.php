@@ -11,6 +11,6 @@ class ClearUserSession
 {
     public function run(): bool
     {
-        return (bool) db()->delete('delete from user_sessions where created_at < DATE_SUB(NOW(), INTERVAL 1 DAY)');
+        return (bool) db()->delete('delete from user_sessions where DATE(created_at) < DATE_SUB(NOW(), INTERVAL 1 DAY)');
     }
 }
