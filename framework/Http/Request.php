@@ -23,11 +23,11 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
 
     public Collection $files;
 
-    public string $requestMethod;
+    public ?string $requestMethod;
 
-    public string $uri;
+    public ?string $uri;
 
-    public RouteInterface $route;
+    public ?RouteInterface $route = null;
 
     private ?array $uriValues = null;
 
@@ -41,9 +41,9 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
 
         $this->files = new Collection($_FILES);
 
-        $this->requestMethod = $_SERVER['REQUEST_METHOD'];
+        $this->requestMethod = $_SERVER['REQUEST_METHOD'] ?? null;
 
-        $this->uri = urldecode(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
+        $this->uri = urldecode(parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH));
     }
 
     public function __call($name, $arguments)

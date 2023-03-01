@@ -6,8 +6,8 @@ namespace App\Console\Commands;
 
 use App\Services\SystemAdministration\OpenStreetMap\OpenStreetMapSync;
 use Framework\Console\BaseCommands\ClearCache;
+use Framework\Console\Color;
 use Framework\Console\Command;
-use Framework\Console\Out;
 use Framework\Enums\Environment;
 use Throwable;
 
@@ -20,6 +20,8 @@ class DailyCron extends Command
 
     public function handle(): void
     {
+        $silent = (bool) $this->getOption('silent');
+
         $jobs = [
             resolve(ClearUserSessionCommand::class),
             resolve(AggregateLogsCommand::class),
@@ -30,21 +32,33 @@ class DailyCron extends Command
 
         $hasErrors = false;
 
-        array_walk($jobs, function (Command $job) use (&$hasErrors) {
+        array_walk($jobs, function (Command $job) use (&$hasErrors, $silent) {
             try {
-                $job->handle();
+                $this->output->info('executing ' . $job::signature() . '... ', !$silent);
+                $response = $job->silent($silent)->handle();
+                if ($response) {
+                    $this->output->writeln("error", Color::red);
+                    $hasErrors = true;
+                } else {
+                    $this->output->writeln("done", Color::green);
+                }
             } catch (Throwable $e) {
                 $hasErrors = true;
+                $this->output->writeln("error", Color::red);
                 report($e);
             }
         });
 
         if (!$hasErrors) {
-            Out::success($message = 'DAILY CRON RAN SUCCEFFULLY');
+            $message = 'success';
+            $this->output->success('DAILY CRON RAN SUCCEFFULLY');
         } else {
-            Out::warning($message = 'DAILY CRON RAN WITH SOME ERRORS');
+            $message = 'fail';
+            $this->output->warning('DAILY CRON RAN WITH SOME ERRORS');
         }
 
-        file_put_contents(ROOT . '.daily_cron_last_run', date('Y-m-d H:i:s') . ' - ' . $message, FILE_APPEND);
+        $file = ROOT . '.daily_cron_last_run';
+        $date = date('Y-m-d H:i:s');
+        file_put_contents($file, "{$date} - {$message}\r\n", FILE_APPEND);
     }
 }

@@ -11,7 +11,6 @@ use App\QueryBuilders\Institutes;
 use App\QueryBuilders\OsmMarkers;
 use App\Repositories\CityStatistics;
 use Framework\Console\Command;
-use Framework\Console\Out;
 
 class OpenStreetMapSync extends Command
 {
@@ -22,7 +21,7 @@ class OpenStreetMapSync extends Command
 
     public function handle(): int
     {
-        Out::info('Syncing Open Street Map pois...');
+        $this->output->info('Syncing Open Street Map pois...');
 
         db()->transaction(function () {
             OsmMarkers::query()->delete();
@@ -76,7 +75,7 @@ class OpenStreetMapSync extends Command
                     ]);
                 });
         });
-        Out::success('DONE');
+        $this->output->success('DONE');
 
         return self::SUCCESS;
     }
