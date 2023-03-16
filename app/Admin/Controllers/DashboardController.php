@@ -3,14 +3,14 @@
 namespace App\Admin\Controllers;
 
 use App\Admin\Dashboard\Dashboard;
-use App\Auth\AuthUser;
+use App\Auth\Auth;
 use App\Enums\UserRight;
 
 class DashboardController extends AdminController
 {
-    public function dashboard(Dashboard $dashboard, AuthUser $user): Dashboard
+    public function dashboard(Dashboard $dashboard): Dashboard
     {
-        if (!$user->can(UserRight::FULL_ACCESS)) {
+        if (!Auth::can(UserRight::FULL_ACCESS)) {
             redirect_route('admin.group.list');
         }
         return $dashboard;

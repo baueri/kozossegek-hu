@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\QueryBuilders;
 
 use App\Auth\AuthUser;
@@ -22,7 +24,7 @@ class UserLegalNotices extends EntityQueryBuilder
         return $this->where('user_id', $user->id);
     }
 
-    public function updateOrInsertCurrentFor(AuthUser $user): int
+    public function updateOrInsertCurrentFor(AuthUser $user): bool
     {
         return $this->updateOrInsert(
             ['user_id' => $user->id],

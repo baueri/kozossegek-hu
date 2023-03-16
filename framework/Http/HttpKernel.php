@@ -5,6 +5,7 @@ namespace Framework\Http;
 use Error;
 use Exception;
 use Framework\Exception\UnauthorizedException;
+use Framework\Http\Exception\HttpException;
 use Framework\Http\Exception\PageNotFoundException;
 use Framework\Http\Exception\RouteNotFoundException;
 use Framework\Kernel;
@@ -30,42 +31,49 @@ class HttpKernel implements Kernel
     }
 
     /**
-     * @throws \Throwable
-     * @var Error|Throwable|Exception $exception
+     * @throws Throwable
+     * @var Error|Throwable|Exception $error
      */
-    public function handleError($exception)
+    public function handleError($error)
     {
-        Response::setStatusCode($exception->getCode() ?: 500);
+        Response::setStatusCode(ResponseStatus::isValidResponse($error->getCode()) ? $error->getCode() : 500);
 
-        if (Response::contentTypeIsJson()) {
-            print json_encode([
-                'success' => false,
-                'error_code' => $exception->getCode()
-            ]);
-            throw $exception;
+        if (Response::contentTypeIsJson() || request()->wantsJson()) {
+
+            if (app()->debug()) {
+                throw $error;
+            }
+
+            elseif ($error instanceof HttpException) {
+                $message = $error->getMessage();
+            } else {
+                $message = 'Server error';
+            }
+            print json_encode(compact('message'));
+            exit;
         }
 
-        if (config('app.debug') && $exception->getCode() != '401') {
-            echo "<pre style='white-space:pre-line'><h3>Unexpected error (" . get_class($exception) . ")</h3>";
-            echo "{$exception->getMessage()} in <b>{$exception->getFile()}</b> on line <b>{$exception->getLine()}</b> \n\n";
-            echo $exception->getTraceAsString();
+        if (app()->debug() && $error->getCode() != '401') {
+            echo "<pre style='white-space:pre-line'><h3>Unexpected error (" . get_class($error) . ")</h3>";
+            echo "{$error->getMessage()} in <b>{$error->getFile()}</b> on line <b>{$error->getLine()}</b> \n\n";
+            echo $error->getTraceAsString();
             echo "</pre>";
             exit;
         }
 
         try {
-            throw $exception;
-        } catch (PageNotFoundException | ModelNotFoundException | RouteNotFoundException $exception) {
+            throw $error;
+        } catch (PageNotFoundException | ModelNotFoundException | RouteNotFoundException $error) {
             return print(view('portal.error', [
-                'code' => $exception->getCode(),
+                'code' => $error->getCode(),
                 'message' => 'A keresett oldal nem található',
                 'message2' => 'Az oldal, amit keresel lehet, hogy törölve lett vagy ideiglenesen nem elérhető.']));
-        } catch (UnauthorizedException $exception) {
+        } catch (UnauthorizedException $error) {
             return print(view('portal.error', [
-                'code' => $exception->getCode(),
+                'code' => $error->getCode(),
                 'message2' => 'Nincs jogosultsága az oldal megtekintéséhez']));
-        } catch (Error | Exception $exception) {
-            error_log($exception);
+        } catch (Error | Exception $error) {
+            error_log($error);
 
             return print(view('portal.error', [
                 'code' => 500,

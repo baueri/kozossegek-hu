@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Admin\Components;
 
 use App\Auth\AuthUser;
@@ -12,8 +14,8 @@ use Framework\Support\StringHelper;
 class AdminMenu
 {
     public function __construct(
-        private RouterInterface $router,
-        private ?AuthUser $user
+        private readonly RouterInterface $router,
+        private readonly ?AuthUser       $user
     ) {
     }
 

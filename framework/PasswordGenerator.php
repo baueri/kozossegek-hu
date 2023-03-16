@@ -1,8 +1,8 @@
 <?php
 
+declare(strict_types=1);
 
 namespace Framework;
-
 
 use InvalidArgumentException;
 
@@ -18,17 +18,10 @@ class PasswordGenerator
     private array $settings = [
         self::OPTION_LOWER => true,
         self::OPTION_UPPER => true,
-        self::OPTION_NUMBERS => true,
+        self::OPTION_NUMBERS => true
     ];
 
-    private int $length;
-
-    public function __construct(int $length = 8)
-    {
-        $this->length = $length;
-    }
-
-    public function generate(): string
+    public function generate(int $length = 8): string
     {
         $pattern = $this->settings[self::OPTION_LOWER] ? self::LETTERS : '';
         if ($this->settings[self::OPTION_UPPER]) {
@@ -40,7 +33,7 @@ class PasswordGenerator
 
         $pwd = '';
         $patternArr = str_split($pattern);
-        for ($i = 0; $i < $this->length; $i++) {
+        for ($i = 0; $i < $length ; $i++) {
             $pwd .= $patternArr[array_rand($patternArr)];
         }
         return $pwd;

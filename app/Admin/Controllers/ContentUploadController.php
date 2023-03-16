@@ -40,7 +40,7 @@ class ContentUploadController
             $dir = $request['dir'];
             $file = $this->storage->uploadFileByFileData($request->files['file'], null, "uploads/$dir");
             return $this->storage->getPublicPathFor($file);
-        } catch (Exception $e) {
+        } catch (Exception) {
             Response::setStatusCode(500);
             return 'Nem lehet feltölteni a fájlt!';
         }

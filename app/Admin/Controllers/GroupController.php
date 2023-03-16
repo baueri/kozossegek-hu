@@ -147,7 +147,7 @@ class GroupController extends AdminController
     public function rejectGroup(ChurchGroups $groups, Mailer $mailer): array
     {
         try {
-            $this->request->validate('message', 'subject', 'email', 'name');
+            $this->request->requires('message', 'subject', 'email', 'name');
 
             $group = $this->findOrFailById();
             $groups->save($group, ['pending' => -1]);
@@ -202,7 +202,7 @@ class GroupController extends AdminController
     public function deleteByValidation(ChurchGroups $groups, Mailer $mailer): array
     {
         try {
-            $this->request->validate('message', 'subject', 'email', 'name');
+            $this->request->requires('message', 'subject', 'email', 'name');
 
             $group = $this->findOrFailById();
 

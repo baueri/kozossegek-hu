@@ -21,6 +21,8 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
 {
     public Collection $request;
 
+    public Collection $headers;
+
     public Collection $files;
 
     public ?string $requestMethod;
@@ -38,6 +40,8 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
                 $collection[$key] = filter_var($item, FILTER_VALIDATE_BOOLEAN);
             }
         });
+
+        $this->headers = collect(getallheaders());
 
         $this->files = new Collection($_FILES);
 
@@ -128,7 +132,7 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
         return $this;
     }
 
-    public function validate(...$requestParams): void
+    public function requires(...$requestParams): void
     {
         foreach ($requestParams as $requestParam) {
             if (!$this->request[$requestParam]) {
@@ -140,5 +144,20 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
     public function isAjax(): bool
     {
         return Arr::get($_SERVER, 'HTTP_X_REQUESTED_WITH') && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'xmlhttprequest';
+    }
+
+    public function wantsJson(): bool
+    {
+        return $this->headers->get('Content-Type') === 'application/json';
+    }
+
+    public function bearerToken(): ?string
+    {
+        $auth = $_SERVER['HTTP_AUTHORIZATION'] ?? null;
+        if (! preg_match('/Bearer\s(\S+)/', (string) $auth, $matches)) {
+            return null;
+        }
+
+        return $matches[1];
     }
 }

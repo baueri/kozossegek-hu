@@ -1,9 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Admin\Group\Services;
 
 use App\Helpers\GroupHelper;
 use App\Models\ChurchGroup;
+use App\Models\User;
+use App\QueryBuilders\Institutes;
+use Exception;
 use Framework\Exception\FileTypeNotAllowedException;
 use Framework\Support\Collection;
 
@@ -11,7 +16,7 @@ class CreateGroup extends BaseGroupService
 {
     /**
      * @throws FileTypeNotAllowedException
-     * @throws \Exception
+     * @throws Exception
      */
     public function create(Collection $groupData, ?array $document = null): ?ChurchGroup
     {
@@ -39,6 +44,10 @@ class CreateGroup extends BaseGroupService
             return null;
         }
 
+        if (Institutes::query()->where('id', $instituteId)->doesntExist()) {
+            $this->pushError('Nem létező intézmény');
+        }
+
         $group = $this->repository->create($data);
 
         $this->syncTags($group, (array) $groupData['tags']);
@@ -56,7 +65,6 @@ class CreateGroup extends BaseGroupService
         if ($file) {
             $group->document = $file->getFileName();
         }
-
         $this->repository->save($group);
 
         return $group;

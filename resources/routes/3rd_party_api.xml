@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<routes>
+    <route-group namespace="App\ThirdParty\Http\Controllers\Api\V1" prefix="/api/v1">
+        <route method="post" uri="groups/authorize" controller="AuthController" use="authorize"/>
+        <route method="post" uri="groups/authenticate" controller="AuthController" use="authenticate"/>
+        <route resource="api" prefix="groups" controller="ChurchGroupController" middleware="App\ThirdParty\Http\Middleware\JwtAuthorize"/>
+    </route-group>
+</routes>

@@ -12,7 +12,8 @@
     "psr/container": "^1.0",
     "jaybizzle/crawler-detect": "^1.2",
     "nesbot/carbon": "^2.50",
-    "guzzlehttp/guzzle": "^7.4"
+    "guzzlehttp/guzzle": "^7.4",
+    "firebase/php-jwt": "^6.4"
   },
   "autoload": {
     "psr-4": {

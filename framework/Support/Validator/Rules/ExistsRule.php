@@ -1,45 +1,26 @@
 <?php
 
+declare(strict_types=1);
 
 namespace Framework\Support\Validator\Rules;
-
 
 use Framework\Database\Database;
 
 class ExistsRule implements Rule
 {
+    private Database $db;
 
-    /**
-     * @var Database
-     */
-    private $db;
-
-    /**
-     * ExistsRule constructor.
-     * @param Database $db
-     */
     public function __construct(Database $db)
     {
         $this->db = $db;
     }
 
-    /**
-     * @return string
-     */
-    public static function getName()
+    public static function getName(): string
     {
         return 'exists';
     }
 
-    /**
-     * @param $rule
-     * @param string $field
-     * @param $value
-     * @param array $inputs
-     * @param array $errors
-     * @return bool
-     */
-    public function validate($rule, $field, $value, $inputs = [], &$errors = [])
+    public function validate($rule, $field, $value, $inputs = [], &$errors = []): bool
     {
         if (!$value) {
             return false;
@@ -49,7 +30,7 @@ class ExistsRule implements Rule
 
         $column = $field;
 
-        if (strpos($table, '.') !== false) {
+        if (str_contains($table, '.')) {
             [$table, $column] = explode('.', $table);
         }
 

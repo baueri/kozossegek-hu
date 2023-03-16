@@ -27,12 +27,12 @@ class HttpKernel extends \Framework\Http\HttpKernel
         echo view('maintenance');
     }
 
-    public function handleError($exception)
+    public function handleError($error)
     {
-        if ($exception->getCode() != '404' && !_env('DEBUG')) {
-            report($exception);
+        if ($error->getCode() != '404' && !_env('DEBUG')) {
+            report($error);
         }
 
-        parent::handleError($exception);
+        parent::handleError($error);
     }
 }

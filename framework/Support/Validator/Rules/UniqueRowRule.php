@@ -1,39 +1,26 @@
 <?php
 
+declare(strict_types=1);
 
 namespace Framework\Support\Validator\Rules;
-
 
 use Framework\Database\Database;
 
 class UniqueRowRule implements Rule
 {
-    /**
-     * @var Database
-     */
-    private $database;
+    private Database $database;
 
-    /**
-     * UniqueRowRule constructor.
-     * @param Database $database
-     */
     public function __construct(Database $database)
     {
         $this->database = $database;
     }
 
-    /**
-     * @return string
-     */
-    public static function getName()
+    public static function getName(): string
     {
         return 'unique';
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function validate($rule, $field, $value, $inputs = [], &$errors = [])
+    public function validate($rule, $field, $value, $inputs = [], &$errors = []): bool
     {
         if (!$value) {
             return false;
@@ -43,7 +30,7 @@ class UniqueRowRule implements Rule
 
         $column = $field;
 
-        if (strpos($table, '.') !== false) {
+        if (str_contains($table, '.')) {
             [$table, $column] = explode('.', $table);
         }
 

@@ -33,10 +33,10 @@ class EmailTemplateController extends AdminController
     /**
      * @throws \Exception
      */
-    public function registrationByGroup(UserTokens $userTokens): string
+    public function registrationByGroup(UserTokens $userTokens, PasswordGenerator $passwordGenerator): string
     {
         $user = new User(['name' => 'Minta János', 'email' => 'minta_janos@kozossegek.hu']);
-        $password = (new PasswordGenerator(6))->setOpt(PasswordGenerator::OPTION_LOWER, false)->generate();
+        $password = $passwordGenerator->useLower(false)->generate(6);
 
         $group = new ChurchGroupView(['name' => 'Minta Közösség', 'city' => 'Szeged']);
 
