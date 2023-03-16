@@ -1,14 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Framework\Support;
 
 class Password
 {
-    private static string $algo = PASSWORD_BCRYPT;
-
-    public static function hash($password): string
+    public static function hash($password, ?string $algo = PASSWORD_BCRYPT): string
     {
-        return password_hash($password, static::$algo);
+        return password_hash($password, $algo);
     }
 
     public static function verify($password, $hashedPassword): bool

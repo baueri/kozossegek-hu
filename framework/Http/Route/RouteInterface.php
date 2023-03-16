@@ -1,10 +1,8 @@
 <?php
 
+declare(strict_types=1);
 
 namespace Framework\Http\Route;
-
-
-use Framework\Middleware\Middleware;
 
 interface RouteInterface
 {

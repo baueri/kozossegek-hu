@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Traits\GroupTrait;
+use App\QueryBuilders\GroupViews;
 use App\Services\SystemAdministration\SiteMap\ChangeFreq;
 use Framework\Model\Entity;
 
@@ -25,9 +26,11 @@ use Framework\Model\Entity;
  * @property-read null|string $spiritual_movement
  * @property-read null|string $pending
  */
-class ChurchGroupView extends Entity
+class ChurchGroupView extends Entity implements ChurchGroupInterface
 {
     use GroupTrait;
+
+    protected static ?string $queryBuilder = GroupViews::class;
 
     public function getThumbnail(): string
     {

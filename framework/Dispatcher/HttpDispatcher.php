@@ -4,6 +4,7 @@ namespace Framework\Dispatcher;
 
 use Exception;
 use Framework\Application;
+use Framework\Http\ControllerDependencyResolver;
 use Framework\Http\Cookie;
 use Framework\Http\Exception\RouteNotFoundException;
 use Framework\Http\HttpKernel;
@@ -15,7 +16,7 @@ use Framework\Http\Exception\PageNotFoundException;
 
 class HttpDispatcher implements Dispatcher
 {
-    public function __construct(private Application $app, private Request $request, private RouterInterface $router, private HttpKernel $kernel)
+    public function __construct(public readonly Application $app, public readonly Request $request, private RouterInterface $router, private HttpKernel $kernel)
     {
         Cookie::setTestCookie();
     }
@@ -68,21 +69,13 @@ class HttpDispatcher implements Dispatcher
     }
 
     /**
-     * @throws PageNotFoundException
+     * @throws PageNotFoundException|\ReflectionException
      */
     private function resolveController(RouteInterface $route)
     {
-        $controller = $this->app->make($route->getController());
+        $resolver = new ControllerDependencyResolver($this);
 
-        if (method_exists($controller, $route->getUse())) {
-            return $this->app->resolve($controller, $route->getUse());
-        }
-
-        if (is_callable($controller)) {
-            return $this->app->resolve($controller, '__invoke');
-        }
-
-        throw new PageNotFoundException($this->request->uri);
+        return $resolver->resolve($route);
     }
 
     private function resolveView(): string

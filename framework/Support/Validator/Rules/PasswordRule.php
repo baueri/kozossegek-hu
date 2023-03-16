@@ -1,24 +1,17 @@
 <?php
 
+declare(strict_types=1);
 
 namespace Framework\Support\Validator\Rules;
 
-
 class PasswordRule implements Rule
 {
-
-    /**
-     * @inheritDoc
-     */
-    public static function getName()
+    public static function getName(): string
     {
         return 'password';
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function validate($rule, $field, $value, $inputs = [], &$errors = [])
+    public function validate($rule, $field, $value, $inputs = [], &$errors = []): bool
     {
         if (!$value) {
             $errors["password_missing"] = lang('errors.field_is_required');

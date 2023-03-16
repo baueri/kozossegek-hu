@@ -2,6 +2,8 @@
 
 namespace App\Admin\Group\Services;
 
+use App\Enums\AgeGroup;
+use App\Enums\OccasionFrequency;
 use App\Helpers\FileHelper;
 use App\Helpers\GroupHelper;
 use App\Models\ChurchGroup;
@@ -98,15 +100,23 @@ abstract class BaseGroupService
     {
         $requiredFields = [
             'name',
-            'age_group',
-            'occasion_frequency',
             'description',
             'group_leaders',
         ];
 
+        foreach (explode(',', $data['age_group']) as $ageGroup) {
+            if (!AgeGroup::tryFrom($ageGroup)) {
+                $this->pushError('age_group.invalid');
+            }
+        }
+
+        if (!OccasionFrequency::tryFrom($data['occasion_frequency'])) {
+            $this->pushError('occasion_frequency.invalid');
+        }
+
         foreach ($requiredFields as $field) {
             if (!isset($data[$field]) || !$data[$field]) {
-                $this->getErrors()['error.required'][] = $field;
+                $this->getErrors()->push("{$field}.required");
             }
         }
 

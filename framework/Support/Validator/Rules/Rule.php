@@ -1,24 +1,12 @@
 <?php
 
+declare(strict_types=1);
 
 namespace Framework\Support\Validator\Rules;
 
-
 interface Rule
 {
-    /**
-     * @return string
-     */
-    public static function getName();
+    public static function getName(): string;
 
-    /**
-     * @param $rule
-     * @param string $field
-     * @param $value
-     * @param array $inputs
-     * @param array $errors
-     * @return bool
-     */
-    public function validate($rule, $field, $value, $inputs = [], &$errors = []);
-
+    public function validate($rule, $field, $value, $inputs = [], &$errors = []): bool;
 }

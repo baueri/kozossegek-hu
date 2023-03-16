@@ -2,9 +2,6 @@
     Options +FollowSymLinks
     Options -Indexes
     RewriteEngine On
-</IfModule>
-
-<IfModule mod_rewrite.c>
     RewriteBase /
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
@@ -13,4 +10,7 @@
     # a wordpress-es heckelőknek rögtön letiltjuk a kapcsolatot,
     # hogy ne terheljék a szervert
     RewriteRule wp-(includes|login|admin|content)|wordpress - [F]
+
+    RewriteCond %{HTTP:Authorization} ^(.+)$
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 </IfModule>

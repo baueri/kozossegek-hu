@@ -309,6 +309,12 @@ class Builder
 
     public function where($column, $operator = null, $value = null, $clause = 'and'): self
     {
+        if (is_array($column)) {
+            foreach ($column as $field => $value) {
+                $this->where($field, $value);
+            }
+        }
+
         if (is_callable($column)) {
             $this->where[] = [$column, null, null, $operator ?: 'and'];
             return $this;
@@ -465,17 +471,17 @@ class Builder
         return $this->db->insert($query, $bindings);
     }
 
-    public function updateOrInsert(array $where, array $values = [])
+    public function updateOrInsert(array $where, array $values = []): bool
     {
         foreach ($where as $column => $value) {
             $this->where($column, $value);
         }
 
         if ($this->exists()) {
-            return $this->update($values);
+            return (bool) $this->update($values);
         }
 
-        return $this->insert(array_merge($where, $values));
+        return (bool) $this->insert(array_merge($where, $values));
     }
 
     public function delete(): int
@@ -494,7 +500,12 @@ class Builder
         return isset($this->first()['exists']);
     }
 
-    public function truncate()
+    public function doesntExist(): bool
+    {
+        return !$this->exists();
+    }
+
+    public function truncate(): void
     {
         $this->db->execute("TRUNCATE {$this->getTable()}");
     }

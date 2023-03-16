@@ -1,24 +1,17 @@
 <?php
 
+declare(strict_types=1);
 
 namespace Framework\Support\Validator\Rules;
 
-
 class RequiredRule implements Rule
 {
-
-    /**
-     * @return string
-     */
-    public static function getName()
+    public static function getName(): string
     {
         return 'required';
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function validate($rule, $field, $value, $inputs = [], &$errors = [])
+    public function validate($rule, $field, $value, $inputs = [], &$errors = []): bool
     {
         if (!$value) {
             $errors["required"] = lang('errors.field_is_required');

@@ -29,9 +29,7 @@ class PortalCreateGroup
     }
 
     /**
-     * @throws Exception
-     * @throws EmailTakenException|FileTypeNotAllowedException
-     * @throws \Exception
+     * @throws Exception|EmailTakenException|FileTypeNotAllowedException
      */
     public function createGroup(Collection $requestData, ?array $fileData, ?User $user): ?ChurchGroup
     {

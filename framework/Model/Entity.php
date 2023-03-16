@@ -10,6 +10,12 @@ use Framework\Support\StringHelper;
  */
 abstract class Entity
 {
+    /**
+     * @param string|null|class-string<EntityQueryBuilder>
+     * @phpstan-param class-string<EntityQueryBuilder>
+     */
+    protected static ?string $queryBuilder = null;
+
     protected static string $primaryCol = 'id';
 
     public static function updatedCol(): ?string
@@ -113,5 +119,20 @@ abstract class Entity
     public function setRelation(string $name, $relation): void
     {
         $this->relations[$name] = $relation;
+    }
+
+    public static function query(): EntityQueryBuilder
+    {
+        if ($builder = static::$queryBuilder) {
+            return $builder::query();
+        }
+
+        $model = get_class_name(static::class);
+
+        $plural = StringHelper::plural($model);
+
+        /** @var EntityQueryBuilder $class */
+        $class = "\\App\\QueryBuilders\\{$plural}";
+        return $class::query();
     }
 }

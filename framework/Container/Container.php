@@ -8,6 +8,7 @@ use Framework\Container\Exceptions\AlreadyBoundException;
 use Framework\Database\Database;
 use InvalidArgumentException;
 use Psr\Container\ContainerInterface;
+use ReflectionException;
 use ReflectionFunction;
 use ReflectionFunctionAbstract;
 use ReflectionMethod;
@@ -154,7 +155,10 @@ class Container implements ContainerInterface
         return $this->getFallback($parent);
     }
 
-    private function getDependencies($class, string $method = '__construct', ?array $resolvedDependencies = []): array
+    /**
+     * @throws ReflectionException
+     */
+    public function getDependencies($class, string $method = '__construct', ?array $resolvedDependencies = []): array
     {
         if (!method_exists($class, $method) && !function_exists($class) && !$class instanceof Closure) {
             return [];
@@ -166,17 +170,20 @@ class Container implements ContainerInterface
 
         foreach ($parameters as $i => $parameter) {
             if (array_key_exists($i, $resolvedDependencies) && key($resolvedDependencies) === 0) {
-                $dependencies[] = $resolvedDependencies[$i];
+                $dependencies[$parameter->name] = $resolvedDependencies[$i];
             } elseif (array_key_exists($parameter->name, $resolvedDependencies)) {
-                $dependencies[] = $resolvedDependencies[$parameter->name];
+                $dependencies[$parameter->name] = $resolvedDependencies[$parameter->name];
             } elseif ($this->isResolvable($parameter)) {
-                $dependencies[] = $this->getDependencyResourceValue($parameter);
+                $dependencies[$parameter->name] = $this->getDependencyResourceValue($parameter);
             }
         }
 
         return $dependencies;
     }
 
+    /**
+     * @throws ReflectionException
+     */
     private function getReflectionMethod($abstract, string $method = '__construct'): ?ReflectionFunctionAbstract
     {
         if ($abstract instanceof Closure || (is_string($abstract) && function_exists($abstract))) {
@@ -236,11 +243,10 @@ class Container implements ContainerInterface
     }
 
     /**
-     * @param mixed $concrete
-     * @return mixed
+     * @throws ReflectionException
      */
-    public function resolve($concrete, string $method = '__construct')
+    public function resolve($concrete, string $method = '__construct', ?array $params = null)
     {
-        return call_user_func_array([$concrete, $method], $this->getDependencies($concrete, $method));
+        return call_user_func_array([$concrete, $method], $params ?? $this->getDependencies($concrete, $method));
     }
 }

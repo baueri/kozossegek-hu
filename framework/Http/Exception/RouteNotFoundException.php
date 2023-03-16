@@ -1,11 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Framework\Http\Exception;
 
-class RouteNotFoundException extends \Exception
+class RouteNotFoundException extends NotFoundException
 {
-    public function __construct(string $message = "", int $code = 404, \Throwable $previous = null)
-    {
-        parent::__construct($message, $code, $previous);
-    }
+
 }

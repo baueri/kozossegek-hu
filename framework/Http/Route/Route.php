@@ -1,25 +1,24 @@
 <?php
 
-namespace Framework\Http\Route;
+declare(strict_types=1);
 
-use App\Middleware\AdminMiddleware;
-use Framework\Middleware\Middleware;
+namespace Framework\Http\Route;
 
 class Route implements RouteInterface
 {
-    protected string $method;
+    public readonly string $method;
 
-    protected string $uriMask;
+    public readonly string $uriMask;
 
-    protected string $as;
+    public readonly string $as;
 
-    protected string $controller;
+    public readonly string $controller;
 
-    protected string $use;
+    public readonly string $use;
 
-    protected string $view;
+    public readonly string $view;
 
-    protected array $middleware = [];
+    public readonly array $middleware;
 
     private array $resolvedMiddleware;
 
@@ -108,8 +107,8 @@ class Route implements RouteInterface
     public function getUriForPregReplace(): ?string
     {
         return preg_replace([
-            '/({[a-zA-Z\-\_\.]+})/',
-            '/({\?[a-zA-Z\-\_\.]+})/',
+            '/({[a-zA-Z\-_.]+})/',
+            '/({\?[a-zA-Z\-_.]+})/',
             '/\//'
         ], [
             '([a-zA-Z0-9\-\_\.áéíóöőúüű]+)',
@@ -125,10 +124,23 @@ class Route implements RouteInterface
 
     public function requestMethodIs($method): bool
     {
-        if (strpos($this->method, '|') !== false) {
-            return strpos($this->method, $method) !== false;
+        if (str_contains($this->method, '|')) {
+            return str_contains($this->method, $method);
         }
 
         return $this->method == $method || $this->method == 'ALL';
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'method' => $this->method,
+            'uriMask' => $this->uriMask,
+            'as' => $this->as,
+            'controller' => $this->controller,
+            'use' => $this->use,
+            'view' => $this->view,
+            'middleware' => $this->middleware,
+        ];
     }
 }

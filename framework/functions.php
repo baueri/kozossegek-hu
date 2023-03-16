@@ -17,6 +17,7 @@ use Framework\Dispatcher\Dispatcher;
 use Framework\Dispatcher\HttpDispatcher;
 use Framework\Enums\Environment;
 use Framework\Http\ApiResponse;
+use Framework\Http\Exception\NotFoundException;
 use Framework\Http\Message;
 use Framework\Http\Request;
 use Framework\Http\Response;
@@ -431,4 +432,13 @@ function namespace_split(string $class): array
     }
 
     return [substr($class, 0, $classPos), substr($class, $classPos + 1)];
+}
+
+function abort(int $code = 500, ?string $message = null) {
+
+    if ($code === 404) {
+        throw new NotFoundException($message);
+    }
+
+    throw new HttpException($message, $code);
 }

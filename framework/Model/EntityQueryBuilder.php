@@ -160,6 +160,7 @@ abstract class EntityQueryBuilder
 
     /**
      * @throws ModelNotFoundException
+     * @phpstan-return T
      */
     public function firstOrFail(): Entity
     {
@@ -350,7 +351,7 @@ abstract class EntityQueryBuilder
         }
 
         $col = $entity::updatedCol();
-        if ($col && !array_key_exists($col, $values)) {
+        if ($col && !array_key_exists($col, $toUpdate)) {
             $toUpdate[$col] = $entity->{$col} = now();
         }
 
@@ -362,9 +363,19 @@ abstract class EntityQueryBuilder
         return $this->builder->insert($values);
     }
 
-    public function updateOrInsert(array $where, array $values = [])
+    public function updateOrInsert(array $where, array $values = []): bool
     {
         return $this->builder->updateOrInsert($where, $values);
+    }
+
+    public function updateOrCreate(array $where, array $values = [])
+    {
+        $found = $this->where($where)->first();
+        if ($found) {
+            $this->save($found, $values);
+            return $found;
+        }
+        return $this->create(array_merge($where, $values));
     }
 
     public function deleteModel($model, bool $hardDelete = false)
@@ -396,6 +407,11 @@ abstract class EntityQueryBuilder
     public function exists(): bool
     {
         return $this->builder->exists();
+    }
+
+    public function doesntExist(): bool
+    {
+        return $this->builder->doesntExist();
     }
 
     public function toSql(bool $withBindings = false): string

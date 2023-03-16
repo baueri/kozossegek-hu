@@ -22,7 +22,6 @@ class PDOMysqlDatabase implements Database
         $start = microtime(true);
 
         $statement = $this->pdo->prepare($query);
-
         $statement->execute($bindings);
 
         $time = microtime(true) - $start;

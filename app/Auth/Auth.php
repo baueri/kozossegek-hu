@@ -51,6 +51,11 @@ final class Auth
         return self::$user;
     }
 
+    public static function can($right): bool
+    {
+        return self::$user?->can($right) ?? false;
+    }
+
     public static function is(User|int|null $user): bool
     {
 

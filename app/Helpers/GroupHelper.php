@@ -28,7 +28,7 @@ class GroupHelper
         return $root . static::getRelpath($groupId);
     }
 
-    public static function getPublicImagePath(int $groupId): string
+    public static function getPublicImagePath(int|string $groupId): string
     {
         return "/media/groups/images/{$groupId}_1.jpg";
     }
