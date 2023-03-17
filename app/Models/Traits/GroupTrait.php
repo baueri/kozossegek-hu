@@ -83,7 +83,6 @@ trait GroupTrait
         return GroupHelper::getStoragePath($this->id);
     }
 
-
     public function joinMode(): string
     {
         return JoinMode::getText($this->join_mode) ?? '';

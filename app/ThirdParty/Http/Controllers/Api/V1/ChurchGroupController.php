@@ -18,8 +18,10 @@ use Firebase\JWT\Key;
 use Framework\Exception\FileTypeNotAllowedException;
 use Framework\Http\Controller;
 use Framework\Http\Exception\HttpException;
+use Framework\Http\Exception\NotFoundException;
 use Framework\Http\Request;
 use Framework\Http\Response;
+use Framework\Support\Collection;
 
 class ChurchGroupController extends Controller
 {
@@ -53,11 +55,18 @@ class ChurchGroupController extends Controller
         $this->user = $this->payload->user();
     }
 
-    public function index(GroupViews $groupViews)
+    public function index(GroupViews $groupViews): Collection
     {
-        return $groupViews->forUser($this->user)->get()->map->getAttributes();
+        return $groupViews->forUser($this->user)->with('searchEngine')->get()->map(function (ChurchGroupView $group) {
+            $data = $group->getAttributes();
+            $data['keywords'] = $group->searchEngine['keywords'];
+            return $data;
+        });
     }
 
+    /**
+     * @throws HttpException|NotFoundException
+     */
     public function show(ChurchGroupView $group): array
     {
         $this->checkAccess($group);
@@ -65,6 +74,9 @@ class ChurchGroupController extends Controller
         return $group->getAttributes();
     }
 
+    /**
+     * @throws FileTypeNotAllowedException
+     */
     public function store(CreateGroup $service): array
     {
         $group = $service->create(
@@ -81,7 +93,7 @@ class ChurchGroupController extends Controller
     }
 
     /**
-     * @throws FileTypeNotAllowedException
+     * @throws FileTypeNotAllowedException|HttpException|NotFoundException
      */
     public function update(ChurchGroup $group, PortalUpdateGroup $service): array
     {
@@ -105,13 +117,19 @@ class ChurchGroupController extends Controller
         return ['message' => 'Success'];
     }
 
-    public function delete(ChurchGroup $group)
+    /**
+     * @throws NotFoundException|HttpException
+     */
+    public function destroy(ChurchGroup $group)
     {
         $this->checkAccess($group);
 
         $group->query()->deleteModel($group);
     }
 
+    /**
+     * @throws NotFoundException|HttpException
+     */
     private function checkAccess(ChurchGroupInterface $group): void
     {
         if (!$group->isVisibleBy($this->user)) {

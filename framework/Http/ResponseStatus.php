@@ -117,8 +117,8 @@ enum ResponseStatus: int
     case NOT_EXTENDED = 510;
     case NETWORK_AUTHENTICATION_REQUIRED = 511;
 
-    public static function isValidResponse(int $statusCode): bool
+    public static function isValidResponse($statusCode): bool
     {
-        return (bool) self::tryFrom($statusCode);
+        return (bool) self::tryFrom((int) $statusCode);
     }
 }

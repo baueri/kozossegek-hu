@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\ThirdParty\Http;
 
+use App\Models\ThirdPartyCredential;
 use App\Models\User;
+use App\QueryBuilders\ThirdPartyCredentials;
 use Carbon\Carbon;
 
 class JwtPayload
@@ -23,12 +25,19 @@ class JwtPayload
 
     public function user(): User
     {
-        return $this->user ?? User::query()
-            ->findOrFail($this->context()['user']['id']);
+        return $this->user ?? $this->credentials()->user;
     }
 
     public function context()
     {
         return $this->payload['context'] ?? [];
+    }
+
+    private function credentials(): ThirdPartyCredential
+    {
+        return ThirdPartyCredentials::query()
+            ->byCredentials($this->payload['context']['app']['name'], $this->payload['context']['app']['secret'])
+            ->with('user')
+            ->firstOrFail();
     }
 }
