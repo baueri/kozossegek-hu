@@ -148,12 +148,13 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
 
     public function wantsJson(): bool
     {
-        return $this->headers->get('Content-Type') === 'application/json';
+        return str_starts_with($this->headers->get('Accept'), 'application/json');
     }
 
     public function bearerToken(): ?string
     {
         $auth = $_SERVER['HTTP_AUTHORIZATION'] ?? null;
+
         if (! preg_match('/Bearer\s(\S+)/', (string) $auth, $matches)) {
             return null;
         }

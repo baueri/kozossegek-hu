@@ -21,6 +21,7 @@ use Framework\Http\Exception\NotFoundException;
 use Framework\Http\Message;
 use Framework\Http\Request;
 use Framework\Http\Response;
+use Framework\Http\ResponseStatus;
 use Framework\Http\Route\RouteInterface;
 use Framework\Http\Route\RouterInterface;
 use Framework\Http\View\View;
@@ -31,6 +32,7 @@ use Framework\Model\Entity;
 use Framework\Model\Model;
 use Framework\Support\Collection;
 use Framework\Translator;
+use Framework\Http\Exception\HttpException;
 
 /**
  * @return Application|null|mixed
@@ -437,7 +439,7 @@ function namespace_split(string $class): array
 function abort(int $code = 500, ?string $message = null) {
 
     if ($code === 404) {
-        throw new NotFoundException($message);
+        throw new NotFoundException($message, 404);
     }
 
     throw new HttpException($message, $code);

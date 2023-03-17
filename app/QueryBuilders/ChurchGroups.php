@@ -27,6 +27,11 @@ class ChurchGroups extends EntityQueryBuilder
         return $this->has(Has::many, GroupTags::class);
     }
 
+    public function searchEngine(): Relation
+    {
+        return $this->has(Has::one, builder('search_engine'), 'group_id', 'id');
+    }
+
     public function active(): static
     {
         return $this->where('pending', 0)

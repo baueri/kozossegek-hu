@@ -11,6 +11,7 @@ use Firebase\JWT\JWT;
 use Framework\Exception\UnauthorizedException;
 use Framework\Http\Controller;
 use Framework\Http\Response;
+use Framework\Http\ResponseStatus;
 use Framework\PasswordGenerator;
 use InvalidArgumentException;
 
@@ -19,7 +20,7 @@ class AuthController extends Controller
     /**
      * @throws UnauthorizedException
      */
-    public function authorize(Authenticate $authenticate, ThirdPartyCredentials $credentials, PasswordGenerator $passwordGenerator): array
+    public function authenticate(Authenticate $authenticate, ThirdPartyCredentials $credentials, PasswordGenerator $passwordGenerator): array
     {
         Response::asJson();
 
@@ -33,21 +34,26 @@ class AuthController extends Controller
             throw new InvalidArgumentException('`site_url` is required');
         }
 
-        $credential = $credentials->create([
+        $credential = $credentials->updateOrCreate([
             'app_name' => $this->request->get('site_url'),
-            'app_secret' => $secret = $passwordGenerator->generate(32),
             'user_id' => $user->getId()
+        ],[
+            'app_secret' => $secret = $passwordGenerator->generate(32),
         ]);
 
         return ['token' => $this->getJwt($credential), 'secret' => $secret];
     }
 
-    public function authenticate(ThirdPartyCredentials $credentials)
+    public function authorize(ThirdPartyCredentials $credentials)
     {
         $credential = $credentials
             ->where('app_name', $this->request->get('app_name'))
             ->where('app_secret', $this->request->get('app_secret'))
-            ->firstOrFail();
+            ->first();
+
+        if (!$credential) {
+            abort(ResponseStatus::UNAUTHORIZED->value, 'unauthorized');
+        }
 
         return ['token' => $this->getJwt($credential)];
     }
@@ -59,6 +65,7 @@ class AuthController extends Controller
             'exp' => now()->addDay()->timestamp,
             'context' => [
                 'app' => [
+                    'name' => $credential->app_name,
                     'secret' => $credential->app_secret
                 ]
             ]

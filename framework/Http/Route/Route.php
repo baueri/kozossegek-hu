@@ -80,7 +80,7 @@ class Route implements RouteInterface
         if ($args && is_array($args)) {
             foreach ($args as $key => $arg) {
                 if (str_contains($uri, '{' . $key . '}')) {
-                    $uri = str_replace('{' . $key . '}', $arg, $uri);
+                    $uri = str_replace('{' . $key . '}', (string) $arg, $uri);
                     unset($args[$key]);
                 }
             }

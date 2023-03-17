@@ -313,6 +313,7 @@ class Builder
             foreach ($column as $field => $value) {
                 $this->where($field, $value);
             }
+            return $this;
         }
 
         if (is_callable($column)) {
