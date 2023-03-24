@@ -1,5 +1,4 @@
 const dialog = (function () {
-
     let thisDialog = this;
 
     let okBtn = function () {
@@ -222,4 +221,3 @@ $.fn.confirm = function (options) {
         });
     });
 }
-
