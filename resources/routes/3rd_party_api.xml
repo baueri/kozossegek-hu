@@ -2,7 +2,7 @@
 <routes>
     <route-group namespace="App\ThirdParty\Http\Controllers\Api\V1" prefix="/api/v1">
         <route method="post" uri="groups/authenticate" controller="AuthController" use="authenticate"/>
-        <route method="post" uri="groups/authorize" controller="AuthController" use="authorize"/>
+        <route method="post" uri="groups/get-token" controller="AuthController" use="getToken"/>
         <route resource="api" prefix="groups" controller="ChurchGroupController" middleware="App\ThirdParty\Http\Middleware\JwtAuthorize"/>
     </route-group>
 </routes>

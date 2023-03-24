@@ -5,6 +5,7 @@ namespace App;
 use App\Middleware\DebugBarMiddleware;
 use App\Middleware\ListenViewLoading;
 use App\Providers\AppServiceProvider;
+use Framework\Http\Exception\HttpException;
 use Framework\Middleware\AuthMiddleware;
 use Framework\Middleware\BaseAuthMiddleware;
 use Framework\Middleware\CheckMaintenance;
@@ -22,6 +23,10 @@ class HttpKernel extends \Framework\Http\HttpKernel
         AppServiceProvider::class,
     ];
 
+    protected array $dontReport = [
+        HttpException::class
+    ];
+
     public function handleMaintenance()
     {
         echo view('maintenance');
@@ -29,7 +34,7 @@ class HttpKernel extends \Framework\Http\HttpKernel
 
     public function handleError($error)
     {
-        if ($error->getCode() != '404' && !_env('DEBUG')) {
+        if (!in_array($error::class, $this->dontReport) && !_env('DEBUG')) {
             report($error);
         }
 

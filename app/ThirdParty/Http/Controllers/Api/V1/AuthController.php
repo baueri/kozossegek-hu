@@ -10,9 +10,10 @@ use App\QueryBuilders\ThirdPartyCredentials;
 use Firebase\JWT\JWT;
 use Framework\Exception\UnauthorizedException;
 use Framework\Http\Controller;
+use Framework\Http\Exception\HttpException;
+use Framework\Http\Exception\NotFoundException;
 use Framework\Http\Response;
 use Framework\Http\ResponseStatus;
-use Framework\PasswordGenerator;
 use InvalidArgumentException;
 
 class AuthController extends Controller
@@ -20,7 +21,7 @@ class AuthController extends Controller
     /**
      * @throws UnauthorizedException
      */
-    public function authenticate(Authenticate $authenticate, ThirdPartyCredentials $credentials, PasswordGenerator $passwordGenerator): array
+    public function authenticate(Authenticate $authenticate, ThirdPartyCredentials $credentials): array
     {
         Response::asJson();
 
@@ -34,31 +35,28 @@ class AuthController extends Controller
             throw new InvalidArgumentException('`site_url` is required');
         }
 
-        $credential = $credentials->updateOrCreate([
-            'app_name' => $this->request->get('site_url'),
-            'user_id' => $user->getId()
-        ],[
-            'app_secret' => $secret = $passwordGenerator->generate(32),
-        ]);
+        $credential = $credentials->getCredentials($user, $this->request->get('site_url'));
 
-        return ['token' => $this->getJwt($credential), 'secret' => $secret];
+        return ['api_key' => $credential->api_key, 'token' => $this->createJWT($credential)];
     }
 
-    public function authorize(ThirdPartyCredentials $credentials)
+    /**
+     * @throws HttpException|NotFoundException
+     */
+    public function getToken(ThirdPartyCredentials $credentials): array
     {
         $credential = $credentials
-            ->where('app_name', $this->request->get('app_name'))
-            ->where('app_secret', $this->request->get('app_secret'))
+            ->where('api_key', $this->request->get('api_key'))
             ->first();
 
         if (!$credential) {
-            abort(ResponseStatus::UNAUTHORIZED->value, 'unauthorized');
+            abort(ResponseStatus::UNAUTHORIZED->value, 'Unauthorized');
         }
 
-        return ['token' => $this->getJwt($credential)];
+        return ['token' => $this->createJWT($credential)];
     }
 
-    private function getJwt(ThirdPartyCredential $credential): string
+    private function createJWT(ThirdPartyCredential $credential): string
     {
         $payload = [
             'iss' => $credential->app_name,
@@ -66,7 +64,7 @@ class AuthController extends Controller
             'context' => [
                 'app' => [
                     'name' => $credential->app_name,
-                    'secret' => $credential->app_secret
+                    'secret' => $credential->api_key
                 ]
             ]
         ];

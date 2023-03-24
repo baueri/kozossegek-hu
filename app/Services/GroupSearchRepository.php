@@ -24,18 +24,7 @@ class GroupSearchRepository
         $builder = $this->repository;
 
         if ($keyword = $filter['search']) {
-            $keyword = StringHelper::sanitize(str_replace(['-', '.', '(', ')'], ' ', $keyword));
-            $keywords = '+' . str_replace(' ', '* +', trim($keyword, ' ')) . '*';
-
-            $found = db()->select('select group_id
-                from search_engine 
-                where MATCH(keywords) AGAINST (? IN BOOLEAN MODE)', [$keywords]);
-
-            if ($found) {
-                $builder->whereIn('id', collect($found)->pluck('group_id')->all());
-            } else {
-                $builder->where('name', 'like', "%{$keyword}%");
-            }
+            $builder->search($keyword);
         }
 
         if ($varos = mb_strtolower($filter['varos'] ?? '')) {
