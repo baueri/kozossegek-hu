@@ -36,7 +36,7 @@ class Arr
         return $result;
     }
 
-    public static function filter($items, $callback, bool $byKey = false): array
+    public static function filter($items, $callback = null, bool $byKey = false): array
     {
         if ($items instanceof Collection) {
             return $items->filter($callback)->all();
@@ -169,5 +169,17 @@ class Arr
             null, '' => [],
             default => explode($separator, $text)
         };
+    }
+
+    public static function except(array $list, array|string|int $except): array
+    {
+        $except = (array) $except;
+        foreach ($list as $key => $item) {
+            if (in_array($key, $except)) {
+                unset($list[$key]);
+            }
+        }
+
+        return $list;
     }
 }

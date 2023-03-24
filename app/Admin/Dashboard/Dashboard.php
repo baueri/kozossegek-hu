@@ -1,18 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Admin\Dashboard;
 
 use App\Admin\Settings\Services\ErrorLogParser;
-use App\Repositories\Groups;
+use App\QueryBuilders\ChurchGroups;
 use Carbon\Carbon;
 
 class Dashboard
 {
-    private Groups $groups;
+    private ChurchGroups $groups;
 
     private ErrorLogParser $errorLogParser;
 
-    public function __construct(Groups $groups, ErrorLogParser $errorLogParser)
+    public function __construct(ChurchGroups $groups, ErrorLogParser $errorLogParser)
     {
         $this->groups = $groups;
         $this->errorLogParser = $errorLogParser;
@@ -26,10 +28,11 @@ class Dashboard
 
         $groupsThisMonth = $this->groups->query()
             ->where('created_at', '>=', date('Y-m-01'))
-            ->apply('notDeleted')->count();
+            ->notDeleted()
+            ->count();
 
-        $groupsTotal = $this->groups->query()->apply('notDeleted')->count();
-        $pendingGroups = $this->groups->query()->where('pending', 1)->apply('notDeleted')->count();
+        $groupsTotal = $this->groups->query()->notDeleted()->count();
+        $pendingGroups = $this->groups->query()->where('pending', 1)->notDeleted()->count();
 
         $lastError = $this->errorLogParser->getLastError();
 
@@ -50,7 +53,7 @@ class Dashboard
         return $this->getHtml();
     }
 
-    private function getGroupStats(?string $from = null, ?string $to = null): array
+    private function getGroupStats(?string $from = null): array
     {
         $query = builder('event_logs')
             ->select(
@@ -61,10 +64,6 @@ class Dashboard
 
         if ($from) {
             $query->where('created_at', '>=', $from);
-        }
-
-        if ($to) {
-            $query->where('created_at', '<=', $to);
         }
 
         return $query->first();
@@ -80,7 +79,8 @@ class Dashboard
             return null;
         }
 
-        [$version, $date] = explode(' ', $matches[1]);
+        $header = $matches[1];
+        [, $date] = explode(' ', $header);
 
         $date = str_replace(['(', ')', '.'], ['', '', '-'], $date);
 
@@ -91,15 +91,11 @@ class Dashboard
             return null;
         }
 
-        $dom = new \DOMDocument();
-        $dom->loadHTML($page);
-
-        /* @var $ul \DOMElement */
-        $ul = $dom->getElementsByTagName('ul')[0];
+        preg_match('~<ul>(.*?)</ul>~s', $page, $notes);
 
         return [
-            'header' => $matches[1],
-            'notes' => htmlspecialchars_decode(utf8_decode($ul->ownerDocument->saveHTML($ul)))
+            'header' => $header,
+            'notes' => $notes[0]
         ];
     }
 }

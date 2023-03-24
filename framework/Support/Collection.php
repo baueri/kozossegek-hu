@@ -25,7 +25,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     /**
      * @param array<T>|null|T[]|T $items
      */
-    public function __construct($items = null)
+    public function __construct(mixed $items = null)
     {
         if ($items instanceof Collection) {
             $this->items = $items->all();

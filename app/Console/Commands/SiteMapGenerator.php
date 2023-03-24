@@ -4,14 +4,13 @@ namespace App\Console\Commands;
 
 use App\Services\SystemAdministration\SiteMap\SiteMapGenerator as SiteMapGeneratorService;
 use Framework\Console\Command;
-use Framework\Console\In;
-use Framework\Console\Out;
 
-class SiteMapGenerator implements Command
+class SiteMapGenerator extends Command
 {
     public function __construct(
         private readonly SiteMapGeneratorService $generator
     ) {
+        parent::__construct();
     }
 
     public static function signature(): string
@@ -21,17 +20,20 @@ class SiteMapGenerator implements Command
 
     public function handle(): void
     {
-        Out::info('Generating sitemap.xml ...');
+        $this->output->info('Generating sitemap.xml ...');
 
         $this->generator->run();
 
-        Out::info('sitemap successfully generated.');
+        $this->output->info('sitemap successfully generated.');
 
-        if ((new In())->confirm('Ping google?')) {
-            $url = get_site_url() . '/sitemap.xml';
-            file_get_contents("https://www.google.com/ping?sitemap={$url}");
+        if (!$this->getOption('ping-google')) {
+            $this->output->warning('Skipped google ping.');
+            $this->output->success('Done');
+            return;
         }
 
-        Out::success('Done!');
+        $url = get_site_url() . '/sitemap.xml';
+        file_get_contents("https://www.google.com/ping?sitemap={$url}");
+        $this->output->success('Done!');
     }
 }

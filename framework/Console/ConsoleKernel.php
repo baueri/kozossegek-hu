@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Framework\Console;
 
 use Framework\Application;
@@ -28,7 +30,7 @@ class ConsoleKernel implements Kernel
     protected array $commands = [];
 
     public function __construct(
-        private Application $application
+        private readonly Application $application
     ) {
     }
 
@@ -37,7 +39,7 @@ class ConsoleKernel implements Kernel
         return array_merge($this->commands, $this->baseCommands);
     }
 
-    /**
+    /**ar
      * @throws CommandNotFoundException
      */
     public function getCommand(?string $signature): Command

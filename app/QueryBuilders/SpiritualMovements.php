@@ -14,7 +14,7 @@ class SpiritualMovements extends EntityQueryBuilder
 {
     use HasManyChurchGroupViews;
 
-    protected static function getModelClass(): string
+    public static function getModelClass(): string
     {
         return SpiritualMovement::class;
     }

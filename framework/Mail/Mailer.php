@@ -19,7 +19,7 @@ class Mailer
         $phpMailer->Password = config('app.email_password');
         $phpMailer->SMTPSecure = config('app.email_ssl');
         $phpMailer->Port = config('app.email_port');
-        $phpMailer->isHTML(true);
+        $phpMailer->isHTML();
         $phpMailer->CharSet = 'UTF-8';
         $this->phpMailer = $phpMailer;
 

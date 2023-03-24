@@ -12,7 +12,6 @@ use Framework\Http\View\Directives\LangDirective;
 use Framework\Http\View\Directives\RouteDirective;
 use Framework\Http\View\Directives\SectionDirective;
 use Framework\Http\View\Directives\YieldDirective;
-use Framework\Http\View\ParseSection;
 use Framework\Http\View\ViewParser;
 use Framework\Http\View\Directives\ForeachDirective;
 

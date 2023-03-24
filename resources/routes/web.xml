@@ -15,7 +15,7 @@
 
         <route method="all" uri="[A-Z][a-z]+" as="portal.groups.in_city" controller="GroupController" use="kozossegek"/>
         <route method="get" uri="kozossegek/page/{page}/" as="portal.groups.page" controller="GroupController" use="kozossegek"/>
-        <route method="get" uri="kozosseg/{varos}/{intezmeny}" as="portal.institute_groups" controller="GroupController" use="intezmenyKozossegek"/>
+        <route method="get" uri="templom/{varos}/{intezmeny}" as="portal.institute_groups" controller="GroupController" use="intezmenyKozossegek"/>
 
         <route method="get" uri="kozosseg/{varos}/{intezmeny}/{kozosseg}" as="kozosseg.old" controller="GroupController" use="kozosseg"/>
 
@@ -50,6 +50,9 @@
 
         <route method="get" uri="lelkisegi-mozgalmak" as="portal.spiritual_movements" controller="SpiritualMovementController" use="list"/>
         <route method="get" uri="lelkisegi-mozgalom/{slug}" as="portal.spiritual_movement.view" controller="SpiritualMovementController" use="view"/>
+
+        <route method="get" uri="szerzetesrendek" as="portal.szerzetesrendek" controller="MonasticCommunityController" use="list"/>
+        <route method="get" uri="szerzetesrendek/{slug}" as="portal.monastic_community.view" controller="MonasticCommunityController" use="view"/>
     </route-group>
 
     <!--  FIÓK AKTIVÁLÁS  -->

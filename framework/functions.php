@@ -233,15 +233,15 @@ function mb_ucfirst($string, $encoding = 'utf-8'): string
     return mb_strtoupper($firstChar, $encoding) . $then;
 }
 
-function raise_error_page(int $code, string $message, string $message2): never
+function raise_error_page(int $code, string $message, string $message2 = ''): never
 {
     echo view('portal.error', compact('code', 'message', 'message2'));
     exit();
 }
 
-function raise_500(string $message = '', string $message2 = 'Nincs jogosultsága az oldal megtekintéséhez'): never
+function raise_500(string $message = ''): never
 {
-    raise_error_page(500, $message, $message2);
+    raise_error_page(500, $message);
 }
 
 function raise_404($message = 'A keresett oldal nem található', $message2 = '<i class="text-muted">De azért ne adjátok fel.<br/> Keressetek, és előbb, vagy utóbb találtok ;-)</i>'): never
@@ -364,17 +364,17 @@ function flash(): ?array
 
 function report($exception): void
 {
-    if (!_env('DEBUG') || ($exception instanceof \Throwable && $exception->getCode() == '404')) {
+    if ($exception instanceof Throwable && $exception->getCode() == '404') {
         return;
     }
     $mailer = new Mailer();
     $mailer->to(config('app.error_email'));
 
-    if ($exception instanceof \Throwable) {
+    if ($exception instanceof Throwable) {
         $mail = new ThrowableCriticalErrorEmail($exception);
     } else {
         $mail = new Mailable();
-        $mail->setMessage($exception);
+        $mail->setMessage($exception)->subject(get_site_url() . ' - report');
     }
 
     $mailer->send($mail);
@@ -417,4 +417,14 @@ function query_history_bound(): array
     return query_history()->map(function ($query) {
         return DatabaseHelper::getQueryWithBindings($query[0], $query[1]);
     })->all();
+}
+
+function namespace_split(string $class): array
+{
+    $classPos = strrpos($class, '\\');
+    if ($classPos === false) {
+        return ['', $class];
+    }
+
+    return [substr($class, 0, $classPos), substr($class, $classPos + 1)];
 }

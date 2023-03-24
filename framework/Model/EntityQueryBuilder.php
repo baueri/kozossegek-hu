@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Framework\Model;
 
 use Closure;
@@ -7,9 +9,12 @@ use Framework\Database\Builder;
 use Framework\Database\Repository\Events\ModelCreated;
 use Framework\Database\Repository\Events\ModelDeleted;
 use Framework\Event\EventDisptatcher;
+use Framework\Model\Exceptions\ModelNotFoundException;
+use Framework\Model\Exceptions\QueryBuilderException;
 use Framework\Model\Relation\HasRelations;
 use Framework\Support\Collection;
 use Framework\Support\StringHelper;
+use RuntimeException;
 
 /**
  * @phpstan-template T of \Framework\Model\Entity
@@ -20,7 +25,7 @@ abstract class EntityQueryBuilder
 
     public const TABLE = null;
 
-    protected Builder $builder;
+    public readonly Builder $builder;
 
     final public function __construct()
     {
@@ -43,7 +48,20 @@ abstract class EntityQueryBuilder
     /**
      * @phpstan-return class-string<T>
      */
-    abstract protected static function getModelClass(): string;
+    public static function getModelClass(): string
+    {
+        $singular = substr(static::class, 0, strlen(static::class) -1);
+
+        [, $className] = namespace_split($singular);
+
+        $modelClassName = "App\\Models\\{$className}";
+
+        if (!class_exists($modelClassName)) {
+            throw new RuntimeException("Could not instantiate {$modelClassName} from entity " . static::class);
+        }
+
+        return $modelClassName;
+    }
 
     public static function query(): static
     {
@@ -88,7 +106,7 @@ abstract class EntityQueryBuilder
     }
 
     /**
-     * @return T|null
+     * @return Entity|T|null
      */
     public function getInstance(?array $values = null)
     {
@@ -96,6 +114,11 @@ abstract class EntityQueryBuilder
             return null;
         }
 
+        return $this->makeModel($values);
+    }
+
+    protected function makeModel($values = null)
+    {
         $class = static::getModelClass();
 
         return new $class($values);
@@ -104,9 +127,19 @@ abstract class EntityQueryBuilder
     /**
      * @phpstan-return \Framework\Model\Entity<T>|T|null
      */
-    public function find($id): ?Entity
+    public function find(mixed $id): ?Entity
     {
         return $this->wherePK($id)->first();
+    }
+
+    /**
+     * @param $id
+     * @return Entity
+     * @phpstan-return T
+     */
+    public function findOrNew($id): Entity
+    {
+        return $this->find($id) ?? $this->makeModel();
     }
 
     public function fetchFirst(?string $column = null)
@@ -115,8 +148,10 @@ abstract class EntityQueryBuilder
     }
 
     /**
-     * @throws \Framework\Model\ModelNotFoundException
-     * @phpstan-return T
+     * @param mixed $id
+     * @return \Framework\Model\Entity|null
+     * @phpstan-return \Framework\Model\Entity<T>|T|null
+     * @throws ModelNotFoundException
      */
     public function findOrFail($id): Entity
     {
@@ -186,7 +221,7 @@ abstract class EntityQueryBuilder
         return $this;
     }
 
-    public function where(callable|string $column, ?string $operator = null, string|int|null $value = null, string $clause = 'and'): static
+    public function where(callable|string $column, $operator = null, $value = null, string $clause = 'and'): static
     {
         $this->builder->where($column, $operator, $value, $clause);
 
@@ -205,9 +240,9 @@ abstract class EntityQueryBuilder
         return $this;
     }
 
-    public function whereNull($column): static
+    public function whereNull($column, $clause = 'and'): EntityQueryBuilder
     {
-        $this->builder->whereNull($column);
+        $this->builder->whereNull($column, $clause);
         return $this;
     }
 
@@ -241,6 +276,12 @@ abstract class EntityQueryBuilder
         return $this;
     }
 
+    public function whereDoesnExist(Builder|EntityQueryBuilder $table, ?Closure $callback = null, string $clause = 'and'): static
+    {
+        $this->builder->whereDoesnExist($table instanceof EntityQueryBuilder ? $table->builder : $table, $callback, $clause);
+        return $this;
+    }
+
     public function groupBy($gropBy): EntityQueryBuilder
     {
         $this->builder->groupBy($gropBy);
@@ -257,7 +298,7 @@ abstract class EntityQueryBuilder
     public function when($expression, Closure $callback): static
     {
         if ($expression) {
-            $callback($this);
+            $callback($this, $expression);
         }
 
         return $this;
@@ -287,19 +328,32 @@ abstract class EntityQueryBuilder
         return $this->builder->update($values);
     }
 
-    public function save(Entity $entity, ?array $values = null): int
+    /**
+     * @throws QueryBuilderException
+     */
+    public function touch(Entity $entity): int
     {
-        if (!$values) {
-            $values = $entity->getAttributes();
-        } else {
-            $entity->update($values);
+        if (!$entity::updatedCol()) {
+            throw new QueryBuilderException('method updatedCol must return a valid column name.');
         }
 
-        if ($entity->hasAttribute('updated_at')) {
-            $values['updated_at'] = now()->toDateTimeString();
-            $entity->updated_at = $values['updated_at'];
+        return static::query()->where(static::primaryCol(), $entity->getId())
+            ->update([$entity::updatedCol() => now()->format('Y-m-d H:i:s')]);
+    }
+
+    public function save(Entity $entity, ?array $values = null): int
+    {
+        $toUpdate = $values ?: $entity->getAttributes();
+        if ($values) {
+            $entity->fill($values);
         }
-        return $this->query()->where(static::primaryCol(), $entity->getId())->update($values);
+
+        $col = $entity::updatedCol();
+        if ($col && !array_key_exists($col, $toUpdate)) {
+            $toUpdate[$col] = $entity->{$col} = now();
+        }
+
+        return $this->query()->where(static::primaryCol(), $entity->getId())->update($toUpdate);
     }
 
     public function insert(array $values): int|string
@@ -362,20 +416,33 @@ abstract class EntityQueryBuilder
         return $this;
     }
 
-    public function create(array $values)
+    public static function truncate(): void
     {
-        $values['id'] = $this->insert($values);
+        static::query()->builder->truncate();
+    }
 
-        $model = $this->getInstance($values);
+    /**
+     * @param array|Entity $values
+     * @phpstan-param T|array $values
+     * @return Entity|null
+     * @phpstan-return T
+     */
+    public function create(array|Entity $values)
+    {
+        $model = $values instanceof Entity ? $values : null;
+        $toSave = $model ? $model->getAttributes() : $values;
+
+        $insertId = $this->insert($toSave);
+
+        if (isset($model)) {
+            $model->{self::primaryCol()} = $insertId;
+        } else {
+            $model = $this->getInstance($toSave + [static::primaryCol() => $insertId]);
+        }
 
         EventDisptatcher::dispatch(new ModelCreated($model));
 
         return $model;
-    }
-
-    public static function truncate(): void
-    {
-        static::query()->builder->truncate();
     }
 
     public function getTable(): string

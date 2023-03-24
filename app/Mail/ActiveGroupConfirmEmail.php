@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Mail;
 
 use App\Models\ChurchGroup;
@@ -11,8 +13,8 @@ use Framework\Support\Collection;
 class ActiveGroupConfirmEmail extends Mailable
 {
     /**
-     * @param \App\Models\User $maintainer
-     * @param \Framework\Support\Collection<UserToken> $tokens
+     * @param User $maintainer
+     * @param Collection<UserToken> $tokens
      */
     public function __construct(
         private readonly User $maintainer,

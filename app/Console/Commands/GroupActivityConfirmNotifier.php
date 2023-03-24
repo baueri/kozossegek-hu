@@ -4,13 +4,14 @@ namespace App\Console\Commands;
 
 use App\Mail\ActiveGroupConfirmEmail;
 use App\Models\ChurchGroup;
+use App\Models\User;
 use App\QueryBuilders\ChurchGroups;
 use App\QueryBuilders\Users;
-use App\Repositories\UserTokens;
+use App\QueryBuilders\UserTokens;
 use Framework\Console\Command;
 use Framework\Model\ModelCollection;
 
-class GroupActivityConfirmNotifier implements Command
+class GroupActivityConfirmNotifier extends Command
 {
     public static function signature(): string
     {
@@ -20,6 +21,7 @@ class GroupActivityConfirmNotifier implements Command
     public function __construct(
         private readonly UserTokens $tokens
     ) {
+        parent::__construct();
     }
 
     public function handle(): void
@@ -40,7 +42,7 @@ class GroupActivityConfirmNotifier implements Command
     }
 
     /**
-     * @return \App\Models\User[]|ModelCollection<\App\Models\User>
+     * @return User[]|ModelCollection<User>
      */
     private function getUsers(): ModelCollection
     {

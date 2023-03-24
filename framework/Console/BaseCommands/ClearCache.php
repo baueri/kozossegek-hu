@@ -4,11 +4,9 @@ namespace Framework\Console\BaseCommands;
 
 use Exception;
 use Framework\Console\Command;
-use Framework\Console\Out;
 
-class ClearCache implements Command
+class ClearCache extends Command
 {
-
     public static function signature(): string
     {
         return 'cache:clear';
@@ -19,10 +17,10 @@ class ClearCache implements Command
      */
     public function handle(): void
     {
-        if (!rrmdir(CACHE)) {
-            Out::fatal('Nem sikerült a cache törlés');
+        if (!rrmdir(CACHE . '/')) {
+            $this->output->fatal('Nem sikerült a cache törlés');
         }
 
-        Out::success('Sikeres cache törlés');
+        $this->output->success('Sikeres cache törlés');
     }
 }

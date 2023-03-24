@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Framework\Http;
 
 use App\Http\Exception\RequestParameterException;
@@ -7,6 +9,7 @@ use ArrayAccess;
 use ArrayIterator;
 use Countable;
 use Framework\Http\Route\RouteInterface;
+use Framework\Support\Arr;
 use Framework\Support\Collection;
 use IteratorAggregate;
 use Traversable;
@@ -20,11 +23,11 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
 
     public Collection $files;
 
-    public string $requestMethod;
+    public ?string $requestMethod;
 
-    public string $uri;
+    public ?string $uri;
 
-    public RouteInterface $route;
+    public ?RouteInterface $route = null;
 
     private ?array $uriValues = null;
 
@@ -38,9 +41,9 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
 
         $this->files = new Collection($_FILES);
 
-        $this->requestMethod = $_SERVER['REQUEST_METHOD'];
+        $this->requestMethod = $_SERVER['REQUEST_METHOD'] ?? null;
 
-        $this->uri = urldecode(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
+        $this->uri = urldecode(parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH));
     }
 
     public function __call($name, $arguments)
@@ -132,5 +135,10 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
                 throw new RequestParameterException('Missing request value');
             }
         }
+    }
+
+    public function isAjax(): bool
+    {
+        return Arr::get($_SERVER, 'HTTP_X_REQUESTED_WITH') && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'xmlhttprequest';
     }
 }

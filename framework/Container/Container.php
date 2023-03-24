@@ -155,7 +155,7 @@ class Container implements ContainerInterface
 
     private function getDependencies($class, string $method = '__construct', ?array $resolvedDependencies = []): array
     {
-        if (!method_exists($class, $method) && !function_exists($class)) {
+        if (!method_exists($class, $method) && !function_exists($class) && !$class instanceof Closure) {
             return [];
         }
 

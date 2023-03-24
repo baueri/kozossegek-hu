@@ -4,11 +4,22 @@
 @extends('admin')
 <form method="post" action="{{ $action }}">
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-5">
             <div class="form-group">
-                <label>Név</label>
+                <label >Név</label>
                 <input type="text" class="form-control" name="name" value="{{ $spiritualMovement->name }}"/>
             </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>Típus</label>
+                <select class="form-control" name="type">
+                    <option value="spiritual_movement" @selected($spiritualMovement->type === 'spiritual_movement')>Lelkiségi mozgalom</option>
+                    <option value="monastic_community" @selected($spiritualMovement->type === 'monastic_community')>Szerzetesrend</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-8">
             <div class="form-group">
                 <label>Keresőbarát url</label>
                 <input type="text" class="form-control" value="{{ $spiritualMovement->slug }}" disabled/>

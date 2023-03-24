@@ -9,13 +9,16 @@ class ApiResponse
         return $this->response($data, true);
     }
 
-    public function error($data = null): array
+    /**
+     * @param array|string $data
+     * @return array
+     */
+    public function error($data = [], ?int $code = null)
     {
-        return $this->response($data, false);
+        return $this->response($data, false, $code);
     }
 
-
-    public function response($data, ?bool $success = null): array
+    public function response($data, ?bool $success = null, ?int $code = null)
     {
         Response::asJson();
 
@@ -26,6 +29,10 @@ class ApiResponse
             $data = ['msg' => $data];
         }
 
-        return array_merge(compact('success'), (array) $data);
+        if ($code) {
+            Response::setStatusCode($code);
+        }
+
+        return array_merge(compact('success'), $data);
     }
 }

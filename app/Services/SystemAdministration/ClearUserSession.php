@@ -1,15 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services\SystemAdministration;
 
 /**
  * Több, mint egy napos user session-ök törlése
- * @package App\Services\SystemAdministration
  */
 class ClearUserSession
 {
-    public function run()
+    public function run(): bool
     {
-        return (bool) db()->delete('delete from user_sessions where created_at < DATE_SUB(NOW(), INTERVAL 1 DAY)');
+        return (bool) db()->delete('delete from user_sessions where DATE(created_at) < DATE_SUB(NOW(), INTERVAL 1 DAY)');
     }
 }

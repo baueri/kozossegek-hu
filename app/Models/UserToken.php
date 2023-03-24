@@ -1,28 +1,26 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
+use Framework\Model\Entity;
 use Carbon\Carbon;
 use Framework\Model\Model;
 
-class UserToken extends Model
+/**
+ * @property $token
+ * @property $email
+ * @property $page
+ * @property $expires_at
+ */
+class UserToken extends Entity
 {
-    public $id;
-
-    public $token;
-
-    public $email;
-
-    public $page;
-
-    public $expires_at;
-
-    public $data;
-
-    public function getUrl(array $additionalQueryParams = []): string
+    public function getUrl(): string
     {
-        return "{$this->page}?{$this->buildQuery($additionalQueryParams)}";
+        return "{$this->page}?token={$this->token}";
     }
+
 
     public function getUrlWithEncodedParams(array $additionalQueryParams = [])
     {
