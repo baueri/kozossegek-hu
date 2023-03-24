@@ -7,16 +7,14 @@ use App\Exception\EmailTakenException;
 use App\Http\Responses\CreateGroupSteps\RegisterGroupForm;
 use App\Http\Responses\PortalEditGroupForm;
 use App\Models\ChurchGroup;
-use App\Models\UserToken;
 use App\Portal\Services\GroupList;
 use App\Portal\Services\PortalCreateGroup;
 use App\Portal\Services\PortalUpdateGroup;
 use App\Portal\Services\SendGroupContactMessage;
 use App\QueryBuilders\ChurchGroups;
 use App\QueryBuilders\GroupViews;
-use App\Repositories\Groups;
-use App\Repositories\UserTokens;
 use App\QueryBuilders\Institutes;
+use App\QueryBuilders\UserTokens;
 use App\Services\GroupSearchRepository;
 use Error;
 use ErrorException;
@@ -292,7 +290,10 @@ class GroupController extends PortalController
         readfile($file_url);
     }
 
-    public function confirmGroup(UserTokens $tokens, ChurchGroups $groups)
+    /**
+     * @throws ModelNotFoundException
+     */
+    public function confirmGroup(UserTokens $tokens, ChurchGroups $groups): string
     {
         parse_str(base64_decode(request()->get('verify')), $decoded);
         $token = $tokens->getByToken($decoded['token'] ?? '');
@@ -305,7 +306,6 @@ class GroupController extends PortalController
             return view('portal.error', ['message2' => 'Ennek a tokennek az érvényességi ideje lejárt!']);
         }
 
-        /** @var ChurchGroup $group */
         $group = $groups->findOrFail($decoded['group_id']);
         if ((int) $token->data('group_id') !== (int) $group->getId()) {
             return view('portal.error', ['message2' => 'Közösség megerősítése sikertelen! Hibás token.']);
@@ -321,7 +321,7 @@ class GroupController extends PortalController
             throw new InvalidArgumentException('Invalid confirm action');
         }
 
-        $tokens->delete($token);
+        $tokens->deleteModel($token);
         return $view;
     }
 }
