@@ -8,6 +8,7 @@ use Framework\Model\Entity;
 /**
  * @property int $institute_id
  * @property $document
+ * @property User|null $manager
  */
 class ChurchGroup extends Entity implements ChurchGroupInterface
 {
