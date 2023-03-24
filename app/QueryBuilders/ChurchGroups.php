@@ -12,7 +12,7 @@ use Framework\Model\Relation\Relation;
 use Framework\Model\SoftDeletes;
 
 /**
- * @phpstan-extends EntityQueryBuilder<\App\Models\ChurchGroup>
+ * @phpstan-extends EntityQueryBuilder<ChurchGroup>
  */
 class ChurchGroups extends EntityQueryBuilder
 {

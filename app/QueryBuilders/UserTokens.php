@@ -45,13 +45,13 @@ class UserTokens extends EntityQueryBuilder
     /**
      * @throws Exception
      */
-    public function make(User $user, string $page, ?Carbon $exireDate = null, string|array $data = null): UserToken
+    public function make(User $user, string $page, ?Carbon $expireDate = null, string|array $data = null): UserToken
     {
         return $this->getInstance([
             'token' => bin2hex(random_bytes(20)),
             'email' => $user->email,
             'page' => $page,
-            'expires_at' => $exireDate ? $exireDate->toDateTimeString() : now()->modify('+1 day')->toDateTimeString(),
+            'expires_at' => $expireDate ? $expireDate->toDateTimeString() : now()->modify('+1 day')->toDateTimeString(),
             'data' => is_array($data) ? json_encode($data) : $data
         ]);
     }

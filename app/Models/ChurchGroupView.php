@@ -24,7 +24,6 @@ use Framework\Model\Entity;
  * @property-read null|string $institute_name2
  * @property-read null|string $spiritual_movement
  * @property-read null|string $pending
- * @mixin \App\Models\ChurchGroup
  */
 class ChurchGroupView extends Entity
 {
