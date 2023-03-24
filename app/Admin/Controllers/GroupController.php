@@ -22,7 +22,9 @@ use Framework\Http\Message;
 use Framework\Http\Request;
 use Framework\Mail\Mailer;
 use Framework\Model\Exceptions\ModelNotFoundException;
+use RuntimeException;
 use Throwable;
+use function PHPUnit\Framework\assertIsBool;
 
 class GroupController extends AdminController
 {
@@ -173,7 +175,12 @@ class GroupController extends AdminController
      */
     public function approveGroup(ChurchGroups $groupRepo, Mailer $mailer): array
     {
-        $groupView = $this->groupViews->findOrFail($this->request['id']);
+        $groupView = $this->groupViews->with('manager')->findOrFail($this->request['id']);
+
+        if (!$groupView->manager->activated_at) {
+            throw new RuntimeException('Nem megerősített fiók közösségének jóváhagyása nem megengedett');
+        }
+
         $groupRepo->query()->where('id', $groupView->id)->update(['pending' => 0]);
 
         $mailable = new GroupAcceptedEmail($groupView);
