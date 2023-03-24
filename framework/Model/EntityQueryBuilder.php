@@ -150,8 +150,10 @@ abstract class EntityQueryBuilder
     }
 
     /**
+     * @param mixed $id
+     * @return \Framework\Model\Entity|null
+     * @phpstan-return \Framework\Model\Entity<T>|T|null
      * @throws ModelNotFoundException
-     * @phpstan-return T
      */
     public function findOrFail($id): Entity
     {
