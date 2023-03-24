@@ -6,18 +6,19 @@ use App\Services\RebuildSearchEngine;
 use Framework\Console\Command;
 use Framework\Console\Out;
 
-class RebuildSearchEngineCommand implements Command
+class RebuildSearchEngineCommand extends Command
 {
     public function __construct(
-        private RebuildSearchEngine $service
+        private readonly RebuildSearchEngine $service
     ) {
+        parent::__construct();
     }
 
     public function handle(): void
     {
-        Out::writeln('rebuilding search engine rows...');
+        $this->output->writeln('rebuilding search engine rows...');
         $this->service->run();
-        Out::success('done.');
+        $this->output->success('done.');
     }
 
     public static function signature(): string

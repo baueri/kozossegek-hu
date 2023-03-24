@@ -1,35 +1,31 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Portal\Services;
 
 use App\Admin\Group\Services\CreateGroup;
 use App\Enums\Denomination;
 use App\Exception\EmailTakenException;
 use App\Mail\NewGroupEmail;
+use App\Models\ChurchGroup;
 use App\Models\User;
-use App\Repositories\UserTokens;
+use App\QueryBuilders\UserTokens;
 use Framework\Exception\FileTypeNotAllowedException;
 use Framework\Mail\Mailer;
 use Framework\Support\Collection;
 use Framework\Traits\ManagesErrors;
-use Legacy\Group;
 use PHPMailer\PHPMailer\Exception;
 
 class PortalCreateGroup
 {
     use ManagesErrors;
 
-    private CreateUser $createUser;
-
-    private CreateGroup $createGroup;
-
-    private UserTokens $userTokens;
-
-    public function __construct(CreateUser $createUser, CreateGroup $createGroup, UserTokens $userTokens)
-    {
-        $this->createUser = $createUser;
-        $this->createGroup = $createGroup;
-        $this->userTokens = $userTokens;
+    public function __construct(
+        private readonly CreateUser $createUser,
+        private readonly CreateGroup $createGroup,
+        private readonly UserTokens $userTokens
+    ) {
     }
 
     /**
@@ -37,7 +33,7 @@ class PortalCreateGroup
      * @throws EmailTakenException|FileTypeNotAllowedException
      * @throws \Exception
      */
-    public function createGroup(Collection $requestData, ?array $fileData, ?User $user): ?Group
+    public function createGroup(Collection $requestData, ?array $fileData, ?User $user): ?ChurchGroup
     {
         $data = $requestData->only(
             'status',

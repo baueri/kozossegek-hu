@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Framework\Model;
 
 use Framework\Support\Collection;
 
 /**
- * @template T of \Framework\Model\Entity
+ * @template T of Entity
  */
 class ModelCollection extends Collection
 {

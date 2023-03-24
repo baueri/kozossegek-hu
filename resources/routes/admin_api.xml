@@ -5,6 +5,9 @@
             <route method="post" uri="{id}/reject-group" controller="GroupController" as="group.reject_group" use="rejectGroup"/>
             <route method="post" uri="{id}/approve" controller="GroupController" use="approveGroup" as="group.approve"/>
             <route method="post" uri="{id}/delete-by-validation" controller="GroupController" use="deleteByValidation" as="group.delete_by_validation"/>
+            <route method="get" uri="user/{id}/group-managers/search" controller="Api\GroupManagerController" use="searchGroups" as="group_managers.search_groups"/>
+            <route method="post" uri="group-managers/add-group" controller="Api\GroupManagerController" use="addGroup" as="group_managers.add_group"/>
+            <route method="post" uri="group-managers/remove-group" controller="Api\GroupManagerController" use="removeGroup" as="group_managers.remove_group"/>
         </route-group>
     </route-group>
 </routes>

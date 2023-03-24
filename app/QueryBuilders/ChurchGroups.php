@@ -5,6 +5,7 @@ namespace App\QueryBuilders;
 use App\Models\ChurchGroup;
 use App\Models\ChurchGroupView;
 use Framework\Database\Builder;
+use App\Models\User;
 use Framework\Model\EntityQueryBuilder;
 use Framework\Model\Relation\Has;
 use Framework\Model\Relation\Relation;
@@ -17,7 +18,7 @@ class ChurchGroups extends EntityQueryBuilder
 {
     use SoftDeletes;
 
-    protected static function getModelClass(): string
+    public static function getModelClass(): string
     {
         return ChurchGroup::class;
     }
@@ -25,6 +26,11 @@ class ChurchGroups extends EntityQueryBuilder
     public function tags(): Relation
     {
         return $this->has(Has::many, GroupTags::class);
+    }
+
+    public function manager(): Relation
+    {
+        return $this->has(Has::one, Users::class, 'id', 'user_id');
     }
 
     public function maintainer(): Relation
@@ -64,6 +70,20 @@ class ChurchGroups extends EntityQueryBuilder
         }
 
         return $this;
+    }
+
+    public function of(User $user): static
+    {
+        return $this->where('user_id', $user->getId());
+    }
+
+    public function editableBy(User $user): static
+    {
+        return $this->whereExists(
+            builder('managed_church_groups')
+                ->whereRaw("group_id={$this->getTable()}.id")
+                ->where('user_id', $user->getId())
+        , null, 'or');
     }
 
     public function shouldNotify(): static

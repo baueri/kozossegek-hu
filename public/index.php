@@ -30,7 +30,6 @@ try {
     MileStone::measure('dispatch', 'Dispatching');
     $app->run($app->get(HttpDispatcher::class));
     MileStone::endMeasure('dispatch');
-    print debugbar()->render();
 } catch (Error | Exception | Throwable $e) {
     ob_get_clean();
     $app->handleError($e);

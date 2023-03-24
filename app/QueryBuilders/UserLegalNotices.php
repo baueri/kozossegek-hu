@@ -12,7 +12,7 @@ use Framework\Model\EntityQueryBuilder;
  */
 class UserLegalNotices extends EntityQueryBuilder
 {
-    protected static function getModelClass(): string
+    public static function getModelClass(): string
     {
         return UserLegalNotice::class;
     }

@@ -7,8 +7,9 @@ use App\Auth\Auth;
 use App\Enums\UserRole;
 use App\Mail\RegistrationEmail;
 use App\Models\User;
+use App\QueryBuilders\GroupViews;
 use App\QueryBuilders\Users;
-use App\Repositories\UserTokens;
+use App\QueryBuilders\UserTokens;
 use App\Services\DeleteUser;
 use Exception;
 use Framework\Exception\DuplicateEntryException;
@@ -16,15 +17,16 @@ use Framework\Http\Message;
 use Framework\Http\Request;
 use Framework\Http\Session;
 use Framework\Mail\Mailer;
-use Framework\Model\ModelNotFoundException;
+use Framework\Model\Exceptions\ModelNotFoundException;
 use Framework\Support\Password;
 
 class UserController extends AdminController
 {
     public function list(UserTable $table): string
     {
-        $selected_user_group = request()['user_group'];
-        return view('admin.user.list', compact('table', 'selected_user_group'));
+        $selected_user_group = $this->request->get('user_group');
+        $online = $this->request->get('online');
+        return view('admin.user.list', compact('table', 'selected_user_group', 'online'));
     }
 
     public function create(): string
@@ -40,27 +42,21 @@ class UserController extends AdminController
     {
         $data = $request->only('username', 'name', 'email', 'user_group');
         try {
-            $existingUser = $repository->query()
-                ->where('email', $data['email'])
+            $existingUser = $repository->query()->where('email', $data['email'])
                 ->orWhere('username', $data['username'])
                 ->first();
 
             if ($existingUser) {
-                if ($existingUser->email === $data['email']) {
-                    $msg = 'Ez az email cím már foglalt';
-                } else {
-                    $msg = 'Ez a felhasználónév már foglalt';
-                }
-                throw new DuplicateEntryException($msg);
+                throw new DuplicateEntryException($existingUser->email === $data['email'] ? 'Ez az email cím már foglalt' : 'Ez a felhasználónév már foglalt');
             }
 
             $data['password'] = Password::hash(time());
             $user = $repository->create($data);
+
             $passwordReset = $passwordResetRepository->createActivationToken($user);
 
             $mailable = new RegistrationEmail($user, $passwordReset);
             (new Mailer($user->email))->send($mailable);
-
             Message::success('Sikeres létrehozás');
             redirect_route('admin.user.edit', $user);
         } catch (DuplicateEntryException $e) {
@@ -81,7 +77,7 @@ class UserController extends AdminController
     public function edit(Request $request, Users $repository): string
     {
         $user = $repository->findOrFail($request['id']);
-        $my_profile = $user->is(Auth::user());
+        $my_profile = Auth::is($user);
         $action = route('admin.user.update', $user);
         $groups = UserRole::getTranslated();
         $spiritual_movements = db()->select('select * from spiritual_movements order by name');
@@ -90,6 +86,19 @@ class UserController extends AdminController
 
         $model = compact('user', 'my_profile', 'action', 'groups', 'spiritual_movements', 'user_movement');
         return view('admin.user.edit', $model);
+    }
+
+    public function managedGroups(Request $request, Users $repository, GroupViews $groupViews)
+    {
+        $user = $repository->findOrFail($request['id']);
+        $managedGroups = $groupViews
+            ->select($groupViews->getTable() . '.*')
+            ->leftJoin('managed_church_groups m', $groupViews->getTable() . '.id = m.group_id')
+            ->where('m.user_id', $user->getId())
+            ->orderBy('name')
+            ->get();
+
+        return view('admin.user.managed_groups', compact('user', 'managedGroups'));
     }
 
     /**
@@ -164,7 +173,7 @@ class UserController extends AdminController
     }
 
     /**
-     * @throws \Framework\Model\ModelNotFoundException
+     * @throws ModelNotFoundException
      */
     public function delete(Request $request, Users $repository, DeleteUser $service): void
     {

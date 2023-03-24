@@ -40,9 +40,9 @@ class AppMigrationTable extends Table
         return $this;
     }
 
-    public function updatedAt(string $column = 'updated_at'): static
+    public function updatedAt(string $column = 'updated_at', array $options = []): static
     {
-        $this->timestamp($column, ['null' => true, 'update' => 'CURRENT_TIMESTAMP']);
+        $this->timestamp($column, array_merge(['null' => true], $options));
 
         return $this;
     }
@@ -52,6 +52,11 @@ class AppMigrationTable extends Table
         $this->addColumn($column, AdapterInterface::PHINX_TYPE_DATE, $options);
 
         return $this;
+    }
+
+    public function enum(string $column, array $values, array $options = []): static
+    {
+        return $this->addColumn($column, 'enum', array_merge($options, compact('values')));
     }
 
     public function dropTimeStamps(): static

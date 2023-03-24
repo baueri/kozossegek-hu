@@ -3,8 +3,8 @@
 namespace App\Services;
 
 use App\Models\User;
+use App\QueryBuilders\Institutes;
 use Framework\Support\Csv;
-use Legacy\Institutes;
 
 class InstituteImporter
 {

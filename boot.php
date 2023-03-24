@@ -25,7 +25,7 @@ const APP = ROOT . 'app' . DS;
 const RESOURCES = ROOT . 'resources' . DS;
 const VIEWS = RESOURCES . 'views' . DS;
 const CACHE = ROOT . 'cache' . DS;
-const APP_VERSION = 'v2.2.0';
+const APP_VERSION = 'v2.3.0';
 
 // Config constants for faster development
 const APP_CFG_LEGAL_NOTICE_VERSION = 'app.legal_notice_version';
@@ -33,8 +33,8 @@ const APP_CFG_LEGAL_NOTICE_DATE = 'app.legal_notice_date';
 
 DotEnv::load(ROOT . '.env.php');
 
+ini_set("log_errors", 1);
 if (!_env('DEBUG')) {
-    ini_set("log_errors", 1);
     ini_set("error_log", ROOT . "error.log");
 } else {
     ini_set('display_errors', 1);

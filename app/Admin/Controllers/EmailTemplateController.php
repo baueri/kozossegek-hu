@@ -11,7 +11,7 @@ use App\Mail\ResetPasswordEmail;
 use App\Models\ChurchGroup;
 use App\Models\ChurchGroupView;
 use App\Models\User;
-use App\Repositories\UserTokens;
+use App\QueryBuilders\UserTokens;
 use Framework\Http\Request;
 use Framework\Http\Response;
 use Framework\Http\View\View;
@@ -104,8 +104,13 @@ class EmailTemplateController extends AdminController
             new ChurchGroup(['name' => 'Teszt közösség', 'id' => 123]),
             new ChurchGroup(['name' => 'Másik közi', 'id' => 456]),
         ]));
-        $tokens = $user->groups;
-        $mailable = new ActiveGroupConfirmEmail($user, $token);
+
+        $groupTokens = collect();
+
+        foreach ($user->groups as $group) {
+            $groupTokens[$group->getId()] = $tokens->make($user, route('confirm_group'), now()->addMonth(), ['group_id' => $group->getId()]);
+        }
+        $mailable = new ActiveGroupConfirmEmail($user, $groupTokens);
         $title = 'Aktív közösség megerősítése';
         return view('admin.email_template', compact('mailable', 'title'));
     }

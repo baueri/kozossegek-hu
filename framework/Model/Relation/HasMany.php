@@ -14,7 +14,7 @@ trait HasMany
     public function loadHasRelations($instances): void
     {
         $instances = collect($instances);
-        $relations = $this->getPreparedRelations();
+        $relations = $this->getPreparedRelations()->filter(fn (Relation $relation) => $relation->relationType instanceof Has);
 
         if ($relations->isEmpty() || $instances->isEmpty()) {
             return;

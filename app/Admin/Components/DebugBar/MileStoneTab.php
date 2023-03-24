@@ -24,7 +24,7 @@ class MileStoneTab extends DebugBarTab
 
         /** @var array{title: string, start: float, end: float} $measure */
         foreach ($measures as $name => $measure) {
-            $time = $this->roundTime($measure['end'] - $measure['start']);
+            $time = $this->roundTime($measure['end'] ?? microtime(true) - $measure['start']);
             $title = $measure['title'] ?: $name;
             $out .= "<tr><td><b>{$title}</b>:</td><td>{$time}ms</td></tr>";
         }

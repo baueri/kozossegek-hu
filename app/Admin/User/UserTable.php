@@ -5,11 +5,15 @@ namespace App\Admin\User;
 use App\Admin\Components\AdminTable\{AdminTable, Deletable, Editable};
 use App\Enums\UserRole;
 use App\Models\User;
+use App\Models\UserSession;
 use App\QueryBuilders\ChurchGroups;
+use App\QueryBuilders\GroupViews;
 use App\QueryBuilders\Users;
+use App\QueryBuilders\UserSessions;
 use Framework\Database\Builder;
 use Framework\Database\PaginatedResultSetInterface;
 use Framework\Http\Request;
+use Framework\Model\PaginatedModelCollection;
 use Framework\Support\Collection;
 
 class UserTable extends AdminTable implements Deletable, Editable
@@ -22,6 +26,7 @@ class UserTable extends AdminTable implements Deletable, Editable
         'email' => 'Email',
         'activated_at' => 'Aktiválva',
         'created_at' => 'Regisztráció',
+        'sessions' => '<i class="fa fa-dot-circle text-success" title="Online"></i>'
     ];
 
     private Users $repository;
@@ -78,6 +83,25 @@ class UserTable extends AdminTable implements Deletable, Editable
         );
     }
 
+    /**
+     * @param Collection<UserSession> $sessions
+     * @return string
+     */
+    public function getSessions(Collection $sessions): string
+    {
+        if ($sessions->isEmpty()) {
+            return static::getIcon('fa fa-dot-circle text-lightgray');
+        }
+
+        $lastSession = $sessions->first();
+
+        if ($lastSession->updatedAt()->gt(now()->subMinutes(30))) {
+            return static::getIcon('fa fa-dot-circle text-success');
+        }
+
+        return static::getIcon('fa fa-dot-circle text-warning');
+    }
+
     public function getData(): PaginatedResultSetInterface
     {
         $filter = collect($this->request->only('deleted', 'search', 'user_group'));
@@ -87,7 +111,7 @@ class UserTable extends AdminTable implements Deletable, Editable
         return $this->getUsers($filter);
     }
 
-    private function getUsers(Collection $filter): PaginatedResultSetInterface
+    private function getUsers(Collection $filter): PaginatedModelCollection
     {
         $query = $this->repository->query();
 
@@ -112,7 +136,14 @@ class UserTable extends AdminTable implements Deletable, Editable
         if ($userGroup = $filter['user_group']) {
             $query->where('user_group', $userGroup);
         }
-        $query->withCount('groups', fn (ChurchGroups $query) => $query->notDeleted());
+
+        $query->withCount('groups', fn(ChurchGroups $groupViews) => $groupViews->active());
+        $online = ['sessions', fn (UserSessions $query) => $query->online()->orderBy('updated_at', 'desc')];
+        $query->with(...$online);
+
+        if ($this->request->get('online')) {
+            $query->whereHas(...$online);
+        }
 
         return $query->paginate($this->perpage);
     }

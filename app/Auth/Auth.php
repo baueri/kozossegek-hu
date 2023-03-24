@@ -50,4 +50,15 @@ final class Auth
     {
         return self::$user;
     }
+
+    public static function is(User|int|null $user): bool
+    {
+
+        return self::id() === $user->getId();
+    }
+
+    public static function id()
+    {
+        return self::user()?->getId();
+    }
 }

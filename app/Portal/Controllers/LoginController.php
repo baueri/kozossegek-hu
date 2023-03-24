@@ -9,9 +9,10 @@ use App\Helpers\HoneyPot;
 use App\Mail\RegistrationEmail;
 use App\Portal\Services\CreateUser;
 use App\QueryBuilders\Users;
-use App\Repositories\UserTokens;
+use App\QueryBuilders\UserTokens;
 use App\Services\User\LegalNoticeService;
 use Exception;
+use Framework\Exception\UnauthorizedException;
 use Framework\Http\Cookie;
 use Framework\Http\Request;
 use Framework\Http\Message;
@@ -71,8 +72,8 @@ class LoginController extends PortalController
 
     /**
      * @throws \PHPMailer\PHPMailer\Exception
-     * @throws \Framework\Exception\UnauthorizedException
-     * @throws \Exception
+     * @throws UnauthorizedException
+     * @throws Exception
      */
     public function register(CreateUser $service, UserTokens $tokens, Mailer $mailer, LegalNoticeService $legalNoticeService): string
     {

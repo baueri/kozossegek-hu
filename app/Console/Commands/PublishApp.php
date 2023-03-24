@@ -6,7 +6,7 @@ use Framework\Console\Command;
 use Framework\Console\Out;
 use Framework\File\FileManager;
 
-class PublishApp implements Command
+class PublishApp extends Command
 {
     /**
      * @throws \Exception
