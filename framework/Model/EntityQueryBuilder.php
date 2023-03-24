@@ -368,6 +368,9 @@ abstract class EntityQueryBuilder
         return $this->builder->updateOrInsert($where, $values);
     }
 
+    /**
+     * @phpstan-return \Framework\Model\Entity<T>|T|null
+     */
     public function updateOrCreate(array $where, array $values = [])
     {
         $found = $this->where($where)->first();

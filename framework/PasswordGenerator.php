@@ -36,10 +36,11 @@ class PasswordGenerator
         for ($i = 0; $i < $length ; $i++) {
             $pwd .= $patternArr[array_rand($patternArr)];
         }
+
         return $pwd;
     }
 
-    public function setOpt($option, $value): PasswordGenerator
+    public function setOpt($option, $value): self
     {
         if (!isset($this->settings[$option])) {
             throw new InvalidArgumentException('Invalid password option: ' . $option);
@@ -52,19 +53,19 @@ class PasswordGenerator
         return $this;
     }
 
-    public function useLower(bool $use): PasswordGenerator
+    public function useLower(bool $use): self
     {
         $this->setOpt(self::OPTION_LOWER, $use);
         return $this;
     }
 
-    public function useUpper(bool $use): PasswordGenerator
+    public function useUpper(bool $use): self
     {
         $this->setOpt(self::OPTION_UPPER, $use);
         return $this;
     }
 
-    public function useNumbers(bool $use): PasswordGenerator
+    public function useNumbers(bool $use): self
     {
         $this->setOpt(self::OPTION_NUMBERS, $use);
         return $this;

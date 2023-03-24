@@ -9,7 +9,7 @@ use Framework\Model\HasTimestamps;
 
 /**
  * @property string $app_name
- * @property string $app_secret
+ * @property string $api_key
  * @property string $user_id
  */
 class ThirdPartyCredential extends Entity

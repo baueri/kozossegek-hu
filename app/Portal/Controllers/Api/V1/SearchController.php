@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Portal\Controllers\Api\V1;
 
 use App\Auth\Auth;
@@ -15,8 +17,9 @@ use Framework\Http\Request;
 
 class SearchController
 {
-    public function __construct(private Request $request)
-    {
+    public function __construct(
+        private readonly Request $request
+    ) {
     }
 
     public function searchCity(Cities $repository): CitySearchResponse

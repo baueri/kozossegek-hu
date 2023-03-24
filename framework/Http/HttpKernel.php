@@ -37,12 +37,11 @@ class HttpKernel implements Kernel
     public function handleError($error)
     {
         Response::setStatusCode(ResponseStatus::isValidResponse($error->getCode()) ? $error->getCode() : 500);
-        if (Response::contentTypeIsJson() || request()->wantsJson()) {
 
+        if (Response::contentTypeIsJson() || request()->wantsJson()) {
             if (app()->debug()) {
                 throw $error;
             }
-
             elseif ($error instanceof HttpException) {
                 $message = $error->getMessage();
             } else {

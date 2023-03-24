@@ -13,15 +13,19 @@ use App\Portal\Services\PortalUpdateGroup;
 use App\QueryBuilders\GroupViews;
 use App\ThirdParty\Http\JwtPayload;
 use DomainException;
+use Firebase\JWT\ExpiredException;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
+use Firebase\JWT\SignatureInvalidException;
 use Framework\Exception\FileTypeNotAllowedException;
 use Framework\Http\Controller;
 use Framework\Http\Exception\HttpException;
 use Framework\Http\Exception\NotFoundException;
 use Framework\Http\Request;
 use Framework\Http\Response;
+use Framework\Http\ResponseStatus;
 use Framework\Support\Collection;
+use UnexpectedValueException;
 
 class ChurchGroupController extends Controller
 {
@@ -48,8 +52,15 @@ class ChurchGroupController extends Controller
                     true
                 )
             );
-        } catch (DomainException $e) {
-            throw new HttpException(message: 'Unauthorized', code: 401, previous: $e);
+        } catch (ExpiredException $e) {
+            header('WWW-Authenticate: Bearer');
+            throw new HttpException('Token expired', 401, $e);
+        } catch (SignatureInvalidException $e) {
+            header('WWW-Authenticate: Bearer');
+            throw new HttpException('Invalid token', 401, $e);
+        } catch (DomainException|UnexpectedValueException $e) {
+            header('WWW-Authenticate: Bearer');
+            throw new HttpException('Unauthenticated', 401, $e);
         }
 
         $this->user = $this->payload->user();
@@ -57,11 +68,14 @@ class ChurchGroupController extends Controller
 
     public function index(GroupViews $groupViews): Collection
     {
-        return $groupViews->forUser($this->user)->with('searchEngine')->get()->map(function (ChurchGroupView $group) {
-            $data = $group->getAttributes();
-            $data['keywords'] = $group->searchEngine['keywords'];
-            return $data;
-        });
+        return $groupViews->forUser($this->user)
+            ->with('searchEngine')
+            ->get()
+            ->map(function (ChurchGroupView $group) {
+                $data = $group->getAttributes();
+                $data['keywords'] = $group->searchEngine['keywords'];
+                return $data;
+            });
     }
 
     /**
