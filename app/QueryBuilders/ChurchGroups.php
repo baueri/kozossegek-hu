@@ -32,6 +32,11 @@ class ChurchGroups extends EntityQueryBuilder
         return $this->has(Has::one, builder('search_engine'), 'group_id', 'id');
     }
 
+    public function manager(): Relation
+    {
+        return $this->has(Has::one, Users::class, 'id', 'user_id');
+    }
+
     public function active(): static
     {
         return $this->where('pending', 0)
