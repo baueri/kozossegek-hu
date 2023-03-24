@@ -11,6 +11,9 @@
         <b>Törölt közösség!</b> A visszállításához kattints a <b>visszaállítás</b> gombra a jobb oldali sáv alján.
     @endalert
 @endif
+@if(isset($owner) && !$owner->activated_at)
+    @include('admin.group.partials.validation-warning')
+@endif
 <form method="post" id="group-form" action="{{ $action }}">
     <div class="row">
         <div class="col-md-9">
@@ -102,7 +105,7 @@
                 <label for="pending">Jóváhagyva</label>
                 <select class="form-control" id="pending" name="pending" data-placeholder="jóváhagyás állapota">
                     <option></option>
-                    <option value="0" @selected($group->pendingStatusIs(0))>jóváhagyva</option>
+                    <option value="0" @disabled($owner && !$owner->activated_at) @selected($group->pendingStatusIs(0))>jóváhagyva</option>
                     <option value="1" @selected($group->pendingStatusIs(1))>jóhávagyásra vár</option>
                     <option value="-1" @selected($group->pendingStatusIs(-1))>visszautasítva</option>
                 </select>

@@ -352,7 +352,7 @@ abstract class EntityQueryBuilder
         }
 
         $col = $entity::updatedCol();
-        if ($col && !array_key_exists($col, $values)) {
+        if ($col && !array_key_exists($col, $toUpdate)) {
             $toUpdate[$col] = $entity->{$col} = now();
         }
 
