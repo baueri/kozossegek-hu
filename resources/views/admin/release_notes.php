@@ -1,6 +1,12 @@
 @title('Verzióinformáció')
 @extends('admin')
-<h3>v3.0 (2023.03.02)</h3>
+<h3>v3.1.1 (2023.03.24)</h3>
+<ul>
+    <li>[FIX]: Csak olyan közösség hagyható jóvá, aminek a tulajdonosa megerősített user.</li>
+    <li><b>Gépház</b></li>
+    <li>[FIX]: Entitás mentésnél apró hibajavítás</li>
+</ul>
+<h3>v3.1.0 (2023.03.02)</h3>
 <ul>
     <li><b>Gépház</b></li>
     <li>[NEW]: console parancs futtatás "silent" módban</li>
