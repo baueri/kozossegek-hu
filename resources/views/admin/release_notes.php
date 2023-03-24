@@ -1,5 +1,65 @@
 @title('Verzióinformáció')
 @extends('admin')
+<h3>v3.1.1 (2023.03.24)</h3>
+<ul>
+    <li>[FIX]: Csak olyan közösség hagyható jóvá, aminek a tulajdonosa megerősített user.</li>
+    <li><b>Gépház</b></li>
+    <li>[FIX]: Entitás mentésnél apró hibajavítás</li>
+</ul>
+<h3>v3.1.0 (2023.03.02)</h3>
+<ul>
+    <li><b>Gépház</b></li>
+    <li>[NEW]: console parancs futtatás "silent" módban</li>
+    <li>[CHANGE]: default console color</li>
+    <li>[FIX]: console command futása alatt küldött hiba email javítása</li>
+</ul>
+<h3>v3.0 (2023.02.27)</h3>
+<ul>
+    <li>[NEW]: Szerzetesrendek menedzselése admin oldalon</li>
+    <li>[NEW]: "Közösségekről mondták" rész a főoldalon</li>
+    <li>[NEW]: Főoldal redesign</li>
+    <li>[NEW]: Todo admin oldal</li>
+    <li>[NEW]: Felhasználó admin oldalon "online" mező</li>
+    <li>[CHANGE]: Lelkiségi mozgalmak oldal redesign</li>
+    <li><b>Gépház</b></li>
+    <li>[NEW]: módosítás dátuma automatikus frissítése olyan tábla mentésekor, ahol ez a mező jelen van</li>
+    <li>[NEW]: touch függvény az entity query builderbe</li>
+    <li>[NEW]: Carbon típusú model mezők datetime-má alakítása db íráskor</li>
+    <li>[FIX]: Deprecated `utf8_encode` lecserélése</li>ű
+</ul>
+<h3>v2.4.1 (2023.01.13)</h3>
+<ul>
+    <li><b>Gépház</b></li>
+    <li>[CHANGE]: Console command-ok képesek kezelni az argumentumokat</li>
+    <li>[CHANGE]: Napi cron egyesével kezeli a hibákat, hogy az adott feladat ne akassza meg a többi folyamatot</li>
+    <li>[FIX]: Open Street Map generáló db tranzakció javítása.</li>
+</ul>
+<h3>v2.4.0 (2022.09.28)</h3>
+<ul>
+    <li>[NEW]: Felhasználónak az admin adatlapján lehetőség van közösségez szerkesztési jogosultságot adni</li>
+    <li>[FIX]: Felhasználóknak kiküldött link elé hibásan kétszer került oda a host.</li>
+    <li>[FIX]: Adott intézmény közösségeinek lista oldalának linkje végére odakerül az intézmény azonosító, hogy az id alapján legyenek a közösségek leszűrve</li>
+</ul>
+<h3>v2.3.0 (2022.09.12)</h3>
+<ul>
+    <li><b>Gépház</b></li>
+    <li>[FIXED]: Statisztika csv export</li>
+    <li>[FIXED]: Error report nem működött élesen</li>
+    <li>[FIXED]: Admin oldalon a felhasználók listájában csak az aktív közösségek számát jelenítjük most már meg</li>
+    <li>[CHANGED]: debugbar kiíratásának helye</li>
+</ul>
+<h3>v2.2.1 (2022.09.02)</h3>
+<ul>
+    <li>[NEW]: miserend.hu API</li>
+    <li>[NEW]: Közösség adatlapján hivatkozás az intézmény/templom közösségeinek listájára</li>
+    <li>[NEW]: Adott intézmény/templom közösségeinek lista oldalán az intézmény nevének, címének és miserend.hu-s linkjének megjelenítése</li>
+    <li><b>Gépház</b></li>
+    <li>[CHANGED]: templom közösségeinek url-je megváltozott /templom/{varos}/{intezmeny}</li>
+    <li>[CHANGED]: OpenStreetMap-es folyamat db tranzakcióba foglalva, hogy ha valami hiba történik, vissza tudjon állni az eggyel korábbi állapotra</li>
+    <li>[CHANGED]: Legacy institute repo kivezetése</li>
+    <li>[CHANGED]: Legacy group model és repo kivezetése</li>
+    <li>[FIX]: keresőbarát url generáló kód ékezetkezelése javítva lett (pl keresztel-szent-janos --> keresztelo-szent-janos)</li>
+</ul>
 <h3>v2.2.0 (2022.03.26)</h3>
 <ul>
     <li>[NEW]: Kulcsszavas statisztikák népszerűségre és városokra bontva</li>

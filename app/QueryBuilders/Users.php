@@ -10,12 +10,15 @@ use Framework\Model\Relation\Relation;
 use Framework\Model\SoftDeletes;
 use Framework\Support\StringHelper;
 
+/**
+ * @phpstan-extends EntityQueryBuilder<\App\Models\User>
+ */
 class Users extends EntityQueryBuilder
 {
     use HasManyChurchGroupViews;
     use SoftDeletes;
 
-    protected static function getModelClass(): string
+    public static function getModelClass(): string
     {
         return User::class;
     }
@@ -56,5 +59,10 @@ class Users extends EntityQueryBuilder
         }
 
         return $this;
+    }
+
+    public function sessions(): Relation
+    {
+        return $this->has(Has::many, UserSessions::class);
     }
 }

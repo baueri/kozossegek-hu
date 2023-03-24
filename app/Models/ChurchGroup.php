@@ -15,6 +15,8 @@ use Framework\Model\Entity;
  * @property string $confirmed_at
  * @property string $notified_at
  * @property int $institute_id
+ * @property $document
+ * @property User|null $manager
  * @property User $maintainer
  * @property \Framework\Support\Collection $tags
  */

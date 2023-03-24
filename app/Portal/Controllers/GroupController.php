@@ -16,6 +16,7 @@ use App\QueryBuilders\ChurchGroups;
 use App\QueryBuilders\GroupViews;
 use App\Repositories\Groups;
 use App\Repositories\UserTokens;
+use App\QueryBuilders\Institutes;
 use App\Services\GroupSearchRepository;
 use Error;
 use ErrorException;
@@ -24,12 +25,11 @@ use Framework\Exception\FileTypeNotAllowedException;
 use Framework\Http\Exception\PageNotFoundException;
 use Framework\Http\Message;
 use Framework\Http\Request;
-use Framework\Model\ModelNotFoundException;
+use Framework\Http\View\Section;
+use Framework\Model\Exceptions\ModelNotFoundException;
 use Framework\Support\Arr;
 use InvalidArgumentException;
 use Jaybizzle\CrawlerDetect\CrawlerDetect;
-use Legacy\Group;
-use Legacy\Institutes;
 use Throwable;
 
 class GroupController extends PortalController
@@ -43,9 +43,23 @@ class GroupController extends PortalController
 
     public function intezmenyKozossegek(Request $request, GroupList $service, Institutes $institutes): string
     {
-        $city = str_replace('-', ' ', $request['varos']);
-        $instituteName = str_replace('-', ' ', $request['intezmeny']);
-        $institute = $institutes->searchByCityAndInstituteName($city, $instituteName);
+        if (preg_match('/-(\d+)$/', $request['intezmeny'], $m)) {
+            $institute = $institutes->findOrFail($m[1]);
+        } else {
+            $institute = $institutes->where('slug', "{$request['varos']}/{$request['intezmeny']}")->firstOrFail();
+        }
+
+        Section::set('templom_title', function () use ($institute) {
+            $url = $institute->getMiserendUrl();
+            $link = $url ? "<p><a href='$url' target='_blank'>{$url} <i class='fa fa-external-link-alt'></i></a></p>" : '';
+            return <<<HTML
+            <div class="text-center">
+                <h2>$institute->name</h2>
+                <h4>$institute->city, $institute->address</h4>
+                $link
+            </div>
+            HTML;
+        });
 
         return $service->getHtml(collect([
             'institute_id' => $institute->id
@@ -128,7 +142,7 @@ class GroupController extends PortalController
     {
         try {
             $group = $repo->findOrFail($request['id']);
-            $service->send($group, $request->map('strip_tags', true)->all());
+            $service->send($group, $request->map('strip_tags')->all());
             $msg = '<div class="alert alert-success text-center">Köszönjük! Üzenetedet elküldtük a közösségvezető(k)nek!</div>';
             return [
                 'success' => true,
@@ -160,7 +174,7 @@ class GroupController extends PortalController
         }
 
         if (!$group->isEditableBy($user)) {
-            raise_500();
+            raise_403();
         }
 
         return $response($group);
@@ -197,11 +211,17 @@ class GroupController extends PortalController
         }
     }
 
-    public function updateMyGroup(Request $request, PortalUpdateGroup $service, Groups $groups)
+    public function updateMyGroup(Request $request, PortalUpdateGroup $service, ChurchGroups $groups)
     {
+        $group = $groups->find($request['id']);
+        if (!$group) {
+            Message::danger('Nincs ilyen közösség!');
+            redirect_route('portal.my_groups');
+        }
+        if (!$group->isEditableBy(Auth::user())) {
+            raise_403();
+        }
         try {
-            /* @var $group Group */
-            $group = $groups->findOrFail($request['id']);
             $service->update($group, $request->only(
                 'status',
                 'name',
@@ -219,16 +239,13 @@ class GroupController extends PortalController
 
             Message::success('Sikeres mentés!');
             redirect_route('portal.edit_group', $group);
-        } catch (ModelNotFoundException $e) {
-            Message::danger('Nincs ilyen közösség!');
-            redirect_route('portal.my_groups');
-        } catch (FileTypeNotAllowedException $e) {
+        } catch (FileTypeNotAllowedException) {
             Message::danger(
                 '<b>A dokumentum fájltípusa érvénytelen!</b> Az alábbi fájltípusokat fogadjuk el: doc, docx, pdf, jpeg, jpg, png'
             );
             redirect_route('portal.edit_group', $group);
         } catch (Error | Throwable $e) {
-            dd($e);
+            report($e);
             Message::danger('Sikertelen mentés!');
             redirect_route('portal.edit_group', $group);
         }
@@ -237,16 +254,15 @@ class GroupController extends PortalController
     /**
      * @throws ModelNotFoundException
      */
-    public function deleteGroup(Request $request, Groups $groups)
+    public function deleteGroup(Request $request, ChurchGroups $groups)
     {
-        /* @var $group Group */
         $group = $groups->findOrFail($request['id']);
 
         if (!$group->isEditableBy(Auth::user())) {
-            raise_500();
+            raise_403();
         }
 
-        $groups->delete($group);
+        $groups->softDelete($group);
 
         Message::warning('Közösség törölve');
 
@@ -259,7 +275,7 @@ class GroupController extends PortalController
     }
 
     /**
-     * @throws \Framework\Model\ModelNotFoundException
+     * @throws ModelNotFoundException
      */
     public function downloadDocument(Request $request, GroupViews $groups)
     {

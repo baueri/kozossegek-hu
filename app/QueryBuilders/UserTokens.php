@@ -1,39 +1,41 @@
 <?php
 
-namespace App\Repositories;
+declare(strict_types=1);
+
+namespace App\QueryBuilders;
 
 use App\Models\User;
 use App\Models\UserToken;
 use Carbon\Carbon;
-use Framework\Repository;
+use Exception;
+use Framework\Model\EntityQueryBuilder;
 
 /**
- * @phpstan-extends \Framework\Repository<\App\Models\UserToken>
+ * @phpstan-extends EntityQueryBuilder<UserToken>
  */
-class UserTokens extends Repository
+class UserTokens extends EntityQueryBuilder
 {
-    public function getByToken(string $token): ?UserToken
+    public const TABLE = 'user_token';
+
+    public function getByToken(string $token)
     {
-        if (!$token) {
-            return null;
-        }
-        return $this->getInstance($this->getBuilder()->where('token', $token)->first());
+        return $this->query()->where('token', $token)->first();
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function createUserToken(User $user, string $page, ?Carbon $expireDate = null, string|array $data = null): UserToken
     {
         $instance = $this->make($user, $page, $expireDate, $data);
 
-        $this->save($instance);
+        $this->create($instance);
 
         return $instance;
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function createActivationToken(User $user): UserToken
     {
@@ -41,7 +43,7 @@ class UserTokens extends Repository
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function make(User $user, string $page, ?Carbon $exireDate = null, string|array $data = null): UserToken
     {
@@ -52,15 +54,5 @@ class UserTokens extends Repository
             'expires_at' => $exireDate ? $exireDate->toDateTimeString() : now()->modify('+1 day')->toDateTimeString(),
             'data' => is_array($data) ? json_encode($data) : $data
         ]);
-    }
-
-    public static function getModelClass(): string
-    {
-        return UserToken::class;
-    }
-
-    public static function getTable(): string
-    {
-        return 'user_token';
     }
 }

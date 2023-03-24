@@ -57,12 +57,12 @@ return [
         ],
     ],
     [
-        'title' => 'Lelkiségi mozgalmak',
+        'title' => 'Mozgalmak, rendek',
         'icon' => 'landmark',
         'as' => 'admin.spiritual_movement.list',
         'submenu' => [
             [
-                'title' => 'Lelkiségi mozgalmak',
+                'title' => 'Mozgalmak, rendek',
                 'icon' => 'landmark',
                 'as' => 'admin.spiritual_movement.list',
                 'similars' => ['admin.spiritual_movement.edit'],
@@ -107,7 +107,7 @@ return [
                 'title' => 'Felhasználók',
                 'icon' => 'users',
                 'as' => 'admin.user.list',
-                'similars' => ['admin.user.edit', 'admin.user.profile'],
+                'similars' => ['admin.user.edit', 'admin.user.profile', 'admin.user.managed_groups'],
             ],
             [
                 'title' => 'Létrehozás',
@@ -164,6 +164,11 @@ return [
                 'icon' => 'exclamation-circle ' . (site_has_error_logs() ? 'text-danger' : ''),
                 'as' => 'admin.error_log',
             ],
+            [
+                'title' => 'Todo',
+                'as' => 'admin.todo',
+                'icon' => 'clipboard-list'
+            ]
         ],
     ],
     [

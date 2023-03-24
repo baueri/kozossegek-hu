@@ -1,33 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Framework\Console\BaseCommands;
 
 use Framework\Console\Command;
 use Framework\Console\ConsoleKernel;
-use Framework\Console\Out;
 
-class ListCommands implements Command
+class ListCommands extends Command
 {
-
-    /**
-     * @var ConsoleKernel
-     */
     private ConsoleKernel $kernel;
 
-    /**
-     * @var Out
-     */
-    private Out $out;
-
-    /**
-     * ListCommands constructor.
-     * @param ConsoleKernel $kernel
-     * @param Out $out
-     */
-    public function __construct(ConsoleKernel $kernel, Out $out)
+    public function __construct(ConsoleKernel $kernel)
     {
         $this->kernel = $kernel;
-        $this->out = $out;
+        parent::__construct();
     }
 
     public static function signature(): string
@@ -37,9 +24,9 @@ class ListCommands implements Command
 
     public function handle(): void
     {
-        $this->out->heading('list of available commands');
+        $this->output->heading('list of available commands');
         foreach ($this->kernel->getCommands() as $command) {
-            $this->out->writeln($command::signature());
+            $this->output->writeln($command::signature());
         }
     }
 }

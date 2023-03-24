@@ -3,18 +3,14 @@
 namespace App\Admin\Group\Services;
 
 use App\Helpers\GroupHelper;
-use App\Repositories\Groups;
+use App\QueryBuilders\ChurchGroups;
 use Framework\Http\Message;
-use Framework\Model\ModelNotFoundException;
+use Framework\Model\Exceptions\ModelNotFoundException;
 
 class DeleteGroup
 {
-
-    private Groups $repository;
-
-    public function __construct(Groups $repository)
+    public function __construct(private readonly ChurchGroups $repository)
     {
-        $this->repository = $repository;
     }
 
     /**
@@ -24,7 +20,7 @@ class DeleteGroup
     {
         $group = $this->repository->findOrFail($groupId);
 
-        $this->repository->delete($group);
+        $this->repository->softDelete($group);
 
         rrmdir(GroupHelper::getStoragePath($groupId));
 

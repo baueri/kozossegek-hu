@@ -57,7 +57,7 @@ class Section
     {
         if ($content instanceof Closure) {
             ob_start();
-            $content($args);
+            echo $content($args);
             return ob_get_clean();
         }
 

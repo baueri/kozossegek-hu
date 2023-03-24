@@ -15,15 +15,16 @@ use App\Mail\GroupAcceptedEmail;
 use App\Models\ChurchGroupView;
 use App\QueryBuilders\ChurchGroups;
 use App\QueryBuilders\GroupViews;
-use App\Repositories\Groups;
 use App\Services\RebuildSearchEngine;
 use Exception;
 use Framework\Exception\FileTypeNotAllowedException;
 use Framework\Http\Message;
 use Framework\Http\Request;
 use Framework\Mail\Mailer;
-use Framework\Model\ModelNotFoundException;
+use Framework\Model\Exceptions\ModelNotFoundException;
+use RuntimeException;
 use Throwable;
+use function PHPUnit\Framework\assertIsBool;
 
 class GroupController extends AdminController
 {
@@ -72,7 +73,7 @@ class GroupController extends AdminController
      * @throws FileTypeNotAllowedException
      * @throws ModelNotFoundException
      */
-    public function update(UpdateGroup $service, Groups $groups)
+    public function update(UpdateGroup $service, ChurchGroups $groups)
     {
         $group = $groups->findOrFail($this->request['id']);
         $service->update($group, $this->request);
@@ -104,7 +105,7 @@ class GroupController extends AdminController
         redirect_route('admin.group.list');
     }
 
-    public function restore(Groups $groups)
+    public function restore(ChurchGroups $groups)
     {
         $group = $groups->find($this->request['id']);
         $group->deleted_at = null;
@@ -172,9 +173,14 @@ class GroupController extends AdminController
      * @throws ModelNotFoundException
      * @throws \PHPMailer\PHPMailer\Exception
      */
-    public function approveGroup(Groups $groupRepo, Mailer $mailer): array
+    public function approveGroup(ChurchGroups $groupRepo, Mailer $mailer): array
     {
-        $groupView = $this->groupViews->findOrFail($this->request['id']);
+        $groupView = $this->groupViews->with('manager')->findOrFail($this->request['id']);
+
+        if (!$groupView->manager->activated_at) {
+            throw new RuntimeException('Nem megerősített fiók közösségének jóváhagyása nem megengedett');
+        }
+
         $groupRepo->query()->where('id', $groupView->id)->update(['pending' => 0]);
 
         $mailable = new GroupAcceptedEmail($groupView);

@@ -4,7 +4,7 @@
         <tr><th>Intézmény</th><td> {{ $group->institute_name }} ({{ $group->city, $group->district ? ", $group->district" : "" }})</td></tr>
         <tr><th>Korosztály</th><td>{{ $group->allAgeGroupsAsString() }}</td></tr>
         <tr><th>Alkalmak gyakorisága</th><td>{{ $group->occasionFrequency() }}<br/></td></tr>
-        <tr><th>Mely napokon</th><td> {{ $group->getDays()->implode(',') }}<br/></td></tr>
+        <tr><th>Mely napokon</th><td> {{ $group->getDaysAsString() }}<br/></td></tr>
         <tr><th>Lelkiségi mozgalom</th><td> {{ $group->spiritual_movement ?: '-' }}<br/></td></tr>
         <tr><th>Csatlakozás módja</th><td> {{ $group->joinMode() ?: '-' }}<br/></td></tr>
         <tr><th>Közösség jellemzői</th><td> {{ $selected_tags }}</td></tr>
