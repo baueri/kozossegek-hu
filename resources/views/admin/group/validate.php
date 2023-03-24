@@ -53,7 +53,7 @@
         </table>
         <hr>
         <h5>Válassz egyet az alábbi műveletek közül</h5>
-        @if(!$user->activated_at)
+        @if($user->activated_at)
             <a href="" onclick="approveGroup(); return false;"  class="btn btn-success" title="Az adatokkal minden rendben van">@icon('check') Jóváhagyás</a>
         @else
             <a href="#" onclick="return false;" class="btn btn-success" style="opacity: .5; cursor:default;" title="Nem megerősített fiók közösségét nem lehet jóváhagyni!">@icon('check') Jóváhagyás</a>
