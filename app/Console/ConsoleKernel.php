@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console;
 
 use App\Console\Commands\AggregateLogsCommand;
 use App\Console\Commands\ClearUserSessionCommand;
+use App\Console\Commands\Cron\MonthlyCron;
 use App\Console\Commands\DailyCron;
 use App\Console\Commands\GroupActivityConfirmNotifier;
 use App\Console\Commands\PublishApp;
@@ -17,6 +20,7 @@ class ConsoleKernel extends Kernel
 {
     protected array $commands = [
         DailyCron::class,
+        MonthlyCron::class,
         ClearUserSessionCommand::class,
         RebuildSearchEngineCommand::class,
         PublishApp::class,
@@ -24,6 +28,6 @@ class ConsoleKernel extends Kernel
         SiteMapGenerator::class,
         OpenStreetMapSync::class,
         SetLatLonToInstitutes::class,
-        GroupActivityConfirmNotifier::class
+        GroupActivityConfirmNotifier::class,
     ];
 }
