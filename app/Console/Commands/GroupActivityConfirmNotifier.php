@@ -42,7 +42,7 @@ class GroupActivityConfirmNotifier extends Command
     }
 
     /**
-     * @return User[]|ModelCollection<User>
+     * @return ModelCollection<User>
      */
     private function getUsers(): ModelCollection
     {

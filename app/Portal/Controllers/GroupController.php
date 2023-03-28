@@ -136,10 +136,10 @@ class GroupController extends PortalController
         return view('portal.partials.group-contact-form', compact('group'));
     }
 
-    public function sendContactMessage(Request $request, GroupViews $repo, SendGroupContactMessage $service): array
+    public function sendContactMessage(Request $request, GroupViews $groups, SendGroupContactMessage $service): array
     {
         try {
-            $group = $repo->findOrFail($request['id']);
+            $group = $groups->findOrFail($request['id']);
             $service->send($group, $request->map('strip_tags')->all());
             $msg = '<div class="alert alert-success text-center">Köszönjük! Üzenetedet elküldtük a közösségvezető(k)nek!</div>';
             return [
