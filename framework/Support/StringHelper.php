@@ -1,15 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Framework\Support;
 
-/**
- * Description of StringHelper
- *
- * @author ivan
- */
-class StringHelper
+final class StringHelper
 {
-
     /**
      *
      * @param string $text
@@ -17,7 +13,7 @@ class StringHelper
      * @param string $moreText
      * @return string
      */
-    public static function more($text, int $numberOfWords, $moreText = ''): string
+    public static function more(string $text, int $numberOfWords, string $moreText = ''): string
     {
         $text = strip_tags($text);
         if (str_word_count($text) > $numberOfWords) {
@@ -48,7 +44,7 @@ class StringHelper
         return strtolower(preg_replace(['/([A-Z]+)([A-Z][a-z])/', '/([a-z\d])([A-Z])/'], '\1' . $delimiter . '\2', ucfirst($text)));
     }
 
-    public static function slugify($text, $divider = '-')
+    public static function slugify($text, $divider = '-'): string
     {
         // replace non letter or digits by divider
         $text = preg_replace('~[^\pL\d]+~u', $divider, $text);
@@ -73,11 +69,6 @@ class StringHelper
         }
 
         return $text;
-    }
-
-    public static function convertSpecialChars($string): string
-    {
-        return preg_replace("/&([a-z])[a-z]+;/i", "$1", iconv('utf-8', 'us-ascii//TRANSLIT', $string));
     }
 
     public static function sanitize($buffer): string
@@ -107,7 +98,7 @@ class StringHelper
 
     public static function plural($word): string
     {
-        if (static::endsWith($word, 'y')) {
+        if (self::endsWith($word, 'y')) {
             return substr($word, 0, strlen($word) - 1) . 'ies';
         }
 
@@ -122,5 +113,19 @@ class StringHelper
     public static function startsWith($string, $startsWith): bool
     {
         return str_starts_with($string, $startsWith);
+    }
+
+    public static function mask(string $text, int $keep = 3): string
+    {
+        return substr($text, 0, $keep) . str_repeat('*', mb_strlen($text) - $keep);
+    }
+
+    public static function maskEmail(string $email, int $keep = 3): string
+    {
+        if (!($at_pos = strpos($email, '@'))) {
+            return '';
+        }
+
+        return self::mask(substr($email, 0, $at_pos), $keep) . substr($email, $at_pos);
     }
 }
