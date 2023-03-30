@@ -97,13 +97,13 @@ class Mailable
         return $this;
     }
 
-    public function send(string|User $to, ?string $name = null): void
+    public function send(string|User $to, ?string $name = null): bool
     {
         if ($to instanceof User) {
             $name ??= $to->name;
             $to = $to->email;
         }
 
-        (new Mailer($to, $name))->send($this);
+        return (new Mailer($to, $name))->send($this);
     }
 }

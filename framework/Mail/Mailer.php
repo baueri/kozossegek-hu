@@ -9,7 +9,7 @@ class Mailer
 {
     private PHPMailer $phpMailer;
 
-    public function __construct(string $address = '', string $name = '')
+    public function __construct(string $address = '', ?string $name = '')
     {
         $phpMailer = new PHPMailer(true);
         $phpMailer->isSMTP();
@@ -33,7 +33,7 @@ class Mailer
      */
     public function to(string $address, ?string $name = ''): self
     {
-        $this->phpMailer->addAddress($address, $name);
+        $this->phpMailer->addAddress($address, (string) $name);
 
         return $this;
     }
@@ -63,9 +63,9 @@ class Mailer
     }
 
     /**
-     * @throws \PHPMailer\PHPMailer\Exception
+     * @throws Exception
      */
-    private function setMailableForTest(Mailable $mailable)
+    private function setMailableForTest(Mailable $mailable): void
     {
         $this->phpMailer->setFrom($this->phpMailer->Username, site_name());
         $originalAddressee = key($this->phpMailer->getAllRecipientAddresses());
