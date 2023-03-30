@@ -33,6 +33,6 @@ class ApiResponse
             Response::setStatusCode($code);
         }
 
-        return array_merge(compact('success'), $data);
+        return array_merge(compact('success'), $data ?? []);
     }
 }

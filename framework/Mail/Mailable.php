@@ -2,6 +2,8 @@
 
 namespace Framework\Mail;
 
+use App\Models\User;
+
 class Mailable
 {
     /**
@@ -95,8 +97,13 @@ class Mailable
         return $this;
     }
 
-    public function send(string $email, ?string $name = null): void
+    public function send(string|User $to, ?string $name = null): void
     {
-        (new Mailer($email, $name))->send($this);
+        if ($to instanceof User) {
+            $name ??= $to->name;
+            $to = $to->email;
+        }
+
+        (new Mailer($to, $name))->send($this);
     }
 }

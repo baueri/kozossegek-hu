@@ -5,6 +5,7 @@ namespace App\Models\Traits;
 use App\Enums\AgeGroup;
 use App\Enums\Denomination;
 use App\Enums\OccasionFrequency;
+use App\Enums\GroupPending;
 use App\Enums\WeekDay;
 use App\Enums\GroupStatus;
 use App\Enums\JoinMode;
@@ -155,11 +156,14 @@ trait GroupTrait
         return $this->pending == -1;
     }
 
-    public function pendingStatusIs(int $status): bool
+    public function pendingStatusIs(int|GroupPending $status): bool
     {
+        $status = $status instanceof GroupPending ? (int) $status->value() : $status;
+
         if (is_null($this->pending)) {
             return false;
         }
+
         return (int) $this->pending === $status;
     }
 

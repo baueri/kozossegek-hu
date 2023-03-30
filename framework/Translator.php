@@ -36,11 +36,17 @@ class Translator
 
         $translated = $this->cache[$lang][$key] ?? null;
 
-        if (!$translated) {
-            report("hiányzó nyelvi kulcs ({$lang}): {$key}");
+        if ($translated) {
+            return $translated;
         }
 
-        return $translated ?? "?$key?";
+        if ($lang === 'hu') {
+            return $key;
+        }
+
+        report("hiányzó nyelvi kulcs ({$lang}): {$key}");
+
+        return "$key";
     }
 
     /**

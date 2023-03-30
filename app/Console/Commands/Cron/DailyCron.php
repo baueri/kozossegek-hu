@@ -2,8 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Cron;
 
+use App\Console\Commands\AggregateLogsCommand;
+use App\Console\Commands\ClearUserSessionCommand;
+use App\Console\Commands\SiteMapGenerator;
 use App\Services\SystemAdministration\OpenStreetMap\OpenStreetMapSync;
 use Framework\Console\BaseCommands\ClearCache;
 use Framework\Console\BaseCommands\CronCommand;

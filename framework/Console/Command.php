@@ -22,6 +22,11 @@ abstract class Command
         $this->output = new CommandOutput();
     }
 
+    public function description(): string
+    {
+        return '';
+    }
+
     public function withArgs(array|string $args): static
     {
         $this->args = array_merge($this->args, (array) $args);
