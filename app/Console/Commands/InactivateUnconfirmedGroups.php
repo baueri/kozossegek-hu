@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Enums\GroupStatus;
+use App\Mail\GroupsInactivated;
 use App\Models\User;
 use App\QueryBuilders\ChurchGroups;
 use App\QueryBuilders\Users;
@@ -23,10 +24,7 @@ class InactivateUnconfirmedGroups extends Command
     {
         $users = $this->getUsers();
         foreach ($users as $user) {
-            app(Mailable::class)
-                ->view('email_templates:groups_inactivated')
-                ->with(['groups' => $user->groups->pluck('name')->toList(), 'name' => $user->name])
-                ->send($user);
+            (new GroupsInactivated($user, $user->grouos))->send($user);
             ChurchGroups::query()->whereIn('id', $user->groups->map->getId())->update([
                 'notified_at' => null,
                 'status' => GroupStatus::inactive
