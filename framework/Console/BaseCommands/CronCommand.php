@@ -2,33 +2,24 @@
 
 declare(strict_types=1);
 
-namespace App\Console\Commands;
+namespace Framework\Console\BaseCommands;
 
-use App\Services\SystemAdministration\OpenStreetMap\OpenStreetMapSync;
-use Framework\Console\BaseCommands\ClearCache;
 use Framework\Console\Color;
 use Framework\Console\Command;
-use Framework\Enums\Environment;
 use Throwable;
 
-class DailyCron extends Command
+abstract class CronCommand extends Command
 {
-    public static function signature(): string
-    {
-        return 'cron:daily';
-    }
+    /**
+     * @phpstan-return Command[]
+     */
+    abstract protected function jobs(): array;
 
     public function handle(): void
     {
         $silent = (bool) $this->getOption('silent');
 
-        $jobs = [
-            resolve(ClearUserSessionCommand::class),
-            resolve(AggregateLogsCommand::class),
-            resolve(SiteMapGenerator::class)->withArgs('--ping-google=' . (int) app()->envIs(Environment::production)),
-            resolve(OpenStreetMapSync::class),
-            resolve(ClearCache::class)
-        ];
+        $jobs = $this->jobs();
 
         $hasErrors = false;
 

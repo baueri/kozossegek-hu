@@ -23,7 +23,7 @@ final class CreateGroupsTable extends AppMigration
                  ->addColumn('spiritual_movement', MysqlAdapter::PHINX_TYPE_STRING, ['null' => true, 'comment' => 'lelkiségi mozgalom'])
                  ->addColumn('age_group', MysqlAdapter::PHINX_TYPE_ENUM, ['values' => AgeGroup::toArray(), 'comment' => 'korosztály'])
                  ->addColumn('occasion_frequency', MysqlAdapter::PHINX_TYPE_ENUM, ['values' => App\Enums\OccasionFrequency::toArray(), 'comment' => 'milyen gyakran találkoznak a közösségek'])
-                 ->addColumn('status', MysqlAdapter::PHINX_TYPE_ENUM, ['values' => App\Enums\GroupStatus::asArray()])
+                 ->addColumn('status', MysqlAdapter::PHINX_TYPE_ENUM, ['values' => ['active', 'inactive', 'pending']])
                  ->timestamps()
                  ->addIndex('name')
                  ->addIndex('city')

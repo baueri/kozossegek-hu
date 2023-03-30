@@ -6,17 +6,10 @@ use Framework\File\Enums\FileType;
 use Framework\File\File;
 use Framework\Support\Collection;
 
-/**
- * Description of FileHelper
- *
- * @author ivan
- */
 class FileHelper
 {
-
     /**
-     *
-     * @param Collection|File[] $files
+     * @param Collection<File> $files
      */
     public static function parseFilesToArray(Collection $files): array
     {
@@ -36,7 +29,7 @@ class FileHelper
         ])->all();
     }
 
-    public static function getIcon(File $file)
+    public static function getIcon(File $file): string
     {
         $type = $file->getMainType();
 
@@ -53,18 +46,13 @@ class FileHelper
         return '';
     }
 
-    /**
-     *
-     * @param File $file
-     * @return string
-     */
     public static function getPublicPathFor(File $file): string
     {
         $path = $file->getFilePath();
         return str_replace(_env('STORAGE_PATH') . 'public', '/storage', $path);
     }
 
-    public static function getExtension(string $fileName)
+    public static function getExtension(string $fileName): string
     {
         return pathinfo($fileName, PATHINFO_EXTENSION);
     }

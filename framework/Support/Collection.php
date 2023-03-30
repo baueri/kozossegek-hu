@@ -298,6 +298,11 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         return $this->pluck($value)->implode($glue);
     }
 
+    public function toList(string $delimiter = '-'): string
+    {
+        return "{$delimiter} {$this->implode("<br/>{$delimiter} ")}";
+    }
+
     public function reverse(bool $preserve_keys = true): self
     {
         return new self(array_reverse($this->items, $preserve_keys));
@@ -338,7 +343,6 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     {
         return $this->unique($key)->pluck($key);
     }
-
 
     public function zip(array $array): self
     {
@@ -572,5 +576,10 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         }
 
         return null;
+    }
+
+    public function buildQuery(): string
+    {
+        return http_build_query($this->items);
     }
 }

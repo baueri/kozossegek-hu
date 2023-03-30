@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Admin\Group\Services;
 
 use App\Helpers\GroupHelper;
 use App\Models\ChurchGroup;
+use Exception;
 use Framework\Exception\FileTypeNotAllowedException;
 use Framework\Http\Message;
-use Framework\Http\Request;
 use Framework\Support\Arr;
 use Framework\Support\Collection;
 
@@ -15,14 +17,10 @@ class UpdateGroup extends BaseGroupService
     private const ALLOWED_TAGS = ['a', 'h1', 'h2', 'h3', 'p', 'b', 'u', 'ul', 'ol', 'li', 'code', 'pre'];
 
     /**
-     * @throws FileTypeNotAllowedException
+     * @throws FileTypeNotAllowedException|Exception
      */
-    public function update(ChurchGroup $group, Request|Collection|array $request, ?array $document = []): ChurchGroup
+    public function update(ChurchGroup $group, Collection $request, ?array $document = []): ChurchGroup
     {
-        if (is_array($request)) {
-            $request = collect($request);
-        }
-
         $data = $request->except('id', 'tags', 'image', 'files')->all();
 
         $data['description'] = strip_tags($data['description'], self::ALLOWED_TAGS);

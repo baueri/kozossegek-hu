@@ -27,6 +27,11 @@ class Institutes extends EntityQueryBuilder
         return $this->has(Has::one, Cities::class, 'name', 'city');
     }
 
+    public function user(): Relation
+    {
+        return $this->has(Has::one, Users::class, 'id', 'user_id');
+    }
+
     public function churchGroups(): Relation
     {
         return $this->has(Has::many, ChurchGroups::class);

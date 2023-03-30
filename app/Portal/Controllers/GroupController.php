@@ -6,6 +6,7 @@ use App\Auth\Auth;
 use App\Exception\EmailTakenException;
 use App\Http\Responses\CreateGroupSteps\RegisterGroupForm;
 use App\Http\Responses\PortalEditGroupForm;
+use App\Models\ChurchGroup;
 use App\Portal\Services\GroupList;
 use App\Portal\Services\PortalCreateGroup;
 use App\Portal\Services\PortalUpdateGroup;
@@ -13,6 +14,7 @@ use App\Portal\Services\SendGroupContactMessage;
 use App\QueryBuilders\ChurchGroups;
 use App\QueryBuilders\GroupViews;
 use App\QueryBuilders\Institutes;
+use App\QueryBuilders\UserTokens;
 use App\Services\GroupSearchRepository;
 use Error;
 use ErrorException;
@@ -24,6 +26,7 @@ use Framework\Http\Request;
 use Framework\Http\View\Section;
 use Framework\Model\Exceptions\ModelNotFoundException;
 use Framework\Support\Arr;
+use InvalidArgumentException;
 use Jaybizzle\CrawlerDetect\CrawlerDetect;
 use Throwable;
 
@@ -133,10 +136,10 @@ class GroupController extends PortalController
         return view('portal.partials.group-contact-form', compact('group'));
     }
 
-    public function sendContactMessage(Request $request, GroupViews $repo, SendGroupContactMessage $service): array
+    public function sendContactMessage(Request $request, GroupViews $groups, SendGroupContactMessage $service): array
     {
         try {
-            $group = $repo->findOrFail($request['id']);
+            $group = $groups->findOrFail($request['id']);
             $service->send($group, $request->map('strip_tags')->all());
             $msg = '<div class="alert alert-success text-center">Köszönjük! Üzenetedet elküldtük a közösségvezető(k)nek!</div>';
             return [
@@ -217,7 +220,7 @@ class GroupController extends PortalController
             raise_403();
         }
         try {
-            $service->update($group, $request->only(
+            $service->update($group, collect($request->only(
                 'status',
                 'name',
                 'institute_id',
@@ -230,7 +233,7 @@ class GroupController extends PortalController
                 'description',
                 'image',
                 'join_mode'
-            ), $request->files['document']);
+            )), $request->files['document']);
 
             Message::success('Sikeres mentés!');
             redirect_route('portal.edit_group', $group);
@@ -285,5 +288,40 @@ class GroupController extends PortalController
         header("Content-Transfer-Encoding: Binary");
         header("Content-disposition: attachment; filename=\"" . basename($file_url) . "\"");
         readfile($file_url);
+    }
+
+    /**
+     * @throws ModelNotFoundException
+     */
+    public function confirmGroup(UserTokens $tokens, ChurchGroups $groups): string
+    {
+        parse_str(base64_decode(request()->get('verify')), $decoded);
+        $token = $tokens->getByToken($decoded['token'] ?? '');
+
+        if (!$token) {
+            return view('portal.error', ['message2' => 'Közösség megerősítése sikertelen! Hibás token.']);
+        }
+
+        if ($token->expired()) {
+            return view('portal.error', ['message2' => 'Ennek a tokennek az érvényességi ideje lejárt!']);
+        }
+
+        $group = $groups->findOrFail($decoded['group_id']);
+        if ((int) $token->data('group_id') !== (int) $group->getId()) {
+            return view('portal.error', ['message2' => 'Közösség megerősítése sikertelen! Hibás token.']);
+        }
+
+        if ($decoded['action'] === 'confirm') {
+            $groups->save($group, ['confirmed_at' => now(), 'notified_at' => null]);
+            $view = view('portal.error', ['message2' => 'Közösség sikeresen megerősítve!']);
+        } elseif ($decoded['action'] === 'deactivate') {
+            $groups->save($group, ['active' => 0]);
+            $view = view('portal.error', ['message2' => 'Közösség inaktiválva. Közösséget bármikor újra aktiválhatsz belépés után a közösség adatlapján.']);
+        } else {
+            throw new InvalidArgumentException('Invalid confirm action');
+        }
+
+        $tokens->deleteModel($token);
+        return $view;
     }
 }

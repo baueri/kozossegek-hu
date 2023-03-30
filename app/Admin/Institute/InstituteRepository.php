@@ -38,6 +38,7 @@ class InstituteRepository
             $builder->orderBy('institutes.id', 'desc');
         }
         $builder->withCount('groups', fn (ChurchGroups $groups) => $groups->where('pending', 0)->notDeleted());
+        $builder->with('user');
         return $builder->paginate(30);
     }
 }

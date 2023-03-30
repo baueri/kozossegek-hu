@@ -23,6 +23,11 @@ class Users extends EntityQueryBuilder
         return User::class;
     }
 
+    public function groups(): Relation
+    {
+        return $this->has(Has::many, ChurchGroups::class, 'user_id');
+    }
+
     public function byAuth(?string $username): static
     {
         $this->notDeleted();

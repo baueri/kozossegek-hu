@@ -6,6 +6,8 @@ namespace App\Portal\Services;
 
 use App\Admin\Group\Services\CreateGroup;
 use App\Enums\Denomination;
+use App\Enums\GroupStatus;
+use App\Enums\GroupPending;
 use App\Exception\EmailTakenException;
 use App\Mail\NewGroupEmail;
 use App\Models\ChurchGroup;
@@ -34,7 +36,6 @@ class PortalCreateGroup
     public function createGroup(Collection $requestData, ?array $fileData, ?User $user): ?ChurchGroup
     {
         $data = $requestData->only(
-            'status',
             'name',
             'institute_id',
             'institute',
@@ -49,8 +50,7 @@ class PortalCreateGroup
             'join_mode'
         );
 
-        $data['denomination'] = Denomination::katolikus->name;
-
+        // Ha nincs még belépve, akkor létrehozunk egy új fiókot a megadott adatokkal
         if (!$user) {
             $user = $this->createUser->create(collect([
                 'name' => $requestData['user_name'],
@@ -71,6 +71,9 @@ class PortalCreateGroup
         $mailable->with(['user_name' => $user->name]);
 
         $data['user_id'] = $user->id;
+        $data['pending'] = GroupPending::pending;
+        $data['denomination'] = Denomination::katolikus;
+        $data['status'] = GroupStatus::active;
 
         $group = $this->createGroup->create(collect($data), $fileData);
 

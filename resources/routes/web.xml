@@ -25,6 +25,9 @@
         <route method="post" uri="group-contact-form" as="portal.group-contact-form" controller="GroupController" use="groupContactForm"/>
         <route method="post" uri="send-contact-message" as="portal.contact-group" controller="GroupController" use="sendContactMessage" middleware="Framework\Middleware\JsonApi"/>
 
+        <!--  Aktív közösség megerősítés  -->
+        <route method="get" uri="confirm-group" as="confirm_group" controller="GroupController" use="confirmGroup"/>
+
         <route method="get" uri="forgot-password" as="portal.forgot_password" controller="UserController" use="forgotPassword"/>
         <route method="post" uri="reset-password" as="portal.reset_password" controller="UserController" use="resetPassword"/>
         <route method="all" uri="recover-password" as="portal.recover_password" controller="UserController" use="recoverPassword"/>

@@ -4,15 +4,7 @@ namespace Framework\Console;
 
 class In
 {
-    protected $stdIn = 'php://stdin';
-
-    protected $out;
-
-    /**
-     * @param bool $mandatory
-     * @return string
-     */
-    public function readLn($mandatory = false)
+    public function readLn(bool $mandatory = false): string
     {
         $input = null;
         while (!$input) {
@@ -25,10 +17,7 @@ class In
         return trim($input);
     }
 
-    /**
-     * @return string|void
-     */
-    public function readLnSilent()
+    public function readLnSilent(): ?string
     {
         if (preg_match('/^win/i', PHP_OS)) {
             $vb_script = sys_get_temp_dir() . 'prompt_password.vbs';
@@ -39,22 +28,21 @@ class In
             $password = rtrim(shell_exec($command));
             unlink($vb_script);
             return $password;
-        } else {
-            $command = "/usr/bin/env bash -c 'echo OK'";
-            if (rtrim(shell_exec($command)) !== 'OK') {
-                trigger_error("Can't invoke bash");
-                return null;
-            }
-            $command = "/usr/bin/env bash -c 'read -s -p \""
-
-                . "\" mypassword && echo \$mypassword'";
-            $password = rtrim(shell_exec($command));
-            echo "\n";
-            return $password;
         }
+        $command = "/usr/bin/env bash -c 'echo OK'";
+        if (rtrim(shell_exec($command)) !== 'OK') {
+            trigger_error("Can't invoke bash");
+            return null;
+        }
+        $command = "/usr/bin/env bash -c 'read -s -p \""
+
+            . "\" mypassword && echo \$mypassword'";
+        $password = rtrim(shell_exec($command));
+        echo "\n";
+        return $password;
     }
 
-    public function confirm(string $question, $accept = 'y')
+    public function confirm(string $question, $accept = 'y'): bool
     {
         Out::writeln("$question [y/n]:");
 

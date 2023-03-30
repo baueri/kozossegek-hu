@@ -15,7 +15,7 @@ class AdminMenu
 {
     public function __construct(
         private readonly RouterInterface $router,
-        private readonly ?AuthUser       $user
+        private readonly ?AuthUser $user
     ) {
     }
 

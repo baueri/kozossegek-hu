@@ -53,13 +53,13 @@
             <div class="modal-body">
                 @alert('info')
                     <p>
-                        <i class="fa fa-exclamation-circle"></i> <b>Figyelem!</b> A tartalom első sorát - <b>&commat;extends('mail.wrapper')</b> - ne töröld és ne módosítsd, ez állítja be a fej- illetve a láblécet!
+                        <i class="fa fa-exclamation-circle"></i> <b>Figyelem!</b> A tartalom első sorát - <code>&commat;extends('mail.wrapper')</code> - ne töröld és ne módosítsd, ez állítja be a fej- illetve a láblécet!
                     </p>
-                    <p>Az alább felsorolt dinamikus változókat az email szövegében tudod felhasználni. Az, hogy egy ilyen változó mit tartalmaz, annak nevéből lehet kikövetkeztetni, de ha mégse tudod, kérdezd meg a honlap fejlesztőjét.</p>
+                    <p>Az alább felsorolt változókat az email szövegében tudod felhasználni. Az, hogy egy ilyen változó mit tartalmaz, annak nevéből lehet kikövetkeztetni, de ha mégse tudod, kérdezd meg a honlap fejlesztőjét.</p>
                     Felhasználható dinamikus változók:
                     <ul>
                         <?php foreach($mailable->getVariableNames() as $variable): ?>
-                            <li>&lbrace;&lbrace; ${{ $variable }} &rbrace;&rbrace;</li>
+                            <li><code>&lbrace;&lbrace; ${{ $variable }} &rbrace;&rbrace;</code></li>
                         <?php endforeach; ?>
                     </ul>
                 @endalert

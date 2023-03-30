@@ -20,7 +20,7 @@ class HttpKernel extends \Framework\Http\HttpKernel
         TranslationRoute::class,
         CheckMaintenance::class,
         AuthMiddleware::class,
-        AppServiceProvider::class,
+        AppServiceProvider::class
     ];
 
     protected array $dontReport = [

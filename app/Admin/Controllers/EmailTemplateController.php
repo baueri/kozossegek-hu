@@ -2,18 +2,23 @@
 
 namespace App\Admin\Controllers;
 
+use App\Mail\ActiveGroupConfirmEmail;
 use App\Mail\GroupContactMail;
+use App\Mail\GroupsInactivated;
 use App\Mail\NewGroupEmail;
 use App\Mail\RegistrationByGroupEmailForFirstUsers;
 use App\Mail\RegistrationEmail;
 use App\Mail\ResetPasswordEmail;
+use App\Models\ChurchGroup;
 use App\Models\ChurchGroupView;
 use App\Models\User;
+use App\QueryBuilders\ChurchGroups;
 use App\QueryBuilders\UserTokens;
 use Framework\Http\Request;
 use Framework\Http\Response;
 use Framework\Http\View\View;
 use Framework\PasswordGenerator;
+use Framework\Support\Arr;
 
 class EmailTemplateController extends AdminController
 {
@@ -22,7 +27,7 @@ class EmailTemplateController extends AdminController
      */
     public function registration(UserTokens $userTokens): string
     {
-        $user = new User(['name' => 'Minta János', 'email' => 'minta_janos@kozossegek.hu']);
+        $user = $this->mintaJanos();
         $user_token = $userTokens->make($user, route('portal.user.activate'));
         $mailable = new RegistrationEmail($user, $user_token);
         $title = 'Regisztrációs email sablon';
@@ -35,7 +40,7 @@ class EmailTemplateController extends AdminController
      */
     public function registrationByGroup(UserTokens $userTokens, PasswordGenerator $passwordGenerator): string
     {
-        $user = new User(['name' => 'Minta János', 'email' => 'minta_janos@kozossegek.hu']);
+        $user = $this->mintaJanos();
         $password = $passwordGenerator->useLower(false)->generate(6);
 
         $group = new ChurchGroupView(['name' => 'Minta Közösség', 'city' => 'Szeged']);
@@ -52,7 +57,7 @@ class EmailTemplateController extends AdminController
      */
     public function passwordReset(UserTokens $userTokens): string
     {
-        $user = new User(['name' => 'Minta János', 'email' => 'minta_janos@kozossegek.hu']);
+        $user = $this->mintaJanos();
         $user_token = $userTokens->make($user, route('portal.user.activate'));
         $mailable = new ResetPasswordEmail($user, $user_token);
         $title = 'Jelszó visszaállító email sablon';
@@ -77,7 +82,7 @@ class EmailTemplateController extends AdminController
 
     public function createdGroup(): string
     {
-        $mailable = (new NewGroupEmail(new User(['name' => 'Minta János', 'email' => 'minta_janos@kozossegek.hu'])));
+        $mailable = (new NewGroupEmail($this->mintaJanos()));
         $title = 'Új közösség létrehozása (létező fiókkal)';
         return view('admin.email_template', compact('mailable', 'title'));
     }
@@ -87,12 +92,44 @@ class EmailTemplateController extends AdminController
      */
     public function createdGroupWithNewUser(UserTokens $userTokens): string
     {
-        $user = new User(['name' => 'Minta János', 'email' => 'minta_janos@kozossegek.hu']);
+        $user = $this->mintaJanos();
         $token = $userTokens->make($user, route('portal.user.activate'));
         $mailable = (new NewGroupEmail($user))
             ->withNewUserMessage($token);
         $title = 'Új közösség létrehozása (új fiókkal)';
         return view('admin.email_template', compact('mailable', 'title'));
+    }
+
+    public function seasonalNotification(UserTokens $tokens): string
+    {
+        $user = new User($this->mintaJanos());
+        $user->setRelation('groups', collect([
+            new ChurchGroup(['name' => 'Teszt közösség', 'id' => 123]),
+            new ChurchGroup(['name' => 'Másik közi', 'id' => 456]),
+        ]));
+
+        $groupTokens = collect();
+
+        foreach ($user->groups as $group) {
+            $groupTokens[$group->getId()] = $tokens->make($user, route('confirm_group'), now()->addMonth(), ['group_id' => $group->getId()]);
+        }
+        $mailable = new ActiveGroupConfirmEmail($user, $groupTokens);
+        $title = 'Aktív közösség megerősítése';
+        return view('admin.email_template', compact('mailable', 'title'));
+    }
+
+    public function groupInactivated(): string
+    {
+        $user = $this->mintaJanos();
+        $groups = collect(['Közi 1', 'Közi 2', 'Közi 3'])->map(fn ($name) => ChurchGroup::make(compact('name')));
+        $title = 'Értesítés közösség inaktiválásáról';
+        $mailable = new GroupsInactivated($user, $groups);
+        return view('admin.email_template', compact('mailable', 'title'));
+    }
+
+    private function mintaJanos(): User
+    {
+        return new User(['name' => 'Minta János', 'email' => 'minta_janos@kozossegek.hu']);
     }
 
     public function saveTemplate(Request $request): array

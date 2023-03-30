@@ -4,8 +4,11 @@ namespace App\Models;
 
 use App\Auth\AuthUser;
 use App\Enums\UserRole;
+use App\QueryBuilders\Users;
 use Framework\Model\Entity;
 use Framework\Model\HasTimestamps;
+use Framework\Model\ModelCollection;
+use App\QueryBuilders\ChurchGroups;
 
 /**
  * @property string $name
@@ -16,10 +19,15 @@ use Framework\Model\HasTimestamps;
  * @property string $user_group
  * @property string $activated_at
  * @property string $phone_number
+ * @property ModelCollection<ChurchGroup> $groups
+ * @property int $groups_count
+ * @method ChurchGroups groups()
  */
 class User extends Entity implements AuthUser
 {
     use HasTimestamps;
+
+    protected ?string $builder = Users::class;
 
     public function keresztnev(): string
     {

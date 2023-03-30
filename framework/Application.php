@@ -64,12 +64,7 @@ class Application extends Container
         $dispatcher->dispatch();
     }
 
-    /**
-     * @param string|null $key
-     * @param mixed $default
-     * @return Config|mixed
-     */
-    public function config(string $key = null, $default = null)
+    public function config(string $key = null, $default = null): mixed
     {
         if (!$key) {
             return $this->get(Config::class);

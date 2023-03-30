@@ -6,18 +6,12 @@ use SimpleXMLElement;
 
 class XmlObject extends SimpleXMLElement
 {
-    /**
-     * @return array
-     */
-    public function getParentsWithCurrentNode()
+    public function getParentsWithCurrentNode(): array
     {
         return array_merge($this->getParents(), [$this]);
     }
 
-    /**
-     * @return array
-     */
-    public function getParents()
+    public function getParents(): array
     {
         $parents = [];
 
@@ -32,9 +26,6 @@ class XmlObject extends SimpleXMLElement
         return $parents;
     }
 
-    /**
-     * @return mixed
-     */
     public function getParentNode()
     {
         return current($this->xpath('parent::*'));

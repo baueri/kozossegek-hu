@@ -33,6 +33,8 @@ const APP_CFG_LEGAL_NOTICE_DATE = 'app.legal_notice_date';
 
 DotEnv::load(ROOT . '.env.php');
 
+date_default_timezone_set(_env('APP_TIMEZONE', 'Europe/Budapest'));
+
 ini_set("log_errors", 1);
 if (!_env('DEBUG')) {
     ini_set("error_log", ROOT . "error.log");

@@ -76,7 +76,7 @@ class GroupController extends AdminController
     public function update(UpdateGroup $service, ChurchGroups $groups)
     {
         $group = $groups->findOrFail($this->request['id']);
-        $service->update($group, $this->request);
+        $service->update($group, $this->request->collect());
 
         redirect_route('admin.group.edit', ['id' => $this->request['id']]);
     }
@@ -86,7 +86,7 @@ class GroupController extends AdminController
      */
     public function delete(DeleteGroup $service)
     {
-        $service->delete($this->request['id']);
+        $service->delete((int) $this->request['id']);
 
         redirect_route('admin.group.list');
     }
