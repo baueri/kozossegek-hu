@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Enums;
 
 use Exception;
@@ -8,11 +10,11 @@ use Framework\Support\StringHelper;
 
 trait HasTranslation
 {
-    final public function translate(): string
+    public function translate(?string $lang = null): string
     {
         $className = substr(static::class, strrpos(static::class, '\\') + 1);
 
-        return lang(StringHelper::snake($className) . '.' . $this->value());
+        return lang(StringHelper::snake($className) . '.' . $this->value(), $lang);
     }
 
     public static function mapTranslated(): Collection

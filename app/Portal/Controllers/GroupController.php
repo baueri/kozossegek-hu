@@ -220,7 +220,7 @@ class GroupController extends PortalController
             raise_403();
         }
         try {
-            $service->update($group, $request->only(
+            $service->update($group, collect($request->only(
                 'status',
                 'name',
                 'institute_id',
@@ -233,7 +233,7 @@ class GroupController extends PortalController
                 'description',
                 'image',
                 'join_mode'
-            ), $request->files['document']);
+            )), $request->files['document']);
 
             Message::success('Sikeres mentés!');
             redirect_route('portal.edit_group', $group);
@@ -312,7 +312,7 @@ class GroupController extends PortalController
         }
 
         if ($decoded['action'] === 'confirm') {
-            $groups->save($group, ['confirmed_at' => now()]);
+            $groups->save($group, ['confirmed_at' => now(), 'notified_at' => null]);
             $view = view('portal.error', ['message2' => 'Közösség sikeresen megerősítve!']);
         } elseif ($decoded['action'] === 'deactivate') {
             $groups->save($group, ['active' => 0]);

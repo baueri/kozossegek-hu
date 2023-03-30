@@ -2,10 +2,9 @@
 
 namespace Framework\Model;
 
-use Framework\Exception\MethodNotFoundException;
+use Error;
 use Framework\Model\Relation\Relation;
 use Framework\Support\Arr;
-use Framework\Support\StringHelper;
 use ReflectionMethod;
 
 /**
@@ -102,7 +101,7 @@ abstract class Entity
             return (new $this->builder)->{$name}()->buildQuery($this);
         }
 
-        throw new MethodNotFoundException();
+        throw new Error("Call to undefined method {$name}");
     }
 
     public function __set($name, $value)
