@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Framework\Database;
 
+use BackedEnum;
 use Closure;
 use DateTimeInterface;
 use Framework\Support\Arr;
@@ -458,7 +459,7 @@ class Builder
 
     public function insert(array $values): int|string
     {
-        $bindings = array_values($values);
+        $bindings = array_values(array_map(fn ($value) => $value instanceof BackedEnum ? $value->value : $value, $values));
 
         $table = implode(', ', $this->table);
         $columns = implode(',', array_keys($values));

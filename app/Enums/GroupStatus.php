@@ -9,14 +9,12 @@ enum GroupStatus: string
 
     case active = 'active';
     case inactive = 'inactive';
-    case pending = 'pending';
 
     public function class(): string
     {
         return match($this) {
             self::active => 'fa fa-check-circle text-success',
-            self::inactive => 'fa fa-moon text-muted',
-            self::pending => 'fa fa-sync',
+            self::inactive => 'fa fa-moon text-muted'
         };
     }
 }

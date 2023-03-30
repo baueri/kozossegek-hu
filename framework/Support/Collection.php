@@ -298,6 +298,11 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         return $this->pluck($value)->implode($glue);
     }
 
+    public function toList(string $delimiter = '-'): string
+    {
+        return "{$delimiter} {$this->implode("\n{$delimiter} ")}";
+    }
+
     public function reverse(bool $preserve_keys = true): self
     {
         return new self(array_reverse($this->items, $preserve_keys));
