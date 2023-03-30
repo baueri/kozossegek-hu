@@ -1,5 +1,17 @@
 @title('Verzióinformáció')
 @extends('admin')
+<h3>v3.2.0 (2023.03.30)</h3>
+<ul>
+    <li>[NEW]: Megerősítő email küldés félévenként</li>
+    <li>[CHANGE]: `pending` státusz megszüntetése a `status` enum mezőből</li>
+    <li>[CHANGE]: Figyelmeztető üzenet az automatikus (noreply) levelek végére, hogy ne válaszoljanak erre a címre.</li>
+    <li><b>Gépház</b></li>
+    <li>[NEW]: Időzóna beállítása manuálisan Europe/Budapest-re</li>
+    <li>[NEW]: `Collection::toList` függvény. Primitív tömbből generál sortöréses listát</li>
+    <li>[NEW]: SQL: Enum típusú mező is átadható az SQL lekérdezéseknek</li>
+    <li>[CHANGE]: `Mailable::send()` függvény `User` példányt is kaphat paraméterben</li>
+    <li>[CHANGE]: Nyelviesítésnél a nyelvi kulcs helyet lehet magyar szöveget is megadni. Ez esetben az angol verzióban a kulcs a magyar szöveg lesz.</li>
+</ul>
 <h3>v3.1.1 (2023.03.24)</h3>
 <ul>
     <li>[FIX]: Csak olyan közösség hagyható jóvá, aminek a tulajdonosa megerősített user.</li>

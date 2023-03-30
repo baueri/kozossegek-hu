@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Auth\Auth;
 use App\Mail\ActiveGroupConfirmEmail;
 use App\Models\ChurchGroup;
 use App\Models\User;
@@ -9,6 +10,9 @@ use App\QueryBuilders\ChurchGroups;
 use App\QueryBuilders\Users;
 use App\QueryBuilders\UserTokens;
 use Framework\Console\Command;
+use Framework\Console\Out;
+use Framework\Mail\Mailable;
+use Framework\Mail\Mailer;
 use Framework\Model\ModelCollection;
 
 class GroupActivityConfirmNotifier extends Command
@@ -26,7 +30,9 @@ class GroupActivityConfirmNotifier extends Command
 
     public function handle(): void
     {
-        foreach ($this->getUsers() as $user) {
+        $users = $this->getUsers();
+
+        foreach ($users as $user) {
             $tokens = $user->groups->keyBy('id')->map(function (ChurchGroup $group) use($user) {
                 return $this->tokens->createUserToken(
                     user: $user,
