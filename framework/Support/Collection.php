@@ -300,7 +300,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
 
     public function toList(string $delimiter = '-'): string
     {
-        return "{$delimiter} {$this->implode("\n{$delimiter} ")}";
+        return "{$delimiter} {$this->implode("<br/>{$delimiter} ")}";
     }
 
     public function reverse(bool $preserve_keys = true): self
