@@ -35,4 +35,8 @@
         <td><a href="@route('admin.email_template.seasonal_notification')">Aktív közösség megerősítése (félévente)</a></td>
         <td>Félévente kiküldésre kerülő üzenet</td>
     </tr>
+    <tr>
+        <td><a href="@route('admin.email_template.group_inactivated')">Értesítés közösség inaktiválásáról</a></td>
+        <td>Figyelmeztető email után se erősítette meg a közössége aktív státuszát.</td>
+    </tr>
 </table>
