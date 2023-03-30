@@ -2,24 +2,27 @@
 
 namespace Framework\Database\PDO;
 
+use BackedEnum;
 use Closure;
 use Exception;
 use Framework\Database\Database;
-use Framework\Database\DatabaseConfiguration;
 use Framework\Database\Events\QueryRan;
 use Framework\Database\ResultSet;
 use Framework\Event\EventDisptatcher;
 use PDO;
+use UnitEnum;
 
 class PDOMysqlDatabase implements Database
 {
     private int $transactionCounter = 0;
 
-    public function __construct(private PDO $pdo) {}
+    public function __construct(public readonly PDO $pdo) {}
 
     public function execute(string $query, ...$bindings): ResultSet
     {
         $start = microtime(true);
+
+        $bindings = $this->prepareBindings($bindings);
 
         $statement = $this->pdo->prepare($query);
         $statement->execute($bindings);
@@ -117,5 +120,15 @@ class PDOMysqlDatabase implements Database
     public function delete(string $query, array $params = []): int
     {
         return $this->execute($query, ...$params)->rowCount();
+    }
+
+    private function prepareBindings(array $bindings): array
+    {
+        return array_map(function($binding) {
+            if ($binding instanceof UnitEnum) {
+                return $binding instanceof BackedEnum ? $binding->value : $binding->name;
+            }
+            return $binding;
+        }, $bindings);
     }
 }

@@ -2,8 +2,11 @@
 
 namespace App\QueryBuilders;
 
+use App\Enums\GroupStatus;
+use App\Enums\GroupPending;
 use App\Models\ChurchGroup;
 use App\Models\ChurchGroupView;
+use Framework\Database\Builder;
 use App\Models\User;
 use Framework\Model\EntityQueryBuilder;
 use Framework\Model\Relation\Has;
@@ -11,11 +14,15 @@ use Framework\Model\Relation\Relation;
 use Framework\Model\SoftDeletes;
 
 /**
- * @phpstan-extends EntityQueryBuilder<\App\Models\ChurchGroup>
+ * @phpstan-extends EntityQueryBuilder<ChurchGroup>
  */
 class ChurchGroups extends EntityQueryBuilder
 {
     use SoftDeletes;
+
+    public const GROUP_SEND_NOTIFICATION_AFTER = '6 MONTH';
+
+    public const GROUP_INACTIVATE_AFTER_NOTIFICATION = '1 MONTH';
 
     public static function getModelClass(): string
     {
@@ -39,8 +46,8 @@ class ChurchGroups extends EntityQueryBuilder
 
     public function active(): static
     {
-        return $this->where('pending', 0)
-            ->where('status', 'active')
+        return $this->where('pending', GroupPending::confirmed)
+            ->where('status', GroupStatus::active)
             ->notDeleted();
     }
 
@@ -53,9 +60,7 @@ class ChurchGroups extends EntityQueryBuilder
 
     public function whereGroupTag(array $tags): static
     {
-        $innerQuery = builder('group_tags')->distinct()->select('group_id')->whereIn('tag', $tags);
-        $this->whereRaw("id in ($innerQuery)", $tags);
-        return $this;
+        return $this->whereHas('tags', fn (Builder $query) => $query->whereIn('tag', $tags));
     }
 
     public function similarTo(ChurchGroupView $group): static
@@ -85,5 +90,18 @@ class ChurchGroups extends EntityQueryBuilder
                 ->whereRaw("group_id={$this->getTable()}.id")
                 ->where('user_id', $user->getId())
         , null, 'or');
+    }
+
+    public function shouldNotify(): static
+    {
+        return $this
+            ->active()
+            ->whereRaw(sprintf('(notified_at IS NULL AND DATE(confirmed_at) < DATE_SUB(NOW(), INTERVAL %s))', self::GROUP_SEND_NOTIFICATION_AFTER));
+    }
+
+    public function shouldInactivate(): static
+    {
+        return $this->active()
+            ->whereRaw(sprintf('(DATE(notified_at) < DATE_SUB(NOW(), INTERVAL %s))', self::GROUP_INACTIVATE_AFTER_NOTIFICATION));
     }
 }

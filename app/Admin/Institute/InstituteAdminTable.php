@@ -28,7 +28,10 @@ class InstituteAdminTable extends AdminTable implements Deletable, Editable
 
     protected array $centeredColumns = ['image', 'groups_count'];
 
-    public function __construct(Request $request, private InstituteRepository $repository, private Users $userRepository)
+    public function __construct(
+        Request $request,
+        private readonly InstituteRepository $repository,
+        private readonly Users $userRepository)
     {
         parent::__construct($request);
     }
@@ -40,12 +43,7 @@ class InstituteAdminTable extends AdminTable implements Deletable, Editable
 
     protected function getData(): PaginatedResultSetInterface
     {
-        $filter = $this->request;
-        $institutes = $this->repository->getInstitutes($filter);
-        $userIds = $institutes->pluck('user_id')->filter()->unique()->all();
-        $users = $this->userRepository->whereIn('id', $userIds)->get();
-        $institutes->with($users, 'user', 'user_id');
-        return $institutes;
+        return $this->repository->getInstitutes($this->request);
     }
 
     public function getLeaderName($leader_name): string

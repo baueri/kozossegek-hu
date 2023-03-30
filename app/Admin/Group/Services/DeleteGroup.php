@@ -14,10 +14,9 @@ class DeleteGroup
     }
 
     /**
-     * @param $groupId
      * @throws ModelNotFoundException
      */
-    public function delete($groupId)
+    public function delete(int $groupId): void
     {
         $group = $this->repository->findOrFail($groupId);
 

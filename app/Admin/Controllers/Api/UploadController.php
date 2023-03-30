@@ -2,6 +2,7 @@
 
 namespace App\Admin\Controllers\Api;
 
+use App\Helpers\FileHelper;
 use Framework\Http\Request;
 use Framework\Storage\PublicStorage;
 
@@ -18,7 +19,7 @@ class UploadController {
         
         $files = collect($storage->getFiles("uploads/$dir"));
         
-        $uploads = \App\Helpers\FileHelper::parseFilesToArray($files);
+        $uploads = FileHelper::parseFilesToArray($files);
         
         return view('admin.uploads.api.list', compact('uploads'));
     }

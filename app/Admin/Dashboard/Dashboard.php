@@ -82,7 +82,7 @@ class Dashboard
         $header = $matches[1];
         [, $date] = explode(' ', $header);
 
-        $date = str_replace(['(', ')', '.'], ['', '', '-'], $date);
+        $date = str_replace(['(', ')', '.'], ['', '', '-'], $date ?? '');
 
         $latestDate = Carbon::parse($date);
         $toCheck = now()->subDays(5);

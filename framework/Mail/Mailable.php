@@ -2,6 +2,8 @@
 
 namespace Framework\Mail;
 
+use App\Models\User;
+
 class Mailable
 {
     /**
@@ -93,5 +95,15 @@ class Mailable
         $this->replyTo = $email;
 
         return $this;
+    }
+
+    public function send(string|User $to, ?string $name = null): bool
+    {
+        if ($to instanceof User) {
+            $name ??= $to->name;
+            $to = $to->email;
+        }
+
+        return (new Mailer($to, $name))->send($this);
     }
 }

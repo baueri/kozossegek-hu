@@ -257,7 +257,7 @@ function raise_403($message = '', $message2 = 'Nincs jogosultsága a tartalom me
     raise_error_page(403, $message, $message2);
 }
 
-function process_error($e)
+function process_error($e): void
 {
     if (!_env('DEBUG')) {
         report($e);
@@ -319,21 +319,17 @@ function rcopy($src, $dst, $excludeSymlinks = false): void
     }
 }
 
-function set_header_bg(string $bg)
+function set_header_bg(string $bg): void
 {
     View::setVariable('header_background', $bg);
 }
 
-function use_default_header_bg()
+function use_default_header_bg(): void
 {
     set_header_bg('/images/main.jpg');
 }
 
-/**
- * @param string|object $class
- * @return mixed|string
- */
-function get_class_name($class)
+function get_class_name(string|object $class): string
 {
     if (is_object($class)) {
         $path = explode('\\', get_class($class));
@@ -354,7 +350,7 @@ function event_logger(): EventLogger
     return app()->get(EventLogRepository::class);
 }
 
-function log_event(string $type, array $data = [])
+function log_event(string $type, array $data = []): void
 {
     event_logger()->logEvent($type, $data);
 }
@@ -416,7 +412,7 @@ function attr(string $name): Closure
 
 function query_history(): Collection
 {
-    return app(QueryHistory::class)->queryHistory;
+    return resolve(QueryHistory::class)->queryHistory;
 }
 
 function query_history_bound(): array

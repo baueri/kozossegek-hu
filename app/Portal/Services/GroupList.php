@@ -43,10 +43,6 @@ class GroupList
         }
 
         $groups = $this->service->search($filter, 18);
-        if ($groupIds = $groups->pluck('id')->all()) {
-            $group_tags = builder('v_group_tags')->whereIn('group_id', $groupIds)->get();
-            $groups->withMany($group_tags, 'tags', 'id', 'group_id');
-        }
 
         $model = array_merge($model, [
             'groups' => $groups,

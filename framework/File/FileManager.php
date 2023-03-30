@@ -39,7 +39,7 @@ class FileManager
     /**
      * Root path of file manager
      */
-    protected ?string $rootPath;
+    public readonly ?string $rootPath;
 
     /**
      * List of enabled Types
@@ -89,10 +89,9 @@ class FileManager
     }
 
     /**
-     * @param string $folderName
      * @throws Exception
      */
-    public function createFolder($folderName = '', &$error = [])
+    public function createFolder(string $folderName = '', &$error = []): bool
     {
         if ($this->folderExists($folderName)) {
             return true;
@@ -107,64 +106,37 @@ class FileManager
         return $ok;
     }
 
-    /**
-     * @param array $enabledTypes
-     */
-    public function setEnabledTypes(array $enabledTypes)
+    public function setEnabledTypes(array $enabledTypes): void
     {
         $this->enabledTypes = $enabledTypes;
     }
 
-    /**
-     * @param $filePath
-     * @return string
-     */
-    private static function addDirectorySeparator($filePath)
+    private static function addDirectorySeparator(string $filePath): string
     {
         return rtrim($filePath, '/') . '/';
     }
 
-    /**
-     * @param $folderName
-     * @return bool
-     */
-    public function folderExists($folderName)
+    public function folderExists(string $folderName): bool
     {
         return is_dir($this->rootPath . $folderName);
     }
 
-    /**
-     * @param $type
-     * @return bool
-     */
-    public function fileTypeEnabled($type)
+    public function fileTypeEnabled(string $type): bool
     {
         return in_array($type, $this->enabledTypes) || in_array('*', $this->enabledTypes);
     }
 
-    /**
-     * @return bool
-     */
-    private function rootFolderExists()
+    private function rootFolderExists(): bool
     {
         return is_dir($this->rootPath);
     }
 
-    /**
-     * @return string
-     */
-    public function getPath()
-    {
-        return $this->rootPath;
-    }
-
-
-    public function getDirName()
+    public function getDirName(): string
     {
         return basename($this->rootPath);
     }
 
-    public function createSymLink($link)
+    public function createSymLink($link): bool
     {
         return symlink($this->rootPath, $link);
     }

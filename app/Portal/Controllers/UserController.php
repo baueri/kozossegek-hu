@@ -76,7 +76,7 @@ class UserController extends PortalController
             return view('portal.error', ['message2' => 'Jelszó visszaállítás sikertelen! Hibás token.']);
         }
 
-        if (strtotime($token->expires_at) < time()) {
+        if ($token->expired()) {
             return view('portal.error', ['message2' => 'Ennek a tokennek az érvényességi ideje lejárt!']);
         }
 
@@ -109,7 +109,7 @@ class UserController extends PortalController
                 return view('portal.error', ['message2' => 'Felhasználói aktiválása sikertelen! Hibás token.']);
             }
 
-            if (strtotime($token->expires_at) < time()) {
+            if ($token->expired()) {
                 return view('portal.error', ['message2' => 'Ennek a linknek az érvényességi ideje lejárt!']);
             }
 

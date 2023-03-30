@@ -32,9 +32,6 @@ class XmlRouteBuilder
         );
     }
 
-    /**
-     * @return string
-     */
     public function getUriMask(): string
     {
         $prefixes = $this->getPrefix();

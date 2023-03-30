@@ -1,16 +1,10 @@
 <?php
 
-
 namespace Framework\Http;
-
 
 class ApiResponse
 {
-    /**
-     * @param array|string $data
-     * @return array
-     */
-    public function ok($data = [])
+    public function ok($data = null): array
     {
         return $this->response($data, true);
     }
@@ -39,6 +33,6 @@ class ApiResponse
             Response::setStatusCode($code);
         }
 
-        return array_merge(compact('success'), $data);
+        return array_merge(compact('success'), $data ?? []);
     }
 }

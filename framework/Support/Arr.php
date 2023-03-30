@@ -4,12 +4,7 @@ namespace Framework\Support;
 
 class Arr
 {
-    /**
-     * @param array|Collection $items
-     * @param $callback
-     * @param mixed ...$params
-     */
-    public static function each($items, $callback, ...$params): void
+    public static function each(array|Collection $items, callable $callback, ...$params): void
     {
         if ($items instanceof Collection) {
             $items->each($callback);
@@ -22,13 +17,7 @@ class Arr
         }
     }
 
-    /**
-     * @param array|Collection $items
-     * @param $callback
-     * @param bool $keepKeys
-     * @return array
-     */
-    public static function map($items, $callback, bool $keepKeys = false): array
+    public static function map(array|Collection $items, callable $callback, bool $keepKeys = false): array
     {
         if ($items instanceof Collection) {
             return $items->map($callback, $keepKeys)->all();

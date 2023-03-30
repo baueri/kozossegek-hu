@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace App\QueryBuilders;
 
 use App\Models\User;
-use DateTime;
+use App\Models\UserToken;
+use Carbon\Carbon;
 use Exception;
 use Framework\Model\EntityQueryBuilder;
-use App\Models\UserToken;
 
 /**
- * @phpstan-extends EntityQueryBuilder<\App\Models\UserToken>
+ * @phpstan-extends EntityQueryBuilder<UserToken>
  */
 class UserTokens extends EntityQueryBuilder
 {
@@ -25,9 +25,9 @@ class UserTokens extends EntityQueryBuilder
     /**
      * @throws Exception
      */
-    public function createUserToken(User $user, string $page): UserToken
+    public function createUserToken(User $user, string $page, ?Carbon $expireDate = null, string|array $data = null): UserToken
     {
-        $instance = $this->make($user, $page);
+        $instance = $this->make($user, $page, $expireDate, $data);
 
         $this->create($instance);
 
@@ -45,13 +45,14 @@ class UserTokens extends EntityQueryBuilder
     /**
      * @throws Exception
      */
-    public function make(User $user, string $page): UserToken
+    public function make(User $user, string $page, ?Carbon $expireDate = null, string|array $data = null): UserToken
     {
         return $this->getInstance([
             'token' => bin2hex(random_bytes(20)),
             'email' => $user->email,
             'page' => $page,
-            'expires_at' => (new DateTime())->modify('+1 day')->format('Y-m-d H:i:s')
+            'expires_at' => $expireDate ? $expireDate->toDateTimeString() : now()->modify('+1 day')->toDateTimeString(),
+            'data' => is_array($data) ? json_encode($data) : $data
         ]);
     }
 }

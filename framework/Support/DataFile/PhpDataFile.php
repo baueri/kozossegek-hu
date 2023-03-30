@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Framework\Support\DataFile;
-
 
 class PhpDataFile extends DataFile
 {
@@ -10,7 +8,7 @@ class PhpDataFile extends DataFile
 
     protected function parse($content)
     {
-        return $content ?: null;
+        return $content;
     }
 
     protected static function getContent(string $filename)

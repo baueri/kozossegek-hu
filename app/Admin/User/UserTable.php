@@ -6,6 +6,7 @@ use App\Admin\Components\AdminTable\{AdminTable, Deletable, Editable};
 use App\Enums\UserRole;
 use App\Models\User;
 use App\Models\UserSession;
+use App\QueryBuilders\ChurchGroups;
 use App\QueryBuilders\GroupViews;
 use App\QueryBuilders\Users;
 use App\QueryBuilders\UserSessions;
@@ -74,7 +75,7 @@ class UserTable extends AdminTable implements Deletable, Editable
     {
         $icon = static::getIcon('fa fa-comments');
         $route = route('admin.group.list', ['user_id' => $user->id]);
-        $groupCount = (int) $user->groups_count;
+        $groupCount = $user->groups_count;
         return static::getLink(
             $route,
             "{$icon} ({$groupCount})",
@@ -136,7 +137,7 @@ class UserTable extends AdminTable implements Deletable, Editable
             $query->where('user_group', $userGroup);
         }
 
-        $query->withCount('groups', fn(GroupViews $groupViews) => $groupViews->active());
+        $query->withCount('groups', fn(ChurchGroups $groupViews) => $groupViews->active());
         $online = ['sessions', fn (UserSessions $query) => $query->online()->orderBy('updated_at', 'desc')];
         $query->with(...$online);
 

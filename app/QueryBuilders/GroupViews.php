@@ -4,14 +4,13 @@ namespace App\QueryBuilders;
 
 use App\Models\ChurchGroupView;
 use App\Models\User;
-use Framework\Model\EntityQueryBuilder;
 use Framework\Model\Relation\Has;
 use Framework\Model\Relation\Relation;
 use Framework\Support\Arr;
 use Framework\Support\StringHelper;
 
 /**
- * @phpstan-extends EntityQueryBuilder<ChurchGroupView>
+ * @phpstan-extends ChurchGroups<ChurchGroupView>
  */
 class GroupViews extends ChurchGroups
 {

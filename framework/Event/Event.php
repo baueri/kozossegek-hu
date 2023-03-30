@@ -4,20 +4,14 @@ namespace Framework\Event;
 
 abstract class Event
 {
-    /**
-     * @var EventListener[]
-     */
     protected static array $listeners = [];
 
-    /*
-     * @return EventListener[]
-     */
-    public static function getListeners()
+    public static function getListeners(): array
     {
         return static::$listeners;
     }
 
-    public static function listen($listenerClassName)
+    public static function listen($listenerClassName): void
     {
         static::$listeners[] = $listenerClassName;
     }
