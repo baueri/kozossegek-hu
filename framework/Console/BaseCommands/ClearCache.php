@@ -19,7 +19,6 @@ class ClearCache extends Command
         return 'Törli a cache mappát.';
     }
 
-
     /**
      * @throws Exception
      */
