@@ -76,6 +76,7 @@
                 <route method="get" uri="error-log" use="errorLog" as="error_log"/>
                 <route method="get" uri="error-log/clear" use="clearErrorLog" as="clear_error_log"/>
                 <route method="get" uri="event-log" use="eventLog" as="event_log"/>
+                <route method="get" uri="scheduled-tasks" use="scheduledTasks" as="scheduled_tasks"/>
             </route-group>
 
             <!--   EMAIL SABLONOK     -->

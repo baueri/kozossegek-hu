@@ -2,7 +2,7 @@
 
 namespace App\Admin\Institute;
 
-use App\Admin\Components\AdminTable\AdminTable;
+use App\Admin\Components\AdminTable\PaginatedAdminTable;
 use App\Admin\Components\AdminTable\Deletable;
 use App\Admin\Components\AdminTable\Editable;
 use App\QueryBuilders\Users;
@@ -11,7 +11,7 @@ use Framework\Http\Request;
 use Framework\Support\StringHelper;
 use App\Models\Institute;
 
-class InstituteAdminTable extends AdminTable implements Deletable, Editable
+class InstituteAdminTable extends PaginatedAdminTable implements Deletable, Editable
 {
     protected array $columns = [
         'id' => '<i class="fa fa-hashtag"></i>',

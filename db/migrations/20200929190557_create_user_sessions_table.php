@@ -11,7 +11,7 @@ final class CreateUserSessionsTable extends AppMigration
         $this->table('user_sessions')
             ->addColumn('unique_id', MysqlAdapter::PHINX_TYPE_STRING)
             ->addColumn('user_id', MysqlAdapter::PHINX_TYPE_INTEGER)
-            ->timestamp('created_at', ['default' => 'CURRENT_TIMESTAMP'])
+            ->datetime('created_at', ['default' => 'CURRENT_TIMESTAMP'])
             ->save();
     }
 

@@ -11,7 +11,7 @@ final class CreatePasswordResetTable extends App\Migration\AppMigration
         $this->table('password_reset')
                 ->addColumn('email', MysqlAdapter::PHINX_TYPE_STRING)
                 ->addColumn('token', MysqlAdapter::PHINX_TYPE_STRING)
-                ->timestamp('expires_at', ['default' => 'CURRENT_TIMESTAMP'])
+                ->datetime('expires_at', ['default' => 'CURRENT_TIMESTAMP'])
                 ->addIndex('token', ['unique' => true])
                 ->save();
     }
