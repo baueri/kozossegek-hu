@@ -2,7 +2,7 @@
 
 namespace App\Admin\Group;
 
-use App\Admin\Components\AdminTable\AdminTable;
+use App\Admin\Components\AdminTable\PaginatedAdminTable;
 use App\Admin\Components\AdminTable\Deletable;
 use App\Admin\Components\AdminTable\Editable;
 use App\Enums\GroupStatus;
@@ -13,7 +13,7 @@ use Framework\Http\Request;
 use Framework\Model\Entity;
 use Framework\Support\StringHelper;
 
-class GroupTable extends AdminTable implements Editable, Deletable
+class GroupTable extends PaginatedAdminTable implements Editable, Deletable
 {
     protected array $columns = [
         'id' => '#',

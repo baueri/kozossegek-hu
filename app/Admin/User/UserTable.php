@@ -2,7 +2,7 @@
 
 namespace App\Admin\User;
 
-use App\Admin\Components\AdminTable\{AdminTable, Deletable, Editable};
+use App\Admin\Components\AdminTable\{PaginatedAdminTable, Deletable, Editable};
 use App\Enums\UserRole;
 use App\Models\User;
 use App\Models\UserSession;
@@ -16,7 +16,7 @@ use Framework\Http\Request;
 use Framework\Model\PaginatedModelCollection;
 use Framework\Support\Collection;
 
-class UserTable extends AdminTable implements Deletable, Editable
+class UserTable extends PaginatedAdminTable implements Deletable, Editable
 {
     protected array $columns = [
         'id' => '#',
@@ -26,7 +26,14 @@ class UserTable extends AdminTable implements Deletable, Editable
         'email' => 'Email',
         'activated_at' => 'Aktiválva',
         'created_at' => 'Regisztráció',
+        'last_login' => 'Utoljára belépve',
         'sessions' => '<i class="fa fa-dot-circle text-success" title="Online"></i>'
+    ];
+
+    protected array $sortableColumns = [
+        'activated_at',
+        'created_at',
+        'last_login'
     ];
 
     private Users $repository;

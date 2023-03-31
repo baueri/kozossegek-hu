@@ -19,7 +19,7 @@ class DailyCron extends CronCommand
         return 'cron:daily';
     }
 
-    protected function jobs(): array
+    public function jobs(): array
     {
         return [
             resolve(ClearUserSessionCommand::class),

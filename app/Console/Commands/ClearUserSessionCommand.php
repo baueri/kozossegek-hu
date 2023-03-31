@@ -20,6 +20,11 @@ class ClearUserSessionCommand extends Command
         return 'clear:session';
     }
 
+    public function description(): string
+    {
+        return 'Törli az egy napnál régebbi session sorokat a user_session táblából.';
+    }
+
     public function handle(): void
     {
         $this->service->run();

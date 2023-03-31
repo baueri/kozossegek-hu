@@ -2,12 +2,12 @@
 
 namespace App\Admin\Settings\EventLog;
 
-use App\Admin\Components\AdminTable\AdminTable;
+use App\Admin\Components\AdminTable\PaginatedAdminTable;
 use App\Repositories\EventLogRepository;
 use Framework\Database\PaginatedResultSetInterface;
 use Framework\Http\Request;
 
-class EventLogAdminTable extends AdminTable
+class EventLogAdminTable extends PaginatedAdminTable
 {
     protected array $columns = [
         'id' => '#',

@@ -10,7 +10,6 @@ use App\Models\User;
 use App\QueryBuilders\ChurchGroups;
 use App\QueryBuilders\Users;
 use Framework\Console\Command;
-use Framework\Mail\Mailable;
 use Framework\Model\ModelCollection;
 
 class InactivateUnconfirmedGroups extends Command
@@ -20,15 +19,20 @@ class InactivateUnconfirmedGroups extends Command
         return 'group:inactivate-unconfirmed';
     }
 
+    public function description(): string
+    {
+        return sprintf('Inaktiválja azokat a közösségeket, amelyek %d hónappal a kiküldött emlékeztető email után se lettek megerősítve.', ChurchGroups::GROUP_INACTIVATE_AFTER_NOTIFICATION);
+    }
+
     public function handle()
     {
         $users = $this->getUsers();
         foreach ($users as $user) {
-            (new GroupsInactivated($user, $user->grouos))->send($user);
             ChurchGroups::query()->whereIn('id', $user->groups->map->getId())->update([
                 'notified_at' => null,
                 'status' => GroupStatus::inactive
             ]);
+            (new GroupsInactivated($user, $user->groups))->send($user);
         }
     }
 

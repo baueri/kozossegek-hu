@@ -2,7 +2,7 @@
 
 namespace App\Admin\SpiritualMovement;
 
-use App\Admin\Components\AdminTable\AdminTable;
+use App\Admin\Components\AdminTable\PaginatedAdminTable;
 use App\Admin\Components\AdminTable\Deletable;
 use App\Admin\Components\AdminTable\Editable;
 use App\Enums\SpiritualMovementType;
@@ -13,7 +13,7 @@ use Framework\Database\Builder;
 use Framework\Http\Request;
 use Framework\Model\PaginatedModelCollection;
 
-class SpiritualMovementTable extends AdminTable implements Editable, Deletable
+class SpiritualMovementTable extends PaginatedAdminTable implements Editable, Deletable
 {
     protected array $columns = [
         'name' => 'Név',

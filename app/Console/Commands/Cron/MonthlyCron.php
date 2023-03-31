@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Console\Commands\Cron;
 
 use App\Console\Commands\GroupActivityConfirmNotifier;
+use App\Console\Commands\InactivateUnconfirmedGroups;
 use Framework\Console\BaseCommands\CronCommand;
 
 class MonthlyCron extends CronCommand
@@ -14,10 +15,11 @@ class MonthlyCron extends CronCommand
         return 'cron:monthly';
     }
 
-    protected function jobs(): array
+    public function jobs(): array
     {
         return [
-            resolve(GroupActivityConfirmNotifier::class)
+            resolve(GroupActivityConfirmNotifier::class),
+            resolve(InactivateUnconfirmedGroups::class)
         ];
     }
 }
