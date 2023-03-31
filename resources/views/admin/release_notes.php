@@ -2,7 +2,7 @@
 @extends('admin')
 <h3>v3.2.0 (2023.03.30)</h3>
 <ul>
-    <li>[NEW]: Megerősítő email küldés félévenként</li>
+    <li>[NEW]: Megerősítő email küldés évenként</li>
     <li>[CHANGE]: `pending` státusz megszüntetése a `status` enum mezőből</li>
     <li>[CHANGE]: Figyelmeztető üzenet az automatikus (noreply) levelek végére, hogy ne válaszoljanak erre a címre.</li>
     <li><b>Gépház</b></li>

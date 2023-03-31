@@ -32,8 +32,8 @@
         <td>Felhasználói oldalon a már regisztrált és belépett felhasználónak küldjük ki, amikor új közösséget regisztrál</td>
     </tr>
     <tr>
-        <td><a href="@route('admin.email_template.seasonal_notification')">Aktív közösség megerősítése (félévente)</a></td>
-        <td>Félévente kiküldésre kerülő üzenet</td>
+        <td><a href="@route('admin.email_template.seasonal_notification')">Aktív közösség megerősítése (évente)</a></td>
+        <td>Évente kiküldésre kerülő üzenet</td>
     </tr>
     <tr>
         <td><a href="@route('admin.email_template.group_inactivated')">Értesítés közösség inaktiválásáról</a></td>
