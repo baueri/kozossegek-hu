@@ -27,4 +27,8 @@ return [
     'ERROR_EMAIL' => 'ivan.bauer90@gmail.com',
     'LEGAL_NOTICE_VERSION' => 0,
     'LEGAL_NOTICE_DATE' => '2021-07-07',
+
+    'GROUP_SEND_NOTIFICATION_AFTER' => '6 MONTH',
+    'GROUP_INACTIVATE_AFTER_NOTIFICATION' => '1 MONTH',
+    'APP_TIMEZONE' => 'Europe/Budapest'
 ];

@@ -22,6 +22,11 @@ return [
     'EMAIL_SSL' => 'STARTTLS',
 
     'CONTACT_EMAIL' => 'ivan.bauer90@gmail.com',
-    'ERROR_EMAIL' => 'error@kozossegek.hu'
+    'ERROR_EMAIL' => 'error@kozossegek.hu',
 
+    'LEGAL_NOTICE_DATE' => '2021-07-07',
+
+    'GROUP_SEND_NOTIFICATION_AFTER' => '6 MONTH',
+    'GROUP_INACTIVATE_AFTER_NOTIFICATION' => '1 MONTH',
+    'APP_TIMEZONE' => 'Europe/Budapest'
 ];
