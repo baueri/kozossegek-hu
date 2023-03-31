@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Framework\Console\BaseCommands;
 
 use Exception;
@@ -10,6 +12,11 @@ class ClearCache extends Command
     public static function signature(): string
     {
         return 'cache:clear';
+    }
+
+    public function description(): string
+    {
+        return 'Törli a cache mappát.';
     }
 
     /**

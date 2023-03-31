@@ -31,12 +31,14 @@ const APP_VERSION = 'v2.3.0';
 const APP_CFG_LEGAL_NOTICE_VERSION = 'app.legal_notice_version';
 const APP_CFG_LEGAL_NOTICE_DATE = 'app.legal_notice_date';
 
+
 DotEnv::load(ROOT . '.env.php');
 
 date_default_timezone_set(_env('APP_TIMEZONE', 'Europe/Budapest'));
 
 ini_set("log_errors", 1);
-if (!_env('DEBUG')) {
+
+if (!_env('DEBUG') && !is_cli()) {
     ini_set("error_log", ROOT . "error.log");
 } else {
     ini_set('display_errors', 1);

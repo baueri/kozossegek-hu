@@ -194,9 +194,7 @@ class Builder
 
                 $column($builder);
 
-                $closureBindings = array_map(function ($where) {
-                    return $where[2];
-                }, $builder->getWhere());
+                $closureBindings = array_map(fn($where) => $where[2], $builder->getWhere());
 
                 $closureWhere = $builder->buildWhere();
 

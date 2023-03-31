@@ -10,7 +10,7 @@ final class AddLastLoginToUsersTable extends AppMigration
     public function up(): void
     {
         $this->table('users')
-            ->timestamp('last_login', ['null' => true])
+            ->datetime('last_login', ['null' => true])
             ->save();
     }
 

@@ -11,7 +11,7 @@ final class CreateUserLegalNoticesTable extends AppMigration
         $this->table('user_legal_notices')
             ->addColumn('user_id', MysqlAdapter::PHINX_TYPE_INTEGER)
             ->addColumn('accepted_legal_notice_version', MysqlAdapter::PHINX_TYPE_SMALL_INTEGER, ['default' => 1])
-            ->timestamp('accepted_at', ['update' => 'CURRENT_TIMESTAMP', 'default' => 'CURRENT_TIMESTAMP'])
+            ->datetime('accepted_at', ['update' => 'CURRENT_TIMESTAMP', 'default' => 'CURRENT_TIMESTAMP'])
             ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE'])
             ->save();
     }

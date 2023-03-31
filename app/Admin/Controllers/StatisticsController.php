@@ -2,7 +2,7 @@
 
 namespace App\Admin\Controllers;
 
-use App\Admin\Components\AdminTable\AdminTable;
+use App\Admin\Components\AdminTable\PaginatedAdminTable;
 use App\Repositories\CityStatistics;
 use Framework\Database\Builder;
 use Framework\Database\PaginatedResultSetInterface;
@@ -15,9 +15,9 @@ class StatisticsController extends AdminController
         return view('admin.statistics.index', ['table' => $this->statisticsTable(), 'varos' => $request['varos'] ?? '', 'periodus' => $request['periodus']]);
     }
 
-    private function statisticsTable(): AdminTable
+    private function statisticsTable(): PaginatedAdminTable
     {
-        return new class(request()) extends AdminTable
+        return new class(request()) extends PaginatedAdminTable
         {
             protected array $columns = [
                 'city' => 'Város',
@@ -64,9 +64,9 @@ class StatisticsController extends AdminController
         return view('admin/statistics/keywords', ['table' => $this->keywordsTable(), 'popularKeywords' => $popularKeywords]);
     }
 
-    private function keywordsTable(): AdminTable
+    private function keywordsTable(): PaginatedAdminTable
     {
-        return new class($this->request) extends AdminTable
+        return new class($this->request) extends PaginatedAdminTable
         {
             protected array $columns = [
                 'city' => 'Város',

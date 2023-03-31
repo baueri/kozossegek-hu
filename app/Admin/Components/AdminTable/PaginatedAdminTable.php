@@ -9,7 +9,7 @@ use Framework\Http\Request;
 use Framework\Support\StringHelper;
 use InvalidArgumentException;
 
-abstract class AdminTable
+abstract class PaginatedAdminTable
 {
     protected array $columns = [];
 
@@ -26,6 +26,8 @@ abstract class AdminTable
     protected array $sortableColumns = [];
 
     protected array $columnClasses = [];
+
+    protected bool $withPager = true;
 
     /**
      * @var string[]
@@ -64,7 +66,8 @@ abstract class AdminTable
             'adminTable' => $this,
             'total' => $data->total(),
             'page' => $data->page(),
-            'perpage' => $data->perpage()
+            'perpage' => $data->perpage(),
+            'with_pager' => $this->withPager
         ];
 
         return view('admin.partials.table', $model);

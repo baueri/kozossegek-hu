@@ -1,7 +1,7 @@
-
-<div class="mt-4">Összes találat: <b>{{ $total }}</b></div>
-<div class="mb-4">@include('partials.simple-pager')</div>
-
+@if($with_pager)
+    <div class="mt-4">Összes találat: <b>{{ $total }}</b></div>
+    <div class="mb-4">@include('partials.simple-pager')</div>
+@endif
 <table class="bg-white shadow rounded table table-hover table-responsive-sm">
     <thead>
         <tr>
@@ -39,4 +39,6 @@
     </tbody>
 </table>
 
-<div class="mt-4">@include('partials.simple-pager')</div>
+@if($with_pager)
+    <div class="mt-4">@include('partials.simple-pager')</div>
+@endif

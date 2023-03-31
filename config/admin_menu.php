@@ -166,8 +166,13 @@ return [
             ],
             [
                 'title' => 'Todo',
+                'icon' => 'clipboard-list',
                 'as' => 'admin.todo',
-                'icon' => 'clipboard-list'
+            ],
+            [
+                'title' => 'Háttérfolyamatok',
+                'icon' => 'stopwatch',
+                'as' => 'admin.scheduled_tasks'
             ]
         ],
     ],

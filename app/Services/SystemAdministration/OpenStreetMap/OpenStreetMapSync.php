@@ -19,6 +19,11 @@ class OpenStreetMapSync extends Command
         return 'osm:sync';
     }
 
+    public function description(): string
+    {
+        return 'Az OpenStreetMap-hez generálja le a POI-kat, amiket a térképeken (admin és front-end egyaránt) megjelenítünk.';
+    }
+
     public function handle(): int
     {
         $this->output->info('Syncing Open Street Map pois...');

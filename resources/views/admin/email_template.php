@@ -30,7 +30,8 @@
     @include('asset_groups.editor')
 </head>
 <body>
-<h3 class="text-center">
+<a href="@route('admin.email_template.list')" style="position: absolute; top: 0; left: .3em; text-decoration: none"><span style="font-size: 2em">🔙</span></a>
+<h3 class="text-center my-4">
     {{ $title }}
 </h3>
 <div id="mail-content">
