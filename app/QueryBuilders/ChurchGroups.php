@@ -20,7 +20,7 @@ class ChurchGroups extends EntityQueryBuilder
 {
     use SoftDeletes;
 
-    public const GROUP_SEND_NOTIFICATION_AFTER = '6 MONTH';
+    public const GROUP_SEND_NOTIFICATION_AFTER = '12 MONTH';
 
     public const GROUP_INACTIVATE_AFTER_NOTIFICATION = '1 MONTH';
 
