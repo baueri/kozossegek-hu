@@ -3,10 +3,10 @@
 namespace App\Portal\Controllers;
 
 use App\Auth\Auth;
+use App\Enums\GroupStatus;
 use App\Exception\EmailTakenException;
 use App\Http\Responses\CreateGroupSteps\RegisterGroupForm;
 use App\Http\Responses\PortalEditGroupForm;
-use App\Models\ChurchGroup;
 use App\Portal\Services\GroupList;
 use App\Portal\Services\PortalCreateGroup;
 use App\Portal\Services\PortalUpdateGroup;
@@ -315,8 +315,8 @@ class GroupController extends PortalController
             $groups->save($group, ['confirmed_at' => now(), 'notified_at' => null]);
             $view = view('portal.error', ['message2' => 'Közösség sikeresen megerősítve!']);
         } elseif ($decoded['action'] === 'deactivate') {
-            $groups->save($group, ['active' => 0]);
-            $view = view('portal.error', ['message2' => 'Közösség inaktiválva. Közösséget bármikor újra aktiválhatsz belépés után a közösség adatlapján.']);
+            $groups->save($group, ['status' => GroupStatus::inactive]);
+            $view = view('portal.error', ['message2' => 'Közösséged inaktiválva lett. Közösséget bármikor újra aktiválhatsz belépés után a közösség adatlapján.']);
         } else {
             throw new InvalidArgumentException('Invalid confirm action');
         }

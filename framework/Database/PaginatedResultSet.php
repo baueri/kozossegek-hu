@@ -8,14 +8,8 @@ use Framework\Support\Collection;
 
 class PaginatedResultSet extends Collection implements PaginatedResultSetInterface
 {
-    /**
-     * @var int
-     */
     private $page;
 
-    /**
-     * @var int
-     */
     private $total;
 
     /**
@@ -23,14 +17,7 @@ class PaginatedResultSet extends Collection implements PaginatedResultSetInterfa
      */
     private $perpage;
 
-    /**
-     * PaginatedResultSet constructor.
-     * @param array $items
-     * @param int $perpage
-     * @param int $page
-     * @param int $total
-     */
-    public function __construct($items, $perpage, $page = 1, $total = 0)
+    public function __construct($items, $perpage = 10, $page = 1, $total = 0)
     {
         parent::__construct($items);
         $this->page = $page;

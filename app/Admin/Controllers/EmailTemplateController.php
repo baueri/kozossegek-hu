@@ -102,7 +102,7 @@ class EmailTemplateController extends AdminController
 
     public function seasonalNotification(UserTokens $tokens): string
     {
-        $user = new User($this->mintaJanos());
+        $user = $this->mintaJanos();
         $user->setRelation('groups', collect([
             new ChurchGroup(['name' => 'Teszt közösség', 'id' => 123]),
             new ChurchGroup(['name' => 'Másik közi', 'id' => 456]),

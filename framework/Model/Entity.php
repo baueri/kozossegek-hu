@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Framework\Model;
 
 use Error;
@@ -65,14 +67,16 @@ abstract class Entity
 
     public function __get($name)
     {
-        $relation = substr($name, 0, strrpos($name, '_count'));
+        $relation = null;
+        if (str_ends_with($name, '_count')) {
+            $relation = substr($name, 0, strrpos($name, '_count'));
+            if (isset($this->relations_count[$relation])) {
+                return $this->relations_count[$relation];
+            }
 
-        if (isset($this->relations_count[$relation])) {
-            return $this->relations_count[$relation];
-        }
-
-        if (str_ends_with($name, '_count') && isset($this->relations[$relation])) {
-            return $this->relations_count[$relation] = count($this->relations[$relation]);
+            if (isset($this->relations[$relation])) {
+                return $this->relations_count[$relation] = count($this->relations[$relation]);
+            }
         }
 
         if (isset($this->attributes[$name])) {
@@ -83,7 +87,7 @@ abstract class Entity
             return $this->relations[$name] ?? null;
         }
 
-        if ($this->builder && method_exists($this->builder, $relation)) {
+        if (is_numeric($relation) && $this->builder && method_exists($this->builder, $relation)) {
             $method = new ReflectionMethod($this->builder, $relation);
             $returnType = $method->getReturnType();
             if ($returnType->getName() === Relation::class) {

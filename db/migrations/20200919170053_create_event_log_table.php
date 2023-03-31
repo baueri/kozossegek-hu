@@ -13,7 +13,7 @@ final class CreateEventLogTable extends \App\Migration\AppMigration
                 ->addColumn('type', MysqlAdapter::PHINX_TYPE_STRING)
                 ->addColumn('user_id', MysqlAdapter::PHINX_TYPE_INTEGER, ['default' => '0'])
                 ->addColumn('data', MysqlAdapter::PHINX_TYPE_TEXT, ['null' => true])
-                ->timestamp('created_at', ['default' => 'CURRENT_TIMESTAMP'])
+                ->datetime('created_at', ['default' => 'CURRENT_TIMESTAMP'])
                 ->addIndex('type')
                 ->addIndex('user_id')
                 ->create();

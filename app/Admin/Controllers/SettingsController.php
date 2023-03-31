@@ -2,7 +2,13 @@
 
 namespace App\Admin\Controllers;
 
+use App\Admin\Components\AdminTable\PaginatedAdminTable;
 use App\Admin\Settings\EventLog\EventLogAdminTable;
+use App\Console\Commands\Cron\DailyCron;
+use App\Console\Commands\Cron\MonthlyCron;
+use Framework\Console\Command;
+use Framework\Database\PaginatedResultSet;
+use Framework\Database\PaginatedResultSetInterface;
 use Framework\Http\Message;
 use Framework\Http\View\Section;
 use Framework\Maintenance;
@@ -51,5 +57,55 @@ class SettingsController extends AdminController
         $date_to = $request['date_to'];
 
         return view('admin.settings.event-log', compact('table', 'date_from', 'date_to'));
+    }
+
+    public function scheduledTasks(): string
+    {
+        $table = function (string $command): PaginatedAdminTable {
+            return new class($command, request()) extends PaginatedAdminTable
+            {
+                protected array $columns = [
+                    'signature' => 'azonosító',
+                    'description' => 'Leírás'
+                ];
+
+                protected array $columnClasses = [
+                    'signature' => 'signature'
+                ];
+
+                protected bool $withPager = false;
+
+                public function __construct(private readonly string $command, Request $request)
+                {
+                    parent::__construct($request);
+                }
+
+                protected function getData(): PaginatedResultSetInterface
+                {
+                    return new PaginatedResultSet(
+                        array_map(
+                            fn (Command $command) =>
+                            ['signature' => $command::signature(), 'description' => $command->description()],
+                            resolve($this->command)->jobs()
+                        )
+                    );
+                }
+
+                public function getSignature(string $signature): string
+                {
+                    return "<code>{$signature}</code>";
+                }
+
+                public function getDescription(string $description): array|string|null
+                {
+                    return preg_replace('/`(.*)`/', '<code>$1</code>', $description);
+                }
+            };
+        };
+
+        $daily = $table(DailyCron::class);
+        $monthly = $table(MonthlyCron::class);
+
+        return view('admin.settings.scheduled_tasks', compact('daily', 'monthly'));
     }
 }

@@ -1,8 +1,14 @@
 @title('Verzióinformáció')
 @extends('admin')
+<h3>v3.2.1 (2023.03.31)</h3>
+<ul>
+    <li>[NEW]: Háttérfolyamatok (cron) listázása admin oldalon</li>
+    <li>[NEW]: User admin sorbarendezés utolsó belépés, regisztráció illetve aktiválás dátuma alapján</li>
+    <li>[FIX]: Közösség inaktiváló oldalon nemlétező mező mentése</li>
+</ul>
 <h3>v3.2.0 (2023.03.30)</h3>
 <ul>
-    <li>[NEW]: Megerősítő email küldés félévenként</li>
+    <li>[NEW]: Megerősítő email küldés évenként</li>
     <li>[CHANGE]: `pending` státusz megszüntetése a `status` enum mezőből</li>
     <li>[CHANGE]: Figyelmeztető üzenet az automatikus (noreply) levelek végére, hogy ne válaszoljanak erre a címre.</li>
     <li><b>Gépház</b></li>

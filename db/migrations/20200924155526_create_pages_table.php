@@ -16,7 +16,7 @@ final class CreatePagesTable extends AppMigration
             ->addColumn('content', MysqlAdapter::PHINX_TYPE_TEXT)
             ->addColumn('user_id', MysqlAdapter::PHINX_TYPE_INTEGER)
             ->addColumn('status', MysqlAdapter::PHINX_TYPE_ENUM, ['values' => PageStatus::asArray(), 'default' => PageStatus::PUBLISHED])
-            ->timestamps()
+            ->datetimes()
             ->create();
     }
 }

@@ -13,7 +13,7 @@ abstract class CronCommand extends Command
     /**
      * @phpstan-return Command[]
      */
-    abstract protected function jobs(): array;
+    abstract public function jobs(): array;
 
     public function handle(): void
     {

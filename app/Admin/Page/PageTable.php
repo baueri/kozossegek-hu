@@ -2,7 +2,7 @@
 
 namespace App\Admin\Page;
 
-use App\Admin\Components\AdminTable\AdminTable;
+use App\Admin\Components\AdminTable\PaginatedAdminTable;
 use App\Admin\Components\AdminTable\Deletable;
 use App\Admin\Components\AdminTable\Editable;
 use App\Models\Page;
@@ -13,7 +13,7 @@ use Framework\Database\PaginatedResultSetInterface;
 use Framework\Model\PaginatedModelCollection;
 use Framework\Support\Collection;
 
-class PageTable extends AdminTable implements Deletable, Editable
+class PageTable extends PaginatedAdminTable implements Deletable, Editable
 {
     protected array $columns = [
         'id' => '#',

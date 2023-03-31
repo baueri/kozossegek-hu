@@ -13,7 +13,7 @@ final class CreateInstitutesTable extends \App\Migration\AppMigration
                 ->addColumn('city', MysqlAdapter::PHINX_TYPE_STRING)
                 ->addColumn('address', MysqlAdapter::PHINX_TYPE_STRING)
                 ->addColumn('leader_name', MysqlAdapter::PHINX_TYPE_STRING, ['comment' => 'Intézményvezető/plébános neve'])
-                ->timestamps()
+                ->datetimes()
                 ->addIndex('name')
                 ->addIndex('city')
                 ->addIndex(['name', 'city'])
