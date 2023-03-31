@@ -18,6 +18,11 @@ class AggregateLogsCommand extends Command
         return 'log:aggregate';
     }
 
+    public function description(): string
+    {
+        return 'Aggregálja a még fel nem dolgozott eseménynapló bejegyzéseket.';
+    }
+
     public function handle(): void
     {
         $this->output->info('aggregating event logs..');

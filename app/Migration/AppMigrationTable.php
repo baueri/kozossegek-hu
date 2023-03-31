@@ -7,10 +7,10 @@ use Phinx\Db\Table;
 
 class AppMigrationTable extends Table
 {
-    public function timestamps(bool $withDeletedAt = true): static
+    public function datetimes(bool $withDeletedAt = true): static
     {
         $this->createdAt();
-        $this->timestamp('updated_at', ['null' => true]);
+        $this->datetime('updated_at', ['null' => true]);
 
         if ($withDeletedAt) {
             $this->deletedAt();
@@ -21,12 +21,12 @@ class AppMigrationTable extends Table
 
     public function createdAt(string $column = 'created_at'): static
     {
-        $this->timestamp($column, ['default' => 'CURRENT_TIMESTAMP']);
+        $this->datetime($column, ['default' => 'CURRENT_TIMESTAMP']);
 
         return $this;
     }
 
-    public function timestamp(string $column, array $options = []): static
+    public function datetime(string $column, array $options = []): static
     {
         $this->addColumn($column, AdapterInterface::PHINX_TYPE_DATETIME, $options);
 
@@ -35,14 +35,14 @@ class AppMigrationTable extends Table
 
     public function deletedAt(): static
     {
-        $this->timestamp('deleted_at', ['null' => true]);
+        $this->datetime('deleted_at', ['null' => true]);
 
         return $this;
     }
 
     public function updatedAt(string $column = 'updated_at', array $options = []): static
     {
-        $this->timestamp($column, array_merge(['null' => true], $options));
+        $this->datetime($column, array_merge(['null' => true], $options));
 
         return $this;
     }

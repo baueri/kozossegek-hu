@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Framework\Console\BaseCommands;
 
 use Exception;
@@ -11,6 +13,12 @@ class ClearCache extends Command
     {
         return 'cache:clear';
     }
+
+    public function description(): string
+    {
+        return 'Törli a cache mappát.';
+    }
+
 
     /**
      * @throws Exception
