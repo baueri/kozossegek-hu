@@ -36,6 +36,10 @@ class AdminMenu
         }
 
         $menuItem['active'] = $this->isActive($menuItem, $currentRoute);
+        $menuItem['class'] = 'menu-item-' . str_replace([',', '.', '_'], '-', $menuItem['as']);
+        if ($menuItem['active']) {
+            $menuItem['class'] .= ' active';
+        }
         if (isset($menuItem['submenu'])) {
             $menuItem['submenu'] = collect($menuItem['submenu'])->map(function ($menuItem) use ($currentRoute) {
                 return $this->parseMenuItem($menuItem, $currentRoute);

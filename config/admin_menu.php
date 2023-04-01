@@ -107,7 +107,7 @@ return [
                 'title' => 'Felhasználók',
                 'icon' => 'users',
                 'as' => 'admin.user.list',
-                'similars' => ['admin.user.edit', 'admin.user.profile', 'admin.user.managed_groups'],
+                'similars' => ['admin.user.edit', 'admin.user.managed_groups'],
             ],
             [
                 'title' => 'Létrehozás',
@@ -116,7 +116,11 @@ return [
             ],
         ],
     ],
-
+    [
+        'title' => 'Profilom',
+        'as' => 'admin.user.profile',
+        'icon' => 'user'
+    ],
     [
         'title' => 'Email sablonok',
         'icon' => 'envelope',
@@ -178,7 +182,7 @@ return [
     ],
     [
         'title' => 'Kilépés',
-        'link_class' => 'text-danger',
+        'link_class' => 'bg-danger',
         'icon' => 'sign-out-alt',
         'as' => 'logout',
     ],

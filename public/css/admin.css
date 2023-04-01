@@ -1,7 +1,11 @@
 @import "common.css";
 
-* {
-    /*transition: none !important;*/
+:root {
+    --sidebar-width: 230px;
+}
+
+body {
+    font-size: 16px;
 }
 
 img {
@@ -13,16 +17,18 @@ img {
 }
 
 #sidebar {
-    height: 100vh;
     position: fixed;
+    display: flex;
+    flex-flow: column;
+    height: 100%;
     left: 0;
     margin-left: 0 !important;
     transition: left ease-in .2s;
-    width: 200px; max-width: 200px; min-width: 200px
+    width: var(--sidebar-width); max-width: var(--sidebar-width); min-width: var(--sidebar-width)
 }
 
 #content {
-    margin-left: 200px;
+    margin-left: var(--sidebar-width);
     margin-top: 41px;
     min-height: calc(100vh - 41px);
     position: relative;
@@ -42,13 +48,16 @@ body.has-debugbar #content {
 }
 
 #top_menu {
-    margin-left: 200px;
-    /*background: #32373d !important;*/
+    margin-left: var(--sidebar-width);
 }
 
 #top_menu .nav-link {
     padding-top: 0px;
     padding-bottom: 0px;
+}
+
+#top_menu .nav-item.active .nav-link {
+    color: var(--primary) !important;
 }
 
 .note-editor.note-frame.fullscreen {background: #fff}
@@ -201,7 +210,7 @@ body.has-debugbar #content {
         margin-left: 0;
     }
     body:not(.sidebar-open) #sidebar {
-        left: -200px;
+        left: calc(var(--sidebar-width ) * -1);
     }
 }
 
@@ -279,8 +288,21 @@ body.has-debugbar #content {
     cursor: pointer;
 }
 
+#admin_menu {
+    flex: 1;
+    position: relative;
+}
+
 ul#admin_menu li {
-    font-size: 14px;
+    font-size: 16px;
+}
+
+ul#admin_menu li i.fa {
+    font-size: 1.3em;
+}
+
+#sidebar ul li.active > a {
+    background: var(--success);
 }
 
 .note-editor [class^=col-] {

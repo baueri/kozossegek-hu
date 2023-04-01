@@ -67,7 +67,7 @@
                 <input type="hidden" name="image">
             </div>
             <div class="form-group" id="chosable_images">
-                @if($images)
+                @if(isset($images))
                     <h4>Kép választása (miserend.hu-ról)</h4>
                     @foreach($images as $i => $chosable)
                     <input type="radio" name="image_url" value="{{ $chosable }}" id="{{ 'chosable_img_' . $i }}" @if($chosable === $institute->image_url) checked @endif style="display:none"/>
