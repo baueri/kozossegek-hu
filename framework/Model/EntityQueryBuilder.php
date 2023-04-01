@@ -222,7 +222,7 @@ abstract class EntityQueryBuilder
         return $this;
     }
 
-    public function where(callable|string $column, $operator = null, $value = null, string $clause = 'and'): static
+    public function where(callable|string|array $column, $operator = null, $value = null, string $clause = 'and'): static
     {
         $this->builder->where($column, $operator, $value, $clause);
 

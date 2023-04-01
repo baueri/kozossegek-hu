@@ -10,7 +10,8 @@
     <title>{{ site_name() }} - Adminisztráció</title>
 
     <link href="https://fonts.googleapis.com/css?family=Montserrat|Work+Sans:400,700|Merriweather|Roboto+Condensed:wght@300;400" rel="stylesheet">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+
     <link rel="stylesheet" href="/assets/fontawesome/css/all.min.css">
     <link rel="stylesheet" href="/assets/sidebar-09/css/style.css">
 
@@ -40,7 +41,8 @@
         @if(isset($current_menu_item['submenu']))
             @foreach($current_menu_item['submenu'] as $submenuItem)
             <li class="nav-item  {{ $submenuItem['active'] ? 'active' : '' }}">
-                <a class="nav-link" href="{{ $submenuItem['uri'] }}"><i class="fa fa-{{ $submenuItem['icon'] }} {{ $submenuItem['active'] ? 'text-primary' : '' }}"></i>
+                <a class="nav-link" href="{{ $submenuItem['uri'] }}">
+                    <i class="mr-2 fa fa-{{ $submenuItem['icon'] }} {{ $submenuItem['active'] ? 'text-primary' : '' }}"></i>
                     <span>{{ $submenuItem['title'] }}</a></span>
             </li>
             <li class="nav-item divider"></li>
@@ -65,7 +67,7 @@
 
 <div class="wrapper d-flex align-items-stretch">
     <nav id="sidebar">
-        <div class="img bg-wrap text-center" style="background-image: url(/assets/sidebar-09/images/bg_1.jpg);">
+        <div id="admin-logo" class="img bg-wrap text-center" style="background-image: url(/images/praise_kicsi.jpg);">
             <div class="user-logo">
 <!--                <div class="img" style="background-image: url(/images/logo_only.png);"></div>-->
                 <h3 style="">kozossegek.hu<br/><b>adminisztráció</b></h3>
