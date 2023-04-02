@@ -24,6 +24,8 @@ use Framework\Model\Entity;
  * @property-read null|string $institute_name2
  * @property-read null|string $spiritual_movement
  * @property-read null|string $pending
+ * @property-read null|string $notified_at
+ * @property-read null|string $confirmed_at
  */
 class ChurchGroupView extends Entity
 {
