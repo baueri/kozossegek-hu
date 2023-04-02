@@ -4,6 +4,7 @@
 <ul>
     <li>[NEW]: Háttérfolyamatok (cron) listázása admin oldalon</li>
     <li>[NEW]: User admin sorbarendezés utolsó belépés, regisztráció illetve aktiválás dátuma alapján</li>
+    <li>[NEW]: Közösségek admin oldalon megerősítés dátuma szerinti sorbarendezés</li>
     <li>[FIX]: Közösség inaktiváló oldalon nemlétező mező mentése</li>
 </ul>
 <h3>v3.2.0 (2023.03.30)</h3>

@@ -28,11 +28,12 @@ class GroupTable extends PaginatedAdminTable implements Editable, Deletable
         'group_leaders' => 'Közösség vezető(i)',
         'age_group' => 'Korosztály',
         'created_at' => 'Létrehozva',
+        'confirmed_at' => 'Megerősítve',
     ];
 
-    protected array $centeredColumns = ['status', 'pending', 'document', 'view', 'image'];
+    protected array $centeredColumns = ['status', 'pending', 'document', 'view', 'image', 'created_at', 'confirmed_at'];
 
-    protected array $sortableColumns = ['id', 'status', 'pending', 'document', 'created_at'];
+    protected array $sortableColumns = ['id', 'status', 'pending', 'document', 'created_at', 'confirmed_at'];
 
     protected array $columnClasses = ['age_group' => 'd-none d-xl-table-cell'];
 
@@ -53,11 +54,19 @@ class GroupTable extends PaginatedAdminTable implements Editable, Deletable
         return "<span title='{$fullDate}'>{$date}</span>";
     }
 
+    public function getConfirmedAt($confirmedAt, ChurchGroupView $groupView): string
+    {
+        $fullDate = date('Y.m.d H:i', strtotime($confirmedAt));
+        $date = date('Y.m.d', strtotime($confirmedAt));
+
+        return "<span title='{$fullDate}'>{$date}</span>";
+    }
+
     public function getStatus($status): string
     {
         $status = GroupStatus::from($status);
 
-        return "<i class='{$status->class()}'></i>";
+        return "<i class='{$status->class()} title='{$status->translate()}'></i>";
     }
 
     public function getInstituteName($instituteName, ChurchGroupView $group): string
