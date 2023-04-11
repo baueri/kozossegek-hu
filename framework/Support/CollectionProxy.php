@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Framework\Support;
 
 class CollectionProxy
 {
     public function __construct(
-        private Collection $collection,
-        private readonly string $collectionMethod
+        private readonly Collection $collection,
+        private readonly string     $collectionMethod
     ) {
     }
 

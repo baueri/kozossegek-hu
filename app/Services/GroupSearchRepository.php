@@ -11,8 +11,9 @@ use Framework\Support\StringHelper;
 
 class GroupSearchRepository
 {
-    public function __construct(public readonly GroupViews $repository)
-    {
+    public function __construct(
+        public readonly GroupViews $repository
+    ) {
     }
 
     public function search($filter = [], ?int $perPage = 30): PaginatedModelCollection|ModelCollection

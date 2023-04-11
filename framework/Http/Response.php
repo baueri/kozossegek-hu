@@ -21,11 +21,6 @@ class Response
         return $headers;
     }
 
-    public static function setHeader($name, $value)
-    {
-        header("$name: $value");
-    }
-
     public static function setStatusCode($code)
     {
         http_response_code((int) $code);
