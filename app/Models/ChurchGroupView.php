@@ -6,6 +6,7 @@ use App\Models\Traits\GroupTrait;
 use App\QueryBuilders\GroupViews;
 use App\Services\SystemAdministration\SiteMap\ChangeFreq;
 use Framework\Model\Entity;
+use Framework\Support\Collection;
 
 /**
  * @property-read null|string $name
@@ -28,6 +29,7 @@ use Framework\Model\Entity;
  * @property-read null|array{id: int, group_id: int, keywords: string}  $searchEngine
  * @property-read null|string $notified_at
  * @property-read null|string $confirmed_at
+ * @property-read Collection $tags
  */
 class ChurchGroupView extends Entity implements ChurchGroupInterface
 {

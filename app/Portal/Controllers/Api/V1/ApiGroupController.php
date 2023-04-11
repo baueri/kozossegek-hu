@@ -2,6 +2,7 @@
 
 namespace App\Portal\Controllers\Api\V1;
 
+use App\Http\Responses\Api\V1\ChurchGroupResponse;
 use App\Http\Responses\CreateGroupSteps\FinishRegistration;
 use App\Models\ChurchGroupView;
 use App\QueryBuilders\GroupViews;
@@ -11,6 +12,7 @@ use Exception;
 use Framework\Http\Controller;
 use Framework\Http\Request;
 use Framework\Http\Response;
+use Framework\Model\PaginatedModelCollection;
 
 class ApiGroupController extends Controller
 {
@@ -23,24 +25,20 @@ class ApiGroupController extends Controller
     {
         try {
             $filter = $request->only('search', 'varos', 'intezmeny');
-            $perPage = (int) $request['per_page'] ?: 30;
+            $perPage = (int) $request['per_page'] ?: -1;
             $results = $groupViews->search($filter, $perPage);
 
-            $data = $results->map(fn (ChurchGroupView $groupView) => [
-                'name' => $groupView->name,
-                'city' => $groupView->city,
-                'district' => $groupView->district,
-                'institute' => $groupView->institute_name,
-                'link' => $groupView->url(),
-            ])->all();
+            $data = $results->toResponse(ChurchGroupResponse::class);
+
+            $isPaginated = $results instanceof PaginatedModelCollection;
 
             $query = array_filter([
                 'search' => $request['search'],
                 'varos' => $request['varos'],
                 'intezmeny' => $request['intezmeny'],
-                'per_page' => $results->perpage(),
-                'page' => $results->page(),
-                'total' => $results->total()
+                'per_page' => $isPaginated ? $results->perpage() : null,
+                'page' => $isPaginated ? $results->page() : 1,
+                'total' => $isPaginated ? $results->total() : $results->count()
             ]);
 
             return compact('query', 'data');
@@ -50,7 +48,12 @@ class ApiGroupController extends Controller
         }
     }
 
-    public function instituteByMiserendId(Request $request, Institutes $institutes, GroupViews $churchGroups)
+    public function show(ChurchGroupView $kozosseg): ChurchGroupResponse
+    {
+        return new ChurchGroupResponse($kozosseg);
+    }
+
+    public function instituteByMiserendId(Request $request, Institutes $institutes, GroupViews $churchGroups): array
     {
         $institute = $institutes->where('miserend_id', $request['id'])->first();
 

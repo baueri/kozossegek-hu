@@ -6,6 +6,7 @@ use ArrayAccess;
 use ArrayIterator;
 use Closure;
 use Countable;
+use Framework\Http\JsonResponse;
 use IteratorAggregate;
 
 /**
@@ -581,5 +582,19 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     public function buildQuery(): string
     {
         return http_build_query($this->items);
+    }
+
+    /**
+     * @param string|null $class
+     * @return mixed
+     * @phpstan-param <class-string>|JsonResponse $class
+     */
+    public function toResponse(?string $class): array
+    {
+        if (!$class) {
+            return $this->items;
+        }
+
+        return array_map(fn ($value) => (new $class($value))->response(), $this->items);
     }
 }
