@@ -31,6 +31,8 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
 
     private ?array $uriValues = null;
 
+    public readonly Collection $headers;
+
     public function __construct()
     {
         $this->request = (new Collection($_REQUEST))->each(function ($item, $key, $collection) {
@@ -44,6 +46,8 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
         $this->requestMethod = $_SERVER['REQUEST_METHOD'] ?? null;
 
         $this->uri = urldecode(parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH));
+
+        $this->headers = collect(getallheaders());
     }
 
     public function __call($name, $arguments)
@@ -140,5 +144,15 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
     public function isAjax(): bool
     {
         return Arr::get($_SERVER, 'HTTP_X_REQUESTED_WITH') && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'xmlhttprequest';
+    }
+
+    public function getHeader(string $name, $default = null)
+    {
+        return $this->headers->get($name, $default);
+    }
+
+    public function token(): ?string
+    {
+        return $this->get('_token') ?: $this->headers->get('X-CSRF-TOKEN');
     }
 }

@@ -12,12 +12,14 @@ use Framework\Middleware\Middleware;
 use Framework\Model\Exceptions\ModelNotFoundException;
 use Throwable;
 
-class HttpKernel implements Kernel
+abstract class HttpKernel implements Kernel
 {
     /**
      * @var string[]|Middleware[]
      */
     protected array $middleware = [];
+
+    public const NAMED_MIDDLEWARE = [];
 
     public function getMiddleware(): array
     {

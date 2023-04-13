@@ -73,7 +73,15 @@ class XmlRouteBuilder
 
     public function getMiddleware(): array
     {
-        $middleware = $this->getAttributeValues('middleware');
+        $middleware = [];
+        $currentMiddleware = $this->getAttributeValues('middleware');
+        foreach ($currentMiddleware as $item) {
+            if (str_contains($item, '|')) {
+                $middleware = array_merge($middleware, explode('|', $item));
+            } else {
+                $middleware[] = $item;
+            }
+        }
         $parentProperties = $this->getParentProperties('middleware');
         return collect($parentProperties)
             ->map(function(XmlObject $middleware){

@@ -3,6 +3,8 @@
 namespace Framework\Http\Route;
 
 use App\Middleware\AdminMiddleware;
+use Framework\Dispatcher\Dispatcher;
+use Framework\Http\HttpKernel;
 use Framework\Middleware\Middleware;
 
 class Route implements RouteInterface
@@ -25,12 +27,13 @@ class Route implements RouteInterface
 
     public function __construct(string $method, string $uriMask, string $as, string $controller, string $use, array $middleware, string $view)
     {
+        $kernel = app(HttpKernel::class);
         $this->method = $method;
         $this->uriMask = $uriMask;
         $this->as = $as;
         $this->controller = trim($controller, '\\');
         $this->use = $use;
-        $this->middleware = $middleware;
+        $this->middleware = array_map(fn ($m) => $kernel::NAMED_MIDDLEWARE[$m] ?? $m, $middleware);
         $this->view = $view;
     }
 

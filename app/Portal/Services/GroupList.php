@@ -18,6 +18,11 @@ class GroupList
         $baseFilter = $request->only('search', 'korosztaly', 'tags', 'institute_id');
         $baseFilter['varos'] = $request['varos'];
 
+        if (request()->route->getAs() === 'portal.groups.in_city') {
+            preg_match('#' . request()->route->getUriMask() . '#', request()->uri, $matches);
+            $baseFilter['varos'] = $matches[1] ?? null;
+        }
+
         $filter = $baseFilter;
 
         $filter['pending'] = 0;
@@ -38,7 +43,7 @@ class GroupList
             'age_group_query' => http_build_query($baseFilter)
         ];
 
-        if ($request->isEmpty()) {
+        if (empty($baseFilter)) {
             return view('portal.kozossegek_no_filter', $model);
         }
 

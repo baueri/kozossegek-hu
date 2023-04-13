@@ -1,5 +1,13 @@
 @title('Verzióinformáció')
 @extends('admin')
+<h3>v3.2.2 (2023.04.13)</h3>
+<ul>
+    <li><b>Gépház</b></li>
+    <li>[FIX]: Néhány joghoz kötött API végpont levédése</li>
+    <li>[NEW]: CSRF védelem</li>
+    <li>[NEW]: Middleware aliasok megadása</li>
+    <li>[NEW]: Több middleware megadható `|`-vel elválasztva (pl, json|admin|csrf)</li>
+</ul>
 <h3>v3.2.1 (2023.03.31)</h3>
 <ul>
     <li>[NEW]: Háttérfolyamatok (cron) listázása admin oldalon</li>

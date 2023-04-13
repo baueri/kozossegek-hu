@@ -12,7 +12,6 @@ use Framework\Http\Exception\RouteNotFoundException;
 
 class XmlRouter implements RouterInterface
 {
-
     /**
      * @var Collection<Route>
      * @phpstan-var Route[]|Collection

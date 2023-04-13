@@ -4,6 +4,7 @@ namespace App\Middleware;
 
 use App\Auth\Auth;
 use App\Enums\UserRight;
+use Framework\Http\Response;
 use Framework\Middleware\Middleware;
 use Framework\Http\Message;
 use Framework\Http\Session;
@@ -30,6 +31,9 @@ class AdminMiddleware implements Middleware
     final public function handle(): void
     {
         if (!Auth::loggedIn()) {
+            if (Response::getHeader('Content-Type') === 'application/json') {
+                throw new UnauthorizedException();
+            }
             Session::set('last_visited', $_SERVER['REQUEST_URI']);
             Message::danger('Nem vagy belépve!');
             redirect_route('login');
