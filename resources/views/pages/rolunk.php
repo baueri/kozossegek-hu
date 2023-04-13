@@ -51,6 +51,7 @@
                     </div>
                     @honeypot('rolunk')
                     <button type="submit" name="send" class="btn btn-darkblue btn-sm"><i class="fa fa-paper-plane mr-2"></i> Üzenet elküldése</button>
+                    @csrf()
                 </form>
             </div>
         </div>

@@ -1,6 +1,7 @@
 <?php $redirect = request()['redirect']; ?>
 <div class="form">
     <form class="login-form" method="post" action="@route('login', ['redirect' => $redirect])">
+        @csrf()
         <div>
                 @include('admin.partials.message')
                 <div class="form-group">

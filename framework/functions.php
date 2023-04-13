@@ -22,6 +22,7 @@ use Framework\Http\Request;
 use Framework\Http\Response;
 use Framework\Http\Route\RouteInterface;
 use Framework\Http\Route\RouterInterface;
+use Framework\Http\Session;
 use Framework\Http\View\View;
 use Framework\Http\View\ViewInterface;
 use Framework\Mail\Mailable;
@@ -427,4 +428,9 @@ function namespace_split(string $class): array
     }
 
     return [substr($class, 0, $classPos), substr($class, $classPos + 1)];
+}
+
+function csrf_token(): string
+{
+    return Session::token();
 }

@@ -61,7 +61,7 @@
 
     <!-- BELÉPÉS -->
     <route method="get" uri="login" controller="App\Portal\Controllers\LoginController" use="login" as="login"/>
-    <route method="post" uri="login" controller="App\Portal\Controllers\LoginController" use="doLogin"/>
+    <route method="post" uri="login" controller="App\Portal\Controllers\LoginController" use="doLogin" middleware="csrf"/>
     <route method="get" uri="logout" controller="App\Portal\Controllers\LoginController" use="logout" as="logout"/>
     <route method="post" uri="resend-activation" controller="App\Portal\Controllers\LoginController" use="resendActivationEmail" as="resend_activation"/>
 
