@@ -9,6 +9,7 @@ use Framework\Middleware\AuthMiddleware;
 use Framework\Middleware\BaseAuthMiddleware;
 use Framework\Middleware\CheckMaintenance;
 use Framework\Middleware\TranslationRoute;
+use Framework\Middleware\VerifyCsrfToken;
 
 class HttpKernel extends \Framework\Http\HttpKernel
 {
@@ -20,6 +21,10 @@ class HttpKernel extends \Framework\Http\HttpKernel
         CheckMaintenance::class,
         AuthMiddleware::class,
         AppServiceProvider::class
+    ];
+
+    public const NAMED_MIDDLEWARE = [
+        'csrf' => VerifyCsrfToken::class
     ];
 
     public function handleMaintenance()
