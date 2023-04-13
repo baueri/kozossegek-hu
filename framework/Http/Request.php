@@ -161,4 +161,14 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
 
         return $matches[1];
     }
+
+    public function getHeader(string $name, $default = null)
+    {
+        return $this->headers->get($name, $default);
+    }
+
+    public function token(): ?string
+    {
+        return $this->get('_token') ?: $this->headers->get('X-CSRF-TOKEN');
+    }
 }

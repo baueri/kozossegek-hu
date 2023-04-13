@@ -18,6 +18,7 @@
                     <div class="form-group">
                         <input type="password" name="password" placeholder="jelszó" class="form-control"/>
                     </div>
+                    @csrf()
                     <button type="submit" class="btn btn-darkblue">belépés</button>
                     <p class="message mt-3">
                         <a href="@route('portal.register')" style="float: left"><b>Új fiók létrehozása</b></a>

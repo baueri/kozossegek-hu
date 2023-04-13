@@ -7,10 +7,11 @@ use App\HttpKernel;
 use App\Services\MileStone;
 use Framework\Dispatcher\Dispatcher;
 use Framework\Dispatcher\HttpDispatcher;
+use Framework\Http\Session;
 
 include '../vendor/autoload.php';
 
-session_start();
+Session::start();
 
 ob_start();
 $app = app();
