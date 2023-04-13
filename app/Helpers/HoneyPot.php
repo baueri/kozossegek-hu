@@ -25,7 +25,7 @@ class HoneyPot
     {
         $checkTime = $_SESSION['honey_pot'][$id]['honeypot_check_time'] ?? null;
         $check_hash = $_SESSION['honey_pot'][$id]['honeypot_check_hash'] ?? null;
-        if (!$checkTime || !$check_hash || time() - $checkTime < 5 || $hashVal !== $check_hash) {
+        if (!$checkTime || !$check_hash || time() - $checkTime < 5 || $hashVal) {
             throw new UnauthorizedException('spam check failed');
         }
 
