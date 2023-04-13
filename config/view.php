@@ -72,7 +72,8 @@ return [
         'selected' => fn ($matches) => "<?php if($matches[1]): echo 'selected'; endif; ?>",
         'checked' => fn ($matches) => "<?php if($matches[1]): echo 'checked'; endif; ?>",
         'disabled' => fn ($matches) => "<?php if($matches[1]): echo 'disabled'; endif; ?>",
-        'dump' => fn($matches) => "<?php d($matches[1]); ?>"
+        'dump' => fn($matches) => "<?php d($matches[1]); ?>",
+        'csrf' => fn () => "<input type=\"hidden\" name=\"_token\" value=\"<?php echo csrf_token(); ?>\">"
     ],
     'components' => [
         'aszf' => AszfCheckBox::class,

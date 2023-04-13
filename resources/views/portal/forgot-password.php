@@ -9,7 +9,7 @@
         Add meg a fiókodhoz tartozó email címedet, amire küldünk egy levelet a további lépésekkel kapcsolatban!
     </p>
     <form method="post" class="row" action="@route('portal.reset_password')">
-
+        @csrf()
         <div class="col-md-4">
             <div class="form-group required">
                 <label>Email címed</label>
