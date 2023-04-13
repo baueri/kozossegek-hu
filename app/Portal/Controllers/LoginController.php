@@ -77,7 +77,6 @@ class LoginController extends PortalController
      */
     public function register(CreateUser $service, UserTokens $tokens, Mailer $mailer, LegalNoticeService $legalNoticeService): string
     {
-
         $request = $this->request;
         use_default_header_bg();
         $model = [

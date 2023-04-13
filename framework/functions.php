@@ -24,6 +24,7 @@ use Framework\Http\Response;
 use Framework\Http\ResponseStatus;
 use Framework\Http\Route\RouteInterface;
 use Framework\Http\Route\RouterInterface;
+use Framework\Http\Session;
 use Framework\Http\View\View;
 use Framework\Http\View\ViewInterface;
 use Framework\Mail\Mailable;
@@ -439,4 +440,8 @@ function abort(int $code = 500, ?string $message = null) {
     }
 
     throw new HttpException($message, $code);
+}
+function csrf_token(): string
+{
+    return Session::token();
 }
