@@ -55,6 +55,7 @@ class VerifyCsrfToken implements Middleware
 
     private function tokenMatches(): bool
     {
-        return $this->request->get('_token') && $this->request->get('_token') === Session::token();
+        $token = $this->request->token();
+        return $token && Session::token() && $token === Session::token();
     }
 }
