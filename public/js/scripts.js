@@ -1,4 +1,9 @@
 $(() => {
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
     $(".img-big").on("load", function () {
         $(this).css("opacity", "1");
     });
