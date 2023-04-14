@@ -11,9 +11,14 @@ class LoadedViewsTab extends DebugBarTab
         static::$loadedViews[] = [substr($filePath, strlen(ROOT)), basename($cachedFilePath)];
     }
 
-    public function getName(): string
+    public function getTitle(): string
     {
         return 'betöltött template-ek (' . count(static::$loadedViews) . ')';
+    }
+
+    public function icon(): string
+    {
+        return 'fa fa-code';
     }
 
     public function render(): string

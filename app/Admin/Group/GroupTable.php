@@ -56,6 +56,9 @@ class GroupTable extends PaginatedAdminTable implements Editable, Deletable
 
     public function getConfirmedAt($confirmedAt, ChurchGroupView $groupView): string
     {
+        if (!$confirmedAt) {
+            return '-';
+        }
         $fullDate = date('Y.m.d H:i', strtotime($confirmedAt));
         $date = date('Y.m.d', strtotime($confirmedAt));
 
