@@ -4,9 +4,14 @@ namespace App\Admin\Components\DebugBar;
 
 class FrameworkInfoTab extends DebugBarTab
 {
-    public function getName(): string
+    public function getTitle(): string
     {
         return 'keretrendszer';
+    }
+
+    public function icon(): string
+    {
+        return 'fa fa-tachometer-alt';
     }
 
     public function render(): string
