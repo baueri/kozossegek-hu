@@ -7,7 +7,14 @@
                 </label>
             @endforeach
         </div>
-        <label class="float-right mr-4 text-danger" for="close"><i class="fa fa-times"></i><input type="radio" name="debug-tab" id="close" style="display: none"></label>
+        <div class="float-right">
+            <span title="memory usage"><i class="fa fa-cogs"></i> {{ $memory_usage }}</span> |
+            <span title="query exec time"><i class="fa fa-database"></i> {{ $query_time }}</span> |
+            <span title="total load time"><i class="fa fa-stopwatch"></i> {{ $total_load_time }}ms</span>
+            <label class="mr-2 ml-3 text-danger" for="close" style="cursor: pointer;">
+                <i class="fa fa-times"></i><input type="radio" name="debug-tab" id="close" style="display: none">
+            </label>
+        </div>
     </div>
     <div id="debugbar-content">
         @foreach($tab_contents as $id => $tab_content)

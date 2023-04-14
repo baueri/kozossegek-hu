@@ -434,3 +434,9 @@ function csrf_token(): string
 {
     return Session::token();
 }
+
+function memory_usage_format(): string
+{
+    $conv = fn ($size) => @round($size/pow(1024,($i=floor(log($size,1024)))),2).' '.array('b','kb','mb','gb','tb','pb')[$i];
+    return $conv(memory_get_usage());
+}
