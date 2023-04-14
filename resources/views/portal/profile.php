@@ -35,6 +35,7 @@
                 </div>
             </div>
         </div>
+        @csrf()
         <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Mentés</button>
         <a href="@route('api.portal.profile.delete')" id="delete-profile" class="text-danger float-right"><i class="fa fa-trash-alt"></i> Fiókom törlése</a>
     </form>
