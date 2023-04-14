@@ -7,12 +7,12 @@ use App\Portal\Services\ImageService;
 
 class ImageController
 {
-    public function getImage(Request $request, ImageService $image)
+    public function getImage(Request $request, ImageService $image): void
     {
         if ($request['entity_type'] == 'institutes') {
-            $image->getInstituteImage($request['image']);
+            $image->printInstituteImage($request['image']);
         } else {
-            $image->getGroupImage($request['image']);
+            $image->printGroupImage($request['image']);
         }
     }
 }

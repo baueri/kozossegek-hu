@@ -17,7 +17,7 @@ class GroupHelper
         return $matches[0][0] . DS . $matches[0][1] . DS . $groupIdFull . DS;
     }
 
-    public static function getStoragePath(?int $groupId): string
+    public static function getStoragePath(null|int|string $groupId): string
     {
         if (!$groupId) {
             return '';
