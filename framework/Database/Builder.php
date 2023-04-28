@@ -250,8 +250,11 @@ class Builder
         $limit = $limit ?? request()->get('per-page', 30);
 
         $total = $this->count();
+        $rows = [];
 
-        $rows = $this->limit(($page - 1) * $limit . ', ' . $limit)->get();
+        if ($total) {
+            $rows = $this->limit(($page - 1) * $limit . ', ' . $limit)->get();
+        }
 
         return new PaginatedResultSet($rows, $limit, $page, $total);
     }
