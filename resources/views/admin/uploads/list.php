@@ -1,7 +1,16 @@
 @header()
-    <script src="/assets/dropzone/dropzone.min.js"></script>
-    <link rel="stylesheet" href="/assets/dropzone/dropzone.min.css"/>
+<script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
 @endheader
+@footer()
+<script>
+    Dropzone.options.uploadFiles2 = {
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr('content')
+        }
+    }
+</script>
+@endfooter
 @title('Feltöltések')
 @extends('admin')
 <nav aria-label="breadcrumb">
@@ -18,7 +27,7 @@
 
     </ol>
 </nav>
-<form action="@route('admin.content.upload.upload_file', ['dir' => $dir])" id="upload-files" class="dropzone">
+<form action="@route('admin.content.upload.upload_file', ['dir' => $dir])" id="upload-files2" class="dropzone">
     <h4 class="dz-message">Húzd ide a fájlt a feltöltéshez, vagy kattints ide.</h4>
 </form>
 @if($uploads)

@@ -6,6 +6,8 @@ namespace Framework\Middleware;
 
 use Framework\Http\Exception\TokenMismatchException;
 use Framework\Http\Request;
+use Framework\Http\Route\Route;
+use Framework\Http\Route\XmlRouter;
 use Framework\Http\Session;
 
 class VerifyCsrfToken implements Middleware
@@ -15,6 +17,7 @@ class VerifyCsrfToken implements Middleware
     public function __construct(
         private readonly Request $request
     ) {
+        $this->except = config('app.exclude_csrf');
     }
 
     /**
@@ -29,7 +32,6 @@ class VerifyCsrfToken implements Middleware
         ) {
             return;
         }
-
         throw new TokenMismatchException('csrf token mismatch');
     }
 
@@ -38,9 +40,8 @@ class VerifyCsrfToken implements Middleware
         if (in_array($this->request->uri, $this->except)) {
             return true;
         }
-
         foreach ($this->except as $except) {
-            if (preg_match("#{$this->request->route->getUriMask()}#", $except)) {
+            if ($this->request->route->getAs() === $except || preg_match("#{$this->request->route->getUriMask()}#", $except)) {
                 return true;
             }
         }
