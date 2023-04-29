@@ -79,12 +79,12 @@
             </div>
         </div>
     </div>
+    @csrf()
 </form>
 <script>
-    var image_val;
+    let image_val;
     $(() => {
-
-        var upload = null;
+        let upload = null;
         function initCroppie()
         {
             upload = $("#image").croppie({

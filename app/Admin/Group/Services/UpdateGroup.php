@@ -14,8 +14,6 @@ use Framework\Support\Collection;
 
 class UpdateGroup extends BaseGroupService
 {
-    private const ALLOWED_TAGS = ['a', 'h1', 'h2', 'h3', 'p', 'b', 'u', 'ul', 'ol', 'li', 'code', 'pre'];
-
     /**
      * @throws FileTypeNotAllowedException|Exception
      */

@@ -21,6 +21,8 @@ use Framework\Traits\ManagesErrors;
 
 abstract class BaseGroupService
 {
+    public const ALLOWED_TAGS = '<a><b><u><ul><ol><li><p><pre><h1><h2><h3><h4><h5><h6><blockquote>';
+
     use ManagesErrors;
 
     public function __construct(

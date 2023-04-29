@@ -65,6 +65,8 @@ function d(...$data)
             print_r($toDump ? 'true' : 'false');
         } elseif (is_null($toDump)) {
             print_r('null');
+        } elseif (is_string($toDump)) {
+            print_r(htmlspecialchars($toDump));
         } else {
             print_r($toDump);
         }
@@ -444,4 +446,10 @@ function abort(int $code = 500, ?string $message = null) {
 function csrf_token(): string
 {
     return Session::token();
+}
+
+function memory_usage_format(): string
+{
+    $conv = fn ($size) => @round($size/pow(1024,($i=floor(log($size,1024)))),2).' '.array('b','kb','mb','gb','tb','pb')[$i];
+    return $conv(memory_get_usage());
 }

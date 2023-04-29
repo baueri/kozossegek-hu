@@ -36,9 +36,9 @@ final class Auth
 
         self::$user = null;
 
-        session_start();
-
         session_id(session_create_id());
+
+        session_start();
     }
 
     public static function loggedIn(): bool

@@ -16,11 +16,9 @@ use Throwable;
 abstract class HttpKernel implements Kernel
 {
     /**
-     * @var string[]|Middleware[]
+     * @var class-string<Middleware>[]
      */
     protected array $middleware = [];
-
-    public const NAMED_MIDDLEWARE = [];
 
     public function getMiddleware(): array
     {
