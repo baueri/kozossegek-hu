@@ -6,6 +6,7 @@ use App\Exception\EmailTakenException;
 use App\Models\User;
 use App\QueryBuilders\UserLegalNotices;
 use App\QueryBuilders\Users;
+use Exception;
 use Framework\Support\Collection;
 use Framework\Support\Password;
 
@@ -22,18 +23,30 @@ class CreateUser
     }
 
     /**
-     * @throws EmailTakenException
+     * @throws Exception
      */
     public function create(Collection $data): User
     {
-        if ($this->users->byEmail($data['email'])->exists()) {
+        $name = strip_tags($data->get('name'));
+        $email = filter_var($data->get('email'), FILTER_VALIDATE_EMAIL);
+        $password = $data->get('password');
+        $phone_number = strip_tags($data->get('phone_number'));
+
+        if (!$email) {
+            // @todo user-barát hibaüzenet
+            throw new Exception('invalid email');
+        }
+
+        if ($this->users->byEmail($email)->exists()) {
             throw new EmailTakenException();
         }
 
-        $data = $data->only('name', 'email', 'password', 'phone_number');
-        $data['password'] = Password::hash($data['password']);
-
-        $user = $this->users->create($data);
+        $user = $this->users->create([
+            'name' => $name,
+            'email' => $email,
+            'password' => Password::hash($password),
+            'phone_number' => $phone_number
+        ]);
 
         $this->legalNotices->updateOrInsertCurrentFor($user);
 
