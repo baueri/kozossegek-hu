@@ -49,6 +49,11 @@
                     return $("<div></div>").load("@route('api.portal.profile.delete_modal')");
                 },
                 isAjax: true,
+                ajaxData() {
+                    return {
+                        "password": $("#delete-pw").val()
+                    }
+                },
                 afterResponse(response) {
                     if(response.success) {
                         dialog.show("Sikeres fióktörlés!", () => {

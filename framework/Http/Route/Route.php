@@ -2,11 +2,6 @@
 
 namespace Framework\Http\Route;
 
-use App\Middleware\AdminMiddleware;
-use Framework\Dispatcher\Dispatcher;
-use Framework\Http\HttpKernel;
-use Framework\Middleware\Middleware;
-
 class Route implements RouteInterface
 {
     protected string $method;
@@ -23,17 +18,14 @@ class Route implements RouteInterface
 
     protected array $middleware = [];
 
-    private array $resolvedMiddleware;
-
     public function __construct(string $method, string $uriMask, string $as, string $controller, string $use, array $middleware, string $view)
     {
-        $kernel = app(HttpKernel::class);
         $this->method = $method;
         $this->uriMask = $uriMask;
         $this->as = $as;
         $this->controller = trim($controller, '\\');
         $this->use = $use;
-        $this->middleware = array_map(fn ($m) => $kernel::NAMED_MIDDLEWARE[$m] ?? $m, $middleware);
+        $this->middleware = array_map(fn ($m) => config('app.named_middleware')[$m] ?? $m, $middleware);
         $this->view = $view;
     }
 
@@ -70,7 +62,7 @@ class Route implements RouteInterface
         return $this->middleware;
     }
 
-    public function getWithArgs(mixed $args = null, array $globalArgs): string
+    public function getWithArgs(mixed $args, array $globalArgs): string
     {
         $uri = $this->uriMask;
 
@@ -111,8 +103,8 @@ class Route implements RouteInterface
     public function getUriForPregReplace(): ?string
     {
         return preg_replace([
-            '/({[a-zA-Z\-\_\.]+})/',
-            '/({\?[a-zA-Z\-\_\.]+})/',
+            '/({[a-zA-Z\-_.]+})/',
+            '/({\?[a-zA-Z\-_.]+})/',
             '/\//'
         ], [
             '([a-zA-Z0-9\-\_\.áéíóöőúüű]+)',
@@ -128,8 +120,8 @@ class Route implements RouteInterface
 
     public function requestMethodIs($method): bool
     {
-        if (strpos($this->method, '|') !== false) {
-            return strpos($this->method, $method) !== false;
+        if (str_contains($this->method, '|')) {
+            return str_contains($this->method, $method);
         }
 
         return $this->method == $method || $this->method == 'ALL';
