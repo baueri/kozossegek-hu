@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Portal\Controllers\Api\V1;
+namespace App\Portal\Controllers;
 
 use App\Helpers\HoneyPot;
 use Exception;

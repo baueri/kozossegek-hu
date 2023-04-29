@@ -29,7 +29,7 @@
             </div>
             <div class="col-md-5">
                 <h4>Írj nekünk!</h4>
-                <form method="post" id="send-message" action="@route('api.portal.contact_us')">
+                <form method="post" id="send-message" action="@route('portal.contact_us')">
                     <div class="form-group required">
                         <label class="" for="mail_name">Neved</label>
                         <input type="text" class="form-control form-control-sm" name="name" required id="mail_name">

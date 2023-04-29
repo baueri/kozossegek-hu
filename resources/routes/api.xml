@@ -6,7 +6,6 @@
             <route method="all" controller="SearchController" uri="search-institute" use="searchInstitute" as="search-institute"/>
             <route method="all" controller="SearchController" uri="search-district" use="searchDistrict" as="search-district"/>
             <route method="all" controller="SearchController" uri="search-user" use="searchUser" as="search-user" middleware="admin"/>
-            <route method="post" uri="send-message" as="portal.contact_us" controller="ContactController" use="send" middleware="csrf"/>
 
             <!-- Foglalt email ellenőrzés -->
             <route method="post" uri="check-email" controller="ApiUserController" use="checkEmail" as="check-email"/>
@@ -15,7 +14,7 @@
             <route method="all" middleware="auth" uri="profile/delete-modal" as="portal.profile.delete_modal" view="portal.partials.delete_modal"/>
 
             <!-- Fiók törlése -->
-            <route method="post" middleware="auth" uri="profile/delete" as="portal.profile.delete" controller="ApiUserController" use="delete"/>
+            <route method="post" middleware="auth|csrf" uri="profile/delete" as="portal.profile.delete" controller="ApiUserController" use="delete"/>
 
             <!-- Közösségek API szolgáltatás -->
             <route method="all" uri="kozossegek" as="portal.kozossegek" controller="ApiGroupController" use="list"/>
