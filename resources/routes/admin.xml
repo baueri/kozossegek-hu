@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <routes>
-    <route-group namespace="App\Admin\Controllers" prefix="admin" as="admin" middleware="admin">
+    <route-group namespace="App\Admin\Controllers" prefix="admin" as="admin" middleware="admin|csrf">
         <middleware name="App\Middleware\CheckRole@roles:ACCESS_BACKEND"/>
         <middleware name="App\Providers\AdminServiceProvider"/>
 
@@ -139,10 +139,10 @@
         </route-group>
 
         <!--    SAJÁT PROFIL    -->
-        <route-group controller="UserController" prefix="user" as="user">
-            <route method="get" uri="profile" use="profile" as="profile"/>
-            <route method="post" uri="profile/update" use="updateProfile" as="profile.update"/>
-            <route method="post" uri="profile/change-password" use="changeMyPassword" as="profile.change_password"/>
+        <route-group controller="UserController" prefix="profile" as="user">
+            <route method="get" uri="" use="profile" as="profile"/>
+            <route method="post" uri="update" use="updateProfile" as="profile.update"/>
+            <route method="post" uri="change-password" use="changeMyPassword" as="profile.change_password"/>
         </route-group>
 
         <!--    Statisztika    -->

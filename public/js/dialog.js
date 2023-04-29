@@ -195,6 +195,7 @@ $.fn.confirm = function (options) {
         title: "Biztos vagy benne?",
         message: "",
         isAjax: false,
+        ajaxData: null,
         afterResponse(response) {  }
     }, options);
 
@@ -204,7 +205,13 @@ $.fn.confirm = function (options) {
             let onConfirm;
             if (options.isAjax) {
                 onConfirm = () => {
-                    $.post(action, options.afterResponse);
+                    let data = {};
+                    if (typeof options.ajaxData === "function") {
+                        data = options.ajaxData();
+                    } else if (typeof options.ajaxData === "object") {
+                        data = options.ajaxData;
+                    }
+                    $.post(action, data, options.afterResponse);
                 }
             } else {
                 onConfirm = () => { window.location.href = action };
