@@ -15,6 +15,7 @@
     @include('admin.group.partials.validation-warning')
 @endif
 <form method="post" id="group-form" action="{{ $action }}">
+    @csrf()
     <div class="row">
         <div class="col-md-9">
             <div class="row">

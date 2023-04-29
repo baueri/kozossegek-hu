@@ -141,7 +141,7 @@ class UserController extends AdminController
     {
         $user = Auth::user();
 
-        $repository->save($user, $request->only('name', 'email'));
+        $repository->save($user, $request->only('name', 'email', 'phone_number'));
 
         Message::success('Sikeres mentés');
 
