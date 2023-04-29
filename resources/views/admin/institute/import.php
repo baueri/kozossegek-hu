@@ -8,5 +8,6 @@
         <label for="import_file">CSV fájl kiválasztása</label><br/>
         <input type="file" name="import_file">
     </div>
+    @csrf()
     <button type="submit" class="btn btn-success">indítás</button>
 </form>

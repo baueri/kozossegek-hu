@@ -38,5 +38,8 @@ return [
         'json' => JsonApi::class,
         'admin' => AdminMiddleware::class,
         'auth' => LoggedInMiddleware::class
+    ],
+    'exclude_csrf' => [
+        'admin.upload_file'
     ]
 ];
