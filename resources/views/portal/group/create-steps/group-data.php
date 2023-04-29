@@ -207,6 +207,7 @@
             </p>
         </div>
     </div>
+    @csrf()
     <div class="text-center">
         <button type="submit" id="preview-new-group" class="btn btn-lg btn-darkblue">Tovább</button>
     </div>

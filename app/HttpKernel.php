@@ -27,13 +27,6 @@ class HttpKernel extends \Framework\Http\HttpKernel
         AppServiceProvider::class
     ];
 
-    public const NAMED_MIDDLEWARE = [
-        'csrf' => VerifyCsrfToken::class,
-        'json' => JsonApi::class,
-        'admin' => AdminMiddleware::class,
-        'auth' => LoggedInMiddleware::class
-    ];
-
     protected array $dontReport = [
         HttpException::class
     ];

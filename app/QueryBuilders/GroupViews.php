@@ -35,8 +35,8 @@ class GroupViews extends ChurchGroups
 
     public function search(string $keyword): static
     {
-        $keyword = StringHelper::sanitize(str_replace(['-', '.', '(', ')'], ' ', $keyword));
-        $keywords = '+' . str_replace(' ', '* +', trim($keyword, ' ')) . '*';
+        $sanitized_keyword = StringHelper::sanitize(str_replace(['-', '.', '(', ')'], ' ', $keyword));
+        $keywords = '+' . str_replace(' ', '* +', trim($sanitized_keyword, ' ')) . '*';
 
         $found = db()->select('select group_id
                 from search_engine 

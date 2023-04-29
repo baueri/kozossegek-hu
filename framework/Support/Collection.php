@@ -319,7 +319,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         return new self(Arr::pluck($this->items, $key, $keyBy));
     }
 
-    public function map($func, bool $keepKeys = true): self
+    public function map(callable $func, bool $keepKeys = true): self
     {
         return new self(Arr::map($this->items, $func, $keepKeys));
     }
@@ -582,6 +582,21 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     public function buildQuery(): string
     {
         return http_build_query($this->items);
+    }
+
+    public function sanitize(): Collection
+    {
+        $sanitized = collect();
+
+        foreach ($this->items as $key => $value) {
+            if (is_array($value)) {
+                $sanitized[$key] = collect($value)->sanitize()->all();
+            } else {
+                $sanitized[$key] = strip_tags($value);
+            }
+        }
+
+        return $sanitized;
     }
 
     /**

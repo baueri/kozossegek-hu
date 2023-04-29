@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Framework\Http\Route;
 
-use Framework\Http\HttpKernel;
-
 class Route implements RouteInterface
 {
     public readonly string $method;
@@ -22,17 +20,14 @@ class Route implements RouteInterface
 
     public readonly array $middleware;
 
-    private array $resolvedMiddleware;
-
     public function __construct(string $method, string $uriMask, string $as, string $controller, string $use, array $middleware, string $view)
     {
-        $kernel = app(HttpKernel::class);
         $this->method = $method;
         $this->uriMask = $uriMask;
         $this->as = $as;
         $this->controller = trim($controller, '\\');
         $this->use = $use;
-        $this->middleware = array_map(fn ($m) => $kernel::NAMED_MIDDLEWARE[$m] ?? $m, $middleware);
+        $this->middleware = array_map(fn ($m) => config('app.named_middleware')[$m] ?? $m, $middleware);
         $this->view = $view;
     }
 
@@ -69,7 +64,7 @@ class Route implements RouteInterface
         return $this->middleware;
     }
 
-    public function getWithArgs(mixed $args = null, array $globalArgs): string
+    public function getWithArgs(mixed $args, array $globalArgs): string
     {
         $uri = $this->uriMask;
 

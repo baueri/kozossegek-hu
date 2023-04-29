@@ -2,8 +2,9 @@
 @extends('admin')
 
 <form method="post" action="{{ $action }}" class="mb-4">
+    @csrf()
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-lg-4 col-md-6">
             <div class="form-group">
                 <label>Felhasználónév</label>
                 <input type="text" name="username" value="{{ $user->username }}" class="form-control disabled" disabled/>
@@ -28,7 +29,8 @@
 
 @if($my_profile)
     <form method="post" id="change_password" action="@route('admin.user.profile.change_password')"  autocomplete="off">
-        <div class="row"><div class="col-md-3">
+        @csrf()
+        <div class="row"><div class="col-lg-4 col-md-6">
             <h5>Jelszócsere</h5>
             <hr>
             <div class="form-group">

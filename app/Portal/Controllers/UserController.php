@@ -15,17 +15,17 @@ use PHPMailer\PHPMailer\Exception;
 
 class UserController extends PortalController
 {
-    public function profile()
+    public function profile(): string
     {
         $user = Auth::user();
 
         return view('portal.profile', compact('user'));
     }
 
-    public function update(Request $request, UpdateUser $service)
+    public function update(Request $request, UpdateUser $service): void
     {
         $user = Auth::user();
-        $changes = $request->only('name', 'email', 'phone_number');
+        $changes = $request->sanitize()->only('name', 'email', 'phone_number');
 
         $passwordChange = $request->only('old_password', 'new_password', 'new_password_again');
 
@@ -36,7 +36,7 @@ class UserController extends PortalController
         redirect_route('portal.my_profile');
     }
 
-    public function forgotPassword()
+    public function forgotPassword(): string
     {
         use_default_header_bg();
 
@@ -45,9 +45,8 @@ class UserController extends PortalController
 
     /**
      * @throws Exception
-     * @throws \Exception
      */
-    public function resetPassword(Request $request, Users $users, Mailer $mailer, UserTokens $userTokens)
+    public function resetPassword(Request $request, Users $users, Mailer $mailer, UserTokens $userTokens): void
     {
         $user = $users->byEmail($request['email'])->first();
 

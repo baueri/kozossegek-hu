@@ -1,5 +1,10 @@
 <?php
 
+use App\Middleware\AdminMiddleware;
+use App\Middleware\LoggedInMiddleware;
+use Framework\Middleware\JsonApi;
+use Framework\Middleware\VerifyCsrfToken;
+
 return [
     'site_url' => _env('SITE_URL'),
     'site_name' => _env('SITE_NAME', 'kozossegek.hu'),
@@ -26,5 +31,15 @@ return [
 
     'providers' => [
 
+    ],
+
+    'named_middleware' => [
+        'csrf' => VerifyCsrfToken::class,
+        'json' => JsonApi::class,
+        'admin' => AdminMiddleware::class,
+        'auth' => LoggedInMiddleware::class
+    ],
+    'exclude_csrf' => [
+        'admin.upload_file'
     ]
 ];

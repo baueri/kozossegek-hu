@@ -18,10 +18,10 @@ class DebugBar
         MileStoneTab $timeLineTab
     ) {
         $this->tabs = [
-            FrameworkInfoTab::class => $frameworkInfoTab,
-            QueryHistoryTab::class => $queryHistoryTab,
-            LoadedViewsTab::class => $loadedViewsTab,
-            MileStoneTab::class => $timeLineTab
+            'info' => $frameworkInfoTab,
+            'query_history' => $queryHistoryTab,
+            'views' => $loadedViewsTab,
+            'timeline' => $timeLineTab
         ];
     }
 
@@ -35,11 +35,15 @@ class DebugBar
         $tab_contents = [];
         foreach ($this->tabs as $tab) {
             $name = get_class_name($tab);
-            $headers[$name] = $tab->getName();
+            $headers[$name] = $tab->generateIcon() . $tab->getTitle();
             $tab_contents[$name] = $tab->render();
         }
 
-        return StringHelper::sanitize(view('admin.partials.debugbar', compact('headers', 'tab_contents')));
+        $query_time = $this->tabs['query_history']->getTotalTime() . 's';
+        $memory_usage = memory_usage_format();
+        $total_load_time = $this->tabs['timeline']->getTotalLoadTime();
+
+        return StringHelper::sanitize(view('admin.partials.debugbar', compact('headers', 'tab_contents', 'query_time', 'memory_usage', 'total_load_time')));
     }
 
     public function enabled(): bool
