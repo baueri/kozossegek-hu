@@ -2,6 +2,7 @@
 <routes>
     <route-group namespace="App\Portal\Controllers\">
         <middleware name="App\Middleware\ComingSoon"/>
+        <middleware name="csrf"/>
         <route method="get" uri="test" as="test" controller="TestController" use="test"/>
 
         <route method="all" uri="" as="home" controller="HomeController" use="home"/>
@@ -23,16 +24,16 @@
 
         <!-- Közösség kapcsolatfelvételi űrlap -->
         <route method="post" uri="group-contact-form" as="portal.group-contact-form" controller="GroupController" use="groupContactForm"/>
-        <route method="post" uri="send-contact-message" as="portal.contact-group" controller="GroupController" use="sendContactMessage" middleware="json|csrf"/>
+        <route method="post" uri="send-contact-message" as="portal.contact-group" controller="GroupController" use="sendContactMessage" middleware="json"/>
 
         <!--  Aktív közösség megerősítés  -->
         <route method="get" uri="confirm-group" as="confirm_group" controller="GroupController" use="confirmGroup"/>
 
         <route method="get" uri="forgot-password" as="portal.forgot_password" controller="UserController" use="forgotPassword"/>
-        <route method="post" uri="reset-password" as="portal.reset_password" controller="UserController" use="resetPassword" middleware="csrf"/>
+        <route method="post" uri="reset-password" as="portal.reset_password" controller="UserController" use="resetPassword"/>
         <route method="all" uri="recover-password" as="portal.recover_password" controller="UserController" use="recoverPassword"/>
 
-        <route-group middleware="auth|csrf">
+        <route-group middleware="auth">
             <route method="get" uri="profile" as="portal.my_profile" controller="UserController" use="profile"/>
             <route method="post" uri="profile/update" as="portal.profile.update" controller="UserController" use="update"/>
 
@@ -46,13 +47,16 @@
 
         <route method="get" uri="sikeres-regisztracio" as="portal.group.create_group_success" controller="GroupController" use="registrationSuccess"/>
 
-        <route method="post" uri="create-group" as="portal.my_group.create" controller="GroupController" use="createGroup" middleware="csrf"/>
+        <route method="post" uri="create-group" as="portal.my_group.create" controller="GroupController" use="createGroup"/>
 
         <route method="get" uri="lelkisegi-mozgalmak" as="portal.spiritual_movements" controller="SpiritualMovementController" use="list"/>
         <route method="get" uri="lelkisegi-mozgalom/{slug}" as="portal.spiritual_movement.view" controller="SpiritualMovementController" use="view"/>
 
         <route method="get" uri="szerzetesrendek" as="portal.szerzetesrendek" controller="MonasticCommunityController" use="list"/>
         <route method="get" uri="szerzetesrendek/{slug}" as="portal.monastic_community.view" controller="MonasticCommunityController" use="view"/>
+
+        <!-- Kapcsolatfelvétel -->
+        <route method="post" uri="send-message" as="portal.contact_us" controller="ContactController" use="send"/>
     </route-group>
 
     <!--  FIÓK AKTIVÁLÁS  -->
@@ -61,7 +65,7 @@
 
     <!-- BELÉPÉS -->
     <route method="get" uri="login" controller="App\Portal\Controllers\LoginController" use="login" as="login"/>
-    <route method="post" uri="login" controller="App\Portal\Controllers\LoginController" use="doLogin" middleware="csrf"/>
+    <route method="post" uri="login" controller="App\Portal\Controllers\LoginController" use="doLogin"/>
     <route method="get" uri="logout" controller="App\Portal\Controllers\LoginController" use="logout" as="logout"/>
     <route method="post" uri="resend-activation" controller="App\Portal\Controllers\LoginController" use="resendActivationEmail" as="resend_activation"/>
 

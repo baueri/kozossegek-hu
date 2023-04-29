@@ -140,7 +140,7 @@ function validate_email(mail)
 
     cookieAlert.offsetHeight; // Force browser to trigger reflow (https://stackoverflow.com/a/39451131)
 
-    // Show the alert if we cant find the "acceptCookies" cookie
+    // Show the alert if we can't find the "acceptCookies" cookie
     if (!getCookie("acceptCookies")) {
         cookieAlert.classList.add("show");
     }
