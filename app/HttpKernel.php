@@ -26,13 +26,6 @@ class HttpKernel extends \Framework\Http\HttpKernel
         AppServiceProvider::class
     ];
 
-    public const NAMED_MIDDLEWARE = [
-        'csrf' => VerifyCsrfToken::class,
-        'json' => JsonApi::class,
-        'admin' => AdminMiddleware::class,
-        'auth' => LoggedInMiddleware::class
-    ];
-
     public function handleMaintenance()
     {
         echo view('maintenance');

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Portal\Services;
 
+use App\Admin\Group\Services\BaseGroupService;
 use App\Admin\Group\Services\CreateGroup;
 use App\Enums\Denomination;
 use App\Enums\GroupStatus;
@@ -37,7 +38,7 @@ class PortalCreateGroup
      */
     public function createGroup(Collection $requestData, ?array $fileData, ?User $user): ?ChurchGroup
     {
-        $data = $requestData->only(
+        $data = $requestData->sanitize()->only(
             'name',
             'institute_id',
             'institute',
@@ -47,10 +48,10 @@ class PortalCreateGroup
             'spiritual_movement',
             'tags',
             'group_leaders',
-            'description',
-            'image',
             'join_mode'
         );
+        $data['description'] = strip_tags($requestData->get('description'), BaseGroupService::ALLOWED_TAGS);
+        $data['image'] = $requestData->get('image');
 
         // Ha nincs még belépve, akkor létrehozunk egy új fiókot a megadott adatokkal
         if (!$user) {

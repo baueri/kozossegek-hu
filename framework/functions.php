@@ -62,6 +62,8 @@ function d(...$data)
             print_r($toDump ? 'true' : 'false');
         } elseif (is_null($toDump)) {
             print_r('null');
+        } elseif (is_string($toDump)) {
+            print_r(htmlspecialchars($toDump));
         } else {
             print_r($toDump);
         }

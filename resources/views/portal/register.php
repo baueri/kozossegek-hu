@@ -48,5 +48,6 @@
                 </div>
             </div>
         </div>
+        @csrf()
     </form>
 </div>
