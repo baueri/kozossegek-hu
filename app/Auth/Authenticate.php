@@ -41,7 +41,11 @@ class Authenticate
     public function authenticateBySession(): void
     {
         $query = UserSessions::query();
-        $session = $query->where('unique_id', session_id())->with('user')->first();
+        $session = $query->where('unique_id', session_id())
+            ->where('user_agent', $_SERVER['HTTP_USER_AGENT'])
+            ->where('ip_address', $_SERVER['REMOTE_ADDR'])
+            ->with('user')
+            ->first();
 
         if ($session && $session->user) {
             $query->touch($session);
