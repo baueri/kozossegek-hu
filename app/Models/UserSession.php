@@ -12,6 +12,8 @@ use Framework\Model\HasTimestamps;
  * @property $user_id
  * @property $created_at
  * @property User|null $user
+ * @property string $user_agent
+ * @property string $ip_address
  */
 class UserSession extends Entity
 {
