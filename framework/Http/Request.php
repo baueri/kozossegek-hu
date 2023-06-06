@@ -48,6 +48,14 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
         $this->requestMethod = $_SERVER['REQUEST_METHOD'] ?? null;
 
         $this->uri = urldecode(parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH));
+
+        $headers = [];
+        foreach ($_SERVER as $headerKey => $headerVal) {
+            if (str_starts_with($headerKey, 'HTTP_')) {
+                $headers[mb_substr($headerKey, 5)] = $headerVal;
+            }
+        }
+        $this->headers = collect($headers);
     }
 
     public function __call($name, $arguments)
@@ -169,6 +177,6 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
 
     public function token(): ?string
     {
-        return $this->get('_token') ?: $this->headers->get('X-CSRF-TOKEN');
+        return $this->get('_token') ?: $this->headers->get('X_CSRF_TOKEN');
     }
 }
