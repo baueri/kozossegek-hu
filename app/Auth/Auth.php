@@ -19,9 +19,11 @@ final class Auth
         app()->make(LegalNoticeService::class)->setLegalNoticeSessionFor($user);
 
         db()->execute(
-            'replace into user_sessions (unique_id, user_id, created_at) values(?, ?, CURRENT_TIMESTAMP)',
+            'replace into user_sessions (unique_id, user_id, created_at, user_agent, ip_address) values(?, ?, CURRENT_TIMESTAMP, ?, ?)',
             session_id(),
-            $user->id
+            $user->id,
+            $_SERVER['HTTP_USER_AGENT'],
+            $_SERVER['REMOTE_ADDR']
         );
         db()->execute('update users set last_login=CURRENT_TIMESTAMP where id=?', $user->id);
 
