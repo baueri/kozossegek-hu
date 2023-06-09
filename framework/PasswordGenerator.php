@@ -21,8 +21,13 @@ class PasswordGenerator
         self::OPTION_NUMBERS => true
     ];
 
-    public function generate(int $length = 8): string
+    public function generate(int|null $length = null): string
     {
+        $length ??= 8;
+        if (!is_numeric($length) || $length <= 0) {
+            throw new InvalidArgumentException('Please provide a valid number!');
+        }
+
         $pattern = $this->settings[self::OPTION_LOWER] ? self::LETTERS : '';
         if ($this->settings[self::OPTION_UPPER]) {
             $pattern .= strtoupper(static::LETTERS);
