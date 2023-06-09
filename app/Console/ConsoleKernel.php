@@ -8,6 +8,7 @@ use App\Console\Commands\AggregateLogsCommand;
 use App\Console\Commands\ClearUserSessionCommand;
 use App\Console\Commands\Cron\DailyCron;
 use App\Console\Commands\Cron\MonthlyCron;
+use App\Console\Commands\GeneratePassword;
 use App\Console\Commands\GroupActivityConfirmNotifier;
 use App\Console\Commands\InactivateUnconfirmedGroups;
 use App\Console\Commands\PublishApp;
@@ -30,6 +31,7 @@ class ConsoleKernel extends Kernel
         OpenStreetMapSync::class,
         SetLatLonToInstitutes::class,
         GroupActivityConfirmNotifier::class,
-        InactivateUnconfirmedGroups::class
+        InactivateUnconfirmedGroups::class,
+        GeneratePassword::class
     ];
 }
