@@ -13,7 +13,7 @@ class PublishApp extends Command
      */
     public function handle(): void
     {
-        $fileManager = new FileManager(_env('STORAGE_PATH') . 'public');
+        $fileManager = new FileManager(env('STORAGE_PATH') . 'public');
 
         if (!file_exists(ROOT . 'public/uploads')) {
             $fileManager->createFolder('uploads');

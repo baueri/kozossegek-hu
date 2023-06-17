@@ -23,7 +23,7 @@ class GroupHelper
             return '';
         }
 
-        $root = _env('STORAGE_PATH') . 'groups' . DS;
+        $root = env('STORAGE_PATH') . 'groups' . DS;
 
         return $root . static::getRelpath($groupId);
     }

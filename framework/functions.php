@@ -159,11 +159,6 @@ function collect_file($file): Collection
     return collect(array_filter(explode(PHP_EOL, file_get_contents($file))));
 }
 
-function _env($key, $default = null)
-{
-    return DotEnv::get($key, $default);
-}
-
 function now($tz = null): Carbon
 {
     return Carbon::now($tz);
@@ -259,7 +254,7 @@ function raise_403($message = '', $message2 = 'Nincs jogosultsága a tartalom me
 
 function process_error($e): void
 {
-    if (!_env('DEBUG')) {
+    if (!env('DEBUG')) {
         report($e);
     } else {
         dd($e, request()->all(), request()->route);

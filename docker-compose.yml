@@ -1,0 +1,65 @@
+version: "3.3"
+
+services:
+  mysql:
+    container_name: kozossegek_mysql
+    image: mariadb:10.8.2
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./docker/mysql:/docker-entrypoint-initdb.d
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: pw
+      MYSQL_DATABASE: kozossegek
+      MYSQL_USER: user
+      MYSQL_PASSWORD: pw
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 5s
+      retries: 10
+    networks:
+      inner:
+        aliases:
+          - mysql
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: kozossegek_pma
+    links:
+      - mysql
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+    restart: always
+    ports:
+      - ${PMA_PORT}:80
+    networks:
+      inner:
+        aliases:
+          - pma
+    depends_on:
+      - mysql
+  app:
+    container_name: kozossegek_app
+    build:
+      context: ./
+      dockerfile: docker/app/Dockerfile
+    volumes:
+      - ./:/app
+      - ./docker/app/kozossegek.conf:/etc/apache2/sites-enabled/kozossegek.conf
+    environment:
+      - STORAGE_PATH=${STORAGE_PATH}
+    ports:
+      - "${APP_PORT}:8000"
+    networks:
+      inner:
+        aliases:
+          - kozossegek_app
+    depends_on:
+      - mysql
+networks:
+  inner:
+    driver: bridge
+
+volumes:
+  db_data: {}
