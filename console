@@ -21,7 +21,7 @@ try {
         app()->make(Dispatcher::class)
     );
 } catch (Error | Exception | Throwable $e) {
-    if (_env('DEBUG')) {
+    if (env('DEBUG')) {
         throw $e;
     }
     app()->handleError($e);
