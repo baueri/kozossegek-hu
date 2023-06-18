@@ -2,7 +2,7 @@
 
 namespace App\Http\Components\Selectors;
 
-use App\Enums\UserRole;
+use Legacy\UserRole;
 
 class UserGroupSelector
 {

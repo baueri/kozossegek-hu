@@ -1,5 +1,15 @@
 @title('Verzióinformáció')
 @extends('admin')
+<h3>v4.0 (2023.06.18)</h3>
+<ul>
+    <li><b>Gépház</b></li>
+    <li>[NEW]: kozossegek.hu dockerizálva lett</li>
+    <li>[NEW]: Egy alap dump sql fájl lett generálva, amit telepítéskor be lehet importálni</li>
+    <li>[NEW]: Régi nem használt seederek kikerültek, új közösség seeder létre lett hozva</li>
+    <li>[NEW]: Projekt lokális telepítéséhez most már lehet használni az <code>install.php</code>-t</li>
+    <li>[CHANGE]: .env könyvtár le lett cserélve</li>
+    <li>[CHANGE]: README.md fájl átírásra került, (docker beüzemelés, keretrendszer bemutatása)</li>
+</ul>
 <h3>v3.2.2 (2023.04.13)</h3>
 <ul>
     <li><b>Gépház</b></li>

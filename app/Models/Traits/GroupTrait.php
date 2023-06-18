@@ -8,7 +8,7 @@ use App\Enums\OccasionFrequency;
 use App\Enums\GroupPending;
 use App\Enums\WeekDay;
 use App\Enums\GroupStatus;
-use App\Enums\JoinMode;
+use Legacy\JoinMode;
 use App\Helpers\GroupHelper;
 use App\Models\User;
 use App\Services\SystemAdministration\SiteMap\EntitySiteMappable;

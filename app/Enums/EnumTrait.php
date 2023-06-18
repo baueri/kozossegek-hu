@@ -53,4 +53,9 @@ trait EnumTrait
 
         return $case->name;
     }
+
+    public static function random(): static
+    {
+        return static::collect()->random();
+    }
 }

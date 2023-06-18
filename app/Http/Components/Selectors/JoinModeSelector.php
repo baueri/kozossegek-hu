@@ -2,7 +2,7 @@
 
 namespace App\Http\Components\Selectors;
 
-use App\Enums\JoinMode;
+use Legacy\JoinMode;
 
 class JoinModeSelector
 {

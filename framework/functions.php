@@ -437,3 +437,7 @@ function memory_usage_format(): string
     $conv = fn ($size) => @round($size/pow(1024,($i=floor(log($size,1024)))),2).' '.array('b','kb','mb','gb','tb','pb')[$i];
     return $conv(memory_get_usage());
 }
+
+function enum_val(UnitEnum $enum) {
+    return $enum instanceof BackedEnum ? $enum->value : $enum->name;
+}

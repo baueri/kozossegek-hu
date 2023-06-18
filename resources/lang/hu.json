@@ -22,7 +22,7 @@
     "week_day.he": "hétfő",
     "week_day.ke": "kedd",
     "week_day.sze": "szerda",
-    "week_day.csut": "csütörtök",
+    "week_day.csu": "csütörtök",
     "week_day.pe": "péntek",
     "week_day.szo": "szombat",
     "week_day.vas": "vasárnap",
@@ -32,5 +32,13 @@
     "errors.password_mismatch": "A két jelszó nem egyezik!",
 
     "spiritual_movement_type.spiritual_movement": "Lelkiségi mozgalom",
-    "spiritual_movement_type.monastic_community": "Szerzetesrend"
+    "spiritual_movement_type.monastic_community": "Szerzetesrend",
+
+    "user_role.super_admin": "Szuper Admin",
+    "user_role.spiritual_movement_leader": "Lelikségi mozgalom vezető",
+    "user_role.group_leader": "Közösségvezető",
+
+    "join_mode.egyeni": "Egyéni megbeszélés alapján",
+    "join_mode.folyamatos": "Folyamatos csatlakozási lehetőség",
+    "join_mode.idoszakos": "Időszakos csatlakozás"
 }
