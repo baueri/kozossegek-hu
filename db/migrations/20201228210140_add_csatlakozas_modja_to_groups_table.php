@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Enums\JoinMode;
+use Legacy\JoinMode;
 use App\Migration\AppMigration;
 use App\Services\RefreshGroupViewTable;
 use Phinx\Db\Adapter\MysqlAdapter;

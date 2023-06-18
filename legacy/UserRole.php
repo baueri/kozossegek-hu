@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Enums;
+namespace Legacy;
 
+use App\Enums\UserRight;
 use Framework\Support\Arr;
 use Framework\Support\Enum;
 
@@ -33,7 +34,7 @@ class UserRole extends Enum
      */
     public static function getTranslated(): array
     {
-        return UserRole::get()->map(fn (UserRole $group) => $group->text())->all();
+        return self::get()->map(fn (UserRole $group) => $group->text())->all();
     }
 
     public static function can(string $role, $right): bool
