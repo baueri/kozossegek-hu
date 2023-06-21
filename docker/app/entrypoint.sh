@@ -5,6 +5,10 @@ chown www-data:www-data -R /app/cache && chown www-data:www-data -R ${STORAGE_PA
 
 service apache2 start
 
+composer install
+composer migrate
+php install.php
+
 while true
 do
    sleep 1
