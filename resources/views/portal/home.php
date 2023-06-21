@@ -35,7 +35,7 @@
                         <input type="text" class="form-control rounded-pill" placeholder="Milyen közösséget keresel? pl.: Budapest egyetemista..." name="search">
                     </div>
                     <div class="col-lg-3 mb-2 mb-lg-0">
-                        <select class="form-control rounded-pill" style="color:#aaa" name="bármilyen korosztaly">
+                        <select class="form-control rounded-pill" style="color:#aaa" name="korosztaly">
                             <option value="">-- bármilyen korosztály --</option>
                             <option value="tinedzser">tinédzser</option>
                             <option value="fiatal_felnott">fiatal felnőtt</option>
