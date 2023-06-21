@@ -104,7 +104,7 @@ class GroupController extends PortalController
 
         $similar_groups = GroupViews::query()->similarTo($group)->limit(4)->get();
         $slug = $group->slug();
-        $keywords = builder('search_engine')->where('group_id', $group->getId())->first()['keywords'];
+        $keywords = builder('search_engine')->where('group_id', $group->getId())->first()['keywords'] ?? '';
 
         if (!(new CrawlerDetect())->isCrawler()) {
             log_event('group_profile_opened', [
