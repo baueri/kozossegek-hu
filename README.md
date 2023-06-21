@@ -25,7 +25,7 @@ Másold le a .env.example tartalmát a .env fájlba
 
 ```cp .env.example .env```
 
-Az **alkalmazás** a `8280`-as, a **phpmyadmin** pedig a `8281`-es portokon lesznek kiszolgálva, ha ezen változtatnál,
+Az **alkalmazás** a `8000`-es, a **phpmyadmin** pedig a `8001`-es portokon lesznek kiszolgálva, ha ezen változtatnál,
 írd át az `APP_PORT` és a `PMA_PORT` változókat a `.env` fájlban.
 
 _A többi változót is igény szerint módosíthatod (sql usernév, jelszó, storage mappa stb)_
@@ -36,7 +36,7 @@ Indítsd el a dockert:
 
 _A `-d` kapcsolóval a sikeres build után a háttérben fognak futni a containerek._
 
-Miután a dockeres telepítés megtörtént, az `app` containerben futtasd az `install.php`-t:
+Miután a dockeres telepítés megtörtént, a `kozossegek_app` containerben futtasd az `install.php`-t:
 
 ```docker exec kozossegek_app php install.php```
 
