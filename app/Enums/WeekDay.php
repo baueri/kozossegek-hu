@@ -10,7 +10,7 @@ enum WeekDay: string
     case he = 'he';
     case ke = 'ke';
     case sze = 'sze';
-    case csut = 'csut';
+    case csu = 'csu';
     case pe = 'pe';
     case szo = 'szo';
     case vas = 'vas';

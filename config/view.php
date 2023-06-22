@@ -18,7 +18,7 @@ use App\Services\SystemAdministration\SiteMap\PrioritySelector;
 
 return [
     'view_sources' => [
-        'email_templates' => _env('STORAGE_PATH') . 'email_templates'
+        'email_templates' => env('STORAGE_PATH') . 'email_templates'
     ],
     'directives' => [
         'header' => function ($matches) {

@@ -4,7 +4,7 @@ namespace App\Admin\Group\Services;
 
 use App\Enums\AgeGroup;
 use App\Enums\GroupStatus;
-use App\Enums\JoinMode;
+use Legacy\JoinMode;
 use App\Enums\OccasionFrequency;
 use App\Models\ChurchGroupView;
 use App\QueryBuilders\Institutes;

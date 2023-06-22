@@ -4,7 +4,7 @@ namespace App\Admin\Controllers;
 
 use App\Admin\User\UserTable;
 use App\Auth\Auth;
-use App\Enums\UserRole;
+use Legacy\UserRole;
 use App\Mail\RegistrationEmail;
 use App\Models\User;
 use App\QueryBuilders\GroupViews;

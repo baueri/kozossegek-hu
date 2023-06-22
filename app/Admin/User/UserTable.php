@@ -3,7 +3,7 @@
 namespace App\Admin\User;
 
 use App\Admin\Components\AdminTable\{PaginatedAdminTable, Deletable, Editable};
-use App\Enums\UserRole;
+use Legacy\UserRole;
 use App\Models\User;
 use App\Models\UserSession;
 use App\QueryBuilders\ChurchGroups;

@@ -13,6 +13,8 @@ abstract class Command
 
     public readonly CommandOutput $output;
 
+    public readonly In $in;
+
     abstract public static function signature(): string;
 
     abstract public function handle();
@@ -20,6 +22,7 @@ abstract class Command
     public function __construct()
     {
         $this->output = new CommandOutput();
+        $this->in = new In();
     }
 
     public function description(): string

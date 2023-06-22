@@ -7,12 +7,12 @@
     }
   ],
   "require": {
-    "arrilot/dotenv-php": "^2.0",
     "phpmailer/phpmailer": "~6.1",
     "psr/container": "^1.0",
     "jaybizzle/crawler-detect": "^1.2",
     "nesbot/carbon": "^2.50",
-    "guzzlehttp/guzzle": "^7.4"
+    "guzzlehttp/guzzle": "^7.4",
+    "vlucas/phpdotenv": "^5.5"
   },
   "autoload": {
     "psr-4": {
@@ -42,6 +42,7 @@
   "require-dev": {
     "robmorgan/phinx": "^0.12.9",
     "phpseclib/phpseclib": "^3.0",
-    "phpunit/phpunit": "^9"
+    "phpunit/phpunit": "^9",
+    "fakerphp/faker": "^1.23"
   }
 }
