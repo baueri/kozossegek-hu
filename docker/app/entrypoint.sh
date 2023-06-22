@@ -14,6 +14,22 @@ service apache2 start
 composer install
 composer migrate
 
+echo "
+               &
+              &&&
+               &
+         &&&   &   &&&
+      &&     &&&&&     &&
+    &&     &&&   &&&     &
+    &   &&&         &&&   &
+   %& &&     (( ((    &&& &&
+    &% (    ((( (((    ( &&
+ && ((      ((( (((      (( &%
+   (  ((               ((  (
+        (((         (((
+           (((((((((
+"
+
 while true
 do
    sleep 1

@@ -74,6 +74,7 @@ class Install extends Command
     private function seedChurchGroups(): void
     {
         $this->output->info('Dummy adatok generálása...');
+        sleep(2);
 
         passthru('composer db:seed -- -s ChurchGroupSeeder');
 

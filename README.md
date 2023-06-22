@@ -22,10 +22,11 @@ _Részletes fejlesztői dokumentáció jelenleg nincs, de idővel igyekszünk en
 #### Instant telepítés, alap beállításokkal
 _(app port: 8000, pma port: 8001, username: admin, password: pw, email: amit lent megadsz)_
 ```shell
-git clone git@bitbucket.org:baueri/kozossegek.git \
+git clone git@github.com:baueri/kozossegek-hu.git \
   && cd kozossegek \
-  && chmod +x install.sh \
-  && ./install.sh -e your.email@kozossegek.hu
+  && cp .env.example .env \
+  && docker compose up -d --build \
+  && docker exec kozossegek_app php console install --name=Admin --username=admin --email="your.eamil@kozossegek.hu" --password=pw --seed
 ```
 
 ### VAGY
@@ -35,7 +36,7 @@ git clone git@bitbucket.org:baueri/kozossegek.git \
 Klónozd le a projektet, majd lépj be a könyvtárba
 
 ```shell
-git clone git@bitbucket.org:baueri/kozossegek.git
+git clone git@github.com:baueri/kozossegek-hu.git
 ```
 
 Másold le a .env.example tartalmát a .env fájlba
