@@ -33,7 +33,7 @@ class HttpKernel extends \Framework\Http\HttpKernel
 
     public function handleError($exception)
     {
-        if ($exception->getCode() != '404' && !_env('DEBUG')) {
+        if ($exception->getCode() != '404' && !env('DEBUG')) {
             report($exception);
         }
 

@@ -77,7 +77,7 @@
     <div class="container">
         <div class="bg-altblue text-light">
             <div class="row">
-                <div class="col-lg-6" style="background: url('/storage/uploads/kozosseget_vezetek.jpg') no-repeat center; background-size: cover"></div>
+                <div class="col-lg-6" style="background: url('/images/kozosseget_vezetek_kicsi.jpg') no-repeat center; background-size: cover"></div>
                 <div class="col-lg-6 align-middle h-100">
                     <div class="px-3 px-md-5 py-3 my-md-5 my-xs-3">
                         <h2 class="text-center title-secondary font-weight-bold mb-4">Közösséget vezetek, szeretném hirdetni.<br/> Mit tegyek?</h2>
