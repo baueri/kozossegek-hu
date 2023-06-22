@@ -19,11 +19,30 @@ _Részletes fejlesztői dokumentáció jelenleg nincs, de idővel igyekszünk en
 - Docker. Telepítése: https://docs.docker.com/engine/install/
 
 ### Telepítés
+#### Instant telepítés, alap beállításokkal
+_(app port: 8000, pma port: 8001, username: admin, password: pw, email: amit lent megadsz)_
+```shell
+git clone git@bitbucket.org:baueri/kozossegek.git \
+  && cd kozossegek \
+  && chmod +x install.sh \
+  && ./install.sh -e your.email@kozossegek.hu
+```
+
+### VAGY
+
+#### Részletes telepítés
+
 Klónozd le a projektet, majd lépj be a könyvtárba
+
+```shell
+git clone git@bitbucket.org:baueri/kozossegek.git
+```
 
 Másold le a .env.example tartalmát a .env fájlba
 
-```cp .env.example .env```
+```shell
+cp .env.example .env
+```
 
 Az **alkalmazás** a `8000`-es, a **phpmyadmin** pedig a `8001`-es portokon lesznek kiszolgálva, ha ezen változtatnál,
 írd át az `APP_PORT` és a `PMA_PORT` változókat a `.env` fájlban.
@@ -32,13 +51,17 @@ _A többi változót is igény szerint módosíthatod (sql usernév, jelszó, st
 
 Indítsd el a dockert:
 
-```docker compose up -d --build```
+```shell
+docker compose up -d --build
+```
 
 _A `-d` kapcsolóval a sikeres build után a háttérben fognak futni a containerek._
 
 Miután a dockeres telepítés megtörtént, a `kozossegek_app` containerben futtasd az `install.php`-t:
 
-```docker exec kozossegek_app php install.php```
+```shell
+docker exec kozossegek_app php install.php
+```
 
 A telepítőben
 
