@@ -29,6 +29,8 @@ git clone git@github.com:baueri/kozossegek-hu.git \
   && docker exec kozossegek_app php console install --name=Admin --username=admin --email="your.eamil@kozossegek.hu" --password=pw --seed
 ```
 
+_Előfordulhat, hogy a `php console install` hamarabb fut le, mint, hogy a docker teljesen elindulna. ilyenkor futtasd újra a legutolsó command-ot._
+
 ### VAGY
 
 #### Részletes telepítés
