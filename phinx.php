@@ -18,6 +18,15 @@ return
             'port' => '3306',
             'charset' => 'utf8',
         ],
+        'production' => [
+            'adapter' => 'mysql',
+            'host' => env('DB_HOST'),
+            'name' => env('DB_NAME'),
+            'user' => env('DB_USER'),
+            'pass' => env('DB_PASSWORD'),
+            'port' => '3306',
+            'charset' => 'utf8',
+        ],
     ],
     'version_order' => 'creation'
 ];
