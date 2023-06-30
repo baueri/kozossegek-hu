@@ -9,6 +9,11 @@ use Framework\Dispatcher\Dispatcher;
 use Framework\Dispatcher\HttpDispatcher;
 use Framework\Http\Session;
 
+if (file_exists('../.maintenance')) {
+    include '../resources/views/maintenance.php';
+    exit;
+}
+
 include '../vendor/autoload.php';
 
 Session::start();
