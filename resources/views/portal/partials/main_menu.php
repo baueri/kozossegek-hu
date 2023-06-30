@@ -47,14 +47,20 @@
                         <i class="far fa-user-circle" style="font-size: 18px;"></i>
                     </a>
                     <ul class="submenu">
-                        <li class="nav-item">
-                            <a href="@route('login')" class="nav-link">
-                                Belépés
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="@route('portal.register')" class="nav-link">Regisztráció</a>
-                        </li>
+                       <li class="nav-item">
+                           <div class="p-3" style="width: 250px">
+                               <form action="" method="post">
+                                   <h5>Bejelentkezés</h5>
+                                   <div class="form-group">
+                                       <input type="text" class="form-control" name="username" placeholder="email vagy felhasználónév"/>
+                                   </div>
+                                   <div class="form-group">
+                                       <input type="password" class="form-control" name="password" placeholder="jelszó"/>
+                                   </div>
+                                   <button type="submit" class="btn btn-primary">Belépés</button>
+                               </form>
+                           </div>
+                       </li>
                     </ul>
                 </li>
             @endauth
