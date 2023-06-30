@@ -9,4 +9,5 @@ enum Environment
     case production;
     case demo;
     case local;
+    case test;
 }
