@@ -4,7 +4,7 @@ use App\Bootstrapper\RegisterDirectives;
 use App\Repositories\EventLogRepository;
 use App\Services\EventLogger;
 use App\Services\MileStone;
-use Arrilot\DotEnv\DotEnv;
+use Dotenv\Dotenv;
 use Framework\Application;
 use Framework\Database\Database;
 use Framework\Database\PDO\PDOMysqlDatabase;
@@ -25,20 +25,28 @@ const APP = ROOT . 'app' . DS;
 const RESOURCES = ROOT . 'resources' . DS;
 const VIEWS = RESOURCES . 'views' . DS;
 const CACHE = ROOT . 'cache' . DS;
-const APP_VERSION = 'v2.3.0';
+const APP_VERSION = 'v4.0';
 
 // Config constants for faster development
 const APP_CFG_LEGAL_NOTICE_VERSION = 'app.legal_notice_version';
 const APP_CFG_LEGAL_NOTICE_DATE = 'app.legal_notice_date';
 
+$_ENV['ROOT'] = ROOT;
 
-DotEnv::load(ROOT . '.env.php');
+global $argv;
+$env = null;
 
-date_default_timezone_set(_env('APP_TIMEZONE', 'Europe/Budapest'));
+if ($argv && [,$envVar] = explode('=', array_values(array_filter($argv, fn ($arg) => str_contains($arg, '--environment')))[0] ?? null)) {
+    $env = [".env.{$envVar}"];
+}
+
+$dotenv = Dotenv::createImmutable(__DIR__, $env);
+$dotenv->load();
+date_default_timezone_set(env('APP_TIMEZONE', 'Europe/Budapest'));
 
 ini_set("log_errors", 1);
 
-if (!_env('DEBUG') && !is_cli()) {
+if (!env('DEBUG') && !is_cli()) {
     ini_set("error_log", ROOT . "error.log");
 } else {
     ini_set('display_errors', 1);

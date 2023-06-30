@@ -38,7 +38,7 @@ class HttpKernel extends \Framework\Http\HttpKernel
 
     public function handleError($error)
     {
-        if (!in_array($error::class, $this->dontReport) && !_env('DEBUG')) {
+        if (!in_array($error::class, $this->dontReport) && !env('DEBUG')) {
             report($error);
         }
 

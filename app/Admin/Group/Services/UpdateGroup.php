@@ -19,7 +19,7 @@ class UpdateGroup extends BaseGroupService
      */
     public function update(ChurchGroup $group, Collection $request, ?array $document = []): ChurchGroup
     {
-        $data = $request->except('id', 'tags', 'image', 'files')->all();
+        $data = $request->except('id', 'tags', 'image', 'files', '_token')->all();
 
         $data['description'] = strip_tags($data['description'], self::ALLOWED_TAGS);
         $data['name'] = strip_tags($data['name']);
@@ -51,7 +51,7 @@ class UpdateGroup extends BaseGroupService
         $this->syncImages($group, [$request['image']]);
 
         if ($request['image']) {
-            $data['image_url'] = GroupHelper::getPublicImagePath($group->id);
+            $data['image_url'] = GroupHelper::getPublicImagePath((int) $group->getId());
         }
 
         $this->repository->save($group, $data);

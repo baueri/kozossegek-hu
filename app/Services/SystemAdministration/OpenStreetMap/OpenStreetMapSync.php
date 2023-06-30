@@ -80,7 +80,7 @@ class OpenStreetMapSync extends Command
                     ]);
                 });
         });
-        $this->output->success('DONE');
+        $this->output->success('Done');
 
         return self::SUCCESS;
     }

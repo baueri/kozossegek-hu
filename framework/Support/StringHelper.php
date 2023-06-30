@@ -55,13 +55,13 @@ final class StringHelper
         $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
 
         // remove unwanted characters
-        $text = preg_replace('~[^-\w]+~', '', $text);
+        $text = preg_replace('~[^' . $divider . '\w]+~', '', $text);
 
         // trim
         $text = trim($text, $divider);
 
         // remove duplicate divider
-        $text = preg_replace('~-+~', $divider, $text);
+        $text = preg_replace('~' . preg_quote($divider) . '+~', $divider, $text);
 
         // lowercase
         $text = strtolower($text);

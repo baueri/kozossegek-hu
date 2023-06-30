@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Auth\AuthUser;
-use App\Enums\UserRole;
+use Legacy\UserRole;
 use App\QueryBuilders\Users;
 use Framework\Model\Entity;
 use Framework\Model\HasTimestamps;
@@ -51,7 +51,7 @@ class User extends Entity implements AuthUser
 
     public function hasRight($right): bool
     {
-        return UserRole::can($this->user_group, ($right));
+        return UserRole::can($this->user_group, $right);
     }
 
     public function firstName(): string

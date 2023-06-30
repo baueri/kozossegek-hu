@@ -62,4 +62,14 @@ class In
         }
         return $input;
     }
+
+    public function ask(string $question, string $default = '', bool $mandatory = false): string
+    {
+        Out::write($question);
+        if ($default) {
+            Out::write(" [{$default}]", Color::yellow);
+        }
+        Out::write(' ');
+        return $this->readLn($mandatory) ?: $default;
+    }
 }

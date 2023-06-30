@@ -8,6 +8,7 @@ use Closure;
 use Countable;
 use Framework\Http\JsonResponse;
 use IteratorAggregate;
+use UnitEnum;
 
 /**
  * @template T
@@ -293,7 +294,8 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     public function implode($value, $glue = null): string
     {
         if (is_null($glue)) {
-            return implode($value, $this->items);
+            $values = array_map(fn ($item) => $item instanceof UnitEnum ? enum_val($item) : $item, $this->items);
+            return implode($value, $values);
         }
 
         return $this->pluck($value)->implode($glue);
