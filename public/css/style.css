@@ -283,6 +283,10 @@ nav.navbar .nav-link:hover {
     background-color: #0a0a0a;
 }
 
+#footer-bottom a {
+    text-decoration: none;
+}
+
 .card-body .description {
     text-overflow: ellipsis;
     overflow: hidden;
