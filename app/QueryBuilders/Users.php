@@ -2,6 +2,7 @@
 
 namespace App\QueryBuilders;
 
+use App\Enums\SocialProvider;
 use App\Models\User;
 use App\QueryBuilders\Relations\HasManyChurchGroupViews;
 use Framework\Model\EntityQueryBuilder;
@@ -39,6 +40,16 @@ class Users extends EntityQueryBuilder
         }
 
         return $this;
+    }
+
+    public function bySocialLogin(SocialProvider $provider, string $socialId): Users
+    {
+        return $this->notDeleted()->whereExists(
+            builder('social_profile')
+                ->where('users.id', 'social_profile.user_id')
+                ->where('social_provider', $provider)
+                ->where('social_profile.social_id', $socialId)
+        );
     }
 
     public function byEmail(?string $email): static

@@ -23,7 +23,34 @@ $(() => {
     $("#search-group select").on("change", function () {
         setAgeGroupClass();
     });
+
+    $(".navbar-nav > .nav-item > a").click(function () {
+        $(this).closest(".nav-item").toggleClass("open");
+        const submenu = $("> .submenu", $(this).closest(".nav-item"));
+        if (submenu.length) {
+            // submenu.toggleClass("open");
+        }
+    });
+
+    $("body").click((e) => {
+        if (!$(e.target).closest(".nav-item").length) {
+            $(".nav-item").removeClass("open");
+        }
+    });
 });
+
+$(window).on("load scroll", () => {
+    if ($(window).scrollTop() > 0 || typeof window.orientation !== 'undefined') {
+        $(".navbar").addClass("compact");
+    } else {
+        $(".navbar").removeClass("compact");
+    }
+});
+
+$(window).on("resize", () => {
+    $("#toggle_main_menu").prop("checked", false);
+})
+
 
 function setAgeGroupClass()
 {
@@ -34,14 +61,6 @@ function setAgeGroupClass()
         sel.removeClass("has-val");
     }
 }
-
-$(window).on("load scroll", () => {
-    if ($(window).scrollTop() > 0 || typeof window.orientation !== 'undefined') {
-        $(".navbar").addClass("compact");
-    } else {
-        $(".navbar").removeClass("compact");
-    }
-});
 
 $.fn.instituteSelect = function (options) {
     $(this).each(function () {

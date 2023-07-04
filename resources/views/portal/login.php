@@ -13,7 +13,7 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
-                        <input type="text" name="username" placeholder="email vagy felhasználónév" autofocus class="form-control"/>
+                        <input type="text" name="username" placeholder="email cím" autofocus class="form-control"/>
                     </div>
                     <div class="form-group">
                         <input type="password" name="password" placeholder="jelszó" class="form-control"/>
