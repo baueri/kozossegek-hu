@@ -49,7 +49,7 @@
                     <ul class="submenu">
                        <li class="nav-item">
                            <div class="p-3" style="width: 250px">
-                               <form action="" method="post">
+                               <form action="@route('doLogin')" method="post">
                                    <h5>Bejelentkezés</h5>
                                    <div class="form-group">
                                        <input type="text" class="form-control" name="username" placeholder="email vagy felhasználónév"/>
@@ -57,6 +57,24 @@
                                    <div class="form-group">
                                        <input type="password" class="form-control" name="password" placeholder="jelszó"/>
                                    </div>
+                                   <div id="g_id_onload"
+                                        data-client_id="{{ env('GOOGLE_CLIENT_ID') }}"
+                                        data-context="signin"
+                                        data-ux_mode="popup"
+                                        data-login_uri="https://kozossegek.serveo.net/social-login"
+                                        data-auto_prompt="false">
+                                   </div>
+
+                                   <div class="g_id_signin mb-1"
+                                        data-type="standard"
+                                        data-shape="rectangular"
+                                        data-theme="outline"
+                                        data-text="signin_with"
+                                        data-size="large"
+                                        data-logo_alignment="left"
+                                        data-locale="hu">
+                                   </div>
+                                   <div class="fb-login-button mb-2" data-width="225" data-size="large" data-button-type="login_with" data-layout="default" data-auto-logout-link="false" data-use-continue-as="true"></div><br/>
                                    <button type="submit" class="btn btn-primary">Belépés</button>
                                </form>
                            </div>

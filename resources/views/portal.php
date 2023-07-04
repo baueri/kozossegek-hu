@@ -22,6 +22,9 @@
     <link rel="stylesheet" href="/css/style.css?{{ filemtime('css/style.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/hu_HU/sdk.js#xfbml=1&version=v17.0&appId=784869592115351&autoLogAppEvents=1" nonce="HRNksHZS"></script>
     @if(is_prod())
         <!-- Global site tag (gtag.js) - Google Analytics -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=UA-43190044-6"></script>
@@ -47,7 +50,6 @@
     @endif
 </head>
 <body class="{{ is_prod() ? 'demo' : '' }} {{ is_home() ? 'home' : '' }} {{ $body_class ?? '' }}">
-    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/hu_HU/sdk.js#xfbml=1&version=v9.0&appId=784869592115351&autoLogAppEvents=1" nonce="lcQfw2hE"></script>
     <div id="fb-root"></div>
     @if($header_background)
         <div class="featured-header header-outer">
