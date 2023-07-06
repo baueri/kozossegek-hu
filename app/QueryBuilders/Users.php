@@ -19,11 +19,6 @@ class Users extends EntityQueryBuilder
     use HasManyChurchGroupViews;
     use SoftDeletes;
 
-    public static function getModelClass(): string
-    {
-        return User::class;
-    }
-
     public function groups(): Relation
     {
         return $this->has(Has::many, ChurchGroups::class, 'user_id');
