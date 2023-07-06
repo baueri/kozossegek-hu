@@ -16,7 +16,7 @@ class Cities extends EntityQueryBuilder
 
     public function groups(): Relation
     {
-        return $this->has(Has::many, GroupViews::class, 'city', 'name');
+        return $this->has(Has::many, ChurchGroupViews::class, 'city', 'name');
     }
 
     public function search(?string $term): static

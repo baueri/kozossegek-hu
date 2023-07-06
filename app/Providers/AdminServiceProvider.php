@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use App\Auth\Auth;
 use App\Enums\UserRight;
-use App\QueryBuilders\GroupViews;
+use App\QueryBuilders\ChurchGroupViews;
 use App\QueryBuilders\SpiritualMovements;
 use Framework\Middleware\Middleware;
 
@@ -21,8 +21,8 @@ class AdminServiceProvider implements Middleware
         }
 
         if ($user->hasRight(UserRight::MANAGE_SPIRITUAL_MOVEMENT_GROUPS)) {
-            app()->bind(GroupViews::class, function () use ($user) {
-                return (new GroupViews())->forUser($user);
+            app()->bind(ChurchGroupViews::class, function () use ($user) {
+                return (new ChurchGroupViews())->forUser($user);
             });
         }
     }
