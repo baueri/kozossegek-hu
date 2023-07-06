@@ -1,6 +1,26 @@
 <!DOCTYPE html>
 <html lang="hu">
 <head>
+    <!--
+                       &
+                      &&&
+                       &
+                 &&&   &   &&&
+              &&     &&&&&     &&
+            &&     &&&   &&&     &
+            &   &&&         &&&   &
+           %& &&     (( ((    &&& &&
+            &% (    ((( (((    ( &&
+         && ((      ((( (((      (( &%
+           (  ((               ((  (
+                (((         (((
+                   (((((((((
+
+           "Keressetek és találtok..."
+
+            Megtaláltad! Ha ezt itt látod, akkor valószínűleg konyítasz valamennyit a kódoláshoz ;)
+            Kapcsolódj be te is a fejlesztésbe: https://github.com/baueri/kozossegek-hu/
+      -->
     <meta charset="utf-8"/>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -24,7 +44,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <div id="fb-root"></div>
-    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/hu_HU/sdk.js#xfbml=1&version=v17.0&appId=784869592115351&autoLogAppEvents=1" nonce="HRNksHZS"></script>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/hu_HU/sdk.js#xfbml=1&version=v17.0&appId={{ env('FACEBOOK_APP_ID') }}&autoLogAppEvents=1" nonce="HRNksHZS"></script>
     @if(is_prod())
         <!-- Global site tag (gtag.js) - Google Analytics -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=UA-43190044-6"></script>
@@ -49,7 +69,7 @@
         </script>
     @endif
 </head>
-<body class="{{ is_prod() ? 'demo' : '' }} {{ is_home() ? 'home' : '' }} {{ $body_class ?? '' }}">
+<body class="{{ !is_prod() ? 'demo' : '' }} {{ is_home() ? 'home' : '' }} {{ $body_class ?? '' }}">
     <div id="fb-root"></div>
     @if($header_background)
         <div class="featured-header header-outer">
@@ -100,7 +120,7 @@
         <div id="footer-bottom">
             <div class="container">
                 <div class="row">
-                    <div class="col-sm-6"><small>© 2021 {{ date('Y') > 2021 ? ' - ' . date('Y') : '' }} kozossegek.hu - Minden jog fenntartva!</small></div>
+                    <div class="col-sm-6"><small>© 2021-{{ date('Y') }} kozossegek.hu</small></div>
                     <div class="col-sm-6 text-right">
                         <a href="https://www.facebook.com/K%C3%B6z%C3%B6ss%C3%A9gekhu-107828477772892" title="Facebook" target="_blank" class="text-white"><i class="fab fa-facebook-square fs-3"></i> </a>
                         <a href="https://www.instagram.com/kozossegek.hu/" title="Instagram" target="_blank" class="text-white"><i class="fab fa-instagram-square fs-3"></i> </a>

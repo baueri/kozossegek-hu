@@ -29,6 +29,11 @@ class Users extends EntityQueryBuilder
         return $this->has(Has::many, ChurchGroups::class, 'user_id');
     }
 
+    public function socialProfiles(): Relation
+    {
+        return $this->has(Has::many, SocialProfiles::class, 'user_id');
+    }
+
     public function byAuth(?string $username): static
     {
         $this->notDeleted();
@@ -44,11 +49,10 @@ class Users extends EntityQueryBuilder
 
     public function bySocialLogin(SocialProvider $provider, string $socialId): Users
     {
-        return $this->notDeleted()->whereExists(
-            builder('social_profile')
-                ->where('users.id', 'social_profile.user_id')
-                ->where('social_provider', $provider)
-                ->where('social_profile.social_id', $socialId)
+        return $this->notDeleted()->whereHas(
+            'socialProfiles',
+            fn (SocialProfiles $query) => $query->where('social_provider', $provider)
+                ->where('social_id', $socialId)
         );
     }
 

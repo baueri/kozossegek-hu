@@ -61,7 +61,6 @@ abstract class Entity
 
     public function __get($name)
     {
-        $relation = null;
         if (str_ends_with($name, '_count')) {
             $relation = substr($name, 0, strrpos($name, '_count'));
             if (isset($this->relations_count[$relation])) {
@@ -71,17 +70,19 @@ abstract class Entity
             if (isset($this->relations[$relation])) {
                 return $this->relations_count[$relation] = count($this->relations[$relation]);
             }
+        } else {
+            $relation = $name;
         }
 
         if (isset($this->attributes[$name])) {
             return $this->attributes[$name];
         }
 
-        if (isset($this->relations[$name])) {
-            return $this->relations[$name] ?? null;
+        if (isset($this->relations[$relation])) {
+            return $this->relations[$relation] ?? null;
         }
 
-        if (is_numeric($relation) && $this->builder && method_exists($this->builder, $relation)) {
+        if ($relation && $this->builder && method_exists($this->builder, $relation)) {
             $method = new ReflectionMethod($this->builder, $relation);
             $returnType = $method->getReturnType();
             if ($returnType->getName() === Relation::class) {

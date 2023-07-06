@@ -16,11 +16,6 @@ class GroupViews extends ChurchGroups
 {
     public const TABLE = 'v_groups';
 
-    public static function getModelClass(): string
-    {
-        return ChurchGroupView::class;
-    }
-
     public function tags(): Relation
     {
         return $this->has(Has::many, GroupTags::class, 'group_id');

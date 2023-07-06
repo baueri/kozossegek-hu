@@ -34,6 +34,14 @@
                     <input type="password" name="new_password_again" id="new_password_again" class="form-control" autocomplete="new-password"/>
                 </div>
             </div>
+            <div class="col-lg-5 col-md-12">
+                <h3>Közösségi fiókok</h3>
+                @foreach($socialProfiles as $profile)
+                    <p>
+                        <i class="{{ $profile->icon() }}"></i> - {{ $profile->text() }}<br/> <a href="@route('portal.detach_social_profile', ['provider' => $profile->social_provider])" class="small" style="color: darkorange; font-size: 12px; font-weight: bold;">@icon('trash-alt') szétkapcsolás</a>
+                    </p>
+                @endforeach
+            </div>
         </div>
         @csrf()
         <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Mentés</button>

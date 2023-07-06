@@ -2,6 +2,7 @@
 
 namespace App\Portal\Controllers;
 
+use App\Enums\SocialProvider;
 use App\Mail\ResetPasswordEmail;
 use App\QueryBuilders\Users;
 use App\QueryBuilders\UserTokens;
@@ -18,8 +19,8 @@ class UserController extends PortalController
     public function profile(): string
     {
         $user = Auth::user();
-
-        return view('portal.profile', compact('user'));
+        $socialProfiles = $user->socialProfiles;
+        return view('portal.profile', compact('user', 'socialProfiles'));
     }
 
     public function update(Request $request, UpdateUser $service): void
@@ -129,5 +130,13 @@ class UserController extends PortalController
             process_error($e);
             raise_500('Felhasználó aktiválása nem sikerült');
         }
+    }
+
+    public function detachSocialProfile(SocialProvider $provider)
+    {
+        Auth::user()->socialProfiles()->where('social_provider', $provider)->delete();
+
+        Message::success(sprintf('A(z) "%s" közösségi fiókodat szétkapcsoltuk.', $provider->text()));
+        redirect_route('portal.my_profile');
     }
 }

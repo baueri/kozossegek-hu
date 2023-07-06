@@ -71,8 +71,9 @@
                                                 data-type="standard"
                                                 data-shape="rectangular"
                                                 data-theme="outline"
-                                                data-text="signin_with"
+                                                data-text="continue_with"
                                                 data-size="large"
+                                                data-width="205"
                                                 data-logo_alignment="center"
                                                 data-locale="hu">
                                            </div>

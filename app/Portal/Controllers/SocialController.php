@@ -20,16 +20,13 @@ class SocialController extends Controller
 {
     public function socialLogin(SocialProvider $provider, UserLegalNotices $legalNotices): void
     {
-        if ($provider === SocialProvider::google) {
-
-        }
         $credential = $this->request->get('credential');
 
         $client = new Google_Client(['client_id' => env('GOOGLE_CLIENT_ID')]);  // Specify the CLIENT_ID of the app that accesses the backend
         $payload = $client->verifyIdToken($credential);
         if ($payload) {
             $socialId = $payload['sub'];
-            $user = Users::query()->bySocialLogin(SocialProvider::google, $socialId)->first();
+            $user = Users::query()->bySocialLogin($provider, $socialId)->first();
 
             if (!$user) {
                 $user = Users::query()->where('email', $payload['email'])->notDeleted()->first();

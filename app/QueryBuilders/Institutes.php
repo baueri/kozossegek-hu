@@ -2,7 +2,6 @@
 
 namespace App\QueryBuilders;
 
-use App\Models\Institute;
 use App\QueryBuilders\Relations\HasManyChurchGroupViews;
 use Framework\Model\EntityQueryBuilder;
 use Framework\Model\Relation\Has;
@@ -16,11 +15,6 @@ class Institutes extends EntityQueryBuilder
 {
     use HasManyChurchGroupViews;
     use SoftDeletes;
-
-    public static function getModelClass(): string
-    {
-        return Institute::class;
-    }
 
     public function cityModel(): Relation
     {
