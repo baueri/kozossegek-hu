@@ -21,6 +21,7 @@ class SocialController extends Controller
     public function socialLogin(SocialProvider $provider, UserLegalNotices $legalNotices): void
     {
         $credential = $this->request->get('credential');
+        $redirectAfter = $this->request->get('redirect_after');
 
         $client = new Google_Client(['client_id' => env('GOOGLE_CLIENT_ID')]);  // Specify the CLIENT_ID of the app that accesses the backend
         $payload = $client->verifyIdToken($credential);
@@ -42,6 +43,9 @@ class SocialController extends Controller
                 echo "Sikeres bejelentkezés";
                 sleep(1);
                 Auth::login($user);
+                if ($redirectAfter) {
+                    redirect($redirectAfter);
+                }
                 redirect_route('home');
             }
 
@@ -65,6 +69,9 @@ class SocialController extends Controller
             $message = new RegistrationEmail($user, $token);
             (new Mailer())->to($user->email)->send($message);
             Message::success('Sikeres regisztráció! Az aktiváló linket elküldtük az email címedre.');
+            if ($redirectAfter) {
+                redirect($redirectAfter);
+            }
             redirect_route('portal.my_profile');
         } else {
             // Invalid ID token

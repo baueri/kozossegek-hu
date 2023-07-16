@@ -58,31 +58,15 @@
                                        <input type="password" class="form-control" name="password" placeholder="jelszó"/>
                                    </div>
                                    <div>
-                                       @if(env('GOOGLE_LOGIN_ENABLED'))
-                                           <div id="g_id_onload"
-                                                data-client_id="{{ env('GOOGLE_CLIENT_ID') }}"
-                                                data-context="signin"
-                                                data-ux_mode="popup"
-                                                data-login_uri="@route('social_login', ['provider' => 'google'])"
-                                                data-auto_prompt="false">
-                                           </div>
-
-                                           <div class="g_id_signin mb-3"
-                                                data-type="standard"
-                                                data-shape="rectangular"
-                                                data-theme="outline"
-                                                data-text="continue_with"
-                                                data-size="large"
-                                                data-width="205"
-                                                data-logo_alignment="center"
-                                                data-locale="hu">
-                                           </div>
-                                       @endif
+                                       @include('portal.partials.google-login', ['width' => 205])
 <!--                                       <div class="fb-login-button mb-3" data-width="238px" data-size="medium" data-button-type="login_with" data-layout="default" data-auto-logout-link="false" data-use-continue-as="true"></div><br/>-->
                                    </div>
-                                   <div class="text-center">
+                                   <p class="text-center">
                                        <button type="submit" class="btn btn-altblue">Belépés</button>
-                                   </div>
+                                   </p>
+                                   <p class="text-center">
+                                       <a href="@route('portal.register')" class="">Regisztráció</a>
+                                   </p>
                                </form>
                            </div>
                        </li>

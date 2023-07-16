@@ -10,7 +10,8 @@
                 <div class="form-group">
                     <input type="password" name="password" placeholder="jelszó" class="form-control"/>
                 </div>
-                <button type="submit" class="btn btn-darkblue">belépés</button>
+                @include('portal.partials.google-login')
+                <button type="submit" class="btn btn-altblue">belépés</button>
                 <p class="message mt-3">
                     <a href="@route('portal.forgot_password')">Elfelejtettem a jelszavam</a>
                 </p>

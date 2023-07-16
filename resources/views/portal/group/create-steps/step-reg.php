@@ -25,7 +25,7 @@
                     <input type="password" name="password_again" class="form-control form-control-sm" required data-describedby="validate_password_again">
                     <div id="validate_password_again" class="validate_message"></div>
                 </div>
-                <button type="submit" class="btn btn-darkblue">Tovább</button>
+                <button type="submit" class="btn btn-altblue">Tovább</button>
             </form>
         </div>
     </div>

@@ -7,7 +7,7 @@ use App\Models\ChurchGroup;
 use App\Models\ChurchGroupView;
 use App\QueryBuilders\ChurchGroups;
 use App\QueryBuilders\GroupTags;
-use App\QueryBuilders\GroupViews;
+use App\QueryBuilders\ChurchGroupViews;
 use App\QueryBuilders\Institutes;
 use App\Services\GroupSearchRepository;
 use Exception;
@@ -54,7 +54,7 @@ class ApiGroupController extends Controller
         }
     }
 
-    public function instituteByMiserendId(Request $request, Institutes $institutes, GroupViews $churchGroups)
+    public function instituteByMiserendId(Request $request, Institutes $institutes, ChurchGroupViews $churchGroups)
     {
         $institute = $institutes->where('miserend_id', $request['id'])->first();
 

@@ -33,7 +33,7 @@ $(() => {
     });
 
     $("body").click((e) => {
-        if (!$(e.target).closest(".nav-item").length) {
+            if (!$(e.target).closest(".nav-item").length) {
             $(".nav-item").removeClass("open");
         }
     });
@@ -48,9 +48,12 @@ $(window).on("load scroll", () => {
 });
 
 $(window).on("resize", () => {
-    $("#toggle_main_menu").prop("checked", false);
+    mobile_menu("close");
 })
 
+function mobile_menu(action) {
+    $("#toggle_main_menu").prop("checked", action === "open")
+}
 
 function setAgeGroupClass()
 {
@@ -138,7 +141,7 @@ const loadFile = function (event, element) {
 
 function detectmob()
 {
-    return ((window.innerWidth <= 800) && (window.innerHeight <= 600));
+    return (window.innerWidth <= 991);
 }
 
 function validate_email(mail)
@@ -204,6 +207,13 @@ function validate_email(mail)
 
 function showLoginModal(redirectUrlAfterLogin)
 {
+    if (detectmob()) {
+        mobile_menu("open");
+        $("#popup-login-username").focus();
+    } else {
+        $("label[for='popup-login-username']").closest(".nav-item").addClass("open");
+    }
+    return;
     $.post("/login-modal", {redirect: redirectUrlAfterLogin}, html => {
         dialog.show({
             size: "sm",

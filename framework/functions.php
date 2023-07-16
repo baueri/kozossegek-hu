@@ -6,7 +6,6 @@ use App\Mailable\ThrowableCriticalErrorEmail;
 use App\Middleware\AdminMiddleware;
 use App\Repositories\EventLogRepository;
 use App\Services\EventLogger;
-use Arrilot\DotEnv\DotEnv;
 use Carbon\Carbon;
 use Framework\Application;
 use Framework\Database\Builder;

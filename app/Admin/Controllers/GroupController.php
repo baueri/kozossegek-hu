@@ -14,7 +14,7 @@ use App\Mail\DefaultMailable;
 use App\Mail\GroupAcceptedEmail;
 use App\Models\ChurchGroupView;
 use App\QueryBuilders\ChurchGroups;
-use App\QueryBuilders\GroupViews;
+use App\QueryBuilders\ChurchGroupViews;
 use App\Services\RebuildSearchEngine;
 use Exception;
 use Framework\Exception\FileTypeNotAllowedException;
@@ -28,7 +28,7 @@ use function PHPUnit\Framework\assertIsBool;
 
 class GroupController extends AdminController
 {
-    public function __construct(Request $request, private GroupViews $groupViews)
+    public function __construct(Request $request, private ChurchGroupViews $groupViews)
     {
         parent::__construct($request);
     }
