@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Components\AszfCheckBox;
+use App\Http\Components\BreadCrumb;
 use App\Http\Components\ComponentParser;
 use App\Http\Components\FacebookShareButton;
 use App\Http\Components\FeaturedTitle;
@@ -82,6 +83,7 @@ return [
         'occasion_frequency_selector' => OccasionFrequencySelector::class,
         'priority_selector' => PrioritySelector::class,
         'open_street_map' => OpenStreeMap::class,
-        'base_selector' => BaseSelector::class
+        'base_selector' => BaseSelector::class,
+        'breadcrumb' => BreadCrumb::class
     ]
 ];

@@ -20,6 +20,7 @@
         Ez a közösséged jelenleg <b>inaktív</b> állapotban van, ezért mások számára nem jelenik meg a találati listában, illetve közvetlenül se tudják megtekinteni az adatlapját. Amennyiben láthatóvá szeretnéd tenni, állítsd át az állapotát <b>aktívra</b> a <a href="{{ $group->getEditUrl() }}" title="szerkesztés">szerkesztési oldalon</a>.
         @endalert
     @endif
+    @component('breadcrumb', ['churchGroup' => $group, 'institute' => $institute])
     <div class="row">
         <div class="col-lg-4 d-md-none d-lg-block">
             <div><img class="img-big" src="{{ $group->getThumbnail() }}" alt="{{ $group->name }}"></div>
