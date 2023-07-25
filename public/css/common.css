@@ -53,6 +53,16 @@
     color: #fff;
 }
 
+.btn-outline-altblue {
+    color: var(--alt-blue);
+    border: 1px solid var(--alt-blue);
+}
+
+.btn-outline-altblue:hover {
+    background: var(--alt-blue);
+    color: #fff;
+}
+
 .btn-lightred {
     background-color: var(--light-red);
     color: #fff;

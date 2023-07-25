@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Traits\GroupTrait;
 use App\Portal\BreadCrumb\BreadCrumbable;
+use App\QueryBuilders\GroupViews;
 use App\Services\SystemAdministration\SiteMap\ChangeFreq;
 use Framework\Model\Entity;
 use SebastianBergmann\CodeCoverage\BranchAndPathCoverageNotSupportedException;
@@ -32,6 +33,8 @@ use SebastianBergmann\CodeCoverage\BranchAndPathCoverageNotSupportedException;
 class ChurchGroupView extends Entity implements BreadCrumbable
 {
     use GroupTrait;
+
+    protected ?string $builder = GroupViews::class;
 
     public function getThumbnail(): string
     {

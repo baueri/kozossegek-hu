@@ -28,7 +28,7 @@ class GroupViews extends ChurchGroups
 
     public function institute(): Relation
     {
-        return $this->has(Has::one, Institutes::class, 'institute_id');
+        return $this->has(Has::one, Institutes::class, 'id', 'institute_id');
     }
 
     public function forUser(User $user): self

@@ -8,8 +8,8 @@ use App\Enums\OccasionFrequency;
 use App\Enums\GroupPending;
 use App\Enums\WeekDay;
 use App\Enums\GroupStatus;
+use App\Models\Institute;
 use App\Portal\BreadCrumb\BreadCrumb;
-use Framework\Support\Arr;
 use Legacy\JoinMode;
 use App\Helpers\GroupHelper;
 use App\Models\User;
@@ -19,6 +19,9 @@ use Framework\Model\HasTimestamps;
 use Framework\Support\Collection;
 use Framework\Support\StringHelper;
 
+/**
+ * @property-read ?Institute $institute
+ */
 trait GroupTrait
 {
     use EntitySiteMappable;
@@ -181,30 +184,22 @@ trait GroupTrait
 
     public function getBreadCrumb(): BreadCrumb
     {
-        $referer = Arr::get($_SERVER, 'HTTP_REFERER');
-
-        if ($referer && str_contains($referer, get_site_url() . '/kozossegek')) {
-            $root = ['name' => 'Közösségek', 'position' => 1, 'url' => $referer];
-        } else {
-            $root = ['name' => 'Közösségek', 'position' => 1, 'url' => route('portal.groups')];
-        }
-        $breadCrumbs = [$root];
-
-        $breadCrumbs[] = [
-            'name' => $this->city,
-            'position' => 2,
-            'url' => route('portal.groups', ['varos' => $this->city])
-        ];
-
-        $breadCrumbs[] = [
-            'name' => $this->institute_name,
-            'position' => 3,
-            'url' => $this->institute?->groupsUrl()
-        ];
-
-        $breadCrumbs[] = [
-            'name' => $this->name,
-            'position' => 4
+        $breadCrumbs = [
+            ['name' => 'Közösségek', 'position' => 1, 'url' => route('portal.groups')],
+            [
+                'name' => $this->city,
+                'position' => 2,
+                'url' => route('portal.groups', ['varos' => $this->city])
+            ],
+            [
+                'name' => $this->institute_name,
+                'position' => 3,
+                'url' => $this->institute?->groupsUrl()
+            ],
+            [
+                'name' => $this->name,
+                'position' => 4
+            ]
         ];
 
         return new BreadCrumb($breadCrumbs);

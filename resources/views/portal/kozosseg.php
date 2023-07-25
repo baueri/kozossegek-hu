@@ -85,7 +85,7 @@
                 {{ $group->description }}
             @endif
             <p class="mt-4">
-                <span class="btn btn-outline-darkblue open-contact-modal"><i class="fas fa-envelope"></i> Érdekel!</span>
+                <span class="btn btn-outline-altblue open-contact-modal"><i class="fas fa-envelope"></i> Érdekel!</span>
             </p>
         </div>
     </div>
