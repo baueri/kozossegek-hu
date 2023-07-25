@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Framework\Model;
 
 use Error;
+use Framework\Database\Builder;
 use Framework\Model\Relation\Relation;
 use Framework\Support\Arr;
+use Framework\Support\StringHelper;
 use ReflectionMethod;
 
 /**
@@ -154,5 +156,18 @@ abstract class Entity
         $newValues = $this->attributes;
 
         return array_diff($newValues, $original);
+    }
+
+    public function getBuilder(): ?Builder
+    {
+        if ($this->builder) {
+            return new $this->builder;
+        }
+
+        $builder = "\\App\\QueryBuilders\\" . StringHelper::plural(get_class_name(static::class));
+        if (class_exists($builder)) {
+            return new $builder;
+        }
+        return null;
     }
 }
