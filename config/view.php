@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Components\AszfCheckBox;
-use App\Http\Components\BreadCrumb;
 use App\Http\Components\ComponentParser;
 use App\Http\Components\FacebookShareButton;
 use App\Http\Components\FeaturedTitle;
@@ -15,6 +14,7 @@ use App\Http\Components\Selectors\OccasionFrequencySelector;
 use App\Http\Components\Selectors\OnDaysSelector;
 use App\Http\Components\Selectors\SpiritualMovementSelector;
 use App\Http\Components\Selectors\UserGroupSelector;
+use App\Portal\BreadCrumb\BreadCrumb;
 use App\Services\SystemAdministration\SiteMap\PrioritySelector;
 
 return [

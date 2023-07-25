@@ -8,6 +8,8 @@ use App\Enums\OccasionFrequency;
 use App\Enums\GroupPending;
 use App\Enums\WeekDay;
 use App\Enums\GroupStatus;
+use App\Portal\BreadCrumb\BreadCrumb;
+use Framework\Support\Arr;
 use Legacy\JoinMode;
 use App\Helpers\GroupHelper;
 use App\Models\User;
@@ -175,5 +177,36 @@ trait GroupTrait
     public function getUrl(): string
     {
         return $this->url();
+    }
+
+    public function getBreadCrumb(): BreadCrumb
+    {
+        $referer = Arr::get($_SERVER, 'HTTP_REFERER');
+
+        if ($referer && str_contains($referer, get_site_url() . '/kozossegek')) {
+            $root = ['name' => 'Közösségek', 'position' => 1, 'url' => $referer];
+        } else {
+            $root = ['name' => 'Közösségek', 'position' => 1, 'url' => route('portal.groups')];
+        }
+        $breadCrumbs = [$root];
+
+        $breadCrumbs[] = [
+            'name' => $this->city,
+            'position' => 2,
+            'url' => route('portal.groups', ['varos' => $this->city])
+        ];
+
+        $breadCrumbs[] = [
+            'name' => $this->institute_name,
+            'position' => 3,
+            'url' => $this->institute?->groupsUrl()
+        ];
+
+        $breadCrumbs[] = [
+            'name' => $this->name,
+            'position' => 4
+        ];
+
+        return new BreadCrumb($breadCrumbs);
     }
 }
