@@ -23,7 +23,7 @@
             </li>
             @auth
                 <li class="nav-item nav-item-profile">
-                    <a href="@route('portal.my_profile')" class="nav-link user-menu"><i class="fa fa-user-circle" style="font-size: 18px;"></i></a>
+                    <a href="#" class="nav-link user-menu"><i class="fa fa-user-circle" style="font-size: 18px;" onclick="return false;"></i></a>
                     <ul class="submenu">
                         <li class="nav-item">
                             <a href="@route('portal.my_profile')" class="nav-link">@icon('user-circle') Fiókom</a>
@@ -42,19 +42,34 @@
                     </ul>
                 </li>
             @else
-                <li class="nav-item">
-                    <a href="@route('login')" class="nav-link d-none d-lg-block">
-                        <i class="far fa-user-circle" style="font-size: 18px;"></i>
+                <li class="nav-item px-2">
+                    <a href="#" class="nav-link d-none d-lg-block">
+                        <label for="popup-login-username" class="mb-0" style="cursor:pointer;"><i class="far fa-user-circle" style="font-size: 18px;"></i></label>
                     </a>
                     <ul class="submenu">
-                        <li class="nav-item">
-                            <a href="@route('login')" class="nav-link">
-                                Belépés
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="@route('portal.register')" class="nav-link">Regisztráció</a>
-                        </li>
+                       <li class="nav-item" id="login-box">
+                           <div class="p-lg-3">
+                               <form action="@route('doLogin')" method="post">
+                                   <label class="text-center w-100">Bejelentkezés</label><br/>
+                                   <div class="form-group">
+                                       <input type="text" class="form-control" name="username" placeholder="email cím" id="popup-login-username"/>
+                                   </div>
+                                   <div class="form-group">
+                                       <input type="password" class="form-control" name="password" placeholder="jelszó"/>
+                                   </div>
+                                   <div>
+                                       @include('portal.partials.google-login', ['width' => 205])
+<!--                                       <div class="fb-login-button mb-3" data-width="238px" data-size="medium" data-button-type="login_with" data-layout="default" data-auto-logout-link="false" data-use-continue-as="true"></div><br/>-->
+                                   </div>
+                                   <p class="text-center">
+                                       <button type="submit" class="btn btn-altblue">Belépés</button>
+                                   </p>
+                                   <p class="text-center">
+                                       <a href="@route('portal.register')" class="">Regisztráció</a>
+                                   </p>
+                               </form>
+                           </div>
+                       </li>
                     </ul>
                 </li>
             @endauth

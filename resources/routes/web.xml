@@ -36,6 +36,7 @@
         <route-group middleware="auth">
             <route method="get" uri="profile" as="portal.my_profile" controller="UserController" use="profile"/>
             <route method="post" uri="profile/update" as="portal.profile.update" controller="UserController" use="update"/>
+            <route method="get" uri="profile/detach-social-profile" as="portal.detach_social_profile" controller="UserController" use="detachSocialProfile"/>
 
             <route method="get" uri="my-group/{id}/edit" as="portal.edit_group" controller="GroupController" use="editGroup"/>
             <route method="get" uri="my-group/{id}/download-document" as="portal.download_document" controller="GroupController" use="downloadDocument"/>
@@ -59,18 +60,26 @@
         <route method="post" uri="send-message" as="portal.contact_us" controller="ContactController" use="send"/>
     </route-group>
 
+    <route method="all" uri="social/{provider}/login" controller="\App\Portal\Controllers\SocialController" use="socialLogin" as="social_login"/>
+    <route method="all" uri="social/{provider}/deauthorize" controller="\App\Portal\Controllers\SocialController" use="deauthorize" as="social_deauthorize"/>
+
     <!--  FIÓK AKTIVÁLÁS  -->
     <route method="all" uri="/user/activate" as="portal.user.activate" controller="App\Portal\Controllers\UserController" use="activateUser"/>
     <route method="post" uri="login-modal" as="portal.login_modal" view="portal.partials.login_modal"/>
 
     <!-- BELÉPÉS -->
     <route method="get" uri="login" controller="App\Portal\Controllers\LoginController" use="login" as="login"/>
-    <route method="post" uri="login" controller="App\Portal\Controllers\LoginController" use="doLogin"/>
+    <route method="post" uri="login" controller="App\Portal\Controllers\LoginController" use="doLogin" as="doLogin"/>
     <route method="get" uri="logout" controller="App\Portal\Controllers\LoginController" use="logout" as="logout"/>
     <route method="post" uri="resend-activation" controller="App\Portal\Controllers\LoginController" use="resendActivationEmail" as="resend_activation"/>
 
     <!-- VÍZJELES KÉPGENERÁLÁS -->
     <route method="get" uri="/media/{entity_type}/images/{image}" controller="App\Portal\Controllers\ImageController" use="getImage"/>
+
+    <!--  Fiók törlés info link  -->
+    <route method="get" uri="fiok-torlese" view="portal/data_deletion_info"/>
+
+    <route method="get" uri="opensearch.xml" view="portal/opensearch"/>
 
     <!-- Adatbázisban tárolt statikus oldalak. FIGYELEM!!!! EZ ALÁ MÁR NE KERÜLJÖN ROUTE!!! -->
     <route method="get" uri="{slug}" controller="App\Portal\Controllers\PageController" use="page" as="portal.page" middleware="App\Middleware\ComingSoon"/>

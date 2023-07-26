@@ -6,7 +6,7 @@ use App\Helpers\FileHelper;
 use App\Helpers\GroupHelper;
 use App\Models\ChurchGroup;
 use App\QueryBuilders\ChurchGroups;
-use App\QueryBuilders\GroupViews;
+use App\QueryBuilders\ChurchGroupViews;
 use App\QueryBuilders\Institutes;
 use App\Services\RebuildSearchEngine;
 use App\Storage\Base64Image;
@@ -33,7 +33,7 @@ abstract class BaseGroupService
 
     protected function updateSearchEngine(ChurchGroup $group): void
     {
-        $this->searchEngineBuilder->updateSearchEngine(GroupViews::query()->find($group->getId()));
+        $this->searchEngineBuilder->updateSearchEngine(ChurchGroupViews::query()->find($group->getId()));
     }
 
     protected function syncTags(ChurchGroup $group, array $tags = []): void

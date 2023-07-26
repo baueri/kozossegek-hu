@@ -23,11 +23,15 @@ class PasswordGenerator
 
     private int $length;
 
-    public function __construct(null|int $length = null)
+    public function __construct(null|int $length = null, array $settings = [])
     {
         $length ??= 8;
         if (is_numeric($length) && $length <= 0) {
             throw new InvalidArgumentException('Please provide a valid number!');
+        }
+
+        if ($settings) {
+            $this->settings = $settings;
         }
 
         $this->length = $length;

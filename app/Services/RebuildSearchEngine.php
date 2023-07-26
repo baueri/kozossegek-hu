@@ -3,12 +3,12 @@
 namespace App\Services;
 
 use App\Models\ChurchGroupView;
-use App\QueryBuilders\GroupViews;
+use App\QueryBuilders\ChurchGroupViews;
 
 class RebuildSearchEngine
 {
     public function __construct(
-        private GroupViews $groupRepo
+        private ChurchGroupViews $groupRepo
     ) {
     }
 

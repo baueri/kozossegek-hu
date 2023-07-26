@@ -13,7 +13,7 @@
         <div class="step-container">
             <h4>Felhasználói adatok</h4>
             <p>
-                <a href="@route('login')" id="login-existing-user" onclick="showLoginModal('{{ request()->uri }}'); return false;"><b>
+                <a href="@route('login')" id="login-existing-user" onclick="showLoginModal(); return false;"><b>
                         @icon('key') van már fiókom, belépek
                     </b></a>
             </p>
@@ -209,7 +209,7 @@
     </div>
     @csrf()
     <div class="text-center">
-        <button type="submit" id="preview-new-group" class="btn btn-lg btn-darkblue">Tovább</button>
+        <button type="submit" id="preview-new-group" class="btn btn-lg btn-altblue">Tovább</button>
     </div>
 </form>
 <script>
@@ -321,8 +321,8 @@
 
         function validatePassword()
         {
-            const pw1 = $("[name=password]");
-            const pw2 = $("[name=password_again]");
+            const pw1 = $("[name=password]", form);
+            const pw2 = $("[name=password_again]", form);
 
             if (pw1.length === 0 && pw2.length === 0) {
                 return true;
