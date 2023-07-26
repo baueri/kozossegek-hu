@@ -33,7 +33,7 @@ $(() => {
     });
 
     $("body").click((e) => {
-            if (!$(e.target).closest(".nav-item").length) {
+        if (!$(e.target).closest(".nav-item").length && $(e.target).attr("id") !== "login-existing-user" && $(e.target).closest("#login-existing-user").length === 0) {
             $(".nav-item").removeClass("open");
         }
     });
