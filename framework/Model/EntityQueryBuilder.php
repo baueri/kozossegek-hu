@@ -50,7 +50,11 @@ abstract class EntityQueryBuilder
      */
     public static function getModelClass(): string
     {
-        $singular = substr(static::class, 0, strlen(static::class) -1);
+        if (str_ends_with(static::class, 'ies')) {
+            $singular = str_replace('ies', 'y', static::class);
+        } else {
+            $singular = substr(static::class, 0, strlen(static::class) -1);
+        }
 
         [, $className] = namespace_split($singular);
 
