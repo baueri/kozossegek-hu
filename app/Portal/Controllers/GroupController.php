@@ -12,6 +12,7 @@ use App\Portal\Services\PortalCreateGroup;
 use App\Portal\Services\PortalUpdateGroup;
 use App\Portal\Services\SendGroupContactMessage;
 use App\QueryBuilders\ChurchGroups;
+use App\QueryBuilders\Cities;
 use App\QueryBuilders\ChurchGroupViews;
 use App\QueryBuilders\Institutes;
 use App\QueryBuilders\UserTokens;
@@ -35,8 +36,12 @@ class GroupController extends PortalController
     public function kozossegek(Request $request, GroupList $service): string
     {
         $filter = $request->collect()->merge(['korosztaly' => $request['korosztaly']])->filter();
+        $breadcrumb = null;
+        if ($varos = $filter->get('varos')) {
+            $breadcrumb = Cities::query()->where('name', $varos)->first()->getBreadCrumb();
+        }
 
-        return $service->getHtml($filter);
+        return $service->getHtml($filter, $breadcrumb);
     }
 
     public function intezmenyKozossegek(Request $request, GroupList $service, Institutes $institutes): string
@@ -61,7 +66,7 @@ class GroupController extends PortalController
 
         return $service->getHtml(collect([
             'institute_id' => $institute->id
-        ]));
+        ]), $institute->getBreadCrumb());
     }
 
     public function groupsByCity(Request $request, GroupList $service): string

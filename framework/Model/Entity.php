@@ -7,6 +7,7 @@ namespace Framework\Model;
 use Error;
 use Framework\Model\Relation\Relation;
 use Framework\Support\Arr;
+use Framework\Support\StringHelper;
 use ReflectionMethod;
 
 /**
@@ -82,12 +83,10 @@ abstract class Entity
             return $this->relations[$relation] ?? null;
         }
 
-        if ($relation && $this->builder && method_exists($this->builder, $relation)) {
-            $method = new ReflectionMethod($this->builder, $relation);
+        if ($relation && ($builder = $this->getBuilder()) && method_exists($builder, $relation)) {
+            $method = new ReflectionMethod($builder, $relation);
             $returnType = $method->getReturnType();
             if ($returnType->getName() === Relation::class) {
-                /** @var \Framework\Model\EntityQueryBuilder $builder */
-                $builder = new $this->builder;
                 $queryRelation = $builder->getRelation($relation);
                 $builder->fillRelations($this, $queryRelation, str_ends_with($name, '_count'));
                 if (str_ends_with($name, '_count')) {
@@ -155,5 +154,18 @@ abstract class Entity
         $newValues = $this->attributes;
 
         return array_diff($newValues, $original);
+    }
+
+    public function getBuilder(): ?EntityQueryBuilder
+    {
+        if ($this->builder) {
+            return new $this->builder;
+        }
+
+        $builder = "\\App\\QueryBuilders\\" . StringHelper::plural(get_class_name(static::class));
+        if (class_exists($builder)) {
+            return new $builder;
+        }
+        return null;
     }
 }

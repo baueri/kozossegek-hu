@@ -14,6 +14,7 @@ use App\Http\Components\Selectors\OccasionFrequencySelector;
 use App\Http\Components\Selectors\OnDaysSelector;
 use App\Http\Components\Selectors\SpiritualMovementSelector;
 use App\Http\Components\Selectors\UserGroupSelector;
+use App\Portal\BreadCrumb\BreadCrumb;
 use App\Services\SystemAdministration\SiteMap\PrioritySelector;
 
 return [
@@ -82,6 +83,7 @@ return [
         'occasion_frequency_selector' => OccasionFrequencySelector::class,
         'priority_selector' => PrioritySelector::class,
         'open_street_map' => OpenStreeMap::class,
-        'base_selector' => BaseSelector::class
+        'base_selector' => BaseSelector::class,
+        'breadcrumb' => BreadCrumb::class
     ]
 ];
