@@ -53,6 +53,7 @@
 
 @extends('portal')
     <div class="container inner">
+        {{ $breadcrumb }}
         @yield('templom_title')
         @if($total)
             @include('portal.partials.kozossegek-view2')
