@@ -12,14 +12,9 @@ use Framework\Model\Relation\Relation;
 /**
  * @phpstan-extends ChurchGroups<ChurchGroupView>
  */
-class GroupViews extends ChurchGroups
+class ChurchGroupViews extends ChurchGroups
 {
     public const TABLE = 'v_groups';
-
-    public static function getModelClass(): string
-    {
-        return ChurchGroupView::class;
-    }
 
     public function tags(): Relation
     {

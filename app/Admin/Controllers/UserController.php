@@ -7,7 +7,7 @@ use App\Auth\Auth;
 use Legacy\UserRole;
 use App\Mail\RegistrationEmail;
 use App\Models\User;
-use App\QueryBuilders\GroupViews;
+use App\QueryBuilders\ChurchGroupViews;
 use App\QueryBuilders\Users;
 use App\QueryBuilders\UserTokens;
 use App\Services\DeleteUser;
@@ -88,7 +88,7 @@ class UserController extends AdminController
         return view('admin.user.edit', $model);
     }
 
-    public function managedGroups(Request $request, Users $repository, GroupViews $groupViews)
+    public function managedGroups(Request $request, Users $repository, ChurchGroupViews $groupViews)
     {
         $user = $repository->findOrFail($request['id']);
         $managedGroups = $groupViews

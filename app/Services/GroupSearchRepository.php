@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Models\User;
-use App\QueryBuilders\GroupViews;
+use App\QueryBuilders\ChurchGroupViews;
 use Framework\Database\Builder;
 use Framework\Model\ModelCollection;
 use Framework\Model\PaginatedModelCollection;
@@ -11,7 +11,7 @@ use Framework\Support\StringHelper;
 
 class GroupSearchRepository
 {
-    public function __construct(public readonly GroupViews $repository)
+    public function __construct(public readonly ChurchGroupViews $repository)
     {
     }
 

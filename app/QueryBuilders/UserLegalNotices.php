@@ -12,11 +12,6 @@ use Framework\Model\EntityQueryBuilder;
  */
 class UserLegalNotices extends EntityQueryBuilder
 {
-    public static function getModelClass(): string
-    {
-        return UserLegalNotice::class;
-    }
-
     public function forUser(User $user): self
     {
         return $this->where('user_id', $user->id);

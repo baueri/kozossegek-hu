@@ -24,11 +24,6 @@ class ChurchGroups extends EntityQueryBuilder
 
     public const GROUP_INACTIVATE_AFTER_NOTIFICATION = '1 MONTH';
 
-    public static function getModelClass(): string
-    {
-        return ChurchGroup::class;
-    }
-
     public function tags(): Relation
     {
         return $this->has(Has::many, GroupTags::class);

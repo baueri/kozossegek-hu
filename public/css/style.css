@@ -156,10 +156,6 @@ body:not(.home) .featured-header {
     color: #aaa !important;
 }
 
-nav.navbar .nav-link i {
-    margin-right: 5px;
-}
-
 nav.navbar .nav-item {
     position: relative;
 }
@@ -173,7 +169,10 @@ nav.navbar .submenu {
     margin: 0;
     white-space: nowrap;
     background: #fff;
-    border: 1px solid #ccc;
+    border: 1px solid #dadada;
+    border-top-width: 3px;
+    border-bottom-left-radius: .3em;
+    border-bottom-right-radius: .3em;
     right: 0;
     transition: opacity ease-in .2s;
     max-height: 0;
@@ -186,22 +185,19 @@ nav.navbar .submenu {
     font-family: 'Raleway', sans-serif;
 }
 
-nav a {
-    /*text-transform: initial !important;*/
+#login-box {
+    width: 237px;
+    max-width: 100%;
 }
 
-nav.navbar .nav-item:hover .submenu {
-    opacity: 1;
+nav.navbar .nav-item.open .submenu {
+    opacity: 1 ;
     max-height: initial;
 }
 
-nav.navbar .submenu .nav-item:hover {
-    background: #fafafa;
+nav.navbar .navbar-nav > .nav-item:hover {
+    background: #f1f1f1;
 }
-
-nav.navbar .submenu a {
-}
-
 
 .nav-fbook {
     margin-left: 20px;
@@ -439,6 +435,10 @@ input[name=search]::placeholder, input[name=varos]::placeholder {
     font-size: 2em;
     color: #333;
     display: none;
+}
+
+#toggle_main_menu:checked~.navbar-nav .nav-item {
+    background: none;
 }
 
 #toggle_main_menu:checked~.navbar-nav .fa-angle-down {

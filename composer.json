@@ -12,7 +12,8 @@
     "jaybizzle/crawler-detect": "^1.2",
     "nesbot/carbon": "^2.50",
     "guzzlehttp/guzzle": "^7.4",
-    "vlucas/phpdotenv": "^5.5"
+    "vlucas/phpdotenv": "^5.5",
+    "google/apiclient": "^2.15"
   },
   "autoload": {
     "psr-4": {
@@ -22,7 +23,6 @@
       "Legacy\\": "legacy/"
     },
     "files": [
-      "framework/functions.php",
       "boot.php"
     ]
   },

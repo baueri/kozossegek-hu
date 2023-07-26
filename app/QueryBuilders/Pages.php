@@ -13,11 +13,6 @@ class Pages extends EntityQueryBuilder
 {
     use SoftDeletes;
 
-    public static function getModelClass(): string
-    {
-        return Page::class;
-    }
-
     public function user(): Relation
     {
         return $this->has(Has::one, Users::class, 'id', 'user_id');

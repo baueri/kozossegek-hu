@@ -2,6 +2,7 @@
 
 namespace App\QueryBuilders;
 
+use App\Enums\SocialProvider;
 use App\Models\User;
 use App\QueryBuilders\Relations\HasManyChurchGroupViews;
 use Framework\Model\EntityQueryBuilder;
@@ -18,14 +19,14 @@ class Users extends EntityQueryBuilder
     use HasManyChurchGroupViews;
     use SoftDeletes;
 
-    public static function getModelClass(): string
-    {
-        return User::class;
-    }
-
     public function groups(): Relation
     {
         return $this->has(Has::many, ChurchGroups::class, 'user_id');
+    }
+
+    public function socialProfiles(): Relation
+    {
+        return $this->has(Has::many, SocialProfiles::class, 'user_id');
     }
 
     public function byAuth(?string $username): static
@@ -39,6 +40,15 @@ class Users extends EntityQueryBuilder
         }
 
         return $this;
+    }
+
+    public function bySocialLogin(SocialProvider $provider, string $socialId): Users
+    {
+        return $this->notDeleted()->whereHas(
+            'socialProfiles',
+            fn (SocialProfiles $query) => $query->where('social_provider', $provider)
+                ->where('social_id', $socialId)
+        );
     }
 
     public function byEmail(?string $email): static

@@ -23,7 +23,37 @@ $(() => {
     $("#search-group select").on("change", function () {
         setAgeGroupClass();
     });
+
+    $(".navbar-nav > .nav-item > a").click(function () {
+        $(this).closest(".nav-item").toggleClass("open");
+        const submenu = $("> .submenu", $(this).closest(".nav-item"));
+        if (submenu.length) {
+            // submenu.toggleClass("open");
+        }
+    });
+
+    $("body").click((e) => {
+            if (!$(e.target).closest(".nav-item").length) {
+            $(".nav-item").removeClass("open");
+        }
+    });
 });
+
+$(window).on("load scroll", () => {
+    if ($(window).scrollTop() > 0 || typeof window.orientation !== 'undefined') {
+        $(".navbar").addClass("compact");
+    } else {
+        $(".navbar").removeClass("compact");
+    }
+});
+
+$(window).on("resize", () => {
+    mobile_menu("close");
+})
+
+function mobile_menu(action) {
+    $("#toggle_main_menu").prop("checked", action === "open")
+}
 
 function setAgeGroupClass()
 {
@@ -34,14 +64,6 @@ function setAgeGroupClass()
         sel.removeClass("has-val");
     }
 }
-
-$(window).on("load scroll", () => {
-    if ($(window).scrollTop() > 0 || typeof window.orientation !== 'undefined') {
-        $(".navbar").addClass("compact");
-    } else {
-        $(".navbar").removeClass("compact");
-    }
-});
 
 $.fn.instituteSelect = function (options) {
     $(this).each(function () {
@@ -119,7 +141,7 @@ const loadFile = function (event, element) {
 
 function detectmob()
 {
-    return ((window.innerWidth <= 800) && (window.innerHeight <= 600));
+    return (window.innerWidth <= 991);
 }
 
 function validate_email(mail)
@@ -185,6 +207,13 @@ function validate_email(mail)
 
 function showLoginModal(redirectUrlAfterLogin)
 {
+    if (detectmob()) {
+        mobile_menu("open");
+        $("#popup-login-username").focus();
+    } else {
+        $("label[for='popup-login-username']").closest(".nav-item").addClass("open");
+    }
+    return;
     $.post("/login-modal", {redirect: redirectUrlAfterLogin}, html => {
         dialog.show({
             size: "sm",
