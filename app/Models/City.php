@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Portal\BreadCrumb\BreadCrumb;
+use App\Portal\BreadCrumb\BreadCrumbable;
 use Framework\Model\Entity;
 
 /**
@@ -12,7 +14,20 @@ use Framework\Model\Entity;
  * @property string $lon
  * @property CityStat $statistics
  */
-class City extends Entity
+class City extends Entity implements BreadCrumbable
 {
-
+    public function getBreadCrumb(): BreadCrumb
+    {
+        return new BreadCrumb([
+            [
+                'name' => 'Közösségek',
+                'position' => 1,
+                'url' => route('portal.groups')
+            ],
+            [
+                'name' => $this->name,
+                'position' => 2
+            ],
+        ]);
+    }
 }

@@ -4,7 +4,10 @@ namespace App\Portal\Services;
 
 use App\Enums\GroupStatus;
 use App\Enums\AgeGroup;
+use App\Portal\BreadCrumb\BreadCrumb;
+use App\QueryBuilders\Cities;
 use Framework\Support\Collection;
+use function Symfony\Component\String\b;
 
 class GroupList
 {
@@ -13,7 +16,7 @@ class GroupList
     ) {
     }
 
-    public function getHtml(Collection $request): string
+    public function getHtml(Collection $request, ?BreadCrumb $breadCrumb = null): string
     {
         $baseFilter = $request->only('search', 'korosztaly', 'tags', 'institute_id');
         $baseFilter['varos'] = $request['varos'];
@@ -40,7 +43,8 @@ class GroupList
             'statuses' => $statuses,
             'selected_age_group' => $korosztaly,
             'header_background' => '/images/kozosseget_keresek.jpg',
-            'age_group_query' => http_build_query($baseFilter)
+            'age_group_query' => http_build_query($baseFilter),
+            'breadcrumb' => $breadCrumb
         ];
 
         if (empty($baseFilter)) {
