@@ -38,7 +38,7 @@ class GroupController extends PortalController
         $filter = $request->collect()->merge(['korosztaly' => $request['korosztaly']])->filter();
         $breadcrumb = null;
         if ($varos = $filter->get('varos')) {
-            $breadcrumb = Cities::query()->where('name', $varos)->first()->getBreadCrumb();
+            $breadcrumb = Cities::query()->where('name', $varos)->first()?->getBreadCrumb();
         }
 
         return $service->getHtml($filter, $breadcrumb);
