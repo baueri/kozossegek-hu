@@ -55,6 +55,11 @@ abstract class PaginatedAdminTable
     {
         $data = $this->getData();
 
+        if ($this->request->get('pg') > 1 && !$data->count()) {
+            $url = $this->request->uri . '?' . $this->request->except('pg')->buildQuery();
+            redirect($url);
+        }
+
         $model = [
             'columns' => $this->getColumns(),
             'order' => $this->order,
