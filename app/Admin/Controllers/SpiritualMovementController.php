@@ -6,12 +6,13 @@ use App\Admin\SpiritualMovement\SpiritualMovementTable;
 use App\Models\SpiritualMovement;
 use App\QueryBuilders\SpiritualMovements;
 use Exception;
+use Framework\Http\Controller;
 use Framework\Http\Message;
 use Framework\Http\Request;
 use Framework\Model\Exceptions\ModelNotFoundException;
 use Framework\Support\StringHelper;
 
-class SpiritualMovementController
+class SpiritualMovementController extends Controller
 {
     public function spiritualMovements(Request $request, SpiritualMovementTable $table): string
     {
@@ -90,6 +91,6 @@ class SpiritualMovementController
 
         Message::danger('Lelkiségi mozgalom törölve');
 
-        redirect_route('admin.spiritual_movement.list');
+        redirect($this->request->referer());
     }
 }

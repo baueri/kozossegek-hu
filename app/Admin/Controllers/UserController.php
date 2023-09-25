@@ -183,6 +183,6 @@ class UserController extends AdminController
 
         Message::warning('Felhasználó törölve');
 
-        redirect_route('admin.user.list');
+        redirect($this->request->referer());
     }
 }
