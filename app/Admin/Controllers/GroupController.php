@@ -88,7 +88,7 @@ class GroupController extends AdminController
     {
         $service->delete((int) $this->request['id']);
 
-        redirect_route('admin.group.list');
+        redirect($this->request->referer());
     }
 
     public function trash(ListGroups $service): string

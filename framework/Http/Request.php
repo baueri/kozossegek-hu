@@ -161,4 +161,9 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
     {
         return $this->get('_token') ?: $this->headers->get('X_CSRF_TOKEN');
     }
+
+    public function referer(): string
+    {
+        return (string) $_SERVER['HTTP_REFERER'] ?? '';
+    }
 }

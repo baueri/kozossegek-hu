@@ -111,7 +111,7 @@ class InstituteController extends AdminController
 
         Message::warning('Intézmény törölve');
 
-        redirect_route('admin.institute.list');
+        redirect($this->request->referer());
     }
 
     public function import(): string
