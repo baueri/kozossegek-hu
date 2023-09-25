@@ -23,13 +23,16 @@ _Részletes fejlesztői dokumentáció jelenleg nincs, de idővel igyekszünk en
 _(app port: 8000, pma port: 8001, username: admin, password: pw, email: amit lent megadsz)_
 ```shell
 git clone git@github.com:baueri/kozossegek-hu.git \
-  && cd kozossegek \
+  && cd kozossegek-hu \
   && cp .env.example .env \
-  && docker compose up -d --build \
-  && docker exec kozossegek_app php console install --name=Admin --username=admin --email="your.eamil@kozossegek.hu" --password=pw --seed
+  && docker compose up -d --build
 ```
 
-_Előfordulhat, hogy a `php console install` hamarabb fut le, mint, hogy a docker teljesen elindulna. ilyenkor futtasd újra a legutolsó command-ot._
+_Miután elindult a docker container, telepítéshez futtasd ezt:_
+
+```shell
+docker exec kozossegek_app php console install --name=Admin --username=admin --email="your.eamil@kozossegek.hu" --password=pw --seed
+```
 
 ### VAGY
 
@@ -71,18 +74,18 @@ A telepítőben
 1. létrejön az admin fiókod
 2. felkerül néhány dummy közösség, illetve a térkép modul és a keresőmotor frissül. Ez 1-2 percet igénybe vehet.
 
-Ha minden sikeresen lefutott, akkor az alkalmazás a http://localhost:8280 linken elérhető lesz.
+Ha minden sikeresen lefutott, akkor az alkalmazás a http://localhost:8000 (a port a konfigurációtól függ) linken elérhető lesz.
 
 ### Docker containerek
 A kozossegek.hu projektben három containert futtatunk:
 
-- **kozossegek_app**: Ide van az apache szerver felrakva, és az alkalmazás is itt fut.
-- **kozossegek_pma**: Phpmyadmin image van behúzva. A phpmyadmin innen érhető el: http://localhost:8281
-  - Alapértelmezetten a **user:** root, **password:** pw adatokkal tudsz belépni.
-- **kozossegek_mysql**: Ez az sql container, szintén a fenti login adatokkal lehet használni az sql cli-t.
+- **kozossegek_app**: Ide van az apache szerver felrakva, az alkalmazás innen van kiszolgálva.
+- **kozossegek_pma**: Phpmyadmin image van behúzva. A phpmyadmin innen érhető el: http://localhost:8001
+  - Alapértelmezetten a **user:** `root`, **password:** `pw` adatokkal tudsz belépni.
+- **kozossegek_mysql**: Ez az sql container, szintén a fenti login adatokkal (`root, pw`) lehet használni az sql cli-t.
 
 ## A keretrendszerről
-A kozossegek.hu egyedi keretrendszer alatt fut, `MVC` struktúrával. Ebben a fejezetben a legalapvetőbb dolgokat írjuk le, amivel már bele tudsz kapcsolódni a fejlesztésbe.
+A kozossegek.hu egyedi keretrendszer alatt fut, `MVC` struktúrával. Ebben a fejezetben a legalapvetőbb dolgokat írjuk le, amivel már be tudsz kapcsolódni a fejlesztésbe.
 
 A **route**-ok határozzák meg az oldal belépési pontját, amik nagyrészt egy **controller** class adott **metódusára** mutatnak.
 
