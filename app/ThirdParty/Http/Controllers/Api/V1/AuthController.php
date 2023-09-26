@@ -69,6 +69,6 @@ class AuthController extends Controller
             ]
         ];
 
-        return JWT::encode($payload, _env('API_SITE_KEY'), 'HS256');
+        return JWT::encode($payload, env('API_SITE_KEY'), 'HS256');
     }
 }

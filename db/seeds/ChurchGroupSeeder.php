@@ -18,7 +18,6 @@ use App\Storage\Base64Image;
 use Faker\Factory;
 use Framework\Console\Out;
 use Framework\Support\Password;
-use Framework\Support\StringHelper;
 use Legacy\UserRole;
 use Phinx\Seed\AbstractSeed;
 
@@ -34,6 +33,8 @@ class ChurchGroupSeeder extends AbstractSeed
         $ageGroups = AgeGroup::collect();
         $tags = Tags::query()->collect();
         $days = WeekDay::collect();
+        $imageSource = fn () => base64_encode(file_get_contents('https://loremflickr.com/300/300/church,catholic,christian/all'));
+
         for ($i = 0; $i < 200; $i++) {
             db()->beginTransaction();
             try {
@@ -67,8 +68,7 @@ class ChurchGroupSeeder extends AbstractSeed
                     ]);
                 }
                 ChurchGroups::query()->save($group, ['image_url' => GroupHelper::getPublicImagePath((int)$group->getId())]);
-                $imageSource = base64_encode(file_get_contents('https://loremflickr.com/300/300/church,catholic,christian/all'));
-                $image = new Base64Image($imageSource);
+                $image = new Base64Image($imageSource());
                 $image->saveImage($group->getStorageImageDir() . $group->id . '_1.jpg');
             } catch (\Throwable $e) {
                 if (str_contains($e->getMessage(), 'Duplicate entry')) {

@@ -3,7 +3,8 @@
 namespace App\Models;
 
 use App\Models\Traits\GroupTrait;
-use App\QueryBuilders\GroupViews;
+use App\QueryBuilders\ChurchGroupViews;
+use App\Portal\BreadCrumb\BreadCrumbable;
 use App\Services\SystemAdministration\SiteMap\ChangeFreq;
 use Framework\Model\Entity;
 use Framework\Support\Collection;
@@ -31,11 +32,11 @@ use Framework\Support\Collection;
  * @property-read null|string $confirmed_at
  * @property-read Collection $tags
  */
-class ChurchGroupView extends Entity implements ChurchGroupInterface
+class ChurchGroupView extends Entity implements ChurchGroupInterface, BreadCrumbable
 {
     use GroupTrait;
 
-    protected static ?string $queryBuilder = GroupViews::class;
+    protected static ?string $queryBuilder = ChurchGroupViews::class;
 
     public function getThumbnail(): string
     {

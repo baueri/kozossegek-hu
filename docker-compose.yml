@@ -43,8 +43,8 @@ services:
     volumes:
       - ./:/app
       - ./docker/app/kozossegek.conf:/etc/apache2/sites-enabled/kozossegek.conf
-    environment:
-      - STORAGE_PATH=${STORAGE_PATH}
+#    environment:
+#      - STORAGE_PATH=${STORAGE_PATH}
     ports:
       - "${APP_PORT}:8000"
     networks:

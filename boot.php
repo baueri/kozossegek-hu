@@ -31,17 +31,13 @@ const APP_VERSION = 'v4.0';
 const APP_CFG_LEGAL_NOTICE_VERSION = 'app.legal_notice_version';
 const APP_CFG_LEGAL_NOTICE_DATE = 'app.legal_notice_date';
 
+include "framework/functions.php";
+
 $_ENV['ROOT'] = ROOT;
 
-global $argv;
-$env = null;
-
-if ($argv && [,$envVar] = explode('=', array_values(array_filter($argv, fn ($arg) => str_contains($arg, '--environment')))[0] ?? null)) {
-    $env = [".env.{$envVar}"];
-}
-
-$dotenv = Dotenv::createImmutable(__DIR__, $env);
+$dotenv = Dotenv::createImmutable(__DIR__);
 $dotenv->load();
+
 date_default_timezone_set(env('APP_TIMEZONE', 'Europe/Budapest'));
 
 ini_set("log_errors", 1);

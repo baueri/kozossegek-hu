@@ -36,7 +36,7 @@ class PageController extends AdminController
 
         Message::warning('Lomtár kiürítve.');
 
-        redirect_route('admin.page.trash');
+        redirect($this->request->referer());
     }
 
     public function create(): string
@@ -82,7 +82,7 @@ class PageController extends AdminController
 
         Message::warning('Oldal lomtárba helyezve');
 
-        redirect_route('admin.page.list');
+        redirect($this->request->referer());
     }
 
     public function forceDelete(): never
@@ -91,7 +91,7 @@ class PageController extends AdminController
 
         Message::warning('Oldal véglegesen törölve');
 
-        redirect_route('admin.page.trash');
+        redirect($this->request->referer());
     }
 
     public function restore(Request $request)
@@ -102,7 +102,7 @@ class PageController extends AdminController
         } catch (\Exception $e) {
             Message::danger('Sikertelen visszaállítás');
         } finally {
-            redirect_route('admin.page.trash');
+            redirect($this->request->referer());
         }
     }
 }

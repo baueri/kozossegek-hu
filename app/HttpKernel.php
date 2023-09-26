@@ -2,18 +2,14 @@
 
 namespace App;
 
-use App\Middleware\AdminMiddleware;
 use App\Middleware\DebugBarMiddleware;
 use App\Middleware\ListenViewLoading;
-use App\Middleware\LoggedInMiddleware;
 use App\Providers\AppServiceProvider;
 use Framework\Http\Exception\HttpException;
 use Framework\Middleware\AuthMiddleware;
 use Framework\Middleware\BaseAuthMiddleware;
 use Framework\Middleware\CheckMaintenance;
-use Framework\Middleware\JsonApi;
 use Framework\Middleware\TranslationRoute;
-use Framework\Middleware\VerifyCsrfToken;
 
 class HttpKernel extends \Framework\Http\HttpKernel
 {
@@ -31,12 +27,12 @@ class HttpKernel extends \Framework\Http\HttpKernel
         HttpException::class
     ];
 
-    public function handleMaintenance()
+    public function handleMaintenance(): void
     {
         echo view('maintenance');
     }
 
-    public function handleError($error)
+    public function handleError($error): void
     {
         if (!in_array($error::class, $this->dontReport) && !env('DEBUG')) {
             report($error);

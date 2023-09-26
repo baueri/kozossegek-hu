@@ -5,7 +5,7 @@ namespace App\Portal\Controllers\Api\V1;
 use App\Http\Responses\Api\V1\ChurchGroupResponse;
 use App\Http\Responses\CreateGroupSteps\FinishRegistration;
 use App\Models\ChurchGroupView;
-use App\QueryBuilders\GroupViews;
+use App\QueryBuilders\ChurchGroupViews;
 use App\QueryBuilders\Institutes;
 use App\Services\GroupSearchRepository;
 use Exception;
@@ -53,7 +53,7 @@ class ApiGroupController extends Controller
         return new ChurchGroupResponse($kozosseg);
     }
 
-    public function instituteByMiserendId(Request $request, Institutes $institutes, GroupViews $churchGroups): array
+    public function instituteByMiserendId(Request $request, Institutes $institutes, ChurchGroupViews $churchGroups)
     {
         $institute = $institutes->where('miserend_id', $request['id'])->first();
 

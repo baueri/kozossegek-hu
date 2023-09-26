@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Auth\AuthUser;
+use App\QueryBuilders\SocialProfiles;
 use Legacy\UserRole;
 use App\QueryBuilders\Users;
 use Framework\Model\Entity;
@@ -20,6 +21,7 @@ use App\QueryBuilders\ChurchGroups;
  * @property string $activated_at
  * @property string $phone_number
  * @property ModelCollection<ChurchGroup> $groups
+ * @property ModelCollection<SocialProfile>|SocialProfile[] $socialProfiles
  * @property int $groups_count
  * @method ChurchGroups groups()
  */
@@ -27,7 +29,7 @@ class User extends Entity implements AuthUser
 {
     use HasTimestamps;
 
-    protected ?string $builder = Users::class;
+    protected static ?string $queryBuilder = Users::class;
 
     public function keresztnev(): string
     {

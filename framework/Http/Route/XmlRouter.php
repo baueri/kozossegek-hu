@@ -42,7 +42,7 @@ class XmlRouter implements RouterInterface
         $checkSum = md5(implode('.', array_map(fn ($file) => md5_file($file), $sources)));
         $cachedFile = CACHE . "route/{$checkSum}.php";
 
-        if (_env('ROUTE_CACHE_ENABLED') && file_exists($cachedFile)) {
+        if (env('ROUTE_CACHE_ENABLED') && file_exists($cachedFile)) {
             $cachedRoutes = require_once $cachedFile;
             foreach ($cachedRoutes as $route) {
                $this->routes[] = app()->make(RouteInterface::class, [

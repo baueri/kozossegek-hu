@@ -14,18 +14,18 @@ use Framework\Support\StringHelper;
 /**
  * @phpstan-extends ChurchGroups<ChurchGroupView>
  */
-class GroupViews extends ChurchGroups
+class ChurchGroupViews extends ChurchGroups
 {
     public const TABLE = 'v_groups';
-
-    public static function getModelClass(): string
-    {
-        return ChurchGroupView::class;
-    }
 
     public function tags(): Relation
     {
         return $this->has(Has::many, GroupTags::class, 'group_id');
+    }
+
+    public function institute(): Relation
+    {
+        return $this->has(Has::one, Institutes::class, 'id', 'institute_id');
     }
 
     public function forUser(User $user): self

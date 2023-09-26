@@ -21,13 +21,24 @@ class PasswordGenerator
         self::OPTION_NUMBERS => true
     ];
 
-    public function generate(int|null $length = null): string
+    private int $length;
+
+    public function __construct(null|int $length = null, array $settings = [])
     {
         $length ??= 8;
         if (!is_numeric($length) || $length <= 0) {
             throw new InvalidArgumentException('Please provide a valid number!');
         }
 
+        if ($settings) {
+            $this->settings = $settings;
+        }
+
+        $this->length = $length;
+    }
+
+    public function generate(): string
+    {
         $pattern = $this->settings[self::OPTION_LOWER] ? self::LETTERS : '';
         if ($this->settings[self::OPTION_UPPER]) {
             $pattern .= strtoupper(static::LETTERS);
@@ -38,7 +49,7 @@ class PasswordGenerator
 
         $pwd = '';
         $patternArr = str_split($pattern);
-        for ($i = 0; $i < $length ; $i++) {
+        for ($i = 0; $i < $this->length ; $i++) {
             $pwd .= $patternArr[array_rand($patternArr)];
         }
 

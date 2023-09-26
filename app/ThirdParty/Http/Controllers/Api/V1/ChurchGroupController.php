@@ -10,7 +10,7 @@ use App\Models\ChurchGroupInterface;
 use App\Models\ChurchGroupView;
 use App\Models\User;
 use App\Portal\Services\PortalUpdateGroup;
-use App\QueryBuilders\GroupViews;
+use App\QueryBuilders\ChurchGroupViews;
 use App\ThirdParty\Http\JwtPayload;
 use DomainException;
 use Firebase\JWT\ExpiredException;
@@ -23,7 +23,6 @@ use Framework\Http\Exception\HttpException;
 use Framework\Http\Exception\NotFoundException;
 use Framework\Http\Request;
 use Framework\Http\Response;
-use Framework\Http\ResponseStatus;
 use Framework\Support\Collection;
 use UnexpectedValueException;
 
@@ -48,7 +47,7 @@ class ChurchGroupController extends Controller
         try {
             $this->payload = new JwtPayload(
                 json_decode(
-                    json_encode(JWT::decode($jwt, new Key(_env('API_SITE_KEY'), 'HS256'))),
+                    json_encode(JWT::decode($jwt, new Key(env('API_SITE_KEY'), 'HS256'))),
                     true
                 )
             );
@@ -66,7 +65,7 @@ class ChurchGroupController extends Controller
         $this->user = $this->payload->user();
     }
 
-    public function index(GroupViews $groupViews): Collection
+    public function index(ChurchGroupViews $groupViews): Collection
     {
         return $groupViews->forUser($this->user)
             ->with('searchEngine')

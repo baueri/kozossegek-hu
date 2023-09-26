@@ -72,4 +72,15 @@ class In
         Out::write(' ');
         return $this->readLn($mandatory) ?: $default;
     }
+
+    public function askIf(string $question, string $default = '', bool $mandatory = false): bool
+    {
+        $true = ['y', 'yes', 'igen', 'i', '1'];
+        Out::write($question);
+        if ($default) {
+            Out::write(" [{$default}]", Color::yellow);
+        }
+        Out::write(' ');
+        return in_array(mb_strtolower($this->readLn($mandatory) ?: $default), $true);
+    }
 }

@@ -22,7 +22,7 @@ class Install extends Command
     {
         $this->createAdmin();
 
-        if ($this->getOption('seed') || in_array($this->in->ask('Szeretnél random közösségeket generálni?', 'igen'), ['igen', 'i', 'y'])) {
+        if ($this->getOption('seed') || $this->in->askIf('Szeretnél random közösségeket generálni (i/n)?', 'igen')) {
             $this->seedChurchGroups();
         }
 

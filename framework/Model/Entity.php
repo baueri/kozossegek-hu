@@ -7,7 +7,9 @@ namespace Framework\Model;
 use Error;
 use Framework\Model\Relation\Relation;
 use Framework\Support\Arr;
+use Framework\Support\StringHelper;
 use ReflectionMethod;
+use RuntimeException;
 
 /**
  * @property null|string $id
@@ -67,7 +69,6 @@ abstract class Entity
 
     public function __get($name)
     {
-        $relation = null;
         if (str_ends_with($name, '_count')) {
             $relation = substr($name, 0, strrpos($name, '_count'));
             if (isset($this->relations_count[$relation])) {
@@ -77,22 +78,22 @@ abstract class Entity
             if (isset($this->relations[$relation])) {
                 return $this->relations_count[$relation] = count($this->relations[$relation]);
             }
+        } else {
+            $relation = $name;
         }
 
         if (isset($this->attributes[$name])) {
             return $this->attributes[$name];
         }
 
-        if (isset($this->relations[$name])) {
-            return $this->relations[$name] ?? null;
+        if (isset($this->relations[$relation])) {
+            return $this->relations[$relation] ?? null;
         }
 
-        if (is_numeric($relation) && $this->builder && method_exists($this->builder, $relation)) {
-            $method = new ReflectionMethod($this->builder, $relation);
+        if ($relation && method_exists($builder = static::query(), $relation)) {
+            $method = new ReflectionMethod($builder, $relation);
             $returnType = $method->getReturnType();
             if ($returnType->getName() === Relation::class) {
-                /** @var \Framework\Model\EntityQueryBuilder $builder */
-                $builder = new $this->builder;
                 $queryRelation = $builder->getRelation($relation);
                 $builder->fillRelations($this, $queryRelation, str_ends_with($name, '_count'));
                 if (str_ends_with($name, '_count')) {
@@ -107,8 +108,8 @@ abstract class Entity
 
     public function __call(string $name, array $arguments)
     {
-        if ($this->builder && method_exists($this->builder, $name)) {
-            return (new $this->builder)->{$name}()->buildQuery($this);
+        if (static::$queryBuilder && method_exists(static::$queryBuilder, $name)) {
+            return (new static::$queryBuilder)->{$name}()->buildQuery($this);
         }
 
         throw new Error("Call to undefined method {$name}");
@@ -172,8 +173,11 @@ abstract class Entity
 
         $plural = StringHelper::plural($model);
 
-        /** @var EntityQueryBuilder $class */
+        /** @var class-string<EntityQueryBuilder>|null $class */
         $class = "\\App\\QueryBuilders\\{$plural}";
-        return $class::query();
+        if (class_exists($class)) {
+            return $class::query();
+        }
+        throw new RuntimeException('Could not guess query builder class');
     }
 }

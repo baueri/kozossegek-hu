@@ -28,5 +28,5 @@ class ChurchGroup extends Entity implements ChurchGroupInterface
 {
     use GroupTrait;
 
-    protected ?string $builder = ChurchGroups::class;
+    protected static ?string $queryBuilder = ChurchGroups::class;
 }

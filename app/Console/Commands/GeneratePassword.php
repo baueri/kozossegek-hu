@@ -6,7 +6,7 @@ namespace App\Console\Commands;
 
 use Framework\Console\Color;
 use Framework\Console\Command;
-use Framework\PasswordGenerator;
+use Framework\Support\Password;
 
 class GeneratePassword extends Command
 {
@@ -22,9 +22,7 @@ class GeneratePassword extends Command
 
     public function handle(): void
     {
-        $this->output->writeln(
-            (new PasswordGenerator())->generate(((int) $this->getOption('l') ?: null)),
-            Color::green
-        );
+        $length = (int) $this->getOption('l') ?: null;
+        $this->output->writeln(Password::generate($length)->password, Color::green);
     }
 }

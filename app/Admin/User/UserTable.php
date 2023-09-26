@@ -7,7 +7,7 @@ use Legacy\UserRole;
 use App\Models\User;
 use App\Models\UserSession;
 use App\QueryBuilders\ChurchGroups;
-use App\QueryBuilders\GroupViews;
+use App\QueryBuilders\ChurchGroupViews;
 use App\QueryBuilders\Users;
 use App\QueryBuilders\UserSessions;
 use Framework\Database\Builder;

@@ -8,13 +8,11 @@ use Framework\Model\EntityQueryBuilder;
 use Framework\Model\Relation\Has;
 use Framework\Model\Relation\Relation;
 
+/**
+ * @phpstan-extends EntityQueryBuilder<City>
+ */
 class Cities extends EntityQueryBuilder
 {
-    public static function getModelClass(): string
-    {
-        return City::class;
-    }
-
     public function statistics(): Relation
     {
         return $this->has(Has::one, CityStatistics::class, 'city', 'name');
@@ -22,7 +20,7 @@ class Cities extends EntityQueryBuilder
 
     public function groups(): Relation
     {
-        return $this->has(Has::many, GroupViews::class, 'city', 'name');
+        return $this->has(Has::many, ChurchGroupViews::class, 'city', 'name');
     }
 
     public function search(?string $term): static

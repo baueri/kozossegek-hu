@@ -14,11 +14,6 @@ class SpiritualMovements extends EntityQueryBuilder
 {
     use HasManyChurchGroupViews;
 
-    public static function getModelClass(): string
-    {
-        return SpiritualMovement::class;
-    }
-
     public function hightLighted(): self
     {
         return $this->where('highlighted', 1);

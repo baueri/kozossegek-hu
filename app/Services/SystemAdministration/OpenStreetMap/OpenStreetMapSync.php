@@ -6,7 +6,7 @@ use App\Models\City;
 use App\Models\Institute;
 use App\QueryBuilders\ChurchGroups;
 use App\QueryBuilders\Cities;
-use App\QueryBuilders\GroupViews;
+use App\QueryBuilders\ChurchGroupViews;
 use App\QueryBuilders\Institutes;
 use App\QueryBuilders\OsmMarkers;
 use App\Repositories\CityStatistics;
@@ -49,7 +49,7 @@ class OpenStreetMapSync extends Command
             Cities::query()
                 ->select(['name', 'lat', 'lon'])
                 ->with('statistics', fn (CityStatistics $query) => $query->selectSums())
-                ->withCount('groups', fn (GroupViews $query) => $query->active())
+                ->withCount('groups', fn (ChurchGroupViews $query) => $query->active())
                 ->get()
                 ->each(function (City $city) {
                     $searches = $city->statistics->search_count ?? 0;

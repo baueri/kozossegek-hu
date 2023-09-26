@@ -18,6 +18,7 @@ use Framework\Http\Request;
 use Framework\Http\Message;
 use Framework\Http\Session;
 use Framework\Mail\Mailer;
+use Framework\Support\Arr;
 
 class LoginController extends PortalController
 {
@@ -51,7 +52,11 @@ class LoginController extends PortalController
 
             Auth::login($user);
 
-            $route = $request['redirect'] ?? route('home');
+            if (str_contains($referer = (string) Arr::get($_SERVER, 'HTTP_REFERER'), get_site_url())) {
+                $refererRedirect = $referer;
+            }
+
+            $route = $request['redirect'] ?? $refererRedirect ?? route('home');
 
             redirect(Session::flash('last_visited', $route));
         } catch (Exception $e) {

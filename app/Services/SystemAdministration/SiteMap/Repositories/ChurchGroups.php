@@ -2,14 +2,14 @@
 
 namespace App\Services\SystemAdministration\SiteMap\Repositories;
 
-use App\QueryBuilders\GroupViews;
+use App\QueryBuilders\ChurchGroupViews;
 use Framework\Support\Collection;
 
 class ChurchGroups extends Repository
 {
     public function getSiteMapUrls(): Collection
     {
-        return GroupViews::query()
+        return ChurchGroupViews::query()
             ->active()
             ->get()
             ->map

@@ -12,7 +12,8 @@ use App\Portal\Services\PortalCreateGroup;
 use App\Portal\Services\PortalUpdateGroup;
 use App\Portal\Services\SendGroupContactMessage;
 use App\QueryBuilders\ChurchGroups;
-use App\QueryBuilders\GroupViews;
+use App\QueryBuilders\Cities;
+use App\QueryBuilders\ChurchGroupViews;
 use App\QueryBuilders\Institutes;
 use App\QueryBuilders\UserTokens;
 use App\Services\GroupSearchRepository;
@@ -35,8 +36,12 @@ class GroupController extends PortalController
     public function kozossegek(Request $request, GroupList $service): string
     {
         $filter = $request->collect()->merge(['korosztaly' => $request['korosztaly']])->filter();
+        $breadcrumb = null;
+        if ($varos = $filter->get('varos')) {
+            $breadcrumb = Cities::query()->where('name', $varos)->first()?->getBreadCrumb();
+        }
 
-        return $service->getHtml($filter);
+        return $service->getHtml($filter, $breadcrumb);
     }
 
     public function intezmenyKozossegek(Request $request, GroupList $service, Institutes $institutes): string
@@ -61,7 +66,7 @@ class GroupController extends PortalController
 
         return $service->getHtml(collect([
             'institute_id' => $institute->id
-        ]));
+        ]), $institute->getBreadCrumb());
     }
 
     public function groupsByCity(Request $request, GroupList $service): string
@@ -82,7 +87,7 @@ class GroupController extends PortalController
      * Közösség adatlap
      * @throws \Framework\Http\Exception\PageNotFoundException
      */
-    public function kozosseg(Request $request, GroupViews $repo, Institutes $instituteRepo): string
+    public function kozosseg(Request $request, ChurchGroupViews $repo, Institutes $instituteRepo): string
     {
         use_default_header_bg();
         $backUrl = null;
@@ -102,7 +107,7 @@ class GroupController extends PortalController
 
         $institute = $instituteRepo->find($group->institute_id);
 
-        $similar_groups = GroupViews::query()->similarTo($group)->limit(4)->get();
+        $similar_groups = ChurchGroupViews::query()->similarTo($group)->limit(4)->get();
         $slug = $group->slug();
         $keywords = builder('search_engine')->where('group_id', $group->getId())->first()['keywords'] ?? '';
 
@@ -136,7 +141,7 @@ class GroupController extends PortalController
         return view('portal.partials.group-contact-form', compact('group'));
     }
 
-    public function sendContactMessage(Request $request, GroupViews $groups, SendGroupContactMessage $service): array
+    public function sendContactMessage(Request $request, ChurchGroupViews $groups, SendGroupContactMessage $service): array
     {
         try {
             $group = $groups->findOrFail($request['id']);
@@ -161,7 +166,7 @@ class GroupController extends PortalController
         return view('portal.group.my_groups', compact('groups'));
     }
 
-    public function editGroup(Request $request, GroupViews $groups, PortalEditGroupForm $response): string
+    public function editGroup(Request $request, ChurchGroupViews $groups, PortalEditGroupForm $response): string
     {
         $user = Auth::user();
 
@@ -275,7 +280,7 @@ class GroupController extends PortalController
     /**
      * @throws ModelNotFoundException
      */
-    public function downloadDocument(Request $request, GroupViews $groups)
+    public function downloadDocument(Request $request, ChurchGroupViews $groups)
     {
         $group = $groups->findOrFail($request['id']);
 

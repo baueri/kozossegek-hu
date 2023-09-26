@@ -12,6 +12,7 @@ use ReflectionFunction;
 use ReflectionFunctionAbstract;
 use ReflectionMethod;
 use ReflectionParameter;
+use UnitEnum;
 
 class Container implements ContainerInterface
 {
@@ -198,11 +199,13 @@ class Container implements ContainerInterface
     private function getDependencyResourceValue(ReflectionParameter $resource)
     {
         $value = null;
-
         if ($resource->hasType()) {
             $resourceType = $resource->getType()->getName();
+
             if ($resource->isDefaultValueAvailable()) {
                 $value = $resource->getDefaultValue();
+            } elseif (is_subclass_of($resourceType, UnitEnum::class) && $requestValue = request()->get($resource->name) ?? request()->getUriValue($resource->name)) {
+                $value = constant("{$resourceType}::{$requestValue}");
             } else {
                 $value = $this->get($resourceType);
             }
