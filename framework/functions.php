@@ -440,3 +440,10 @@ function memory_usage_format(): string
 function enum_val(UnitEnum $enum) {
     return $enum instanceof BackedEnum ? $enum->value : $enum->name;
 }
+
+function str_before(string $subject, string $search): ?string
+{
+    preg_match('/(.*)' . preg_quote($search, '/') . '/', $subject, $matches);
+
+    return $matches[1] ?? null;
+}

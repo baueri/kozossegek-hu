@@ -25,7 +25,16 @@ class Route implements RouteInterface
         $this->as = $as;
         $this->controller = trim($controller, '\\');
         $this->use = $use;
-        $this->middleware = array_map(fn ($m) => config('app.named_middleware')[$m] ?? $m, $middleware);
+
+        $this->middleware = array_map(function ($middleware) {
+            [$name, $params] = explode('@', $middleware) + [null, null];
+            $class = config('app.named_middleware')[$name] ?? null;
+            if (!$class) {
+                return $middleware;
+            }
+            return $class . ($params ? '@' . $params : '');
+        }, $middleware);
+
         $this->view = $view;
     }
 

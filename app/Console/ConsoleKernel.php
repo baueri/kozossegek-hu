@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Console;
 
 use App\Console\Commands\AggregateLogsCommand;
+use App\Console\Commands\ClearThrottle;
 use App\Console\Commands\ClearUserSessionCommand;
 use App\Console\Commands\Cron\DailyCron;
+use App\Console\Commands\Cron\HourlyCron;
 use App\Console\Commands\Cron\MonthlyCron;
 use App\Console\Commands\GeneratePassword;
 use App\Console\Commands\GroupActivityConfirmNotifier;
@@ -25,6 +27,7 @@ class ConsoleKernel extends Kernel
         Install::class,
         DailyCron::class,
         MonthlyCron::class,
+        HourlyCron::class,
         ClearUserSessionCommand::class,
         RebuildSearchEngineCommand::class,
         PublishApp::class,
@@ -34,6 +37,7 @@ class ConsoleKernel extends Kernel
         SetLatLonToInstitutes::class,
         GroupActivityConfirmNotifier::class,
         InactivateUnconfirmedGroups::class,
-        GeneratePassword::class
+        GeneratePassword::class,
+        ClearThrottle::class
     ];
 }

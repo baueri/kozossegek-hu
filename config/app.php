@@ -3,6 +3,7 @@
 use App\Middleware\AdminMiddleware;
 use App\Middleware\LoggedInMiddleware;
 use Framework\Middleware\JsonApi;
+use Framework\Middleware\RateLimitMiddleware;
 use Framework\Middleware\VerifyCsrfToken;
 
 return [
@@ -38,7 +39,8 @@ return [
         'csrf' => VerifyCsrfToken::class,
         'json' => JsonApi::class,
         'admin' => AdminMiddleware::class,
-        'auth' => LoggedInMiddleware::class
+        'auth' => LoggedInMiddleware::class,
+        'throttle' => RateLimitMiddleware::class
     ],
     'exclude_csrf' => [
         'admin.upload_file'

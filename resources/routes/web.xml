@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <routes>
-    <route-group namespace="App\Portal\Controllers\">
+    <middleware name="throttle"/>
+    <route-group namespace="App\Portal\Controllers\" middleware="throttle">
         <middleware name="App\Middleware\ComingSoon"/>
         <middleware name="csrf"/>
         <route method="get" uri="test" as="test" controller="TestController" use="test"/>

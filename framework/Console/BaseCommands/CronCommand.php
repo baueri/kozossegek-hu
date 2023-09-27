@@ -15,7 +15,7 @@ abstract class CronCommand extends Command
      */
     abstract public function jobs(): array;
 
-    public function handle(): void
+    final public function handle(): void
     {
         $silent = (bool) $this->getOption('silent');
 
