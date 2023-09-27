@@ -24,7 +24,7 @@
 <div id="main-finder" class="p-4 p-lg-5">
     <div class="container">
         <div class="text-white text-center" style="margin: auto">
-            <img src="/images/logo_only_md.png" class="mb-4"/>
+            <img src="/images/logo/logo190x190.webp" class="mb-4"/>
             <h1>KOZOSSEGEK.HU</h1>
             <h4>TALÁLD MEG A KÖZÖSSÉGED!</h4>
         </div>

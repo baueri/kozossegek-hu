@@ -43,11 +43,10 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <div id="fb-root"></div>
-    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/hu_HU/sdk.js#xfbml=1&version=v17.0&appId={{ env('FACEBOOK_APP_ID') }}&autoLogAppEvents=1" nonce="HRNksHZS"></script>
+
     @if(is_prod())
-        <!-- Global site tag (gtag.js) - Google Analytics -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-43190044-6"></script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-43190044-6"></script>
         <script>
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
@@ -67,6 +66,8 @@
                 a.appendChild(r);
             })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
         </script>
+
+        <script async defer crossorigin="anonymous" src="https://connect.facebook.net/hu_HU/sdk.js#xfbml=1&version=v17.0&appId={{ env('FACEBOOK_APP_ID') }}&autoLogAppEvents=1" nonce="HRNksHZS"></script>
     @endif
 </head>
 <body class="{{ !is_prod() ? 'demo' : '' }} {{ is_home() ? 'home' : '' }} {{ $body_class ?? '' }}">
@@ -98,20 +99,20 @@
                     <h5>Partnereink</h5>
                     <div class="partnereink">
                         <a href="https://pasztoralis.hu/" title="Pasztorális helynökség Szeged" target="_blank" rel="noopener noreferrer">
-                            <img src="/images/partnerek/szcsem_szines_latin.png" alt="Pasztorális helynökség Szeged">
+                            <img src="/images/partnerek/szcsem_szines_latin.webp" alt="Pasztorális helynökség Szeged">
                         </a>
                         <a href="https://halo.hu/" title="Háló Közösségi és Kulturális Központ" target="_blank" rel="noopener noreferrer">
-                            <img src="/images/partnerek/halo-logo.png" alt="Háló Közösségi és Kulturális Központ">
+                            <img src="/images/partnerek/halo-logo.webp" alt="Háló Közösségi és Kulturális Központ">
                         </a>
                         <a href="https://fbe.hu/" title="Felebarátok egyesület" target="_blank" rel="noopener noreferrer">
-                            <img src="/images/partnerek/felebaratok_egyesulet.png" alt="Felebarátok egyesület">
+                            <img src="/images/partnerek/felebaratok_egyesulet.webp" alt="Felebarátok egyesület">
                         </a>
                         <br/>
                         <a href="https://72tanitvany.hu/" title="Hetvenkét Tanítvány Mozgalom" target="_blank" rel="noopener noreferrer" class="t72-logo">
-                            <img src="/images/partnerek/t72_2.png" alt="Hetvenkét Tanítvány Mozgalom">
+                            <img src="/images/partnerek/t72_2.webp" alt="Hetvenkét Tanítvány Mozgalom">
                         </a>
                         <a href="https://bizdramagad.hu/" title="Bízd rá magad" target="_blank" rel="noopener noreferrer" class="t72-logo">
-                            <img src="/images/partnerek/bizd_ra_magad.png" alt="Bízd rá magad">
+                            <img src="/images/partnerek/bizd_ra_magad.webp" alt="Bízd rá magad">
                         </a>
                     </div>
                 </div>

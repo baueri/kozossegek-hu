@@ -80,24 +80,10 @@ body:not(.home) .featured-header {
     position:relative;
 }
 
-.demo .navbar-brand:after {
-    /*position: absolute;*/
-    /*content: "demo";*/
-    /*color: red;*/
-    /*top: 13px;*/
-    /*left: 0;*/
-    /*font-weight: bold;*/
-    /*transform: rotate(19deg);*/
-    /*border: 2px solid red;*/
-    /*background: rgba(255, 255, 255, 0.7);*/
-    /*padding: 5px;*/
-    /*font-size: 15px;*/
-}
-
 .navbar-brand > div:first-child {
     width: 200px;
     height: 50px;
-    background: url("/images/logo_sm_2.png") no-repeat center;
+    background: url("/images/logo/logo200x50.webp") no-repeat center;
     background-size: 100%;
     float: left;
     transition: all ease-in .1s;
@@ -107,15 +93,10 @@ body:not(.home) .featured-header {
     padding: 0 !important;
 }
 .header-outer #header.compact .navbar-brand > div {
-    background: url("/images/logo_sm_2.png") no-repeat center;
     background-size: 100%;
     width: 180px;
     height: 45px;
     filter: none;
-}
-
-#main-finder {
-    min-height: calc(100vh - 321px);
 }
 
 #main-finder img {
@@ -520,14 +501,14 @@ input[name=search]::placeholder, input[name=varos]::placeholder {
 }
 
 #footer .partnereink img {
-    max-width: 75px;
-    height: auto;
+    height: 85px;
+    width: auto;
     vertical-align: top;
     margin-bottom: 1em;
 }
 
 #footer .partnereink .t72-logo img {
-    max-width: 160px;
+    height: 55px;
 }
 
 #footer .partnereink a {
@@ -628,7 +609,7 @@ input[name=search]::placeholder, input[name=varos]::placeholder {
 #main-finder h1 {
     font-family: 'Oswald', sans-serif;
     text-transform: uppercase;
-    font-size: 3.5rem;
+    font-size: 3rem;
     text-shadow: 0 0 10px #000;
     cursor: default;
 }
@@ -636,6 +617,7 @@ input[name=search]::placeholder, input[name=varos]::placeholder {
 #main-finder h4 {
     text-shadow: 0 0 10px #000;
     cursor: default;
+    font-size: 1.3rem;
 }
 
 #main-finder p {

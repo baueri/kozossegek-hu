@@ -2,7 +2,7 @@
     <div class="container">
         <a href="/" class="navbar-brand ml-4 ml-sm-0 mt-0 mb-0 p-0 p-sm-1">
             <div class="logo-lg"></div>
-            <img src="/images/logo_only.png" class="logo-sm" style="display:none;">
+            <img src="/images/logo/logo42x42.webp" class="logo-sm" style="display:none;">
         </a>
         <input type="checkbox" style="display: none" id="toggle_main_menu" name="toggle_main_menu">
         <ul class="navbar-nav">
