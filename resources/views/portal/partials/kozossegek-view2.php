@@ -12,7 +12,7 @@
                 <p class="text-center mb-1">
                     @if($group->tags)
                         @foreach($group->tags as $tag)
-                            <span class="tag-img" title="{{ $tag['tag_name'] }}" style="background: url('/images/tag/{{ $tag['tag'] }}.png'); background-size: cover;"></span>
+                            <span class="tag-img" title="{{ $tag['tag_name'] }}" aria-label="{{ $tag['tag_name'] }}" style="background: url('/images/tag/{{ $tag['tag'] }}.png'); background-size: cover;"></span>
                         @endforeach
                     @endif
                 </p>

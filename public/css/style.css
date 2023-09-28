@@ -614,7 +614,7 @@ input[name=search]::placeholder, input[name=varos]::placeholder {
     cursor: default;
 }
 
-#main-finder h4 {
+#main-finder h2 {
     text-shadow: 0 0 10px #000;
     cursor: default;
     font-size: 1.3rem;
@@ -717,8 +717,9 @@ ul.age-group-select li a:hover {
     margin:auto;
     position: relative;
 }
-#instructions h6 {
+#instructions h3 {
     text-transform: uppercase;
+    font-size: 1rem;
 }
 
 .group-tag-badge {
@@ -870,7 +871,8 @@ ul.age-group-select li a:hover {
 }
 
 .cookiealert a {
-    text-decoration: underline
+    text-decoration: underline;
+    color: #fff;
 }
 
 .cookiealert .acceptcookies {

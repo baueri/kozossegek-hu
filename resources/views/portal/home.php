@@ -24,18 +24,18 @@
 <div id="main-finder" class="p-4 p-lg-5">
     <div class="container">
         <div class="text-white text-center" style="margin: auto">
-            <img src="/images/logo/logo190x190.webp" class="mb-4"/>
+            <img src="/images/logo/logo190x190.webp" class="mb-4" alt="logo"/>
             <h1>KOZOSSEGEK.HU</h1>
-            <h4>TALÁLD MEG A KÖZÖSSÉGED!</h4>
+            <h2>TALÁLD MEG A KÖZÖSSÉGED!</h2>
         </div>
         <form method="get" id="finder" class="mt-5 text-center" action="@route('portal.groups')">
             <div id="search-group" class="rounded-pill bg-white py-1 px-1">
                 <div class="row">
                     <div class="col-lg-7 border-right mb-2 mb-lg-0">
-                        <input type="text" class="form-control rounded-pill" placeholder="Milyen közösséget keresel? pl.: Budapest egyetemista..." name="search">
+                        <input type="text" class="form-control rounded-pill" placeholder="Milyen közösséget keresel? pl.: Budapest egyetemista..." name="search" aria-label="Keresés">
                     </div>
                     <div class="col-lg-3 mb-2 mb-lg-0">
-                        <select class="form-control rounded-pill" style="color:#aaa" name="korosztaly">
+                        <select class="form-control rounded-pill" style="color:#aaa" name="korosztaly" aria-label="Korosztály">
                             <option value="">-- bármilyen korosztály --</option>
                             <option value="tinedzser">tinédzser</option>
                             <option value="fiatal_felnott">fiatal felnőtt</option>

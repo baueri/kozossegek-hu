@@ -123,9 +123,9 @@
                 <div class="row">
                     <div class="col-sm-6"><small>© 2021-{{ date('Y') }} kozossegek.hu</small></div>
                     <div class="col-sm-6 text-right">
-                        <a href="https://www.facebook.com/K%C3%B6z%C3%B6ss%C3%A9gekhu-107828477772892" title="Facebook" target="_blank" class="text-white"><i class="fab fa-facebook-square fs-3"></i> </a>
-                        <a href="https://www.instagram.com/kozossegek.hu/" title="Instagram" target="_blank" class="text-white"><i class="fab fa-instagram-square fs-3"></i> </a>
-                        <a href="https://github.com/baueri/kozossegek-hu/" title="Github" target="_blank" class="text-white"><i class="fab fa-github-square fs-3"></i> </a>
+                        <a href="https://www.facebook.com/K%C3%B6z%C3%B6ss%C3%A9gekhu-107828477772892" title="Facebook" aria-label="Facebook" target="_blank" class="text-white"><i class="fab fa-facebook-square fs-3"></i> </a>
+                        <a href="https://www.instagram.com/kozossegek.hu/" title="Instagram" aria-label="Instagram" target="_blank" class="text-white"><i class="fab fa-instagram-square fs-3"></i> </a>
+                        <a href="https://github.com/baueri/kozossegek-hu/" title="Github" aria-label="Github" target="_blank" class="text-white"><i class="fab fa-github-square fs-3"></i> </a>
                     </div>
                 </div>
             </div>

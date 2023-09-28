@@ -12,7 +12,7 @@
 @extends('portal')
 <?php $nvr = 'a_' . substr(md5(time()), 0, 5); ?>
 <script>
-    var nvr = "{{ $nvr }}";
+    let nvr = "{{ $nvr }}";
 </script>
 <div class="container inner kozi-adatlap">
     @if($group->status == "inactive")
