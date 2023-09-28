@@ -30,8 +30,8 @@
     <title>@yield('subtitle'){{ site_name() }}</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="/assets/fontawesome/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:wght@200|Open+Sans:300,400,600|Work+Sans:400,700|Raleway|Roboto+Condensed:wght@100,300;400|Poppins" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Cardo:400,700|Oswald" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:wght@200|Open+Sans:300,400,600|Work+Sans:400,700|Raleway|Roboto+Condensed:wght@100,300;400|Poppins&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Cardo:400,700|Oswald&display=swap" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="search" type="application/opensearchdescription+xml" title="kozossegek.hu" href="opensearch.xml">
 
@@ -40,35 +40,6 @@
     @yield('header')
 
     <link rel="stylesheet" href="/css/style.css?{{ filemtime('css/style.css') }}">
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-
-    @if(is_prod())
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-43190044-6"></script>
-        <script>
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-
-          gtag('config', 'UA-43190044-6');
-        </script>
-
-        <!-- Hotjar Tracking Code for https://kozossegek.hu -->
-        <script>
-            (function(h,o,t,j,a,r){
-                h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
-                h._hjSettings={hjid:3218308,hjsv:6};
-                a=o.getElementsByTagName('head')[0];
-                r=o.createElement('script');r.async=1;
-                r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
-                a.appendChild(r);
-            })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
-        </script>
-
-        <script async defer crossorigin="anonymous" src="https://connect.facebook.net/hu_HU/sdk.js#xfbml=1&version=v17.0&appId={{ env('FACEBOOK_APP_ID') }}&autoLogAppEvents=1" nonce="HRNksHZS"></script>
-    @endif
 </head>
 <body class="{{ !is_prod() ? 'demo' : '' }} {{ is_home() ? 'home' : '' }} {{ $body_class ?? '' }}">
     <div id="fb-root"></div>
@@ -138,6 +109,35 @@
             Rendben
         </button>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+    @if(is_prod())
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-43190044-6"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-43190044-6');
+    </script>
+
+    <!-- Hotjar Tracking Code for https://kozossegek.hu -->
+    <script>
+        (function(h,o,t,j,a,r){
+            h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+            h._hjSettings={hjid:3218308,hjsv:6};
+            a=o.getElementsByTagName('head')[0];
+            r=o.createElement('script');r.async=1;
+            r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+            a.appendChild(r);
+        })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+    </script>
+
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/hu_HU/sdk.js#xfbml=1&version=v17.0&appId={{ env('FACEBOOK_APP_ID') }}&autoLogAppEvents=1" nonce="HRNksHZS"></script>
+    @endif
     <script src="/js/scripts.js?{{ filemtime('js/scripts.js') }}"></script>
     <script src="/js/dialog.js?{{ filemtime('js/dialog.js') }}"></script>
     @yield('scripts')

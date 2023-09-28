@@ -1,6 +1,8 @@
 @section('header')
     <link rel="canonical" href="@route('portal.groups')" />
     <meta name="description" content="Közösséget keresek, keresés, jellemzők, katolikus" />
+@endsection
+@section('footer')
     @include('asset_groups.select2')
 @endsection
 
