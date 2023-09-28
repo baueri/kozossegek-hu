@@ -2,5 +2,5 @@ User-Agent: *
 Allow: /
 Disallow: /admin
 
-Sitemap: sitemap.xml
+Sitemap: https://kozossegek.hu/sitemap.xml
 

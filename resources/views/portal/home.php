@@ -13,7 +13,6 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
       integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
       crossorigin=""/>
-@include('asset_groups.select2')
 @endsection
 @section('footer')
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
@@ -24,18 +23,18 @@
 <div id="main-finder" class="p-4 p-lg-5">
     <div class="container">
         <div class="text-white text-center" style="margin: auto">
-            <img src="/images/logo_only_md.png" class="mb-4"/>
+            <img src="/images/logo/logo190x190.webp" class="mb-4" alt="logo"/>
             <h1>KOZOSSEGEK.HU</h1>
-            <h4>TALÁLD MEG A KÖZÖSSÉGED!</h4>
+            <h2>TALÁLD MEG A KÖZÖSSÉGED!</h2>
         </div>
         <form method="get" id="finder" class="mt-5 text-center" action="@route('portal.groups')">
             <div id="search-group" class="rounded-pill bg-white py-1 px-1">
                 <div class="row">
                     <div class="col-lg-7 border-right mb-2 mb-lg-0">
-                        <input type="text" class="form-control rounded-pill" placeholder="Milyen közösséget keresel? pl.: Budapest egyetemista..." name="search">
+                        <input type="text" class="form-control rounded-pill" placeholder="Milyen közösséget keresel? pl.: Budapest egyetemista..." name="search" aria-label="Keresés">
                     </div>
                     <div class="col-lg-3 mb-2 mb-lg-0">
-                        <select class="form-control rounded-pill" style="color:#aaa" name="korosztaly">
+                        <select class="form-control rounded-pill" style="color:#aaa" name="korosztaly" aria-label="Korosztály">
                             <option value="">-- bármilyen korosztály --</option>
                             <option value="tinedzser">tinédzser</option>
                             <option value="fiatal_felnott">fiatal felnőtt</option>
@@ -77,7 +76,7 @@
     <div class="container">
         <div class="bg-altblue text-light">
             <div class="row">
-                <div class="col-lg-6" style="background: url('/images/kozosseget_vezetek_kicsi.jpg') no-repeat center; background-size: cover"></div>
+                <div class="col-lg-6" style="background: url('/images/kozosseget_vezetek_kicsi.webp') no-repeat center; background-size: cover"></div>
                 <div class="col-lg-6 align-middle h-100">
                     <div class="px-3 px-md-5 py-3 my-md-5 my-xs-3">
                         <h2 class="text-center title-secondary font-weight-bold mb-4">Közösséget vezetek, szeretném hirdetni.<br/> Mit tegyek?</h2>

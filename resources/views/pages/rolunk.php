@@ -25,7 +25,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-5 offset-2lehet">
-                <img src="/images/csoportkep_contact.jpg"/>
+                <img src="/images/csoportkep_contact.jpg" alt="A kozossegek.hu csapata"/>
             </div>
             <div class="col-md-5">
                 <h4>Írj nekünk!</h4>

@@ -80,24 +80,10 @@ body:not(.home) .featured-header {
     position:relative;
 }
 
-.demo .navbar-brand:after {
-    /*position: absolute;*/
-    /*content: "demo";*/
-    /*color: red;*/
-    /*top: 13px;*/
-    /*left: 0;*/
-    /*font-weight: bold;*/
-    /*transform: rotate(19deg);*/
-    /*border: 2px solid red;*/
-    /*background: rgba(255, 255, 255, 0.7);*/
-    /*padding: 5px;*/
-    /*font-size: 15px;*/
-}
-
 .navbar-brand > div:first-child {
     width: 200px;
     height: 50px;
-    background: url("/images/logo_sm_2.png") no-repeat center;
+    background: url("/images/logo/logo200x50.webp") no-repeat center;
     background-size: 100%;
     float: left;
     transition: all ease-in .1s;
@@ -107,15 +93,10 @@ body:not(.home) .featured-header {
     padding: 0 !important;
 }
 .header-outer #header.compact .navbar-brand > div {
-    background: url("/images/logo_sm_2.png") no-repeat center;
     background-size: 100%;
     width: 180px;
     height: 45px;
     filter: none;
-}
-
-#main-finder {
-    min-height: calc(100vh - 321px);
 }
 
 #main-finder img {
@@ -520,14 +501,14 @@ input[name=search]::placeholder, input[name=varos]::placeholder {
 }
 
 #footer .partnereink img {
-    max-width: 75px;
-    height: auto;
+    height: 85px;
+    width: auto;
     vertical-align: top;
     margin-bottom: 1em;
 }
 
 #footer .partnereink .t72-logo img {
-    max-width: 160px;
+    height: 55px;
 }
 
 #footer .partnereink a {
@@ -628,14 +609,15 @@ input[name=search]::placeholder, input[name=varos]::placeholder {
 #main-finder h1 {
     font-family: 'Oswald', sans-serif;
     text-transform: uppercase;
-    font-size: 3.5rem;
+    font-size: 3rem;
     text-shadow: 0 0 10px #000;
     cursor: default;
 }
 
-#main-finder h4 {
+#main-finder h2 {
     text-shadow: 0 0 10px #000;
     cursor: default;
+    font-size: 1.3rem;
 }
 
 #main-finder p {
@@ -735,8 +717,9 @@ ul.age-group-select li a:hover {
     margin:auto;
     position: relative;
 }
-#instructions h6 {
+#instructions h3 {
     text-transform: uppercase;
+    font-size: 1rem;
 }
 
 .group-tag-badge {
@@ -764,6 +747,33 @@ ul.age-group-select li a:hover {
     height: 35px;
     margin: 0 5px;
 }
+
+/** cimke sprite-ok **/
+.tag-utkereso { background: url('/images/tag_sprites.webp') -10px -10px; }
+.tag-szntrsulat { background: url('/images/tag_sprites.webp') -65px -10px; }
+.tag-szemlelodo { background: url('/images/tag_sprites.webp') -10px -65px; }
+.tag-sportos { background: url('/images/tag_sprites.webp') -65px -65px; }
+.tag-paroknak { background: url('/images/tag_sprites.webp') -120px -10px; }
+.tag-onsegito-kor { background: url('/images/tag_sprites.webp') -120px -65px; }
+.tag-nyugdijas { background: url('/images/tag_sprites.webp') -10px -120px; }
+.tag-noi-kor { background: url('/images/tag_sprites.webp') -65px -120px; }
+.tag-kozepiskolas { background: url('/images/tag_sprites.webp') -120px -120px; }
+.tag-korus { background: url('/images/tag_sprites.webp') -175px -10px; }
+.tag-klub { background: url('/images/tag_sprites.webp') -175px -65px; }
+.tag-katekumen { background: url('/images/tag_sprites.webp') -175px -120px; }
+.tag-karizmatikus { background: url('/images/tag_sprites.webp') -10px -175px; }
+.tag-karitativ { background: url('/images/tag_sprites.webp') -65px -175px; }
+.tag-imakor { background: url('/images/tag_sprites.webp') -120px -175px; }
+.tag-ferfi-kor { background: url('/images/tag_sprites.webp') -175px -175px; }
+.tag-elmelkedo { background: url('/images/tag_sprites.webp') -230px -10px; }
+.tag-egyetemista { background: url('/images/tag_sprites.webp') -230px -65px; }
+.tag-egyedulallok { background: url('/images/tag_sprites.webp') -230px -120px; }
+.tag-dicsoito-zenes { background: url('/images/tag_sprites.webp') -230px -175px; }
+.tag-csalados { background: url('/images/tag_sprites.webp') -10px -230px; }
+.tag-bibliaolvaso { background: url('/images/tag_sprites.webp') -65px -230px; }
+.tag-beszelgeto-kor { background: url('/images/tag_sprites.webp') -120px -230px; }
+.tag-babamama { background: url('/images/tag_sprites.webp') -175px -230px;  }
+.tag-baba-mama-klub { background: url('/images/tag_sprites.webp') -230px -230px; }
 
 /*#kozossegek-list > div {*/
 /*    padding-left: 1.3em;*/
@@ -888,7 +898,8 @@ ul.age-group-select li a:hover {
 }
 
 .cookiealert a {
-    text-decoration: underline
+    text-decoration: underline;
+    color: #fff;
 }
 
 .cookiealert .acceptcookies {
@@ -912,7 +923,7 @@ ul.age-group-select li a:hover {
     width: 100%;
     height: 100%;
     background-size: cover !important;
-    background: url("/images/biblia.jpg") no-repeat center;
+    background: url("/images/biblia.webp") no-repeat center;
     filter: brightness(.4);
 }
 

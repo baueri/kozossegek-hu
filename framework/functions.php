@@ -320,7 +320,7 @@ function set_header_bg(string $bg): void
 
 function use_default_header_bg(): void
 {
-    set_header_bg('/images/main.jpg');
+    set_header_bg('/images/main.webp');
 }
 
 function get_class_name(string|object $class): string

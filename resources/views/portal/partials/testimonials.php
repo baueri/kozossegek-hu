@@ -4,7 +4,7 @@
                 <div class="card mb-3 p-3 shadow">
                     <div class="row g-0">
                         <div class="col-12 text-center text-sm-left col-sm-auto">
-                            <img src="/images/idezetek/Thorday-Attila.png" class="rounded-circle img-thumbnail" alt="Thorday Attila atya">
+                            <img src="/images/idezetek/Thorday-Attila.webp" class="rounded-circle img-thumbnail" alt="Thorday Attila atya">
                         </div>
                         <div class="col">
                             <div class="card-body">
@@ -18,7 +18,7 @@
                 <div class="card mb-3 p-3 shadow">
                     <div class="row g-0">
                         <div class="col-12 text-center text-sm-left col-sm-auto">
-                            <img src="/images/idezetek/Elek-Laszlo.png" class="rounded-circle img-thumbnail" alt="Thorday Attila atya">
+                            <img src="/images/idezetek/Elek-Laszlo.webp" class="rounded-circle img-thumbnail" alt="Thorday Attila atya">
                         </div>
                         <div class="col">
                             <div class="card-body">

@@ -1,8 +1,8 @@
 <nav id="header" class="navbar navbar-expand-sm fixed-top">
     <div class="container">
-        <a href="/" class="navbar-brand ml-4 ml-sm-0 mt-0 mb-0 p-0 p-sm-1">
+        <a href="/" class="navbar-brand ml-4 ml-sm-0 mt-0 mb-0 p-0 p-sm-1" aria-label="Főoldal">
             <div class="logo-lg"></div>
-            <img src="/images/logo_only.png" class="logo-sm" style="display:none;">
+            <img src="/images/logo/logo42x42.webp" class="logo-sm" style="display:none;">
         </a>
         <input type="checkbox" style="display: none" id="toggle_main_menu" name="toggle_main_menu">
         <ul class="navbar-nav">
@@ -23,7 +23,7 @@
             </li>
             @auth
                 <li class="nav-item nav-item-profile">
-                    <a href="#" class="nav-link user-menu"><i class="fa fa-user-circle" style="font-size: 18px;" onclick="return false;"></i></a>
+                    <a href="#" class="nav-link user-menu" aria-label="Felhasználói menü"><i class="fa fa-user-circle" style="font-size: 18px;" onclick="return false;"></i></a>
                     <ul class="submenu">
                         <li class="nav-item">
                             <a href="@route('portal.my_profile')" class="nav-link">@icon('user-circle') Fiókom</a>
@@ -43,7 +43,7 @@
                 </li>
             @else
                 <li class="nav-item px-2">
-                    <a href="#" class="nav-link d-none d-lg-block">
+                    <a href="#" class="nav-link d-none d-lg-block" aria-label="Bejelentkezés">
                         <label for="popup-login-username" class="mb-0" style="cursor:pointer;"><i class="far fa-user-circle" style="font-size: 18px;"></i></label>
                     </a>
                     <ul class="submenu">
@@ -74,14 +74,14 @@
                 </li>
             @endauth
             <li class="nav-item divider-before">
-                <a href="https://vp2.hu/" class="nav-link partner-header-link" title="Virtuális plébánia" target="_blank" rel="noopener noreferrer">
-                    <img src="/images/ikon-vp2.png"/>
+                <a href="https://vp2.hu/" class="nav-link partner-header-link" title="Virtuális plébánia" aria-label="Virtuális plébánia" target="_blank" rel="noopener noreferrer">
+                    <img src="/images/ikon-vp2.png" alt="Virtuális plébánia"/>
                     <span class="d-lg-none d-inline-block">Virtuális plébánia</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a href="https://miserend.hu/" class="nav-link partner-header-link" title="miserend.hu" target="_blank" rel="noopener noreferrer">
-                    <img src="/images/ikon-miserend.png"/>
+                <a href="https://miserend.hu/" class="nav-link partner-header-link" title="miserend.hu" target="_blank" aria-label="miserend.hu" rel="noopener noreferrer">
+                    <img src="/images/ikon-miserend.png" alt="miserend.hu"/>
                     <span class="d-lg-none d-inline-block">miserend.hu</span>
                 </a>
             </li>

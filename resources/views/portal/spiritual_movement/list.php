@@ -13,7 +13,7 @@
             <div class="card mb-3 shadow-sm rounded">
                 <div class="no-gutters row">
                     <div class="p-2 align-middle text-center col-2">
-                        <img src="{{ $spiritualMovement->image_url }}" class="align-middle w-100">
+                        <img src="{{ $spiritualMovement->image_url }}" alt="{{ $spiritualMovement->name }}" class="align-middle w-100">
                     </div>
                     <div class="p-3 flex-grow-1 text-center text-md-left col">
                         <h5><b class="card-title">{{ $spiritualMovement->name }}</b></h5>
