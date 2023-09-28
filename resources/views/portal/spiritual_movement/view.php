@@ -26,7 +26,7 @@
                     <div class="card-body">
                         <p class="text-center">
                             @foreach($group->tags as $tag)
-                            <span class="tag-img" title="{{ $tag['tag_name'] }}" aria-label="{{ $tag['tag_name'] }}" style="background: url('/images/tag/{{ $tag['tag'] }}.png'); background-size: cover;"></span>
+                            <span class="tag-img tag-{{ $tag['tag'] }}" title="{{ $tag['tag_name'] }}" aria-label="{{ $tag['tag_name'] }}"></span>
                             @endforeach
                         </p>
                         <div>{{ $group->name }}</div>

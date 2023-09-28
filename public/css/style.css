@@ -748,6 +748,33 @@ ul.age-group-select li a:hover {
     margin: 0 5px;
 }
 
+/** cimke sprite-ok **/
+.tag-utkereso { background: url('/images/tag_sprites.webp') -10px -10px; }
+.tag-szntrsulat { background: url('/images/tag_sprites.webp') -65px -10px; }
+.tag-szemlelodo { background: url('/images/tag_sprites.webp') -10px -65px; }
+.tag-sportos { background: url('/images/tag_sprites.webp') -65px -65px; }
+.tag-paroknak { background: url('/images/tag_sprites.webp') -120px -10px; }
+.tag-onsegito-kor { background: url('/images/tag_sprites.webp') -120px -65px; }
+.tag-nyugdijas { background: url('/images/tag_sprites.webp') -10px -120px; }
+.tag-noi-kor { background: url('/images/tag_sprites.webp') -65px -120px; }
+.tag-kozepiskolas { background: url('/images/tag_sprites.webp') -120px -120px; }
+.tag-korus { background: url('/images/tag_sprites.webp') -175px -10px; }
+.tag-klub { background: url('/images/tag_sprites.webp') -175px -65px; }
+.tag-katekumen { background: url('/images/tag_sprites.webp') -175px -120px; }
+.tag-karizmatikus { background: url('/images/tag_sprites.webp') -10px -175px; }
+.tag-karitativ { background: url('/images/tag_sprites.webp') -65px -175px; }
+.tag-imakor { background: url('/images/tag_sprites.webp') -120px -175px; }
+.tag-ferfi-kor { background: url('/images/tag_sprites.webp') -175px -175px; }
+.tag-elmelkedo { background: url('/images/tag_sprites.webp') -230px -10px; }
+.tag-egyetemista { background: url('/images/tag_sprites.webp') -230px -65px; }
+.tag-egyedulallok { background: url('/images/tag_sprites.webp') -230px -120px; }
+.tag-dicsoito-zenes { background: url('/images/tag_sprites.webp') -230px -175px; }
+.tag-csalados { background: url('/images/tag_sprites.webp') -10px -230px; }
+.tag-bibliaolvaso { background: url('/images/tag_sprites.webp') -65px -230px; }
+.tag-beszelgeto-kor { background: url('/images/tag_sprites.webp') -120px -230px; }
+.tag-babamama { background: url('/images/tag_sprites.webp') -175px -230px;  }
+.tag-baba-mama-klub { background: url('/images/tag_sprites.webp') -230px -230px; }
+
 /*#kozossegek-list > div {*/
 /*    padding-left: 1.3em;*/
 /*    padding-right: 1.3em;*/
@@ -896,7 +923,7 @@ ul.age-group-select li a:hover {
     width: 100%;
     height: 100%;
     background-size: cover !important;
-    background: url("/images/biblia.jpg") no-repeat center;
+    background: url("/images/biblia.webp") no-repeat center;
     filter: brightness(.4);
 }
 
