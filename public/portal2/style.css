@@ -1,5 +1,36 @@
+:root {
+    --brown: #32221F;
+}
+
 .has-text-shadow {
     text-shadow: 0 0 10px #000;
+}
+
+.is-shady:hover {
+    box-shadow: 0 10px 16px rgba(0, 0, 0, .13), 0 6px 6px rgba(0, 0, 0, .19);
+}
+
+.is-shady {
+    animation: flyintoright .4s backwards;
+    background: #fff;
+    box-shadow: rgba(0, 0, 0, .1) 0 1px 0;
+    border-radius: 4px;
+    display: inline-block;
+    position: relative;
+    transition: all .2s ease-in-out;
+}
+
+.is-always-shady {
+    box-shadow: 0 10px 16px rgba(0, 0, 0, .13), 0 6px 6px rgba(0, 0, 0, .19) !important;
+}
+
+.button.is-brown {
+    background: var(--brown);
+    color: #fff;
+}
+
+#main-menu .navbar-menu > div > .navbar-item {
+    padding: 0 .5rem;
 }
 
 #instructions .card {
@@ -10,6 +41,14 @@
     background: url('/images/main.webp') no-repeat top;
     background-size: cover;
     position: relative;
+}
+
+#main-finder:before {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(50, 34, 31, .6);
+    content: "";
 }
 
 .darken-bg:before {
@@ -31,4 +70,54 @@
     background: url('/images/biblia.webp') no-repeat top;
     background-size: cover;
     position: relative;
+}
+
+
+.cookiealert {
+    font-size: 14px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    margin: 0 !important;
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    border-radius: 0;
+    transform: translateY(100%);
+    transition: all 500ms ease-out;
+    color: #ecf0f1;
+    background: rgba(33, 35, 39, 0.9);
+}
+
+#testimonials .media-content .content p {
+    position: relative;
+}
+#testimonials .media-content .content p:first-child:before {
+    content: "\201C";
+    font-family: Arial,sans-serif;
+    color: #e2e2e2;
+    font-weight: bold;
+    font-size: 90px;
+    line-height: 54px;
+    position: absolute;
+    left: -25px;
+    top: 25px;
+}
+
+.cookiealert.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0%);
+    transition-delay: 1000ms;
+}
+
+.cookiealert a {
+    text-decoration: underline;
+    color: #fff;
+}
+
+.cookiealert .acceptcookies {
+    margin-left: 10px;
+    vertical-align: baseline;
 }
