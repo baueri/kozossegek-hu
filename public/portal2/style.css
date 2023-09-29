@@ -1,0 +1,34 @@
+.has-text-shadow {
+    text-shadow: 0 0 10px #000;
+}
+
+#instructions .card {
+    height: 100%;
+}
+
+#main-finder {
+    background: url('/images/main.webp') no-repeat top;
+    background-size: cover;
+    position: relative;
+}
+
+.darken-bg:before {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    content: '';
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.darken-bg > div {
+    position: relative;
+    z-index: 1;
+}
+
+#kozosseghez-tartozni {
+    background: url('/images/biblia.webp') no-repeat top;
+    background-size: cover;
+    position: relative;
+}
