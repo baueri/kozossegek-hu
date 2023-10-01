@@ -16,8 +16,8 @@
             <a href="@route('portal.groups')" class="navbar-item">Közösséget keresek</a>
             <a href="@route('portal.register_group')" class="navbar-item">Közösséget vezetek</a>
 
-            <div href="@route('portal.register_group')" class="navbar-item has-dropdown is-hoverable">
-                <a href="#" class="navbar-link">Mozgalmak, lelkészségek</a>
+            <div href="@route('portal.register_group')" class="navbar-item has-dropdown is-hoverable pr-0">
+                <a href="#" class="navbar-link pl-0">Mozgalmak, lelkészségek</a>
                 <div class="navbar-dropdown">
                     <a href="@route('portal.spiritual_movements')" class="navbar-item">
                         Lelkiségi mozgalmak

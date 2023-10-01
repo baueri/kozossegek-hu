@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <link rel="stylesheet" href="/assets/fontawesome/css/all.min.css">
     <link rel="stylesheet" href="/portal2/style.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    @yield('portal2.header')
     <title>@yield('subtitle'){{ site_name() }}</title>
 </head>
 <body class="{{ !is_prod() ? 'demo' : '' }} {{ is_home() ? 'home' : '' }} {{ $body_class ?? '' }}">
@@ -17,6 +19,5 @@
     @yield('portal2.main')
 
     @include('portal2.partial.footer')
-
 </body>
 </html>
