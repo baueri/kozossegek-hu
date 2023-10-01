@@ -60,6 +60,6 @@ class GroupList
             'perpage' => $groups->perpage(),
         ]);
 
-        return view('portal.kozossegek', $model);
+        return view('portal2.kozossegek', $model);
     }
 }
