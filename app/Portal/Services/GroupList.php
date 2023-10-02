@@ -51,7 +51,7 @@ class GroupList
             return view('portal.kozossegek_no_filter', $model);
         }
 
-        $groups = $this->service->search($filter, 18);
+        $groups = $this->service->search($filter, 20);
 
         $model = array_merge($model, [
             'groups' => $groups,

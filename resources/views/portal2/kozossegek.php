@@ -18,12 +18,12 @@
 </script>
 @endsection
 @extends('portal2.main')
-<section class="section section-with-bg is-small is-bold">
-    <div class="container is-max-desktop">
+<section class="section section-with-bg is-bold pt-6 pb-6">
+    <div class="container is-max-desktop pt-6 pb-6">
         <h1 class="title has-text-white">Közösség keresése</h1>
         <form method="get" class="mt-4">
             <div class="field has-addons">
-                <div class="control"><input class="input is-rounded" type="text" placeholder="Keresés"></div>
+                <div class="control"><input class="input is-rounded" type="text" placeholder="Keresés" name="search"></div>
                 <div class="control">
                     <div class="select is-rounded">
                         <select name="korosztaly">
@@ -52,7 +52,7 @@
                        @if(in_array($tag['slug'], $selected_tags)) checked @endif
                 style="display: none;">
                 <label for="tag-{{ $tag['slug'] }}" class="mr-1 tag is-rounded is-light group-tag-badge mb-1" aria-label="{{ $tag['tag'] }}">
-                    {{ $tag['tag'] }}
+                    #{{ $tag['tag'] }}
                 </label>
                 @endforeach
                 <input type="hidden" name="tags" value="{{ $filter['tags'] }}">
@@ -64,7 +64,9 @@
     <div class="container">
         @if($total)
             @include('portal2.partial.kozossegek_lista')
-            @include('partials.simple-pager', ['route' => 'portal.groups.page','total' => $total,'page' => $page,'perpage' => $perpage,'routeparams' => $filter])
+        <div class="mt-5 pt-5">
+            @include('portal2.partial.simple-pager', ['route' => 'portal.groups.page','total' => $total,'page' => $page,'perpage' => $perpage,'routeparams' => $filter])
+        </div>
         @else
             <h5 class="has-text-center"><i>Sajnos nem találtunk ilyen közösséget.</i></h5>
             <h6 class="has-text-center"><i>Próbáld meg más keresési feltételekkel.</i></h6>
