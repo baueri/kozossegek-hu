@@ -15,6 +15,6 @@ class BreadCrumb extends Component
 
     public function render(): string
     {
-        return view('partials.components.breadcrumb', ['breadcrumbs' => $this->breadcrumbs]);
+        return view('portal2.partial.breadcrumb', ['breadcrumbs' => $this->breadcrumbs]);
     }
 }

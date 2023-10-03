@@ -48,6 +48,13 @@ return [
 
             return '</div>';
         },
+        'notification' => function ($matches) {
+            if (str_contains($matches[0], '@notification')) {
+                return '<div class="notification is-' . str_replace(['\'', '"'], '', $matches[1]) . ' shadow-sm">';
+            }
+
+            return '</div>';
+        },
         'admin' => function ($matches) {
             if ($matches[0] == '@endadmin') {
                 return '<?php endif; ?>';

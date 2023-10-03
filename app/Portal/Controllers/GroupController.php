@@ -89,7 +89,6 @@ class GroupController extends PortalController
      */
     public function kozosseg(Request $request, ChurchGroupViews $repo, Institutes $instituteRepo): string
     {
-        use_default_header_bg();
         $backUrl = null;
         $user = Auth::user();
         $referer = (string) Arr::get($_SERVER, 'HTTP_REFERER');
@@ -119,7 +118,7 @@ class GroupController extends PortalController
             ]);
         }
 
-        return view('portal.kozosseg', compact(
+        return view('portal2.kozosseg', compact(
             'group',
             'institute',
             'backUrl',

@@ -60,7 +60,7 @@
         </form>
     </div>
 </section>
-<section class="section">
+<section id="grop-list" class="section">
     <div class="container">
         @if($total)
             @include('portal2.partial.kozossegek_lista')

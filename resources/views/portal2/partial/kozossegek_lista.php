@@ -14,19 +14,19 @@
                 </div>
                 <div class="card-content is-flex-grow-1">
                     <div class="media-content is-flex is-flex-direction-column h-100">
-                        <div class="mb-4 is-flex-grow-1">
+                        <div class="mb-4">
                             <a href="{{ $group->url() }}"><span class="title is-5_5">{{ $group->name }}</span><br/>
-                                <span class="subtitle is-7 has-text-grey">{{ $group->city . ($group->district ? ', ' . $group->district : '')  }}</span>
+                                <span class="menu-label is-7 has-text-grey">{{ $group->city . ($group->district ? ', ' . $group->district : '')  }}</span>
                             </a>
                         </div>
-                        <div class="tags">
+                        <div class="tags is-flex-grow-1 is-justify-content-start is-align-content-start	">
                             @if($group->tags)
-                            @foreach($group->tags as $tag)
-                            <small class="tag is-rounded is-info is-light pr-2 pl-2" title="{{ $tag['tag_name'] }}" aria-label="{{ $tag['tag_name'] }}">#{{ $tag['tag_name'] }}</small>
-                            @endforeach
+                                @foreach($group->tags as $tag)
+                                    <div class="tag is-rounded is-info is-light pr-2 pl-2" title="{{ $tag['tag_name'] }}"
+                                           aria-label="{{ $tag['tag_name'] }}">#{{ $tag['tag_name'] }}</div>
+                                @endforeach
                             @endif
                         </div>
-                        <div class=""></div>
                         <div>
                             <p class="menu-label"><b>korosztály: </b>{{ $group->ageGroup() }}</p>
                             <p class="menu-label"><b>alkalmak: </b>{{ $group->occasionFrequency() }}</p>

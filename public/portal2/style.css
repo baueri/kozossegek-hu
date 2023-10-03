@@ -169,3 +169,15 @@
 /*    width: 100%;*/
 /*    color: #fff;*/
 /*}*/
+
+#grop-list .tag {
+    font-size: .7rem;
+}
+
+#grop-list .tag:not(:last-child) {
+    margin-right: .3rem;
+}
+
+#grop-list .card-content {
+    padding: 1rem;
+}

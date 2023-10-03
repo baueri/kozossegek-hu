@@ -198,7 +198,9 @@ trait GroupTrait
             ],
             [
                 'name' => $this->name,
-                'position' => 4
+                'position' => 4,
+                'url' => '#',
+                'last' => true
             ]
         ];
 
