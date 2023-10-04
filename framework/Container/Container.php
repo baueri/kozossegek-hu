@@ -215,7 +215,7 @@ class Container implements ContainerInterface
             return false;
         }
         $name = $type->getName();
-        return interface_exists($name) || class_exists($name);
+        return interface_exists($name) || class_exists($name) || $parameter->isDefaultValueAvailable();
     }
 
     public function share(string $key, $value): void

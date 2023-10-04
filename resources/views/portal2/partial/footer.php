@@ -47,5 +47,6 @@
         </div>
     </div>
 </footer>
+{{ debugbar()->render() }}
 @yield('portal2.footer_scripts')
 <script src="/portal2/scripts.js"></script>

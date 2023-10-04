@@ -80,6 +80,6 @@ class RegisterGroupForm extends AbstractGroupStep
 
     protected function getView(): string
     {
-        return 'portal.group.create-steps.group-data';
+        return 'portal2.register-group.form';
     }
 }

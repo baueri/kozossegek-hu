@@ -1,5 +1,5 @@
 <div id="debugbar">
-    <div id="debugbar-header" class="bg-light">
+    <div id="debugbar-header" class="has-background-light">
         <div class="btn-group btn-shadow">
             @foreach($headers as $id => $header)
                 <label for="{{ $id }}" class="btn btn-default btn-sm mb-0">

@@ -8,7 +8,7 @@
                 <div class="card-image">
                     <a href="{{ $group->url() }}">
                         <figure class="image is-5by3">
-                            <img src="/images/default_thumbnail.jpg" data-src="{{ $group->getThumbnail() }}" data-srcset="{{ $group->getThumbnail() }}" alt="{{ $group->city }}" style="object-fit: cover" class="lazy">
+                            <img src="/images/placeholder.jpg" data-src="{{ $group->getThumbnail() }}" data-srcset="{{ $group->getThumbnail() }}" alt="{{ $group->city }}" style="object-fit: cover" class="lazy">
                         </figure>
                     </a>
                 </div>

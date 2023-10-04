@@ -128,4 +128,9 @@ final class StringHelper
 
         return self::mask(substr($email, 0, $at_pos), $keep) . substr($email, $at_pos);
     }
+
+    public static function pascalCase(string $text): array|string
+    {
+        return str_replace(' ', '', ucwords(str_replace(['-', '_'], ' ', $text)));
+    }
 }
