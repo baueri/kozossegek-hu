@@ -93,6 +93,10 @@
     visibility: visible;
 }
 
+/*#register-group-form .label {*/
+/*    white-space: nowrap;*/
+/*}*/
+
 /** end of bulma styles **/
 
 #main-menu .navbar-menu > div > .navbar-item {

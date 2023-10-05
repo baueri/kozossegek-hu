@@ -17,7 +17,7 @@
     @include('portal2.partial.menu')
 
     @yield('portal2.main')
-
+    {{ $main ?? '' }}
     @include('portal2.partial.footer')
 </body>
 </html>
