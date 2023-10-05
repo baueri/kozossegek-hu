@@ -10,8 +10,6 @@ class PageController extends PortalController
 {
     public function page(Request $request, Pages $repository): string
     {
-        use_default_header_bg();
-
         $page = $repository->whereSlug($request['slug'])->first();
 
         if (!$page) {
@@ -30,6 +28,6 @@ class PageController extends PortalController
             $model['header_background'] = $page->header_image;
         }
 
-        return view('portal.page', $model);
+        return view('portal2.page', $model);
     }
 }

@@ -11,7 +11,7 @@
 </com:section>
 
 <com:template extends="portal2.main">
-    <section id="main-finder" class="hero is-info is-medium is-bold">
+    <section id="main-finder" class="hero is-info is-small is-bold pt-6 pb-6">
         <div class="container hero-body">
             <div class="columns is-vcentered">
                 <div class="column is-narrow">
@@ -19,7 +19,7 @@
                 </div>
                 <div class="column">
                     <h1 class="title has-text-light mb-0">kozossegek.hu</h1>
-                    <h2 class="is-size-1 has-text-light">Találd meg a közösséged!</h2>
+                    <h2 class="is-size-3 has-text-light">Találd meg a közösséged!</h2>
                 </div>
             </div>
             <form method="get" class="mt-4">
