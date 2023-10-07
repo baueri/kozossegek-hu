@@ -1,8 +1,8 @@
 <nav id="main-menu" class="navbar is-light" role="navigation" aria-label="main navigation">
     <div class="container">
     <div class="navbar-brand">
-        <a class="navbar-item" href="/">
-            <img src="/images/logo/logo200x50.webp" width="112" height="28">
+        <a class="navbar-item" href="/" aria-label="Közösségek.hu - Főoldal">
+            <img src="/images/logo/logo200x50.webp" width="112" height="28" alt="Közösségek.hu">
         </a>
 
         <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">

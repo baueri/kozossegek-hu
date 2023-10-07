@@ -2,21 +2,21 @@
 <link rel="canonical" href="@route('portal.groups')" />
 <meta name="description" content="Közösséget keresek, keresés, jellemzők, katolikus" />
 @endsection
-@section('portal2.footer_scripts')
-<script>
-    $(() => {
-        $(".group-tag").change(function () {
-            let val = "";
-            $(".group-tag:checked").each(function () {
-                val += (val ? "," : "") + $(this).val();
+<com:section name="portal2.footer_scripts">
+    <script>
+        $(() => {
+            $(".group-tag").change(function () {
+                let val = "";
+                $(".group-tag:checked").each(function () {
+                    val += (val ? "," : "") + $(this).val();
+                });
+
+                $("[name=tags]").val(val);
             });
 
-            $("[name=tags]").val(val);
         });
-
-    });
-</script>
-@endsection
+    </script>
+</com:section>
 @extends('portal2.main')
 <section class="section section-with-bg is-bold pt-6 pb-6">
     <div class="container is-max-desktop pt-6 pb-6">
@@ -52,7 +52,7 @@
                        @if(in_array($tag['slug'], $selected_tags)) checked @endif
                 style="display: none;">
                 <label for="tag-{{ $tag['slug'] }}" class="mr-1 tag is-rounded is-light group-tag-badge mb-1" aria-label="{{ $tag['tag'] }}">
-                    #{{ $tag['tag'] }}
+                    <com:icon class="hashtag mr-1"/> {{ $tag['tag'] }}
                 </label>
                 @endforeach
                 <input type="hidden" name="tags" value="{{ $filter['tags'] }}">

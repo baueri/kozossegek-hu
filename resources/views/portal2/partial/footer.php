@@ -6,7 +6,7 @@
         </button>
     </div>
 </div>
-<footer id="footer" class="footer has-background-black-bis has-text-light mt-6 pt-5 pb-5">
+<footer id="footer" class="footer has-background-black-bis has-text-white mt-6 pt-5 pb-5">
     <div class="container">
         <div class="columns">
             <div class="column is-3">
@@ -50,11 +50,11 @@
 <div id="footer-bottom has-background-black" style="background: #000">
     <div class="container">
         <div class="columns">
-            <div class="column"><small>© 2021-{{ date('Y') }} kozossegek.hu</small></div>
+            <div class="column has-text-light"><small>© 2021-{{ date('Y') }} kozossegek.hu</small></div>
             <div class="column has-text-right is-size-4">
-                <a href="https://www.facebook.com/K%C3%B6z%C3%B6ss%C3%A9gekhu-107828477772892" title="Facebook" aria-label="Facebook" target="_blank" class="has-text-light"><i class="fab fa-facebook-square fs-3"></i> </a>
-                <a href="https://www.instagram.com/kozossegek.hu/" title="Instagram" aria-label="Instagram" target="_blank" class="has-text-light"><i class="fab fa-instagram-square fs-3"></i> </a>
-                <a href="https://github.com/baueri/kozossegek-hu/" title="Github" aria-label="Github" target="_blank" class="has-text-light"><i class="fab fa-github-square fs-3"></i> </a>
+                <a href="https://www.facebook.com/K%C3%B6z%C3%B6ss%C3%A9gekhu-107828477772892" title="Facebook" aria-label="Facebook" target="_blank" class="has-text-white"><i class="fab fa-facebook-square fs-3"></i> </a>
+                <a href="https://www.instagram.com/kozossegek.hu/" title="Instagram" aria-label="Instagram" target="_blank" class="has-text-white"><i class="fab fa-instagram-square fs-3"></i> </a>
+                <a href="https://github.com/baueri/kozossegek-hu/" title="Github" aria-label="Github" target="_blank" class="has-text-white"><i class="fab fa-github-square fs-3"></i> </a>
             </div>
         </div>
     </div>
@@ -63,4 +63,4 @@
 
 {{ debugbar()->render() }}
 @yield('portal2.footer_scripts')
-<script src="/portal2/scripts.js"></script>
+
