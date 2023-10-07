@@ -15,14 +15,17 @@
     <script>
         let nvr = "{{ $nvr }}";
     </script>
-    <section class="section">
+    <div class="container is-max-desktop mt-4 mb-4">
+        {{ $group->getBreadCrumb() }}
+    </div>
+    <section>
         <div class="container is-max-desktop">
             @if($group->status == "inactive")
                 <com:notification type="warning">
                     Ez a közösséged jelenleg <b>inaktív</b> állapotban van, ezért mások számára nem jelenik meg a találati listában, illetve közvetlenül se tudják megtekinteni az adatlapját. Amennyiben láthatóvá szeretnéd tenni, állítsd át az állapotát <b>aktívra</b> a <a href="{{ $group->getEditUrl() }}" title="szerkesztés">szerkesztési oldalon</a>.
                 </com:notification>
             @endif
-            {{ $group->getBreadCrumb() }}
+
             <div class="columns">
                 <div class="column is-3">
                     <figure class="image">
@@ -31,7 +34,7 @@
                     </figure>
                 </div>
                 <div class="column">
-                    <h1 class="title mb-1">{{ $group->name }} <a href=""><i class="fa fa-share-alt is-size-5"></i></a> </h1>
+                    <h1 class="title mb-1">{{ $group->name }}</h1>
                     <h2 class="menu-label mt-0">{{ $institute->name  }}, {{ $institute->city . ', ' . $institute->address }}</h2>
 
                     <hr class="mt-4"/>

@@ -14,3 +14,4 @@ tests/
 public/sitemap.xml
 .daily_cron_last_run
 .env*
+node_modules/

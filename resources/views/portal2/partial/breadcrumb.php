@@ -1,4 +1,4 @@
-<nav class="breadcrumb has-background-light p-3" aria-label="breadcrumb">
+<nav class="breadcrumb has-bullet-separator mt-5 mb-5" aria-label="breadcrumb">
     <ul itemscope itemtype="http://schema.org/BreadcrumbList">
         @foreach($breadcrumbs as $breadcrumb)
         <li @if(!empty($breadcrumb['last']))class="is-active"@endif itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">

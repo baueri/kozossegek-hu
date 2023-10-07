@@ -1,3 +1,6 @@
+@import url('https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css');
+@import url('/assets/fontawesome/css/all.min.css');
+
 :root {
     --brown: #32221F;
 }
