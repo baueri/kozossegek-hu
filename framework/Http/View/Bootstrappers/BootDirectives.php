@@ -5,6 +5,7 @@ namespace Framework\Http\View\Bootstrappers;
 
 use Framework\Bootstrapper;
 use Framework\Http\View\Directives\ComponentDirective;
+use Framework\Http\View\Directives\ComponentExpression;
 use Framework\Http\View\Directives\EchoDirective;
 use Framework\Http\View\Directives\ExtendsDirective;
 use Framework\Http\View\Directives\IfDirective;
@@ -31,5 +32,6 @@ class BootDirectives implements Bootstrapper
         ViewParser::registerDirective(new IfDirective());
         ViewParser::registerDirective(new ForeachDirective());
         ViewParser::registerDirective(new ComponentDirective());
+        ViewParser::registerDirective(new ComponentExpression());
     }
 }

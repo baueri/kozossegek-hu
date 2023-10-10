@@ -20,12 +20,9 @@
                             </a>
                         </div>
                         <div class="tags is-flex-grow-1 is-justify-content-start is-align-content-start	">
-                            @if($group->tags)
-                                @foreach($group->tags as $tag)
-                                    <div class="tag is-rounded is-info is-light pr-2 pl-2" title="{{ $tag['tag_name'] }}"
-                                           aria-label="{{ $tag['tag_name'] }}"><com:icon class="hashtag mr-1"/> {{ $tag['tag_name'] }}</div>
-                                @endforeach
-                            @endif
+                            <div x:foreach="$group->tags as $tag" class="tag is-rounded is-info is-light pr-2 pl-2" title="{{ $tag['tag_name'] }}"
+                                 aria-label="{{ $tag['tag_name'] }}"><com:Icon class="hashtag mr-1"/> {{ $tag['tag_name'] }}
+                            </div>
                         </div>
                         <div>
                             <p class="menu-label has-text-grey-dark"><b>korosztály: </b>{{ $group->ageGroup() }}</p>
@@ -38,11 +35,6 @@
                         <a href="{{ $group->url() }}" class="menu-label p-4 has-text-grey-dark is-uppercase is-full-width has-text-centered">Megnézem</a>
                     </div>
                 </footer>
-<!--                <footer class="card-footer">-->
-<!--                    <span class="card-footer-item">{{ $group->ageGroup() }}</span>-->
-<!--                    <span class="card-footer-item">{{ $group->occasionFrequency() }}</span>-->
-<!--                    <a href="{{ $group->url() }}" class="card-footer-item has-background-info has-text-white">Megnézem</a>-->
-<!--                </footer>-->
             </div>
         </div>
     @endforeach
