@@ -43,19 +43,20 @@
                 </div>
             </div>
             <div>
-                @foreach($tags as $i => $tag)
-                @if($i > 0 && $i % 9 == 0) <br/> @endif
-                <input type="checkbox"
-                       class="group-tag"
-                       id="tag-{{ $tag['slug'] }}"
-                       value="{{ $tag['slug'] }}"
-                       @if(in_array($tag['slug'], $selected_tags)) checked @endif
-                style="display: none;">
-                <label for="tag-{{ $tag['slug'] }}" class="mr-1 tag is-rounded is-light group-tag-badge mb-1" aria-label="{{ $tag['tag'] }}">
-                    <com:icon class="hashtag mr-1"/> {{ $tag['tag'] }}
-                </label>
-                @endforeach
+                <span x:foreach="$tags as $i => $tag">
+                    <input type="checkbox"
+                           class="group-tag"
+                           id="tag-{{ $tag['slug'] }}"
+                           value="{{ $tag['slug'] }}"
+                           style="display: none;"
+                           @checked(in_array($tag['slug'], $selected_tags))>
+                    <label for="tag-{{ $tag['slug'] }}" class="mr-1 tag is-rounded is-light group-tag-badge mb-1" aria-label="{{ $tag['tag'] }}">
+                        <com:icon class="hashtag mr-1"/> {{ $tag['tag'] }}
+                    </label>
+                </span>
                 <input type="hidden" name="tags" value="{{ $filter['tags'] }}">
+
+
             </div>
         </form>
     </div>

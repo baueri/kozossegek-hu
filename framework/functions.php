@@ -440,3 +440,8 @@ function memory_usage_format(): string
 function enum_val(UnitEnum $enum) {
     return $enum instanceof BackedEnum ? $enum->value : $enum->name;
 }
+
+function gt($a, $b): bool
+{
+    return $a > $b;
+}
