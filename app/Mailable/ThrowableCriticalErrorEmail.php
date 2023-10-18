@@ -21,7 +21,8 @@ class ThrowableCriticalErrorEmail extends Mailable
             'request' => request(),
             'user' => Auth::user(),
             'referer' => $_SERVER['HTTP_REFERER'] ?? null,
-            'is_bot' => $decector->isCrawler()
+            'is_bot' => $decector->isCrawler(),
+            'server' => $_SERVER
         ])
         ->subject(get_site_url() . ' HIBA: ' . $exception->getMessage());
     }

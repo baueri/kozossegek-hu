@@ -11,20 +11,25 @@ class ComponentDirective implements Directive
 {
     public function getPattern(): string
     {
-        return '/<com:([a-zA-Z\-\_]+)([^>]*)(?:\/?)>(?:(.*?)<\/com:\1>)?/s';
+        return '/<com:([a-zA-Z\-\_\.]+)([^\/?>]*)(?:\/?)>(?:(.*?)<\/com:\1>)?/s';
     }
 
     public function getReplacement(array $matches): string
     {
+        dd('todo : dinamically load components');
         $slot = '';
         if (isset($matches[3])) {
             $slot = preg_replace_callback($this->getPattern(), [$this, 'getReplacement'], $matches[3]);
         }
 
-        [, $component] = $matches + ['', ''];
-
+        [, $component, , $attributes] = $matches + ['', '', '', ''];
         /** @var class-string<TagComponent> $componentClassName */
-        $componentClassName = '\\App\\Http\\Components\\' . StringHelper::pascalCase($component);
+        if (str_contains($component, '.')) {
+            $componentClassName = trim('\\' . str_replace('.', '\\', $component), '\\');
+        } else {
+            $componentClassName = '\\App\\Http\\Components\\' . StringHelper::pascalCase($component);
+        }
+
         $parsedAttributes = [];
 
         $tag = preg_replace_callback(
@@ -41,10 +46,9 @@ class ComponentDirective implements Directive
             }
             $parsedAttributes[ltrim($key, ':')] = (string) $attribute;
         }
-        return app()->make($componentClassName, $parsedAttributes)->withSlot($slot)->render();
+        return app()->get($componentClassName, $parsedAttributes)->withSlot($slot)->render();
 //        $attributes = str_replace('=', ':', $attributes);
 //        $attributes = preg_replace(['/"([^"]+)"/'], ['"$1",'], $attributes);
-//        dd($attributes);
 //        return <<<PHP
 /*            <?php echo (new $componentClassName($attributes))->withSlot('$slot')->render(); ?>            */
 //        PHP;

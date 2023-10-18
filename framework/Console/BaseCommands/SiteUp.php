@@ -8,7 +8,6 @@
 
 class SiteUp extends Command
 {
-
     public static function signature(): string
     {
         return 'site:up';
@@ -18,6 +17,6 @@ class SiteUp extends Command
     {
         (new Maintenance())->up();
 
-        Out::success('The site is now on line');
+        Out::success(lang('The site is now online'));
     }
 }

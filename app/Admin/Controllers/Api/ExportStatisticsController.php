@@ -2,15 +2,15 @@
 
 namespace App\Admin\Controllers\Api;
 
-use App\Admin\Controllers\AdminController;
 use App\Enums\CityStatOrderColumn;
 use App\Models\CityStat;
 use App\Repositories\CityStatistics;
 use Exception;
+use Framework\Http\Controller;
 
-class ExportStatisticsController extends AdminController
+class ExportStatisticsController extends Controller
 {
-    public function __invoke(CityStatistics $query)
+    public function __invoke(CityStatistics $query): void
     {
         $stream = fopen('php://output', 'w');
         try {

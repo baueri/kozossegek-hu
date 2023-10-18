@@ -1,19 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Admin\Controllers\Api;
 
 use App\Helpers\FileHelper;
 use Framework\Http\Request;
 use Framework\Storage\PublicStorage;
 
-/**
- * Description of UploadController
- *
- * @author ivan
- */
 class UploadController {
     
-    public function getUploads(Request $request, PublicStorage $storage)
+    public function getUploads(Request $request, PublicStorage $storage): string
     {
         $dir = $request['dir'];
         
