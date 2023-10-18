@@ -11,6 +11,11 @@ class Translator
 
     private string $defaultLang = '';
 
+    private array $langSources = [
+        ROOT . 'framework' . DS . 'lang' . DS . ':lang' . '.json',
+        RESOURCES . 'lang' . DS . ':lang' . '.json'
+    ];
+
     public function __construct()
     {
         $this->cache = new Collection();
@@ -44,7 +49,7 @@ class Translator
             return $key;
         }
 
-        report("hiányzó nyelvi kulcs ({$lang}): {$key}");
+        report("missing lang key{$lang}): {$key}");
 
         return "$key";
     }
@@ -62,12 +67,19 @@ class Translator
      */
     private function load(string $lang): void
     {
-        $content = file_get_contents(RESOURCES . 'lang' . DS . $lang . '.json');
+        foreach ($this->langSources as $source) {
+            $source = str_replace(':lang', $lang, $source);
 
-        if ($parsed = json_decode($content, true)) {
-            $this->cache[$lang] = $parsed;
-        } else {
-            throw new InvalidTranslationFileException();
+            if (file_exists($source)) {
+                $content = file_get_contents($source);
+
+                if ($parsed = json_decode($content, true)) {
+                    $this->cache[$lang] = $parsed;
+                    return;
+                } else {
+                    throw new InvalidTranslationFileException();
+                }
+            }
         }
     }
 }

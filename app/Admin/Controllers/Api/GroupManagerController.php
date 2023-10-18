@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Admin\Controllers\Api;
 
-use App\Admin\Controllers\AdminController;
 use App\Portal\Responses\Select2Response;
 use App\Services\GroupSearchRepository;
+use Framework\Http\Controller;
 use Framework\Http\Request;
 
-class GroupManagerController extends AdminController
+class GroupManagerController extends Controller
 {
     public function searchGroups(Request $request, GroupSearchRepository $repository): array|Select2Response
     {

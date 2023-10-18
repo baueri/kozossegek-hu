@@ -12,18 +12,17 @@ use App\Mail\ResetPasswordEmail;
 use App\Models\ChurchGroup;
 use App\Models\ChurchGroupView;
 use App\Models\User;
-use App\QueryBuilders\ChurchGroups;
 use App\QueryBuilders\UserTokens;
+use Exception;
 use Framework\Http\Request;
 use Framework\Http\Response;
 use Framework\Http\View\View;
 use Framework\PasswordGenerator;
-use Framework\Support\Arr;
 
 class EmailTemplateController extends AdminController
 {
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function registration(UserTokens $userTokens): string
     {
@@ -36,7 +35,7 @@ class EmailTemplateController extends AdminController
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function registrationByGroup(UserTokens $userTokens): string
     {
@@ -53,7 +52,7 @@ class EmailTemplateController extends AdminController
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function passwordReset(UserTokens $userTokens): string
     {
@@ -88,7 +87,7 @@ class EmailTemplateController extends AdminController
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function createdGroupWithNewUser(UserTokens $userTokens): string
     {

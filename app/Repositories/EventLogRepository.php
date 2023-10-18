@@ -12,11 +12,14 @@ use Framework\Repository;
  */
 class EventLogRepository extends Repository implements EventLogger
 {
-    public function logEvent(string $type, array $data = [], ?User $user = null): EventLog
+    public function logEvent(string $type, array|int|string $data = null, ?User $user = null): EventLog
     {
+        if (is_array($data)) {
+            $data = json_encode($data);
+        }
         return $this->create([
             'type' => $type,
-            'log' => json_encode($data),
+            'log' => $data,
             'user_id' => (int) $user?->getId()
         ]);
     }

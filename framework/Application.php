@@ -39,7 +39,7 @@ class Application extends Container
      */
     public function __construct(public readonly string $root)
     {
-        $this->locale = 'hu';
+        $this->locale = env('APP_LOCALE', 'en');
         $this->singleton(static::class, function () {
             return static::getInstance();
         });

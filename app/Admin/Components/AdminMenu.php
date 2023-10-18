@@ -6,24 +6,31 @@ use App\Auth\AuthUser;
 use App\Middleware\CheckRole;
 use Framework\Http\Route\RouteInterface;
 use Framework\Http\Route\RouterInterface;
+use Framework\Http\View\TagComponent;
 use Framework\Support\Collection;
 use Framework\Support\StringHelper;
 
-class AdminMenu
+class AdminMenu extends TagComponent
 {
+    public readonly Collection $menu;
+
     public function __construct(
         private readonly RouterInterface $router,
         private readonly ?AuthUser $user
     ) {
-    }
-
-    public function getMenu(): Collection
-    {
         $currentRoute = current_route();
 
-        return collect(config('admin_menu'))->map(
+        $this->menu = collect(config('admin_menu'))->map(
             fn ($item) => $this->parseMenuItem($item, $currentRoute)
         )->filter();
+    }
+
+    public function render(): string
+    {
+        return view('admin.partials.menu', [
+            'admin_menu' => $this->menu,
+            'current_menu_item' => $this->menu->first('active'),
+        ]);
     }
 
     private function parseMenuItem(array $menuItem, RouteInterface $currentRoute): array
@@ -67,9 +74,11 @@ class AdminMenu
         if ($currentRoute->getAs() == $menuItem['as']) {
             return true;
         }
+
         if (isset($menuItem['similars']) && in_array($currentRoute->getAs(), $menuItem['similars'])) {
             return true;
         }
+
         return isset($menuItem['submenu']) &&
             array_filter(
                 $menuItem['submenu'],

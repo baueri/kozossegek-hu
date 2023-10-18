@@ -17,7 +17,7 @@ class ApiPageController
         while ($repository->whereSlug($slug)->first()) {
             preg_match('/-([0-9]+)$/', $slug, $matches);
 
-            $number = isset($matches[1]) ? $matches[1] + 1 : 1;
+            $number = isset($matches[1]) ? ((int) $matches[1]) + 1 : 1;
 
             $slug = "$originalSlug-$number";
         }

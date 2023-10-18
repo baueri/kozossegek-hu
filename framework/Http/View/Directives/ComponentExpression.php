@@ -8,7 +8,7 @@ class ComponentExpression implements Directive
 {
     public function getPattern(): string
     {
-        return '/<(\w+)(?=[^>]*\s(x:(foreach|if|for)=(?:"([^"]*)")?))[^>]*>(.*?)<\/\1>|<(\w+)(?=[^>]*\sx:(foreach|if|for)(="[^"]*")?)[^>]*\/>/is';
+        return '/<(\w+)(?=[^>]*\s(x:(foreach|if|for)=("[^"]*")?))[^>]*>(.*?)<\/\1>|<(\w+)(?=[^>]*\sx:(foreach|if|for)(="[^"]*")?)[^>]*\/>/is';
     }
 
     public function getReplacement(array $matches): string

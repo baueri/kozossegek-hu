@@ -4,7 +4,6 @@ namespace App\Admin\Controllers;
 
 use App\Helpers\FileHelper;
 use Exception;
-use Framework\File\File;
 use Framework\Http\Message;
 use Framework\Http\Request;
 use Framework\Http\Response;
@@ -14,7 +13,7 @@ use Framework\Support\Collection;
 class ContentUploadController
 {
     public function __construct(
-        private PublicStorage $storage
+        private readonly PublicStorage $storage
     ) {
     }
 
@@ -46,7 +45,7 @@ class ContentUploadController
         }
     }
 
-    public function deleteFile(Request $request)
+    public function deleteFile(Request $request): void
     {
         $file = $this->storage->getFileByPubPath($request['file']);
 
