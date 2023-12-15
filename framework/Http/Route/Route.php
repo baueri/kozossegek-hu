@@ -4,19 +4,19 @@ namespace Framework\Http\Route;
 
 class Route implements RouteInterface
 {
-    protected string $method;
+    public readonly string $method;
 
-    protected string $uriMask;
+    public readonly string $uriMask;
 
-    protected string $as;
+    public readonly string $as;
 
-    protected string $controller;
+    public readonly string $controller;
 
-    protected string $use;
+    public readonly string $use;
 
-    protected string $view;
+    public readonly string $view;
 
-    protected array $middleware = [];
+    public readonly array $middleware;
 
     public function __construct(string $method, string $uriMask, string $as, string $controller, string $use, array $middleware, string $view)
     {
@@ -67,16 +67,16 @@ class Route implements RouteInterface
         $uri = $this->uriMask;
 
         array_walk($globalArgs, function($value, $key) use ($globalArgs, &$uri) {
-            if (str_contains($uri, '{' . $key . '}')) {
-                $uri = str_replace('{' . $key . '}', $value, $uri);
+            if (preg_match("/{\??{$key}}/", $uri)) {
+                $uri = preg_replace("/{\??{$key}}/", $value, $uri);
                 unset($globalArgs[$key]);
             }
         });
 
         if ($args && is_array($args)) {
             foreach ($args as $key => $arg) {
-                if (str_contains($uri, '{' . $key . '}')) {
-                    $uri = str_replace('{' . $key . '}', $arg, $uri);
+                if (preg_match("/{\??{$key}}/", $uri)) {
+                    $uri = preg_replace("/{\??{$key}}/", $arg, $uri);
                     unset($args[$key]);
                 }
             }
@@ -97,18 +97,22 @@ class Route implements RouteInterface
     public function matches(string $uri): bool
     {
         $pattern = '/^' . $this->getUriForPregReplace() . '$/';
-        return $this->uriMask == $uri || preg_match_all($pattern, $uri);
+        $hasMatches = preg_match_all($pattern, $uri, $matches);
+        dd($pattern);
+        if (array_filter($matches[2] ?? [])) {
+            dd($matches, $uri, $this->uriMask, $pattern);
+        }
+
+        return $this->uriMask == $uri || ($hasMatches && empty($matches[2]));
     }
 
     public function getUriForPregReplace(): ?string
     {
         return preg_replace([
-            '/({[a-zA-Z\-_.]+})/',
-            '/({\?[a-zA-Z\-_.]+})/',
+            '/({\??[a-zA-Z\-_.]+(:\d+)?})/',
             '/\//'
         ], [
-            '([a-zA-Z0-9\-\_\.áéíóöőúüű]+)',
-            '([\?a-zA-Z0-9\-\_\.áéíóöőúüű]+)',
+            '([\??a-zA-Z0-9\-\_\.áéíóöőúüű]+(:\d+)?)',
             '\/'
         ], trim($this->uriMask, '/'));
     }

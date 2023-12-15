@@ -13,12 +13,7 @@ interface RouterInterface
 
     public function find(string $method, string $uri): ?RouteInterface;
 
-    /**
-     * @param string $name
-     * @param array $args
-     * @return string
-     */
     public function route(string $name, mixed $args = null): string;
 
-    public function addGlobalArg($name, $value);
+    public function addGlobalArg($name, $value): void;
 }

@@ -16,6 +16,7 @@ return [
     'debug' => env('DEBUG', false),
     'coming_soon' => env('COMING_SOON', false),
     'storage_path' => env('STORAGE_PATH'),
+    'default_locale' => env('DEFAULT_LOCALE', 'hu'),
 
     'email' => env('EMAIL_ADDRESS'),
     'email_password' => env('EMAIL_PASSWORD'),

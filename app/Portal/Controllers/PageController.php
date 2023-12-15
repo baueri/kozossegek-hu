@@ -8,11 +8,11 @@ use Framework\Http\View\View;
 
 class PageController extends PortalController
 {
-    public function page(Request $request, Pages $repository): string
+    public function page(Request $request, Pages $pages): string
     {
         use_default_header_bg();
 
-        $page = $repository->whereSlug($request['slug'])->first();
+        $page = $pages->whereSlug($request['slug'])->first();
 
         if (!$page) {
             raise_404();

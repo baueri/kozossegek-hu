@@ -59,7 +59,7 @@ class View implements ViewInterface
     {
         $viewPath = str_replace('.', DS, $view);
 
-        if (strpos($view, ':') !== false) {
+        if (str_contains($view, ':')) {
             [$dirPath, $viewPath] = explode(':', $viewPath);
             $dirPath = rtrim(config("view.view_sources.{$dirPath}"), DS) . DS;
         } else {

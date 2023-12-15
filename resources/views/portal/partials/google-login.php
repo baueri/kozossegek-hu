@@ -14,7 +14,7 @@
      data-theme="{{ $g_theme ?? 'outline' }}"
      data-text="{{ $g_text ?? 'continue_with' }}"
      data-size="{{ $g_size ?? 'large' }}"
-     @if(!empty($width)) data-width="{{ $g_width }}" @endif
+     @if(!empty($g_width)) data-width="{{ $g_width }}" @endif
      data-logo_alignment="{{ $g_logo_alignment ?? 'center' }}"
      data-locale="hu">
 </div>

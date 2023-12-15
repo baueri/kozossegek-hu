@@ -50,6 +50,7 @@
                        <li class="nav-item" id="login-box">
                            <div class="p-lg-3">
                                <form action="@route('doLogin')" method="post">
+                                   @csrf()
                                    <label class="text-center w-100">Bejelentkezés</label><br/>
                                    <div class="form-group">
                                        <input type="text" class="form-control" name="username" placeholder="email cím" id="popup-login-username"/>
@@ -58,8 +59,7 @@
                                        <input type="password" class="form-control" name="password" placeholder="jelszó"/>
                                    </div>
                                    <div>
-                                       @include('portal.partials.google-login', ['width' => 205])
-<!--                                       <div class="fb-login-button mb-3" data-width="238px" data-size="medium" data-button-type="login_with" data-layout="default" data-auto-logout-link="false" data-use-continue-as="true"></div><br/>-->
+                                       @include('portal.partials.google-login', ['g_width' => 205])
                                    </div>
                                    <p class="text-center">
                                        <button type="submit" class="btn btn-altblue">Belépés</button>

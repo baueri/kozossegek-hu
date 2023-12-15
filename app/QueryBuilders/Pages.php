@@ -9,6 +9,9 @@ use Framework\Model\Relation\Has;
 use Framework\Model\Relation\Relation;
 use Framework\Model\SoftDeletes;
 
+/**
+ * @phpstan-extends EntityQueryBuilder<Page>
+ */
 class Pages extends EntityQueryBuilder
 {
     use SoftDeletes;

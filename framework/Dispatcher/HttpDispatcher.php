@@ -15,7 +15,12 @@ use Framework\Http\Exception\PageNotFoundException;
 
 class HttpDispatcher implements Dispatcher
 {
-    public function __construct(private Application $app, private Request $request, private RouterInterface $router, private HttpKernel $kernel)
+    public function __construct(
+        public readonly Application $app,
+        public readonly Request $request,
+        public readonly RouterInterface $router,
+        public readonly HttpKernel $kernel
+    )
     {
         Cookie::setTestCookie();
     }

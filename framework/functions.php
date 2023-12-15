@@ -51,20 +51,33 @@ function is_cli(): bool
     return PHP_SAPI == 'cli';
 }
 
-function d(...$data)
+function d(...$data): void
 {
-    if (!Response::contentTypeIsJson() && !is_cli()) {
+    $prettyPrint = !Response::contentTypeIsJson() && !is_cli();
+    if ($prettyPrint) {
         print "<pre>";
     }
     foreach ($data as $toDump) {
+        if ($prettyPrint) {
+            print("<div style='background-color: #f1f1f1; padding: 10px; border: 1px solid #ccc; border-radius: 5px; margin-bottom: 10px;'>");
+        }
         if (is_bool($toDump)) {
-            print_r($toDump ? 'true' : 'false');
+            print("<span style='color: blueviolet'>".($toDump ? 'true' : 'false') . "</span>");
         } elseif (is_null($toDump)) {
-            print_r('null');
+            print('<span style="color: blueviolet">null</span>');
         } elseif (is_string($toDump)) {
-            print_r(htmlspecialchars($toDump));
+            print_r("<span style='color: darkred; font-weight: bold;'>" . htmlspecialchars($toDump) . "</span>");
+        } elseif (is_int($toDump)) {
+            print "<span style='color: blue; font-weight: bold;'>$toDump</span>";
         } else {
-            print_r($toDump);
+            print preg_replace(
+                '/(\[.*?][^]])/',
+                '<span style="color: #b91b5d; font-weight: bold;">$1</span>',
+                htmlspecialchars(print_r($toDump, true))
+            );
+        }
+        if ($prettyPrint) {
+            print("</div>");
         }
         print("\n");
     }
@@ -90,13 +103,25 @@ function dd(...$data): never
     exit;
 }
 
+function dd_when($condition, ...$data): void
+{
+    if ($condition) {
+        dd(...$data);
+    }
+}
+
 function lang(string $key = null, ?string $lang = null): string
 {
     $translator = app()->get(Translator::class);
 
     $lang = $lang ?: getLang();
 
-    return $translator->translate($key, $lang);
+    try {
+        return $translator->translate($key, $lang);
+    } catch (Exception $e) {
+        report($e);
+        return $key;
+    }
 }
 
 function lang_f($key, ...$args): string

@@ -39,18 +39,18 @@ class Application extends Container
      */
     public function __construct(public readonly string $root)
     {
-        $this->locale = 'hu';
+        static::$singleton = $this;
+        $this->locale = config('app.default_locale');
         $this->singleton(static::class, function () {
             return static::getInstance();
         });
 
         $this->singleton(QueryHistory::class);
-        static::$singleton = $this;
     }
 
     public static function getInstance(): Application
     {
-        return static::$singleton ??= new static();
+        return static::$singleton;
     }
 
     public function run(Dispatcher $dispatcher)
@@ -91,7 +91,7 @@ class Application extends Container
         return $this->locale;
     }
 
-    public function setLocale($lang)
+    public function setLocale($lang): void
     {
         $this->locale = $lang;
     }

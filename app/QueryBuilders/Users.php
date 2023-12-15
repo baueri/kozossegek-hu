@@ -12,7 +12,7 @@ use Framework\Model\SoftDeletes;
 use Framework\Support\StringHelper;
 
 /**
- * @phpstan-extends EntityQueryBuilder<\App\Models\User>
+ * @phpstan-extends EntityQueryBuilder<User>
  */
 class Users extends EntityQueryBuilder
 {
