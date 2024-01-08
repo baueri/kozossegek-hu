@@ -44,5 +44,14 @@
 
   "join_mode.egyeni": "Based on individual consultation",
   "join_mode.folyamatos": "Continuous",
-  "join_mode.idoszakos": "Periodical"
+  "join_mode.idoszakos": "Periodical",
+
+
+  "find_your_church_group": "Find your church group in Hungary!",
+
+  "menu.search_group": "Search group",
+  "menu.leading_a_group": "Leading a group",
+  "menu.religious_movements": "Religious movements",
+  "menu.about_church_groups": "About church groups",
+  "menu.about_us": "About us"
 }

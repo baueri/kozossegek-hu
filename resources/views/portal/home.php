@@ -4,7 +4,7 @@
 <meta name="keywords" content="közösség, katolikus, közösségkereső, keresztény, karizmatikus, imakör, dicsőítő"/>
 <meta property="og:url" content="{{ get_site_url() }}"/>
 <meta property="og:type" content="website"/>
-<meta property="og:title" content="kozossegek.hu - Találd meg a közösséged!"/>
+<meta property="og:title" content="kozossegek.hu - @lang('find_your_church_group')"/>
 <meta property="og:description"
       content="A kozossegek.hu egy katolikus közösségkereső portál, amelyet azért hoztunk létre, hogy segítsünk mindenkinek megtalálni a közösségét akárhol is éljen, tanuljon, vagy dolgozzon, nemtől, kortól, életállapottól függetlenül."/>
 <meta property="og:image" content="{{ get_site_url() . $header_background }}"/>
@@ -13,6 +13,9 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
       integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
       crossorigin=""/>
+@endsection
+@section('subtitle')
+    @lang('find_your_church_group') -
 @endsection
 @section('footer')
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
@@ -25,7 +28,7 @@
         <div class="text-white text-center" style="margin: auto">
             <img src="/images/logo/logo190x190.webp" class="mb-4" alt="logo"/>
             <h1>KOZOSSEGEK.HU</h1>
-            <h2>TALÁLD MEG A KÖZÖSSÉGED!</h2>
+            <h2 style="text-transform: uppercase">{{ lang('find_your_church_group') }}</h2>
         </div>
         <form method="get" id="finder" class="mt-5 text-center" action="@route('portal.groups')">
             <div id="search-group" class="rounded-pill bg-white py-1 px-1">

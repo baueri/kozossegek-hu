@@ -71,7 +71,7 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
         $pattern = $this->route->getUriForPregReplace();
         preg_match_all($pattern, $this->uri, $matches);
         foreach ($matches as $key => $value) {
-            if (is_string($key) && $value[0]) {
+            if (is_string($key) && !empty($value[0])) {
                 $this->uriValues[$key] = $value[0];
             }
         }
