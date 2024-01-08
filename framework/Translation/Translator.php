@@ -1,8 +1,8 @@
 <?php
 
-namespace Framework;
+namespace Framework\Translation;
 
-use Framework\Exception\FileNotFoundException;
+use Framework\Event\EventDisptatcher;
 use Framework\Exception\InvalidTranslationFileException;
 use Framework\Support\Collection;
 
@@ -45,7 +45,7 @@ class Translator
             return $key;
         }
 
-        report("hiányzó nyelvi kulcs ({$lang}): {$key}");
+        EventDisptatcher::dispatch(new TranslationMissing($lang, $key));
 
         return "$key";
     }

@@ -29,7 +29,7 @@ use Framework\Mail\Mailer;
 use Framework\Model\Entity;
 use Framework\Model\Model;
 use Framework\Support\Collection;
-use Framework\Translator;
+use Framework\Translation\Translator;
 
 /**
  * @return Application|null|mixed
