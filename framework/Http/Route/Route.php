@@ -94,8 +94,8 @@ class Route implements RouteInterface
 
     public function matches(string $uri): bool
     {
-        $pattern = '/^' . $this->getUriForPregReplace() . '$/';
-        return $this->uriMask == $uri || preg_match_all($pattern, $uri);
+        $pattern = $this->getUriForPregReplace();
+        return $this->uriMask == $uri || preg_match_all($pattern, '/' . ltrim($uri, '/'));
     }
 
     public function getUriForPregReplace(): ?string
@@ -108,11 +108,11 @@ class Route implements RouteInterface
             return "(?<{$name}>{$pattern})";
         }, $this->uriMask);
 
-        return preg_replace([
+        return '/^\/?' . preg_replace([
             '/\//'
         ], [
             '\/'
-        ], trim($pattern, '/'));
+        ], trim($pattern, '/')) . '$/';
     }
 
     public function getView(): string

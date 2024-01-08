@@ -1,9 +1,13 @@
 {
+    "any_age_group": "any age group",
+    "age_group": "age group",
     "age_group.tinedzser": "tinédzser",
     "age_group.fiatal_felnott": "fiatal felnőtt",
     "age_group.kozepkoru": "középkorú",
     "age_group.nyugdijas": "nyugdíjas",
+    "age_group.vegyes": "vegyes",
 
+    "occasions": "alkalmak",
     "occasion_frequency.hetente": "hetente",
     "occasion_frequency.havonta": "havonta",
     "occasion_frequency.kethetente": "két hetente",

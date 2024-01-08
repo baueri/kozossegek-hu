@@ -35,7 +35,7 @@
                     </div>
                     <div class="col-lg-3 mb-2 mb-lg-0">
                         <select class="form-control rounded-pill" style="color:#aaa" name="korosztaly" aria-label="Korosztály">
-                            <option value="">-- bármilyen korosztály --</option>
+                            <option value="">-- @lang('any_age_group') --</option>
                             <option value="tinedzser">tinédzser</option>
                             <option value="fiatal_felnott">fiatal felnőtt</option>
                             <option value="kozepkoru">középkorú</option>
