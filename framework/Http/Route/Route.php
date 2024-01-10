@@ -104,7 +104,7 @@ class Route implements RouteInterface
             preg_match('/(^[a-zA-Z_]+(?:#)?)?(.*)$/', $m[1], $parts);
             [, $name, $pattern] = $parts;
             $name = str_replace('#', '', $name);
-            $pattern = $pattern ?: '[a-zA-Z_\-0-9]+';
+            $pattern = $pattern ?: '[a-zA-Z_\-0-9\.]+';
             return "(?<{$name}>{$pattern})";
         }, $this->uriMask);
 

@@ -53,5 +53,24 @@
   "menu.leading_a_group": "Leading a group",
   "menu.religious_movements": "Religious movements",
   "menu.about_church_groups": "About church groups",
-  "menu.about_us": "About us"
+  "menu.about_us": "About us",
+
+  "menu.my_account": "My account",
+  "menu.my_groups": "My groups",
+  "menu.admin": "Admin",
+  "menu.login": "Log in",
+  "menu.logout": "Log out",
+  "menu.login.email": "E-mail address",
+  "menu.login.password": "Password",
+
+  "search_tip": "Search for city or characteristics, e.g.: Budapest student etc...",
+  "search": "Search",
+  "how_does_it_work": "How does it work?",
+  "intro.search_for_it.title": "Search for it!",
+  "intro.search_for_it.description": "Search church groups based on your desired location, religious movement, or any specific characteristics that hold significance for you in a community!",
+  "intro.click_it.title": "Click on it!",
+  "intro.click_it.description": "By clicking on the groups listed, you can learn more about them!",
+  "intro.contact.title": "Get in contact!",
+  "intro.contact.description": "If a group has sparked your interest, get in touch with its leader through the group's profile page!"
+
 }

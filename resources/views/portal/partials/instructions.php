@@ -1,12 +1,12 @@
-<h2 class="text-center title-secondary py-5">Hogyan működik?</h2>
+<h2 class="text-center title-secondary py-5">@lang('how_does_it_work')</h2>
 <div id="instructions" class="row pb-5">
     <div class="col-lg-4 col-sm-12 mb-lg-0 mb-5">
         <div class="card shadow text-center h-100">
             <div class="pt-3">
-                <img style="max-width: 128px" src="/images/home-icons/computer.webp" alt="Keresd meg!" class="card-img-top" />
+                <img style="max-width: 128px" src="/images/home-icons/computer.webp" alt="@lang('intro.search_for_it.title')" class="card-img-top" />
                 <div class="card-body">
-                    <h3 class="text-danger mt-4 mb-3">Keresd meg!</h3>
-                    <p>Keress rá településre, lelkiségi mozgalomra, <br/>a közösség jellegére, vagy arra, ami számodra fontos egy közösségben!</p>
+                    <h3 class="text-danger mt-4 mb-3">@lang('intro.search_for_it.title')</h3>
+                    <p>@lang('intro.search_for_it.description')</p>
                 </div>
             </div>
         </div>
@@ -14,10 +14,10 @@
     <div class="col-lg-4 col-sm-12 mb-lg-0 mb-5">
         <div class="card shadow text-center h-100">
             <div class="pt-3">
-                <img style="max-width: 128px;" src="/images/home-icons/mouse.webp" alt="Kattints rá!" class="card-img-top" />
+                <img style="max-width: 128px;" src="/images/home-icons/mouse.webp" alt="@lang('intro.click_it.title')" class="card-img-top" />
                 <div class="card-body">
-                    <h3 class="text-danger mt-4 mb-3">Kattints rá!</h3>
-                    <p>A listában megtalálható közösségekre kattintva többet megtudhatsz a részletekről!</p>
+                    <h3 class="text-danger mt-4 mb-3">@lang('intro.click_it.title')</h3>
+                    <p>@lang('intro.click_it.description')</p>
                 </div>
             </div>
         </div>
@@ -25,10 +25,10 @@
     <div class="col-lg-4 col-sm-12 mb-lg-0 mb-5">
         <div class="card shadow text-center h-100">
             <div class="pt-3">
-                <img style="max-width: 128px" src="/images/home-icons/mail.webp" alt="" class="card-img-top" />
+                <img style="max-width: 128px" src="/images/home-icons/mail.webp" alt="@lang('intro.contact.title')" class="card-img-top" />
                 <div class="card-body">
-                    <h3 class="text-danger mt-4 mb-3">Írj nekik!</h3>
-                    <p>Amennyiben felkeltette az érdeklődésedet egy közösség, az adatlapján keresztül vedd fel a kapcsolatot a közösségvezetővel!</p>
+                    <h3 class="text-danger mt-4 mb-3">@lang('intro.contact.title')</h3>
+                    <p>@lang('intro.contact.description')</p>
                 </div>
             </div>
         </div>

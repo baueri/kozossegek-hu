@@ -74,13 +74,12 @@
         <route method="get" uri="logout" controller="App\Portal\Controllers\LoginController" use="logout" as="logout"/>
         <route method="post" uri="resend-activation" controller="App\Portal\Controllers\LoginController" use="resendActivationEmail" as="resend_activation"/>
 
-        <!-- VÍZJELES KÉPGENERÁLÁS -->
-        <route method="get" uri="/media/{entity_type}/images/{image}" controller="App\Portal\Controllers\ImageController" use="getImage"/>
-
         <!--  Fiók törlés info link  -->
         <route method="get" uri="fiok-torlese" view="portal/data_deletion_info"/>
     </route-group>
 
+    <!-- VÍZJELES KÉPGENERÁLÁS -->
+    <route method="get" uri="/media/{entity_type}/images/{image}" controller="App\Portal\Controllers\ImageController" use="getImage"/>
     <route method="get" uri="opensearch.xml" view="portal/opensearch"/>
 
     <!-- Adatbázisban tárolt statikus oldalak. FIGYELEM!!!! EZ ALÁ MÁR NE KERÜLJÖN ROUTE!!! -->
