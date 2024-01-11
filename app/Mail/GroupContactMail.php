@@ -10,6 +10,7 @@ class GroupContactMail extends Mailable
     {
         $this->subject(site_name() . ' - Új érdeklődő szeretné felvenni a kapcsolatot a közösséggel')
             ->replyTo($email)
+            ->showNoReplyText(false)
             ->view('email_templates:group-contact')
             ->with([
                 'name' => $name,

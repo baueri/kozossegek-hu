@@ -17,8 +17,8 @@
                             <input type="text" class="form-control rounded-pill" placeholder="Milyen közösséget keresel? pl.: Budapest egyetemista..." name="search" value="{{ $filter['search'] }}" aria-label="Keresőszó">
                         </div>
                         <div class="col-lg-3 mb-2 mb-lg-0">
-                            <select class="form-control rounded-pill" style="color:#aaa" name="korosztaly" aria-label="Korosztály">
-                                <option value="">-- korosztály --</option>
+                            <select class="form-control rounded-pill" style="color:#aaa" name="korosztaly" aria-label="@lang('age_group')">
+                                <option value="">-- @lang('age_group') --</option>
                                 @foreach($age_groups as $age_group)
                                     <option value="{{ $age_group->value }}" @selected($selected_age_group === $age_group->value)>{{ $age_group->translate() }}</option>
                                 @endforeach

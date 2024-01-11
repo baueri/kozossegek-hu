@@ -17,7 +17,7 @@
                     </div>
                     <div class="col-lg-3 mb-2 mb-lg-0">
                         <select class="form-control rounded-pill" style="color:#aaa" name="korosztaly">
-                            <option value="">-- korosztály --</option>
+                            <option value="">-- @lang('age_group') --</option>
                             @foreach($age_groups as $age_group)
                                 <option value="{{ $age_group->value }}" @selected($selected_age_group === $age_group->value)>{{ $age_group->translate() }}</option>
                             @endforeach

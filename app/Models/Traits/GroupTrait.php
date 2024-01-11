@@ -32,7 +32,7 @@ trait GroupTrait
     public function ageGroup(): string
     {
         if ($this->getAgeGroups()->count() > 1) {
-            return 'vegyes';
+            return lang('age_group.vegyes');
         }
 
         return (string) $this->getAgeGroups()->first()?->translate();
