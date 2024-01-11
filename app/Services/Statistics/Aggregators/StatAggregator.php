@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Services\Statistics\Aggregators;
+use App\QueryBuilders\Cities;
+use Framework\Support\Collection;
 
 abstract class StatAggregator
 {
@@ -14,6 +16,16 @@ abstract class StatAggregator
     {
         if ($city = $row['log']['varos'] ?? null) {
             return str_replace(['*'], [''], trim(ucfirst($city)));
+        }
+
+        $search = $row['log']['search'] ?? null;
+
+        if ($search) {
+            $keywords = Collection::fromList($search, ' ')->filter()->values();
+            $city = Cities::query()->whereIn('name', $keywords)->first();
+            if ($city) {
+                return $city->name;
+            }            
         }
 
         return $this->getGroup($row)['city'] ?? '';
