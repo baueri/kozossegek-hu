@@ -15,7 +15,8 @@ abstract class StatAggregator
     protected function getCity(array $row): string
     {
         if ($city = $row['log']['varos'] ?? null) {
-            return str_replace(['*'], [''], trim(ucfirst($city)));
+            $city = str_replace(['*'], [''], trim(ucfirst($city)));
+            return Cities::query()->where('name', $city)->first()->name ?? '';
         }
 
         $search = $row['log']['search'] ?? null;
