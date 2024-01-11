@@ -5,8 +5,14 @@
     @foreach($groups as $i => $group)
     <div class="{{ $grid_class ?? 'col-md-6 col-lg-4' }} mb-3">
         <div class="card kozi-box h-100 p-0">
-            <a href="{{ $group->url() }}" style="background: url({{ $group->getThumbnail() }}) no-repeat bottom 0 center;background-size: cover;" class="card-img">
+            <a href="{{ $group->url() }}" class="card-img">
                 <div>megnézem</div>
+                <img src="/images/placeholder.jpg"
+                    data-src="{{ $group->getThumbnail() }}"
+                    data-srcset="{{ $group->getThumbnail() }}"
+                    alt="{{ $group->city }}"
+                    style="object-fit: cover"
+                class="lazy">
             </a>
             <div class="card-body">
                 <p class="text-center mb-1">
