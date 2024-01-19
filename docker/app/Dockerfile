@@ -1,4 +1,4 @@
-FROM zareef/php81-apache
+FROM intrasistema/php83-apache-cloudrun
 
 WORKDIR /app
 
