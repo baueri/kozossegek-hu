@@ -109,8 +109,8 @@
                             {{ $similarGroup->city . ($similarGroup->district ? ', ' . $similarGroup->district : '')  }}
                         </div>
                         <p class="card-text mb-0">
-                            <strong>korosztály:</strong> <span>{{ $similarGroup->ageGroup() }}</span><br>
-                            <strong>alkalmak:</strong> <span>{{ $similarGroup->occasionFrequency() }}</span><br>
+                            <strong>@lang('age_group'):</strong> <span>{{ $similarGroup->ageGroup() }}</span><br>
+                            <strong>@lang('occasions'):</strong> <span>{{ $similarGroup->occasionFrequency() }}</span><br>
                         </p>
                         <a href="{{ $similarGroup->url() }}" class="btn btn-outline-success btn-sm kozi-more-info">Megnézem</a>
                     </div>

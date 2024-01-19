@@ -41,7 +41,8 @@ class VerifyCsrfToken implements Middleware
             return true;
         }
         foreach ($this->except as $except) {
-            if ($this->request->route->getAs() === $except || preg_match("#{$this->request->route->getUriMask()}#", $except)) {
+            $mask = preg_quote($this->request->route->getUriMask());
+            if ($this->request->route->getAs() === $except || preg_match("#{$mask}#", $except)) {
                 return true;
             }
         }

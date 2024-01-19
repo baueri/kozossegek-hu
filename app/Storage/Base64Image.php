@@ -58,7 +58,7 @@ class Base64Image
         $dirname = dirname($path);
 
         if (!is_dir($dirname) && !file_exists($dirname)) {
-            if (!mkdir($dirname, 0775, true)) {
+            if (!@mkdir($dirname, 0775, true)) {
                 throw new Exception("Cannot create image dir: $dirname");
             }
         }

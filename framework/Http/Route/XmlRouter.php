@@ -44,7 +44,7 @@ class XmlRouter implements RouterInterface
         }
     }
 
-    private function parseRoutes($elements)
+    private function parseRoutes(XmlObject $elements): void
     {
         if ($elements->getName() === 'route') {
             $route = $this->buildRoute($elements);
@@ -126,20 +126,16 @@ class XmlRouter implements RouterInterface
             $args = ['id' => $args->getId()];
         }
 
-//        if (is_array($args)) {
-//            $args = array_merge(static::$globalArgs, $args);
-//        }
-
         foreach ($this->routes as $route) {
             if ($route->getAs() == $name) {
-                return ($withHost ? get_site_url() : '') . '/' . ltrim($route->getWithArgs($args, static::$globalArgs), '/');
+                return trim(($withHost ? get_site_url() : '') . '/' . ltrim($route->getWithArgs($args, static::$globalArgs), '/'), '/');
             }
         }
 
         throw new RouteNotFoundException($name);
     }
 
-    public function addGlobalArg($name, $value)
+    public function addGlobalArg($name, $value): void
     {
         static::$globalArgs[$name] = $value;
     }

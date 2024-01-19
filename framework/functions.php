@@ -29,13 +29,13 @@ use Framework\Mail\Mailer;
 use Framework\Model\Entity;
 use Framework\Model\Model;
 use Framework\Support\Collection;
-use Framework\Translator;
+use Framework\Translation\Translator;
 
 /**
  * @return Application|null|mixed
  * @psalm-template T
  * @psalm-param class-string<T> $abstract
- * @psalm-return T
+ * @psalm-return T|Application
  */
 function app(string $abstract = null)
 {
@@ -378,10 +378,10 @@ function report($exception): void
 }
 
 /**
- * @template T
- * @param T $class
+ * @phpstan-template T
+ * @phpstan class-string<T> $class
  * @param $args
- * @return T
+ * @phpstan-return T
  */
 function resolve($class, $args = null)
 {

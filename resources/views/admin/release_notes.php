@@ -1,5 +1,9 @@
 @title('Verzióinformáció')
 @extends('admin')
+<h3>v4.0.2 (2023.09.28)</h3>
+<ul>
+    <li>[FIX] - page speed optimalizálások, képek tömörítése</li>
+</ul>
 <h3>v4.0.1 (2023.09.27)</h3>
 <ul>
     <li>[FIX]: admin oldalon egy elem (közösség, felhasználó stb) törlése után a lista első oldalára ugrott</li>

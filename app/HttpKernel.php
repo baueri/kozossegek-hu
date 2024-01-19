@@ -8,7 +8,7 @@ use App\Providers\AppServiceProvider;
 use Framework\Middleware\AuthMiddleware;
 use Framework\Middleware\BaseAuthMiddleware;
 use Framework\Middleware\CheckMaintenance;
-use Framework\Middleware\TranslationRoute;
+use Framework\Middleware\Translation;
 
 class HttpKernel extends \Framework\Http\HttpKernel
 {
@@ -16,7 +16,7 @@ class HttpKernel extends \Framework\Http\HttpKernel
         BaseAuthMiddleware::class,
         DebugBarMiddleware::class,
         ListenViewLoading::class,
-        TranslationRoute::class,
+        Translation::class,
         CheckMaintenance::class,
         AuthMiddleware::class,
         AppServiceProvider::class

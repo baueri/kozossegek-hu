@@ -1,9 +1,13 @@
 {
+    "any_age_group": "bármilyen korosztály",
+    "age_group": "korosztály",
     "age_group.tinedzser": "tinédzser",
     "age_group.fiatal_felnott": "fiatal felnőtt",
     "age_group.kozepkoru": "középkorú",
     "age_group.nyugdijas": "nyugdíjas",
+    "age_group.vegyes": "vegyes",
 
+    "occasions": "alkalmak",
     "occasion_frequency.hetente": "hetente",
     "occasion_frequency.havonta": "havonta",
     "occasion_frequency.kethetente": "két hetente",
@@ -40,5 +44,31 @@
 
     "join_mode.egyeni": "Egyéni megbeszélés alapján",
     "join_mode.folyamatos": "Folyamatos csatlakozási lehetőség",
-    "join_mode.idoszakos": "Időszakos csatlakozás"
+    "join_mode.idoszakos": "Időszakos csatlakozás",
+
+    "find_your_church_group": "Találd meg a közösséged!",
+
+    "menu.search_group": "Közösséget keresek",
+    "menu.leading_a_group": "Közösséget vezetek",
+    "menu.religious_movements": "Lelkiségi mozgalmak",
+    "menu.about_church_groups": "A közösségről",
+    "menu.about_us": "Rólunk",
+    "menu.my_account": "Fiókom",
+    "menu.my_groups": "Közösségeim",
+    "menu.admin": "Admin",
+    "menu.login": "Bejelentkezés",
+    "menu.logout": "Kijelentkezés",
+    "menu.login.email": "E-mail cím",
+    "menu.login.password": "Jelszó",
+    
+    "search_tip": "Milyen közösséget keresel? pl.: Budapest egyetemista...",
+    "how_does_it_work": "Hogyan működik?",
+    "intro.search_for_it.title": "Keress rá!",
+    "intro.search_for_it.description": "Keress rá településre, lelkiségi mozgalomra, <br/>a közösség jellegére, vagy arra, ami számodra fontos egy közösségben!",
+    "intro.click_it.title": "Kattints rá!",
+    "intro.click_it.description": "A listában megtalálható közösségekre kattintva többet megtudhatsz róluk!",
+    "intro.contact.title": "Vedd fel a kapcsolatot!",
+    "intro.contact.description": "Amennyiben felkeltette az érdeklődésedet egy közösség, az adatlapján keresztül vedd fel a kapcsolatot a közösségvezetővel!",
+    "inspiration.title": "Mert közösséghez tartozni jó!",
+    "inspiration.description": "Közösséghez tartozni lehetőség és felelősség is egyben. Lehetőség a lelki elmélyülésre és az emberi kapcsolatok mélyítésére. Ugyanakkor felelősség is, hogy az Istentől kapott készségeket, képességeket, talentumokat felhasználva mások segítségére lehessünk."
 }
