@@ -18,7 +18,7 @@
                 <p class="text-center mb-1">
                     @if($group->tags)
                         @foreach($group->tags as $tag)
-                            <span class="tag-img tag-{{ $tag['tag'] }}" title="{{ $tag['tag_name'] }}" aria-label="{{ $tag['tag_name'] }}"></span>
+                            <span class="tag-img tag-{{ $tag->tag }}" title="{{ $tag->translate() }}" aria-label="{{ $tag->translate() }}"></span>
                         @endforeach
                     @endif
                 </p>

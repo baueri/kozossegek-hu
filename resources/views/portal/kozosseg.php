@@ -43,8 +43,8 @@
                 </h1>
                 <div class="group-tags float-left">
                     @foreach($group->tags as $tag)
-                    <a href="@route('portal.groups', ['tags' => $tag['tag']])" class="tag align-bottom">
-                        <span class="tag-img tag-{{ $tag['tag'] }}" title="{{ $tag['tag_name'] }}"></span>
+                    <a href="@route('portal.groups', ['tags' => $tag->tag])" class="tag align-bottom">
+                        <span class="tag-img tag-{{ $tag->tag }}" title="{{ $tag->translate() }}"></span>
                     </a>
                     @endforeach
                 </div>
@@ -101,7 +101,7 @@
                     <div class="card-body">
                         <p class="text-center">
                             @foreach($similarGroup->tags as $tag)
-                                <span class="tag-img tag-{{ $tag['tag'] }}" title="{{ $tag['tag_name'] }}"></span>
+                                <span class="tag-img tag-{{ $tag->tag }}" title="{{ $tag->translate() }}"></span>
                             @endforeach
                         </p>
                         <div>{{ $similarGroup->name }}</div>

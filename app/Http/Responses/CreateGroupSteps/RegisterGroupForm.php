@@ -4,6 +4,7 @@ namespace App\Http\Responses\CreateGroupSteps;
 
 use App\Admin\Group\Services\BaseGroupService;
 use App\Auth\Auth;
+use App\Enums\Tag;
 use App\Models\ChurchGroupView;
 use App\QueryBuilders\Institutes;
 use App\QueryBuilders\SpiritualMovements;
@@ -67,7 +68,7 @@ class RegisterGroupForm extends AbstractGroupStep
             'group' => $group,
             'user' => $user,
             'age_group_array' => $request['age_group'] ?? [],
-            'tags' => builder('tags')->get(),
+            'tags' => Tag::collect(),
             'image' => $image,
             'document' => $request->files['document']['name'] ?? null,
             'group_tags' => $request['tags'] ?? [],

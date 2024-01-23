@@ -4,6 +4,7 @@ namespace App\Portal\Services;
 
 use App\Enums\GroupStatus;
 use App\Enums\AgeGroup;
+use App\Enums\Tag;
 use App\Portal\BreadCrumb\BreadCrumb;
 use App\QueryBuilders\Cities;
 use Framework\Support\Collection;
@@ -39,7 +40,7 @@ class GroupList
             'age_groups' => AgeGroup::cases(),
             'filter' => collect($filter),
             'selected_tags' => array_filter(explode(',', $filter['tags'] ?? '')),
-            'tags' => builder('tags')->get(),
+            'tags' => Tag::collect(),
             'statuses' => $statuses,
             'selected_age_group' => $korosztaly,
             'header_background' => '/images/kozosseget_keresek.jpg',

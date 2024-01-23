@@ -3,6 +3,7 @@ vendor/
 .maintenance
 cache/
 .idea/
+.vscode/
 error.log
 storage/
 public/media

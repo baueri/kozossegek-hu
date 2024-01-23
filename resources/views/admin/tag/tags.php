@@ -10,6 +10,9 @@
     </form>
 @endsection
 @extends('admin')
+@alert('danger')
+    Figyelem! Ez az oldal elavult, a címkéket a kódban kezeljük!
+@endalert
 @foreach($tags as $i => $tag)
     <div class="row mb-3" data-id="{{ $tag['id'] }}">
         <div class="col-md-6 col-lg-3">

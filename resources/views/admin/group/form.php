@@ -69,13 +69,13 @@
                 <label>Címkék</label>
                 <div>
                     @foreach($tags as $tag)
-                        <label class="mr-2" for="tag-{{ $tag['id'] }}">
+                        <label class="mr-2" for="tag-{{ $tag->value }}">
                             <input type="checkbox"
                                 name="tags[]"
-                                id="tag-{{$tag['id']}}"
-                                value="{{ $tag['slug'] }}"
-                                @if(in_array($tag['slug'], $group_tags)) checked @endif
-                            > {{ $tag['tag'] }}
+                                id="tag-{{$tag->value}}"
+                                value="{{ $tag->value }}"
+                                @checked(in_array($tag->value, $group_tags))
+                            > {{ $tag->translate() }}
                         </label>
                     @endforeach
                 </div>

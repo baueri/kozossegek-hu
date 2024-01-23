@@ -12,6 +12,7 @@ use App\Models\Institute;
 use App\Portal\BreadCrumb\BreadCrumb;
 use Legacy\JoinMode;
 use App\Helpers\GroupHelper;
+use App\Models\GroupTag;
 use App\Models\User;
 use App\Services\SystemAdministration\SiteMap\EntitySiteMappable;
 use Framework\File\File;
@@ -21,6 +22,7 @@ use Framework\Support\StringHelper;
 
 /**
  * @property-read ?Institute $institute
+ * @property-read ?Collection<GroupTag> $tags
  */
 trait GroupTrait
 {

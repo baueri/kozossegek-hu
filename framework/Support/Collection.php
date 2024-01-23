@@ -15,6 +15,7 @@ use UnitEnum;
  * @property-read T|CollectionProxy $each
  * @property-read T|CollectionProxy $filter
  * @property-read T|CollectionProxy $reject
+ * @property-read T|CollectionProxy $pluck
  */
 class Collection implements ArrayAccess, Countable, IteratorAggregate
 {

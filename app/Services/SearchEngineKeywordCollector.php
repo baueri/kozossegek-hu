@@ -11,10 +11,7 @@ final class SearchEngineKeywordCollector
 
     final public function __construct(private readonly ChurchGroupView $churchGroup)
     {
-        $this->keywords = collect(builder('v_group_tags')
-            ->select('tag_name')->where('group_id', $this->churchGroup->getId())
-            ->get())
-            ->pluck('tag_name');
+        $this->keywords = $this->churchGroup->tags->map->translate();
     }
 
     public function getKeywords(): Collection

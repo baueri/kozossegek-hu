@@ -49678,7 +49678,7 @@ CREATE TABLE `tags` (
 
 INSERT INTO `tags` (`id`, `tag`, `slug`) VALUES
 (1, 'karitatív', 'karitativ'),
-(2, 'dicsőítő zenés', 'dicsoito-zenes'),
+(2, 'dicsőítő zenés', 'dicsoito_zenes'),
 (3, 'karizmatikus', 'karizmatikus'),
 (4, 'kórus', 'korus'),
 (5, 'imakör', 'imakor'),
@@ -49688,14 +49688,14 @@ INSERT INTO `tags` (`id`, `tag`, `slug`) VALUES
 (9, 'katekumen', 'katekumen'),
 (10, 'útkereső', 'utkereso'),
 (11, 'családos', 'csalados'),
-(12, 'férfi kör', 'ferfi-kor'),
-(13, 'női kör', 'noi-kor'),
+(12, 'férfi kör', 'ferfi_kor'),
+(13, 'női kör', 'noi_kor'),
 (14, 'egyedülállók', 'egyedulallok'),
-(15, 'önsegítő kör', 'onsegito-kor'),
-(16, 'beszélgető kör', 'beszelgeto-kor'),
+(15, 'önsegítő kör', 'onsegito_kor'),
+(16, 'beszélgető kör', 'beszelgeto_kor'),
 (17, 'egyetemista', 'egyetemista'),
 (18, 'középiskolás', 'kozepiskolas'),
-(19, 'színtársulat', 'szntrsulat'),
+(19, 'színtársulat', 'szintarsulat'),
 (21, 'sportos', 'sportos'),
 (22, 'klub', 'klub');
 

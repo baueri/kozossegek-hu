@@ -3,10 +3,7 @@
 namespace App\Portal\Controllers\Api\V1;
 
 use App\Http\Responses\CreateGroupSteps\FinishRegistration;
-use App\Models\ChurchGroup;
 use App\Models\ChurchGroupView;
-use App\QueryBuilders\ChurchGroups;
-use App\QueryBuilders\GroupTags;
 use App\QueryBuilders\ChurchGroupViews;
 use App\QueryBuilders\Institutes;
 use App\Services\GroupSearchRepository;
@@ -14,7 +11,6 @@ use Exception;
 use Framework\Http\Controller;
 use Framework\Http\Request;
 use Framework\Http\Response;
-use Framework\Support\Arr;
 
 class ApiGroupController extends Controller
 {

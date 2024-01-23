@@ -2,9 +2,9 @@
 
 namespace App\QueryBuilders;
 
-use Framework\Database\Builder;
+use Framework\Model\EntityQueryBuilder;
 
-class GroupTags extends Builder
+class GroupTags extends EntityQueryBuilder
 {
-    public const TABLE = 'v_group_tags';
+
 }

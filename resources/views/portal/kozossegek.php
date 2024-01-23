@@ -35,12 +35,12 @@
                     @if($i > 0 && $i % 9 == 0) <br/> @endif
                     <input type="checkbox"
                            class="group-tag"
-                           id="tag-{{ $tag['slug'] }}"
-                           value="{{ $tag['slug'] }}"
-                        @if(in_array($tag['slug'], $selected_tags)) checked @endif
+                           id="tag-{{ $tag->value }}"
+                           value="{{ $tag->value }}"
+                        @if(in_array($tag->value, $selected_tags)) checked @endif
                            style="display: none;">
-                    <label for="tag-{{ $tag['slug'] }}" class="mr-1 badge badge-pill badge-light group-tag-badge align-middle" aria-label="{{ $tag['tag'] }}">
-                        <span class="align-middle">{{ $tag['tag'] }}</span>
+                    <label for="tag-{{ $tag->value }}" class="mr-1 badge badge-pill badge-light group-tag-badge align-middle" aria-label="{{ $tag->translate() }}">
+                        <span class="align-middle">{{ $tag->translate() }}</span>
                     </label>
                     @endforeach
                     <input type="hidden" name="tags" value="{{ $filter['tags'] }}">
