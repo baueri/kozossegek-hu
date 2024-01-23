@@ -27,11 +27,7 @@ class PortalEditGroupForm
         $age_groups = AgeGroup::cases();
         $days = WeekDay::cases();
 
-        $group_tags = collect(
-            builder('group_tags')
-            ->apply('whereGroupId', $group->getId())
-            ->get()
-        )->pluck('tag')->all();
+        $group_tags = $group->tags->pluck('tag')->all();
 
         $age_group_array = array_filter(explode(',', $group->age_group));
         $group_days = $group->getDays();
