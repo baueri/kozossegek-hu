@@ -4,15 +4,15 @@ namespace App\Services;
 
 use App\Models\User;
 use App\QueryBuilders\ChurchGroupViews;
-use Framework\Database\Builder;
 use Framework\Model\ModelCollection;
 use Framework\Model\PaginatedModelCollection;
 use Framework\Support\StringHelper;
 
 class GroupSearchRepository
 {
-    public function __construct(public readonly ChurchGroupViews $repository)
-    {
+    public function __construct(
+        public readonly ChurchGroupViews $repository
+    ) {
     }
 
     public function search($filter = [], ?int $perPage = 30): PaginatedModelCollection|ModelCollection
@@ -23,19 +23,16 @@ class GroupSearchRepository
 
         $builder = $this->repository;
 
-        if ($keyword = $filter['search']) {
-            $sanitized_keyword = StringHelper::sanitize(str_replace(['-', '.', '(', ')'], ' ', $keyword));
+        $keyword = trim(StringHelper::sanitize(str_replace(['-', '.', '(', ')', '*', '+'], ' ', $filter['search'])));
+
+        if ($keyword) {
+            $sanitized_keyword = trim(StringHelper::sanitize(str_replace(['-', '.', '(', ')', '*', '+'], ' ', $keyword)));
+
             $keywords = '+' . str_replace(' ', '* +', trim($sanitized_keyword, ' ')) . '*';
 
-            $found = db()->select('select group_id
-                from search_engine 
-                where MATCH(keywords) AGAINST (? IN BOOLEAN MODE)', [$keywords]);
-
-            if ($found) {
-                $builder->whereIn('id', collect($found)->pluck('group_id')->all());
-            } else {
-                $builder->where('name', 'like', "%{$keyword}%");
-            }
+            $builder->whereRaw('id in(select group_id
+            from search_engine 
+            where MATCH(keywords) AGAINST (? IN BOOLEAN MODE))', $keywords);
         }
 
         if ($varos = mb_strtolower($filter['varos'] ?? '')) {
