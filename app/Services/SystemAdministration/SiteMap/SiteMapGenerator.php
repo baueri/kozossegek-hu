@@ -2,6 +2,7 @@
 
 namespace App\Services\SystemAdministration\SiteMap;
 
+use App\Services\SystemAdministration\SiteMap\Repositories\Institutes;
 use App\Services\SystemAdministration\SiteMap\Repositories\ChurchGroups;
 use App\Services\SystemAdministration\SiteMap\Repositories\PopularCities;
 use App\Services\SystemAdministration\SiteMap\Repositories\SpiritualMovementRepository;
@@ -23,6 +24,7 @@ class SiteMapGenerator
             StaticPages::class,
             SpiritualMovementRepository::class,
             ChurchGroups::class,
+            Institutes::class,
             PopularCities::class
         ];
     }
@@ -42,7 +44,7 @@ class SiteMapGenerator
     }
 
     /**
-     * @param \App\Services\SystemAdministration\SiteMap\SiteMapUrl[]|Collection $siteMapUrls
+     * @param SiteMapUrl[]|Collection $siteMapUrls
      */
     private function generateSiteMap(array|Collection $siteMapUrls): string
     {

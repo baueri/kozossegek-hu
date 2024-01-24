@@ -1,6 +1,7 @@
 @section('header')
     <meta name="keywords" content="{{ $keywords }}" />
     <meta name="description" content="{{ $group->name }}" />
+    <meta name="thumbnail" content="{{ $group->getThumbnail() }}" />
     <meta property="og:url"           content="{{ $group->url() }}" />
     <meta property="og:type"          content="website" />
     <meta property="og:title"         content="kozossegek.hu - {{ $group->name }}" />
