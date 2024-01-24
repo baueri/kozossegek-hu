@@ -380,7 +380,6 @@ function report($exception): void
 /**
  * @phpstan-template T
  * @phpstan class-string<T> $class
- * @param $args
  * @phpstan-return T
  */
 function resolve($class, $args = null)
