@@ -12,9 +12,10 @@ class CityStatAggregator extends StatAggregator
 
     public function add(array $row): void
     {
+        $city = $this->getCity($row);
         if (
             !in_array(EventType::tryFrom($row['type']), [EventType::search, EventType::group_profile_opened, EventType::group_contact])
-            || !$this->getCity($row)
+            || !$city
         ) {
             return;
         }
@@ -22,7 +23,7 @@ class CityStatAggregator extends StatAggregator
         $key = $this->compositeKey($row);
         if (!isset($this->aggregated[$key])) {
             $this->aggregated[$key] = [
-                'city' => $this->getCity($row),
+                'city' => $city,
                 'search_count' => 0,
                 'opened_groups_count' => 0,
                 'contacted_groups_count' => 0,

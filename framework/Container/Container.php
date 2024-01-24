@@ -105,8 +105,9 @@ class Container implements ContainerInterface
     }
 
     /**
-     * @template T
-     * @param string|T $abstraction
+     * @phpstan-template T
+     * @phpstan class-string<T> $abstraction
+     * @phpstan-return T
      * @return T
      */
     public function make(string $abstraction, ?array $args = [])

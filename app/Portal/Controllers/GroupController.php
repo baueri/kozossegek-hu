@@ -52,6 +52,8 @@ class GroupController extends PortalController
             $institute = $institutes->where('slug', "{$request['varos']}/{$request['intezmeny']}")->firstOrFail();
         }
 
+        Section::add('header', fn () => "<meta name='thumbnail' content='{$institute->getImageRelPath()}'/>");
+
         Section::set('templom_title', function () use ($institute) {
             $url = $institute->getMiserendUrl();
             $link = $url ? "<p><a href='$url' target='_blank'>{$url} <i class='fa fa-external-link-alt'></i></a></p>" : '';

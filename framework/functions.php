@@ -30,14 +30,14 @@ use Framework\Mail\Mailer;
 use Framework\Model\Entity;
 use Framework\Model\Model;
 use Framework\Support\Collection;
-use Framework\Translator;
 use Framework\Http\Exception\HttpException;
+use Framework\Translation\Translator;
 
 /**
  * @return Application|null|mixed
  * @psalm-template T
  * @psalm-param class-string<T> $abstract
- * @psalm-return T
+ * @psalm-return T|Application
  */
 function app(string $abstract = null)
 {
@@ -322,7 +322,7 @@ function set_header_bg(string $bg): void
 
 function use_default_header_bg(): void
 {
-    set_header_bg('/images/main.jpg');
+    set_header_bg('/images/main.webp');
 }
 
 function get_class_name(string|object $class): string
@@ -380,10 +380,9 @@ function report($exception): void
 }
 
 /**
- * @template T
- * @param T $class
- * @param $args
- * @return T
+ * @phpstan-template T
+ * @phpstan class-string<T> $class
+ * @phpstan-return T
  */
 function resolve($class, $args = null)
 {

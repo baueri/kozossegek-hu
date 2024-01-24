@@ -1,7 +1,8 @@
 <?php
 
-namespace Framework;
+namespace Framework\Translation;
 
+use Framework\Event\EventDisptatcher;
 use Framework\Exception\InvalidTranslationFileException;
 use Framework\Support\Collection;
 
@@ -44,7 +45,7 @@ class Translator
             return $key;
         }
 
-        report("hiányzó nyelvi kulcs ({$lang}): {$key}");
+        EventDisptatcher::dispatch(new TranslationMissing($lang, $key));
 
         return "$key";
     }
@@ -62,12 +63,18 @@ class Translator
      */
     private function load(string $lang): void
     {
+        $fileName = RESOURCES . 'lang' . DS . $lang . '.json';
+
+        if (!file_exists($fileName)) {
+            throw new InvalidTranslationFileException("Could not find translation file: {$fileName}");
+        }
+
         $content = file_get_contents(RESOURCES . 'lang' . DS . $lang . '.json');
 
-        if ($parsed = json_decode($content, true)) {
+        if (!is_null($parsed = json_decode($content, true))) {
             $this->cache[$lang] = $parsed;
         } else {
-            throw new InvalidTranslationFileException();
+            throw new InvalidTranslationFileException("invalid translation file for: {$lang}");
         }
     }
 }

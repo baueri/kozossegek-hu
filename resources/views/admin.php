@@ -70,7 +70,6 @@
     <nav id="sidebar">
         <div id="admin-logo" class="img bg-wrap text-center" style="background-image: url(/images/praise_kicsi.jpg);">
             <div class="user-logo">
-<!--                <div class="img" style="background-image: url(/images/logo_only.png);"></div>-->
                 <h3 style="">kozossegek.hu<br/><b>adminisztráció</b></h3>
             </div>
         </div>

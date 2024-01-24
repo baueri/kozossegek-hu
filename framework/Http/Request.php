@@ -69,13 +69,12 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
             return $this->uriValues;
         }
 
-        $uriParts = explode('/', trim($this->uri, '/'));
-        $uriParts2 = explode('/', trim($this->route->getUriMask(), '/'));
         $this->uriValues = [];
-        foreach ($uriParts2 as $i => $uriPart) {
-            preg_match_all('/{([a-zA-Z0-9_]+)}/', $uriPart, $matches);
-            if ($matches[1]) {
-                $this->uriValues[$matches[1][0]] = $uriParts[$i];
+        $pattern = $this->route->getUriForPregReplace();
+        preg_match_all($pattern, $this->uri, $matches);
+        foreach ($matches as $key => $value) {
+            if (is_string($key) && !empty($value[0])) {
+                $this->uriValues[$key] = $value[0];
             }
         }
 

@@ -2,6 +2,7 @@
 
 namespace App\Admin\Components\DebugBar;
 
+use Exception;
 use Framework\Support\StringHelper;
 
 class DebugBar
@@ -15,16 +16,21 @@ class DebugBar
         FrameworkInfoTab $frameworkInfoTab,
         QueryHistoryTab $queryHistoryTab,
         LoadedViewsTab $loadedViewsTab,
-        MileStoneTab $timeLineTab
+        MileStoneTab $timeLineTab,
+        MessageTab $messageTab
     ) {
         $this->tabs = [
             'info' => $frameworkInfoTab,
             'query_history' => $queryHistoryTab,
             'views' => $loadedViewsTab,
-            'timeline' => $timeLineTab
+            'timeline' => $timeLineTab,
+            'message' => $messageTab
         ];
     }
 
+    /**
+     * @throws Exception
+     */
     public function render(): string
     {
         if (!$this->enabled()) {
@@ -39,9 +45,9 @@ class DebugBar
             $tab_contents[$name] = $tab->render();
         }
 
-        $query_time = $this->tabs['query_history']->getTotalTime() . 's';
+        $query_time = $this->getTab(QueryHistoryTab::class)->getTotalTime() . 's';
         $memory_usage = memory_usage_format();
-        $total_load_time = $this->tabs['timeline']->getTotalLoadTime();
+        $total_load_time = $this->getTab(MileStoneTab::class)->getTotalLoadTime();
 
         return StringHelper::sanitize(view('admin.partials.debugbar', compact('headers', 'tab_contents', 'query_time', 'memory_usage', 'total_load_time')));
     }
@@ -49,5 +55,22 @@ class DebugBar
     public function enabled(): bool
     {
         return env('DEBUG') && strtolower($_SERVER['HTTP_X_REQUESTED_WITH'] ?? '') !== 'xmlhttprequest';
+    }
+
+    /**
+     * @phpstan-template T of DebugBarTab
+     * @phpstan-param class-string<T> $tabName
+     * @phpstan-return T
+     * @throws Exception
+     */
+    public function getTab(string $tabName): DebugBarTab
+    {
+        foreach ($this->tabs as $tab) {
+            if ($tab instanceof $tabName) {
+                return $tab;
+            }
+        }
+
+        throw new Exception("no debugbar tab found: {$tabName}");
     }
 }

@@ -6,7 +6,7 @@
 <div class="container inner">
     <div class="row">
         <div class="col-md-3 text-center">
-            <img src="{{ $spiritualMovement->image_url }}" style="width: 350px" class="p-5 p-md-0">
+            <img src="{{ $spiritualMovement->image_url }}" alt="{{ $spiritualMovement->name }}" style="width: 350px" class="p-5 p-md-0">
         </div>
         <div class="px-3 col-md-9">
             {{ $spiritualMovement->description }}
@@ -26,7 +26,7 @@
                     <div class="card-body">
                         <p class="text-center">
                             @foreach($group->tags as $tag)
-                            <span class="tag-img" title="{{ $tag['tag_name'] }}" style="background: url('/images/tag/{{ $tag['tag'] }}.png'); background-size: cover;"></span>
+                            <span class="tag-img tag-{{ $tag['tag'] }}" title="{{ $tag['tag_name'] }}" aria-label="{{ $tag['tag_name'] }}"></span>
                             @endforeach
                         </p>
                         <div>{{ $group->name }}</div>
@@ -34,8 +34,8 @@
                             {{ $group->city . ($group->district ? ', ' . $group->district : '')  }}
                         </div>
                         <p class="card-text mb-0">
-                            <strong>korosztály:</strong> <span>{{ $group->ageGroup() }}</span><br>
-                            <strong>alkalmak:</strong> <span>{{ $group->occasionFrequency() }}</span><br>
+                            <strong>@lang('age_group'):</strong> <span>{{ $group->ageGroup() }}</span><br>
+                            <strong>@lang('occasions'):</strong> <span>{{ $group->occasionFrequency() }}</span><br>
                         </p>
                         <a href="{{ $group->url() }}" class="btn btn-outline-success btn-sm kozi-more-info">Megnézem</a>
                     </div>

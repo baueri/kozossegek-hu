@@ -2,6 +2,7 @@
 
 namespace Framework\Dispatcher;
 
+use App\Services\MileStone;
 use Exception;
 use Framework\Application;
 use Framework\Http\ControllerDependencyResolver;
@@ -28,6 +29,8 @@ class HttpDispatcher implements Dispatcher
      */
     public function dispatch(): void
     {
+        MileStone::measure('dispatch', 'Dispatching');
+
         $route = $this->getCurrentRoute();
 
         if (!$route->getView() && $route->getController() && !class_exists($route->getController())) {
@@ -41,6 +44,8 @@ class HttpDispatcher implements Dispatcher
         array_walk($middleware, fn($item) => $middlewareResolver->resolve($item)->handle());
 
         $response = $this->resolveRoute($route);
+
+        MileStone::endMeasure('dispatch');
 
         if (is_array($response) || is_object($response)) {
             if (is_object($response) && method_exists($response, '__toString')) {
@@ -59,13 +64,14 @@ class HttpDispatcher implements Dispatcher
     private function resolveRoute(RouteInterface $route)
     {
         if ($route->getView()) {
-            return $this->resolveView();
-        }
-        if (!$route->getController() && $callback = $route->getUse()) {
-            return call_user_func($callback, $this->request);
+            $return = $this->resolveView();
+        } elseif (!$route->getController() && $callback = $route->getUse()) {
+            $return = call_user_func($callback, $this->request);
+        } else {
+            $return = $this->resolveController($route);
         }
 
-        return $this->resolveController($route);
+        return $return;
     }
 
     /**

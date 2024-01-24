@@ -13,7 +13,7 @@ class Mailable
 
     protected ?string $view = null;
 
-    protected array $viewData = [];
+    protected array $viewData = ['showNoReplyText' => true];
 
     public string $subject = '';
 
@@ -105,5 +105,12 @@ class Mailable
         }
 
         return (new Mailer($to, $name))->send($this);
+    }
+
+    public function showNoReplyText(bool $showNoReplyText): static
+    {
+        $this->viewData['showNoReplyText'] = $showNoReplyText;
+
+        return $this;
     }
 }

@@ -496,6 +496,11 @@ abstract class EntityQueryBuilder
         }
     }
 
+    public function map(Closure $callback): Collection
+    {
+        return $this->get()->map($callback);
+    }
+
     public static function primaryCol(): string
     {
         /* @var $model Entity */

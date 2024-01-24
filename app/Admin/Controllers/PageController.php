@@ -60,7 +60,11 @@ class PageController extends AdminController
 
     public function edit(): string
     {
-        $page = $this->repository->findOrFail($this->request['id']);
+        $page = $this->repository->find($this->request['id']);
+        if (!$page) {
+            Message::danger('a keresett oldal nem található');
+            redirect_route('admin.page.list');
+        }
         $action = route('admin.page.update', ['id' => $page->id]);
         return view('admin.page.edit', compact('page', 'action'));
     }

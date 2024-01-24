@@ -35,7 +35,7 @@ include "framework/functions.php";
 
 $_ENV['ROOT'] = ROOT;
 
-$dotenv = Dotenv::createImmutable(__DIR__);
+$dotenv = Dotenv::createMutable(__DIR__);
 $dotenv->load();
 
 date_default_timezone_set(env('APP_TIMEZONE', 'Europe/Budapest'));
