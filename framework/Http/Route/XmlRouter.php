@@ -39,10 +39,11 @@ class XmlRouter implements RouterInterface
 
         $sources = $this->application->config('route_sources');
 
-        $checkSum = md5(implode('.', array_map(fn ($file) => md5_file($file), $sources)));
-        $cachedFile = CACHE . "route/{$checkSum}.php";
+        $maxMtime = max(...array_map(fn ($file) => filemtime($file), $sources));
 
-        if (env('ROUTE_CACHE_ENABLED') && file_exists($cachedFile)) {
+        $cachedFile = CACHE . "route.php";
+
+        if (env('ROUTE_CACHE_ENABLED') && file_exists($cachedFile) && filemtime($cachedFile) >= $maxMtime) {
             $cachedRoutes = require_once $cachedFile;
             foreach ($cachedRoutes as $route) {
                 $this->routes[] = app()->make(RouteInterface::class, [
@@ -113,7 +114,6 @@ class XmlRouter implements RouterInterface
 
     public function add(string $method, string $uri, array $options): RouteInterface
     {
-        /* @var $route RouteInterface */
         $route = app()->make(RouteInterface::class, array_merge([
             'method' => $method,
             'uriMask' => $uri,
@@ -215,8 +215,6 @@ class XmlRouter implements RouterInterface
         if (!is_dir($dir = dirname($cachedFile))) {
             mkdir($dir);
         }
-
-        array_map(fn (string $file) => unlink($file), array_filter(glob("{$dir}/*")));
 
         file_put_contents($cachedFile, $output);
     }
