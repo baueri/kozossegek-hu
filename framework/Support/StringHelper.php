@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Framework\Support;
 
+use Cake\Utility\Inflector;
+
 final class StringHelper
 {
     /**
@@ -103,6 +105,11 @@ final class StringHelper
         }
 
         return "{$word}s";
+    }
+
+    public static function singular(string $word): string
+    {
+        return Inflector::singularize($word);
     }
 
     public static function endsWith($string, $endsWith): bool

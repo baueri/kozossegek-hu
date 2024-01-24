@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Framework\Http\Route;
 
 use Exception;
@@ -36,20 +38,48 @@ class XmlRouter implements RouterInterface
         $this->routes = new Collection();
 
         $sources = $this->application->config('route_sources');
+
+        $checkSum = md5(implode('.', array_map(fn ($file) => md5_file($file), $sources)));
+        $cachedFile = CACHE . "route/{$checkSum}.php";
+
+        if (env('ROUTE_CACHE_ENABLED') && file_exists($cachedFile)) {
+            $cachedRoutes = require_once $cachedFile;
+            foreach ($cachedRoutes as $route) {
+                $this->routes[] = app()->make(RouteInterface::class, [
+                    $route['method'],
+                    $route['uriMask'],
+                    $route['as'],
+                    (string) ($route['controller'][0] ?? ''),
+                    (string) ($route['controller'][1] ?? ''),
+                    $route['middleware'],
+                    $route['view']
+                ]);
+            }
+            return;
+        }
+
         foreach ($sources as $sourceFile) {
-            $source = new XmlObject(file_get_contents($sourceFile . '.xml'));
+            $source = new XmlObject(file_get_contents($sourceFile));
             foreach ($source as $element) {
                 $this->parseRoutes($element);
             }
         }
+
+        $this->saveToCache($cachedFile);
     }
 
-    private function parseRoutes(XmlObject $elements): void
+    private function parseRoutes($elements)
     {
         if ($elements->getName() === 'route') {
-            $route = $this->buildRoute($elements);
-
-            $this->routes->push($route);
+            if ($scope = (string) ($elements['resource'] ?? null)) {
+                $this->routes->push(
+                    ...$this->buildResources($elements, $scope)
+                );
+            } else {
+                $this->routes->push(
+                    $this->buildRoute($elements)
+                );
+            }
         } elseif ($elements->getName() === 'route-group') {
             foreach ($elements as $element) {
                 $this->parseRoutes($element);
@@ -61,6 +91,19 @@ class XmlRouter implements RouterInterface
     {
         $builder = new XmlRouteBuilder($elements);
         return $builder->build();
+    }
+
+    private function buildResources($elements, string $scope): array
+    {
+        $routes = [];
+        foreach (CrudResource::getResources($scope) as $resource) {
+            $elements['method'] = mb_strtolower($resource->requestMethod()->name);
+            $elements['use'] = $resource->value();
+            $elements['uri'] = $resource->uri((string) $elements['prefix']);
+            $routes[] = $this->buildRoute($elements);
+        }
+
+        return $routes;
     }
 
     public function get($uri, array $options): RouteInterface
@@ -123,20 +166,58 @@ class XmlRouter implements RouterInterface
     public function route(string $name, mixed $args = null, bool $withHost = true): string
     {
         if ($args instanceof Model || $args instanceof Entity) {
-            $args = ['id' => $args->getId()];
+            $args = ['id' => (string) $args->getId()];
         }
+
+//        if (is_array($args)) {
+//            $args = array_merge(static::$globalArgs, $args);
+//        }
 
         foreach ($this->routes as $route) {
             if ($route->getAs() == $name) {
-                return trim(($withHost ? get_site_url() : '') . '/' . ltrim($route->getWithArgs($args, static::$globalArgs), '/'), '/');
+                return ($withHost ? get_site_url() : '') . '/' . ltrim($route->getWithArgs($args, static::$globalArgs), '/');
             }
         }
 
         throw new RouteNotFoundException($name);
     }
 
-    public function addGlobalArg($name, $value): void
+    public function addGlobalArg($name, $value)
     {
         static::$globalArgs[$name] = $value;
+    }
+
+    private function saveToCache(string $cachedFile)
+    {
+        $output = "<?php \nreturn [\n";
+        foreach ($this->routes as $route) {
+            $output .= "\t[\n";
+            $output .= "\t\t'method' => '{$route->method}',\n";
+            $output .= "\t\t'uriMask' => '{$route->uriMask}',\n";
+            $output .= "\t\t'as' => '{$route->as}',\n";
+            if (!$route->view) {
+                $use = $route->use ?: '__invoke';
+                $output .= "\t\t'controller' => ['{$route->controller}', '{$use}'],\n";
+                $output .= "\t\t'view' => '',\n";
+            } else {
+                $output .= "\t\t'controller' => [],\n";
+                $output .= "\t\t'view' => '{$route->view}',\n";
+            }
+            if ($route->middleware) {
+                $output .= "\t\t'middleware' => ['" . implode("','", $route->middleware) . "']";
+            } else {
+                $output .= "\t\t'middleware' => []";
+            }
+            $output .= "\n\t],\n";
+        }
+        $output .= "];\n";
+
+        if (!is_dir($dir = dirname($cachedFile))) {
+            mkdir($dir);
+        }
+
+        array_map(fn (string $file) => unlink($file), array_filter(glob("{$dir}/*")));
+
+        file_put_contents($cachedFile, $output);
     }
 }
