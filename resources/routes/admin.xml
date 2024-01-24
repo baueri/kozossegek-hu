@@ -152,5 +152,6 @@
 
         <route method="get" uri="" controller="DashboardController" use="dashboard" as="dashboard"/>
         <route method="get" uri="todo" view="admin.todos" as="todo"/>
+        <route method="get" uri="generate-sitemap" controller="SettingsController" use="generateSitemap" as="generate_sitemap"/>
     </route-group>
 </routes>

@@ -6,6 +6,7 @@ use App\Admin\Components\AdminTable\PaginatedAdminTable;
 use App\Admin\Settings\EventLog\EventLogAdminTable;
 use App\Console\Commands\Cron\DailyCron;
 use App\Console\Commands\Cron\MonthlyCron;
+use App\Services\SystemAdministration\SiteMap\SiteMapGenerator;
 use Framework\Console\Command;
 use Framework\Database\PaginatedResultSet;
 use Framework\Database\PaginatedResultSetInterface;
@@ -14,6 +15,7 @@ use Framework\Http\View\Section;
 use Framework\Maintenance;
 use Framework\Http\Request;
 use App\Admin\Settings\Services\ErrorLogParser;
+use Throwable;
 
 class SettingsController extends AdminController
 {
@@ -107,5 +109,18 @@ class SettingsController extends AdminController
         $monthly = $table(MonthlyCron::class);
 
         return view('admin.settings.scheduled_tasks', compact('daily', 'monthly'));
+    }
+
+
+    public function generateSitemap(SiteMapGenerator $service): void
+    {
+        try {
+            $service->run();
+            Message::success('Sikeres sitemap generálás');
+            redirect_route('admin.release_notes');
+        } catch (Throwable $e) {
+            Message::danger('Sikertelen sitemap generálás.');
+            report($e);
+        }
     }
 }
