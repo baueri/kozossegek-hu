@@ -31,6 +31,6 @@ class Cities extends EntityQueryBuilder
 
         return $this->where('name', 'like', "%{$term}%")
             ->limit(10)
-            ->orderBy('name', 'desc');
+            ->orderBy("CASE WHEN name like '{$term}%' THEN 1 ELSE 2 END, name asc");
     }
 }
