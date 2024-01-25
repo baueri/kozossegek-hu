@@ -147,9 +147,9 @@
                 <label for="join_mode">Csatlakozás módja</label>
                 <select class="form-control" name="join_mode" data-allow-clear="1" data-placeholder="Nincs megadva">
                     <option></option>
-                    @foreach($join_modes as $join_mode => $join_mode_name)
-                        <option value="{{ $join_mode }}" @if($group->join_mode==$join_mode) selected @endif>
-                            {{ $join_mode_name }}
+                    @foreach($join_modes as $join_mode)
+                        <option value="{{ $join_mode->value() }}" @selected($group->join_mode==$join_mode->value())>
+                            {{ $join_mode->translate() }}
                         </option>
                     @endforeach
                 </select>
