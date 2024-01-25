@@ -165,11 +165,6 @@ return [
                 'as' => 'admin.error_log',
             ],
             [
-                'title' => 'Todo',
-                'icon' => 'clipboard-list',
-                'as' => 'admin.todo',
-            ],
-            [
                 'title' => 'Háttérfolyamatok',
                 'icon' => 'stopwatch',
                 'as' => 'admin.scheduled_tasks'
