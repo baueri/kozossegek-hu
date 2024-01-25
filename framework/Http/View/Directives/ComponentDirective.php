@@ -16,6 +16,7 @@ class ComponentDirective implements Directive
 
     public function getReplacement(array $matches): string
     {
+        dd('todo : dinamically load components');
         $slot = '';
         if (isset($matches[3])) {
             $slot = preg_replace_callback($this->getPattern(), [$this, 'getReplacement'], $matches[3]);
