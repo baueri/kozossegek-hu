@@ -27,7 +27,11 @@ class LoginController extends PortalController
         use_default_header_bg();
 
         if (Auth::loggedIn()) {
-            redirect_route('admin.dashboard');
+            if (Auth::user()->isAdmin()) {
+                redirect_route('admin.dashboard');
+            }
+
+            redirect_route('home');
         }
 
         return view('portal.login');

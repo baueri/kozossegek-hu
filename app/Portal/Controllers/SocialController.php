@@ -24,6 +24,7 @@ class SocialController extends Controller
         $redirectAfter = $this->request->get('redirect_after');
 
         $client = new Google_Client(['client_id' => env('GOOGLE_CLIENT_ID')]);  // Specify the CLIENT_ID of the app that accesses the backend
+        $client->addScope('email');
         $payload = $client->verifyIdToken($credential);
         if ($payload) {
             $socialId = $payload['sub'];
