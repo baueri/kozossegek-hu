@@ -135,6 +135,7 @@ class LoginController extends PortalController
 
         $ok = $mailer->to($user->email)->send($mailable);
         if ($ok) {
+            log_event('resend_activation_email', user: $user);
             return api()->ok();
         } else {
             return api()->error();

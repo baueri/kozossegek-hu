@@ -114,11 +114,7 @@ class GroupController extends PortalController
         $keywords = builder('search_engine')->where('group_id', $group->getId())->first()['keywords'] ?? '';
 
         if (!(new CrawlerDetect())->isCrawler()) {
-            log_event('group_profile_opened', [
-                'group_id' => $group->getId(),
-                'referer' => $referer,
-                'user_agent' => $_SERVER['HTTP_USER_AGENT']
-            ]);
+            log_event('group_profile_opened', ['group_id' => $group->getId()]);
         }
 
         return view('portal.kozosseg', compact(

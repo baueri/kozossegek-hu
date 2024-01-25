@@ -85,7 +85,8 @@ class UserController extends PortalController
         if ($request->isPostRequestSent()) {
             $ok = $service->changePassword($user, $request->only('new_password', 'new_password_again'));
             if ($ok) {
-                $userTokens->delete($token);
+                $userTokens->deleteModel($token);
+                log_event('password_reset', ['user_id' => $user->getId()]);
                 Message::success('<b>Sikeres jelszócsere!</b> Most már be tudsz lépni az új jelszavaddal.');
                 Session::forget('last_visited');
                 redirect_route('login');
@@ -120,7 +121,8 @@ class UserController extends PortalController
             }
 
             $users->save($user, ['activated_at' => date('Y-m-d H:i:s')]);
-            $userTokens->delete($token);
+            $userTokens->deleteModel($token);
+            log_event('user_activated', ['user_id' => $user->getId()]);
             Auth::logout();
             Auth::login($user);
             Message::success('Sikeres fiók aktiválás!');

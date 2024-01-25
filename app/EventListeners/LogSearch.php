@@ -23,7 +23,6 @@ class LogSearch extends BaseLogger
         }
 
         if ($this->shouldLog($event->data)) {
-            $event->data['referer'] = $_SERVER['HTTP_REFERER'] ?? '';
             parent::trigger($event);
         }
     }

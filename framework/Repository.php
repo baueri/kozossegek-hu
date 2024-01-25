@@ -14,7 +14,8 @@ use Framework\Support\Arr;
 use Framework\Support\Collection;
 
 /**
- * @template T of \Framework\Model\Model
+ * @template T of Model
+ * @deprecated Hasznald helyette az EntityQueryBuilder osztalyt
  */
 abstract class Repository
 {

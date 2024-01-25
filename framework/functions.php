@@ -4,6 +4,7 @@ use App\Admin\Components\DebugBar\DebugBar;
 use App\Auth\Auth;
 use App\Mailable\ThrowableCriticalErrorEmail;
 use App\Middleware\AdminMiddleware;
+use App\Models\User;
 use App\Repositories\EventLogRepository;
 use App\Services\EventLogger;
 use Carbon\Carbon;
@@ -341,12 +342,12 @@ function site_has_error_logs(): bool
 
 function event_logger(): EventLogger
 {
-    return app()->get(EventLogRepository::class);
+    return app()->get(EventLogger::class);
 }
 
-function log_event(string $type, array $data = []): void
+function log_event(string $type, array $data = [], ?User $user = null): void
 {
-    event_logger()->logEvent($type, $data);
+    event_logger()->logEvent($type, $data, $user);
 }
 
 function site_name(): string

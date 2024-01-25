@@ -8,12 +8,20 @@ use App\Services\EventLogger;
 use Framework\Repository;
 
 /**
- * @phpstan-extends Repository<\App\Models\EventLog>
+ * @phpstan-extends Repository<EventLog>
  */
 class EventLogRepository extends Repository implements EventLogger
 {
     public function logEvent(string $type, array $data = [], ?User $user = null): EventLog
     {
+        $data = array_merge(
+            [
+                'referer' => $_SERVER['HTTP_REFERER'] ?? '',
+                'ip' => $_SERVER['REMOTE_ADDR'],
+                'user_agent' => $_SERVER['HTTP_USER_AGENT']
+            ],
+            $data
+        );
         return $this->create([
             'type' => $type,
             'log' => json_encode($data),
