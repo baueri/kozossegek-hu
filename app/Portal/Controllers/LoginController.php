@@ -62,6 +62,8 @@ class LoginController extends PortalController
 
             $route = $request['redirect'] ?? $refererRedirect ?? route('home');
 
+            log_event('user_login', user: $user);
+
             redirect(Session::flash('last_visited', $route));
         } catch (Exception $e) {
             report($e);

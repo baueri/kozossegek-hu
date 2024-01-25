@@ -5,7 +5,6 @@ use App\Auth\Auth;
 use App\Mailable\ThrowableCriticalErrorEmail;
 use App\Middleware\AdminMiddleware;
 use App\Models\User;
-use App\Repositories\EventLogRepository;
 use App\Services\EventLogger;
 use Carbon\Carbon;
 use Framework\Application;
@@ -52,7 +51,7 @@ function is_cli(): bool
     return PHP_SAPI == 'cli';
 }
 
-function d(...$data)
+function d(...$data): void
 {
     if (!Response::contentTypeIsJson() && !is_cli()) {
         print "<pre>";

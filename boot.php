@@ -1,7 +1,7 @@
 <?php
 
 use App\Bootstrapper\RegisterDirectives;
-use App\Repositories\EventLogRepository;
+use App\Repositories\EventLogs;
 use App\Services\EventLogger;
 use App\Services\MileStone;
 use Dotenv\Dotenv;
@@ -57,7 +57,7 @@ $application->bind(RouteInterface::class, Route::class);
 $application->singleton(ViewInterface::class, View::class);
 $application->singleton(Config::class);
 $application->singleton(RouterInterface::class, XmlRouter::class);
-$application->singleton(EventLogger::class, EventLogRepository::class);
+$application->singleton(EventLogger::class, EventLogs::class);
 $application->on('booting', function () { MileStone::measure('bootstrap'); });
 $application->on('booted', function () { MileStone::endMeasure('bootstrap'); });
 

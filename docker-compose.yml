@@ -9,10 +9,11 @@ services:
       - ./docker/mysql:/docker-entrypoint-initdb.d
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: pw
-      MYSQL_DATABASE: kozossegek
-      MYSQL_USER: user
-      MYSQL_PASSWORD: pw
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      TZ: Europe/Budapest
     networks:
       inner:
         aliases:

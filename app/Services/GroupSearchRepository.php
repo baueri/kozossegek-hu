@@ -23,7 +23,7 @@ class GroupSearchRepository
 
         $builder = $this->repository;
 
-        $keyword = trim(StringHelper::sanitize(str_replace(['-', '.', '(', ')', '*', '+'], ' ', $filter['search'])));
+        $keyword = trim(StringHelper::sanitize(str_replace(['-', '.', '(', ')', '*', '+'], ' ', $filter['search'] ?? '')));
 
         if ($keyword) {
             $sanitized_keyword = trim(StringHelper::sanitize(str_replace(['-', '.', '(', ')', '*', '+'], ' ', $keyword)));
