@@ -27,7 +27,11 @@ class LoginController extends PortalController
         use_default_header_bg();
 
         if (Auth::loggedIn()) {
-            redirect_route('admin.dashboard');
+            if (Auth::user()->isAdmin()) {
+                redirect_route('admin.dashboard');
+            }
+
+            redirect_route('home');
         }
 
         return view('portal.login');
@@ -57,6 +61,8 @@ class LoginController extends PortalController
             }
 
             $route = $request['redirect'] ?? $refererRedirect ?? route('home');
+
+            log_event('user_login', user: $user);
 
             redirect(Session::flash('last_visited', $route));
         } catch (Exception $e) {
@@ -131,6 +137,7 @@ class LoginController extends PortalController
 
         $ok = $mailer->to($user->email)->send($mailable);
         if ($ok) {
+            log_event('resend_activation_email', user: $user);
             return api()->ok();
         } else {
             return api()->error();

@@ -7,7 +7,8 @@ namespace Framework\Model;
 use Framework\Support\Collection;
 
 /**
- * @template T of Entity
+ * @phpstan-template T of Entity
+ * @phpstan-extends Collection<T>
  */
 class ModelCollection extends Collection
 {

@@ -52,6 +52,8 @@ class GroupController extends PortalController
             $institute = $institutes->where('slug', "{$request['varos']}/{$request['intezmeny']}")->firstOrFail();
         }
 
+        Section::add('header', fn () => "<meta name='thumbnail' content='{$institute->getImageRelPath()}'/>");
+
         Section::set('templom_title', function () use ($institute) {
             $url = $institute->getMiserendUrl();
             $link = $url ? "<p><a href='$url' target='_blank'>{$url} <i class='fa fa-external-link-alt'></i></a></p>" : '';
@@ -112,11 +114,7 @@ class GroupController extends PortalController
         $keywords = builder('search_engine')->where('group_id', $group->getId())->first()['keywords'] ?? '';
 
         if (!(new CrawlerDetect())->isCrawler()) {
-            log_event('group_profile_opened', [
-                'group_id' => $group->getId(),
-                'referer' => $referer,
-                'user_agent' => $_SERVER['HTTP_USER_AGENT']
-            ]);
+            log_event('group_profile_opened', ['group_id' => $group->getId()]);
         }
 
         return view('portal.kozosseg', compact(

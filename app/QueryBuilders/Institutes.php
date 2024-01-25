@@ -2,6 +2,7 @@
 
 namespace App\QueryBuilders;
 
+use App\Models\Institute;
 use App\QueryBuilders\Relations\HasManyChurchGroupViews;
 use Framework\Model\EntityQueryBuilder;
 use Framework\Model\Relation\Has;
@@ -9,7 +10,7 @@ use Framework\Model\Relation\Relation;
 use Framework\Model\SoftDeletes;
 
 /**
- * @phpstan-extends \Framework\Model\EntityQueryBuilder<\App\Models\Institute>
+ * @phpstan-extends EntityQueryBuilder<Institute>
  */
 class Institutes extends EntityQueryBuilder
 {

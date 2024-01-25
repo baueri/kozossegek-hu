@@ -17,7 +17,7 @@ use Framework\Support\StringHelper;
 use RuntimeException;
 
 /**
- * @phpstan-template T of \Framework\Model\Entity
+ * @phpstan-template T of Entity
  */
 abstract class EntityQueryBuilder
 {
@@ -92,8 +92,7 @@ abstract class EntityQueryBuilder
     }
 
     /**
-     * @return Entity[]|ModelCollection<Entity>
-     * @phpstan-return T[]|\Framework\Model\ModelCollection<T>
+     * @phpstan-return T[]|ModelCollection<T>
      */
     public function get(): ModelCollection
     {
@@ -129,7 +128,7 @@ abstract class EntityQueryBuilder
     }
 
     /**
-     * @phpstan-return \Framework\Model\Entity<T>|T|null
+     * @phpstan-return Entity<T>|T|null
      */
     public function find(mixed $id): ?Entity
     {
@@ -153,8 +152,8 @@ abstract class EntityQueryBuilder
 
     /**
      * @param mixed $id
-     * @return \Framework\Model\Entity|null
-     * @phpstan-return \Framework\Model\Entity<T>|T|null
+     * @return Entity|null
+     * @phpstan-return Entity<T>|T|null
      * @throws ModelNotFoundException
      */
     public function findOrFail($id): Entity
@@ -184,7 +183,7 @@ abstract class EntityQueryBuilder
     }
 
     /**
-     * @phpstan-return \Framework\Model\Entity<T>|T|null
+     * @phpstan-return Entity<T>|T|null
      */
     public function first(): ?Entity
     {
@@ -475,6 +474,11 @@ abstract class EntityQueryBuilder
             $builder->limit("{$offset}, {$chunks}");
             $rows->each(fn($model) => $callback($model));
         }
+    }
+
+    public function map(Closure $callback): Collection
+    {
+        return $this->get()->map($callback);
     }
 
     public static function primaryCol(): string

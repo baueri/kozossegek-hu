@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Enums;
 
-enum JoinMode
+enum JoinMode:string
 {
     use EnumTrait;
     use HasTranslation;
 
-    case egyeni;
-    case folyamatos;
-    case idoszakos;
+    case egyeni = 'egyeni';
+    case folyamatos = 'folyamatos';
+    case idoszakos = 'idoszakos';
 }

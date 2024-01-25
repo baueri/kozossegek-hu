@@ -4,7 +4,7 @@ namespace App\Admin\Group\Services;
 
 use App\Enums\AgeGroup;
 use App\Enums\GroupStatus;
-use Legacy\JoinMode;
+use App\Enums\JoinMode;
 use App\Enums\OccasionFrequency;
 use App\Enums\Tag;
 use App\Models\ChurchGroupView;
@@ -35,7 +35,7 @@ class BaseGroupForm
         $group_days = $group->getDays();
         $title = $group->exists() ? 'Közösség módosítása' : 'Új közösség létrehozása';
         $owner = $this->users->find($group->user_id);
-        $join_modes = JoinMode::getModesWithName();
+        $join_modes = JoinMode::cases();
 
         return compact(
             'group',

@@ -1,24 +1,24 @@
 <?php
 
-namespace Framework\Http\Route;
+declare(strict_types=1);
 
-use Framework\Support\StringHelper;
+namespace Framework\Http\Route;
 
 class Route implements RouteInterface
 {
-    protected string $method;
+    public readonly string $method;
 
-    protected string $uriMask;
+    public readonly string $uriMask;
 
-    protected string $as;
+    public readonly string $as;
 
-    protected string $controller;
+    public readonly string $controller;
 
-    protected string $use;
+    public readonly string $use;
 
-    protected string $view;
+    public readonly string $view;
 
-    protected array $middleware = [];
+    public readonly array $middleware;
 
     public function __construct(string $method, string $uriMask, string $as, string $controller, string $use, array $middleware, string $view)
     {
@@ -74,15 +74,15 @@ class Route implements RouteInterface
         if ($args && is_array($args)) {
             foreach ($args as $key => $arg) {
                 if (preg_match('/{' . $key . '(#)?([^}]+)?}/', $uri)) {
-                    $uri = preg_replace('/({' . $key . '([^}]+)?})/', $arg, $uri);
+                    $uri = preg_replace('/({' . $key . '([^}]+)?})/', (string) $arg, $uri);
                     unset($args[$key]);
                 }
             }
         } elseif (is_string($args)) {
-           $uri = preg_replace('/({[^}]+})/', $args, $uri, 1);
-           $args = [];
+            $uri = preg_replace('/({[^}]+})/', $args, $uri, 1);
+            $args = [];
         }
-        
+
         $uri = preg_replace('/({[^}]+})/', '', $uri);
 
         if (!empty($args)) {
@@ -127,5 +127,18 @@ class Route implements RouteInterface
         }
 
         return $this->method == $method || $this->method == 'ALL';
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'method' => $this->method,
+            'uriMask' => $this->uriMask,
+            'as' => $this->as,
+            'controller' => $this->controller,
+            'use' => $this->use,
+            'view' => $this->view,
+            'middleware' => $this->middleware,
+        ];
     }
 }

@@ -8,9 +8,9 @@ use App\Enums\OccasionFrequency;
 use App\Enums\GroupPending;
 use App\Enums\WeekDay;
 use App\Enums\GroupStatus;
+use App\Enums\JoinMode;
 use App\Models\Institute;
 use App\Portal\BreadCrumb\BreadCrumb;
-use Legacy\JoinMode;
 use App\Helpers\GroupHelper;
 use App\Models\GroupTag;
 use App\Models\User;
@@ -94,16 +94,7 @@ trait GroupTrait
 
     public function joinMode(): string
     {
-        return JoinMode::getText($this->join_mode) ?? '';
-    }
-
-    /**
-     * @todo képmentést megoldani!!!
-     * @return boolean [description]
-     */
-    public function hasImage(): bool
-    {
-        return false;
+        return JoinMode::from($this->join_mode)->translate();
     }
 
     public function isVisibleBy(?User $user): bool

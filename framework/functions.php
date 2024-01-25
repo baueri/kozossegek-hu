@@ -4,7 +4,7 @@ use App\Admin\Components\DebugBar\DebugBar;
 use App\Auth\Auth;
 use App\Mailable\ThrowableCriticalErrorEmail;
 use App\Middleware\AdminMiddleware;
-use App\Repositories\EventLogRepository;
+use App\Models\User;
 use App\Services\EventLogger;
 use Carbon\Carbon;
 use Framework\Application;
@@ -51,7 +51,7 @@ function is_cli(): bool
     return PHP_SAPI == 'cli';
 }
 
-function d(...$data)
+function d(...$data): void
 {
     if (!Response::contentTypeIsJson() && !is_cli()) {
         print "<pre>";
@@ -341,12 +341,12 @@ function site_has_error_logs(): bool
 
 function event_logger(): EventLogger
 {
-    return app()->get(EventLogRepository::class);
+    return app()->get(EventLogger::class);
 }
 
-function log_event(string $type, array $data = []): void
+function log_event(string $type, array $data = [], ?User $user = null): void
 {
-    event_logger()->logEvent($type, $data);
+    event_logger()->logEvent($type, $data, $user);
 }
 
 function site_name(): string
@@ -380,7 +380,6 @@ function report($exception): void
 /**
  * @phpstan-template T
  * @phpstan class-string<T> $class
- * @param $args
  * @phpstan-return T
  */
 function resolve($class, $args = null)

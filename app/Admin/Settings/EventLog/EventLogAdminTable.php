@@ -3,7 +3,7 @@
 namespace App\Admin\Settings\EventLog;
 
 use App\Admin\Components\AdminTable\PaginatedAdminTable;
-use App\Repositories\EventLogRepository;
+use App\Repositories\EventLogs;
 use Framework\Database\PaginatedResultSetInterface;
 use Framework\Http\Request;
 
@@ -17,18 +17,13 @@ class EventLogAdminTable extends PaginatedAdminTable
         'created_at' => 'dátum'
     ];
 
-
-    private EventLogRepository $repository;
-
-    public function __construct(Request $request, EventLogRepository $repository)
-    {
+    public function __construct(
+        Request $request,
+        protected readonly EventLogs $repository
+    ) {
         parent::__construct($request);
-        $this->repository = $repository;
     }
 
-    /**
-     * @return \Framework\Database\PaginatedResultSetInterface
-     */
     protected function getData(): PaginatedResultSetInterface
     {
         $query = $this->repository
@@ -47,7 +42,7 @@ class EventLogAdminTable extends PaginatedAdminTable
         return $query->paginate();
     }
 
-    public function getLog($log)
+    public function getLog($log): string
     {
         $logArr = json_decode($log, true);
 
