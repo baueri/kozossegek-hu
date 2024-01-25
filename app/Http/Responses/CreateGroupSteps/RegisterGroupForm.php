@@ -39,12 +39,15 @@ class RegisterGroupForm extends AbstractGroupStep
             BaseGroupService::ALLOWED_TAGS
         );
 
-        $institute = $this->institutes->find($data['institute_id']);
+        $institute = null;
+        if ($data['institute_id']) {
+            $institute = $this->institutes->find($data['institute_id']);
+        }
 
         $data['group_leaders'] = strip_tags((string) $request->get('group_leaders', $request['user_name']));
-        $data['institute_name'] = $institute ? $institute->name : '';
-        $data['city'] = $institute ? $institute->city : '';
-        $data['district'] = $institute ? $institute->district : '';
+        $data['institute_name'] = $institute->name ?? '';
+        $data['city'] = $institute->city ?? '';
+        $data['district'] = $institute->district ?? '';
         $data['age_group'] = strip_tags(implode(',', $request['age_group'] ?? []));
         $data['on_days'] = strip_tags(implode(',', $request['on_days'] ?? []));
         $data['spiritual_movement'] = '';
@@ -60,7 +63,7 @@ class RegisterGroupForm extends AbstractGroupStep
 
         $image = $request['image'];
 
-        if (!$image && $institute && $institute->hasImage()) {
+        if (!$image && $institute?->hasImage()) {
             $image = $institute->getImageRelPath();
         }
 
