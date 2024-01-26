@@ -754,31 +754,32 @@ ul.age-group-select li a:hover {
 }
 
 /** cimke sprite-ok **/
-.tag-utkereso { background: url('/images/tag_sprites.webp') -10px -10px; }
-.tag-szintarsulat { background: url('/images/tag_sprites.webp') -65px -10px; }
-.tag-szemlelodo { background: url('/images/tag_sprites.webp') -10px -65px; }
-.tag-sportos { background: url('/images/tag_sprites.webp') -65px -65px; }
-.tag-paroknak { background: url('/images/tag_sprites.webp') -120px -10px; }
-.tag-onsegito_kor { background: url('/images/tag_sprites.webp') -120px -65px; }
-.tag-nyugdijas { background: url('/images/tag_sprites.webp') -10px -120px; }
-.tag-noi_kor { background: url('/images/tag_sprites.webp') -65px -120px; }
-.tag-kozepiskolas { background: url('/images/tag_sprites.webp') -120px -120px; }
-.tag-korus { background: url('/images/tag_sprites.webp') -175px -10px; }
-.tag-klub { background: url('/images/tag_sprites.webp') -175px -65px; }
-.tag-katekumen { background: url('/images/tag_sprites.webp') -175px -120px; }
-.tag-karizmatikus { background: url('/images/tag_sprites.webp') -10px -175px; }
-.tag-karitativ { background: url('/images/tag_sprites.webp') -65px -175px; }
-.tag-imakor { background: url('/images/tag_sprites.webp') -120px -175px; }
-.tag-ferfi_kor { background: url('/images/tag_sprites.webp') -175px -175px; }
-.tag-elmelkedo { background: url('/images/tag_sprites.webp') -230px -10px; }
-.tag-egyetemista { background: url('/images/tag_sprites.webp') -230px -65px; }
-.tag-egyedulallok { background: url('/images/tag_sprites.webp') -230px -120px; }
-.tag-dicsoito_zenes { background: url('/images/tag_sprites.webp') -230px -175px; }
-.tag-csalados { background: url('/images/tag_sprites.webp') -10px -230px; }
-.tag-bibliaolvaso { background: url('/images/tag_sprites.webp') -65px -230px; }
-.tag-beszelgeto_kor { background: url('/images/tag_sprites.webp') -120px -230px; }
-.tag-babamama { background: url('/images/tag_sprites.webp') -175px -230px;  }
-.tag-baba_mama_klub { background: url('/images/tag_sprites.webp') -230px -230px; }
+.bg-csalados {background: url('/images/tag_sprites.webp') -10px -10px;}
+.tag-imakor {background: url('/images/tag_sprites.webp') -65px -10px;}
+.tag-egyetemista {background: url('/images/tag_sprites.webp') -10px -65px;}
+.tag-szemlelodo {background: url('/images/tag_sprites.webp') -65px -65px;}
+.tag-elmelkedo {background: url('/images/tag_sprites.webp') -120px -10px;}
+.tag-karitativ {background: url('/images/tag_sprites.webp') -120px -65px;}
+.tag-szintrsulat {background: url('/images/tag_sprites.webp') -10px -120px;}
+.tag-egyedulallok {background: url('/images/tag_sprites.webp') -65px -120px;}
+.tag-dicsoito_zenes {background: url('/images/tag_sprites.webp') -120px -120px;}
+.tag-karizmatikus {background: url('/images/tag_sprites.webp') -175px -10px;}
+.tag-onsegito_kor {background: url('/images/tag_sprites.webp') -175px -65px;}
+.tag-korus {background: url('/images/tag_sprites.webp') -175px -120px;}
+.tag-utkereso {background: url('/images/tag_sprites.webp') -10px -175px;}
+.tag-paroknak {background: url('/images/tag_sprites.webp') -65px -175px;}
+.tag-exodus {background: url('/images/tag_sprites.webp') -120px -175px;}
+.tag-bibliaolvaso {background: url('/images/tag_sprites.webp') -175px -175px;}
+.tag-kozepiskolas {background: url('/images/tag_sprites.webp') -230px -10px;}
+.tag-ferfi_kor {background: url('/images/tag_sprites.webp') -230px -65px;}
+.tag-baba_mama_klub {background: url('/images/tag_sprites.webp') -230px -120px;}
+.tag-babamama {background: url('/images/tag_sprites.webp') -230px -175px;}
+.tag-katekumen {background: url('/images/tag_sprites.webp') -10px -230px;}
+.tag-nyugdijas {background: url('/images/tag_sprites.webp') -65px -230px;}
+.tag-beszelgeto_kor {background: url('/images/tag_sprites.webp') -120px -230px;}
+.tag-noi_kor {background: url('/images/tag_sprites.webp') -175px -230px;}
+.tag-sportos {background: url('/images/tag_sprites.webp') -230px -230px;}
+.tag-klub {background: url('/images/tag_sprites.webp') -285px -10px;}
 
 /*#kozossegek-list > div {*/
 /*    padding-left: 1.3em;*/

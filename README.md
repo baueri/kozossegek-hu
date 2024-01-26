@@ -272,3 +272,6 @@ Route linkjének lekérése
 <a href="@route('admin.dashboard')">Admin felület</a>
 ```
 
+### Egyéb források
+
+- https://www.toptal.com/developers/css/sprite-generator: a címkék (jellemzők) sprite-tá alalkításához. 35x35 px-es képekkel! 
