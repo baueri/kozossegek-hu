@@ -3,18 +3,19 @@
 namespace App\Admin\Page;
 
 use App\Admin\Components\AdminTable\PaginatedAdminTable;
-use App\Admin\Components\AdminTable\Deletable;
 use App\Admin\Components\AdminTable\Editable;
+use App\Admin\Components\AdminTable\Traits\SoftDeletable;
 use App\Models\Page;
 use App\Models\PageStatus;
 use App\QueryBuilders\Pages;
-use App\QueryBuilders\Users;
 use Framework\Database\PaginatedResultSetInterface;
 use Framework\Model\PaginatedModelCollection;
 use Framework\Support\Collection;
 
-class PageTable extends PaginatedAdminTable implements Deletable, Editable
+class PageTable extends PaginatedAdminTable implements Editable
 {
+    use SoftDeletable;
+
     protected array $columns = [
         'id' => '#',
         'title' => 'Oldal címe',
@@ -52,7 +53,7 @@ class PageTable extends PaginatedAdminTable implements Deletable, Editable
         return $this->getPages($filter);
     }
 
-    public function getDeleteUrl($model): string
+    public function getSoftDeleteLink($model): string
     {
         return route('admin.page.delete', $model);
     }

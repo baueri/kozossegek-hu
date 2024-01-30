@@ -6,6 +6,7 @@ use App\Admin\Group\GroupTable;
 use App\Enums\AgeGroup;
 use App\QueryBuilders\Users;
 use App\Enums\GroupStatus;
+use App\QueryBuilders\ChurchGroups;
 use Framework\Http\Request;
 
 class ListGroups
@@ -34,7 +35,7 @@ class ListGroups
 
         $filter['pending'] = $current_page === 'pending';
 
-        $pending_groups = builder()->from('church_groups')->where('pending', 1)->apply('notDeleted')->count();
+        $pending_groups = ChurchGroups::query()->where('pending', 1)->apply('notDeleted')->count();
 
         return view('admin.group.list', compact(
             'table',

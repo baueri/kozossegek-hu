@@ -1,3 +1,8 @@
+@if(!empty($trashView))
+    @alert('danger mt-4')
+        <a href="#" onclick="deleteConfirm(function () {}, 'Biztosan üríted a lomtárat?'); return false;" class="btn btn-danger">Lomtár ürítése</a>
+    @endalert
+@endif
 @if($with_pager)
     <div class="mt-4">Összes találat: <b>{{ $total }}</b></div>
     <div class="mb-4">@include('partials.simple-pager')</div>

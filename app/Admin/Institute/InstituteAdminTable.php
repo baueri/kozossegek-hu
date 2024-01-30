@@ -3,16 +3,18 @@
 namespace App\Admin\Institute;
 
 use App\Admin\Components\AdminTable\PaginatedAdminTable;
-use App\Admin\Components\AdminTable\Deletable;
 use App\Admin\Components\AdminTable\Editable;
+use App\Admin\Components\AdminTable\Traits\SoftDeletable;
 use App\QueryBuilders\Users;
 use Framework\Database\PaginatedResultSetInterface;
 use Framework\Http\Request;
 use Framework\Support\StringHelper;
 use App\Models\Institute;
 
-class InstituteAdminTable extends PaginatedAdminTable implements Deletable, Editable
+class InstituteAdminTable extends PaginatedAdminTable implements Editable
 {
+    use SoftDeletable;
+
     protected array $columns = [
         'id' => '<i class="fa fa-hashtag"></i>',
         'image' => '<i class="fa fa-image" title="Kép"></i>',
@@ -36,7 +38,7 @@ class InstituteAdminTable extends PaginatedAdminTable implements Deletable, Edit
         parent::__construct($request);
     }
 
-    public function getDeleteUrl($model): string
+    public function getSoftDeleteLink($model): string
     {
         return route('admin.institute.delete', ['id' => $model->id]);
     }

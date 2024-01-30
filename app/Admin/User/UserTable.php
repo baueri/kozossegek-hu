@@ -2,12 +2,12 @@
 
 namespace App\Admin\User;
 
-use App\Admin\Components\AdminTable\{PaginatedAdminTable, Deletable, Editable};
+use App\Admin\Components\AdminTable\{PaginatedAdminTable, Editable};
+use App\Admin\Components\AdminTable\Traits\SoftDeletable;
 use Legacy\UserRole;
 use App\Models\User;
 use App\Models\UserSession;
 use App\QueryBuilders\ChurchGroups;
-use App\QueryBuilders\ChurchGroupViews;
 use App\QueryBuilders\Users;
 use App\QueryBuilders\UserSessions;
 use Framework\Database\Builder;
@@ -16,8 +16,10 @@ use Framework\Http\Request;
 use Framework\Model\PaginatedModelCollection;
 use Framework\Support\Collection;
 
-class UserTable extends PaginatedAdminTable implements Deletable, Editable
+class UserTable extends PaginatedAdminTable implements Editable
 {
+    use SoftDeletable;
+
     protected array $columns = [
         'id' => '#',
         'groups' => '<i class="fa fa-comments"></i>',
@@ -44,7 +46,7 @@ class UserTable extends PaginatedAdminTable implements Deletable, Editable
         parent::__construct($request);
     }
 
-    public function getDeleteUrl($model): string
+    public function getSoftDeleteLink($model): string
     {
         return route('admin.user.delete', $model);
     }

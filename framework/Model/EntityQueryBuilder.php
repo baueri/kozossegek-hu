@@ -386,6 +386,11 @@ abstract class EntityQueryBuilder
         return (bool) $deleted;
     }
 
+    public function hardDelete($model): bool
+    {
+        return $this->deleteModel($model, true);
+    }
+
     public function paginate(?int $perpage = null, ?int $page = null): PaginatedModelCollection
     {
         $rows = $this->builder->paginate($perpage, $page);

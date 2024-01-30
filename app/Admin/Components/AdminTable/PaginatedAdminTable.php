@@ -7,10 +7,13 @@ use Framework\Database\PaginatedResultSetInterface;
 use Framework\Dispatcher\Dispatcher;
 use Framework\Http\Request;
 use Framework\Support\StringHelper;
+use Framework\Traits\BootsTraits;
 use InvalidArgumentException;
 
 abstract class PaginatedAdminTable
 {
+    use BootsTraits;
+
     protected array $columns = [];
 
     protected array $order;
@@ -35,8 +38,10 @@ abstract class PaginatedAdminTable
     protected array $dates = ['created_at', 'updated_at', 'deleted_at'];
 
     public function __construct(
-        public readonly Request $request
+        public readonly Request $request,
+        public readonly bool $trashView = false
     ) {
+        $this->bootTraits();
         if (!$this->columns) {
             throw new InvalidArgumentException('missing columns for ' . static::class);
         }
@@ -72,7 +77,8 @@ abstract class PaginatedAdminTable
             'total' => $data->total(),
             'page' => $data->page(),
             'perpage' => $data->perpage(),
-            'with_pager' => $this->withPager
+            'with_pager' => $this->withPager,
+            'trashView' => $this->trashView
         ];
 
         return view('admin.partials.table', $model);
@@ -97,10 +103,6 @@ abstract class PaginatedAdminTable
 
         if (count(array_filter(array_keys($columns), 'is_string')) === 0) {
             $columns = array_combine($columns, $columns);
-        }
-
-        if ($this instanceof Deletable) {
-            $columns['delete'] = '<i class="fa fa-trash-alt"></i>';
         }
 
         return $columns;
@@ -146,18 +148,6 @@ abstract class PaginatedAdminTable
         $icon = self::getIcon('fa fa-edit');
 
         return "<a href='{$url}' title='{$value}'>{$icon} {$text}</a>";
-    }
-
-    protected function getDelete($t, $model, $title = 'lomtárba'): string
-    {
-        $url = $this->getDeleteUrl($model);
-
-        return $this->getDeleteColumn($url, $title);
-    }
-
-    protected function getDeleteColumn(string $url, string $title): string
-    {
-        return "<a href='$url' title='$title'><i class='fa fa-trash-alt text-danger'></i></a>";
     }
 
     protected static function getCheckIcon(string $title = ''): string
