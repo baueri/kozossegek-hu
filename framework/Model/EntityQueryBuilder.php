@@ -369,13 +369,14 @@ abstract class EntityQueryBuilder
         return $this->builder->updateOrInsert($where, $values);
     }
 
-    public function deleteModel($model, bool $hardDelete = false): bool
+    public function deleteModel(int|string|Entity $model, bool $hardDelete = false): bool
     {
         if (is_numeric($model)) {
             $model = $this->find($model);
         }
+        
 
-        if (property_exists($model, 'deleted_at') && !$hardDelete) {
+        if (class_uses_trait($model, SoftDeletes::class) && !$hardDelete) {
             return (bool) $this->save($model, ['deleted_at' => date('Y-m-d H:i:s')]);
         }
 
@@ -384,6 +385,11 @@ abstract class EntityQueryBuilder
         EventDisptatcher::dispatch(new ModelDeleted($model));
 
         return (bool) $deleted;
+    }
+
+    public function hardDelete($model): bool
+    {
+        return $this->deleteModel($model, true);
     }
 
     public function paginate(?int $perpage = null, ?int $page = null): PaginatedModelCollection

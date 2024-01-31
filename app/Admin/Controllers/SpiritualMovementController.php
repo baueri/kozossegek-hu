@@ -85,9 +85,11 @@ class SpiritualMovementController extends Controller
     }
 
 
-    public function delete(Request $request): void
+    public function delete(Request $request, SpiritualMovements $movements): void
     {
-        builder('spiritual_movements')->where('id', $request['id'])->delete();
+        $movement = SpiritualMovements::query()->findOrFail($request['id']);
+
+        $movements->deleteModel($movement);
 
         Message::danger('Lelkiségi mozgalom törölve');
 

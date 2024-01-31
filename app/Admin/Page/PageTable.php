@@ -3,18 +3,21 @@
 namespace App\Admin\Page;
 
 use App\Admin\Components\AdminTable\PaginatedAdminTable;
-use App\Admin\Components\AdminTable\Deletable;
 use App\Admin\Components\AdminTable\Editable;
+use App\Admin\Components\AdminTable\Traits\Destroyable;
+use App\Admin\Components\AdminTable\Traits\SoftDeletable;
 use App\Models\Page;
 use App\Models\PageStatus;
 use App\QueryBuilders\Pages;
-use App\QueryBuilders\Users;
 use Framework\Database\PaginatedResultSetInterface;
 use Framework\Model\PaginatedModelCollection;
 use Framework\Support\Collection;
 
-class PageTable extends PaginatedAdminTable implements Deletable, Editable
+class PageTable extends PaginatedAdminTable implements Editable
 {
+    use SoftDeletable;
+    use Destroyable;
+
     protected array $columns = [
         'id' => '#',
         'title' => 'Oldal címe',
@@ -24,6 +27,8 @@ class PageTable extends PaginatedAdminTable implements Deletable, Editable
         'created_at' => 'Létrehozva',
         'updated_at' => 'Utoljára módosítva',
     ];
+
+    protected string $emptyTrashRoute = 'admin.page.empty_trash';
 
     public function getSlug($slug, Page $page): string
     {
@@ -52,9 +57,15 @@ class PageTable extends PaginatedAdminTable implements Deletable, Editable
         return $this->getPages($filter);
     }
 
-    public function getDeleteUrl($model): string
+    public function getSoftDeleteLink($model): string
     {
         return route('admin.page.delete', $model);
+    }
+
+    public function getDestroyLink($model): string
+    {
+
+        return route('admin.page.force_delete', $model);
     }
 
     public function getEditUrl($model): string

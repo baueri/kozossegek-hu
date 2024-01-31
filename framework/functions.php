@@ -439,3 +439,21 @@ function memory_usage_format(): string
 function enum_val(UnitEnum $enum) {
     return $enum instanceof BackedEnum ? $enum->value : $enum->name;
 }
+
+function class_uses_trait($object_or_class, string $trait): bool
+{
+    return in_array($trait, class_uses_recursive($object_or_class));
+}
+
+function class_uses_recursive($object_or_class): array
+{
+    $uses = [];
+    foreach (array_reverse(class_parents($object_or_class)) as $class) {
+        $uses = array_merge($uses, class_uses($class));
+    }
+
+    $className = is_object($object_or_class) ? get_class($object_or_class) : $object_or_class;
+    $uses = array_merge($uses, class_uses($className));
+
+    return array_unique($uses);
+}

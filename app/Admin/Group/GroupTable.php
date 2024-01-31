@@ -5,6 +5,8 @@ namespace App\Admin\Group;
 use App\Admin\Components\AdminTable\PaginatedAdminTable;
 use App\Admin\Components\AdminTable\Deletable;
 use App\Admin\Components\AdminTable\Editable;
+use App\Admin\Components\AdminTable\Traits\Destroyable;
+use App\Admin\Components\AdminTable\Traits\SoftDeletable;
 use App\Enums\GroupStatus;
 use App\Models\ChurchGroupView;
 use App\Services\GroupSearchRepository;
@@ -13,8 +15,11 @@ use Framework\Http\Request;
 use Framework\Model\Entity;
 use Framework\Support\StringHelper;
 
-class GroupTable extends PaginatedAdminTable implements Editable, Deletable
+class GroupTable extends PaginatedAdminTable implements Editable
 {
+    use Destroyable;
+    use SoftDeletable;
+
     protected array $columns = [
         'id' => '#',
         'image' => '<i class="fa fa-image" title="Fotó"></i>',
@@ -37,8 +42,11 @@ class GroupTable extends PaginatedAdminTable implements Editable, Deletable
 
     protected array $columnClasses = ['age_group' => 'd-none d-xl-table-cell'];
 
+    protected string $emptyTrashRoute = 'admin.group.empty_trash';
+
     public function __construct(Request $request, private GroupSearchRepository $repository)
     {
+        $this->trashView = $request->route->getAs() == 'admin.group.trash';
         parent::__construct($request);
     }
 
@@ -112,11 +120,11 @@ class GroupTable extends PaginatedAdminTable implements Editable, Deletable
     protected function getData(): PaginatedResultSetInterface
     {
         return $this->repository->search($this->request->merge([
-            'deleted' => $this->request->route->getAs() == 'admin.group.trash'
+            'deleted' => $this->trashView
         ]), $this->perpage);
     }
 
-    public function getDeleteUrl($model): string
+    public function getSoftDeleteLink($model): string
     {
         return route('admin.group.delete', $model);
     }
@@ -159,5 +167,10 @@ class GroupTable extends PaginatedAdminTable implements Editable, Deletable
     private function getListUrl(array $params = []): string
     {
         return route('admin.group.list', $params);
+    }
+
+    public function getDestroyLink($model)
+    {
+        return route('admin.group.destroy', $model);
     }
 }

@@ -9,9 +9,11 @@ use App\Admin\Group\Services\EditGroup;
 use App\Admin\Group\Services\ListGroups;
 use App\Admin\Group\Services\UpdateGroup;
 use App\Admin\Group\Services\ValidateGroupForm;
+use App\Helpers\GroupHelper;
 use App\Http\Exception\RequestParameterException;
 use App\Mail\DefaultMailable;
 use App\Mail\GroupAcceptedEmail;
+use App\Models\ChurchGroup;
 use App\Models\ChurchGroupView;
 use App\QueryBuilders\ChurchGroups;
 use App\QueryBuilders\ChurchGroupViews;
@@ -84,9 +86,27 @@ class GroupController extends AdminController
     /**
      * @throws ModelNotFoundException
      */
-    public function delete(DeleteGroup $service)
+    public function delete(ChurchGroups $repository)
     {
-        $service->delete((int) $this->request['id']);
+        $group = $repository->findOrFail($this->request['id']);
+
+        $repository->softDelete($group);
+
+        Message::warning('Közösség lomtárba helyezve.');
+
+        redirect($this->request->referer());
+    }
+
+    public function destroy(ChurchGroups $repository)
+    {
+        $groupId = $this->request['id'];
+        $group = $repository->findOrFail($groupId);
+
+        $repository->hardDelete($group);
+
+        rrmdir(GroupHelper::getStoragePath($groupId));
+
+        Message::warning('Közösség törölve.');
 
         redirect($this->request->referer());
     }
@@ -94,6 +114,15 @@ class GroupController extends AdminController
     public function trash(ListGroups $service): string
     {
         return $service->show();
+    }
+
+    public function emptyTrash(): never
+    {
+        ChurchGroups::query()->trashed()->delete();
+
+        Message::warning('Lomtár kiürítve.');
+
+        redirect($this->request->referer());
     }
 
     public function rebuildSearchEngine(RebuildSearchEngine $service)

@@ -7,6 +7,7 @@ use App\Services\SystemAdministration\SiteMap\ChangeFreq;
 use App\Services\SystemAdministration\SiteMap\EntitySiteMappable;
 use Framework\Model\Entity;
 use Framework\Model\HasTimestamps;
+use Framework\Model\SoftDeletes;
 use Framework\Support\StringHelper;
 
 /**
@@ -21,6 +22,7 @@ use Framework\Support\StringHelper;
  */
 class Page extends Entity
 {
+    use SoftDeletes;
     use HasTimestamps;
     use EntitySiteMappable;
 

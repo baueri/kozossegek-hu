@@ -1,3 +1,8 @@
+@if(!empty($trashView) && $empty_trash_route)
+<div class="mt-3">    
+    <a href="#" onclick="deleteConfirm(() => window.location.href = '{{ $empty_trash_route }}', 'Biztosan üríted a lomtárat?'); return false;" class="btn btn-danger btn-sm float-right">Lomtár ürítése</a>
+</div>
+@endif
 @if($with_pager)
     <div class="mt-4">Összes találat: <b>{{ $total }}</b></div>
     <div class="mb-4">@include('partials.simple-pager')</div>
