@@ -14,11 +14,5 @@
 @endsection
 @extends('admin')
 
-@if($is_trash)
-    <p>
-        <a href="@route('admin.page.empty_trash')" class="text-danger">lomtár ürítése</a>
-    </p>
-@endif
-
 
 {{ $table }}

@@ -116,6 +116,15 @@ class GroupController extends AdminController
         return $service->show();
     }
 
+    public function emptyTrash(): never
+    {
+        ChurchGroups::query()->trashed()->delete();
+
+        Message::warning('Lomtár kiürítve.');
+
+        redirect($this->request->referer());
+    }
+
     public function rebuildSearchEngine(RebuildSearchEngine $service)
     {
         $service->run();

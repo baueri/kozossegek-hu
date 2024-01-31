@@ -42,9 +42,12 @@ class GroupTable extends PaginatedAdminTable implements Editable
 
     protected array $columnClasses = ['age_group' => 'd-none d-xl-table-cell'];
 
+    protected string $emptyTrashRoute = 'admin.group.empty_trash';
+
     public function __construct(Request $request, private GroupSearchRepository $repository)
     {
-        parent::__construct($request, $request->route->getAs() == 'admin.group.trash');
+        $this->trashView = $request->route->getAs() == 'admin.group.trash';
+        parent::__construct($request);
     }
 
     public function getAgeGroup($ageGroup, ChurchGroupView $churchGroup): string

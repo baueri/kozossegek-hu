@@ -32,14 +32,14 @@ abstract class PaginatedAdminTable
 
     protected bool $withPager = true;
 
-    /**
-     * @var string[]
-     */
+    protected bool $trashView = false;
+
+    protected string $emptyTrashRoute = '';
+
     protected array $dates = ['created_at', 'updated_at', 'deleted_at'];
 
     public function __construct(
-        public readonly Request $request,
-        public readonly bool $trashView = false
+        public readonly Request $request
     ) {
         $this->bootTraits();
         if (!$this->columns) {
@@ -78,7 +78,8 @@ abstract class PaginatedAdminTable
             'page' => $data->page(),
             'perpage' => $data->perpage(),
             'with_pager' => $this->withPager,
-            'trashView' => $this->trashView
+            'trashView' => $this->trashView,
+            'empty_trash_route' => $this->emptyTrashRoute ? route($this->emptyTrashRoute) : null
         ];
 
         return view('admin.partials.table', $model);

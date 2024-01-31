@@ -30,7 +30,7 @@ class PageController extends AdminController
         return $service->show($table);
     }
 
-    public function emptyTrash(Pages $repository): never
+    public function emptyTrash(): never
     {
         $this->repository->trashed()->delete();
 

@@ -79,9 +79,6 @@ class StatisticsController extends AdminController
                 'keyword' => 'w-50'
             ];
 
-            /**
-             * @return \Framework\Database\PaginatedResultSetInterface
-             */
             protected function getData(): PaginatedResultSetInterface
             {
                 db()->execute('SET SESSION group_concat_max_len = 1000000;');
