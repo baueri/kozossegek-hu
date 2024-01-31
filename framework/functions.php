@@ -230,7 +230,7 @@ function mb_ucfirst($string, $encoding = 'utf-8'): string
     return mb_strtoupper($firstChar, $encoding) . $then;
 }
 
-function raise_error_page(int $code, string $message, string $message2 = ''): never
+function raise_error_page(int $code, string $message = '', string $message2 = ''): never
 {
     echo view('portal.error', compact('code', 'message', 'message2'));
     exit();

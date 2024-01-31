@@ -22,6 +22,7 @@ class SocialController extends Controller
     {
         $credential = $this->request->get('credential');
         $redirectAfter = $this->request->get('redirect_after');
+        raise_error_page(400, message2: 'érvénytelen kérés');
 
         $client = new Google_Client(['client_id' => env('GOOGLE_CLIENT_ID')]);  // Specify the CLIENT_ID of the app that accesses the backend
         $client->addScope('email');
