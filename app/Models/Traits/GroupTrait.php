@@ -94,6 +94,9 @@ trait GroupTrait
 
     public function joinMode(): string
     {
+        if (!$this->join_mode) {
+            return '';
+        }
         return JoinMode::from($this->join_mode)->translate();
     }
 
