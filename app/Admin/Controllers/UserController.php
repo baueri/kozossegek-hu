@@ -118,6 +118,10 @@ class UserController extends AdminController
             $data['password'] = Password::hash($password);
         }
 
+        if (empty($data['username'])) {
+            $data['username'] = null;
+        }
+
         $repository->save($user, $data);
 
         if ($spiritualMovementId = $request['spiritual_movement_id']) {
