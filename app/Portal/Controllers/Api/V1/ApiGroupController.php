@@ -73,7 +73,7 @@ class ApiGroupController extends Controller
             ->get()
             ->map(fn (ChurchGroupView $churchGroup) => [
                 'name' => $churchGroup->name,
-                'age_group '=> $churchGroup->allAgeGroupsAsString(),
+                'age_group'=> $churchGroup->allAgeGroupsAsString(),
                 'description' => $churchGroup->description,
                 'tags' => $churchGroup->tags->pluck('tag_name')->implode(', '),
                 'link' => $churchGroup->url()
