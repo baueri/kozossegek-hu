@@ -8,6 +8,7 @@ use App\Enums\JoinMode;
 use App\Enums\OccasionFrequency;
 use App\Enums\Tag;
 use App\Models\ChurchGroupView;
+use App\QueryBuilders\ChurchGroups;
 use App\QueryBuilders\Institutes;
 use App\QueryBuilders\Users;
 use Framework\Http\Request;
@@ -36,6 +37,8 @@ class BaseGroupForm
         $title = $group->exists() ? 'Közösség módosítása' : 'Új közösség létrehozása';
         $owner = $this->users->find($group->user_id);
         $join_modes = JoinMode::cases();
+        $comment = $group->comment;
+        $lastCommenter = $comment->lastCommenter->name;
 
         return compact(
             'group',
@@ -51,7 +54,9 @@ class BaseGroupForm
             'group_days',
             'title',
             'owner',
-            'join_modes'
+            'join_modes',
+            'comment',
+            'lastCommenter'
         );
     }
 

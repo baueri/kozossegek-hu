@@ -2,24 +2,31 @@
 
 namespace App\Migration;
 
+use Framework\Exception\MethodNotFoundException;
 use Phinx\Db\Adapter\AdapterInterface;
 use Phinx\Db\Table;
 
+/**
+ * 
+ * @method static integer(string $name, array $options = [])
+ * @method static string(string $name, array $options = [])
+ * @method static text(string $name, array $options = [])
+ * @method static datetime(string $name, array $options = [])
+ * @method static date(string $name, array $options = [])
+ */
 final class AppMigrationTable extends Table
 {
+    protected const MAP = [
+        'integer' => AdapterInterface::PHINX_TYPE_INTEGER,
+        'text' => AdapterInterface::PHINX_TYPE_TEXT,
+        'string' => AdapterInterface::PHINX_TYPE_STRING,
+        'date' => AdapterInterface::PHINX_TYPE_DATE,
+        'datetime' => AdapterInterface::PHINX_TYPE_DATETIME,
+    ];
+
     public function unsignedBigInteger(string $name, array $options = []): self
     {
         return $this->addColumn($name, AdapterInterface::PHINX_TYPE_BIG_INTEGER, array_merge($options, ['signed' => false]));
-    }
-
-    public function integer(string $name, array $options = []): AppMigrationTable
-    {
-        return $this->addColumn($name, AdapterInterface::PHINX_TYPE_INTEGER, $options);
-    }
-
-    public function string(string $name, array $options = []): self
-    {
-        return $this->addColumn($name, AdapterInterface::PHINX_TYPE_STRING, $options);
     }
 
     public function datetimes(bool $withDeletedAt = true): self
@@ -41,11 +48,14 @@ final class AppMigrationTable extends Table
         return $this;
     }
 
-    public function datetime(string $column, array $options = []): self
+    public function __call($method, $arguments)
     {
-        $this->addColumn($column, AdapterInterface::PHINX_TYPE_DATETIME, $options);
+        if (isset(self::MAP[$method])) {
+            return $this->addColumn(array_shift($arguments), self::MAP[$method], $arguments[0] ?? []);
+        }
 
-        return $this;
+        $class = get_class($this);
+        throw new MethodNotFoundException("method {$class}::{$method} not found");
     }
 
     public function deletedAt(): self
@@ -62,16 +72,9 @@ final class AppMigrationTable extends Table
         return $this;
     }
 
-    public function date(string $column, array $options = []): self
-    {
-        $this->addColumn($column, AdapterInterface::PHINX_TYPE_DATE, $options);
-
-        return $this;
-    }
-
     public function enum(string $column, array $values, array $options = []): self
     {
-        return $this->addColumn($column, 'enum', array_merge($options, compact('values')));
+        return $this->addColumn($column, AdapterInterface::PHINX_TYPE_ENUM, array_merge($options, compact('values')));
     }
 
     public function dropTimeStamps(): self
@@ -83,5 +86,10 @@ final class AppMigrationTable extends Table
         }
 
         return $this;
+    }
+
+    public function unique($columns, array $options = []): self
+    {
+        return $this->addIndex($columns, array_merge($options, ['unique' => true]));
     }
 }

@@ -58,9 +58,6 @@ trait HasMany
 
     public function has(Has $relationType, string|EntityQueryBuilder|Builder $repositoryClass, ?string $foreignKey = null, ?string $localKey = null): Relation
     {
-        if (is_null($foreignKey)) {
-            d(debug_backtrace());
-        }
         return new Relation(
             relationType: $relationType,
             queryBuilder: is_string($repositoryClass) ? app($repositoryClass) : $repositoryClass,

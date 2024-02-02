@@ -3,12 +3,12 @@
 namespace App\Admin\Group;
 
 use App\Admin\Components\AdminTable\PaginatedAdminTable;
-use App\Admin\Components\AdminTable\Deletable;
 use App\Admin\Components\AdminTable\Editable;
 use App\Admin\Components\AdminTable\Traits\Destroyable;
 use App\Admin\Components\AdminTable\Traits\SoftDeletable;
 use App\Enums\GroupStatus;
 use App\Models\ChurchGroupView;
+use App\Models\GroupComment;
 use App\Services\GroupSearchRepository;
 use Framework\Database\PaginatedResultSetInterface;
 use Framework\Http\Request;
@@ -25,6 +25,7 @@ class GroupTable extends PaginatedAdminTable implements Editable
         'image' => '<i class="fa fa-image" title="Fotó"></i>',
         'view' => '<i class="fa fa-eye" title="Megtekintés a honlapon"></i>',
         'name' => 'Közösség neve',
+        'comment' => '<i class="fa fa-comment" title="Megjegyzés"></i>',
         'pending' => '<i class="fa fa-thumbs-up" title="Jóváhagyva"></i>',
         'status' => '<i class="fa fa-check-circle" title="Aktív"></i>',
         'document' => '<i class="fa fa-file-word" title="Van feltöltött intézményvezetői igazolása"></i>',
@@ -172,5 +173,14 @@ class GroupTable extends PaginatedAdminTable implements Editable
     public function getDestroyLink($model)
     {
         return route('admin.group.destroy', $model);
+    }
+
+    public function getComment(?GroupComment $comment): string
+    {
+        if (!$comment) {
+            return '';
+        }
+
+        return $this->getIcon('fa fa-comment text-warning', $comment->comment ?? '');
     }
 }
