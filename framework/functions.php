@@ -457,3 +457,16 @@ function class_uses_recursive($object_or_class): array
 
     return array_unique($uses);
 }
+
+function diff(array|Collection $old, array|Collection $new): array
+{
+    $diff = [];
+
+    foreach ($old as $key => $value) {
+        if ($value != (string) $new[$key]) {
+            $diff[$key] = ['old' => $value, 'new' => (string) $new[$key]];
+        }
+    }
+
+    return $diff;
+}

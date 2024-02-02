@@ -20,7 +20,6 @@ trait HasMany
             return;
         }
 
-        /* @var $relations Relation[] */
         foreach ($relations as $relation) {
             $this->fillRelations($instances, $relation, in_array($relation->relationName, $this->relationCounts));
         }
@@ -36,7 +35,7 @@ trait HasMany
         $rows = collect($relation->buildQuery($instances)->get());
         foreach ($instances as $actualInstance) {
             $actualInstanceValue = Arr::get($actualInstance, $relation->localKey);
-            $isSame = fn($relationInstance) => Arr::get($relationInstance, $relation->foreginKey) == $actualInstanceValue;
+            $isSame = fn($relationInstance) => Arr::get($relationInstance, $relation->foreignKey) == $actualInstanceValue;
             if ($relation->relationType == Has::many) {
                 $actualInstance->relations[$relation->relationName] = $rows->filter($isSame)->values();
             } else {
@@ -51,7 +50,7 @@ trait HasMany
      */
     private function fillCounts(Relation $relation, Collection $instances): void
     {
-        $rows = $relation->buildQuery($instances)->countBy($relation->foreginKey);
+        $rows = $relation->buildQuery($instances)->countBy($relation->foreignKey);
         foreach ($instances as $actualInstance) {
             $actualInstance->relations_count[$relation->relationName] = $rows[Arr::getItemValue($actualInstance, $relation->localKey)] ?? 0;
         }
@@ -59,6 +58,9 @@ trait HasMany
 
     public function has(Has $relationType, string|EntityQueryBuilder|Builder $repositoryClass, ?string $foreignKey = null, ?string $localKey = null): Relation
     {
+        if (is_null($foreignKey)) {
+            d(debug_backtrace());
+        }
         return new Relation(
             relationType: $relationType,
             queryBuilder: is_string($repositoryClass) ? app($repositoryClass) : $repositoryClass,

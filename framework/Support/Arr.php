@@ -2,9 +2,11 @@
 
 namespace Framework\Support;
 
+use Closure;
+
 class Arr
 {
-    public static function each(array|Collection $items, callable $callback, ...$params): void
+    public static function each(array|Collection $items, callable|Closure $callback, ...$params): void
     {
         if ($items instanceof Collection) {
             $items->each($callback);

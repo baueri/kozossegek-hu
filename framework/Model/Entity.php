@@ -99,6 +99,14 @@ abstract class Entity
         return null;
     }
 
+    public function load(string $relation)
+    {
+        unset($this->relations[$relation]);
+        unset($this->relations_count[$relation]);
+
+        $this->{$relation};
+    }
+
     public function __call(string $name, array $arguments)
     {
         if ($this->builder && method_exists($this->builder, $name)) {
@@ -154,6 +162,11 @@ abstract class Entity
         $newValues = $this->attributes;
 
         return array_diff($newValues, $original);
+    }
+
+    public function diff(): array
+    {
+        return diff(Arr::except($this->originalAttributes, 'updated_at'), $this->attributes);
     }
 
     public function getBuilder(): ?EntityQueryBuilder

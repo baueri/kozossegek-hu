@@ -1,8 +1,7 @@
 <?php
 
 namespace App\Helpers;
-
-use Framework\Exception\UnauthorizedException;
+use App\Exception\HoneypotException;
 
 class HoneyPot
 {
@@ -17,16 +16,14 @@ class HoneyPot
     }
 
     /**
-     * @param string $id
-     * @param string $hashVal
-     * @throws UnauthorizedException
+     * @throws HoneypotException
      */
     public static function validate(string $id, string $hashVal): void
     {
         $checkTime = $_SESSION['honey_pot'][$id]['honeypot_check_time'] ?? null;
         $check_hash = $_SESSION['honey_pot'][$id]['honeypot_check_hash'] ?? null;
         if (!$checkTime || !$check_hash || time() - $checkTime < 5 || $hashVal) {
-            throw new UnauthorizedException('spam check failed');
+            throw new HoneypotException('spam check failed');
         }
 
         unset($_SESSION['honey_pot'][$id]);

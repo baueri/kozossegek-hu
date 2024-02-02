@@ -13,7 +13,7 @@ class Mailable
 
     protected ?string $view = null;
 
-    protected array $viewData = ['showNoReplyText' => true];
+    protected array $viewData = [];
 
     public string $subject = '';
 
@@ -22,6 +22,8 @@ class Mailable
     public ?string $replyTo = null;
 
     protected bool $useDefaultTemplate = false;
+
+    protected bool $showNoReplyText = true;
 
     final public function view(string $view): self
     {
@@ -54,7 +56,7 @@ class Mailable
     public function getBody(): string
     {
         if ($this->view) {
-            return view($this->view, $this->viewData);
+            return view($this->view, array_merge($this->viewData, ['showNoReplyText' => $this->showNoReplyText]));
         }
 
         $message = str_replace("\n", "<br/>", $this->message);
@@ -109,7 +111,7 @@ class Mailable
 
     public function showNoReplyText(bool $showNoReplyText): static
     {
-        $this->viewData['showNoReplyText'] = $showNoReplyText;
+        $this->showNoReplyText = $showNoReplyText;
 
         return $this;
     }

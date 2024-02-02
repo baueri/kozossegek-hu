@@ -4,16 +4,15 @@ namespace App\Admin\Controllers;
 
 use App\Admin\Group\Services\BaseGroupForm;
 use App\Admin\Group\Services\CreateGroup;
-use App\Admin\Group\Services\DeleteGroup;
 use App\Admin\Group\Services\EditGroup;
 use App\Admin\Group\Services\ListGroups;
 use App\Admin\Group\Services\UpdateGroup;
 use App\Admin\Group\Services\ValidateGroupForm;
+use App\Auth\Auth;
 use App\Helpers\GroupHelper;
 use App\Http\Exception\RequestParameterException;
 use App\Mail\DefaultMailable;
 use App\Mail\GroupAcceptedEmail;
-use App\Models\ChurchGroup;
 use App\Models\ChurchGroupView;
 use App\QueryBuilders\ChurchGroups;
 use App\QueryBuilders\ChurchGroupViews;
@@ -26,7 +25,6 @@ use Framework\Mail\Mailer;
 use Framework\Model\Exceptions\ModelNotFoundException;
 use RuntimeException;
 use Throwable;
-use function PHPUnit\Framework\assertIsBool;
 
 class GroupController extends AdminController
 {
@@ -78,7 +76,14 @@ class GroupController extends AdminController
     public function update(UpdateGroup $service, ChurchGroups $groups)
     {
         $group = $groups->findOrFail($this->request['id']);
+        $oldTags = $group->tags->pluck('tag')->sort()->implode(',');
+        
         $service->update($group, $this->request->collect());
+
+        $newTags = $this->request->collect('tags')->sort()->implode(',');
+        $tagDiff = $oldTags !== $newTags ? ['tags' => ['old' => $oldTags, 'new' => $newTags]] : [];
+
+        log_event('group_updated', ['group_id' => $group->getId(), 'diff' => array_merge($group->diff(), $tagDiff)], Auth::user());
 
         redirect_route('admin.group.edit', ['id' => $this->request['id']]);
     }
@@ -189,6 +194,8 @@ class GroupController extends AdminController
 
             $mailer->to($this->request['email'], $this->request['name'])->send($mailable);
 
+            log_event('group_rejected', ['group_id' => $group->getId(), 'message' => $this->request['message']], Auth::user());
+
             return api()->ok();
         } catch (RequestParameterException $e) {
             return api()->error('Minden mező kötelező!');
@@ -204,7 +211,7 @@ class GroupController extends AdminController
      */
     public function approveGroup(ChurchGroups $groupRepo, Mailer $mailer): array
     {
-        $groupView = $this->groupViews->with('manager')->findOrFail($this->request['id']);
+        $groupView = $this->groupViews->findOrFail($this->request['id']);
 
         if (!$groupView->manager->activated_at) {
             throw new RuntimeException('Nem megerősített fiók közösségének jóváhagyása nem megengedett');
@@ -216,6 +223,9 @@ class GroupController extends AdminController
 
         $mailer->to($groupView->group_leader_email, $groupView->group_leaders)
             ->send($mailable);
+
+        log_event('group_approved', ['group_id' => $groupView->getId()], Auth::user());
+
 
         return api()->ok();
     }
@@ -249,6 +259,8 @@ class GroupController extends AdminController
                 ->subject("kozossegek.hu - {$this->request['subject']}");
 
             $mailer->to($this->request['email'], $this->request['name'])->send($mailable);
+
+            log_event('group_denied', ['group_id' => $group->getId(), 'message' => $this->request['message']], Auth::user());
 
             return api()->ok();
         } catch (RequestParameterException) {

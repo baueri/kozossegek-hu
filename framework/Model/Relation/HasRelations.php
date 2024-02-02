@@ -42,7 +42,7 @@ trait HasRelations
     public function whereHas(string $relationName, $callback = null): static
     {
         $relation = $this->getRelation($relationName, $callback);
-        $relation->queryBuilder->whereRaw("{$relation->queryBuilder->getTable()}.{$relation->foreginKey}={$this->getTable()}.{$relation->localKey}");
+        $relation->queryBuilder->whereRaw("{$relation->queryBuilder->getTable()}.{$relation->foreignKey}={$this->getTable()}.{$relation->localKey}");
         $this->whereExists($relation->queryBuilder);
         return $this;
     }
@@ -57,6 +57,9 @@ trait HasRelations
         return $rel;
     }
 
+    /**
+     * @phpstan-return Collection<Relation>
+     */
     protected function getPreparedRelations(): Collection
     {
         return $this->preparedRelations ??= collect();

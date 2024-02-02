@@ -123,8 +123,12 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
         return $_SERVER['REQUEST_METHOD'] == 'POST';
     }
 
-    public function collect(): Collection
+    public function collect($key = null): Collection
     {
+        if ($key) {
+            return collect($this->request->get($key));
+        }
+
         return $this->request->collect();
     }
 

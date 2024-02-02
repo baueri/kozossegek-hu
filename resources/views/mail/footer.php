@@ -5,7 +5,7 @@
     </span>
     <span style="margin-left: auto"><a href="mailto:info@kozossegek.hu" style="color:#888;">info@kozossegek.hu</a></span>
 </div>
-@if($showNoReplyText)
+@if(!empty($showNoReplyText))
     <p style="font-size: .9em">
         <span><b>Ez egy automatikus email, kérjük ne válaszolj erre az üzenetre.</b></span>
     </p>

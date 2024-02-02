@@ -46,7 +46,12 @@ class EventLogAdminTable extends PaginatedAdminTable
     {
         $logArr = json_decode($log, true);
 
-        $parsed = collect($logArr)->map(fn($val, $key) => "<li>$key: $val</li>")->implode('');
+        $parsed = collect($logArr)->map(function($val, $key) {
+            if (is_array($val)) {
+                $val = json_encode($val);
+            }
+            return "<li>$key: $val</li>";
+        })->implode('');
         return "<ul>{$parsed}</ul>";
     }
 }

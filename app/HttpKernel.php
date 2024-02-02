@@ -2,9 +2,11 @@
 
 namespace App;
 
+use App\Exception\HoneypotException;
 use App\Middleware\DebugBarMiddleware;
 use App\Middleware\ListenViewLoading;
 use App\Providers\AppServiceProvider;
+use Framework\Http\Exception\TokenMismatchException;
 use Framework\Middleware\AuthMiddleware;
 use Framework\Middleware\BaseAuthMiddleware;
 use Framework\Middleware\CheckMaintenance;
@@ -30,7 +32,13 @@ class HttpKernel extends \Framework\Http\HttpKernel
     public function handleError($exception): void
     {
         if ($exception->getCode() != '404' && !env('DEBUG')) {
-            report($exception);
+            if ($exception instanceof TokenMismatchException) {
+                log_event('csrf_fail', ['request' => request()->all()]);
+            } elseif ($exception instanceof HoneypotException) {
+                log_event('honeypot_fail', ['request' => request()->all()]);
+            } else {
+                report($exception);
+            }
         }
 
         parent::handleError($exception);

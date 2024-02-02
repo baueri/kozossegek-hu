@@ -20,7 +20,7 @@ use Framework\Support\Collection;
  * @property int $institute_id
  * @property $document
  * @property User|null $manager
- * @property Collection $tags
+ * @property Collection<GroupTag> $tags
  * @property string|null $status
  * @property int|null $pending
  */

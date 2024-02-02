@@ -139,7 +139,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         return Arr::random($this->items);
     }
 
-    public function each(Closure $func): self
+    public function each(callable|Closure $func): self
     {
         Arr::each($this->items, $func, $this);
 

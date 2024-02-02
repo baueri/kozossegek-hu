@@ -26,7 +26,7 @@ class ChurchGroups extends EntityQueryBuilder
 
     public function tags(): Relation
     {
-        return $this->has(Has::many, GroupTags::class);
+        return $this->has(Has::many, GroupTags::class, 'group_id');
     }
 
     public function manager(): Relation

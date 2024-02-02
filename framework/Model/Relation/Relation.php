@@ -2,7 +2,6 @@
 
 namespace Framework\Model\Relation;
 
-use App\QueryBuilders\Users;
 use Framework\Database\Builder;
 use Framework\Model\Entity;
 use Framework\Model\EntityQueryBuilder;
@@ -10,7 +9,7 @@ use Framework\Support\Collection;
 
 class Relation
 {
-    public readonly ?string $foreginKey;
+    public readonly ?string $foreignKey;
 
     public readonly ?string $localKey;
 
@@ -22,11 +21,11 @@ class Relation
         ?string $localKey = null,
     ) {
         $this->localKey = $localKey ?? $queryBuilder::primaryCol();
-        $this->foreginKey = $foreignKey ?? $this->relationName . '_id';
+        $this->foreignKey = $foreignKey ?? $this->relationName . '_id';
     }
 
     public function buildQuery(Collection|Entity $instances): EntityQueryBuilder|Builder
     {
-        return $this->queryBuilder->whereIn($this->foreginKey, collect($instances)->pluck($this->localKey)->unique()->filter());
+        return $this->queryBuilder->whereIn($this->foreignKey, collect($instances)->pluck($this->localKey)->unique()->filter());
     }
 }
