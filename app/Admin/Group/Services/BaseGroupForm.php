@@ -37,8 +37,8 @@ class BaseGroupForm
         $title = $group->exists() ? 'Közösség módosítása' : 'Új közösség létrehozása';
         $owner = $this->users->find($group->user_id);
         $join_modes = JoinMode::cases();
-        $comment = $group->comment;
-        $lastCommenter = $comment->lastCommenter->name;
+        $comment = $group?->comment;
+        $lastCommenter = $comment?->lastCommenter->name;
 
         return compact(
             'group',

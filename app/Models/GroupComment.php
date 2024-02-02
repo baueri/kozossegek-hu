@@ -6,6 +6,9 @@ namespace App\Models;
 
 use Framework\Model\Entity;
 
+/**
+ * @property User $lastCommenter
+ */
 class GroupComment extends Entity
 {
 }

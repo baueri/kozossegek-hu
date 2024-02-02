@@ -12,6 +12,7 @@ use App\Enums\JoinMode;
 use App\Models\Institute;
 use App\Portal\BreadCrumb\BreadCrumb;
 use App\Helpers\GroupHelper;
+use App\Models\GroupComment;
 use App\Models\GroupTag;
 use App\Models\User;
 use App\Services\SystemAdministration\SiteMap\EntitySiteMappable;
@@ -23,6 +24,7 @@ use Framework\Support\StringHelper;
 /**
  * @property-read ?Institute $institute
  * @property-read ?Collection<GroupTag> $tags
+ * @property-read ?GroupComment $comment
  */
 trait GroupTrait
 {
