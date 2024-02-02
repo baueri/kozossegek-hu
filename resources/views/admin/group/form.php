@@ -173,7 +173,7 @@
             </div>
             <div class="form-group">
                 <label for="group_comment">Megjegyzés</label>
-                <textarea class="form-control" id="group_comment" name="group_comment">{{ $comment?->comment }}</textarea>
+                <textarea class="form-control" id="group_comment" name="group_comment" rows=5>{{ $comment?->comment }}</textarea>
             </div>
             <div class="form-group">
                 <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Mentés</button>
