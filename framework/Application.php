@@ -8,7 +8,6 @@ use Exception;
 use Framework\Container\Container;
 use Framework\Database\BootListeners;
 use Framework\Database\QueryHistory;
-use Framework\Dispatcher\Dispatcher;
 use Framework\Enums\Environment;
 use Framework\Http\View\Bootstrappers\BootDirectives;
 use Framework\Support\Config\Config;
@@ -19,7 +18,7 @@ class Application extends Container
     protected static Application $singleton;
 
     /**
-     * @var Bootstrapper[]|string[]
+     * @var array<class-string<Bootstrapper>>
      */
     protected array $bootstrappers = [
         BootDirectives::class,
@@ -50,18 +49,16 @@ class Application extends Container
 
     public static function getInstance(): Application
     {
-        return static::$singleton ??= new static();
+        return static::$singleton;
     }
 
-    public function run(Dispatcher $dispatcher)
+    public function boot()
     {
         $this->runEvents('booting');
         foreach ($this->bootstrappers as $bootstrapper) {
             $this->make($bootstrapper)->boot();
         }
         $this->runEvents('booted');
-
-        $dispatcher->dispatch();
     }
 
     public function config(string $key = null, $default = null): mixed
@@ -78,10 +75,13 @@ class Application extends Container
      */
     public function handleError($e): void
     {
-        $this->get(Dispatcher::class)->handleError($e);
+        $this->get(Kernel::class)->handleError($e);
     }
 
-    public function boot($bootstrapper): void
+    /**
+     * @phpstan-param class-string<Bootstrapper> $bootstrapper
+     */
+    public function bootWith($bootstrapper): void
     {
         $this->bootstrappers[] = $bootstrapper;
     }

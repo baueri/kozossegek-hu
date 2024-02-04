@@ -3,13 +3,10 @@
 
 use App\Console\ConsoleKernel;
 use Framework\Console\ConsoleKernel as Kernel;
-use Framework\Dispatcher\Dispatcher;
-use Framework\Dispatcher\CliDispatcher;
 
 include 'vendor/autoload.php';
 
-app()->bind(Kernel::class, ConsoleKernel::class);
-app()->singleton(Dispatcher::class, CliDispatcher::class);
+app()->singleton(Kernel::class, ConsoleKernel::class);
 
 if (($argv[1] ?? '') === '--interactive') {
     shell_exec('php -d auto_prepend_file="vendor/autoload.php" -a');
@@ -17,9 +14,8 @@ if (($argv[1] ?? '') === '--interactive') {
 }
 
 try {
-    app()->run(
-        app()->make(Dispatcher::class)
-    );
+    $kernel = app()->get(Kernel::class);
+    $kernel->handle();
 } catch (Error | Exception | Throwable $e) {
     if (env('DEBUG')) {
         throw $e;

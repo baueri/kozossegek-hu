@@ -4,8 +4,8 @@ namespace App\Admin\Components\AdminTable;
 
 use Exception;
 use Framework\Database\PaginatedResultSetInterface;
-use Framework\Dispatcher\Dispatcher;
 use Framework\Http\Request;
+use Framework\Kernel;
 use Framework\Support\StringHelper;
 use Framework\Traits\BootsTraits;
 use InvalidArgumentException;
@@ -184,7 +184,7 @@ abstract class PaginatedAdminTable
         try {
             return $this->render();
         } catch (Exception $e) {
-            app()->get(Dispatcher::class)->handleError($e);
+            app()->get(Kernel::class)->handleError($e);
             return '';
         }
     }

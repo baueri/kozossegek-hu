@@ -3,33 +3,17 @@
 
 namespace Framework\Middleware;
 
-
-use Framework\Bootstrapper;
-use Framework\Http\HttpKernel;
+use Framework\Kernel;
 use Framework\Maintenance;
 
 use Framework\Middleware\Middleware;
 
 class CheckMaintenance implements Middleware
 {
-    /**
-     * @var HttpKernel
-     */
-    private $kernel;
-
-   /**
-    * @var Maintenance
-    */
-    private $maintenance;
-
-    /**
-     * CheckMaintenance constructor.
-     * @param HttpKernel $kernel
-     */
-    public function __construct(HttpKernel $kernel, Maintenance $maintenance)
-    {
-        $this->kernel = $kernel;
-        $this->maintenance = $maintenance;
+    public function __construct(
+        protected readonly Kernel $kernel,
+        protected readonly Maintenance $maintenance
+    ) {
     }
 
     public function handle(): void

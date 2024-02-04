@@ -8,6 +8,7 @@ use Dotenv\Dotenv;
 use Framework\Application;
 use Framework\Database\Database;
 use Framework\Database\PDO\PDOMysqlDatabase;
+use Framework\Http\Request;
 use Framework\Http\Route\Route;
 use Framework\Http\Route\RouteInterface;
 use Framework\Http\Route\RouterInterface;
@@ -57,7 +58,10 @@ MileStone::measure('init', 'Initialize');
 $application->bind(RouteInterface::class, Route::class);
 $application->singleton(ViewInterface::class, View::class);
 $application->singleton(Config::class);
-$application->singleton(RouterInterface::class, XmlRouter::class);
+$application->singleton(
+    RouterInterface::class,
+    fn (Application $app) => new XmlRouter($app->get(Request::class), $app->config('route_sources'))
+);
 $application->singleton(EventLogger::class, EventLogs::class);
 $application->on('booting', function () { MileStone::measure('bootstrap'); });
 $application->on('booted', function () { MileStone::endMeasure('bootstrap'); });
@@ -82,7 +86,9 @@ $application->singleton(Database::class, function () {
     return new PDOMysqlDatabase($pdo);
 });
 
-$application->boot(RegisterDirectives::class);
+$application->bootWith(RegisterDirectives::class);
+
+$application->boot();
 
 MileStone::endMeasure('init');
 

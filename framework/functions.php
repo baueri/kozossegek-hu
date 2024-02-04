@@ -12,8 +12,6 @@ use Framework\Database\Builder;
 use Framework\Database\Database;
 use Framework\Database\DatabaseHelper;
 use Framework\Database\QueryHistory;
-use Framework\Dispatcher\Dispatcher;
-use Framework\Dispatcher\HttpDispatcher;
 use Framework\Enums\Environment;
 use Framework\Http\ApiResponse;
 use Framework\Http\Message;
@@ -175,12 +173,7 @@ function view_path(string $view): string
 
 function current_route(): RouteInterface
 {
-    return app()->get(HttpDispatcher::class)->getCurrentRoute();
-}
-
-function dispatcher(): Dispatcher
-{
-    return app()->get(Dispatcher::class);
+    return app()->get(RouterInterface::class)->getCurrentRoute();
 }
 
 function get_site_url(): string
