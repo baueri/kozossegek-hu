@@ -4,10 +4,9 @@ use App\Admin\Components\DebugBar\DebugBar;
 use App\Auth\Auth;
 use App\Auth\AuthUser;
 use App\HttpKernel;
-use App\Services\MileStone;
-use Framework\Dispatcher\Dispatcher;
-use Framework\Dispatcher\HttpDispatcher;
+use Framework\Http\Request;
 use Framework\Http\Session;
+use Framework\Kernel;
 
 if (file_exists('../.maintenance')) {
     include '../resources/views/maintenance.php';
@@ -24,16 +23,17 @@ $app = app();
 try {
     ob_start();
 
-    $app->singleton(Framework\Http\Request::class);
-    $app->singleton(\Framework\Http\HttpKernel::class, HttpKernel::class);
-    $app->singleton(HttpDispatcher::class);
-    $app->singleton(Dispatcher::class, HttpDispatcher::class);
+    $app->singleton(Request::class);
+    $app->singleton(Kernel::class, HttpKernel::class);
     $app->singleton(DebugBar::class);
     $app->bind(AuthUser::class, function () {
         return Auth::user();
     });
 
-    $app->run($app->get(HttpDispatcher::class));
+    $kernel = $app->get(HttpKernel::class);
+
+    $kernel->handle();
+
 } catch (Error | Exception | Throwable $e) {
     ob_get_clean();
     $app->handleError($e);

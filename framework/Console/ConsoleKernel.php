@@ -7,10 +7,11 @@ namespace Framework\Console;
 use Framework\Application;
 use Framework\Console\BaseCommands\ClearCache;
 use Framework\Console\BaseCommands\ListCommands;
-use Framework\Console\BaseCommands\SiteUp;
 use Framework\Console\BaseCommands\SiteDown;
+use Framework\Console\BaseCommands\SiteUp;
 use Framework\Console\Exception\CommandNotFoundException;
 use Framework\Kernel;
+use Throwable;
 
 class ConsoleKernel implements Kernel
 {
@@ -32,6 +33,23 @@ class ConsoleKernel implements Kernel
     public function __construct(
         private readonly Application $application
     ) {
+    }
+
+    public function handle()
+    {
+        $args = $this->getArgs();
+
+        $signature = array_shift($args);
+        $command = $this->getCommand($signature);
+
+        $command->withArgs($args);
+
+        try {
+            return $command->handle() ?? Command::SUCCESS;
+        } catch (Throwable $e) {
+            $this->handleError($e);
+            return Command::FAILURE;
+        }
     }
 
     public function getCommands(): array
@@ -60,7 +78,16 @@ class ConsoleKernel implements Kernel
     public function handleError($error): void
     {
         throw $error;
-        Out::error('HIBA');
-        Out::error($error->getMessage());
+    }
+
+    protected function getArgs()
+    {
+        global $argv;
+
+        $args = $argv;
+
+        array_shift($args);
+
+        return $args;
     }
 }

@@ -13,6 +13,8 @@ interface RouterInterface
 
     public function find(string $method, string $uri): ?RouteInterface;
 
+    public function getCurrentRoute(): ?RouteInterface;
+
     /**
      * @param string $name
      * @param array $args

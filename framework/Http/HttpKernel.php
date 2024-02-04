@@ -2,13 +2,18 @@
 
 namespace Framework\Http;
 
+use App\Services\MileStone;
 use Error;
 use Exception;
+use Framework\Application;
 use Framework\Exception\UnauthorizedException;
 use Framework\Http\Exception\PageNotFoundException;
 use Framework\Http\Exception\RouteNotFoundException;
+use Framework\Http\Route\RouteInterface;
+use Framework\Http\Route\RouterInterface;
 use Framework\Kernel;
 use Framework\Middleware\Middleware;
+use Framework\Middleware\MiddlewareResolver;
 use Framework\Model\Exceptions\ModelNotFoundException;
 use Throwable;
 
@@ -18,6 +23,86 @@ abstract class HttpKernel implements Kernel
      * @var class-string<Middleware>[]
      */
     protected array $middleware = [];
+
+    public function __construct(private Application $app, private Request $request, private RouterInterface $router)
+    {
+        Cookie::setTestCookie();
+    }
+
+    public function handle()
+    {
+        MileStone::measure('http_dispatch', 'Dispatching http request');
+
+        $route = $this->router->getCurrentRoute();
+
+        if (!$route) {
+            throw new RouteNotFoundException($this->request->uri);
+        }
+
+        if (!$route->getView() && $route->getController() && !class_exists($route->getController())) {
+            throw new PageNotFoundException("controller " . $route->getController() . " not found");
+        }
+
+        $this->request->route = $route;
+
+        $middlewareResolver = new MiddlewareResolver();
+        $middleware = array_merge($this->getMiddleware(), $route->getMiddleware());
+        array_walk($middleware, fn($item) => $middlewareResolver->resolve($item)->handle());
+
+        $response = $this->resolveRoute($route);
+
+        MileStone::endMeasure('http_dispatch');
+
+        if (is_array($response) || is_object($response)) {
+            if (is_object($response) && method_exists($response, '__toString')) {
+                echo $response;
+            } else {
+                echo json_encode(is_object($response) && method_exists($response, 'valuesToArray') ? $response->valuesToArray() : $response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+            }
+        } else {
+            echo $response;
+        }
+    }
+
+
+    /**
+     * @throws PageNotFoundException
+     */
+    private function resolveRoute(RouteInterface $route)
+    {
+        if ($route->getView()) {
+            $return = $this->resolveView();
+        } elseif (!$route->getController() && $callback = $route->getUse()) {
+            $return = call_user_func($callback, $this->request);
+        } else {
+            $return = $this->resolveController($route);
+        }
+
+        return $return;
+    }
+
+    /**
+     * @throws PageNotFoundException
+     */
+    private function resolveController(RouteInterface $route)
+    {
+        $controller = $this->app->make($route->getController());
+
+        if (method_exists($controller, $route->getUse())) {
+            return $this->app->resolve($controller, $route->getUse());
+        }
+
+        if (is_callable($controller)) {
+            return $this->app->resolve($controller, '__invoke');
+        }
+
+        throw new PageNotFoundException($this->request->uri);
+    }
+
+    private function resolveView(): string
+    {
+        return view($this->request->route->getView(), $this->request->getUriValues());
+    }
 
     public function getMiddleware(): array
     {
