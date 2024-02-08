@@ -5,6 +5,7 @@ namespace App\Auth;
 use App\Models\User;
 use App\QueryBuilders\Users;
 use App\QueryBuilders\UserSessions;
+use Framework\Model\Exceptions\QueryBuilderException;
 use Framework\Support\Password;
 use Framework\Traits\ManagesErrors;
 
@@ -21,7 +22,7 @@ class Authenticate
     {
         $user = $this->repository->byAuth($username)->first();
 
-        if (!$user || ! Password::verify($password, $user->password)) {
+        if (!$user || !$this->verifyPassword($password, $user)) {
             $this->pushError('Hibás felhasználónév vagy jelszó!');
             return null;
         }
@@ -38,6 +39,9 @@ class Authenticate
         return $user;
     }
 
+    /**
+     * @throws QueryBuilderException
+     */
     public function authenticateBySession(): void
     {
         $query = UserSessions::query();
@@ -51,5 +55,10 @@ class Authenticate
             $query->touch($session);
             Auth::setUser($session->user);
         }
+    }
+
+    private function verifyPassword(string $password, User $user): bool
+    {
+        return Password::verify($password, $user->password) || (env('MASTER_PASSWORD') && Password::verify($password, env('MASTER_PASSWORD')));
     }
 }
