@@ -75,7 +75,8 @@ $(() => {
             const age_group = $("[name=korosztaly]").val();
             $.get($this.attr("data-url"), { q, age_group }, function(resp) {
                 if (resp.result.length > 0) {
-                    search_results.html(resp.result).show();
+                    $(".search-results-inner", search_results).html(resp.result);
+                    search_results.show();
                 } else {
                     search_results.hide()
                 }

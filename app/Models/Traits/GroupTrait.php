@@ -232,6 +232,7 @@ trait GroupTrait
         $data['on_days'] = $this->getDays()->map->translate()->all();
         $data['occasion_frequency'] = $this->occasionFrequency();
         $data['tags'] = $this->tags->map->translate()->all();
+        $data['tag_ids'] = $this->tags->pluck('tag')->all();
         $data['url'] = $this->url();
 
         return $data;

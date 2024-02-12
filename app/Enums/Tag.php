@@ -29,4 +29,10 @@ enum Tag: string
     case szintarsulat = 'szintarsulat';
     case utkereso = 'utkereso';
     case exodus = 'exodus';
+
+    public function icon(string $class = ''): string
+    {
+        $class = trim("tag-img tag-{$this->value} {$class}");
+        return "<span class='{$class}' title='{$this->translate()}'></span>";
+    }
 }

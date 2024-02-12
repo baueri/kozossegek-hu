@@ -4,7 +4,7 @@ namespace App\Services\Statistics\Aggregators;
 
 use App\Enums\AgeGroup;
 use App\Enums\EventType;
-use App\QueryBuilders\Tags;
+use App\Enums\Tag;
 
 class CityKeywordCountAggregator extends StatAggregator
 {
@@ -30,10 +30,11 @@ class CityKeywordCountAggregator extends StatAggregator
         }
     }
 
-    private function addTags(string $city, array $row)
+    private function addTags(string $city, array $row): void
     {
-        $tags = Tags::query()->whereIn('slug', explode(',', $row['log']['tags'] ?? ''))->pluck('tag');
-        array_walk($tags, fn ($tag) => $this->increase($city, $tag, 'tag'));
+        Tag::fromList($row['log']['tags'] ?? '', ',')->each(function (Tag $tag) use ($city) {
+            $this->increase($city, $tag->translate(), 'tag');
+        });
     }
 
     private function addKeywords(string $city, array $row)

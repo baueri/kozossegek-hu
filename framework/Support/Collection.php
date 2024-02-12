@@ -77,7 +77,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     }
 
     /**
-     * @phpstan-return self<T>
+     * @phpstan-return static<T>
      */
     public function keyBy(int|string|Closure $by): self
     {
@@ -151,7 +151,10 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         return new self(array_chunk($this->items, $size, $preserve_keys));
     }
 
-    public function take(int $limit)
+    /**
+     * @phpstan-return static<T>
+     */
+    public function take(int $limit): static
     {
         return new self(array_slice($this->items, 0, $limit));
     }
@@ -378,6 +381,9 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         return $this->items;
     }
 
+    /**
+     * @return static<T>
+     */
     public function shuffle(): self
     {
         $items = $this->items;
@@ -439,6 +445,9 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         return count($this->items);
     }
 
+    /**
+     * @return ArrayIterator<T>
+     */
     public function getIterator(): ArrayIterator
     {
         return new ArrayIterator($this->items);
@@ -514,7 +523,24 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         });
     }
 
-    public function as(string $abstraction): self
+    /**
+     * @return static<T>
+     */
+    public function whereIn(string $key, array|Collection $items): static
+    {
+        $items = $items instanceof Collection ? $items->all() : $items;
+
+        return $this->filter(function ($item) use ($items, $key) {
+            return in_array(Arr::getItemValue($item, $key), $items);
+        });
+    }
+
+    /**
+     * @template A
+     * @param class-string<A> $abstraction
+     * @return static<A>
+     */
+    public function as(string $abstraction): static
     {
         return $this->map(function ($item) use ($abstraction) {
             if (enum_exists($abstraction)) {

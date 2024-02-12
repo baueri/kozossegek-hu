@@ -17,7 +17,9 @@ class SearchIndexer
         'institute_name2',
         'description',
         'tags',
+        'tag_ids',
         'age_group',
+        'spiritual_movement'
     ];
 
     protected const SEARCHABLE_ATTRIBUTES = [
@@ -26,7 +28,8 @@ class SearchIndexer
         'institute_name',
         'institute_name2',
         'description',
-        'tags'
+        'tags',
+        'spiritual_movement'
     ];
 
     protected const RANKING_RULES = [
@@ -35,8 +38,7 @@ class SearchIndexer
         'sort',
         'proximity',
         'attribute',
-        'exactness',
-        'city:desc'
+        'exactness'
     ];
 
     protected readonly MeiliSearchAdapter $adapter;
@@ -57,7 +59,9 @@ class SearchIndexer
             ->with('tags')
             ->get();
 
-        $this->adapter->index->updateDocuments(
+        $this->index->deleteAllDocuments();
+
+        $this->index->updateDocuments(
             $churchGroups->map('toMeiliSearch')
             ->all()
         );

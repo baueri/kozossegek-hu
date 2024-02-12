@@ -415,17 +415,38 @@ input[name=search]::placeholder, input[name=varos]::placeholder {
 }
 
 .search-results {
-    padding: .4rem;
+    padding: 1rem .4rem .4rem;
     position: absolute;
     width: 100%;
     background: #fff;
     top: 100%;
     left: 0;
     display: none;
+    z-index: 100;
 }
 
 .search-results.active {
     display: block;
+}
+
+.search-results .close {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
+.group-result {
+    border-bottom: 1px solid #ddd;
+}
+
+.group-result em {
+    font-weight: bold !important;
+}
+
+.group-result .tag-img {
+    scale: .6;
+    margin: 0 -3px;
+    filter: grayscale(1);
 }
 
 .group-result:hover, .group-result.selected {
@@ -775,13 +796,13 @@ ul.age-group-select li a:hover {
 }
 
 /** cimke sprite-ok **/
-.bg-csalados {background: url('/images/tag_sprites.webp') -10px -10px;}
+.tag-csalados {background: url('/images/tag_sprites.webp') -10px -10px;}
 .tag-imakor {background: url('/images/tag_sprites.webp') -65px -10px;}
 .tag-egyetemista {background: url('/images/tag_sprites.webp') -10px -65px;}
 .tag-szemlelodo {background: url('/images/tag_sprites.webp') -65px -65px;}
 .tag-elmelkedo {background: url('/images/tag_sprites.webp') -120px -10px;}
 .tag-karitativ {background: url('/images/tag_sprites.webp') -120px -65px;}
-.tag-szintrsulat {background: url('/images/tag_sprites.webp') -10px -120px;}
+.tag-szintarsulat {background: url('/images/tag_sprites.webp') -10px -120px;}
 .tag-egyedulallok {background: url('/images/tag_sprites.webp') -65px -120px;}
 .tag-dicsoito_zenes {background: url('/images/tag_sprites.webp') -120px -120px;}
 .tag-karizmatikus {background: url('/images/tag_sprites.webp') -175px -10px;}

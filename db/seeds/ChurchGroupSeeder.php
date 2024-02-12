@@ -5,12 +5,12 @@ declare(strict_types=1);
 use App\Enums\AgeGroup;
 use App\Enums\JoinMode;
 use App\Enums\OccasionFrequency;
+use App\Enums\Tag;
 use App\Enums\WeekDay;
 use App\Helpers\GroupHelper;
 use App\QueryBuilders\ChurchGroups;
 use App\QueryBuilders\Institutes;
 use App\QueryBuilders\SpiritualMovements;
-use App\QueryBuilders\Tags;
 use App\QueryBuilders\Users;
 use App\Services\RebuildSearchEngine;
 use App\Services\SystemAdministration\OpenStreetMap\OpenStreetMapSync;
@@ -18,7 +18,6 @@ use App\Storage\Base64Image;
 use Faker\Factory;
 use Framework\Console\Out;
 use Framework\Support\Password;
-use Framework\Support\StringHelper;
 use Legacy\UserRole;
 use Phinx\Seed\AbstractSeed;
 
@@ -32,7 +31,7 @@ class ChurchGroupSeeder extends AbstractSeed
         $institutes = Institutes::query()->orderBy('RAND()')->limit(50)->pluck('id');
         $spiritualMovements = SpiritualMovements::query()->pluck('id');
         $ageGroups = AgeGroup::collect();
-        $tags = Tags::query()->collect();
+        $tags = Tag::collect();
         $days = WeekDay::collect();
         for ($i = 0; $i < 200; $i++) {
             db()->beginTransaction();
@@ -59,11 +58,12 @@ class ChurchGroupSeeder extends AbstractSeed
                     'join_mode' => JoinMode::random()->value(),
                     'user_id' => $user
                 ]);
+
                 $groupTags = $tags->shuffle()->take(rand(3, 6));
                 foreach ($groupTags as $tag) {
                     builder('group_tags')->insert([
                         'group_id' => $group->getId(),
-                        'tag' => $tag['slug']
+                        'tag' => $tag->name
                     ]);
                 }
                 ChurchGroups::query()->save($group, ['image_url' => GroupHelper::getPublicImagePath((int)$group->getId())]);

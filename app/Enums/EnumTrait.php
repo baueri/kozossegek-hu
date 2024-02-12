@@ -3,6 +3,7 @@
 namespace App\Enums;
 
 use BackedEnum;
+use Framework\Support\Arr;
 use Framework\Support\Collection;
 use UnitEnum;
 
@@ -57,5 +58,21 @@ trait EnumTrait
     public static function random(): static
     {
         return static::collect()->random();
+    }
+
+    /**
+     * @return Collection<static>
+     */
+    public static function fromList(null|string|array|Collection $items, ?string $separator = null): Collection
+    {
+        if (is_null($items)) {
+            return collect();
+        }
+
+        if (is_string($items)) {
+            $items = Arr::fromList($items, $separator);
+        }
+
+        return collect($items)->as(static::class);
     }
 }

@@ -27,6 +27,7 @@ use Framework\Mail\Mailer;
 use Framework\Model\Entity;
 use Framework\Model\Model;
 use Framework\Support\Collection;
+use Framework\Support\StringHelper;
 use Framework\Translation\Translator;
 
 /**
@@ -462,4 +463,9 @@ function diff(array|Collection $old, array|Collection $new): array
     }
 
     return $diff;
+}
+
+function str_more(string $text, int $numberOfWords, string $moreText = ''): string
+{
+    return StringHelper::more($text, $numberOfWords, $moreText);
 }

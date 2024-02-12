@@ -15,5 +15,5 @@
         </div>
         <div class="col-lg-2"><button type="submit" class="btn btn-altblue px-3 w-100" aria-label="Keresés indítása"><i class="fa fa-search"></i> Keresés</button> </div>
     </div>
-    <div class="search-results shadow"></div>
+    <div class="search-results shadow"><span class="close small" style="cursor:pointer;">@icon('times')</span><div class="search-results-inner"></div></div>
 </div>

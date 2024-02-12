@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Portal\Controllers\Api\V1;
 
 use App\Auth\Auth;
+use App\Enums\Tag;
 use App\Portal\Responses\CitySearchResponse;
 use App\Portal\Responses\DistrictResponse;
 use App\Portal\Responses\InstituteSearchResponse;
@@ -15,6 +16,8 @@ use App\QueryBuilders\Users;
 use App\Repositories\Districts;
 use App\Services\MeiliSearch\GroupSearch;
 use Framework\Http\Request;
+use Framework\Support\Collection;
+use Framework\Support\StringHelper;
 
 class SearchController
 {
@@ -59,11 +62,17 @@ class SearchController
         $ageGroup = $this->request->get('age_group');
 
         $params = $ageGroup ? ['filter' => ["age_group=\"{$ageGroup}\""]] : [];
+        $params['attributesToHighlight'] = ['city', 'institute_name', 'name', 'tags', 'age_group'];
 
         $result = $search->search($query, $params, 5);
-
         return api()->response([
-            'result' => array_map(fn (array $group) => view('portal.partials.api_group_result', compact('group')), $result->getHits()),
+            'result' => array_map(function (array $group) {
+                if (!isset($group['tag_ids'])) {
+                    dd($group);
+                }
+                $tags = Tag::fromList($group['tag_ids'])->map->icon()->implode('');
+                return view('portal.partials.api_group_result', ['group' => $group['_formatted'], 'tags' => $tags]);
+            }, $result->getHits()),
             'total' => $result->getEstimatedTotalHits()
         ]);
     }

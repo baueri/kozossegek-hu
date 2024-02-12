@@ -33,6 +33,8 @@ class MeiliSearchIndexerCommand extends Command
             $this->indexer->configure();
         } elseif (isset($options['index'])) {
             $this->indexer->indexChurchGroups();
+        } else {
+            $this->output->error("invalid meili command.");
         }
     }
 }
