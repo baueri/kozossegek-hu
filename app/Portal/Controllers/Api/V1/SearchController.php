@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Portal\Controllers\Api\V1;
 
 use App\Auth\Auth;
@@ -11,12 +13,14 @@ use App\QueryBuilders\Cities;
 use App\QueryBuilders\Institutes;
 use App\QueryBuilders\Users;
 use App\Repositories\Districts;
+use App\Services\MeiliSearch\GroupSearch;
 use Framework\Http\Request;
 
 class SearchController
 {
-    public function __construct(private Request $request)
-    {
+    public function __construct(
+        private readonly Request $request
+    ) {
     }
 
     public function searchCity(Cities $repository): CitySearchResponse
@@ -47,5 +51,20 @@ class SearchController
     public function searchUser(Users $users): UserResponse
     {
         return new UserResponse($users->search($this->request['term'])->get());
+    }
+
+    public function searchGroup(GroupSearch $search): array
+    {
+        $query = $this->request->get('q');
+        $ageGroup = $this->request->get('age_group');
+
+        $params = $ageGroup ? ['filter' => ["age_group=\"{$ageGroup}\""]] : [];
+
+        $result = $search->search($query, $params, 5);
+
+        return api()->response([
+            'result' => array_map(fn (array $group) => view('portal.partials.api_group_result', compact('group')), $result->getHits()),
+            'total' => $result->getEstimatedTotalHits()
+        ]);
     }
 }

@@ -34,7 +34,6 @@ img {
 }
 
 .featured-header {
-    overflow: hidden;
     padding: 66px 0 2rem;
     position: relative;
 }
@@ -52,7 +51,6 @@ body:not(.home) .featured-header {
     background-attachment: fixed !important;
     background-size: cover !important;
     z-index: -1;
-    transform: translateZ(-1px) scale(1.04);
     filter: brightness(.8);
 }
 
@@ -99,7 +97,7 @@ body:not(.home) .featured-header {
     filter: none;
 }
 
-#main-finder img {
+#main-finder img.logo-home {
     max-width: 220px;
     filter: brightness(0) invert(1);
 }
@@ -114,6 +112,10 @@ body:not(.home) .featured-header {
     padding: .8em 3em;
     border-radius: 25px;
     box-shadow: 0 0 10px 0 #333;
+}
+
+#search-group {
+    position: relative;
 }
 
 #search-group input, #search-group select {
@@ -410,6 +412,25 @@ input[name=search]::placeholder, input[name=varos]::placeholder {
 
 #finder .group-tag:checked + label span:first-child {
     filter: brightness(0) invert(1);
+}
+
+.search-results {
+    padding: .4rem;
+    position: absolute;
+    width: 100%;
+    background: #fff;
+    top: 100%;
+    left: 0;
+    display: none;
+}
+
+.search-results.active {
+    display: block;
+}
+
+.group-result:hover, .group-result.selected {
+    text-decoration: none;
+    background: #eaeaea;
 }
 
 .select2-selection__clear {

@@ -54,6 +54,24 @@ services:
           - kozossegek_app
     depends_on:
       - mysql
+      - meilisearch
+  meilisearch:
+    image: getmeili/meilisearch:v1.6
+    environment:
+      - http_proxy
+      - https_proxy
+      - MEILI_MASTER_KEY=${MEILI_MASTER_KEY}
+      - MEILI_NO_ANALYTICS=${MEILI_NO_ANALYTICS:-true}
+      - MEILI_ENV=${MEILI_ENV:-development}
+      - MEILI_LOG_LEVEL=${MEILI_LOG_LEVEL:-INFO}
+      - MEILI_DB_PATH=${MEILI_DB_PATH:-/data.ms}
+    ports:
+      - ${MEILI_PORT:-7700}:7700
+    networks:
+      inner:
+        aliases:
+          - meilisearch
+    restart: unless-stopped
 networks:
   inner:
     driver: bridge

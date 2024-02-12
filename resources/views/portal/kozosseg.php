@@ -74,7 +74,7 @@
                 </div>
                 @if($group->join_mode)
                     <div class="col-lg-5 col-md-12 mb-md-2">
-                        <strong>Csatlakozási lehetőség módja</strong><br/> {{ $group->joinMode() }}
+                        <strong>Csatlakozási lehetőség módja</strong><br/> {{ $group->joinModeText() }}
                     </div>
                 @endif
             </div>

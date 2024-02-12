@@ -9,10 +9,11 @@ class HomeController extends PortalController
     {
         use_default_header_bg();
 
-        $ageGroups = AgeGroup::collect();
+        $age_groups = AgeGroup::cases();
         $intro = $this->getIntro();
+        $selected_age_group = null;
 
-        return view('portal.home', compact('ageGroups', 'intro'));
+        return view('portal.home', compact('age_groups', 'selected_age_group', 'intro'));
     }
 
     private function getIntro(): string

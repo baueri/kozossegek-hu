@@ -6,6 +6,8 @@
             <route method="all" controller="SearchController" uri="search-institute" use="searchInstitute" as="search-institute"/>
             <route method="all" controller="SearchController" uri="search-district" use="searchDistrict" as="search-district"/>
             <route method="all" controller="SearchController" uri="search-user" use="searchUser" as="search-user" middleware="admin"/>
+            <route method="get" controller="SearchController" uri="group-search" use="searchGroup" as="search_group" />
+
 
             <!-- Foglalt email ellenőrzés -->
             <route method="post" uri="check-email" controller="ApiUserController" use="checkEmail" as="check-email"/>

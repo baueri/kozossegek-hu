@@ -321,7 +321,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         return new self(Arr::pluck($this->items, $key, $keyBy));
     }
 
-    public function map(callable $func, bool $keepKeys = true): self
+    public function map(callable|string $func, bool $keepKeys = true): self
     {
         return new self(Arr::map($this->items, $func, $keepKeys));
     }

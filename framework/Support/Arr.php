@@ -19,7 +19,7 @@ class Arr
         }
     }
 
-    public static function map(array|Collection $items, callable $callback, bool $keepKeys = false): array
+    public static function map(array|Collection $items, callable|string $callback, bool $keepKeys = false): array
     {
         if ($items instanceof Collection) {
             return $items->map($callback, $keepKeys)->all();
@@ -28,10 +28,15 @@ class Arr
         $result = [];
 
         foreach ($items as $key => $item) {
-            if (!$keepKeys) {
-                $result[] = $callback($item, $key);
+            if (is_object($item) && is_string($callback) && method_exists($item, $callback)) {
+                $value = $item->{$callback}();
             } else {
-                $result[$key] = $callback($item, $key);
+                $value = $callback($item, $key);
+            }
+            if (!$keepKeys) {
+                $result[] = $value;
+            } else {
+                $result[$key] = $value;
             }
         }
 

@@ -26,27 +26,12 @@
 <div id="main-finder" class="p-4 p-lg-5">
     <div class="container">
         <div class="text-white text-center" style="margin: auto">
-            <img src="/images/logo/logo190x190.webp" class="mb-4" alt="logo"/>
+            <img src="/images/logo/logo190x190.webp" class="mb-4 logo-home" alt="logo"/>
             <h1>KOZOSSEGEK.HU</h1>
             <h2 style="text-transform: uppercase">{{ lang('find_your_church_group') }}</h2>
         </div>
-        <form method="get" id="finder" class="mt-5 text-center" action="@route('portal.groups')">
-            <div id="search-group" class="rounded-pill bg-white py-1 px-1">
-                <div class="row">
-                    <div class="col-lg-7 border-right mb-2 mb-lg-0">
-                        <input type="text" class="form-control rounded-pill" placeholder="@lang('search_tip')" name="search" aria-label="@lang('search')">
-                    </div>
-                    <div class="col-lg-3 mb-2 mb-lg-0">
-                        <select class="form-control rounded-pill" style="color:#aaa" name="korosztaly" aria-label="@lang('age_group')">
-                            <option value="">-- @lang('any_age_group') --</option>
-                            @foreach($ageGroups as $ageGroup)
-                                <option value="{{ $ageGroup->value }}">{{ $ageGroup->translate() }}
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-lg-2"><button type="submit" class="btn btn-altblue rounded-pill px-3 w-100"><i class="fa fa-search"></i> @lang('search')</button> </div>
-                </div>
-            </div>
+        <form method="get" id="finder" class="mt-5" action="@route('portal.groups')">
+            @include('portal.partials.search_box')
         </form>
     </div>
 </div>

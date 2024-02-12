@@ -9,6 +9,7 @@ use App\Enums\GroupPending;
 use App\Enums\WeekDay;
 use App\Enums\GroupStatus;
 use App\Enums\JoinMode;
+use App\Models\ChurchGroupView;
 use App\Models\Institute;
 use App\Portal\BreadCrumb\BreadCrumb;
 use App\Helpers\GroupHelper;
@@ -93,13 +94,17 @@ trait GroupTrait
         return GroupHelper::getStoragePath($this->id);
     }
 
-
-    public function joinMode(): string
+    public function joinMode(): ?JoinMode
     {
         if (!$this->join_mode) {
-            return '';
+            return null;
         }
-        return JoinMode::from($this->join_mode)->translate();
+        return JoinMode::from($this->join_mode);
+    }
+
+    public function joinModeText(): ?string
+    {
+        return $this->joinMode()?->translate();
     }
 
     public function isVisibleBy(?User $user): bool
@@ -201,5 +206,34 @@ trait GroupTrait
         ];
 
         return new BreadCrumb($breadCrumbs);
+    }
+
+    public function toMeiliSearch(): array
+    {
+        $data = $this->only([
+            'id',
+            'name',
+            'city',
+            'institute_name',
+            'institute_name2',
+            'spiritual_movement',
+            'group_leaders',
+            'description',
+            'institute_id',
+            'confirmed_at',
+            'spiritual_movement_id',
+            'district',
+            'image_url'
+        ]);
+
+        $data['age_group'] = $this->getAgeGroups()->pluck('name')->all();
+        $data['age_group_text'] = $this->getAgeGroups()->map->translate()->all();
+        $data['join_mode'] = $this->joinModeText();
+        $data['on_days'] = $this->getDays()->map->translate()->all();
+        $data['occasion_frequency'] = $this->occasionFrequency();
+        $data['tags'] = $this->tags->map->translate()->all();
+        $data['url'] = $this->url();
+
+        return $data;
     }
 }

@@ -3,6 +3,7 @@
 use App\Bootstrapper\RegisterDirectives;
 use App\Repositories\EventLogs;
 use App\Services\EventLogger;
+use App\Services\MeiliSearch\MeiliSearchAdapter;
 use App\Services\MileStone;
 use Dotenv\Dotenv;
 use Framework\Application;
@@ -85,6 +86,8 @@ $application->singleton(Database::class, function () {
 
     return new PDOMysqlDatabase($pdo);
 });
+
+$application->singleton(MeiliSearchAdapter::class);
 
 $application->bootWith(RegisterDirectives::class);
 

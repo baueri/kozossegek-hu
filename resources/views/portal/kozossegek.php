@@ -11,22 +11,7 @@
     <div class="pb-0 mb-0">
         <div class="container">
             <form method="get" id="finder" action="@route('portal.groups')">
-                <div id="search-group" class="rounded-pill bg-white py-1 px-1">
-                    <div class="row">
-                        <div class="col-lg-7 border-right mb-2 mb-lg-0">
-                            <input type="text" class="form-control rounded-pill" placeholder="Milyen közösséget keresel? pl.: Budapest egyetemista..." name="search" value="{{ $filter['search'] }}" aria-label="Keresőszó">
-                        </div>
-                        <div class="col-lg-3 mb-2 mb-lg-0">
-                            <select class="form-control rounded-pill" style="color:#aaa" name="korosztaly" aria-label="@lang('age_group')">
-                                <option value="">-- @lang('age_group') --</option>
-                                @foreach($age_groups as $age_group)
-                                    <option value="{{ $age_group->value }}" @selected($selected_age_group === $age_group->value)>{{ $age_group->translate() }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-lg-2"><button type="submit" class="btn btn-altblue rounded-pill px-3 w-100" aria-label="Keresés indítása"><i class="fa fa-search"></i> Keresés</button> </div>
-                    </div>
-                </div>
+                @include('portal.partials.search_box')
                 <div class="tag-dropdown-menu text-center">
                     <p>
                         <span class="text-white text-shadowed">Közösség jellege</span>
@@ -76,6 +61,5 @@ $(() => {
 
         $("[name=tags]").val(val);
     });
-
 });
 </script>

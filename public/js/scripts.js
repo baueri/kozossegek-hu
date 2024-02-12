@@ -37,6 +37,58 @@ $(() => {
             $(".nav-item").removeClass("open");
         }
     });
+
+
+    let search;
+    let search_results = $(".search-results");
+
+    $("input[name=search]").on("keyup", function(e) {
+        console.log(e.key);
+        if (e.key === 'Escape') {
+            search_results.hide();
+            return;
+        } else if (e.key === 'ArrowDown') {
+            if ($(".group-result.selected", search_results).length === 0) {
+                $(".group-result", search_results).first().addClass("selected");
+            } else {
+                $(".group-result.selected", search_results).removeClass("selected").next().addClass("selected");
+            }
+            return;
+        } else if (e.key === 'ArrowUp') {
+            if ($(".group-result.selected", search_results).length === 0) {
+                $(".group-result", search_results).last().addClass("selected");
+            } else {
+                $(".group-result.selected", search_results).removeClass("selected").prev().addClass("selected");
+            }
+            return;
+        }
+
+        let $this = $(this);
+        if ($this.val().length < 3) {
+            return;
+        }
+
+        clearTimeout(search);
+
+        search = setTimeout(() => {
+            const q = $this.val();
+            const age_group = $("[name=korosztaly]").val();
+            $.get($this.attr("data-url"), { q, age_group }, function(resp) {
+                if (resp.result.length > 0) {
+                    search_results.html(resp.result).show();
+                } else {
+                    search_results.hide()
+                }
+            });
+        }, 300)
+    }).on("keydown", function (e) {
+        if (e.key === 'Enter' && $(".group-result.selected", search_results).length > 0) {
+            window.location.href = $(".group-result.selected", search_results).attr("href");
+            e.preventDefault();
+        }
+    }).on("focusout", () => setTimeout(() => search_results.hide(), 300)).on("focus", () => {
+
+    });
 });
 
 $(window).on("load scroll", () => {

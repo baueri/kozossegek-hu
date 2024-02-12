@@ -12,6 +12,7 @@ use App\Console\Commands\GeneratePassword;
 use App\Console\Commands\GroupActivityConfirmNotifier;
 use App\Console\Commands\InactivateUnconfirmedGroups;
 use App\Console\Commands\Install;
+use App\Console\Commands\MeiliSearchIndexerCommand;
 use App\Console\Commands\PublishApp;
 use App\Console\Commands\RebuildSearchEngineCommand;
 use App\Console\Commands\SetLatLonToInstitutes;
@@ -34,6 +35,7 @@ class ConsoleKernel extends Kernel
         SetLatLonToInstitutes::class,
         GroupActivityConfirmNotifier::class,
         InactivateUnconfirmedGroups::class,
-        GeneratePassword::class
+        GeneratePassword::class,
+        MeiliSearchIndexerCommand::class
     ];
 }
