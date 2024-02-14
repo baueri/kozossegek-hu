@@ -23,6 +23,11 @@ class GeneratePassword extends Command
     public function handle(): void
     {
         $length = (int) $this->getOption('l') ?: null;
-        $this->output->writeln(Password::generate($length)->password, Color::green);
+        $password = Password::generate($length);
+
+        $this->output->writeln('password: ', Color::blue)
+            ->writeln("{$password->password}")
+            ->writeln('hash: ', Color::blue)
+            ->writeln("{$password->hash}");
     }
 }

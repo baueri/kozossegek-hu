@@ -43,7 +43,6 @@ $(() => {
     let search_results = $(".search-results");
 
     $("input[name=search]").on("keyup", function(e) {
-        console.log(e.key);
         if (e.key === 'Escape') {
             search_results.hide();
             return;
@@ -52,6 +51,9 @@ $(() => {
                 $(".group-result", search_results).first().addClass("selected");
             } else {
                 $(".group-result.selected", search_results).removeClass("selected").next().addClass("selected");
+            }
+            if ($(".group-result", search_results).length > 0) {
+                search_results.show();
             }
             return;
         } else if (e.key === 'ArrowUp') {
@@ -92,13 +94,13 @@ $(() => {
     });
 });
 
-$(window).on("load scroll", () => {
-    if ($(window).scrollTop() > 0 || typeof window.orientation !== 'undefined') {
-        $(".navbar").addClass("compact");
-    } else {
-        $(".navbar").removeClass("compact");
-    }
-});
+// $(window).on("load scroll", () => {
+//     if ($(window).scrollTop() > 0 || typeof window.orientation !== 'undefined') {
+//         $(".navbar").addClass("compact");
+//     } else {
+//         $(".navbar").removeClass("compact");
+//     }
+// });
 
 $(window).on("resize", () => {
     mobile_menu("close");

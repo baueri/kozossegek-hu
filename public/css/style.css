@@ -435,7 +435,7 @@ input[name=search]::placeholder, input[name=varos]::placeholder {
     right: 5px;
 }
 
-.group-result {
+.group-result:not(:last-child) {
     border-bottom: 1px solid #ddd;
 }
 

@@ -6,6 +6,8 @@ namespace Framework\Console;
 
 /**
  * @mixin Out
+ * @method CommandOutput write(string $text, Color $color = Color::default)
+ * @method CommandOutput writeln(string $text, Color $color = Color::default)
  */
 class CommandOutput
 {
@@ -17,12 +19,14 @@ class CommandOutput
         return $this;
     }
 
-    public function __call(string $name, array $arguments)
+    public function __call(string $name, array $arguments): static
     {
         if ($this->silent) {
-            return;
+            return $this;
         }
 
         call_user_func_array([Out::class, $name], $arguments);
+
+        return $this;
     }
 }
