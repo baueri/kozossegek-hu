@@ -14,6 +14,10 @@
     background-color: var(--light-gray);
 }
 
+.border-lightblue {
+    border-color: var(--light-gray);
+}
+
 .text-lightgray {
     color: var(--gray2);
 }
@@ -133,4 +137,8 @@
 
 .flex-grow {
     flex: 1 0 auto;
+}
+
+.position-relative {
+    position: relative;
 }

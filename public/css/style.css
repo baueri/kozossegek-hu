@@ -5,9 +5,9 @@ a {
 }
 
 body {
-    font-family: "Open Sans", sans-serif;
+    font-family: "OpenSans", "Helvetica Neue", Helvetica, Arial, sans-serif;
     color: #555;
-    font-size: 1.15rem;
+    font-size: .9rem;
 }
 
 body:not(.home) {
@@ -34,12 +34,9 @@ img {
 }
 
 .featured-header {
-    padding: 66px 0 2rem;
+    padding: 0 2rem;
     position: relative;
-}
-
-body:not(.home) .featured-header {
-    padding: 5rem 0 2rem;
+    background-size: cover !important;
 }
 
 .featured-bg {
@@ -54,43 +51,36 @@ body:not(.home) .featured-header {
     filter: brightness(.8);
 }
 
-.header-outer #header {
+#header {
     background: #fff;
     box-shadow: 0 0 6px 0;
 }
 
-.header-outer #header.compact .navbar-nav > li .nav-link {
+#header.compact .navbar-nav > li .nav-link {
     padding: 4px 8px;
 }
 
-.header-outer.featured-header .navbar-nav > li > .nav-link {
+#header .navbar-nav > li > .nav-link {
     color: #687074;
 }
 
-.header-outer #header:not(.compact) .navbar-nav > li > .nav-link {
-    padding-top: 1.3rem;
-    padding-bottom: 1.3rem;
-}
-.header-outer #header:not(.compact) .navbar-nav > li > .nav-link:hover {
+#header-main .navbar-nav > li > .nav-link {
+    padding-top: .8rem;
+    padding-bottom: .8rem;
+    font-size: .9rem;
 }
 
 .navbar-brand {
     position:relative;
 }
 
-.navbar-brand > div:first-child {
-    width: 200px;
-    height: 50px;
-    background: url("/images/logo/logo200x50.webp") no-repeat center;
-    background-size: 100%;
+.navbar-brand .logo-lg {
+    height: 42px;
     float: left;
     transition: all ease-in .1s;
 }
 
-.header-outer #header.compact .navbar-brand {
-    padding: 0 !important;
-}
-.header-outer #header.compact .navbar-brand > div {
+#header.compact .navbar-brand > div {
     background-size: 100%;
     width: 180px;
     height: 45px;
@@ -160,12 +150,13 @@ nav.navbar .submenu {
     transition: opacity ease-in .2s;
     max-height: 0;
     overflow: hidden;
-
+    z-index: 1;
 }
 
 .title-secondary {
     font-weight: 700;
     font-family: 'Raleway', sans-serif;
+    font-size: 1.5rem;
 }
 
 #login-box {
@@ -178,8 +169,9 @@ nav.navbar .nav-item.open .submenu {
     max-height: initial;
 }
 
-nav.navbar .navbar-nav > .nav-item:hover {
-    background: #f1f1f1;
+nav#header-main.navbar .navbar-nav > .nav-item:hover a {
+    /*background: #f1f1f1;*/
+    color: var(--alt-blue)
 }
 
 .nav-fbook {
@@ -197,13 +189,30 @@ nav.navbar {
 
 nav.navbar .nav-link {
     color: #000;
-    /*text-transform: uppercase;*/
     transition: all ease-in .2s;
-    font-family: 'Oswald', sans-serif;
 }
 
 nav.navbar .nav-link:hover {
     color: var(--darkblue);
+}
+
+#navbar-top {
+    border-bottom: 1px solid #ddd;
+    background: #f1f1f1;
+}
+
+#navbar-top .nav-item a {
+    font-size: .8rem;
+    padding: .3rem;
+}
+
+#navbar-top .nav-pages a {
+    padding-right: 0;
+}
+
+#navbar-top .nav-item a span {
+    border-right: 1px solid #ddd;
+    padding-right: .3rem;
 }
 
 .featured {
@@ -212,7 +221,7 @@ nav.navbar .nav-link:hover {
 }
 
 .featured h1 {
-    padding: 2em 0;
+    padding: 1em 0;
     margin: 0;
     font-family: 'Poppins', sans-serif;
 }
@@ -240,9 +249,9 @@ nav.navbar .nav-link:hover {
     background-color: #fff;;
 }
 
-.header-outer:not(.featured-header) + .inner {
-    margin-top: 66px;
-}
+/*.header-outer:not(.featured-header) + .inner {*/
+/*    margin-top: 66px;*/
+/*}*/
 
 #footer {
     background-color: #151414;
@@ -417,7 +426,7 @@ input[name=search]::placeholder, input[name=varos]::placeholder {
 .search-results {
     padding: 1rem .4rem .4rem;
     position: absolute;
-    width: 100%;
+    width: 600px;
     background: #fff;
     top: 100%;
     left: 0;
@@ -447,6 +456,11 @@ input[name=search]::placeholder, input[name=varos]::placeholder {
     scale: .6;
     margin: 0 -3px;
     filter: grayscale(1);
+    transform-origin: top;
+    /*width: 21px;*/
+    /*height: 21px;*/
+    /*background-size: 198px;*/
+    /*background-position: calc();*/
 }
 
 .group-result:hover, .group-result.selected {
@@ -771,12 +785,12 @@ ul.age-group-select li a:hover {
 
 .group-tag-badge {
     cursor: pointer;
-    font-size: 14px;
+    font-size: 13px;
     padding: 5px 10px;
 }
 
 .group-tag + label {
-    padding: 5px 15px !important;
+    /*padding: 5px 15px !important;*/
 }
 
 .group-tag:checked + label {
@@ -834,7 +848,8 @@ ul.age-group-select li a:hover {
 #kozossegek-list .card-text {
     font-size: .9rem;
 }
-#kozossegek-list .card-title {
+#kozossegek-list .card-body *{
+    font-size: 1rem !important;
     /*text-transform: uppercase;*/
     /*font-weight: bold;*/
 }
@@ -895,7 +910,7 @@ ul.age-group-select li a:hover {
 
 #create-group .step-container {
     border: 5px solid var(--darkblue);
-    padding: 3em;
+    padding: 2em;
     margin-bottom: 3em;
 }
 #create-group .step-container > h4 {
@@ -1011,11 +1026,11 @@ ul.age-group-select li a:hover {
         display: block;
         margin-bottom: 28px;
     }
-    .header-outer #header {
+    #header {
         background: #fff;
     }
 
-    .header-outer .navbar-brand > div:first-child {
+    #header .navbar-brand > div:first-child {
         filter: initial;
     }
     #header .nav-link {

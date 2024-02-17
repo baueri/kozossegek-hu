@@ -7,8 +7,6 @@ class HomeController extends PortalController
 {
     public function home(): string
     {
-        use_default_header_bg();
-
         $age_groups = AgeGroup::cases();
         $intro = $this->getIntro();
         $selected_age_group = null;

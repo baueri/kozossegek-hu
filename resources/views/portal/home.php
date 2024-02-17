@@ -22,21 +22,16 @@
         integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
         crossorigin=""></script>
 @endsection
-@section('header_content')
-<div id="main-finder" class="p-4 p-lg-5">
+@extends('portal')
+<div id="main-finder" class="p-4" style="background:url('/images/main.webp') no-repeat top -50px center">
     <div class="container">
         <div class="text-white text-center" style="margin: auto">
             <img src="/images/logo/logo190x190.webp" class="mb-4 logo-home" alt="logo"/>
             <h1>KOZOSSEGEK.HU</h1>
             <h2 style="text-transform: uppercase">{{ lang('find_your_church_group') }}</h2>
         </div>
-        <form method="get" id="finder" class="mt-5" action="@route('portal.groups')">
-            @include('portal.partials.search_box')
-        </form>
     </div>
 </div>
-@endsection
-@extends('portal')
 <div class="container text-center">
     <div class="p-3 p-sm-4">
         {{ $intro }}

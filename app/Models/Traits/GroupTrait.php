@@ -223,7 +223,6 @@ trait GroupTrait
             'confirmed_at',
             'spiritual_movement_id',
             'district',
-            'image_url'
         ]);
 
         $data['age_group'] = $this->getAgeGroups()->pluck('name')->all();
@@ -234,6 +233,7 @@ trait GroupTrait
         $data['tags'] = $this->tags->map->translate()->all();
         $data['tag_ids'] = $this->tags->pluck('tag')->all();
         $data['url'] = $this->url();
+        $data['thumbnail'] = get_site_url() . $this->getThumbnail();
 
         return $data;
     }

@@ -43,14 +43,11 @@
 </head>
 <body class="{{ !is_prod() ? 'demo' : '' }} {{ is_home() ? 'home' : '' }} {{ $body_class ?? '' }}">
     <div id="fb-root"></div>
+    @include('portal.partials.main_menu')
     @if($header_background)
-        <div class="featured-header header-outer">
-            @include('portal.partials.main_menu')
-            <div class="featured-bg" style="background:url('{{ $header_background }}') no-repeat top 66px center"></div>
+        <div class="featured-header" style="background:url('{{ $header_background }}') no-repeat top center">
             @yield('header_content')
         </div>
-    @else
-        <div class="header-outer">@include('portal.partials.main_menu')</div>
     @endif
     @yield('portal')
     <footer id="footer" class="text-white">
@@ -138,6 +135,9 @@
 
     <script async defer crossorigin="anonymous" src="https://connect.facebook.net/hu_HU/sdk.js#xfbml=1&version=v17.0&appId={{ env('FACEBOOK_APP_ID') }}&autoLogAppEvents=1" nonce="HRNksHZS"></script>
     @endif
+    <script>
+        const meili_enabled = {{ env ('MEILI_ENABLED') ? 'true' : 'false' }}
+    </script>
     <script src="/js/scripts.js?{{ filemtime('js/scripts.js') }}"></script>
     <script src="/js/dialog.js?{{ filemtime('js/dialog.js') }}"></script>
     @yield('scripts')

@@ -21,6 +21,8 @@ use Framework\Support\StringHelper;
 
 class SearchController
 {
+    public const LIMIT = 5;
+
     public function __construct(
         private readonly Request $request
     ) {
@@ -64,16 +66,23 @@ class SearchController
         $params = $ageGroup ? ['filter' => ["age_group=\"{$ageGroup}\""]] : [];
         $params['attributesToHighlight'] = ['city', 'institute_name', 'name', 'tags', 'age_group'];
 
-        $result = $search->search($query, $params, 5);
+        $result = $search->search($query, $params, self::LIMIT);
+
+        $total = $result->getEstimatedTotalHits();
+
+        $formatted = collect($result->getHits())->map(function (array $group) {
+            $tags = Tag::fromList($group['tag_ids'])->map->icon()->implode('');
+            return view('portal.partials.api_group_result', ['group' => $group['_formatted'], 'tags' => $tags]);
+        })->implode('');
+
+        if ($total > self::LIMIT) {
+            $more = route('portal.groups', ['q' => $query]);
+            $formatted .= "<div class='text-center'><a href='' class='text-muted p-3 d-inline-block'>további találatok ({$total})</a></div>";
+        }
+
         return api()->response([
-            'result' => array_map(function (array $group) {
-                if (!isset($group['tag_ids'])) {
-                    dd($group);
-                }
-                $tags = Tag::fromList($group['tag_ids'])->map->icon()->implode('');
-                return view('portal.partials.api_group_result', ['group' => $group['_formatted'], 'tags' => $tags]);
-            }, $result->getHits()),
-            'total' => $result->getEstimatedTotalHits()
+            'result' => $formatted,
+            'total' => $total
         ]);
     }
 }
