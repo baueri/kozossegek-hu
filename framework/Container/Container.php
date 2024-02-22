@@ -105,7 +105,7 @@ class Container implements ContainerInterface
 
     /**
      * @phpstan-template T
-     * @phpstan class-string<T> $abstraction
+     * @phpstan-param class-string<T> $abstraction
      * @phpstan-return T
      */
     public function make(string $abstraction, ?array $args = [])
@@ -153,7 +153,7 @@ class Container implements ContainerInterface
         return $this->getFallback($parent);
     }
 
-    private function getDependencies($class, string $method = '__construct', ?array $resolvedDependencies = []): array
+    public function getDependencies($class, string $method = '__construct', ?array $resolvedDependencies = []): array
     {
         if (!method_exists($class, $method) && !function_exists($class) && !$class instanceof Closure) {
             return [];

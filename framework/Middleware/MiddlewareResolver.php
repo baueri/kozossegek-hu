@@ -2,11 +2,21 @@
 
 namespace Framework\Middleware;
 
+use Closure;
+
+/**
+ * @template T of Middleware
+ */
 final class MiddlewareResolver
 {
-    public function resolve(string $middleware): Middleware
+    public function resolve(string|Closure $middleware): void
     {
+        if ($middleware instanceof Closure) {
+            app()->resolve($middleware)(...app()->getDependencies($middleware));
+            return;
+        }
         $parts = explode('@', $middleware);
+        /** @var class-string<T> $class */
         $class = $parts[0];
         $params = $parts[1] ?? null;
         $args = [];
@@ -16,6 +26,6 @@ final class MiddlewareResolver
                 $args[$paramName] = $paramValue;
             }
         }
-        return app()->make($class, $args);
+        app()->make($class, $args)->handle();
     }
 }

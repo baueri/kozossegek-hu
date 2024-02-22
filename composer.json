@@ -39,7 +39,11 @@
     "migrate:rollback": "vendor/bin/phinx rollback",
     "db:seed": "vendor/bin/phinx seed:run",
     "make:seed": "vendor/bin/phinx seed:create",
-    "test": "vendor/bin/phpunit tests"
+    "test": "vendor/bin/phpunit tests",
+
+    "meili:create": "php console meili --create",
+    "meili:configure": "php console meili --configure",
+    "meili:import": "php console meili --import"
   },
   "require-dev": {
     "robmorgan/phinx": "^0.12.9",

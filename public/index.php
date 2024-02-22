@@ -32,6 +32,10 @@ try {
 
     $kernel = $app->get(HttpKernel::class);
 
+    $kernel->middleware(function () {
+        dd('alma');
+    });
+
     $kernel->handle();
 
 } catch (Error | Exception | Throwable $e) {

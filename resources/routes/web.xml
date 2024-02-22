@@ -84,5 +84,5 @@
     <route method="get" uri="opensearch.xml" view="portal/opensearch"/>
 
     <!-- Adatbázisban tárolt statikus oldalak. FIGYELEM!!!! EZ ALÁ MÁR NE KERÜLJÖN ROUTE!!! -->
-    <route method="get" uri="/{slug}" controller="App\Portal\Controllers\PageController" use="page" as="portal.page" middleware="App\Middleware\ComingSoon"/>
+    <route method="get" uri="/{slug}/" controller="App\Portal\Controllers\PageController" use="page" as="portal.page" middleware="App\Middleware\ComingSoon"/>
 </routes>

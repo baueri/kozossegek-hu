@@ -76,8 +76,8 @@ class SearchController
         })->implode('');
 
         if ($total > self::LIMIT) {
-            $more = route('portal.groups', ['q' => $query]);
-            $formatted .= "<div class='text-center'><a href='' class='text-muted p-3 d-inline-block'>további találatok ({$total})</a></div>";
+            $more = route('portal.groups', ['search' => $query]);
+            $formatted .= "<div class='text-center'><a href='{$more}' class='text-muted p-3 d-inline-block'>Összes találat ({$total})</a></div>";
         }
 
         return api()->response([

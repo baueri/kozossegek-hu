@@ -64,15 +64,15 @@
                              class="lazy">
                     </a>
                     <div class="card-body">
-                        <p class="text-center mb-1">
+                        <p class="text-center mb-1" style="height: 25px;">
                             @if($group->tags)
                             @foreach($group->tags as $tag)
                             <span class="tag-img tag-{{ $tag->tag }}" title="{{ $tag->translate() }}"
-                                  aria-label="{{ $tag->translate() }}" style="scale: .6; transform-origin: top left; margin-left: -3px"></span>
+                                  aria-label="{{ $tag->translate() }}" style="scale: .6; transform-origin: top left; margin: 0 -3px"></span>
                             @endforeach
                             @endif
                         </p>
-                        <h5 class="card-title">{{ $group->name }}</h5>
+                        <b class="card-title">{{ $group->name }}</b>
                         <h6 style="color: #aaa;">
                             {{ $group->city . ($group->district ? ', ' . $group->district : '') }}
                         </h6>

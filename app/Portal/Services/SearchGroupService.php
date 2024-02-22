@@ -4,9 +4,12 @@ namespace App\Portal\Services;
 
 use App\Events\SearchTriggered;
 use App\Models\ChurchGroupView;
+use App\QueryBuilders\ChurchGroupViews;
 use App\Services\GroupSearchRepository;
+use App\Services\MeiliSearch\GroupSearch;
 use Framework\Event\EventDisptatcher;
 use Framework\Model\PaginatedModelCollection;
+use Framework\Support\Arr;
 use Framework\Support\Collection;
 
 class SearchGroupService

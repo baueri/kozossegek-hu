@@ -23,7 +23,7 @@
         crossorigin=""></script>
 @endsection
 @extends('portal')
-<div id="main-finder" class="p-4" style="background:url('/images/main.webp') no-repeat top -50px center">
+<div id="main-finder" class="p-4">
     <div class="container">
         <div class="text-white text-center" style="margin: auto">
             <img src="/images/logo/logo190x190.webp" class="mb-4 logo-home" alt="logo"/>

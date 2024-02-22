@@ -3,6 +3,7 @@
 namespace Framework\Http;
 
 use App\Services\MileStone;
+use Closure;
 use Error;
 use Exception;
 use Framework\Application;
@@ -17,7 +18,7 @@ use Framework\Middleware\MiddlewareResolver;
 use Framework\Model\Exceptions\ModelNotFoundException;
 use Throwable;
 
-abstract class HttpKernel implements Kernel
+class HttpKernel implements Kernel
 {
     /**
      * @var class-string<Middleware>[]
@@ -29,9 +30,23 @@ abstract class HttpKernel implements Kernel
         Cookie::setTestCookie();
     }
 
+    public function middleware(string|Closure $middleware): static
+    {
+        $this->middleware[] = $middleware;
+
+        return $this;
+    }
+
     public function handle()
     {
         MileStone::measure('http_dispatch', 'Dispatching http request');
+        $middlewareResolver = new MiddlewareResolver();
+
+        // todo a Translation middleware-ben hamarabb nyulunk a route-hoz, minthogy az beallitasra kerulne!
+        dd('lsd fenti comment');
+        $kernelMiddleware = $this->getMiddleware();
+
+        array_walk($kernelMiddleware, fn($item) => $middlewareResolver->resolve($item));
 
         $route = $this->router->getCurrentRoute();
 
@@ -45,9 +60,8 @@ abstract class HttpKernel implements Kernel
 
         $this->request->route = $route;
 
-        $middlewareResolver = new MiddlewareResolver();
-        $middleware = array_merge($this->getMiddleware(), $route->getMiddleware());
-        array_walk($middleware, fn($item) => $middlewareResolver->resolve($item)->handle());
+        $middleware = $route->getMiddleware();
+        array_walk($middleware, fn($item) => $middlewareResolver->resolve($item));
 
         $response = $this->resolveRoute($route);
 
