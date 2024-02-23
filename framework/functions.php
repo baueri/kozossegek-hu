@@ -50,45 +50,6 @@ function is_cli(): bool
     return PHP_SAPI == 'cli';
 }
 
-function d(...$data): void
-{
-    if (!Response::contentTypeIsJson() && !is_cli()) {
-        print "<pre>";
-    }
-    foreach ($data as $toDump) {
-        if (is_bool($toDump)) {
-            print_r($toDump ? 'true' : 'false');
-        } elseif (is_null($toDump)) {
-            print_r('null');
-        } elseif (is_string($toDump)) {
-            print_r(htmlspecialchars($toDump));
-        } else {
-            print_r($toDump);
-        }
-        print("\n");
-    }
-    $bt = debug_backtrace();
-    if (isset($bt[1]) && $bt[1]['function'] === 'dd') {
-        $trace = $bt[1];
-    } else {
-        $trace = $bt[0];
-    }
-    print("\ndumped at: {$trace['file']} on line {$trace['line']}");
-    print("\n----------------------------------------------------");
-    if (!Response::contentTypeIsJson() && !is_cli()) {
-        print "</pre>";
-    }
-    if (is_cli()) {
-        print PHP_EOL;
-    }
-}
-
-function dd(...$data): never
-{
-    d(...$data);
-    exit;
-}
-
 function lang(string $key = null, ?string $lang = null): string
 {
     $translator = app()->get(Translator::class);

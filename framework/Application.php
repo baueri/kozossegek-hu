@@ -27,7 +27,7 @@ class Application extends Container
 
     private string $locale;
 
-    private array $eventCallbacks = [
+    private array $events = [
         'booting' => [],
         'booted' => [],
         'terminated' => []
@@ -125,7 +125,7 @@ class Application extends Container
 
     public function on(string $event, Closure $callback)
     {
-        $this->eventCallbacks[$event][] = $callback;
+        $this->events[$event][] = $callback;
     }
 
     public function __destruct()
@@ -135,6 +135,6 @@ class Application extends Container
 
     private function runEvents(string $event): void
     {
-        array_walk($this->eventCallbacks[$event], fn ($callback) => $callback());
+        array_walk($this->events[$event], fn ($callback) => $callback());
     }
 }

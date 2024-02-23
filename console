@@ -1,12 +1,25 @@
 #!/usr/bin/env php
 <?php
 
-use App\Console\ConsoleKernel;
-use Framework\Console\ConsoleKernel as Kernel;
+use App\Console\Commands\AggregateLogsCommand;
+use App\Console\Commands\ClearUserSessionCommand;
+use App\Console\Commands\Cron\DailyCron;
+use App\Console\Commands\Cron\MonthlyCron;
+use App\Console\Commands\GeneratePassword;
+use App\Console\Commands\GroupActivityConfirmNotifier;
+use App\Console\Commands\InactivateUnconfirmedGroups;
+use App\Console\Commands\Install;
+use App\Console\Commands\MeiliSearchIndexerCommand;
+use App\Console\Commands\PublishApp;
+use App\Console\Commands\RebuildSearchEngineCommand;
+use App\Console\Commands\SetLatLonToInstitutes;
+use App\Console\Commands\SiteMapGenerator;
+use App\Services\SystemAdministration\OpenStreetMap\OpenStreetMapSync;
+use Framework\Console\ConsoleKernel;
 
 include 'vendor/autoload.php';
 
-app()->singleton(Kernel::class, ConsoleKernel::class);
+app()->singleton(ConsoleKernel::class);
 
 if (($argv[1] ?? '') === '--interactive') {
     shell_exec('php -d auto_prepend_file="vendor/autoload.php" -a');
@@ -14,7 +27,25 @@ if (($argv[1] ?? '') === '--interactive') {
 }
 
 try {
-    $kernel = app()->get(Kernel::class);
+    $kernel = app()->get(ConsoleKernel::class);
+
+    $kernel->withCommand([
+        Install::class,
+        DailyCron::class,
+        MonthlyCron::class,
+        ClearUserSessionCommand::class,
+        RebuildSearchEngineCommand::class,
+        PublishApp::class,
+        AggregateLogsCommand::class,
+        SiteMapGenerator::class,
+        OpenStreetMapSync::class,
+        SetLatLonToInstitutes::class,
+        GroupActivityConfirmNotifier::class,
+        InactivateUnconfirmedGroups::class,
+        GeneratePassword::class,
+        MeiliSearchIndexerCommand::class
+    ]);
+
     $kernel->handle();
 } catch (Error | Exception | Throwable $e) {
     if (env('DEBUG')) {

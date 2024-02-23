@@ -31,13 +31,12 @@ try {
     ob_start();
 
     $app->singleton(Request::class);
-    $app->singleton('kernel', HttpKernel::class);
+    $app->singleton(HttpKernel::class);
     $app->singleton(DebugBar::class);
     $app->bind(AuthUser::class, fn () => Auth::user());
     $app->bind('errorHandler', ErrorHandler::class, true);
 
-    /** @var HttpKernel $kernel */
-    $kernel = $app->get('kernel');
+    $kernel = $app->get(HttpKernel::class);
 
     $kernel->middleware(BaseAuthMiddleware::class)
         ->middleware(DebugBarMiddleware::class)
@@ -47,7 +46,6 @@ try {
         ->middleware(AppServiceProvider::class);
 
     $kernel->handle();
-
 } catch (Error | Exception | Throwable $e) {
     ob_get_clean();
     $app->handleError($e);

@@ -18,17 +18,12 @@ class ConsoleKernel implements Kernel
     /**
      * @var Command[]|string[]
      */
-    private array $baseCommands = [
+    private array $commands = [
         ListCommands::class,
         SiteUp::class,
         SiteDown::class,
         ClearCache::class
     ];
-
-    /**
-     * @var array<int, class-string<Command>>
-     */
-    protected array $commands = [];
 
     public function __construct(
         private readonly Application $application
@@ -54,7 +49,18 @@ class ConsoleKernel implements Kernel
 
     public function getCommands(): array
     {
-        return array_merge($this->commands, $this->baseCommands);
+        return $this->commands;
+    }
+
+    public function withCommand(array|string $command): static
+    {
+        if (is_array($command)) {
+            $this->commands = array_merge($this->commands, $command);
+        } else {
+            $this->commands[] = $command;
+        }
+
+        return $this;
     }
 
     /**ar
