@@ -25,8 +25,8 @@ class ListCommands extends Command
     public function handle(): void
     {
         $this->output->heading('list of available commands');
-        foreach ($this->kernel->getCommands() as $command) {
-            $this->output->writeln($command::signature());
+        foreach (array_keys($this->kernel->getCommands()) as $signature) {
+            $this->output->writeln($signature);
         }
     }
 }
