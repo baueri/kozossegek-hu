@@ -75,7 +75,14 @@ class Application extends Container
      */
     public function handleError($e): void
     {
-        $this->get(Kernel::class)->handleError($e);
+        $errorHandler = $this->get('errorHandler');
+
+        if (is_callable($errorHandler)) {
+            $errorHandler($e);
+            return;
+        }
+
+        $errorHandler->handle($e);
     }
 
     /**

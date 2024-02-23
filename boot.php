@@ -54,6 +54,7 @@ if (!env('DEBUG') && !is_cli()) {
 }
 
 $application = new Application(ROOT);
+
 MileStone::measure('init', 'Initialize');
 
 $application->bind(RouteInterface::class, Route::class);
@@ -86,6 +87,8 @@ $application->singleton(Database::class, function () {
 
     return new PDOMysqlDatabase($pdo);
 });
+
+$application->bind('errorHandler', fn ($error) => throw $error);
 
 $application->singleton(MeiliSearchAdapter::class);
 

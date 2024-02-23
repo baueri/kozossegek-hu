@@ -48,13 +48,13 @@ class Container implements ContainerInterface
     /**
      * @throws \Framework\Container\Exceptions\AlreadyBoundException
      */
-    public function bind($abstraction, $concrete): void
+    public function bind($abstraction, $concrete, bool $override = false): void
     {
         if (!$abstraction) {
             throw new InvalidArgumentException('abstraction name must not be empty');
         }
 
-        if ($this->isBindingRegistered($abstraction)) {
+        if ($this->isBindingRegistered($abstraction) && !$override) {
             throw new AlreadyBoundException("$abstraction already has a binding");
         }
 
@@ -113,7 +113,7 @@ class Container implements ContainerInterface
         $binding = $this->getBinding($abstraction);
 
         if (is_callable($binding)) {
-            return $binding(...$this->getDependencies($binding));
+            return $binding(...$this->getDependencies($binding, resolvedDependencies: $args));
         }
 
         if (interface_exists($binding)) {
@@ -155,7 +155,7 @@ class Container implements ContainerInterface
 
     public function getDependencies($class, string $method = '__construct', ?array $resolvedDependencies = []): array
     {
-        if (!method_exists($class, $method) && !function_exists($class) && !$class instanceof Closure) {
+        if (!method_exists($class, $method) && !is_callable($class) && !$class instanceof Closure) {
             return [];
         }
 
@@ -178,7 +178,7 @@ class Container implements ContainerInterface
 
     private function getReflectionMethod($abstract, string $method = '__construct'): ?ReflectionFunctionAbstract
     {
-        if ($abstract instanceof Closure || (is_string($abstract) && function_exists($abstract))) {
+        if ($abstract instanceof Closure || (is_string($abstract) && is_callable($abstract))) {
             return new ReflectionFunction($abstract);
         }
 

@@ -12,7 +12,7 @@ final class MiddlewareResolver
     public function resolve(string|Closure $middleware): void
     {
         if ($middleware instanceof Closure) {
-            app()->resolve($middleware)(...app()->getDependencies($middleware));
+            $middleware(...app()->getDependencies($middleware));
             return;
         }
         $parts = explode('@', $middleware);

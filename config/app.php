@@ -3,6 +3,7 @@
 use App\Middleware\AdminMiddleware;
 use App\Middleware\LoggedInMiddleware;
 use Framework\Middleware\JsonApi;
+use Framework\Middleware\Translation;
 use Framework\Middleware\VerifyCsrfToken;
 
 return [
@@ -35,6 +36,7 @@ return [
     ],
 
     'named_middleware' => [
+        'translation' => Translation::class,
         'csrf' => VerifyCsrfToken::class,
         'json' => JsonApi::class,
         'admin' => AdminMiddleware::class,

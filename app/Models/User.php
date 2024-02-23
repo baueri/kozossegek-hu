@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Auth\AuthUser;
-use App\QueryBuilders\SocialProfiles;
 use Legacy\UserRole;
 use App\QueryBuilders\Users;
 use Framework\Model\Entity;

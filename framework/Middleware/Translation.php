@@ -19,7 +19,8 @@ class Translation implements Middleware
     {
         TranslationMissing::listen(MissingTranslationListener::class);
 
-        if ($lang = request()->getUriValue('lang')) {
+        if (preg_match('/^\/([a-z]{2})(\/|$)/', request()->uri, $matches)) {
+            $lang = $matches[1];
             $this->app->setLocale($lang);
             $this->router->addGlobalArg('lang', $lang);
         }

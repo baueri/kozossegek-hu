@@ -1,4 +1,4 @@
-<div class="sticky-top" id="header">
+<div class="" id="header">
     <nav id="navbar-top" class="navbar navbar-expand-sm">
         <div class="container">
             <ul class="navbar-nav nav-pages">

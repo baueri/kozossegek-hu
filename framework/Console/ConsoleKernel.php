@@ -47,7 +47,7 @@ class ConsoleKernel implements Kernel
         try {
             return $command->handle() ?? Command::SUCCESS;
         } catch (Throwable $e) {
-            $this->handleError($e);
+            app()->handleError($e);
             return Command::FAILURE;
         }
     }
@@ -73,11 +73,6 @@ class ConsoleKernel implements Kernel
         }
 
         throw new CommandNotFoundException("command not found: $signature");
-    }
-
-    public function handleError($error): void
-    {
-        throw $error;
     }
 
     protected function getArgs()

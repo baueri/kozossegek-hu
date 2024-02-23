@@ -184,7 +184,7 @@ abstract class PaginatedAdminTable
         try {
             return $this->render();
         } catch (Exception $e) {
-            app()->get(Kernel::class)->handleError($e);
+            app()->handleError($e);
             return '';
         }
     }
