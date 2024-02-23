@@ -75,4 +75,9 @@ trait EnumTrait
 
         return collect($items)->as(static::class);
     }
+
+    public static function from($value)
+    {
+        return static::collect()->filter(fn ($enum) => $enum->value() === $value)->first();
+    }
 }

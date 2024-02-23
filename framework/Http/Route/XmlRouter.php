@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Framework\Http\Route;
 
 use Exception;
+use Framework\Http\RequestMethod;
 use Framework\Misc\XmlObject;
 use Framework\Model\Entity;
 use Framework\Support\Collection;
@@ -147,8 +148,9 @@ class XmlRouter implements RouterInterface
         return $this->routes;
     }
 
-    public function find(string $method, string $uri): ?RouteInterface
+    public function find(string|RequestMethod $method, string $uri): ?RouteInterface
     {
+        $method = $method->value();
         if ($method === 'HEAD') {
             $method = 'GET';
         }

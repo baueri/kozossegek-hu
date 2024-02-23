@@ -23,7 +23,7 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
 
     public Collection $files;
 
-    public ?string $requestMethod;
+    public readonly ?RequestMethod $requestMethod;
 
     public ?string $uri;
 
@@ -43,7 +43,7 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
 
         $this->files = new Collection($_FILES);
 
-        $this->requestMethod = $_SERVER['REQUEST_METHOD'] ?? null;
+        $this->requestMethod = isset($_SERVER['REQUEST_METHOD']) ? RequestMethod::from($_SERVER['REQUEST_METHOD']): null;
 
         $this->uri = urldecode(parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH));
 

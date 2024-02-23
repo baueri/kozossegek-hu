@@ -26,7 +26,7 @@ class ErrorHandler
             if ($error instanceof TokenMismatchException) {
                 log_event('csrf_fail', ['request' => request()->all()]);
             } elseif ($error instanceof HoneypotException) {
-                log_event('honeypot_fail', ['request' => request()->all()]);
+                log_event('honeypot_fail', ['request' => request()->all(), 'reason' => $error->reason]);
             } else {
                 report($error);
             }

@@ -30,7 +30,7 @@ class CreateUser
         $name = strip_tags($data->get('name'));
         $email = filter_var($data->get('email'), FILTER_VALIDATE_EMAIL);
         $password = $data->get('password');
-        $phone_number = strip_tags($data->get('phone_number'));
+        $phone_number = strip_tags((string) $data->get('phone_number'));
 
         if (!$email) {
             // @todo user-barát hibaüzenet
@@ -49,6 +49,8 @@ class CreateUser
         ]);
 
         $this->legalNotices->updateOrInsertCurrentFor($user);
+
+        log_event('create_user');
 
         return $user;
     }

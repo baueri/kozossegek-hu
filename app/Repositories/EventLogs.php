@@ -18,7 +18,9 @@ class EventLogs extends EntityQueryBuilder implements EventLogger
             [
                 'referer' => $_SERVER['HTTP_REFERER'] ?? '',
                 'ip' => $_SERVER['REMOTE_ADDR'],
-                'user_agent' => $_SERVER['HTTP_USER_AGENT']
+                'user_agent' => $_SERVER['HTTP_USER_AGENT'],
+                'page' => request()->uri,
+                'method' => request()->requestMethod->value()
             ],
             $data
         );

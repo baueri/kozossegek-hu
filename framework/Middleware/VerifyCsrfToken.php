@@ -52,7 +52,7 @@ class VerifyCsrfToken implements Middleware
 
     private function isReading(): bool
     {
-        return in_array($this->request->requestMethod, ['GET', 'HEAD', 'OPTIONS']);
+        return $this->request->requestMethod->is(['GET', 'HEAD', 'OPTIONS']);
     }
 
     private function tokenMatches(): bool
