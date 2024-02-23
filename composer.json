@@ -40,6 +40,7 @@
     "db:seed": "vendor/bin/phinx seed:run",
     "make:seed": "vendor/bin/phinx seed:create",
     "test": "vendor/bin/phpunit tests",
+    "tinker": "php -d auto_prepend_file=\"vendor/autoload.php\" -a",
 
     "meili:create": "php console meili --create",
     "meili:configure": "php console meili --configure",

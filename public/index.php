@@ -28,10 +28,8 @@ ob_start();
 $app = app();
 
 try {
-    ob_start();
 
     $app->singleton(Request::class);
-    $app->singleton(HttpKernel::class);
     $app->singleton(DebugBar::class);
     $app->bind(AuthUser::class, fn () => Auth::user());
     $app->bind('errorHandler', ErrorHandler::class, true);
@@ -40,7 +38,6 @@ try {
 
     $kernel->middleware(BaseAuthMiddleware::class)
         ->middleware(DebugBarMiddleware::class)
-        ->middleware(ListenViewLoading::class)
         ->middleware(Translation::class)
         ->middleware(AuthMiddleware::class)
         ->middleware(AppServiceProvider::class);

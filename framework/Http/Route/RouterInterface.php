@@ -23,4 +23,6 @@ interface RouterInterface
     public function route(string $name, mixed $args = null): string;
 
     public function addGlobalArg($name, $value);
+
+    public function addRoute(RouteInterface $route): static;
 }

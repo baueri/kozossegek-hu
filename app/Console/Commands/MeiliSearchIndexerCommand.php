@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use App\Services\MeiliSearch\SearchIndexer;
 use Framework\Console\Command;
+use Meilisearch\Exceptions\ApiException;
 
 class MeiliSearchIndexerCommand extends Command
 {
@@ -23,6 +26,9 @@ class MeiliSearchIndexerCommand extends Command
         return 'meilisearch keresomotor indexelese, konfiguralasa';
     }
 
+    /**
+     * @throws ApiException
+     */
     public function handle(): void
     {
         $options = $this->getOptions();

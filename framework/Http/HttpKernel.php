@@ -10,11 +10,10 @@ use Framework\Http\Exception\PageNotFoundException;
 use Framework\Http\Exception\RouteNotFoundException;
 use Framework\Http\Route\RouteInterface;
 use Framework\Http\Route\RouterInterface;
-use Framework\Kernel;
 use Framework\Middleware\Middleware;
 use Framework\Middleware\MiddlewareResolver;
 
-class HttpKernel implements Kernel
+class HttpKernel
 {
     /**
      * @var class-string<Middleware>[]
@@ -22,9 +21,9 @@ class HttpKernel implements Kernel
     protected array $middleware = [];
 
     public function __construct(
-        private readonly Application     $app,
-        private readonly Request         $request,
-        private readonly RouterInterface $router
+        private readonly Application $app,
+        private readonly Request $request,
+        public readonly RouterInterface $router
     ) {
         Cookie::setTestCookie();
     }

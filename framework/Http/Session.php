@@ -2,8 +2,6 @@
 
 namespace Framework\Http;
 
-use Framework\Support\StringHelper;
-
 class Session
 {
     public static function start(): void

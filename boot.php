@@ -7,8 +7,10 @@ use App\Services\MeiliSearch\MeiliSearchAdapter;
 use App\Services\MileStone;
 use Dotenv\Dotenv;
 use Framework\Application;
+use Framework\Console\ConsoleKernel;
 use Framework\Database\Database;
 use Framework\Database\PDO\PDOMysqlDatabase;
+use Framework\Http\HttpKernel;
 use Framework\Http\Request;
 use Framework\Http\Route\Route;
 use Framework\Http\Route\RouteInterface;
@@ -57,6 +59,9 @@ $application = new Application(ROOT);
 
 MileStone::measure('init', 'Initialize');
 
+$application->singleton(ConsoleKernel::class);
+$application->singleton(HttpKernel::class);
+
 $application->bind(RouteInterface::class, Route::class);
 $application->singleton(ViewInterface::class, View::class);
 $application->singleton(Config::class);
@@ -88,7 +93,7 @@ $application->singleton(Database::class, function () {
     return new PDOMysqlDatabase($pdo);
 });
 
-$application->bind('errorHandler', fn ($error) => throw $error);
+$application->bind('errorHandler', fn () => fn($error) => throw $error);
 
 $application->singleton(MeiliSearchAdapter::class);
 

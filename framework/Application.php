@@ -3,7 +3,6 @@
 namespace Framework;
 
 use Closure;
-use Error;
 use Exception;
 use Framework\Container\Container;
 use Framework\Database\BootListeners;
@@ -52,7 +51,7 @@ class Application extends Container
         return static::$singleton;
     }
 
-    public function boot()
+    public function boot(): void
     {
         $this->runEvents('booting');
         foreach ($this->bootstrappers as $bootstrapper) {
@@ -70,10 +69,7 @@ class Application extends Container
         return $this->get(Config::class)->get($key, $default);
     }
 
-    /**
-     * @param Error|Exception|Throwable $e
-     */
-    public function handleError($e): void
+    public function handleError(Throwable $e): void
     {
         $errorHandler = $this->get('errorHandler');
 
@@ -98,7 +94,7 @@ class Application extends Container
         return $this->locale;
     }
 
-    public function setLocale($lang)
+    public function setLocale($lang): void
     {
         $this->locale = $lang;
     }
@@ -123,7 +119,7 @@ class Application extends Container
         return config('app.debug') && !$this->envIs(Environment::production);
     }
 
-    public function on(string $event, Closure $callback)
+    public function on(string $event, Closure $callback): void
     {
         $this->events[$event][] = $callback;
     }

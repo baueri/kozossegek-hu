@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Framework\Http\Route;
 
 use Exception;
-use Framework\Application;
 use Framework\Misc\XmlObject;
 use Framework\Model\Entity;
 use Framework\Support\Collection;
@@ -54,7 +53,7 @@ class XmlRouter implements RouterInterface
         if (env('ROUTE_CACHE_ENABLED') && file_exists($cachedFile) && filemtime($cachedFile) >= $maxMtime) {
             $cachedRoutes = require_once $cachedFile;
             foreach ($cachedRoutes as $route) {
-                $this->routes[] = app()->make(RouteInterface::class, [
+                $this->addRoute(app()->make(RouteInterface::class, [
                     $route['method'],
                     $route['uriMask'],
                     $route['as'],
@@ -62,7 +61,7 @@ class XmlRouter implements RouterInterface
                     (string) ($route['controller'][1] ?? ''),
                     $route['middleware'],
                     $route['view']
-                ]);
+                ]));
             }
             return;
         }
@@ -77,7 +76,14 @@ class XmlRouter implements RouterInterface
         $this->saveToCache($cachedFile);
     }
 
-    private function parseRoutes($elements)
+    public function addRoute(RouteInterface $route): static
+    {
+        $this->routes[] = $route;
+
+        return $this;
+    }
+
+    private function parseRoutes($elements): void
     {
         if ($elements->getName() === 'route') {
             if ($scope = (string) ($elements['resource'] ?? null)) {
@@ -190,12 +196,12 @@ class XmlRouter implements RouterInterface
         throw new RouteNotFoundException($name);
     }
 
-    public function addGlobalArg($name, $value)
+    public function addGlobalArg($name, $value): void
     {
         static::$globalArgs[$name] = $value;
     }
 
-    private function saveToCache(string $cachedFile)
+    private function saveToCache(string $cachedFile): void
     {
         $output = "<?php \nreturn [\n";
         foreach ($this->routes as $route) {

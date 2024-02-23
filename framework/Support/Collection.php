@@ -394,7 +394,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
 
     public function dump(): void
     {
-        d($this->items);
+        dump($this->items);
     }
 
     public function replace($value, $replaceTo): self

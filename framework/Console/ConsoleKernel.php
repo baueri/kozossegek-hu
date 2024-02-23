@@ -11,10 +11,9 @@ use Framework\Console\BaseCommands\ListCommands;
 use Framework\Console\BaseCommands\SiteDown;
 use Framework\Console\BaseCommands\SiteUp;
 use Framework\Console\Exception\CommandNotFoundException;
-use Framework\Kernel;
 use Throwable;
 
-class ConsoleKernel implements Kernel
+class ConsoleKernel
 {
     /**
      * @var Command[]|string[]
@@ -32,6 +31,9 @@ class ConsoleKernel implements Kernel
         ]);
     }
 
+    /**
+     * @throws CommandNotFoundException
+     */
     public function handle()
     {
         $args = $this->getArgs();
@@ -39,11 +41,11 @@ class ConsoleKernel implements Kernel
         $signature = array_shift($args);
         $command = $this->getCommand($signature);
 
-        // todo !!!
         try {
             if (is_callable($command)) {
-                return $command($this->application->getDependencies($command, resolvedDependencies: $args)) ?? Command::SUCCESS;
+                return $command(...$this->application->getDependencies($command)) ?? Command::SUCCESS;
             }
+
             $command->withArgs($args);
             return $command->handle() ?? Command::SUCCESS;
         } catch (Throwable $e) {
@@ -67,7 +69,7 @@ class ConsoleKernel implements Kernel
     {
         if (is_array($command)) {
             foreach ($command as $singleCommand) {
-                $this->commands[$singleCommand::signature()] = $command;
+                $this->commands[$singleCommand::signature()] = $singleCommand;
             }
         } elseif ($handler) {
             $this->commands[$command] = $handler;
@@ -84,7 +86,6 @@ class ConsoleKernel implements Kernel
     public function getCommand(?string $signature): Command|Closure
     {
         if (!$signature) {
-
             return $this->application->make(ListCommands::class);
         }
 
@@ -97,7 +98,7 @@ class ConsoleKernel implements Kernel
         throw new CommandNotFoundException("command not found: $signature");
     }
 
-    protected function getArgs()
+    public function getArgs()
     {
         global $argv;
 

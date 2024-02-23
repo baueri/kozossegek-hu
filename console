@@ -15,28 +15,18 @@ use App\Console\Commands\RebuildSearchEngineCommand;
 use App\Console\Commands\SetLatLonToInstitutes;
 use App\Console\Commands\SiteMapGenerator;
 use App\Services\SystemAdministration\OpenStreetMap\OpenStreetMapSync;
-use Framework\Console\Command;
 use Framework\Console\ConsoleKernel;
+use Framework\Console\Out;
 
 include 'vendor/autoload.php';
 
-app()->singleton(ConsoleKernel::class);
-
-if (($argv[1] ?? '') === '--interactive') {
-    shell_exec('php -d auto_prepend_file="vendor/autoload.php" -a');
+if (in_array(($argv[1] ?? ''), ['--interactive', '-it'])) {
+    passthru('php -d auto_prepend_file="vendor/autoload.php" -a');
     exit;
 }
 
 try {
     $kernel = app()->get(ConsoleKernel::class);
-
-    app()->bind(Command::class, function (ConsoleKernel $kernel, Closure $closure) {
-
-        return new class extends Command
-        {
-
-        };
-    });
 
     $kernel->withCommand([
         Install::class,
@@ -54,10 +44,6 @@ try {
         GeneratePassword::class,
         MeiliSearchIndexerCommand::class
     ]);
-
-    $kernel->withCommand('hello:world', function (Command $command) {
-        $command->output->success('huh');
-    });
 
     $kernel->handle();
 } catch (Error | Exception | Throwable $e) {
