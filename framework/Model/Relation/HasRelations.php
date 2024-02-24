@@ -22,8 +22,8 @@ trait HasRelations
 
     protected function getRelationName(): string
     {
-        $bactrace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT | DEBUG_BACKTRACE_IGNORE_ARGS, 3);
-        return $bactrace[2]['function'];
+        $backtrace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT | DEBUG_BACKTRACE_IGNORE_ARGS, 3);
+        return $backtrace[2]['function'];
     }
 
     public function with(string $relation, $callback = null): static

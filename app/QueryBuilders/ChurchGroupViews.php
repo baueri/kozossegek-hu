@@ -6,11 +6,12 @@ namespace App\QueryBuilders;
 
 use App\Models\ChurchGroupView;
 use App\Models\User;
+use Framework\Model\EntityQueryBuilder;
 use Framework\Model\Relation\Has;
 use Framework\Model\Relation\Relation;
 
 /**
- * @phpstan-extends ChurchGroups<ChurchGroupView>
+ * @phpstan-extends EntityQueryBuilder<ChurchGroupView>
  */
 class ChurchGroupViews extends ChurchGroups
 {

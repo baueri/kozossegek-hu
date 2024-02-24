@@ -3,12 +3,12 @@
 namespace App\Admin\Components\DebugBar;
 
 use Framework\Database\DatabaseHelper;
-use Framework\Database\QueryHistory;
+use Framework\Database\QueryLog;
 
 class QueryHistoryTab extends DebugBarTab
 {
     public function __construct(
-        public QueryHistory $queryHistory
+        public QueryLog $queryHistory
     ) {
     }
 

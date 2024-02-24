@@ -28,7 +28,7 @@ class SearchGroupService
      */
     public function search(array|Collection $filter, int $perPage = 21): PaginatedModelCollection
     {
-        $groups = $this->groupRepo->search($filter, $perPage);
+        $groups = $this->groupRepo->search($filter)->paginate($perPage);
 
         EventDisptatcher::dispatch(new SearchTriggered('search', $filter));
 

@@ -16,7 +16,7 @@ class MeiliSearchAdapter
     public readonly Indexes $index;
     public function __construct(Lang $lang = Lang::hu)
     {
-        $this->client = new Client(env('MEILI_HOST'), env('MEILI_MASTER_KEY'));
+        $this->client = new Client(config('meilisearch.host'), config('meilisearch.api_key'));
         $this->index = $this->client->index(
             match ($lang) {
                 Lang::hu => self::INDEX_HU,

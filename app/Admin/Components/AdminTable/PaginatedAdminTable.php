@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Admin\Components\AdminTable;
 
 use Exception;
 use Framework\Database\PaginatedResultSetInterface;
+use Framework\Database\QueryLog;
 use Framework\Http\Request;
 use Framework\Support\StringHelper;
 use Framework\Traits\BootsTraits;

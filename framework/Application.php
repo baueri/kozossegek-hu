@@ -6,7 +6,7 @@ use Closure;
 use Exception;
 use Framework\Container\Container;
 use Framework\Database\BootListeners;
-use Framework\Database\QueryHistory;
+use Framework\Database\QueryLog;
 use Framework\Enums\Environment;
 use Framework\Http\View\Bootstrappers\BootDirectives;
 use Framework\Support\Config\Config;
@@ -42,7 +42,7 @@ class Application extends Container
             return static::getInstance();
         });
 
-        $this->singleton(QueryHistory::class);
+        $this->singleton(QueryLog::class);
         static::$singleton = $this;
     }
 

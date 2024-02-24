@@ -11,7 +11,7 @@ use Framework\Application;
 use Framework\Database\Builder;
 use Framework\Database\Database;
 use Framework\Database\DatabaseHelper;
-use Framework\Database\QueryHistory;
+use Framework\Database\QueryLog;
 use Framework\Enums\Environment;
 use Framework\Http\ApiResponse;
 use Framework\Http\Message;
@@ -360,7 +360,7 @@ function attr(string $name): Closure
 
 function query_history(): Collection
 {
-    return resolve(QueryHistory::class)->queryHistory;
+    return resolve(QueryLog::class)->queryHistory;
 }
 
 function query_history_bound(): array

@@ -1,11 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services;
 
 use App\Models\User;
 use App\QueryBuilders\ChurchGroupViews;
 use Framework\Model\ModelCollection;
-use Framework\Model\PaginatedModelCollection;
 use Framework\Support\StringHelper;
 
 class GroupSearchRepository
@@ -15,7 +16,7 @@ class GroupSearchRepository
     ) {
     }
 
-    public function search($filter = [], ?int $perPage = 30): PaginatedModelCollection|ModelCollection
+    public function search($filter = []): ChurchGroupViews
     {
         if (is_array($filter)) {
             $filter = collect($filter);
@@ -90,11 +91,7 @@ class GroupSearchRepository
 
         $builder->with('tags');
 
-        if ($perPage == -1) {
-            return $builder->get();
-        }
-
-        return $builder->paginate($perPage);
+        return $builder;
     }
 
     public function getNotDeletedGroupsByUser(User $user): ModelCollection

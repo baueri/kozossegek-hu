@@ -73,7 +73,7 @@ class GroupController extends AdminController
      * @throws FileTypeNotAllowedException
      * @throws ModelNotFoundException
      */
-    public function update(UpdateGroup $service, ChurchGroups $groups)
+    public function update(UpdateGroup $service, ChurchGroups $groups): void
     {
         $group = $groups->findOrFail($this->request['id']);
         $oldTags = $group->tags->pluck('tag')->sort()->implode(',');
@@ -91,7 +91,7 @@ class GroupController extends AdminController
     /**
      * @throws ModelNotFoundException
      */
-    public function delete(ChurchGroups $repository)
+    public function delete(ChurchGroups $repository): void
     {
         $group = $repository->findOrFail($this->request['id']);
 
@@ -102,7 +102,7 @@ class GroupController extends AdminController
         redirect($this->request->referer());
     }
 
-    public function destroy(ChurchGroups $repository)
+    public function destroy(ChurchGroups $repository): void
     {
         $groupId = $this->request['id'];
         $group = $repository->findOrFail($groupId);
@@ -130,7 +130,7 @@ class GroupController extends AdminController
         redirect($this->request->referer());
     }
 
-    public function rebuildSearchEngine(RebuildSearchEngine $service)
+    public function rebuildSearchEngine(RebuildSearchEngine $service): void
     {
         $service->run();
 
@@ -139,7 +139,7 @@ class GroupController extends AdminController
         redirect_route('admin.group.list');
     }
 
-    public function restore(ChurchGroups $groups)
+    public function restore(ChurchGroups $groups): void
     {
         $group = $groups->find($this->request['id']);
         $group->deleted_at = null;

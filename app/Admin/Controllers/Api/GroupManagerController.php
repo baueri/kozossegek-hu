@@ -24,7 +24,7 @@ class GroupManagerController extends AdminController
 
         return new class(
             $repository
-                ->search(['search' => $search], 10)
+                ->search(['search' => $search])->paginate(10)
         ) extends Select2Response {
             /**
              * @param \App\Models\ChurchGroupView $group

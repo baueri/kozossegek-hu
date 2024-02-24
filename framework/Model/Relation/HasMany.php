@@ -25,22 +25,33 @@ trait HasMany
         }
     }
 
+    /**
+     * @template T of Entity
+     * @param Collection<T>|Entity<T> $instances
+     * @param Relation $relation
+     * @param bool $loadCount
+     * @return void
+     */
     public function fillRelations(Collection|Entity $instances, Relation $relation, bool $loadCount = false): void
     {
-        $instances = collect($instances);
+        $instances = collect($instances)->filter(fn(Entity $instance) => !in_array($relation->relationName, $instance->loadedRelations));
+        if ($instances->isEmpty()) {
+            return;
+        }
         if ($loadCount) {
             $this->fillCounts($relation, $instances);
             return;
         }
-        $rows = collect($relation->buildQuery($instances)->get());
+        $relatedRows = collect($relation->buildQuery($instances)->get());
         foreach ($instances as $actualInstance) {
             $actualInstanceValue = Arr::get($actualInstance, $relation->localKey);
             $isSame = fn($relationInstance) => Arr::get($relationInstance, $relation->foreignKey) == $actualInstanceValue;
             if ($relation->relationType == Has::many) {
-                $actualInstance->relations[$relation->relationName] = $rows->filter($isSame)->values();
+                $actualInstance->relations[$relation->relationName] = $relatedRows->filter($isSame)->values();
             } else {
-                $actualInstance->relations[$relation->relationName] = $rows->first($isSame);
+                $actualInstance->relations[$relation->relationName] = $relatedRows->first($isSame);
             }
+            $actualInstance->loadedRelations[] = $relation->relationName;
         }
     }
 

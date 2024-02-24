@@ -221,8 +221,9 @@ nav.navbar .nav-link:hover {
 }
 
 .featured h1 {
-    padding: 1em 0;
-    margin: 0;
+    padding: 2em 0;
+    margin: 0 !important;
+    font-size: 2rem;
     font-family: 'Poppins', sans-serif;
 }
 

@@ -28,6 +28,8 @@ abstract class Entity
 
     public array $relations_count = [];
 
+    public array $loadedRelations = [];
+
     protected ?string $builder = null;
 
     public function __construct(protected ?array $attributes = [])
@@ -79,7 +81,7 @@ abstract class Entity
             return $this->attributes[$name];
         }
 
-        if (isset($this->relations[$relation])) {
+        if (in_array($relation, $this->loadedRelations) && isset($this->relations[$relation])) {
             return $this->relations[$relation] ?? null;
         }
 

@@ -11,6 +11,7 @@ use App\Models\ChurchGroupView;
 use App\Models\GroupComment;
 use App\Services\GroupSearchRepository;
 use Framework\Database\PaginatedResultSetInterface;
+use Framework\Database\QueryLog;
 use Framework\Http\Request;
 use Framework\Model\Entity;
 use Framework\Support\StringHelper;
@@ -45,8 +46,10 @@ class GroupTable extends PaginatedAdminTable implements Editable
 
     protected string $emptyTrashRoute = 'admin.group.empty_trash';
 
-    public function __construct(Request $request, private GroupSearchRepository $repository)
-    {
+    public function __construct(
+        Request $request,
+        protected readonly GroupSearchRepository $repository
+    ) {
         $this->trashView = $request->route->getAs() == 'admin.group.trash';
         parent::__construct($request);
     }
@@ -122,7 +125,7 @@ class GroupTable extends PaginatedAdminTable implements Editable
     {
         return $this->repository->search($this->request->merge([
             'deleted' => $this->trashView
-        ]), $this->perpage);
+        ]))->with('comment')->paginate($this->perpage);
     }
 
     public function getSoftDeleteLink($model): string

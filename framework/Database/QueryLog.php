@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Framework\Database;
 
 use Framework\Support\Collection;
 
-class QueryHistory
+class QueryLog
 {
     public readonly Collection $queryHistory;
 
@@ -13,7 +15,7 @@ class QueryHistory
         $this->queryHistory = new Collection();
     }
 
-    public function pushQuery($query, $bindings, $time)
+    public function pushQuery($query, $bindings, $time): void
     {
         $this->queryHistory->push([$query, $bindings, $time]);
     }

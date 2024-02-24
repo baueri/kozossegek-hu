@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Framework\Database\PDO;
 
 use BackedEnum;
@@ -29,6 +31,7 @@ class PDOMysqlDatabase implements Database
         $statement->execute($bindings);
 
         $time = microtime(true) - $start;
+
 
         EventDisptatcher::dispatch(new QueryRan($query, $bindings, $time));
 
@@ -89,17 +92,17 @@ class PDOMysqlDatabase implements Database
         return $this->execute($query, ...$params)->rowCount();
     }
 
-    public function lastInsertId()
+    public function lastInsertId(): bool|string
     {
         return $this->pdo->lastInsertId();
     }
 
-    public function first(string $query, $bindings = [])
+    public function first(string $query, $bindings = []): object|array|null
     {
         return $this->execute($query, ...$bindings)->fetchRow();
     }
 
-    public function insert(string $query, array $params = [])
+    public function insert(string $query, array $params = []): string
     {
         $this->execute($query, ...$params);
 

@@ -24,7 +24,7 @@ class ApiGroupController extends Controller
         try {
             $filter = $request->only('search', 'varos', 'intezmeny');
             $perPage = (int) $request['per_page'] ?: 30;
-            $results = $groupViews->search($filter, $perPage);
+            $results = $groupViews->search($filter)->paginate($perPage);
 
             $data = $results->map(fn (ChurchGroupView $groupView) => [
                 'name' => $groupView->name,

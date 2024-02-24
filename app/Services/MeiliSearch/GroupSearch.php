@@ -15,6 +15,7 @@ class GroupSearch
 
     public function search(string $keyword, array $params = [], ?int $limit = null): SearchResult
     {
+        $params = array_merge(['matchingStrategy' => 'all'], $params);
         if ($limit) {
             $params['limit'] = $limit;
         }

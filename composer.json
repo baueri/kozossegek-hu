@@ -15,7 +15,8 @@
     "vlucas/phpdotenv": "^5.5",
     "google/apiclient": "^2.15",
     "meilisearch/meilisearch-php": "^1.6",
-    "http-interop/http-factory-guzzle": "^1.0"
+    "http-interop/http-factory-guzzle": "^1.0",
+    "ext-pdo": "*"
   },
   "autoload": {
     "psr-4": {

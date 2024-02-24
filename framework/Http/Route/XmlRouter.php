@@ -150,7 +150,7 @@ class XmlRouter implements RouterInterface
 
     public function find(string|RequestMethod $method, string $uri): ?RouteInterface
     {
-        $method = $method->value();
+        $method = is_string($method) ? $method : $method->value();
         if ($method === 'HEAD') {
             $method = 'GET';
         }
