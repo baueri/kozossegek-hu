@@ -16,8 +16,6 @@ use App\QueryBuilders\Users;
 use App\Repositories\Districts;
 use App\Services\MeiliSearch\GroupSearch;
 use Framework\Http\Request;
-use Framework\Support\Collection;
-use Framework\Support\StringHelper;
 
 class SearchController
 {
@@ -58,8 +56,11 @@ class SearchController
         return new UserResponse($users->search($this->request['term'])->get());
     }
 
-    public function searchGroup(GroupSearch $search): array
+    public function searchGroup(GroupSearch $search): ?array
     {
+        if (!config('meilisearch.enabled')) {
+            return null;
+        }
         $query = $this->request->get('q');
         $ageGroup = $this->request->get('age_group');
 

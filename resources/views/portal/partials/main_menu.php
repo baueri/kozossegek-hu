@@ -6,58 +6,62 @@
                 <li class="nav-item"><a href="@route('portal.page', ['slug' => 'rolunk'])#contact" class="nav-link"><span>@lang('menu.contact')</span></a></li>
                 <li class="nav-item"><a href="@route('portal.page', ['slug' => 'a-kozosseg'])" class="nav-link">@lang('menu.about_church_groups')</a></li>
             </ul>
-            <ul class="navbar-nav">
+            <ul class="navbar-nav nav-right">
                 @auth
-                <li class="nav-item nav-item-profile">
-                    <a href="#" class="nav-link user-menu" aria-label="Felhasználói menü"><i class="fa fa-user-circle" style="font-size: 18px;" onclick="return false;"></i></a>
-                    <ul class="submenu">
-                        <li class="nav-item">
-                            <a href="@route('portal.my_profile')" class="nav-link">@icon('user-circle') @lang('menu.my_account')</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="@route('portal.my_groups')" class="nav-link">@icon('comments') @lang('menu.my_groups')</a>
-                        </li>
-                        @admin()
-                        <li class="nav-item">
-                            <a href="@route('admin.dashboard')" class="nav-link">@icon('cog') @lang('menu.admin')</a>
-                        </li>
-                        @endadmin
-                        <li class="nav-item">
-                            <a href="@route('logout')" class="nav-link text-danger">@icon('sign-out-alt') @lang('menu.logout')</a>
-                        </li>
-                    </ul>
-                </li>
+                    <li class="nav-item nav-item-profile">
+                        <a href="#" class="nav-link user-menu" aria-label="Felhasználói menü">
+                            <i class="fa fa-user-circle" onclick="return false;"></i> <small>{{ auth()->name }}</small>
+                        </a>
+                        <ul class="submenu">
+                            <li class="nav-item">
+                                <a href="@route('portal.my_profile')" class="nav-link">@icon('user-circle') @lang('menu.my_account')</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="@route('portal.my_groups')" class="nav-link">@icon('comments') @lang('menu.my_groups')</a>
+                            </li>
+                            @admin()
+                            <li class="nav-item">
+                                <a href="@route('admin.dashboard')" class="nav-link">@icon('cog') @lang('menu.admin')</a>
+                            </li>
+                            @endadmin
+                            <li class="nav-item">
+                                <a href="@route('logout')" class="nav-link text-danger">@icon('sign-out-alt') @lang('menu.logout')</a>
+                            </li>
+                        </ul>
+                    </li>
                 @else
-                <li class="nav-item px-2">
-                    <a href="#" class="nav-link d-none d-lg-block" aria-label="@lang('menu.login')">
-                        <label for="popup-login-username" class="mb-0" style="cursor:pointer;"><i class="far fa-user-circle" style="font-size: 18px;"></i></label>
-                    </a>
-                    <ul class="submenu">
-                        <li class="nav-item" id="login-box">
-                            <div class="p-lg-3">
-                                <form action="@route('doLogin')" method="post">
-                                    <label class="text-center w-100">@lang('menu.login')</label><br/>
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" name="username" placeholder="@lang('menu.login.email')" id="popup-login-username"/>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="password" class="form-control" name="password" placeholder="@lang('menu.login.password')"/>
-                                    </div>
-                                    <div>
-                                        @include('portal.partials.google-login', ['width' => 205])
-                                        <!--                                       <div class="fb-login-button mb-3" data-width="238px" data-size="medium" data-button-type="login_with" data-layout="default" data-auto-logout-link="false" data-use-continue-as="true"></div><br/>-->
-                                    </div>
-                                    <p class="text-center">
-                                        <button type="submit" class="btn btn-altblue">Belépés</button>
-                                    </p>
-                                    <p class="text-center">
-                                        <a href="@route('portal.register')" class="">Regisztráció</a>
-                                    </p>
-                                </form>
-                            </div>
-                        </li>
-                    </ul>
-                </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link d-none d-lg-block user-menu" aria-label="@lang('menu.login')">
+                            <label for="popup-login-username" class="mb-0" style="cursor:pointer;">
+                                <i class="far fa-user-circle"></i> <small>Belépés</small>
+                            </label>
+                        </a>
+                        <ul class="submenu">
+                            <li class="nav-item" id="login-box">
+                                <div class="p-lg-3">
+                                    <form action="@route('doLogin')" method="post">
+                                        <label class="text-center w-100">@lang('menu.login')</label><br/>
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" name="username" placeholder="@lang('menu.login.email')" id="popup-login-username"/>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="password" class="form-control" name="password" placeholder="@lang('menu.login.password')"/>
+                                        </div>
+                                        <div>
+                                            @include('portal.partials.google-login', ['width' => 205])
+                                            <!--                                       <div class="fb-login-button mb-3" data-width="238px" data-size="medium" data-button-type="login_with" data-layout="default" data-auto-logout-link="false" data-use-continue-as="true"></div><br/>-->
+                                        </div>
+                                        <p class="text-center">
+                                            <button type="submit" class="btn btn-altblue">Belépés</button>
+                                        </p>
+                                        <p class="text-center">
+                                            <a href="@route('portal.register')" class="">Regisztráció</a>
+                                        </p>
+                                    </form>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
                 @endauth
                 <li class="nav-item divider-before">
                     <a href="https://vp2.hu/" class="nav-link partner-header-link" title="Virtuális plébánia" aria-label="Virtuális plébánia" target="_blank" rel="noopener noreferrer">

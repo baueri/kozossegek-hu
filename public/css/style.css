@@ -64,6 +64,10 @@ img {
     color: #687074;
 }
 
+.nav-right .submenu .nav-link {
+    padding: .5rem;
+}
+
 #header-main .navbar-nav > li > .nav-link {
     padding-top: .8rem;
     padding-bottom: .8rem;
@@ -202,17 +206,20 @@ nav.navbar .nav-link:hover {
 }
 
 #navbar-top .nav-item a {
-    font-size: .8rem;
-    padding: .3rem;
 }
 
 #navbar-top .nav-pages a {
-    padding-right: 0;
+    padding: .3rem .3rem .3rem 0;
+    font-size: .8rem;
 }
 
 #navbar-top .nav-item a span {
     border-right: 1px solid #ddd;
     padding-right: .3rem;
+}
+
+.nav-right .nav-item a {
+    padding: 0;
 }
 
 .featured {
@@ -503,6 +510,12 @@ input[name=search]::placeholder, input[name=varos]::placeholder {
 #toggle_main_menu:checked~.navbar-nav .user-menu {
     display: none;
 }
+
+.user-menu {
+    padding-top: 4px !important;
+    font-size: 18px;
+}
+
 #toggle_main_menu:checked~.navbar-nav .submenu {
     opacity: 1;
     position: relative;
@@ -994,12 +1007,15 @@ ul.age-group-select li a:hover {
 
 .partner-header-link img {
     width: 22px;
+    padding-top: 5px;
 }
 
 .divider-before a:before {
     content: " ";
     margin-right: 16px;
     border-left: 1px solid rgba(0, 0, 0, 0.25);
+    position: relative;
+    top: 4px;
 }
 
 @media (max-width: 991px) {
