@@ -8,30 +8,30 @@ use Framework\Support\Collection;
 
 class QueryLog
 {
-    public readonly Collection $queryHistory;
+    public readonly Collection $queryLog;
 
     public function __construct()
     {
-        $this->queryHistory = new Collection();
+        $this->queryLog = new Collection();
     }
 
     public function pushQuery($query, $bindings, $time): void
     {
-        $this->queryHistory->push([$query, $bindings, $time]);
+        $this->queryLog->push([$query, $bindings, $time]);
     }
 
-    public function getQueryHistory(): Collection
+    public function getQueryLog(): Collection
     {
-        return $this->queryHistory;
+        return $this->queryLog;
     }
 
     public function getLastQuery(): array
     {
-        return $this->queryHistory->last() ?: [];
+        return $this->queryLog->last() ?: [];
     }
 
     public function getExecutionTime()
     {
-        return $this->queryHistory->reduce(fn ($time, $row) => $time += $row[2], 0);
+        return $this->queryLog->reduce(fn ($time, $row) => $time += $row[2], 0);
     }
 }

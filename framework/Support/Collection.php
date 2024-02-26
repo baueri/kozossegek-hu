@@ -329,6 +329,18 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         return new self(Arr::map($this->items, $func, $keepKeys));
     }
 
+    /**
+     * Converts every item into given class|closure|enum. When closure is passed, the item will be replaced with its return value
+     */
+    public function castInto(callable|string $into): static
+    {
+        foreach ($this->items as $key => &$item) {
+            $item = castInto($item, $into, $key);
+        }
+
+        return $this;
+    }
+
     public function unique($key = null): self
     {
         if (!$key) {
@@ -542,12 +554,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
      */
     public function as(string $abstraction): static
     {
-        return $this->map(function ($item) use ($abstraction) {
-            if (enum_exists($abstraction)) {
-                return $abstraction::from($item);
-            }
-            return app()->make($abstraction, [$item]);
-        });
+        return $this->map(fn($item) => castInto($item, $abstraction));
     }
 
     public function groupBy($key): self

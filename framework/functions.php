@@ -430,3 +430,23 @@ function str_more(string $text, int $numberOfWords, string $moreText = ''): stri
 {
     return StringHelper::more($text, $numberOfWords, $moreText);
 }
+
+function castInto($from, $to)
+{
+    $args = func_get_args();
+    array_shift($args);
+
+    if (is_callable($to)) {
+        return $to($from, ...$args);
+    }
+
+    if (is_object($from) && method_exists($from, $to)) {
+        return $from->{$to}(...$args);
+    }
+
+    if (enum_exists($to)) {
+        return $to::from($from);
+    }
+
+    return app()->make($to, [$from]);
+}

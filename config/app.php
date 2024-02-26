@@ -2,6 +2,8 @@
 
 use App\Middleware\AdminMiddleware;
 use App\Middleware\LoggedInMiddleware;
+use App\Portal\Services\Search\DatabaseSearchGroupRepository;
+use App\Portal\Services\Search\MeiliSearchRepository;
 use Framework\Middleware\JsonApi;
 use Framework\Middleware\Translation;
 use Framework\Middleware\VerifyCsrfToken;
@@ -44,5 +46,10 @@ return [
     ],
     'exclude_csrf' => [
         'admin.upload_file'
+    ],
+    'selected_search_driver' => env('SEARCH_DRIVER', 'database'),
+    'search_drivers' => [
+        'database' => DatabaseSearchGroupRepository::class,
+        'meilisearch' => MeiliSearchRepository::class
     ]
 ];

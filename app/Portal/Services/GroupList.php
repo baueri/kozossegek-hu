@@ -2,18 +2,17 @@
 
 namespace App\Portal\Services;
 
-use App\Enums\GroupStatus;
 use App\Enums\AgeGroup;
+use App\Enums\GroupStatus;
 use App\Enums\Tag;
 use App\Portal\BreadCrumb\BreadCrumb;
-use App\QueryBuilders\Cities;
+use App\Portal\Services\Search\SearchRepository;
 use Framework\Support\Collection;
-use function Symfony\Component\String\b;
 
 class GroupList
 {
     public function __construct(
-        private SearchGroupService $service
+        protected readonly SearchRepository $repository
     ) {
     }
 
@@ -52,7 +51,7 @@ class GroupList
             return view('portal.kozossegek_no_filter', $model);
         }
 
-        $groups = $this->service->search($filter, 18);
+        $groups = $this->repository->search($filter, 18);
 
         $model = array_merge($model, [
             'groups' => $groups,

@@ -14,7 +14,7 @@ class QueryHistoryTab extends DebugBarTab
 
     public function getTitle(): string
     {
-        $count = $this->queryHistory->getQueryHistory()->count();
+        $count = $this->queryHistory->getQueryLog()->count();
         return "lekérdezések ($count)";
     }
 
@@ -26,7 +26,7 @@ class QueryHistoryTab extends DebugBarTab
     public function render(): string
     {
         $time = $this->getTotalTime();
-        $queries = $this->queryHistory->getQueryHistory()->map(function ($row) {
+        $queries = $this->queryHistory->getQueryLog()->map(function ($row) {
             $row[0] = DatabaseHelper::getQueryWithBindings($row[0], $row[1]);
             $row[2] = round($row[2] * 10000, 2);
             return $row;

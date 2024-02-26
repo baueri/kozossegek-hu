@@ -16,6 +16,7 @@ return [
             'tags',
             'tag_ids',
             'age_group',
+            'age_group_text',
             'spiritual_movement'
         ],
         'searchableAttributes' => [
@@ -25,6 +26,7 @@ return [
             'institute_name2',
             'description',
             'tags',
+            'age_group_text',
             'spiritual_movement'
         ],
         'rankingRules' => [

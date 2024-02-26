@@ -14,7 +14,7 @@
     <div class="container inner">
         {{ $breadcrumb }}
         @yield('templom_title')
-        @include('portal.partials.kozossegek-view2')
+        @include('portal.partials.kozossegek_results')
         @include('partials.simple-pager', ['route' => 'portal.groups.page','total' => $total,'page' => $page,'perpage' => $perpage,'routeparams' => $filter])
     </div>
 <script>

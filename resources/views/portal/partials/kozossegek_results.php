@@ -20,14 +20,12 @@
                 <label>Közösség jellege</label>
                 <div>
                     @foreach($tags as $i => $tag)
-<!--                        @if($i > 0 && $i % 9 == 0) <br/> @endif-->
-
                         <label for="tag-{{ $tag->value }}"aria-label="{{ $tag->translate() }}">
                             <input type="checkbox"
                                    class="group-tag"
                                    id="tag-{{ $tag->value }}"
                                    value="{{ $tag->value }}"
-                                   @if(in_array($tag->value, $selected_tags)) checked @endif
+                                   @checked(in_array($tag->value, $selected_tags))
                             style="">
                             <span class="align-middle">{{ $tag->translate() }}</span>
                         </label>
@@ -36,8 +34,8 @@
                 </div>
             </div>
             <div>
-                <button type="submit" class="btn btn-altblue px-3 w-100" aria-label="Keresés indítása"><i
-                            class="fa fa-search"></i> Keresés
+                <button type="submit" class="btn btn-altblue px-3 w-100" aria-label="Keresés indítása">
+                    <i class="fa fa-search"></i> Keresés
                 </button>
             </div>
         </form>
@@ -54,33 +52,33 @@
             @foreach($groups as $i => $group)
             <div class="{{ $grid_class ?? 'col-md-6 col-lg-4' }} mb-3">
                 <div class="card kozi-box h-100 p-0">
-                    <a href="{{ $group->url() }}" class="card-img">
+                    <a href="{{ $group['url'] }}" class="card-img">
                         <div>megnézem</div>
                         <img src="/images/placeholder.jpg"
-                             data-src="{{ $group->getThumbnail() }}"
-                             data-srcset="{{ $group->getThumbnail() }}"
-                             alt="{{ $group->city }}"
+                             data-src="{{ $group['thumbnail'] }}"
+                             data-srcset="{{ $group['thumbnail'] }}"
+                             alt="{{ $group['city'] }}"
                              style="object-fit: cover"
                              class="lazy">
                     </a>
                     <div class="card-body">
                         <p class="text-center mb-1" style="height: 25px;">
-                            @if($group->tags)
-                            @foreach($group->tags as $tag)
-                            <span class="tag-img tag-{{ $tag->tag }}" title="{{ $tag->translate() }}"
-                                  aria-label="{{ $tag->translate() }}" style="scale: .6; transform-origin: top left; margin: 0 -3px"></span>
+                            @if($group['tags'])
+                            @foreach($group['tags'] as $tag_key => $tag)
+                            <span class="tag-img tag-{{ $tag_key }}" title="{{ $tag }}"
+                                  aria-label="{{ $tag }}" style="scale: .6; transform-origin: top left; margin: 0 -3px"></span>
                             @endforeach
                             @endif
                         </p>
-                        <b class="card-title">{{ $group->name }}</b>
+                        <b class="card-title">{{ $group['name'] }}</b>
                         <h6 style="color: #aaa;">
-                            {{ $group->city . ($group->district ? ', ' . $group->district : '') }}
+                            {{ $group['city'] . ($group['district'] ? ', ' . $group['district'] : '') }}
                         </h6>
                         <p class="card-text mb-0">
-                            <strong>@lang('age_group'):</strong> <span>{{ $group->ageGroup() }}</span><br>
-                            <strong>@lang('occasions'):</strong> <span>{{ $group->occasionFrequency() }}</span><br>
+                            <strong>@lang('age_group'):</strong> <span>{{ implode(', ', $group['age_group_text']) }}</span><br>
+                            <strong>@lang('occasions'):</strong> <span>{{ $group['occasion_frequency'] }}</span><br>
                         </p>
-                        <a href="{{ $group->url() }}"
+                        <a href="{{ $group['url'] }}"
                            class="btn btn-outline-darkblue btn-sm kozi-more-info">Megnézem</a>
                     </div>
                 </div>

@@ -9,7 +9,6 @@ use App\Enums\GroupPending;
 use App\Enums\WeekDay;
 use App\Enums\GroupStatus;
 use App\Enums\JoinMode;
-use App\Models\ChurchGroupView;
 use App\Models\Institute;
 use App\Portal\BreadCrumb\BreadCrumb;
 use App\Helpers\GroupHelper;
@@ -208,7 +207,7 @@ trait GroupTrait
         return new BreadCrumb($breadCrumbs);
     }
 
-    public function toMeiliSearch(): array
+    public function toSearchResult(): array
     {
         $data = $this->only([
             'id',
@@ -230,7 +229,7 @@ trait GroupTrait
         $data['join_mode'] = $this->joinModeText();
         $data['on_days'] = $this->getDays()->map->translate()->all();
         $data['occasion_frequency'] = $this->occasionFrequency();
-        $data['tags'] = $this->tags->map->translate()->all();
+        $data['tags'] = $this->tags->keyBy('tag')->map->translate()->all();
         $data['tag_ids'] = $this->tags->pluck('tag')->all();
         $data['url'] = $this->url();
         $data['thumbnail'] = get_site_url() . $this->getThumbnail();

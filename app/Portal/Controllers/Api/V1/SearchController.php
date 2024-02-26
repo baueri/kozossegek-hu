@@ -10,6 +10,7 @@ use App\Portal\Responses\CitySearchResponse;
 use App\Portal\Responses\DistrictResponse;
 use App\Portal\Responses\InstituteSearchResponse;
 use App\Portal\Responses\UserResponse;
+use App\Portal\Services\Search\SearchRepository;
 use App\QueryBuilders\Cities;
 use App\QueryBuilders\Institutes;
 use App\QueryBuilders\Users;

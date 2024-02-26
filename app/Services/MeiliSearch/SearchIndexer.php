@@ -31,7 +31,7 @@ class SearchIndexer
         $this->index->deleteAllDocuments();
 
         $this->index->updateDocuments(
-            $churchGroups->map('toMeiliSearch')
+            $churchGroups->map('toSearchResult')
             ->all()
         );
     }
