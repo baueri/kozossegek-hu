@@ -17,7 +17,7 @@ class MeiliSearchRepository implements SearchRepository
 
     public function search(array $filter, int $perPage = 21): PaginatedResultSetInterface
     {
-        $params = ['matchingStrategy' => 'all', 'hitsPerPage' => $perPage, 'page' => (int) request()->get('pg') ?? 1];
+        $params = ['matchingStrategy' => 'all', 'hitsPerPage' => $perPage, 'page' => (int) request()->get('pg') ?: 1];
         $keyword = $filter['search'] ?? null;
         $results = $this->adapter->index->search($keyword, $params);
 

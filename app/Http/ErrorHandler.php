@@ -13,6 +13,8 @@ use Framework\Http\Exception\RouteNotFoundException;
 use Framework\Http\Exception\TokenMismatchException;
 use Framework\Http\Response;
 use Framework\Model\Exceptions\ModelNotFoundException;
+use Whoops\Handler\PrettyPageHandler;
+use Whoops\Run;
 
 class ErrorHandler
 {
@@ -43,10 +45,14 @@ class ErrorHandler
         }
 
         if (config('app.debug') && $error->getCode() != '401') {
-            echo "<pre style='white-space:pre-line'><h3>Unexpected error (" . get_class($error) . ")</h3>";
-            echo "{$error->getMessage()} in <b>{$error->getFile()}</b> on line <b>{$error->getLine()}</b> \n\n";
-            echo var_export($error->getTrace(), true);
-            echo "</pre>";
+            $whoops = new Run;
+            $whoops->allowQuit(true);
+            $whoops->pushHandler(new PrettyPageHandler);
+            $whoops->handleException($error);
+//            echo "<pre style='white-space:pre-line'><h3>Unexpected error (" . get_class($error) . ")</h3>";
+//            echo "{$error->getMessage()} in <b>{$error->getFile()}</b> on line <b>{$error->getLine()}</b> \n\n";
+//            echo var_export($error->getTrace(), true);
+//            echo "</pre>";
             exit;
         }
 
