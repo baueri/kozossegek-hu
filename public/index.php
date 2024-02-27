@@ -5,7 +5,6 @@ use App\Auth\Auth;
 use App\Auth\AuthUser;
 use App\Http\ErrorHandler;
 use App\Middleware\DebugBarMiddleware;
-use App\Middleware\ListenViewLoading;
 use App\Portal\Services\Search\SearchRepository;
 use App\Providers\AppServiceProvider;
 use Framework\Http\HttpKernel;
@@ -49,8 +48,6 @@ try {
         ->middleware(Translation::class)
         ->middleware(AuthMiddleware::class)
         ->middleware(AppServiceProvider::class);
-
-    \Framework\Model\EntityQueryBuilder::query(\App\Models\User::class)->getModelClass();
 
     $kernel->handle();
 } catch (Error | Exception | Throwable $e) {

@@ -1,13 +1,13 @@
 <div id="debugbar">
-    <div id="debugbar-header" class="bg-light">
-        <div class="btn-group btn-shadow">
+    <div id="debugbar-header" class="bg-light d-flex">
+        <div class="btn-group btn-shadow mr-auto">
             @foreach($headers as $id => $header)
                 <label for="{{ $id }}" class="btn btn-default btn-sm mb-0">
                     {{ $header }}
                 </label>
             @endforeach
         </div>
-        <div class="float-right">
+        <div>
             <span title="memory usage"><i class="fa fa-cogs"></i> {{ $memory_usage }}</span> |
             <span title="query exec time"><i class="fa fa-database"></i> {{ $query_time }}</span> |
             <span title="total load time"><i class="fa fa-stopwatch"></i> {{ $total_load_time }}ms</span>
@@ -45,6 +45,10 @@
 
     #debugbar-header .btn {
         border-radius: 0;
+    }
+
+    #debugbar-header .float-right > span {
+        display: inline-block;
     }
 
     #debugbar-content > div > div {

@@ -42,7 +42,6 @@ class GroupList
             'tags' => Tag::collect(),
             'statuses' => $statuses,
             'selected_age_group' => $korosztaly,
-            'header_background' => '/images/kozosseget_keresek.jpg',
             'age_group_query' => http_build_query($baseFilter),
             'breadcrumb' => $breadCrumb
         ];
