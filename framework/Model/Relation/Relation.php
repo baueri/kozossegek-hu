@@ -20,7 +20,7 @@ class Relation
         ?string $foreignKey = null,
         ?string $localKey = null,
     ) {
-        $this->localKey = $localKey ?? $queryBuilder::primaryCol();
+        $this->localKey = $localKey ?? $queryBuilder->primaryCol();
         $this->foreignKey = $foreignKey ?? $this->relationName . '_id';
     }
 

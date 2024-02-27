@@ -4,13 +4,14 @@ namespace App\Services\SystemAdministration\OpenStreetMap;
 
 use App\Models\City;
 use App\Models\Institute;
+use App\Models\OsmMarker;
 use App\QueryBuilders\ChurchGroups;
 use App\QueryBuilders\Cities;
 use App\QueryBuilders\ChurchGroupViews;
 use App\QueryBuilders\Institutes;
-use App\QueryBuilders\OsmMarkers;
 use App\Repositories\CityStatistics;
 use Framework\Console\Command;
+use Framework\Model\EntityQueryBuilder;
 
 class OpenStreetMapSync extends Command
 {
@@ -29,7 +30,7 @@ class OpenStreetMapSync extends Command
         $this->output->info('Syncing Open Street Map pois...');
 
         db()->transaction(function () {
-            OsmMarkers::query()->delete();
+            EntityQueryBuilder::query(OsmMarker::class)->delete();
 
             $groups = fn (ChurchGroups $query) => $query->active();
             Institutes::query()
@@ -39,7 +40,7 @@ class OpenStreetMapSync extends Command
                 ->whereHas('groups', $groups)
                 ->get()
                 ->map(function (Institute $institute) {
-                    OsmMarkers::query()->insert([
+                    EntityQueryBuilder::query(OsmMarker::class)->insert([
                         'type' => 'institute',
                         'latlon' => $institute->latlon(),
                         'popup_html' => addslashes($this->getHtml($institute))
@@ -66,7 +67,7 @@ class OpenStreetMapSync extends Command
                     } elseif ($city->groups_count) {
                         $marker = '/images/marker_blue.png';
                     }
-                    OsmMarkers::query()->insert([
+                    EntityQueryBuilder::query(OsmMarker::class)->insert([
                         'marker' => $marker,
                         'type' => 'city_stat',
                         'latlon' => "{$city->lat},{$city->lon}",

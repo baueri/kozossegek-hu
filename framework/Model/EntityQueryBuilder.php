@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Framework\Model;
 
+use Cake\Utility\Inflector;
 use Closure;
 use Framework\Database\Builder;
 use Framework\Database\Repository\Events\ModelCreated;
@@ -13,13 +14,12 @@ use Framework\Model\Exceptions\ModelNotFoundException;
 use Framework\Model\Exceptions\QueryBuilderException;
 use Framework\Model\Relation\HasRelations;
 use Framework\Support\Collection;
-use Framework\Support\StringHelper;
 use RuntimeException;
 
 /**
  * @phpstan-template T of Entity
  */
-abstract class EntityQueryBuilder
+class EntityQueryBuilder
 {
     use HasRelations;
 
@@ -27,36 +27,40 @@ abstract class EntityQueryBuilder
 
     public readonly Builder $builder;
 
-    final public function __construct()
+    public readonly ?string $modelClass;
+
+    /**
+     * @phpstan-param class-string<T>|null $model
+     */
+    final public function __construct(?string $model = null)
     {
-        $this->builder = builder(static::getTableName());
+        $this->modelClass = $model ?: null;
+        $this->builder = builder($this->getTableName());
     }
 
-    public static function getTableName(): ?string
+    public function getTableName(): ?string
     {
         if (static::TABLE) {
             return static::TABLE;
         }
 
-        $plural = StringHelper::plural(
-            get_class_name(static::getModelClass())
-        );
+        if ($this->modelClass) {
+            return Inflector::tableize(get_class_name($this->modelClass));
+        }
 
-        return StringHelper::snake($plural);
+        return Inflector::tableize(get_class_name(static::class));
     }
 
     /**
      * @phpstan-return class-string<T>
      */
-    public static function getModelClass(): string
+    public function getModelClass(): string
     {
-        if (str_ends_with(static::class, 'ies')) {
-            $singular = str_replace('ies', 'y', static::class);
-        } else {
-            $singular = substr(static::class, 0, strlen(static::class) -1);
+        if ($this->modelClass) {
+            return $this->modelClass;
         }
 
-        [, $className] = namespace_split($singular);
+        $className = Inflector::singularize(get_class_name(static::class));
 
         $modelClassName = "App\\Models\\{$className}";
 
@@ -67,9 +71,13 @@ abstract class EntityQueryBuilder
         return $modelClassName;
     }
 
-    public static function query(): static
+    /**
+     * @phpstan-param class-string<T>|null $model
+     * @phpstan-return static<T>
+     */
+    public static function query(?string $model = null): static
     {
-        return new static();
+        return new static($model);
     }
 
     public function count(): int
@@ -122,7 +130,7 @@ abstract class EntityQueryBuilder
 
     protected function makeModel($values = null)
     {
-        $class = static::getModelClass();
+        $class = $this->getModelClass();
 
         return new $class($values);
     }
@@ -151,8 +159,6 @@ abstract class EntityQueryBuilder
     }
 
     /**
-     * @param mixed $id
-     * @return Entity|null
      * @phpstan-return Entity<T>|T|null
      * @throws ModelNotFoundException
      */
@@ -264,7 +270,7 @@ abstract class EntityQueryBuilder
 
     public function wherePK($value): static
     {
-        return $this->where(static::primaryCol(), $value);
+        return $this->where($this->primaryCol(), $value);
     }
 
     public function orWhereRaw($where, $bindings = []): static
@@ -340,7 +346,7 @@ abstract class EntityQueryBuilder
             throw new QueryBuilderException('method updatedCol must return a valid column name.');
         }
 
-        return static::query()->where(static::primaryCol(), $entity->getId())
+        return static::query()->where($this->primaryCol(), $entity->getId())
             ->update([$entity::updatedCol() => now()->format('Y-m-d H:i:s')]);
     }
 
@@ -356,7 +362,7 @@ abstract class EntityQueryBuilder
             $toUpdate[$col] = $entity->{$col} = now();
         }
 
-        return $this->query()->where(static::primaryCol(), $entity->getId())->update($toUpdate);
+        return $this->query()->where($this->primaryCol(), $entity->getId())->update($toUpdate);
     }
 
     public function insert(array $values): int|string
@@ -380,7 +386,7 @@ abstract class EntityQueryBuilder
             return (bool) $this->save($model, ['deleted_at' => date('Y-m-d H:i:s')]);
         }
 
-        $deleted = $this->query()->builder->where(static::primaryCol(), $model->getId())->delete();
+        $deleted = $this->query()->builder->where($this->primaryCol(), $model->getId())->delete();
 
         EventDisptatcher::dispatch(new ModelDeleted($model));
 
@@ -444,9 +450,9 @@ abstract class EntityQueryBuilder
         $insertId = $this->insert($toSave);
 
         if (isset($model)) {
-            $model->{self::primaryCol()} = $insertId;
+            $model->{$this->primaryCol()} = $insertId;
         } else {
-            $model = $this->getInstance($toSave + [static::primaryCol() => $insertId]);
+            $model = $this->getInstance($toSave + [$this->primaryCol() => $insertId]);
         }
 
         EventDisptatcher::dispatch(new ModelCreated($model));
@@ -487,10 +493,10 @@ abstract class EntityQueryBuilder
         return $this->get()->map($callback);
     }
 
-    public static function primaryCol(): string
+    public function primaryCol(): string
     {
         /* @var $model Entity */
-        $model = static::getModelClass();
+        $model = $this->getModelClass();
 
         return $model::getPrimaryCol();
     }

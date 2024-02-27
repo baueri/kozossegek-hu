@@ -2,11 +2,9 @@
 
 namespace App\Http\Components;
 
-use App\Enums\OsmType;
 use App\Models\OsmMarker;
-use App\Models\User;
-use App\QueryBuilders\OsmMarkers;
 use Framework\Http\View\Component;
+use Framework\Model\EntityQueryBuilder;
 use Framework\Support\Arr;
 use Framework\Support\Collection;
 
@@ -21,8 +19,8 @@ class OpenStreeMap extends Component
 
     public function render(): string
     {
-        $markers = OsmMarkers::query()
-            ->when($this->types, fn (OsmMarkers $query) => $query->whereIn('type', $this->types))
+        $markers = EntityQueryBuilder::query(OsmMarker::class)
+            ->when($this->types, fn (EntityQueryBuilder $query) => $query->whereIn('type', $this->types))
             ->get()
             ->map(function (OsmMarker $osm) {
                 [$lat, $lon] = Arr::fromList($osm->latlon);

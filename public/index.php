@@ -50,6 +50,8 @@ try {
         ->middleware(AuthMiddleware::class)
         ->middleware(AppServiceProvider::class);
 
+    \Framework\Model\EntityQueryBuilder::query(\App\Models\User::class)->getModelClass();
+
     $kernel->handle();
 } catch (Error | Exception | Throwable $e) {
     ob_get_clean();

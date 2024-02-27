@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Framework\Http\Route;
 
 use App\Enums\EnumTrait;
+use Cake\Utility\Inflector;
 use Framework\Http\RequestMethod;
-use Framework\Support\StringHelper;
 
 enum CrudResource
 {
@@ -31,7 +31,7 @@ enum CrudResource
 
     public function uri(string $name): string
     {
-        $singular = StringHelper::singular($name);
+        $singular = Inflector::singularize($name);
         return match ($this) {
             self::index, self::store => '',
             self::show, self::update, self::destroy => "{{$singular}}",

@@ -220,12 +220,12 @@ class Builder
         return $where;
     }
 
-    private function getWhere(): array
+    public function getWhere(): array
     {
         return $this->where;
     }
 
-    public function first()
+    public function first(): object|array|null
     {
         $this->limit(1);
 

@@ -107,11 +107,6 @@ final class StringHelper
         return "{$word}s";
     }
 
-    public static function singular(string $word): string
-    {
-        return Inflector::singularize($word);
-    }
-
     public static function endsWith($string, $endsWith): bool
     {
         return strrpos($string, $endsWith) === strlen($string) - strlen($endsWith);

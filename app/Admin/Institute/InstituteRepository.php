@@ -30,7 +30,7 @@ class InstituteRepository
         }
 
         if ($filter['sort']) {
-            $orderBy = $filter['order_by'] ?: $builder::primaryCol();
+            $orderBy = $filter['order_by'] ?: $builder->primaryCol();
             if ($orderBy != 'groups_count') {
                 $builder->orderBy($orderBy, $filter['sort']);
             }

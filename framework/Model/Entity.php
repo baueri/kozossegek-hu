@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Framework\Model;
 
+use Cake\Utility\Inflector;
 use Error;
 use Framework\Model\Relation\Relation;
 use Framework\Support\Arr;
-use Framework\Support\StringHelper;
 use ReflectionMethod;
 
 /**
@@ -177,7 +177,7 @@ abstract class Entity
             return new $this->builder;
         }
 
-        $builder = "\\App\\QueryBuilders\\" . StringHelper::plural(get_class_name(static::class));
+        $builder = "\\App\\QueryBuilders\\" . Inflector::pluralize(get_class_name(static::class));
         if (class_exists($builder)) {
             return new $builder;
         }
