@@ -2,6 +2,7 @@
 
 use App\Middleware\AdminMiddleware;
 use App\Middleware\LoggedInMiddleware;
+use App\Middleware\RefererMiddleware;
 use Framework\Middleware\JsonApi;
 use Framework\Middleware\VerifyCsrfToken;
 
@@ -38,7 +39,8 @@ return [
         'csrf' => VerifyCsrfToken::class,
         'json' => JsonApi::class,
         'admin' => AdminMiddleware::class,
-        'auth' => LoggedInMiddleware::class
+        'auth' => LoggedInMiddleware::class,
+        'referer' => RefererMiddleware::class
     ],
     'exclude_csrf' => [
         'admin.upload_file'
