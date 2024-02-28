@@ -928,9 +928,10 @@ ul.age-group-select li a:hover {
 }
 
 #create-group .step-container {
-    border: 5px solid var(--darkblue);
+    border: 3px solid #eaeaea;
     padding: 2em;
     margin-bottom: 3em;
+    box-shadow: 0 0 9px #ddd;
 }
 #create-group .step-container > h4 {
     margin-bottom: 1em;
