@@ -4,7 +4,8 @@ namespace App\Admin\Components;
 
 use App\Auth\AuthUser;
 use App\Middleware\CheckRole;
-use Framework\Http\Route\RouteInterface;
+use Framework\Http\RequestMethod;
+use Framework\Http\Route\Route;
 use Framework\Http\Route\RouterInterface;
 use Framework\Support\Collection;
 use Framework\Support\StringHelper;
@@ -26,7 +27,7 @@ class AdminMenu
         )->filter();
     }
 
-    private function parseMenuItem(array $menuItem, RouteInterface $currentRoute): array
+    private function parseMenuItem(array $menuItem, Route $currentRoute): array
     {
         $menuItem['uri'] = route($menuItem['as']);
         if (!$this->canAccess($menuItem['uri'])) {
@@ -45,7 +46,7 @@ class AdminMenu
 
     private function canAccess(string $uri): bool
     {
-        $route = $this->router->find('GET', $uri);
+        $route = $this->router->find($uri, RequestMethod::GET);
         if (!$route) {
             return true;
         }
@@ -62,7 +63,7 @@ class AdminMenu
         return true;
     }
 
-    private function isActive($menuItem, RouteInterface $currentRoute): bool
+    private function isActive($menuItem, Route $currentRoute): bool
     {
         if ($currentRoute->getAs() == $menuItem['as']) {
             return true;

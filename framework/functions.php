@@ -16,8 +16,7 @@ use Framework\Enums\Environment;
 use Framework\Http\ApiResponse;
 use Framework\Http\Message;
 use Framework\Http\Request;
-use Framework\Http\Response;
-use Framework\Http\Route\RouteInterface;
+use Framework\Http\Route\Route;
 use Framework\Http\Route\RouterInterface;
 use Framework\Http\Session;
 use Framework\Http\View\View;
@@ -86,7 +85,12 @@ function builder(?string $table = null): Builder
  */
 function route(string $route, mixed $args = null): string
 {
-    return resolve(RouterInterface::class)->route($route, $args);
+    return router()->route($route, $args, true);
+}
+
+function router(): RouterInterface
+{
+    return app()->get(RouterInterface::class);
 }
 
 function route_is(string $routeName): bool
@@ -133,7 +137,7 @@ function view_path(string $view): string
     return View::getPath($view);
 }
 
-function current_route(): RouteInterface
+function current_route(): Route
 {
     return app()->get(RouterInterface::class)->getCurrentRoute();
 }

@@ -8,7 +8,7 @@ use App\Http\Exception\RequestParameterException;
 use ArrayAccess;
 use ArrayIterator;
 use Countable;
-use Framework\Http\Route\RouteInterface;
+use Framework\Http\Route\Route;
 use Framework\Support\Arr;
 use Framework\Support\Collection;
 use IteratorAggregate;
@@ -27,7 +27,7 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
 
     public ?string $uri;
 
-    public ?RouteInterface $route = null;
+    public ?Route $route = null;
 
     private ?array $uriValues = null;
 
@@ -167,6 +167,6 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
 
     public function referer(): string
     {
-        return (string) $_SERVER['HTTP_REFERER'] ?? '';
+        return (string) ($_SERVER['HTTP_REFERER'] ?? '');
     }
 }

@@ -16,8 +16,7 @@ use Framework\Http\Request;
 class XmlRouter implements RouterInterface
 {
     /**
-     * @var Collection<Route>
-     * @phpstan-var Route[]|Collection
+     * @phpstan-var Collection<Route>
      */
     protected Collection $routes;
 
@@ -33,9 +32,9 @@ class XmlRouter implements RouterInterface
         $this->load();
     }
 
-    public function getCurrentRoute(): ?RouteInterface
+    public function getCurrentRoute(): ?Route
     {
-        return $this->find($this->request->requestMethod, $this->request->uri);
+        return $this->find($this->request->uri, $this->request->requestMethod);
     }
 
     /**
@@ -54,15 +53,14 @@ class XmlRouter implements RouterInterface
         if (env('ROUTE_CACHE_ENABLED') && file_exists($cachedFile) && filemtime($cachedFile) >= $maxMtime) {
             $cachedRoutes = require_once $cachedFile;
             foreach ($cachedRoutes as $route) {
-                $this->addRoute(app()->make(RouteInterface::class, [
-                    $route['method'],
+                $this->addRoute(new Route($route['method'],
                     $route['uriMask'],
                     $route['as'],
                     (string) ($route['controller'][0] ?? ''),
                     (string) ($route['controller'][1] ?? ''),
                     $route['middleware'],
-                    $route['view']
-                ]));
+                    $route['view'])
+                );
             }
             return;
         }
@@ -77,7 +75,7 @@ class XmlRouter implements RouterInterface
         $this->saveToCache($cachedFile);
     }
 
-    public function addRoute(RouteInterface $route): static
+    public function addRoute(Route $route): static
     {
         $this->routes[] = $route;
 
@@ -103,7 +101,7 @@ class XmlRouter implements RouterInterface
         }
     }
 
-    private function buildRoute($elements): RouteInterface
+    private function buildRoute($elements): Route
     {
         $builder = new XmlRouteBuilder($elements);
         return $builder->build();
@@ -122,14 +120,14 @@ class XmlRouter implements RouterInterface
         return $routes;
     }
 
-    public function get($uri, array $options): RouteInterface
+    public function get($uri, array $options): Route
     {
         return $this->add('get', $uri, $options);
     }
 
-    public function add(string $method, string $uri, array $options): RouteInterface
+    public function add(string $method, string $uri, array $options): Route
     {
-        $route = app()->make(RouteInterface::class, array_merge([
+        $route = app()->make(Route::class, array_merge([
             'method' => $method,
             'uriMask' => $uri,
         ], $options));
@@ -138,24 +136,27 @@ class XmlRouter implements RouterInterface
         return $route;
     }
 
-    public function post($uri, array $options): RouteInterface
+    public function post($uri, array $options): Route
     {
         return $this->add('post', $uri, $options);
     }
 
     /**
-     * @return Collection<RouteInterface>
+     * @return Collection<Route>
      */
     public function getRoutes(): Collection
     {
         return $this->routes;
     }
 
-    public function find(string|RequestMethod $method, string $uri): ?RouteInterface
+    public function find(string $uri, null|RequestMethod $method = null): ?Route
     {
-        $method = is_string($method) ? $method : $method->value();
-        if ($method === 'HEAD') {
-            $method = 'GET';
+        if ($method === RequestMethod::ALL->name) {
+            $method = RequestMethod::ALL;
+        }
+
+        if ($method === RequestMethod::HEAD) {
+            $method = RequestMethod::GET;
         }
 
         $hasStrictMatch = false;
@@ -164,7 +165,7 @@ class XmlRouter implements RouterInterface
             if ($route->getUriMask() == $trimmed) {
                 $hasStrictMatch = true;
 
-                if ($method == $route->requestMethodIs($method)) {
+                if ($route->requestMethodIs($method)) {
                     return $route;
                 }
             }
@@ -178,7 +179,6 @@ class XmlRouter implements RouterInterface
     /**
      * @param string $name
      * @param array|string|Model|Entity $args
-     * @param bool $withHost
      * @return string
      * @throws RouteNotFoundException
      */
@@ -211,7 +211,7 @@ class XmlRouter implements RouterInterface
         $output = "<?php \nreturn [\n";
         foreach ($this->routes as $route) {
             $output .= "\t[\n";
-            $output .= "\t\t'method' => '{$route->method}',\n";
+            $output .= "\t\t'method' => '{$route->method->value()}',\n";
             $output .= "\t\t'uriMask' => '{$route->uriMask}',\n";
             $output .= "\t\t'as' => '{$route->as}',\n";
             if (!$route->view) {

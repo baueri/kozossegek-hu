@@ -11,21 +11,25 @@ enum RequestMethod
     use EnumTrait;
 
     case GET;
+    case HEAD;
     case POST;
     case PUT;
     case PATCH;
     case DELETE;
+    case OPTIONS;
+    case ALL;
 
-    public function is(string|array|self $method): bool
+    public function is(array|self $method): bool
     {
         if (is_array($method)) {
-            return in_array($this->name, $method);
+            foreach ($method as $m) {
+                if ($this->is($m)) {
+                    return true;
+                }
+            }
+            return false;
         }
 
-        if ($method instanceof self) {
-            return $method->name === $this->name;
-        }
-
-        return $this->name === $method;
+        return $method->name === $this->name;
     }
 }

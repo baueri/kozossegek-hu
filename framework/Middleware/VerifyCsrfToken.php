@@ -6,6 +6,7 @@ namespace Framework\Middleware;
 
 use Framework\Http\Exception\TokenMismatchException;
 use Framework\Http\Request;
+use Framework\Http\RequestMethod;
 use Framework\Http\Route\Route;
 use Framework\Http\Route\XmlRouter;
 use Framework\Http\Session;
@@ -52,7 +53,7 @@ class VerifyCsrfToken implements Middleware
 
     private function isReading(): bool
     {
-        return $this->request->requestMethod->is(['GET', 'HEAD', 'OPTIONS']);
+        return $this->request->requestMethod->is([RequestMethod::GET, RequestMethod::HEAD, RequestMethod::OPTIONS]);
     }
 
     private function tokenMatches(): bool

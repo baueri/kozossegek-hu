@@ -2,6 +2,8 @@
 
 namespace Framework\Http;
 
+use Framework\Middleware\Middleware;
+
 class Controller
 {
     protected array $middleware = [];
@@ -13,8 +15,13 @@ class Controller
         }
     }
 
-    public function middleware(string $middleware): void
+    public function middleware(string|Middleware $middleware): void
     {
+        if ($middleware instanceof Middleware) {
+            $middleware->handle();
+            return;
+        }
+
         app()->make($middleware)->handle();
     }
 }

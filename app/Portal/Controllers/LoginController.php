@@ -7,6 +7,7 @@ use App\Auth\Authenticate;
 use App\Exception\EmailTakenException;
 use App\Helpers\HoneyPot;
 use App\Mail\RegistrationEmail;
+use App\Middleware\RefererMiddleware;
 use App\Portal\Services\CreateUser;
 use App\QueryBuilders\Users;
 use App\QueryBuilders\UserTokens;
@@ -94,9 +95,11 @@ class LoginController extends PortalController
             'name' => $request['name'],
             'email' => $request['email'],
         ];
+
         try {
             if ($request->isPostRequestSent()) {
                 HoneyPot::validate('register', $request['website']);
+                $this->middleware(new RefererMiddleware(route('portal.register')));
                 if (!$request['password'] || $request['password'] !== $request['password_again']) {
                     Message::danger('A két jelszó nem egyezik!');
                 } else {

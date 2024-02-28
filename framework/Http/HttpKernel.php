@@ -8,7 +8,7 @@ use Exception;
 use Framework\Application;
 use Framework\Http\Exception\PageNotFoundException;
 use Framework\Http\Exception\RouteNotFoundException;
-use Framework\Http\Route\RouteInterface;
+use Framework\Http\Route\Route;
 use Framework\Http\Route\RouterInterface;
 use Framework\Middleware\Middleware;
 use Framework\Middleware\MiddlewareResolver;
@@ -52,11 +52,11 @@ class HttpKernel
         $route = $this->router->getCurrentRoute();
 
         if (!$route) {
-            throw new RouteNotFoundException($this->request->uri);
+            throw new RouteNotFoundException("route `{$this->request->uri}` not found");
         }
 
-        if (!$route->getView() && $route->getController() && !class_exists($route->getController())) {
-            throw new PageNotFoundException("controller " . $route->getController() . " not found");
+        if (!$route->view && $route->controller && !class_exists($route->controller)) {
+            throw new PageNotFoundException("controller `" . $route->controller . "` not found");
         }
 
         $this->request->route = $route;
@@ -83,7 +83,7 @@ class HttpKernel
     /**
      * @throws PageNotFoundException
      */
-    private function resolveRoute(RouteInterface $route)
+    private function resolveRoute(Route $route)
     {
         if ($route->getView()) {
             $return = $this->resolveView();
@@ -99,7 +99,7 @@ class HttpKernel
     /**
      * @throws PageNotFoundException
      */
-    private function resolveController(RouteInterface $route)
+    private function resolveController(Route $route)
     {
         $controller = $this->app->make($route->getController());
 

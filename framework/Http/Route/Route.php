@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Framework\Http\Route;
 
-class Route implements RouteInterface
+use Framework\Http\RequestMethod;
+
+class Route
 {
-    public readonly string $method;
+    public readonly RequestMethod $method;
 
     public readonly string $uriMask;
 
@@ -22,21 +24,13 @@ class Route implements RouteInterface
 
     public function __construct(string $method, string $uriMask, string $as, string $controller, string $use, array $middleware, string $view)
     {
-        $this->method = $method;
+        $this->method = RequestMethod::from($method);
         $this->uriMask = $uriMask;
         $this->as = $as;
         $this->controller = trim($controller, '\\');
         $this->use = $use;
         $this->middleware = array_map(fn ($m) => config('app.named_middleware')[$m] ?? $m, $middleware);
         $this->view = $view;
-    }
-
-    /**
-     * @return string
-     */
-    public function getRequestMethod(): string
-    {
-        return $this->method;
     }
 
     public function getUriMask(): string
@@ -120,19 +114,23 @@ class Route implements RouteInterface
         return $this->view;
     }
 
-    public function requestMethodIs($method): bool
+    public function requestMethodIs(?RequestMethod $method): bool
     {
-        if (str_contains($this->method, '|')) {
-            return str_contains($this->method, $method);
+        if (is_null($method)) {
+            return true;
         }
 
-        return $this->method == $method || $this->method == 'ALL';
+        if ($this->method->is(RequestMethod::ALL)) {
+            return true;
+        }
+
+        return $this->method->is($method);
     }
 
     public function toArray(): array
     {
         return [
-            'method' => $this->method,
+            'method' => $this->method->value(),
             'uriMask' => $this->uriMask,
             'as' => $this->as,
             'controller' => $this->controller,

@@ -25,13 +25,16 @@ class RefererMiddleware implements Middleware
 
     public function handle(): void
     {
+        $referer = trim(preg_replace('@^(' . preg_quote(get_site_url()) . ')@', '', request()->referer()), '/');
         if (preg_match('/route\(([^\)]+)\)$/', $this->referer, $matches)) {
-            $referer = trim(preg_replace('@^(' . preg_quote(get_site_url()) . ')@', '', request()->referer()), '/');
-            foreach ($this->router->getRoutes() as $route) {
-                if ($route->matches($referer)) {
-                    return;
-                }
+            $expectedReferer = router()->find($matches[1]);
+            if ($expectedReferer->matches($referer)) {
+                return;
             }
+        }
+
+        if (str_starts_with($this->referer, get_site_url()) && $this->referer === request()->referer()) {
+            return;
         }
 
         if (get_site_url() . '/' . $this->referer === request()->referer()) {

@@ -12,8 +12,6 @@ use Framework\Database\Database;
 use Framework\Database\PDO\PDOMysqlDatabase;
 use Framework\Http\HttpKernel;
 use Framework\Http\Request;
-use Framework\Http\Route\Route;
-use Framework\Http\Route\RouteInterface;
 use Framework\Http\Route\RouterInterface;
 use Framework\Http\Route\XmlRouter;
 use Framework\Http\View\View;
@@ -62,7 +60,6 @@ MileStone::measure('init', 'Initialize');
 $application->singleton(ConsoleKernel::class);
 $application->singleton(HttpKernel::class);
 
-$application->bind(RouteInterface::class, Route::class);
 $application->singleton(ViewInterface::class, View::class);
 $application->singleton(Config::class);
 $application->singleton(

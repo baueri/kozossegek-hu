@@ -9,26 +9,21 @@ class XmlRouteBuilder
 {
     protected XmlObject $element;
 
-    /**
-     * @param XmlObject $element
-     */
     public function __construct(XmlObject $element)
     {
         $this->element = $element;
     }
 
-    public function build(): RouteInterface
+    public function build(): Route
     {
-        return app()->make(RouteInterface::class,
-            [
-                $this->getRequestMethod(),
-                $this->getUriMask(),
-                $this->getAs(),
-                $this->getController(),
-                $this->getUse(),
-                $this->getMiddleware(),
-                $this->getView()
-            ]
+        return new Route(
+            $this->getRequestMethod(),
+            $this->getUriMask(),
+            $this->getAs(),
+            $this->getController(),
+            $this->getUse(),
+            $this->getMiddleware(),
+            $this->getView()
         );
     }
 
