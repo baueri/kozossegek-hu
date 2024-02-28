@@ -42,9 +42,7 @@ class RefererMiddleware implements Middleware
         }
 
         log_event('referer_fail', ['request' => request()->all()]);
-        http_response_code(403);
-        exit(1);
-
+        abort(403);
     }
 
 }

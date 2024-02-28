@@ -454,3 +454,12 @@ function castInto($from, $to)
 
     return app()->make($to, [$from]);
 }
+
+function abort(string|int|null $statuscode = null): never
+{
+    if ($statuscode) {
+        http_response_code($statuscode);
+    }
+
+    exit(1);
+}

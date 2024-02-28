@@ -27,8 +27,10 @@ class ErrorHandler
         if ($error->getCode() != '404' && !env('DEBUG')) {
             if ($error instanceof TokenMismatchException) {
                 log_event('csrf_fail', ['request' => request()->all()]);
+                abort(403);
             } elseif ($error instanceof HoneypotException) {
                 log_event('honeypot_fail', ['request' => request()->all(), 'reason' => $error->reason]);
+                abort(403);
             } else {
                 report($error);
             }
