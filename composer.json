@@ -44,5 +44,10 @@
     "phpseclib/phpseclib": "^3.0",
     "phpunit/phpunit": "^9",
     "fakerphp/faker": "^1.23"
+  },
+  "config": {
+    "allow-plugins": {
+      "php-http/discovery": true
+    }
   }
 }

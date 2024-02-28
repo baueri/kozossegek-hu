@@ -136,6 +136,9 @@ class XmlRouter implements RouterInterface
         return $this->add('post', $uri, $options);
     }
 
+    /**
+     * @return Collection<RouteInterface>
+     */
     public function getRoutes(): Collection
     {
         return $this->routes;
