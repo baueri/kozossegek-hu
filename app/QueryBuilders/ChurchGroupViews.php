@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\QueryBuilders;
 
 use App\Models\ChurchGroupView;
+use App\Models\GroupTag;
 use App\Models\User;
 use Framework\Model\EntityQueryBuilder;
 use Framework\Model\Relation\Has;
@@ -19,7 +20,7 @@ class ChurchGroupViews extends ChurchGroups
 
     public function tags(): Relation
     {
-        return $this->has(Has::many, GroupTags::class, 'group_id');
+        return $this->has(Has::many, entity_builder(GroupTag::class), 'group_id');
     }
 
     public function institute(): Relation

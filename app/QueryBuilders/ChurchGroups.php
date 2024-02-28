@@ -6,6 +6,7 @@ use App\Enums\GroupStatus;
 use App\Enums\GroupPending;
 use App\Models\ChurchGroup;
 use App\Models\ChurchGroupView;
+use App\Models\GroupTag;
 use Framework\Database\Builder;
 use App\Models\User;
 use Framework\Model\EntityQueryBuilder;
@@ -26,7 +27,7 @@ class ChurchGroups extends EntityQueryBuilder
 
     public function tags(): Relation
     {
-        return $this->has(Has::many, GroupTags::class, 'group_id');
+        return $this->has(Has::many, entity_builder(GroupTag::class), 'group_id');
     }
 
     public function manager(): Relation
@@ -70,7 +71,7 @@ class ChurchGroups extends EntityQueryBuilder
             ->active();
 
         if ($group->tags) {
-            $tagQuery = fn (GroupTags $query) => $query->whereIn('tag', $group->tags->map->tag);
+            $tagQuery = fn (EntityQueryBuilder $query) => $query->whereIn('tag', $group->tags->map->tag);
             $this->with('tags', $tagQuery);
             $this->whereHas('tags', $tagQuery);
         }

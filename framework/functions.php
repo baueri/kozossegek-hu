@@ -24,6 +24,7 @@ use Framework\Http\View\ViewInterface;
 use Framework\Mail\Mailable;
 use Framework\Mail\Mailer;
 use Framework\Model\Entity;
+use Framework\Model\EntityQueryBuilder;
 use Framework\Model\Model;
 use Framework\Support\Collection;
 use Framework\Support\StringHelper;
@@ -76,6 +77,16 @@ function db(): Database
 function builder(?string $table = null): Builder
 {
     return app()->get(Builder::class)->from($table);
+}
+
+/**
+ * @phpstan-template T of Entity
+ * @phpstan-param class-string<T> $entityClass
+ * @return EntityQueryBuilder<T>
+ */
+function entity_builder(string $entityClass): EntityQueryBuilder
+{
+    return EntityQueryBuilder::query($entityClass);
 }
 
 /**
