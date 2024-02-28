@@ -81,11 +81,12 @@ function builder(?string $table = null): Builder
 /**
  * @param string $route
  * @param array|string|Model|Entity $args
+ * @param bool $withHost
  * @return string
  */
-function route(string $route, mixed $args = null): string
+function route(string $route, mixed $args = null, bool $withHost = true): string
 {
-    return router()->route($route, $args, true);
+    return router()->route($route, $args, $withHost);
 }
 
 function router(): RouterInterface
@@ -338,7 +339,7 @@ function report($exception): void
 
 /**
  * @phpstan-template T
- * @phpstan class-string<T> $class
+ * @phpstan-param class-string<T> $class
  * @phpstan-return T
  */
 function resolve($class, $args = null)

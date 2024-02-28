@@ -46,10 +46,6 @@ class GroupList
             'breadcrumb' => $breadCrumb
         ];
 
-        if (empty($baseFilter)) {
-            return view('portal.kozossegek_no_filter', $model);
-        }
-
         $groups = $this->repository->search($filter, 18);
 
         $model = array_merge($model, [

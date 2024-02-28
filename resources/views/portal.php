@@ -44,9 +44,6 @@
 <body class="{{ !is_prod() ? 'demo' : '' }} {{ is_home() ? 'home' : '' }} {{ $body_class ?? '' }}">
     <div id="fb-root"></div>
     @include('portal.partials.main_menu')
-    <div class="featured-header" style="background-color: #1B3E4A;">
-        @yield('header_content')
-    </div>
     @yield('portal')
     <footer id="footer" class="text-white">
         <div class="container" id="footer-top">

@@ -8,7 +8,7 @@ use App\QueryBuilders\Relations\HasManyChurchGroupViews;
 use Framework\Model\EntityQueryBuilder;
 
 /**
- * @phpstan-extends \Framework\Model\EntityQueryBuilder<\App\Models\SpiritualMovement>
+ * @phpstan-extends EntityQueryBuilder<SpiritualMovement>
  */
 class SpiritualMovements extends EntityQueryBuilder
 {

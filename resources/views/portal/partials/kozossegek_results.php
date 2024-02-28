@@ -51,7 +51,7 @@
         <div class="row" id="kozossegek-list">
             @foreach($groups as $i => $group)
             <div class="{{ $grid_class ?? 'col-md-6 col-lg-4' }} mb-3">
-                <div class="card kozi-box h-100 p-0">
+                <div class="card kozi-box h-100 p-0 shadow-smooth">
                     <a href="{{ $group['url'] }}" class="card-img">
                         <div>megnézem</div>
                         <img src="/images/placeholder.jpg"
@@ -66,7 +66,7 @@
                             @if($group['tags'])
                             @foreach($group['tags'] as $tag_key => $tag)
                             <span class="tag-img tag-{{ $tag_key }}" title="{{ $tag }}"
-                                  aria-label="{{ $tag }}" style="scale: .6; transform-origin: top left; margin: 0 -3px"></span>
+                                  aria-label="{{ $tag }}" style="scale: .6; transform-origin: top; margin: 0 -3px"></span>
                             @endforeach
                             @endif
                         </p>
@@ -76,10 +76,9 @@
                         </h6>
                         <p class="card-text mb-0">
                             <strong>@lang('age_group'):</strong> <span>{{ implode(', ', $group['age_group_text']) }}</span><br>
-                            <strong>@lang('occasions'):</strong> <span>{{ $group['occasion_frequency'] }}</span><br>
                         </p>
                         <a href="{{ $group['url'] }}"
-                           class="btn btn-outline-darkblue btn-sm kozi-more-info">Megnézem</a>
+                           class="btn btn-outline-altblue btn-sm kozi-more-info">Megnézem</a>
                     </div>
                 </div>
             </div>

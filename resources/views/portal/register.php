@@ -1,7 +1,5 @@
-@section('header_content')
-    @featuredTitle('Új fiók létrehozása')
-@endsection
 @extends('portal')
+@featuredTitle('Új fiók létrehozása')
 <div class="container inner">
     @alert('info')
         Kérjük, hogy csak abban az esetben hozz létre új fiókot, ha közösséget hirdetsz.

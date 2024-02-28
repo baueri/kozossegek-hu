@@ -24,11 +24,11 @@
     {{ $group->getBreadCrumb() }}
     <div class="row">
         <div class="col-lg-4 d-md-none d-lg-block">
-            <div><img class="img-big" src="{{ $group->getThumbnail() }}" alt="{{ $group->name }}"></div>
+            <div><img class="img-big shadow-smooth" src="{{ $group->getThumbnail() }}" alt="{{ $group->name }}"></div>
         </div>
         <div class="col-lg-8 col-md-12 pt-4 pt-md-0">
             <div class="title">
-                <img class="img-big img-sm d-none d-md-block d-lg-none" src="{{ $group->getThumbnail() }}" alt="{{ $group->name }}">
+                <img class="img-big shadow-smooth img-sm d-none d-md-block d-lg-none" src="{{ $group->getThumbnail() }}" alt="{{ $group->name }}">
                 @if($backUrl)
                     <div class="float-right">
                         <a href="{{ $backUrl }}"><i class="fa fa-angle-double-left"></i> vissza</a>
@@ -62,7 +62,7 @@
             </p>
             @if($group->spiritual_movement)
                 <p class="kozi-tulajdonsag">
-                    <strong>Lelkiségi mozgalom</strong><br/> {{ $group->spiritual_movement }}
+                    <strong>Lelkiségi mozgalom</strong><br/> <a href="{{ $group->spiritualMovement->getUrl() }}">{{ $group->spiritual_movement }}</a>
                 </p>
             @endif
             <div class="row" style="margin-bottom: .5em;">
@@ -91,11 +91,11 @@
         </div>
     </div>
     @if($similar_groups)
-        <h5 class="mt-4" style="border-bottom: 1px solid;margin-bottom: 1em;padding-bottom: 0.3em;">Hasonló közösségek</h5>
+        <h5 class="mt-4" style="border-bottom: 1px solid #ddd;margin-bottom: 1em;padding-bottom: 0.3em;">Hasonló közösségek</h5>
         <div class="row" id="kozossegek-list">
             @foreach($similar_groups as $i => $similarGroup)
             <div class="col-md-3 mb-3">
-                <div class="card kozi-box h-100 p-0">
+                <div class="card kozi-box h-100 p-0 shadow-smooth">
                     <a href="{{ $similarGroup->url() }}" style="background: url({{ $similarGroup->getThumbnail() }}) no-repeat bottom 0 center;background-size: cover; height: 185px" class="card-img">
                         <div>megnézem</div>
                     </a>
@@ -111,9 +111,8 @@
                         </div>
                         <p class="card-text mb-0">
                             <strong>@lang('age_group'):</strong> <span>{{ $similarGroup->ageGroup() }}</span><br>
-                            <strong>@lang('occasions'):</strong> <span>{{ $similarGroup->occasionFrequency() }}</span><br>
                         </p>
-                        <a href="{{ $similarGroup->url() }}" class="btn btn-outline-success btn-sm kozi-more-info">Megnézem</a>
+                        <a href="{{ $similarGroup->url() }}" class="btn btn-outline-altblue btn-sm kozi-more-info">Megnézem</a>
                     </div>
                 </div>
             </div>

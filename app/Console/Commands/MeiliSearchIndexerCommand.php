@@ -29,8 +29,13 @@ class MeiliSearchIndexerCommand extends Command
     /**
      * @throws ApiException
      */
-    public function handle(): void
+    public function handle()
     {
+        if(!config('meilisearch.enabled')) {
+            $this->output->warning('meilisearch is disabled, skipping...');
+            return Command::SUCCESS;
+        }
+
         $options = $this->getOptions();
 
         if (isset($options['create'])) {
@@ -41,6 +46,9 @@ class MeiliSearchIndexerCommand extends Command
             $this->indexer->indexChurchGroups();
         } else {
             $this->output->error("invalid meili command.");
+            return Command::FAILURE;
         }
+
+        return Command::SUCCESS;
     }
 }

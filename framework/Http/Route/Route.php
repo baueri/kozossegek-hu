@@ -95,7 +95,7 @@ class Route
     public function getUriForPregReplace(): ?string
     {
         $pattern =  preg_replace_callback('/{([^}]+)}/', function ($m) {
-            preg_match('/(^[a-zA-Z_]+(?:#)?)?(.*)$/', $m[1], $parts);
+            preg_match('/(^[a-zA-Z_]+#?)?(.*)$/', $m[1], $parts);
             [, $name, $pattern] = $parts;
             $name = str_replace('#', '', $name);
             $pattern = $pattern ?: '[a-zA-Z_\-0-9\.]+';

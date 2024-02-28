@@ -6,6 +6,7 @@ namespace App\Console\Commands\Cron;
 
 use App\Console\Commands\AggregateLogsCommand;
 use App\Console\Commands\ClearUserSessionCommand;
+use App\Console\Commands\MeiliSearchIndexerCommand;
 use App\Console\Commands\SiteMapGenerator;
 use App\Services\SystemAdministration\OpenStreetMap\OpenStreetMapSync;
 use Framework\Console\BaseCommands\ClearCache;
@@ -26,7 +27,8 @@ class DailyCron extends CronCommand
             resolve(AggregateLogsCommand::class),
             resolve(SiteMapGenerator::class)->withArgs('--ping-google=' . (int) app()->envIs(Environment::production)),
             resolve(OpenStreetMapSync::class),
-            resolve(ClearCache::class)
+            resolve(ClearCache::class),
+            resolve(MeiliSearchIndexerCommand::class)->withArgs('--import')
         ];
     }
 }

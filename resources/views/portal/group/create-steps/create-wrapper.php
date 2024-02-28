@@ -1,8 +1,6 @@
-@section('header_content')
-    @featuredTitle('Új közösség regisztrálása')
-@endsection
 @section('subtitle', 'Új közösség regisztrálása | ')
 @extends('portal')
+@featuredTitle('Új közösség regisztrálása')
 <div class="container inner pt-4 pb-4" id="create-group">
     @message()
     <div>

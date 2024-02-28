@@ -1,8 +1,6 @@
 @section('subtitle', "{$title} - ")
-@section('header_content')
-    @featuredTitle($title)
-@endsection
 @extends('portal')
+@featuredTitle($title)
 <div class="container inner">
     <div class="text-center text-muted font-italic mb-5">
         {{ $description }}

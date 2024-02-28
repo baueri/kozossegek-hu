@@ -7,15 +7,10 @@
         }
     </style>
 @endheader
-@section('header_content')
-    @if($header_background)
-        @featuredTitle($page_title)
-    @endif
-@endsection
 @section('subtitle', 'Rólunk | ')
 @extends('portal')
+@featuredTitle($page_title)
 <div class="container inner p-4 page">
-    @if(!$header_background)<h1>{{ $page_title }}</h1>@endif
     <div>
         {{ $page->content }}
         <span id="contact"></span>

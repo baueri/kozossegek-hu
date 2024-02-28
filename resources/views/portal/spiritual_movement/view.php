@@ -1,9 +1,8 @@
 @section('subtitle', $spiritualMovement->name . ' - ')
-@section('header_content')
-    @featuredTitle($title)
-@endsection
 @extends('portal')
+@featuredTitle($title)
 <div class="container inner">
+    {{ $spiritualMovement->getBreadcrumb() }}
     <div class="row">
         <div class="col-md-3 text-center">
             <img src="{{ $spiritualMovement->image_url }}" alt="{{ $spiritualMovement->name }}" style="width: 350px" class="p-5 p-md-0">

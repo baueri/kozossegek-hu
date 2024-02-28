@@ -1,7 +1,5 @@
-@section('header_content')
-    @featuredTitle('Belépés')
-@endsection
 @extends('portal')
+@featuredTitle('Belépés')
 <div class="container inner login-page">
     <div class="form">
         <form class="login-form" method="post">

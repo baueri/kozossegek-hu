@@ -1,7 +1,5 @@
-@section('header_content')
-    @featuredTitle('Fiók aktiválása')
-@endsection
 @extends('portal')
+@featuredTitle('Fiók aktiválása')
 <div class="container inner">
     @message()
     <form method="post" class="row">

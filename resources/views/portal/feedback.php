@@ -1,4 +1,2 @@
-@section('header_content')
-    @featuredTitle('Visszajelzés küldése')
-@endsection
 @extends('portal')
+@featuredTitle('Visszajelzés küldése')

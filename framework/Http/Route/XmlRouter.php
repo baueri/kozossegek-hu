@@ -179,21 +179,17 @@ class XmlRouter implements RouterInterface
     /**
      * @param string $name
      * @param array|string|Model|Entity $args
+     * @param bool $withHost
      * @return string
      * @throws RouteNotFoundException
      */
     public function route(string $name, mixed $args = null, bool $withHost = true): string
     {
-        if ($args instanceof Model || $args instanceof Entity) {
-            $args = ['id' => (string) $args->getId()];
-        }
-
-//        if (is_array($args)) {
-//            $args = array_merge(static::$globalArgs, $args);
-//        }
-
         foreach ($this->routes as $route) {
             if ($route->getAs() == $name) {
+                if ($args instanceof Model || $args instanceof Entity) {
+                    $args = ['id' => (string) $args->getId()];
+                }
                 return ($withHost ? get_site_url() : '') . '/' . ltrim($route->getWithArgs($args, static::$globalArgs), '/');
             }
         }

@@ -1,8 +1,5 @@
-<?php use_default_header_bg(); ?>
-@section('header_content')
-    @featuredTitle('Új jelszó igénylése')
-@endsection
 @extends('portal')
+@featuredTitle('Új jelszó igénylése')
 <div class="container inner p-3">
     @message()
     <p>

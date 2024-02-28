@@ -222,20 +222,12 @@ nav.navbar .nav-link:hover {
     padding: 0;
 }
 
-.featured {
-    display: inline-block;
-    width: 100%;
-}
-
-.featured h1 {
+.featured-header h1 {
+    color: #fff;
     padding: 1.5em 0;
     margin: 0 !important;
     font-size: 2rem;
     font-family: 'Poppins', sans-serif;
-}
-
-.featured-header h1 {
-    color: #fff;
 }
 
 #finder [name=korosztaly]+span, #finder [name=rendszeresseg]+span {
@@ -319,10 +311,10 @@ nav.navbar .nav-link:hover {
     overflow: hidden;
 }
 
-.kozi-box:hover {
-    box-shadow: 0 0 12px #000;
-    z-index: 1;
-}
+/*.kozi-box:hover {*/
+/*    box-shadow: 0 0 12px #000;*/
+/*    z-index: 1;*/
+/*}*/
 
 .kozi-box img {
     width: 100%;
@@ -370,7 +362,7 @@ nav.navbar .nav-link:hover {
 }
 
 .kozi-adatlap .title {
-    border-bottom: 1px solid;
+    border-bottom: 1px solid #ddd;
     margin-bottom: 1em;
     overflow: hidden;
     position: relative;;
@@ -933,6 +925,12 @@ ul.age-group-select li a:hover {
     margin-bottom: 3em;
     box-shadow: 0 0 9px #ddd;
 }
+
+.shadow-smooth {
+    border: 3px solid #eaeaea;
+    box-shadow: 0 0 9px #ddd;
+}
+
 #create-group .step-container > h4 {
     margin-bottom: 1em;
 }
@@ -1092,7 +1090,7 @@ ul.age-group-select li a:hover {
 }
 
 @media (max-width: 768px) {
-    .featured h1 {
+    .featured-header h1 {
         padding: 1em 0;
     }
     body:not(.home) .featured-header {

@@ -6,5 +6,5 @@ namespace App\Portal\BreadCrumb;
 
 interface BreadCrumbable
 {
-    public function getBreadCrumb();
+    public function getBreadCrumb(): BreadCrumb;
 }

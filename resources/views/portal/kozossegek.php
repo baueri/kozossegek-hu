@@ -6,17 +6,15 @@
     @include('asset_groups.select2')
 @endsection
 
-@section('header_content')
-    @include('portal.partials.kozosseget_keresek_title')
-@endsection
 
 @extends('portal')
-    <div class="container inner">
-        {{ $breadcrumb }}
-        @yield('templom_title')
-        @include('portal.partials.kozossegek_results')
-        @include('partials.simple-pager', ['route' => 'portal.groups.page','total' => $total,'page' => $page,'perpage' => $perpage,'routeparams' => $filter])
-    </div>
+@featuredTitle(lang('Közösség keresése'))
+<div class="container inner">
+    {{ $breadcrumb }}
+    @yield('templom_title')
+    @include('portal.partials.kozossegek_results')
+    @include('partials.simple-pager', ['route' => 'portal.groups.page','total' => $total,'page' => $page,'perpage' => $perpage,'routeparams' => $filter])
+</div>
 <script>
 $(() => {
 
