@@ -5,7 +5,7 @@
     <form method="post" action="@route('portal.profile.update')" class="mb-4">
         <div class="row">
             <div class="col-lg-5 col-md-12">
-                <h3>Profilom</h3>
+                <h3>Profiladatok</h3>
                 <hr/>
                 <div class="form-group">
                     <label>E-mail cím @icon('info-circle small', 'Amikor valaki felszeretné venni a kapcsolatot a közösséggel, erre az email címre küldjük el az érdeklődő üzenetét.')</label>

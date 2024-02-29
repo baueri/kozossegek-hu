@@ -10,7 +10,7 @@
 @extends('portal')
 @featuredTitle()
     {{ $breadcrumb }}
-    <h1 class="pt-3 pb-2 text-center text-md-left">@lang('Közösség keresése')</h1>
+    <h3 class="py-3 mb-0 text-center text-md-left">@lang('Közösségek')</h3>
 @endfeaturedTitle
 
 <div class="container-fluid inner">

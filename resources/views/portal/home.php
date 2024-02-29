@@ -14,9 +14,6 @@
       integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
       crossorigin=""/>
 @endsection
-@section('subtitle')
-    @lang('find_your_church_group') -
-@endsection
 @extends('portal')
 <div id="main-finder" class="p-5">
     <div class="container">

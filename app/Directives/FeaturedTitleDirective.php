@@ -18,9 +18,9 @@ class FeaturedTitleDirective extends AtDirective
         if (isset($matches[1])) {
             $content = '<?php echo ' . $matches[1] . '; ?>';
             return <<<HTML
-            <div class="featured-header py-4" style="background-color: #1B3E4A;">
+            <div class="featured-header py-3" style="background-color: var(--purple);">
                 <div class="container-fluid justify-content-center">
-                    <div class="featured-content"><h1 class="py-3">$content</h1></div>
+                    <div class="featured-content"><h3 class="py-3 mb-0">$content</h3></div>
                 </div>
             </div>
             HTML;
@@ -28,7 +28,7 @@ class FeaturedTitleDirective extends AtDirective
         }
         if ($matches[0] !== '@endfeaturedTitle') {
             return <<<HTML
-                <div class="featured-header py-4" style="background-color: #1B3E4A;">
+                <div class="featured-header py-3" style="background-color: var(--purple);">
                     <div class="container-fluid justify-content-center">
                         <div class="featured-content">
             HTML;

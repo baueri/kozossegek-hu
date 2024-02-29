@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-lg-3 col-md-12">
+    <div class="col-lg-2 col-md-12">
         <form>
             <div class="mb-3">
                 <input type="text" class="form-control"
@@ -34,13 +34,13 @@
                 </div>
             </div>
             <div>
-                <button type="submit" class="btn btn-altblue px-3 w-100" aria-label="Keresés indítása">
+                <button type="submit" class="btn btn-purple px-3 w-100" aria-label="Keresés indítása">
                     <i class="fa fa-search"></i> Keresés
                 </button>
             </div>
         </form>
     </div>
-    <div class="col-lg-9 col-md-12">
+    <div class="col-lg-10 col-md-12">
         <p>
             Összes találat: {{ $total }}
         </p>
@@ -78,7 +78,7 @@
                             <strong>@lang('age_group'):</strong> <span>{{ implode(', ', $group['age_group_text']) }}</span><br>
                         </p>
                         <a href="{{ $group['url'] }}"
-                           class="btn btn-outline-altblue btn-sm kozi-more-info">Megnézem</a>
+                           class="btn btn-outline-purple btn-sm kozi-more-info">Megnézem</a>
                     </div>
                 </div>
             </div>

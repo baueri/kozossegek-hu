@@ -1,5 +1,5 @@
 @extends('portal')
-<div class="container inner">
+<div class="container-fluid inner">
     @include('portal.partials.user-sidemenu')
     @message()
     <h2>Közösségeim <a href="@route('portal.register_group')" class="float-right btn btn-success btn-sm"><i class="fa fa-plus"></i> Új közösség</a></h2>

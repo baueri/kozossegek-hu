@@ -4,6 +4,7 @@
     --light-gray: #f2f5fa;
     --gray2: #a4a7a7;
     --alt-blue: #006ea8;
+    --purple: #485288;
 }
 
 .bg-altblue {
@@ -56,6 +57,23 @@
     background: var(--darkblue);
     color: #fff;
 }
+
+.btn-outline-purple {
+    color: var(--purple);
+    border: 1px solid var(--purple);
+}
+
+.btn-outline-purple:hover {
+    background: var(--purple);
+    color: #fff;
+}
+
+.btn-purple {
+    color: #fff;
+    background-color: var(--purple);
+    border: 1px solid var(--purple);
+}
+
 
 .btn-outline-altblue {
     color: var(--alt-blue);

@@ -94,6 +94,10 @@ img {
     color: rgba(255, 255, 255, .6);
 }
 
+.breadcrumb-item+.breadcrumb-item::before {
+    color: #fff;
+}
+
 .navbar-brand {
     position:relative;
 }

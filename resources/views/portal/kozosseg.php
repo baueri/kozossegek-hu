@@ -17,16 +17,16 @@
 </script>
 @featuredTitle()
     {{ $group->getBreadCrumb() }}
-    <h1 class="pt-3 pb-2 text-center text-md-left">
+    <h3 class="pt-2 pb-2 mb-0 text-center text-md-left">
         {{ $group->name }}<br/>
         @if($user && $user->id == $group->user_id)
             <a href="{{ $group->getEditUrl() }}" title="szerkesztés">
                 <i class="fa fa-edit" style="font-size: 18px;"></i>
             </a>
         @endif
-    </h1>
+    </h3>
     @if($institute)
-        <h4 style="color: rgba(255, 255, 255, .5)" class="mt-0 mb-4 text-center text-md-left">{{ $institute->name }} ({{ $institute->city }})</h4>
+        <h5 style="color: rgba(255, 255, 255, .5)" class="mt-0 mb-4 text-center text-md-left">{{ $institute->name }} ({{ $institute->city }})</h5>
     @endif
     <div class="group-tags text-center text-md-left" style="filter: brightness(0) invert(1)">
         @foreach($group->tags as $tag)
@@ -77,12 +77,12 @@
                 {{ $group->description }}
             @endif
             <div class="mt-4 d-flex">
-                <span class="btn btn-outline-altblue open-contact-modal"><i class="fas fa-envelope"></i> Érdekel!</span>
+                <span class="btn btn-outline-purple open-contact-modal"><i class="fas fa-envelope"></i> Érdekel!</span>
                 <div class="ml-2">@facebook_share_button($group->url())</div>
             </div>
         </div>
     </div>
-    @if($similar_groups)
+    @if($similar_groups?->isNotEmpty())
         <h5 class="mt-4" style="border-bottom: 1px solid #ddd;margin-bottom: 1em;padding-bottom: 0.3em;">Hasonló közösségek</h5>
         <div class="row" id="kozossegek-list">
             @foreach($similar_groups as $i => $similarGroup)
