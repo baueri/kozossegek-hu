@@ -1,6 +1,6 @@
 <div class="" id="header">
     <nav id="navbar-top" class="navbar navbar-expand-sm">
-        <div class="container">
+        <div class="container-fluid">
             <ul class="navbar-nav nav-pages">
                 <li class="nav-item"><a href="@route('portal.page', ['slug' => 'rolunk'])" class="nav-link"><span>@lang('menu.about_us')</span></a></li>
                 <li class="nav-item"><a href="@route('portal.page', ['slug' => 'rolunk'])#contact" class="nav-link"><span>@lang('menu.contact')</span></a></li>
@@ -10,7 +10,7 @@
                 @auth
                     <li class="nav-item nav-item-profile">
                         <a href="#" class="nav-link user-menu" aria-label="Felhasználói menü">
-                            <i class="fa fa-user-circle" onclick="return false;"></i> <small>{{ auth()->name }}</small>
+                            <i class="fa fa-user-circle" onclick="return false;"></i> <span>{{ auth()->name }}</span>
                         </a>
                         <ul class="submenu">
                             <li class="nav-item">
@@ -80,7 +80,7 @@
         </div>
     </nav>
     <nav class="navbar navbar-expand-sm" id="header-main">
-        <div class="container position-relative">
+        <div class="container-fluid position-relative">
             <div><a href="@route('home')" class="navbar-brand ml-4 ml-sm-0 mt-0 mb-0 p-0 p-sm-1" aria-label="Főoldal">
                 <img src="/images/logo/logo200x50.webp" class="logo-lg" alt="logo"/>
                 <img src="/images/logo/logo42x42.webp" class="logo-sm" style="display:none;" alt="logo">

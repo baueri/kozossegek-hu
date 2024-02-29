@@ -4,7 +4,7 @@ namespace Framework\Http\View\Directives;
 
 class ForeachDirective extends AtDirective
 {
-    public function getName()
+    public function getName(): string
     {
         return 'foreach';
     }

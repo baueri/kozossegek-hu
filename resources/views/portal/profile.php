@@ -1,5 +1,5 @@
 @extends('portal')
-<div class="container inner">
+<div class="container-fluid inner">
     @include('portal.partials.user-sidemenu')
     @include('admin.partials.message')
     <form method="post" action="@route('portal.profile.update')" class="mb-4">

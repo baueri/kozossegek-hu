@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Bootstrapper\RegisterDirectives;
 use App\Repositories\EventLogs;
 use App\Services\EventLogger;
@@ -62,10 +64,7 @@ $application->singleton(HttpKernel::class);
 
 $application->singleton(ViewInterface::class, View::class);
 $application->singleton(Config::class);
-$application->singleton(
-    RouterInterface::class,
-    fn (Application $app) => new XmlRouter($app->get(Request::class), $app->config('route_sources'))
-);
+$application->singleton(RouterInterface::class, fn (Application $app, Request $request) => new XmlRouter($request, config('route_sources')));
 $application->singleton(EventLogger::class, EventLogs::class);
 $application->on('booting', function () { MileStone::measure('bootstrap'); });
 $application->on('booted', function () { MileStone::endMeasure('bootstrap'); });

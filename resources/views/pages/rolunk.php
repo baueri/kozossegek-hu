@@ -10,14 +10,14 @@
 @section('subtitle', 'Rólunk | ')
 @extends('portal')
 @featuredTitle($page_title)
-<div class="container inner p-4 page">
+<div class="container-fluid inner p-4 page">
     <div>
         {{ $page->content }}
         <span id="contact"></span>
     </div>
 </div>
 <div class="jumbotron main-block mt-0 mb-0">
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
             <div class="col-md-5 offset-2lehet">
                 <img src="/images/csoportkep_contact.jpg" alt="A kozossegek.hu csapata"/>

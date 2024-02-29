@@ -5,7 +5,7 @@
 @section('subtitle', $page->title . ' | ')
 @extends('portal')
 @featuredTitle($page_title)
-<div class="container inner p-4 page">
+<div class="container-fluid inner p-4 page">
     @if(!$header_background)<h1>{{ $page_title }}</h1>@endif
     <div>
         {{ $page->content }}

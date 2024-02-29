@@ -15,51 +15,42 @@
 <script>
     let nvr = "{{ $nvr }}";
 </script>
-<div class="container inner kozi-adatlap">
+@featuredTitle()
+    {{ $group->getBreadCrumb() }}
+    <h1 class="pt-3 pb-2 text-center text-md-left">
+        {{ $group->name }}<br/>
+        @if($user && $user->id == $group->user_id)
+            <a href="{{ $group->getEditUrl() }}" title="szerkesztés">
+                <i class="fa fa-edit" style="font-size: 18px;"></i>
+            </a>
+        @endif
+    </h1>
+    @if($institute)
+        <h4 style="color: rgba(255, 255, 255, .5)" class="mt-0 mb-4 text-center text-md-left">{{ $institute->name }} ({{ $institute->city }})</h4>
+    @endif
+    <div class="group-tags text-center text-md-left" style="filter: brightness(0) invert(1)">
+        @foreach($group->tags as $tag)
+        <a href="@route('portal.groups', ['tags' => $tag->tag])" class="tag align-bottom">
+            <span class="tag-img tag-{{ $tag->tag }}" title="{{ $tag->translate() }}"></span>
+        </a>
+        @endforeach
+    </div>
+@endfeaturedTitle
+<div class="container-fluid inner kozi-adatlap">
     @if($group->status == "inactive")
         @alert('warning')
         Ez a közösséged jelenleg <b>inaktív</b> állapotban van, ezért mások számára nem jelenik meg a találati listában, illetve közvetlenül se tudják megtekinteni az adatlapját. Amennyiben láthatóvá szeretnéd tenni, állítsd át az állapotát <b>aktívra</b> a <a href="{{ $group->getEditUrl() }}" title="szerkesztés">szerkesztési oldalon</a>.
         @endalert
     @endif
-    {{ $group->getBreadCrumb() }}
+
     <div class="row">
         <div class="col-lg-4 d-md-none d-lg-block">
             <div><img class="img-big shadow-smooth" src="{{ $group->getThumbnail() }}" alt="{{ $group->name }}"></div>
         </div>
         <div class="col-lg-8 col-md-12 pt-4 pt-md-0">
-            <div class="title">
+            <div>
                 <img class="img-big shadow-smooth img-sm d-none d-md-block d-lg-none" src="{{ $group->getThumbnail() }}" alt="{{ $group->name }}">
-                @if($backUrl)
-                    <div class="float-right">
-                        <a href="{{ $backUrl }}"><i class="fa fa-angle-double-left"></i> vissza</a>
-                    </div>
-                @endif
-                <h1 class="primary-title h2 mb-2">
-                    {{ $group->name }}
-                    @if($user && $user->id == $group->user_id)
-                        <a href="{{ $group->getEditUrl() }}" title="szerkesztés">
-                            <i class="fa fa-edit" style="font-size: 18px;"></i>
-                        </a>
-                    @endif
-                </h1>
-                <div class="group-tags float-left">
-                    @foreach($group->tags as $tag)
-                    <a href="@route('portal.groups', ['tags' => $tag->tag])" class="tag align-bottom">
-                        <span class="tag-img tag-{{ $tag->tag }}" title="{{ $tag->translate() }}"></span>
-                    </a>
-                    @endforeach
-                </div>
-                <div class="float-right mb-2">@facebook_share_button($group->url())</div>
             </div>
-            <p class="kozi-tulajdonsag">
-                @if($institute)
-                    <strong>Helyszín</strong><br/>
-                    <a href="{{ $institute->groupsUrl() }}" title="{{ $institute->name }} közösségei">{{ $institute->name }} ({{ $institute->city }})</a><br/>
-                    @if($institute->name2)
-                        <span style="font-size: 13px">({{ $institute->name2 }})</span>
-                    @endif
-                @endif
-            </p>
             @if($group->spiritual_movement)
                 <p class="kozi-tulajdonsag">
                     <strong>Lelkiségi mozgalom</strong><br/> <a href="{{ $group->spiritualMovement->getUrl() }}">{{ $group->spiritual_movement }}</a>
@@ -85,9 +76,10 @@
                 <b>Bemutatkozás</b><br/>
                 {{ $group->description }}
             @endif
-            <p class="mt-4">
+            <div class="mt-4 d-flex">
                 <span class="btn btn-outline-altblue open-contact-modal"><i class="fas fa-envelope"></i> Érdekel!</span>
-            </p>
+                <div class="ml-2">@facebook_share_button($group->url())</div>
+            </div>
         </div>
     </div>
     @if($similar_groups)

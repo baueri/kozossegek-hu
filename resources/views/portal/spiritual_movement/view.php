@@ -1,7 +1,7 @@
 @section('subtitle', $spiritualMovement->name . ' - ')
 @extends('portal')
 @featuredTitle($title)
-<div class="container inner">
+<div class="container-fluid inner">
     {{ $spiritualMovement->getBreadcrumb() }}
     <div class="row">
         <div class="col-md-3 text-center">

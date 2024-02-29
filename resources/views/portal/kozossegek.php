@@ -8,9 +8,12 @@
 
 
 @extends('portal')
-@featuredTitle(lang('Közösség keresése'))
-<div class="container inner">
+@featuredTitle()
     {{ $breadcrumb }}
+    <h1 class="pt-3 pb-2 text-center text-md-left">@lang('Közösség keresése')</h1>
+@endfeaturedTitle
+
+<div class="container-fluid inner">
     @yield('templom_title')
     @include('portal.partials.kozossegek_results')
     @include('partials.simple-pager', ['route' => 'portal.groups.page','total' => $total,'page' => $page,'perpage' => $perpage,'routeparams' => $filter])

@@ -19,6 +19,11 @@ img {
     max-width: 100%;
     height: auto;
 }
+
+.container-fluid {
+    max-width: 1320px;
+}
+
 .tag-dropdown button {
     box-shadow: inset 0 1px 1px rgb(0 0 0 / 8%);
     border: 1px solid #ccc;
@@ -37,6 +42,7 @@ img {
     padding: 0 2rem;
     position: relative;
     background-size: cover !important;
+    color: #fff;
 }
 
 .featured-bg {
@@ -72,6 +78,20 @@ img {
     padding-top: .8rem;
     padding-bottom: .8rem;
     font-size: .9rem;
+}
+
+.breadcrumb {
+    background: rgba(155, 155, 155, 0.2);
+}
+
+.breadcrumb a {
+    color: #fff;
+    /*border-bottom: 1px solid rgba(255, 255, 255, .6);*/
+    /*text-decoration: none !important;*/
+}
+
+.breadcrumb li > span {
+    color: rgba(255, 255, 255, .6);
 }
 
 .navbar-brand {
@@ -1094,7 +1114,7 @@ ul.age-group-select li a:hover {
         padding: 1em 0;
     }
     body:not(.home) .featured-header {
-        padding: 4rem 0 1rem;
+        padding: .2rem 0;
     }
     #instructions::before {
         display: none;

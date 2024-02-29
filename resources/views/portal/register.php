@@ -1,6 +1,6 @@
 @extends('portal')
 @featuredTitle('Új fiók létrehozása')
-<div class="container inner">
+<div class="container-fluid inner">
     @alert('info')
         Kérjük, hogy csak abban az esetben hozz létre új fiókot, ha közösséget hirdetsz.
     @endalert

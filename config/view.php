@@ -36,7 +36,7 @@ return [
 
             return '<?php $__env->getSection()->add("footer", function($args) { extract($args); ?> ';
         },
-        'featuredTitle' => FeaturedTitle::class,
+//        'featuredTitle' => FeaturedTitle::class,
         'spiritual_movement_selector' => SpiritualMovementSelector::class,
         'join_mode_selector' => JoinModeSelector::class,
         'user_group_selector' => UserGroupSelector::class,
@@ -53,7 +53,7 @@ return [
                 return '<?php endif; ?>';
             }
 
-            return '<?php if(\App\Auth\Auth::loggedIn() && \App\Auth\Auth::user()->isAdmin()): ?>';
+            return '<?php if(\App\Auth\Auth::user()?->isAdmin()): ?>';
         },
         'upload' => function ($matches) {
             $file = str_replace("'", "", $matches[1]);

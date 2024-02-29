@@ -18,7 +18,7 @@ use Framework\Http\View\Directives\ForeachDirective;
 class BootDirectives implements Bootstrapper
 {
 
-    public function boot()
+    public function boot(): void
     {
         ViewParser::registerDirective(new ExtendsDirective());
         ViewParser::registerDirective(new RouteDirective());
