@@ -271,7 +271,7 @@ function validate_email(mail)
 })();
 
 
-function showLoginModal(redirectUrlAfterLogin)
+function showLoginModal()
 {
     if (detectmob()) {
         mobile_menu("open");
@@ -279,24 +279,6 @@ function showLoginModal(redirectUrlAfterLogin)
     } else {
         $("label[for='popup-login-username']").closest(".nav-item").addClass("open");
     }
-    return;
-    $.post("/login-modal", {redirect: redirectUrlAfterLogin}, html => {
-        dialog.show({
-            size: "sm",
-            type: "info",
-            title: "Belépés",
-            message: html,
-            buttons: [
-                {
-                    text: "Bezár",
-                    cssClass: "btn btn-default",
-                    action(dialog) {
-                        dialog.close();
-                    }
-            }
-            ]
-        });
-    });
 }
 
 function resendActivationEmail(emailAddress)
@@ -316,25 +298,31 @@ function resendActivationEmail(emailAddress)
     });
 }
 
+const ElementLazyLoaded = new Event("ElementLazyLoaded");
 
 document.addEventListener("DOMContentLoaded", function() {
-    let lazyImages = [].slice.call(document.querySelectorAll("img.lazy"));
+    let lazyElements = [].slice.call(document.querySelectorAll(".lazy"));
 
     if ("IntersectionObserver" in window) {
-        let lazyImageObserver = new IntersectionObserver(function(entries, observer) {
+        let lazyElementObserver = new IntersectionObserver(function(entries, observer) {
             entries.forEach(function(entry) {
                 if (entry.isIntersecting) {
-                    let lazyImage = entry.target;
-                    lazyImage.src = lazyImage.dataset.src;
-                    lazyImage.srcset = lazyImage.dataset.srcset;
-                    lazyImage.classList.remove("lazy");
-                    lazyImageObserver.unobserve(lazyImage);
+                    let lazyElement = entry.target;
+                    switch (lazyElement.tagName) {
+                        case "IMG":
+                            lazyElement.src = lazyElement.dataset.src;
+                            lazyElement.srcset = lazyElement.dataset.srcset;
+                            break;
+                    }
+                    lazyElement.dispatchEvent(ElementLazyLoaded);
+                    lazyElement.classList.remove("lazy");
+                    lazyElementObserver.unobserve(lazyElement);
                 }
             });
         });
 
-        lazyImages.forEach(function(lazyImage) {
-            lazyImageObserver.observe(lazyImage);
+        lazyElements.forEach(function(lazyElement) {
+            lazyElementObserver.observe(lazyElement);
         });
     } else {
         // Possibly fall back to event handlers here

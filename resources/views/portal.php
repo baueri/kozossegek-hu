@@ -52,7 +52,8 @@
                     <ul class="navbar-nav">
                         <li class="nav-item"><a href="@route('portal.page', 'rolunk')" class="nav-link">Rólunk</a></li>
                         <li class="nav-item"><a href="@route('portal.page', 'impresszum')" class="nav-link">Impresszum</a></li>
-                        <li class="nav-item"><a href="@route('portal.page', 'adatkezelesi-tajekoztato')" class="nav-link">Adatvédelem</a></li>
+                        <li class="nav-item"><a href="@route('portal.page', 'adatkezelesi-tajekoztato')" class="nav-link">Adatkezelés</a></li>
+                        <li class="nav-item"><a href="@route('portal.page', 'adatvedelmi-nyilatkozat')" class="nav-link">Adatvédelem</a></li>
                         <li class="nav-item"><a href="@route('portal.page', 'iranyelveink')" class="nav-link">Irányelveink</a></li>
                         <li class="nav-item"><a href="@route('portal.page', 'rolunk')#contact" class="nav-link">Kapcsolat</a></li>
                     </ul>
@@ -97,9 +98,7 @@
     @yield('footer')
     <div class="alert text-center cookiealert" role="alert">
         <b>Kedves látogató!</b> &#x1F36A; A honlapon a felhasználói élmény fokozásának érdekében cookie-kat használunk. <a href="/cookie-tajekoztato" target="_blank">További információ</a>
-        <button type="button" class="btn btn-primary btn-sm acceptcookies">
-            Rendben
-        </button>
+        <button type="button" class="btn btn-altblue btn-sm acceptcookies">Rendben</button>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
@@ -108,29 +107,17 @@
     @endif
 
     @if(is_prod())
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-43190044-6"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-43190044-6"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
 
-        gtag('config', 'UA-43190044-6');
-    </script>
+            gtag('config', 'UA-43190044-6');
+        </script>
 
-    <!-- Hotjar Tracking Code for https://kozossegek.hu -->
-    <script>
-        (function(h,o,t,j,a,r){
-            h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
-            h._hjSettings={hjid:3218308,hjsv:6};
-            a=o.getElementsByTagName('head')[0];
-            r=o.createElement('script');r.async=1;
-            r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
-            a.appendChild(r);
-        })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
-    </script>
-
-    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/hu_HU/sdk.js#xfbml=1&version=v17.0&appId={{ env('FACEBOOK_APP_ID') }}&autoLogAppEvents=1" nonce="HRNksHZS"></script>
+        <script async defer crossorigin="anonymous" src="https://connect.facebook.net/hu_HU/sdk.js#xfbml=1&version=v17.0&appId={{ env('FACEBOOK_APP_ID') }}&autoLogAppEvents=1" nonce="HRNksHZS"></script>
     @endif
     <script>
         const meili_enabled = {{ env ('MEILI_ENABLED') ? 'true' : 'false' }}
@@ -138,22 +125,24 @@
     <script src="/js/scripts.js?{{ filemtime('js/scripts.js') }}"></script>
     <script src="/js/dialog.js?{{ filemtime('js/dialog.js') }}"></script>
     @yield('scripts')
-    <script>
-        @if(isset($display_legal_notice) && $display_legal_notice)
-            dialog.show({
-                "title": "Adatvédelmi tájékoztatónk módosult",
-                "message": "<p>Kedves Felhasználónk!<br/><br/> A <b>kozossegek.hu</b> adatkezelési tájékoztatója <b>{{ $legal_notice_date }}</b> napján módosult. Kérjük, ismerje meg a módosított adatvédelmi tájékoztatónkat.</p><p>" +
-                    "<p class='text-center'><a href='/adatkezelesi-tajekoztato?accept-legal-notice' target='_blank'>Adatvédelmi tájékoztató <i class='fa fa-external-link-alt'></i></a></p>" +
-                    "<p class='text-center'><small><b><u>Az oldal további böngészésével elfogadod az adatvédelmi tájékoztatót.</u></b></small></p>",
-                "closable": false,
-                "buttons": [
-                    {"text": "Megértettem", "cssClass": "btn btn-primary", action(modal, callback) { callback(modal, true); modal.close(); }},
-                ]
-            }, () => {
-                $.post("@route('api.accept_legal_notice')");
-            });
-        @endif
-    </script>
+    @if(isset($display_legal_notice) && $display_legal_notice)
+        <script>
+            (() => {
+                dialog.show({
+                    "title": "Adatvédelmi tájékoztatónk módosult",
+                    "message": "<p>Kedves Felhasználónk!<br/><br/> A <b>kozossegek.hu</b> adatkezelési tájékoztatója <b>{{ $legal_notice_date }}</b> napján módosult. Kérjük, ismerje meg a módosított adatvédelmi tájékoztatónkat.</p><p>" +
+                        "<p class='text-center'><a href='/adatkezelesi-tajekoztato?accept-legal-notice' target='_blank'>Adatvédelmi tájékoztató <i class='fa fa-external-link-alt'></i></a></p>" +
+                        "<p class='text-center'><small><b><u>Az oldal további böngészésével elfogadod az adatvédelmi tájékoztatót.</u></b></small></p>",
+                    "closable": false,
+                    "buttons": [
+                        {"text": "Megértettem", "cssClass": "btn btn-primary", action(modal, callback) { callback(modal, true); modal.close(); }},
+                    ]
+                }, () => {
+                    $.post("@route('api.accept_legal_notice')");
+                });
+            })();
+        </script>
+    @endif
     <noscript>
         <div class="modal fade show" tabindex="-1" aria-hidden="true" style="z-index: 1040; display: block">
             <div class="modal-dialog">

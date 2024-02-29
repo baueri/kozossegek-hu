@@ -82,8 +82,8 @@
     <nav class="navbar navbar-expand-sm" id="header-main">
         <div class="container position-relative">
             <div><a href="@route('home')" class="navbar-brand ml-4 ml-sm-0 mt-0 mb-0 p-0 p-sm-1" aria-label="Főoldal">
-                <img src="/images/logo/logo200x50.webp" class="logo-lg" />
-                <img src="/images/logo/logo42x42.webp" class="logo-sm" style="display:none;">
+                <img src="/images/logo/logo200x50.webp" class="logo-lg" alt="logo"/>
+                <img src="/images/logo/logo42x42.webp" class="logo-sm" style="display:none;" alt="logo">
             </a>
             </div>
             <div style="flex: auto">
@@ -91,7 +91,7 @@
                     <input type="text" class="form-control rounded-pill api-group-search"
                            placeholder="keresés" name="search"
                            value="{{ $filter['search'] ?? '' }}" aria-label="Keresőszó" data-url="@route('api.search_group')" style="height: 30px; z-index: 1"/>
-                    <button type="submit" class="btn p-0" style="right: 10px; top: 2px; position:absolute; z-index: 2;">@icon('search', additionalClass: 'p-1')</button>
+                    <button type="submit" class="btn p-0" style="right: 10px; top: 2px; position:absolute; z-index: 2;" aria-label="Keresés">@icon('search', additionalClass: 'p-1')</button>
                     <div class="search-results shadow"><span class="close small" style="cursor:pointer;">@icon('times')</span><div class="search-results-inner"></div></div>
                 </form>
             </div>
