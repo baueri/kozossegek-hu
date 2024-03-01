@@ -10,7 +10,7 @@ use Framework\Support\Password;
 
 class GeneratePassword extends Command
 {
-    public function description(): string
+    public static function description(): string
     {
         return 'generates a password';
     }

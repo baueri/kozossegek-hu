@@ -17,7 +17,7 @@ abstract class CronCommand extends Command
 
     public function handle(): void
     {
-        $silent = (bool) $this->getOption('silent');
+        $silent = $this->getOption('silent');
 
         $jobs = $this->jobs();
 
@@ -26,7 +26,10 @@ abstract class CronCommand extends Command
         array_walk($jobs, function (Command $job) use (&$hasErrors, $silent) {
             try {
                 $this->output->info('executing ' . $job::signature() . '... ', !$silent);
-                $response = $job->silent($silent)->handle();
+                if (!is_null($silent)) {
+                    $job->silent((bool) $silent);
+                }
+                $response = $job->handle();
                 if ($response) {
                     $this->output->writeln("error", Color::red);
                     $hasErrors = true;

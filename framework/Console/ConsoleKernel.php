@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Framework\Console;
 
+use Cake\Utility\Inflector;
 use Closure;
 use Framework\Application;
 use Framework\Console\BaseCommands\ClearCache;
@@ -29,6 +30,19 @@ class ConsoleKernel
             SiteDown::class,
             ClearCache::class
         ]);
+    }
+
+    public function loadCommands(string $path): static
+    {
+        $files = rglob(ltrim($path, '/') . '/*.php');
+        $commands = [];
+        foreach ($files as $file) {
+            $commands[] = '\\' . mb_ucfirst(str_replace(['/', '.php'], ['\\', ''], $file));
+        }
+
+        $this->withCommand($commands);
+
+        return $this;
     }
 
     /**

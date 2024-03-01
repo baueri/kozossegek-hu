@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
  namespace Framework\Console\BaseCommands;
 
  use Framework\Console\Command;
@@ -12,6 +14,11 @@ class SiteUp extends Command
     public static function signature(): string
     {
         return 'site:up';
+    }
+
+    public static function description(): string
+    {
+        return 'maintenance mode KIKAPCSOLASA';
     }
 
     public function handle(): void

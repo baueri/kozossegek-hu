@@ -13,6 +13,11 @@ class SiteDown extends Command
         return 'site:down';
     }
 
+    public static function description(): string
+    {
+        return 'maintenance mode BEKAPCSOLASA';
+    }
+
     public function handle(): void
     {
         (new Maintenance())->down();

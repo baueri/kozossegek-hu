@@ -111,9 +111,18 @@ class EntityQueryBuilder
         );
     }
 
-    public function delete(): int
+    public function delete(bool $hardDelete = false): int
     {
+        if (class_uses_trait($this, SoftDeletes::class) && !$hardDelete) {
+            return $this->update(['deleted_at' => date('Y-m-d H:i:s')]);
+        }
+
         return $this->builder->delete();
+    }
+
+    public function hardDelete(): int
+    {
+        return $this->delete(true);
     }
 
     /**
@@ -393,7 +402,7 @@ class EntityQueryBuilder
         return (bool) $deleted;
     }
 
-    public function hardDelete($model): bool
+    public function hardDeleteModel($model): bool
     {
         return $this->deleteModel($model, true);
     }

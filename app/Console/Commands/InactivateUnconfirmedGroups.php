@@ -19,7 +19,7 @@ class InactivateUnconfirmedGroups extends Command
         return 'group:inactivate-unconfirmed';
     }
 
-    public function description(): string
+    public static function description(): string
     {
         return sprintf('Inaktiválja azokat a közösségeket, amelyek %d hónappal a kiküldött emlékeztető email után se lettek megerősítve.', ChurchGroups::GROUP_INACTIVATE_AFTER_NOTIFICATION);
     }

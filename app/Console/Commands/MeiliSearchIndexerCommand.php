@@ -21,7 +21,7 @@ class MeiliSearchIndexerCommand extends Command
         return 'meili';
     }
 
-    public function description(): string
+    public static function description(): string
     {
         return 'meilisearch keresomotor indexelese, konfiguralasa';
     }

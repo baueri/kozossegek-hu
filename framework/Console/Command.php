@@ -25,7 +25,7 @@ abstract class Command
         $this->in = new In();
     }
 
-    public function description(): string
+    public static function description(): string
     {
         return '';
     }

@@ -18,7 +18,7 @@ class SiteMapGenerator extends Command
         return 'sitemap:generate';
     }
 
-    public function description(): string
+    public static function description(): string
     {
         return 'Sitemap generálás. A `--ping-google=1` kapcsolóval a generálás után megpingeli a google-t, hogy mentse le náluk az új sitemap-et.';
     }

@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\QueryBuilders;
 
 use App\Enums\PageStatus;
-use App\Models\Page;
 use Framework\Model\EntityQueryBuilder;
 use Framework\Model\Relation\Has;
 use Framework\Model\Relation\Relation;

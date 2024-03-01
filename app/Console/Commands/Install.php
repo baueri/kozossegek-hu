@@ -18,6 +18,11 @@ class Install extends Command
         return 'install';
     }
 
+    public static function description(): string
+    {
+        return 'telepio local / dev kornyezethez. user letrehozas adat seedeles.';
+    }
+
     public function handle(): int
     {
         $this->createAdmin();

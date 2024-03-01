@@ -107,7 +107,7 @@ class GroupController extends AdminController
         $groupId = $this->request['id'];
         $group = $repository->findOrFail($groupId);
 
-        $repository->hardDelete($group);
+        $repository->hardDeleteModel($group);
 
         rrmdir(GroupHelper::getStoragePath($groupId));
 

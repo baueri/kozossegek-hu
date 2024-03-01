@@ -11,7 +11,7 @@ namespace Framework\Console;
  */
 class CommandOutput
 {
-    protected bool $silent = false;
+    public bool $silent = false;
 
     public function silent(bool $silent = true): static
     {

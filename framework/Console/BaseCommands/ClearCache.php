@@ -14,7 +14,7 @@ class ClearCache extends Command
         return 'cache:clear';
     }
 
-    public function description(): string
+    public static function description(): string
     {
         return 'Törli a cache mappát.';
     }

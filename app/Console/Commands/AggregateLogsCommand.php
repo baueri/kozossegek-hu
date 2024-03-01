@@ -18,7 +18,7 @@ class AggregateLogsCommand extends Command
         return 'log:aggregate';
     }
 
-    public function description(): string
+    public static function description(): string
     {
         return 'Aggregálja a még fel nem dolgozott eseménynapló bejegyzéseket.';
     }

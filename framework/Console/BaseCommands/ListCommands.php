@@ -6,6 +6,7 @@ namespace Framework\Console\BaseCommands;
 
 use Framework\Console\Command;
 use Framework\Console\ConsoleKernel;
+use jc21\CliTable;
 
 class ListCommands extends Command
 {
@@ -22,11 +23,19 @@ class ListCommands extends Command
         return 'list';
     }
 
+    public static function description(): string
+    {
+        return 'listazza a futtathato commandokat';
+    }
+
     public function handle(): void
     {
+        $table = new CliTable();
         $this->output->heading('list of available commands');
-        foreach (array_keys($this->kernel->getCommands()) as $signature) {
-            $this->output->writeln($signature);
-        }
+        $table->setHeaderColor('cyan');
+        $table->addField('signature', 'signature', false, 'yellow');
+        $table->addField('description', 'description', false, 'white');
+        $table->injectData(array_map(fn ($command) => ['signature' => $command::signature(), 'description' => strip_tags($command::description())], $this->kernel->getCommands()));
+        $table->display();
     }
 }

@@ -17,10 +17,10 @@ class ClearUserSessionCommand extends Command
 
     public static function signature(): string
     {
-        return 'clear:session';
+        return 'session:clear';
     }
 
-    public function description(): string
+    public static function description(): string
     {
         return 'Törli az egy napnál régebbi session sorokat a user_session táblából.';
     }

@@ -25,4 +25,9 @@ class RebuildSearchEngineCommand extends Command
     {
         return 'search-engine:rebuild';
     }
+
+    public static function description(): string
+    {
+        return 'db keresohoz segedtabla ujraepitese';
+    }
 }

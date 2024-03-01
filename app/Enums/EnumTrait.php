@@ -41,18 +41,14 @@ trait EnumTrait
         return collect(static::cases());
     }
 
-    final public function value()
+    final public function value(): int|string
     {
         return static::getVal($this);
     }
 
-    private static function getVal(UnitEnum $case)
+    private static function getVal(UnitEnum $case): int|string
     {
-        if ($case instanceof BackedEnum) {
-            return $case->value;
-        }
-
-        return $case->name;
+        return enum_val($case);
     }
 
     public static function random(): static

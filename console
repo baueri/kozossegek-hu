@@ -1,22 +1,9 @@
 #!/usr/bin/env php
 <?php
 
-use App\Console\Commands\AggregateLogsCommand;
-use App\Console\Commands\ClearUserSessionCommand;
-use App\Console\Commands\Cron\DailyCron;
-use App\Console\Commands\Cron\MonthlyCron;
-use App\Console\Commands\GeneratePassword;
-use App\Console\Commands\GroupActivityConfirmNotifier;
-use App\Console\Commands\InactivateUnconfirmedGroups;
-use App\Console\Commands\Install;
-use App\Console\Commands\MeiliSearchIndexerCommand;
-use App\Console\Commands\PublishApp;
-use App\Console\Commands\RebuildSearchEngineCommand;
-use App\Console\Commands\SetLatLonToInstitutes;
-use App\Console\Commands\SiteMapGenerator;
-use App\Services\SystemAdministration\OpenStreetMap\OpenStreetMapSync;
+declare(strict_types=1);
+
 use Framework\Console\ConsoleKernel;
-use Framework\Console\Out;
 
 include 'vendor/autoload.php';
 
@@ -28,22 +15,7 @@ if (in_array(($argv[1] ?? ''), ['--interactive', '-it'])) {
 try {
     $kernel = app()->get(ConsoleKernel::class);
 
-    $kernel->withCommand([
-        Install::class,
-        DailyCron::class,
-        MonthlyCron::class,
-        ClearUserSessionCommand::class,
-        RebuildSearchEngineCommand::class,
-        PublishApp::class,
-        AggregateLogsCommand::class,
-        SiteMapGenerator::class,
-        OpenStreetMapSync::class,
-        SetLatLonToInstitutes::class,
-        GroupActivityConfirmNotifier::class,
-        InactivateUnconfirmedGroups::class,
-        GeneratePassword::class,
-        MeiliSearchIndexerCommand::class
-    ]);
+    $kernel->loadCommands(path: 'app/Console/Commands');
 
     $kernel->handle();
 } catch (Error | Exception | Throwable $e) {

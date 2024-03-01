@@ -18,7 +18,7 @@ class GroupActivityConfirmNotifier extends Command
         return 'group:notify-groups';
     }
 
-    public function description(): string
+    public static function description(): string
     {
         return sprintf('Kiküldi a %d hónapnál régebben megerősített közösségek vezetőinek a megerősítő emailt.', ChurchGroups::GROUP_SEND_NOTIFICATION_AFTER);
     }

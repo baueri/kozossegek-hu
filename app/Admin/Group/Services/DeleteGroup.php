@@ -31,7 +31,7 @@ class DeleteGroup
     {
         $group = $this->repository->findOrFail($groupId);
 
-        $this->repository->hardDelete($group);
+        $this->repository->hardDeleteModel($group);
 
         rrmdir(GroupHelper::getStoragePath($groupId));
 

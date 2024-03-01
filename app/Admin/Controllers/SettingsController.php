@@ -87,7 +87,7 @@ class SettingsController extends AdminController
                     return new PaginatedResultSet(
                         array_map(
                             fn (Command $command) =>
-                            ['signature' => $command::signature(), 'description' => $command->description()],
+                            ['signature' => $command::signature(), 'description' => Command::description()],
                             resolve($this->command)->jobs()
                         )
                     );
