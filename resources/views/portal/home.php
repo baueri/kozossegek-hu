@@ -47,11 +47,11 @@
 </div>
 <section class="bg-lightblue py-5">
     <div class="container">
-        <div class="bg-altblue text-light">
+        <div class="bg-purple text-light">
             <div class="row">
                 <div class="col-lg-6" style="background: url('/images/kozosseget_vezetek_kicsi.webp') no-repeat center; background-size: cover"></div>
                 <div class="col-lg-6 align-middle h-100">
-                    <div class="px-3 px-md-5 py-3 my-md-5 my-xs-3">
+                    <div class="px-3 px-md-4 py-3 my-md-5 my-xs-3">
                         <h2 class="text-center title-secondary font-weight-bold mb-4">Közösséget vezetek, szeretném hirdetni.<br/> Mit tegyek?</h2>
                         <p class="text-justify">
                             Nagyon örülünk annak, ha te is hirdetnéd nálunk a közösséged! Ehhez nem kell mást tenned, mint ellátogatnod a <a class="text-light" href="@route('portal.register_group')" target="_blank">közösséget vezetek</a> oldalra, majd az ott található űrlapot kitölteni és elküldeni nekünk. A regisztrációt követően, jóváhagyás után, közösséged a látogatók számára is elérhető lesz.

@@ -74,6 +74,9 @@
     border: 1px solid var(--purple);
 }
 
+.bg-purple {
+    background-color: var(--purple);
+}
 
 .btn-outline-altblue {
     color: var(--alt-blue);
