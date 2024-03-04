@@ -15,7 +15,7 @@
       crossorigin=""/>
 @endsection
 @extends('portal')
-<div id="main-finder" class="p-5">
+<div id="main-finder" class="p-md-5 p-3">
     <div class="container">
         <div class="text-white text-center" style="margin: auto">
             <img src="/images/logo/logo190x190.webp" class="mb-4 logo-home" alt="logo"/>
@@ -45,14 +45,14 @@
         </div>
     </div>
 </div>
-<section class="bg-lightblue py-5">
+<section class="bg-lightblue py-0 py-sm-5">
     <div class="container">
-        <div class="bg-purple text-light">
+        <div class="text-light shadow">
             <div class="row">
-                <div class="col-lg-6" style="background: url('/images/kozosseget_vezetek_kicsi.webp') no-repeat center; background-size: cover"></div>
-                <div class="col-lg-6 align-middle h-100">
-                    <div class="px-3 px-md-4 py-3 my-md-5 my-xs-3">
-                        <h2 class="text-center title-secondary font-weight-bold mb-4">Közösséget vezetek, szeretném hirdetni.<br/> Mit tegyek?</h2>
+                <div class="col-lg-6 d-none d-md-block" style="background: url('/images/kozosseget_vezetek_kicsi.webp') no-repeat center; background-size: cover"></div>
+                <div class="col-lg-6 col-12 align-middle h-100 bg-darkred">
+                    <div class="px-3 py-3 my-md-4 my-xs-3">
+                        <h2 class="text-center title-secondary font-weight-bold my-4">Közösséget vezetek, szeretném hirdetni.<br/> Mit tegyek?</h2>
                         <p class="text-justify">
                             Nagyon örülünk annak, ha te is hirdetnéd nálunk a közösséged! Ehhez nem kell mást tenned, mint ellátogatnod a <a class="text-light" href="@route('portal.register_group')" target="_blank">közösséget vezetek</a> oldalra, majd az ott található űrlapot kitölteni és elküldeni nekünk. A regisztrációt követően, jóváhagyás után, közösséged a látogatók számára is elérhető lesz.
                         </p>

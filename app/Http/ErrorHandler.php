@@ -70,7 +70,7 @@ class ErrorHandler
                 'code' => $error->getCode(),
                 'message2' => 'Nincs jogosultsága az oldal megtekintéséhez']));
         } catch (Error | Exception $error) {
-            error_log($error);
+            error_log($error->getMessage() . "\n" . $error->getTraceAsString());
 
             print(view('portal.error', [
                 'code' => 500,

@@ -30,7 +30,7 @@
     <title>@yield('subtitle'){{ site_name() }}</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="/assets/fontawesome/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:wght@200|Open+Sans:300,400,600|Work+Sans:400,700|Raleway|Roboto+Condensed:wght@100,300;400|Poppins&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:wght@200|Open+Sans:300,400,600|Work+Sans:400,700|Raleway|Roboto+Condensed:wght@400;700|Poppins&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Cardo:400,700|Oswald&display=swap" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="search" type="application/opensearchdescription+xml" title="kozossegek.hu" href="opensearch.xml">
@@ -48,7 +48,7 @@
     <footer id="footer" class="text-white">
         <div class="container" id="footer-top">
             <div class="row">
-                <div class="col-md-4 col-sm-6 col-xs-12">
+                <div class="col-md-4 col-sm-6 col-xs-12 my-3 my-md-0">
                     <ul class="navbar-nav">
                         <li class="nav-item"><a href="@route('portal.page', 'rolunk')" class="nav-link">Rólunk</a></li>
                         <li class="nav-item"><a href="@route('portal.page', 'impresszum')" class="nav-link">Impresszum</a></li>
@@ -59,7 +59,7 @@
                     </ul>
                 </div>
 
-                <div class="col-md-5 offset-3 col-sm-6 col-xs-12">
+                <div class="col-md-5 offset-0 offset-md-3 col-sm-6 col-xs-12">
                     <h5>Partnereink</h5>
                     <div class="partnereink">
                         <a href="https://pasztoralis.hu/" title="Pasztorális helynökség Szeged" target="_blank" rel="noopener noreferrer">

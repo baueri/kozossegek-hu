@@ -44,34 +44,35 @@
     @endif
 
     <div class="row">
-        <div class="col-lg-4 d-md-none d-lg-block">
-            <div><img class="img-big shadow-smooth" src="{{ $group->getThumbnail() }}" alt="{{ $group->name }}"></div>
+        <div class="col-md-4 text-center">
+            <img class="img-big shadow-smooth" src="{{ $group->getThumbnail() }}" alt="{{ $group->name }}" style="max-width: 300px;">
         </div>
-        <div class="col-lg-8 col-md-12 pt-4 pt-md-0">
-            <div>
-                <img class="img-big shadow-smooth img-sm d-none d-md-block d-lg-none" src="{{ $group->getThumbnail() }}" alt="{{ $group->name }}">
-            </div>
+        <div class="col-md-8 col-sm-12 pt-4 pt-md-0">
+<!--            <div>-->
+<!--                <img class="img-big shadow-smooth img-sm d-none d-md-block d-lg-none" src="{{ $group->getThumbnail() }}" alt="{{ $group->name }}">-->
+<!--            </div>-->
             @if($group->spiritual_movement)
                 <p class="kozi-tulajdonsag">
                     <strong>Lelkiségi mozgalom</strong><br/> <a href="{{ $group->spiritualMovement->getUrl() }}">{{ $group->spiritual_movement }}</a>
                 </p>
             @endif
-            <div class="row" style="margin-bottom: .5em;">
-                <div class="col-lg-4 col-md-12 mb-md-2">
+            <div class="row text-center text-md-left" style="margin-bottom: .5em;">
+                <div class="col-lg-4 col-md-6 col-sm-12 my-sm-2">
                     <strong>Alkalmak gyakorisága</strong><br/>{{ $group->occasionFrequency() }}
                 </div>
-                <div class="col-lg-3 col-md-12 mb-md-2">
+                <div class="col-lg-3  col-md-6 col-sm-12 my-sm-2">
                     <strong>Korcsoport</strong><br/> {{ $group->ageGroup() }}
                 </div>
                 @if($group->join_mode)
-                    <div class="col-lg-5 col-md-12 mb-md-2">
+                    <div class="col-lg-5 col-md-6 col-sm-12 my-sm-2">
                         <strong>Csatlakozási lehetőség módja</strong><br/> {{ $group->joinModeText() }}
                     </div>
                 @endif
+                <p class="col-lg-5 col-md-6 col-sm-12 my-sm-2">
+                    <strong>Közösségvezető(k)</strong><br/> {{ $group->group_leaders }}
+                </p>
             </div>
-            <p class="kozi-tulajdonsag">
-                <strong>Közösségvezető(k)</strong><br/> {{ $group->group_leaders }}
-            </p>
+
             @if($group->description)
                 <b>Bemutatkozás</b><br/>
                 {{ $group->description }}

@@ -1,4 +1,4 @@
-<h2 class="text-center title-secondary py-5">@lang('how_does_it_work')</h2>
+<h2 class="text-center title-secondary py-5 mb-0">@lang('how_does_it_work')</h2>
 <div id="instructions" class="row pb-5">
     <div class="col-lg-4 col-sm-12 mb-lg-0 mb-5">
         <div class="card shadow text-center h-100">

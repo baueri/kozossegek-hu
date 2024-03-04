@@ -19,7 +19,7 @@
 <div class="jumbotron main-block mt-0 mb-0">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-5 offset-2lehet">
+            <div class="col-md-5 offset-0 offset-md-1 text-center mb-3">
                 <img src="/images/csoportkep_contact.jpg" alt="A kozossegek.hu csapata"/>
             </div>
             <div class="col-md-5">

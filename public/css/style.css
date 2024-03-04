@@ -184,7 +184,7 @@ nav.navbar .submenu {
 .title-secondary {
     font-weight: 700;
     font-family: 'Raleway', sans-serif;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
 }
 
 #login-box {
@@ -501,29 +501,30 @@ input[name=search]::placeholder, input[name=varos]::placeholder {
     font-size: 2em;
     color: #333;
     display: none;
+    cursor: pointer;
 }
 
-#toggle_main_menu:checked~.navbar-nav .nav-item {
+#toggle_main_menu:checked~.abxd .nav-item {
     background: none;
 }
 
-#toggle_main_menu:checked~.navbar-nav .fa-angle-down {
+#toggle_main_menu:checked~.abxd .fa-angle-down {
     display: none;
 }
-#toggle_main_menu:checked~.navbar-nav {
+#toggle_main_menu:checked~.abxd {
     display: block;
     right: 0;
     z-index: 2;
 }
-#toggle_main_menu:checked~.navbar-nav .nav-item-profile::before {
-    border-top: 1px solid #ccc;
+#toggle_main_menu:checked~.abxd .nav-item-profile::before {
+    border-top: 1px solid #eaeaea;
     content: " ";
     display: block;
 }
-#toggle_main_menu:checked~.navbar-nav .submenu {
+#toggle_main_menu:checked~.abxd .submenu {
     padding: 0 !important;
 }
-#toggle_main_menu:checked~.navbar-nav .user-menu {
+#toggle_main_menu:checked~.abxd .user-menu {
     display: none;
 }
 
@@ -532,7 +533,7 @@ input[name=search]::placeholder, input[name=varos]::placeholder {
     font-size: 18px;
 }
 
-#toggle_main_menu:checked~.navbar-nav .submenu {
+#toggle_main_menu:checked~.abxd .navbar-nav .submenu {
     opacity: 1;
     position: relative;
     border: none;
@@ -815,8 +816,9 @@ ul.age-group-select li a:hover {
     position: relative;
 }
 #instructions h3 {
-    text-transform: uppercase;
     font-size: 1rem;
+    font-family: "Raleway", sans-serif;
+    font-weight: 700;
 }
 
 .group-tag-badge {
@@ -1080,7 +1082,7 @@ ul.age-group-select li a:hover {
         padding-bottom: .8rem !important;
     }
 
-    #header .navbar-nav {
+    #header .abxd {
         display: block;
         position: fixed;
         width: 250px;
@@ -1109,6 +1111,18 @@ ul.age-group-select li a:hover {
 
     .navbar-nav {
         font-size: .9rem;
+    }
+
+    #main-finder {
+        background-position: top 0 center;
+    }
+
+    #main-finder img.logo-home {
+        max-width: 150px;
+    }
+
+    #main-finder h1 {
+        font-size: 2rem;
     }
 
 }
@@ -1147,9 +1161,6 @@ ul.age-group-select li a:hover {
 
     #instructions p {
         margin-bottom: 2rem;
-    }
-    #main-finder h1 {
-        font-size: 2rem;
     }
     #main-finder img {
         max-width: 150px;
