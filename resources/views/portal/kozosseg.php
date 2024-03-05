@@ -45,7 +45,7 @@
 
     <div class="row">
         <div class="col-md-4 text-center">
-            <img class="img-big shadow-smooth" src="{{ $group->getThumbnail() }}" alt="{{ $group->name }}" style="max-width: 300px;">
+            <img class="img-big shadow-smooth" src="{{ $group->getThumbnail() }}" alt="{{ $group->name }}" style="max-width: 510px;">
         </div>
         <div class="col-md-8 col-sm-12 pt-4 pt-md-0">
 <!--            <div>-->
@@ -84,10 +84,10 @@
         </div>
     </div>
     @if($similar_groups?->isNotEmpty())
-        <h5 class="mt-4" style="border-bottom: 1px solid #ddd;margin-bottom: 1em;padding-bottom: 0.3em;">Hasonló közösségek</h5>
+    <h5 class="mt-4" style="border-bottom: 1px solid #ddd;margin-bottom: 1em;padding-bottom: 0.3em;">Hasonló közösségek</h5>
         <div class="row" id="kozossegek-list">
             @foreach($similar_groups as $i => $similarGroup)
-            <div class="col-md-3 mb-3">
+            <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3">
                 <div class="card kozi-box h-100 p-0 shadow-smooth">
                     <a href="{{ $similarGroup->url() }}" style="background: url({{ $similarGroup->getThumbnail() }}) no-repeat bottom 0 center;background-size: cover; height: 185px" class="card-img">
                         <div>megnézem</div>

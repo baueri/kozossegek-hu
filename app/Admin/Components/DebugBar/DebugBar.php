@@ -41,7 +41,7 @@ class DebugBar
         $tab_contents = [];
         foreach ($this->tabs as $tab) {
             $name = get_class_name($tab);
-            $headers[$name] = $tab->generateIcon() . $tab->getTitle();
+            $headers[$name] = "{$tab->generateIcon()}<span class='d-none d-lg-inline'>{$tab->getTitle()}</span>";
             $tab_contents[$name] = $tab->render();
         }
 

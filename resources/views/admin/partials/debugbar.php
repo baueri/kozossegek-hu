@@ -2,18 +2,15 @@
     <div id="debugbar-header" class="bg-light d-flex">
         <div class="btn-group btn-shadow mr-auto">
             @foreach($headers as $id => $header)
-                <label for="{{ $id }}" class="btn btn-default btn-sm mb-0">
+                <label for="{{ $id }}" class="btn btn-default btn-sm mb-0" title="{{ strip_tags($header) }}">
                     {{ $header }}
                 </label>
             @endforeach
         </div>
-        <div>
+        <div class="px-5">
             <span title="memory usage"><i class="fa fa-cogs"></i> {{ $memory_usage }}</span> |
             <span title="query exec time"><i class="fa fa-database"></i> {{ $query_time }}</span> |
             <span title="total load time"><i class="fa fa-stopwatch"></i> {{ $total_load_time }}ms</span>
-            <label class="mr-2 ml-3 text-danger" for="close" style="cursor: pointer;">
-                <i class="fa fa-times"></i><input type="radio" name="debug-tab" id="close" style="display: none">
-            </label>
         </div>
     </div>
     <div id="debugbar-content">
@@ -25,6 +22,10 @@
         @endforeach
     </div>
 </div>
+<label class="mr-2 ml-3 text-danger" for="debugbar-close" style="cursor: pointer; position: fixed; right: 0; bottom: 0; z-index: 1000">
+    <i class="fa fa-times"></i>
+</label>
+<input type="radio" name="debug-tab" id="debugbar-close" style="display: none">
 <style>
 
     body{
@@ -57,8 +58,21 @@
         overflow-y: auto;
     }
 
-    #debugbar-content input[type=radio]:checked ~ div {
+    #debugbar-content input[type=radio]:checked ~ #debugbar-content div {
         display: block;
     }
 
+    #debugbar-close:checked ~ label[for=debugbar-content] {
+        right: initial;
+        left: 0;
+    }
+
+    #debugbar-close:checked ~ #debugbar #debugbar-content {
+        display: none !important;
+    }
+    #debugbar-close:checked ~ #debugbar #debugbar-header {
+        width: 30px;
+        height: 30px;
+        overflow: hidden;
+    }
 </style>
