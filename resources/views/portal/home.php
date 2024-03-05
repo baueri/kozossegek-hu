@@ -50,7 +50,7 @@
         <div class="text-light shadow">
             <div class="row">
                 <div class="col-lg-6 d-none d-md-block" style="background: url('/images/kozosseget_vezetek_kicsi.webp') no-repeat center; background-size: cover"></div>
-                <div class="col-lg-6 col-12 align-middle h-100 bg-darkred">
+                <div class="col-lg-6 col-12 align-middle h-100 bg-main">
                     <div class="px-3 py-3 my-md-4 my-xs-3">
                         <h2 class="text-center title-secondary font-weight-bold my-4">Közösséget vezetek, szeretném hirdetni.<br/> Mit tegyek?</h2>
                         <p class="text-justify">

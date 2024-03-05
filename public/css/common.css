@@ -5,8 +5,9 @@
     --gray2: #a4a7a7;
     --alt-blue: #006ea8;
     --purple: #485288;
-    --darkred: #407555;
-    --transparent-light: rgba(255, 255, 255, .2)
+    --darkgreen: #407555;
+    --transparent-light: rgba(255, 255, 255, .2);
+    --main: #2b699a;
 }
 
 .nav-transparent {
@@ -24,7 +25,7 @@
 }
 
 .nav-tabs.nav-transparent .nav-link.active {
-    background-color: var(--darkred);
+    background-color: var(--main);
     border-bottom: 0;
     border-color: rgba(222, 226, 230, 0.3);
 }
@@ -100,24 +101,24 @@
     background-color: var(--purple);
 }
 
-.btn-outline-darkred {
-    color: var(--darkred);
-    border: 1px solid var(--darkred);
+.btn-outline-main {
+    color: var(--main);
+    border: 1px solid var(--main);
 }
 
-.btn-outline-darkred:hover {
-    background: var(--darkred);
+.btn-outline-main:hover {
+    background: var(--main);
     color: #fff;
 }
 
-.btn-darkred {
+.btn-main {
     color: #fff;
-    background-color: var(--darkred);
-    border: 1px solid var(--darkred);
+    background-color: var(--main);
+    border: 1px solid var(--main);
 }
 
-.bg-darkred {
-    background-color: var(--darkred);
+.bg-main {
+    background-color: var(--main);
 }
 
 .btn-outline-altblue {

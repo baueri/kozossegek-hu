@@ -34,7 +34,7 @@
                 </div>
             </div>
             <div>
-                <button type="submit" class="btn btn-purple px-3 w-100" aria-label="Keresés indítása">
+                <button type="submit" class="btn btn-main px-3 w-100" aria-label="Keresés indítása">
                     <i class="fa fa-search"></i> Keresés
                 </button>
             </div>

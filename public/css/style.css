@@ -225,8 +225,9 @@ nav.navbar .nav-link:hover {
 }
 
 #navbar-top {
-    border-bottom: 1px solid #ddd;
-    background: #f1f1f1;
+    border: none;
+    background: #f8f6f5;
+    padding: .4rem;
 }
 
 #navbar-top .nav-item a {
