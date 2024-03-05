@@ -25,8 +25,8 @@ class FrameworkInfoTab extends DebugBarTab
 
         return <<<EOT
             <code>
-                <b>Környezet:</b> $env<br/>
-                <b>URI maszk:</b> $uriMask<br/>
+                <b>Env:</b> $env<br/>
+                <b>URI mask:</b> $uriMask<br/>
                 <b>Controller:</b> $controller<br/>
                 <b>Alias:</b> $alias<br/>
                 <b>Middleware</b> $middleware<br/>
