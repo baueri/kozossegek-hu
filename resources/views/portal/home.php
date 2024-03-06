@@ -18,7 +18,7 @@
 <div id="main-finder" class="p-md-5 p-3">
     <div class="container">
         <div class="text-white text-center" style="margin: auto">
-            <img src="/images/logo/logo190x190.webp" class="mb-4 logo-home" alt="logo"/>
+            <img src="/images/logo/logo190x190.webp" class="mb-sm-4 mb-2 logo-home" alt="logo"/>
             <h1>KOZOSSEGEK.HU</h1>
             <h2 style="text-transform: uppercase">{{ lang('find_your_church_group') }}</h2>
         </div>

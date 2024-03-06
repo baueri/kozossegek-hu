@@ -255,7 +255,7 @@ nav.navbar .nav-link:hover {
     font-family: 'Poppins', sans-serif;
 }
 
-#finder [name=korosztaly]+span, #finder [name=rendszeresseg]+span {
+.search-form [name=korosztaly]+span, .search-form [name=rendszeresseg]+span {
     width: 150px !important;
 }
 
@@ -429,22 +429,22 @@ input[name=search]::placeholder, input[name=varos]::placeholder {
     color: #999;
 }
 
-.container.inner #finder [name=search]::placeholder {
+.container.inner .search-form [name=search]::placeholder {
     font-size: 14px;
 }
 
-.container.inner #finder button[type=submit] {
+.container.inner .search-form button[type=submit] {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
 }
 
-#main-finder #finder {
+#main-finder .search-form {
     margin: auto;
     width: 100%;
     max-width: 960px;
 }
 
-#finder .group-tag:checked + label span:first-child {
+.search-form .group-tag:checked + label span:first-child {
     filter: brightness(0) invert(1);
 }
 
@@ -454,7 +454,7 @@ input[name=search]::placeholder, input[name=varos]::placeholder {
     width: 600px;
     background: #fff;
     top: 100%;
-    left: 0;
+    right: 0;
     display: none;
     z-index: 100;
 }
@@ -498,13 +498,6 @@ input[name=search]::placeholder, input[name=varos]::placeholder {
     margin-top: 1px;
 }
 
-.mobile-menu-toggle {
-    font-size: 2em;
-    color: #333;
-    display: none;
-    cursor: pointer;
-}
-
 #toggle_main_menu:checked~.abxd .nav-item {
     background: none;
 }
@@ -513,9 +506,7 @@ input[name=search]::placeholder, input[name=varos]::placeholder {
     display: none;
 }
 #toggle_main_menu:checked~.abxd {
-    display: block;
     right: 0;
-    z-index: 2;
 }
 #toggle_main_menu:checked~.abxd .nav-item-profile::before {
     border-top: 1px solid #eaeaea;
@@ -543,15 +534,31 @@ input[name=search]::placeholder, input[name=varos]::placeholder {
     max-height: initial;
 }
 
-#toggle_main_menu:checked~.mobile-menu-toggle {
+.mobile-menu-toggle {
+    font-size: 2em;
+    color: #333;
+    display: none;
+    cursor: pointer;
+    z-index: 1;
+    position: relative;
+}
+
+.mobile-menu-toggle:before {
     position: fixed;
     top: 0;
-    left: 0;
+    left: 100%;
     width: 100%;
     height: 100vh;
+    content: " ";
     background: rgba(0,0,0,0.7);
-    z-index: 1;
-    transition: background-color ease-in .2s;
+    z-index: -1;
+    transition: opacity ease-in-out .2s;
+    opacity: 0;
+}
+
+#toggle_main_menu:checked~.mobile-menu-toggle:before {
+    opacity: 1;
+    left: 0;
 }
 
 #toggle_main_menu:checked~.mobile-menu-toggle i {
@@ -1084,7 +1091,6 @@ ul.age-group-select li a:hover {
     }
 
     #header .abxd {
-        display: block;
         position: fixed;
         width: 250px;
         right: -250px;
@@ -1092,21 +1098,22 @@ ul.age-group-select li a:hover {
         height: 100vh;
         padding: 1em;
         background-color: #f8f9fa;
-        transition: right .17s ease-in;
+        transition: right .18s linear;
+        z-index: 2;
     }
 
     .mobile-menu-toggle {
         display: block;
     }
 
-    #finder .input-group > *, #finder [name=korosztaly]+span, #finder [name=rendszeresseg]+span {
+    .search-form .input-group > *, .search-form [name=korosztaly]+span, .search-form [name=rendszeresseg]+span {
         display: block !important;
         width: 100% !important;
         margin-bottom: 1em !important;
         border-radius: 4px !important;
     }
 
-    #finder .select2-selection {
+    .search-form .select2-selection {
         border-radius: 4px;
     }
 
