@@ -54,7 +54,8 @@
     "phpseclib/phpseclib": "^3.0",
     "phpunit/phpunit": "^9",
     "fakerphp/faker": "^1.23",
-    "symfony/var-dumper": "^6.4"
+    "symfony/var-dumper": "^6.4",
+    "phpmd/phpmd": "^2.15"
   },
   "config": {
     "allow-plugins": {

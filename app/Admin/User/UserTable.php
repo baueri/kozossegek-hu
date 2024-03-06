@@ -75,7 +75,7 @@ class UserTable extends PaginatedAdminTable implements Editable
         return static::getBanIcon();
     }
 
-    public function getCreatedAt($date, User $user): string
+    public function getCreatedAt($date): string
     {
         return date('Y.m.d', strtotime($date));
     }

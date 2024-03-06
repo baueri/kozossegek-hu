@@ -36,7 +36,8 @@ class GroupSearchRepository
             where MATCH(keywords) AGAINST (? IN BOOLEAN MODE))', $keywords);
         }
 
-        if ($varos = mb_strtolower($filter['varos'] ?? '')) {
+        $varos = mb_strtolower($filter['varos'] ?? '');
+        if ($varos) {
             if ($varos === 'budapest') {
                 $builder->where('city', 'like', "{$varos}%");
             } else {
@@ -44,15 +45,18 @@ class GroupSearchRepository
             }
         }
 
-        if ($korosztaly = $filter['korosztaly']) {
+        $korosztaly = $filter['korosztaly'];
+        if ($korosztaly) {
             $builder->apply('whereAgeGroup', $korosztaly);
         }
 
-        if ($rendszeresseg = $filter['rendszeresseg']) {
+        $rendszeresseg = $filter['rendszeresseg'];
+        if ($rendszeresseg) {
             $builder->where('occasion_frequency', $rendszeresseg);
         }
 
-        if ($intezmeny = $filter['institute_id']) {
+        $intezmeny = $filter['institute_id'];
+        if ($intezmeny) {
             $builder->where('institute_id', $intezmeny);
         }
 
@@ -60,20 +64,23 @@ class GroupSearchRepository
             $builder->where('pending', $filter['pending']);
         }
 
-        if ($status = $filter['status']) {
+        $status = $filter['status'];
+        if ($status) {
             $builder->where('status', $status);
         }
 
-        if ($tags = $filter['tags']) {
-            $tags = explode(',', $tags);
-            $builder->apply('whereGroupTag', $tags);
+        $tags = $filter['tags'];
+        if ($tags) {
+            $builder->apply('whereGroupTag', explode(',', $tags));
         }
 
-        if ($institute_name = $filter['intezmeny']) {
+        $institute_name = $filter['intezmeny'];
+        if ($institute_name) {
             $builder->where('institute_name', 'like', "%$institute_name%");
         }
 
-        if ($userId = $filter['user_id']) {
+        $userId = $filter['user_id'];
+        if ($userId) {
             $builder->where('user_id', $userId);
         }
 
@@ -83,7 +90,8 @@ class GroupSearchRepository
             $builder->notDeleted();
         }
 
-        if ($spiritualMovementID = $filter['spiritual_movement_id']) {
+        $spiritualMovementID = $filter['spiritual_movement_id'];
+        if ($spiritualMovementID) {
             $builder->where('spiritual_movement_id', $spiritualMovementID);
         }
 

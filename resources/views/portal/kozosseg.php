@@ -18,9 +18,9 @@
 @featuredTitle()
     {{ $group->getBreadCrumb() }}
     <h3 class="pt-2 pb-2 mb-0 text-center text-md-left">
-        {{ $group->name }}<br/>
+        {{ $group->name }}
         @if($user && $user->id == $group->user_id)
-            <a href="{{ $group->getEditUrl() }}" title="szerkesztés">
+            <a href="{{ $group->getEditUrl() }}" class="text-light" title="szerkesztés">
                 <i class="fa fa-edit" style="font-size: 18px;"></i>
             </a>
         @endif

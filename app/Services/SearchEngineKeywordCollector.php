@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services;
 
 use App\Models\ChurchGroupView;
@@ -22,7 +24,7 @@ final class SearchEngineKeywordCollector
             ->unique();
     }
 
-    private function collect()
+    private function collect(): void
     {
         $churchGroup = $this->churchGroup;
 
@@ -47,7 +49,7 @@ final class SearchEngineKeywordCollector
         }
 
         if ($text instanceof Collection) {
-            $text->each(fn ($word) => $this->pushWords((string) $text));
+            $text->each(fn ($word) => $this->pushWords((string) $word));
             return;
         }
 

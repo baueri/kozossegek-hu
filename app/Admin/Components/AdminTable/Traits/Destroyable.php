@@ -12,6 +12,7 @@ trait Destroyable
             $this->columns['destroy'] = $this->getIcon('fa fa-trash-alt');
         }
     }
+
     abstract public function getDestroyLink($model);
 
     public function getDestroy($value, $model, $title = 'végleges törlés')
