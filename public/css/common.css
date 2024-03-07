@@ -117,6 +117,12 @@
     border: 1px solid var(--main);
 }
 
+.btn-main:hover {
+    color: #fff;
+    background-color: #205781;
+    border-color: #205781;
+}
+
 .bg-main {
     background-color: var(--main);
 }
