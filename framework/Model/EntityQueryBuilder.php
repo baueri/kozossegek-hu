@@ -205,7 +205,7 @@ class EntityQueryBuilder
         return $this->loadRelations($this->getInstance($this->builder->first()));
     }
 
-    public function limit($limit)
+    public function limit($limit): EntityQueryBuilder
     {
         $this->builder->limit($limit);
 
@@ -451,7 +451,7 @@ class EntityQueryBuilder
      * @return Entity|null
      * @phpstan-return T
      */
-    public function create(array|Entity $values)
+    public function create(array|Entity $values): Entity|null
     {
         $model = $values instanceof Entity ? $values : null;
         $toSave = $model ? $model->getAttributes() : $values;

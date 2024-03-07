@@ -5,7 +5,7 @@ a {
 }
 
 body {
-    font-family: "OpenSans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
     color: #555;
     font-size: .9rem;
 }
@@ -39,7 +39,6 @@ img {
 }
 
 .featured-header {
-    padding: 0 2rem;
     position: relative;
     background-size: cover !important;
     color: #fff;
@@ -104,7 +103,6 @@ img {
 
 .navbar-brand .logo-lg {
     height: 42px;
-    float: left;
     transition: all ease-in .1s;
 }
 
@@ -116,23 +114,9 @@ img {
 }
 
 #main-finder img.logo-home {
-    /*max-width: 220px;*/
-    width: 190px;
+    max-width: 170px;
     height: auto;
-    max-width: 100%;
     filter: brightness(0) invert(1);
-}
-
-#search-button {
-    transition: all ease-in .12s;
-    text-transform: uppercase;
-    font-family: 'Roboto Condensed', sans-serif;
-    display: block;
-    margin: 1em auto;
-    font-size: 1em;
-    padding: .8em 3em;
-    border-radius: 25px;
-    box-shadow: 0 0 10px 0 #333;
 }
 
 #search-group {
@@ -186,7 +170,6 @@ nav.navbar .submenu {
 
 .title-secondary {
     font-weight: 700;
-    font-family: 'Raleway', sans-serif;
     font-size: 1.4rem;
 }
 
@@ -228,12 +211,8 @@ nav.navbar .nav-link:hover {
 }
 
 #navbar-top {
-    border: none;
+    border: 1px solid #eee;
     background: #f8f6f5;
-    padding: .4rem;
-}
-
-#navbar-top .nav-item a {
 }
 
 #navbar-top .nav-pages a {
@@ -247,15 +226,7 @@ nav.navbar .nav-link:hover {
 }
 
 .nav-right .nav-item a {
-    padding: 0;
-}
-
-.featured-header h1 {
-    color: #fff;
-    padding: 1.5em 0;
-    margin: 0 !important;
-    font-size: 2rem;
-    font-family: 'Poppins', sans-serif;
+    /*padding: 0;*/
 }
 
 .search-form [name=korosztaly]+span, .search-form [name=rendszeresseg]+span {
@@ -276,10 +247,6 @@ nav.navbar .nav-link:hover {
     padding-bottom: 4em;
     background-color: #fff;;
 }
-
-/*.header-outer:not(.featured-header) + .inner {*/
-/*    margin-top: 66px;*/
-/*}*/
 
 #footer {
     background-color: #151414;
@@ -485,10 +452,6 @@ input[name=search]::placeholder, input[name=varos]::placeholder {
     margin: 0 -3px;
     filter: grayscale(1);
     transform-origin: top;
-    /*width: 21px;*/
-    /*height: 21px;*/
-    /*background-size: 198px;*/
-    /*background-position: calc();*/
 }
 
 .group-result:hover, .group-result.selected {
@@ -524,7 +487,6 @@ input[name=search]::placeholder, input[name=varos]::placeholder {
 }
 
 .user-menu {
-    padding-top: 4px !important;
     font-size: 18px;
 }
 
@@ -702,23 +664,14 @@ input[name=search]::placeholder, input[name=varos]::placeholder {
     background-color: #1C3C4B;
 }
 
-
-.main-block h1 {
-    font-family: 'Oswald', sans-serif;
-    text-transform: uppercase;
-    font-size: 4rem;
-    margin-bottom: 1em;
-}
-
 #main-finder {
     background:url('/images/main.webp') no-repeat top -50px center;
     background-size: cover;
 }
 
 #main-finder h1 {
-    font-family: 'Oswald', sans-serif;
     text-transform: uppercase;
-    font-size: 3rem;
+    font-size: 2rem;
     text-shadow: 0 0 10px #000;
     cursor: default;
 }
@@ -793,17 +746,9 @@ ul.age-group-select li a:hover {
     padding: 2rem 1rem;
 }
 
-.jumbotron.main-block h1 {
-    font-family: 'Roboto Condensed', sans-serif;
+#instructions .card {
+    border-radius: 10px;
 }
-
-/*.inner [target=_blank]::after {*/
-/*    content: "\f35d";*/
-/*    font-family: "Font Awesome 5 Free";*/
-/*    margin-left: 6px;*/
-/*    margin-right: 5px;*/
-/*    font-size: 13px;*/
-/*}*/
 
 #instructions i {
     color: #555;
@@ -819,16 +764,19 @@ ul.age-group-select li a:hover {
 }
 
 #instructions img {
-    /*border: 5px solid #fff;*/
+    position: absolute;
+    top: -31px;
+    left: 1rem;
+    width: 79px;
 }
 
 #instructions {
     margin:auto;
     position: relative;
 }
+
 #instructions h3 {
     font-size: 1rem;
-    font-family: "Raleway", sans-serif;
     font-weight: 700;
 }
 
@@ -1102,7 +1050,7 @@ ul.age-group-select li a:hover {
         padding: 1em;
         background-color: #f8f9fa;
         transition: right .18s linear;
-        z-index: 2;
+        z-index: 3;
     }
 
     .mobile-menu-toggle {
@@ -1138,7 +1086,7 @@ ul.age-group-select li a:hover {
 
 }
 
-@media (max-width: 768px) {
+@media (max-width: var(--breakpoint-md)) {
     .featured-header h1 {
         padding: 1em 0;
     }
@@ -1175,9 +1123,6 @@ ul.age-group-select li a:hover {
     }
     #main-finder img {
         max-width: 150px;
-    }
-    .navbar-brand {
-        width: 40px;
     }
 }
 

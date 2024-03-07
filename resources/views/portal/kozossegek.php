@@ -13,7 +13,7 @@
     <h3 class="py-3 mb-0 text-center text-md-left">@lang('Közösségek')</h3>
 @endfeaturedTitle
 
-<div class="container-fluid inner">
+<div class="container inner">
     @yield('templom_title')
     @include('portal.partials.kozossegek_results')
     @include('partials.simple-pager', ['route' => 'portal.groups.page','total' => $total,'page' => $page,'perpage' => $perpage,'routeparams' => $filter])

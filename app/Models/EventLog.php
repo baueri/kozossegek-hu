@@ -1,18 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
-use Framework\Model\Model;
+use Framework\Model\Entity;
 
-class EventLog extends Model
+/**
+ * @property int $id
+ * @property string $type
+ * @property string $log
+ * @property int $user_id
+ * @property string $created_at
+ */
+class EventLog extends Entity
 {
-    public $id;
-
-    public $type;
-
-    public $log;
-
-    public $user_id;
-
-    public $created_at;
 }

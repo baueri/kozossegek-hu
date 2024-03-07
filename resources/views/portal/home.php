@@ -15,15 +15,13 @@
       crossorigin=""/>
 @endsection
 @extends('portal')
-<!-- Main jumbotron-like header. Should contain a short description and a call to action. Also a search input.
- -->
 <div id="main-finder" class="text-light text-center py-3 py-md-5">
     <div class="container">
         <img src="/images/logo/logo190x190.webp" class="mb-sm-4 mb-2 logo-home" alt="logo"/>
         <h1 class="display-4">kozossegek.hu</h1>
         <form class="form-inline justify-content-center mt-4" method="get" action="@route('portal.groups')">
             <div class="input-group rounded-pill bg-white p-1 shadow" style="max-width: 500px; width: 100%">
-                <input type="text" name="search" class="form-control rounded-pill border-0"
+                <input type="text" name="search" class="form-control rounded-pill border-0 form-control-nofocus mx-1"
                        placeholder="@lang('search')" aria-label="@lang('search')" aria-describedby="search-addon">
                 <div class="input-group-append">
                     <button class="btn btn-main rounded-pill" type="submit">@icon('search') @lang('search')</button>
@@ -32,7 +30,9 @@
         </form>
         <div class="mt-4">
 <!--            <a href="@route('portal.groups')" class="btn btn-main rounded-pill my-2 m-md-0">@lang('menu.search_group')</a>-->
-            <a href="@route('portal.register_group')" class="btn btn-main rounded-pill shadow">@lang('menu.leading_a_group')</a>
+            <a href="@route('portal.register_group')" class="btn btn-outline-purple bg-white text-purple text-d rounded-pill shadow">
+                @lang('menu.leading_a_group') @icon('arrow-right')
+            </a>
         </div>
     </div>
 </div>

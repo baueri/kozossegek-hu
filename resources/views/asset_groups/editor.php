@@ -43,12 +43,12 @@
             fontNames: [
                 'Sans Serif', 'Sans', 'Arial', 'Courier',
                 'Courier New', 'Helvetica',
-                'Merriweather', 'Roboto Condensed'
+                'Merriweather'
             ],
             fontNamesIgnoreCheck: [
                 'Sans Serif', 'Sans', 'Arial', 'Courier',
                 'Courier New', 'Helvetica',
-                'Merriweather', 'Roboto Condensed'
+                'Merriweather'
             ],
             toolbar: [
                 ['style', ['style', 'fontsize', 'fontname']],

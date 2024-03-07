@@ -30,13 +30,11 @@
     @endif
     <div class="group-tags text-center text-md-left" style="filter: brightness(0) invert(1)">
         @foreach($group->tags as $tag)
-        <a href="@route('portal.groups', ['tags' => $tag->tag])" class="tag align-bottom">
-            <span class="tag-img tag-{{ $tag->tag }}" title="{{ $tag->translate() }}"></span>
-        </a>
+        <span class="tag-img tag-{{ $tag->tag }}" title="{{ $tag->translate() }}"></span>
         @endforeach
     </div>
 @endfeaturedTitle
-<div class="container-fluid inner kozi-adatlap">
+<div class="container inner kozi-adatlap">
     @if($group->status == "inactive")
         @alert('warning')
         Ez a közösséged jelenleg <b>inaktív</b> állapotban van, ezért mások számára nem jelenik meg a találati listában, illetve közvetlenül se tudják megtekinteni az adatlapját. Amennyiben láthatóvá szeretnéd tenni, állítsd át az állapotát <b>aktívra</b> a <a href="{{ $group->getEditUrl() }}" title="szerkesztés">szerkesztési oldalon</a>.
@@ -48,9 +46,6 @@
             <img class="img-big shadow-smooth" src="{{ $group->getThumbnail() }}" alt="{{ $group->name }}" style="max-width: 510px;">
         </div>
         <div class="col-md-8 col-sm-12 pt-4 pt-md-0">
-<!--            <div>-->
-<!--                <img class="img-big shadow-smooth img-sm d-none d-md-block d-lg-none" src="{{ $group->getThumbnail() }}" alt="{{ $group->name }}">-->
-<!--            </div>-->
             @if($group->spiritual_movement)
                 <p class="kozi-tulajdonsag">
                     <strong>Lelkiségi mozgalom</strong><br/> <a href="{{ $group->spiritualMovement->getUrl() }}">{{ $group->spiritual_movement }}</a>

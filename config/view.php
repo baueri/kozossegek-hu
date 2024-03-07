@@ -75,7 +75,7 @@ return [
         'disabled' => fn ($matches) => "<?php if($matches[1]): echo 'disabled'; endif; ?>",
         'dump' => fn($matches) => "<?php dump($matches[1]); ?>",
         'csrf' => fn () => "<input type=\"hidden\" name=\"_token\" value=\"<?php echo csrf_token(); ?>\">",
-        'lazySrc' => fn () => "src=\"/images/placeholder.jpg\""
+        'lazySrc' => fn () => "src=\"/images/placeholder.webp\""
     ],
     'components' => [
         'aszf' => AszfCheckBox::class,

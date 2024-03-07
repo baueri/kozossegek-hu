@@ -77,7 +77,7 @@
 
 <div class="" id="header">
     <nav id="navbar-top" class="navbar navbar-expand-sm d-lg-flex d-none">
-        <div class="container-fluid">
+        <div class="container">
             <ul class="navbar-nav nav-pages mx-2">
                 @yield('nav-pages')
             </ul>
@@ -90,13 +90,12 @@
         </div>
     </nav>
     <nav class="navbar navbar-expand-lg" id="header-main">
-        <div class="container-fluid position-relative">
-            <div><a href="@route('home')" class="navbar-brand" aria-label="Főoldal">
-                <img src="/images/logo/logo200x50.webp" class="logo-lg" alt="logo"/>
-                <img src="/images/logo/logo42x42.webp" class="logo-sm" style="display:none;" alt="logo">
+        <div class="container position-relative">
+            <a href="@route('home')" class="navbar-brand mx-2 mx-lg-0" aria-label="Főoldal">
+                <img src="/images/logo/logo200x50.webp" class="logo-lg d-none d-md-block " alt="logo"/>
+                <img src="/images/logo/logo42x42.webp" class="logo-sm d-block d-md-none" alt="logo">
             </a>
-            </div>
-            <div class="d-inline-block d-lg-none flex-grow-1 mx-3">
+            <div class="d-inline-block d-lg-none flex-grow-1 mr-3">
                 @include('portal.partials.search_box')
             </div>
             <input type="checkbox" style="display: none" id="toggle_main_menu" name="toggle_main_menu">

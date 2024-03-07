@@ -1,26 +1,25 @@
 <div class="row">
-    <div class="col-lg-2 col-md-12">
-        <form>
-            <div class="mb-3">
-                <input type="text" class="form-control"
-                       placeholder="" name="search"
+    <div class="col-md-12 my-3">
+        <form class="row">
+            <div class="col-md-3 mb-4">
+                <input type="text" class="form-control rounded-pill"
+                       placeholder="Keresés" name="search"
                        value="{{ request()->get('search') }}" aria-label="Keresőszó"
                        data-url="@route('api.search_group')"/>
             </div>
-            <div class="mb-3">
-                <label>@lang('age_group')</label>
-                <select class="form-control" name="korosztaly" aria-label="@lang('age_group')">
+            <div class="col-md-3 mb-2">
+                <select class="form-control rounded-pill" name="korosztaly" aria-label="@lang('age_group')">
                     <option value="">-- @lang('age_group') --</option>
                     @foreach($age_groups as $age_group)
                     <option value="{{ $age_group->value }}" @selected($selected_age_group === $age_group->value)>{{ $age_group->translate() }}</option>
                     @endforeach
                 </select>
             </div>
-            <div class="mb-3">
+            <div class="col-md-12 mb-3">
                 <label>Közösség jellege</label>
-                <div>
+                <div class="text-center text-md-left mt-2">
                     @foreach($tags as $i => $tag)
-                        <label for="tag-{{ $tag->value }}"aria-label="{{ $tag->translate() }}">
+                        <label for="tag-{{ $tag->value }}" aria-label="{{ $tag->translate() }}" class="mr-1">
                             <input type="checkbox"
                                    class="group-tag"
                                    id="tag-{{ $tag->value }}"
@@ -33,14 +32,14 @@
                     <input type="hidden" name="tags" value="{{ $filter['tags'] }}">
                 </div>
             </div>
-            <div>
-                <button type="submit" class="btn btn-main px-3 w-100" aria-label="Keresés indítása">
+            <div class="col-md-12">
+                <button type="submit" class="btn btn-main rounded-pill px-3" aria-label="Keresés indítása">
                     <i class="fa fa-search"></i> Keresés
                 </button>
             </div>
         </form>
     </div>
-    <div class="col-lg-10 col-md-12">
+    <div class="col-md-12">
         <p>
             Összes találat: {{ $total }}
         </p>
@@ -62,11 +61,11 @@
                              class="lazy">
                     </a>
                     <div class="card-body">
-                        <p class="text-center mb-1" style="height: 25px;">
+                        <p class="text-center mb-2" style="height: 30px;">
                             @if($group['tags'])
                             @foreach($group['tags'] as $tag_key => $tag)
                             <span class="tag-img tag-{{ $tag_key }}" title="{{ $tag }}"
-                                  aria-label="{{ $tag }}" style="scale: .6; transform-origin: top; margin: 0 -3px"></span>
+                                  aria-label="{{ $tag }}" style="scale: .8; transform-origin: top; margin: 0 -1px"></span>
                             @endforeach
                             @endif
                         </p>
@@ -78,7 +77,7 @@
                             <strong>@lang('age_group'):</strong> <span>{{ implode(', ', $group['age_group_text']) }}</span><br>
                         </p>
                         <a href="{{ $group['url'] }}"
-                           class="btn btn-outline-purple btn-sm kozi-more-info">Megnézem</a>
+                           class="btn btn-outline-purple btn-sm kozi-more-info rounded-pill">Megnézem</a>
                     </div>
                 </div>
             </div>
