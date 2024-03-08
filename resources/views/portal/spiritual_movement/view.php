@@ -4,7 +4,7 @@
     {{ $spiritualMovement->getBreadcrumb() }}
     <h3 class="py-3 mb-0">{{ $title }}</h3>
 @endfeaturedTitle
-<div class="container-fluid inner">
+<div class="container inner">
 
     <div class="row">
         <div class="col-md-3 text-center">

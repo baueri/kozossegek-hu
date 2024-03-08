@@ -1,6 +1,6 @@
 @extends('portal')
 @featuredTitle('Új jelszó igénylése')
-<div class="container-fluid inner py-5">
+<div class="container inner py-5">
     @message()
     <p>
         Add meg a fiókodhoz tartozó email címedet, amire küldünk egy levelet a további lépésekkel kapcsolatban!

@@ -1,14 +1,14 @@
 @section('subtitle', "{$title} - ")
 @extends('portal')
 @featuredTitle($title)
-<div class="container-fluid inner">
-    <div class="text-center text-muted font-italic mb-5">
+<div class="container inner">
+    <div class="text-center font-italic mb-5">
         {{ $description }}
     </div>
     <div>
         @foreach($spiritualMovements as $spiritualMovement)
         <a href="{{ $spiritualMovement->getUrl() }}" class="spiritual-movement-row">
-            <div class="card mb-3 shadow-sm rounded">
+            <div class="card mb-3 shadow rounded">
                 <div class="no-gutters row">
                     <div class="p-2 align-middle text-center col-2">
                         <img src="{{ $spiritualMovement->image_url }}" alt="{{ $spiritualMovement->name }}" class="align-middle w-100">

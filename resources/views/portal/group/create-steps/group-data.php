@@ -10,7 +10,7 @@
         <i class="fa fa-exclamation-triangle"></i> Fontos számunkra, hogy az oldalon valóban keresztény értékeket közvetítő közösségeket hirdessünk. Mielőtt kitöltenéd a regisztrációs űrlapot, kérjük, hogy mindenképp olvasd el az <a href="/iranyelveink" target="_blank">irányelveinket</a>.
     @endalert
     @if(!is_loggedin())
-        <div class="step-container">
+        <div class="step-container shadow">
             <h4>Felhasználói adatok</h4>
             <p>
                 <a href="@route('login')" id="login-existing-user" onclick="showLoginModal(); return false;"><b>
@@ -47,7 +47,7 @@
             </div>
         </div>
     @endif
-    <div class="step-container">
+    <div class="step-container shadow">
         <h4>Általános adatok</h4>
         <div class="row">
             <div class="col-md-6">
@@ -152,7 +152,7 @@
             @spiritual_movement_selector($group->spiritual_movement_id)
         </div>
     </div>
-    <div class="step-container">
+    <div class="step-container shadow">
         <h4>A közösség jellemzői<small style="color: red">*</small></h4>
         @alert('info')
             Válassz ki legalább egy, de legfeljebb öt tulajdonságot, ami a közösségedet a legjobban jellemzi.
@@ -193,7 +193,7 @@
             </div>
         </div>
     </div>
-    <div class="step-container">
+    <div class="step-container shadow">
         <h4>Igazolás feltöltése</h4>
         <div class="form-group">
             @alert('info')

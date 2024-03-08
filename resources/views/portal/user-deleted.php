@@ -1,5 +1,5 @@
 @extends('portal')
 
-<div class="container-fluid inner">
+<div class="container inner">
     @message()
 </div>

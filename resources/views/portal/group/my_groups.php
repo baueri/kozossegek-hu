@@ -1,6 +1,6 @@
 @extends('portal')
 @featuredTitle('Közösségeim')
-<div class="container-fluid inner">
+<div class="container inner">
     <div class="row">
         <div class="col-md-3">
         @include('portal.partials.user-sidemenu')

@@ -1,6 +1,6 @@
 @extends('portal')
 @featuredTitle('Belépés')
-<div class="container-fluid inner">
+<div class="container inner">
     <div class="form">
         <form class="login-form" method="post">
             <div class="row">

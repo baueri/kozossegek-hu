@@ -1,9 +1,5 @@
 @import "common.css";
 
-a {
-    /*color: var(--alt-blue);*/
-}
-
 body {
     font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
     color: #555;
@@ -905,10 +901,11 @@ ul.age-group-select li a:hover {
 }
 
 #create-group .step-container {
-    border: 3px solid #eaeaea;
+    border: 1px solid #eaeaea;
     padding: 2em;
     margin-bottom: 3em;
-    box-shadow: 0 0 9px #ddd;
+    border-radius: 10px;
+    /*box-shadow: 0 0 9px #ddd;*/
 }
 
 .shadow-smooth {
