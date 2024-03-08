@@ -11,18 +11,14 @@
 @extends('portal')
 @featuredTitle($page_title)
 <div class="container inner p-4 page">
-    <div>
-        {{ $page->content }}
-        <span id="contact"></span>
-    </div>
-</div>
-<div class="jumbotron main-block mt-0 mb-0">
-    <div class="container">
+    {{ $page->content }}
+    <span id="contact"></span>
+    <div class="card shadow p-3">
         <div class="row">
-            <div class="col-md-5 offset-0 offset-md-1 text-center mb-3">
+            <div class="col-md-6 text-center mb-3">
                 <img src="/images/csoportkep_contact.jpg" alt="A kozossegek.hu csapata"/>
             </div>
-            <div class="col-md-5">
+            <div class="col-md-6">
                 <h4>Írj nekünk!</h4>
                 <form method="post" id="send-message" action="@route('portal.contact_us')">
                     <div class="form-group required">
@@ -45,7 +41,9 @@
                         <textarea class="noresize form-control form-control-sm" name="message" rows="4" required onresize id="mail_msg"></textarea>
                     </div>
                     @honeypot('rolunk')
-                    <button type="submit" name="send" class="btn btn-altblue btn-sm"><i class="fa fa-paper-plane mr-2"></i> Üzenet elküldése</button>
+                    <p class="text-center">
+                        <button type="submit" name="send" class="btn btn-altblue rounded-pill shadow"><i class="fa fa-paper-plane mr-2"></i> Üzenet elküldése</button>
+                    </p>
                 </form>
             </div>
         </div>

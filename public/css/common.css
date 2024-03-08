@@ -66,6 +66,14 @@
     border-radius: 0 !important;
 }
 
+.radisus-1 {
+    border-radius: 1rem !important;
+}
+
+.radius-2 {
+    border-radius: 1.25rem !important;
+}
+
 .btn-darkblue:hover {
     background: #1C3C4B;
     color: #fff;
