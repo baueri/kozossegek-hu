@@ -28,7 +28,7 @@
     @if($institute)
         <h5 style="color: rgba(255, 255, 255, .5)" class="mt-0 mb-4 text-center text-md-left">{{ $institute->name }} ({{ $institute->city }})</h5>
     @endif
-    <div class="group-tags text-center text-md-left" style="filter: brightness(0) invert(1)">
+    <div class="group-tags text-center text-md-left">
         @foreach($group->tags as $tag)
         <span class="tag-img tag-{{ $tag->tag }}" title="{{ $tag->translate() }}"></span>
         @endforeach

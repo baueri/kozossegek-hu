@@ -215,6 +215,15 @@
     box-shadow: none !important;
 }
 
+.badge-purple {
+    background-color: var(--purple);
+    color: #fff;
+}
+
+.border-purple {
+    border-color: var(--purple);
+}
+
 @media (min-width: 576px) {
     .text-sm-left {
         text-align: left !important; }

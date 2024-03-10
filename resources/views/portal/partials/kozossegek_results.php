@@ -19,15 +19,17 @@
                 <label>Közösség jellege</label>
                 <div class="text-center text-md-left mt-2">
                     @foreach($tags as $i => $tag)
-                        <label for="tag-{{ $tag->value }}" aria-label="{{ $tag->translate() }}" class="mr-1">
-                            <input type="checkbox"
-                                   class="group-tag"
-                                   id="tag-{{ $tag->value }}"
-                                   value="{{ $tag->value }}"
-                                   @checked(in_array($tag->value, $selected_tags))
-                            style="">
-                            <span class="align-middle">{{ $tag->translate() }}</span>
-                        </label>
+                    <input type="checkbox"
+                           class="group-tag"
+                           style="display: none;"
+                           id="tag-{{ $tag->value }}"
+                           value="{{ $tag->value }}"
+                           @checked(in_array($tag->value, $selected_tags))
+                    style="">
+                    <label for="tag-{{ $tag->value }}" aria-label="{{ $tag->translate() }}" class="mr-1 rounded-pill btn-outline-purple px-3 py-1">
+
+                        <span class="align-middle">{{ $tag->translate() }}</span>
+                    </label>
                     @endforeach
                     <input type="hidden" name="tags" value="{{ $filter['tags'] }}">
                 </div>

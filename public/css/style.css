@@ -787,7 +787,7 @@ ul.age-group-select li a:hover {
 }
 
 .group-tag:checked + label {
-    background: var(--darkblue);
+    background: var(--purple);
     color: #fff;
 }
 .required > label:after, .required h4:after {
@@ -800,6 +800,9 @@ ul.age-group-select li a:hover {
     width: 35px;
     height: 35px;
     margin: 0 5px;
+    background-color: rgb(255, 255, 255) !important;
+    border-radius: 50%;
+    padding: 1rem;
 }
 
 /** cimke sprite-ok **/
