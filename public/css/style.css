@@ -900,7 +900,7 @@ ul.age-group-select li a:hover {
     opacity: 1;
 }
 
-#create-group .step-container {
+.step-container {
     border: 1px solid #eaeaea;
     padding: 2em;
     margin-bottom: 3em;

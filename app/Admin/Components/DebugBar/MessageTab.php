@@ -12,7 +12,7 @@ class MessageTab extends DebugBarTab
 
     public function getTitle(): string
     {
-        return 'Messages';
+        return 'messages';
     }
 
     public function icon(): string

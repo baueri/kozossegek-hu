@@ -2,7 +2,7 @@
 <input type="radio" name="debug-tab" id="debugbar-open" style="display: none">
 <div id="debugbar">
     <label class="mr-2 ml-3 text-danger" for="debugbar-close" style="cursor: pointer; position: absolute; right: 5px; top: 6px; z-index: 1000">@icon('times')</label>
-    <label class="mr-2 ml-3 text-common" for="debugbar-open" title="debugbar" style="cursor: pointer; position: absolute; right: 5px; top: 6px; z-index: 1000">@icon('terminal')</label>
+    <label class="mr-2 ml-3 text-common" for="debugbar-open" title="debugbar">@icon('terminal')</label>
     <div id="debugbar-inner">
         <div id="debugbar-header" class="bg-light d-flex">
             <div class="btn-group btn-shadow mr-auto">
@@ -69,7 +69,12 @@
         height: 30px;
         margin: 0 !important;
         padding: 5px;
-        top: 0 !important;
+
+        cursor: pointer;
+        position: absolute;
+        top: 0;
+        z-index: 1000;
+        background: linear-gradient(to bottom, #ffffff 0%, #dee5f2 100%);
     }
 
     #debugbar-close:checked ~ #debugbar label[for=debugbar-close] {

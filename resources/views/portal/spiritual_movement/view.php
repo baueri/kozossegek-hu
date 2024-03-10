@@ -12,11 +12,12 @@
         </div>
         <div class="px-3 col-md-9">
             {{ $spiritualMovement->description }}
-            <p>
-                <b>Weboldal: </b><a href="{{ $spiritualMovement->website }}" target="_blank">{{ $spiritualMovement->website }} @icon('external-link-alt')</a>
-            </p>
+            @if($spiritualMovement->website)
+                <p>
+                    <b>Weboldal: </b><a href="{{ $spiritualMovement->website }}" target="_blank">{{ $spiritualMovement->website }} @icon('external-link-alt')</a>
+                </p>
+            @endif
             @if($groups && $groups->isNotEmpty())
-            <hr/>
             <h5 class="my-5 text-center">A(z) <b>{{ $spiritualMovement->name }}</b> nálunk regisztrált kisközösségei:</h5>
             <div class="row" id="kozossegek-list">
             @foreach($groups as $i => $group)

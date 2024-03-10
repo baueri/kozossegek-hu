@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Admin\Components\DebugBar;
 
 use Exception;
@@ -17,14 +19,16 @@ class DebugBar
         QueryHistoryTab $queryHistoryTab,
         LoadedViewsTab $loadedViewsTab,
         MileStoneTab $timeLineTab,
-        MessageTab $messageTab
+        MessageTab $messageTab,
+        RequestTab $requestTab
     ) {
         $this->tabs = [
             'info' => $frameworkInfoTab,
             'query_history' => $queryHistoryTab,
             'views' => $loadedViewsTab,
             'timeline' => $timeLineTab,
-            'message' => $messageTab
+            'message' => $messageTab,
+            'request' => $requestTab
         ];
     }
 

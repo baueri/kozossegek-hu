@@ -10,7 +10,7 @@ class MileStoneTab extends DebugBarTab
 
     public function getTitle(): string
     {
-        return 'Timeline';
+        return 'timeline';
     }
 
     public function icon(): string

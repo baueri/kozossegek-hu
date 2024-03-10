@@ -22,8 +22,8 @@
                     </tr>
                 @foreach($groups as $group)
                 <tr>
-                    <td><a href="{{ $group->url() }}" title="megekintés"><i class="fa fa-eye"></i></a></td>
-                    <td><a href="{{ $group->getEditUrl() }}" title="szerkesztés">{{ $group->name }}</a></td>
+                    <td><a href="{{ $group->url() }}" title="megekintés">@icon('eye')</a></td>
+                    <td><a href="{{ $group->getEditUrl() }}" title="szerkesztés">@icon('edit') {{ $group->name }}</a></td>
                     <td>{{ $group->city }} {{ $group->district ? "<span class='text-muted small'>(" . $group->district .")</span>" : "" }}</td>
                     <td>{{ $group->institute_name }}</td>
                     <td>{{ $group->group_leaders }}</td>
