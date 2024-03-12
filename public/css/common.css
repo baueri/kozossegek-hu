@@ -92,6 +92,8 @@
 .btn-outline-purple {
     color: var(--purple);
     border: 1px solid var(--purple);
+    transition: ease-in all 0.15s;
+    cursor: pointer;
 }
 
 .btn-outline-purple:hover {

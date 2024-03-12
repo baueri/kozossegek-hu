@@ -84,13 +84,19 @@
             @foreach($similar_groups as $i => $similarGroup)
             <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3">
                 <div class="card kozi-box h-100 p-0 shadow-smooth">
-                    <a href="{{ $similarGroup->url() }}" style="background: url({{ $similarGroup->getThumbnail() }}) no-repeat bottom 0 center;background-size: cover; height: 185px" class="card-img">
+                    <a href="{{ $similarGroup->url() }}" class="card-img">
                         <div>megnézem</div>
+                        <img @lazySrc()
+                             data-src="{{ $similarGroup->getThumbnail() }}"
+                             data-srcset="{{ $similarGroup->getThumbnail() }}"
+                             alt="{{ $similarGroup->name }}"
+                             style="object-fit: cover"
+                             class="lazy">
                     </a>
                     <div class="card-body">
                         <p class="text-center">
                             @foreach($similarGroup->tags as $tag)
-                                <span class="tag-img tag-{{ $tag->tag }}" title="{{ $tag->translate() }}"></span>
+                                <span class="tag-img tag-{{ $tag->tag }}" title="{{ $tag->translate() }}" aria-label="{{ $tag->translate() }}"></span>
                             @endforeach
                         </p>
                         <div>{{ $similarGroup->name }}</div>
@@ -100,7 +106,7 @@
                         <p class="card-text mb-0">
                             <strong>@lang('age_group'):</strong> <span>{{ $similarGroup->ageGroup() }}</span><br>
                         </p>
-                        <a href="{{ $similarGroup->url() }}" class="btn btn-outline-altblue btn-sm kozi-more-info">Megnézem</a>
+                        <a href="{{ $similarGroup->url() }}" class="btn btn-outline-purple btn-sm kozi-more-info rounded-pill">Megnézem</a>
                     </div>
                 </div>
             </div>

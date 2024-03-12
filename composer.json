@@ -46,7 +46,9 @@
 
     "meili:create": "php console meili --create",
     "meili:configure": "php console meili --configure",
-    "meili:import": "php console meili --import"
+    "meili:import": "php console meili --import",
+
+    "tag-sprites:generate": "cwebp -q 100 -resize 330 275  public/images/tag_sprites2.png -o public/images/tag_sprites.webp"
   },
   "require-dev": {
     "robmorgan/phinx": "^0.12.9",

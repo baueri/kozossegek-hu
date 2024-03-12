@@ -17,7 +17,7 @@
             </div>
             <div class="col-md-12 mb-3">
                 <label>Közösség jellege</label>
-                <div class="text-center text-md-left mt-2">
+                <div class="text-center text-md-left mt-2 d-flex flex-wrap">
                     @foreach($tags as $i => $tag)
                     <input type="checkbox"
                            class="group-tag"
@@ -26,8 +26,8 @@
                            value="{{ $tag->value }}"
                            @checked(in_array($tag->value, $selected_tags))
                     style="">
-                    <label for="tag-{{ $tag->value }}" aria-label="{{ $tag->translate() }}" class="mr-1 rounded-pill btn-outline-purple px-3 py-1">
-
+                    <label for="tag-{{ $tag->value }}" aria-label="{{ $tag->translate() }}" class="mr-1 rounded-pill btn-outline-purple btn-sm d-flex align-items-center" style="height: 32px;">
+<!--                        <span class="tag-img tag-{{ $tag->value }} tag-sm" aria-label="{{ $tag->translate() }}"></span>-->
                         <span class="align-middle">{{ $tag->translate() }}</span>
                     </label>
                     @endforeach

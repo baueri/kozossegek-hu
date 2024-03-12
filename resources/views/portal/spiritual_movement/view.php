@@ -22,9 +22,15 @@
             <div class="row" id="kozossegek-list">
             @foreach($groups as $i => $group)
             <div class="col-xl-4 col-md-6 mb-3">
-                <div class="card kozi-box h-100 p-0">
-                    <a href="{{ $group->url() }}" style="background: url({{ $group->getThumbnail() }}) no-repeat bottom 0 center;background-size: cover; height: 185px" class="card-img">
+                <div class="card kozi-box h-100 p-0 shadow-smooth">
+                    <a href="{{ $group->url() }}" class="card-img">
                         <div>megnézem</div>
+                        <img @lazySrc()
+                             data-src="{{ $group->getThumbnail() }}"
+                             data-srcset="{{ $group->getThumbnail() }}"
+                             alt="{{ $group->name }}"
+                             style="object-fit: cover"
+                             class="lazy">
                     </a>
                     <div class="card-body">
                         <p class="text-center">
@@ -40,7 +46,7 @@
                             <strong>@lang('age_group'):</strong> <span>{{ $group->ageGroup() }}</span><br>
                             <strong>@lang('occasions'):</strong> <span>{{ $group->occasionFrequency() }}</span><br>
                         </p>
-                        <a href="{{ $group->url() }}" class="btn btn-outline-success btn-sm kozi-more-info">Megnézem</a>
+                        <a href="{{ $group->url() }}" class="btn btn-outline-purple btn-sm kozi-more-info rounded-pill">Megnézem</a>
                     </div>
                 </div>
             </div>

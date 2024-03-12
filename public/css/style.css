@@ -289,11 +289,6 @@ nav.navbar .nav-link:hover {
     text-decoration: none;
 }
 
-.kozi-adatlap #kozossegek-list .tag-img {
-    width: 25px;
-    height: 25px;
-}
-
 .kozi-box {
     margin-bottom: 30px !important;
     text-decoration: none !important;
@@ -301,11 +296,6 @@ nav.navbar .nav-link:hover {
     position: relative;
     overflow: hidden;
 }
-
-/*.kozi-box:hover {*/
-/*    box-shadow: 0 0 12px #000;*/
-/*    z-index: 1;*/
-/*}*/
 
 .kozi-box img {
     width: 100%;
@@ -800,9 +790,6 @@ ul.age-group-select li a:hover {
     width: 35px;
     height: 35px;
     margin: 0 5px;
-    background-color: rgb(255, 255, 255) !important;
-    border-radius: 50%;
-    padding: 1rem;
 }
 
 /** cimke sprite-ok **/
@@ -832,6 +819,12 @@ ul.age-group-select li a:hover {
 .tag-noi_kor {background: url('/images/tag_sprites.webp') -175px -230px;}
 .tag-sportos {background: url('/images/tag_sprites.webp') -230px -230px;}
 .tag-klub {background: url('/images/tag_sprites.webp') -285px -10px;}
+
+.tag-img.tag-sm {
+    scale: .5;
+    transform-origin: left;
+    margin: 0 -1px;
+}
 
 /*#kozossegek-list > div {*/
 /*    padding-left: 1.3em;*/
