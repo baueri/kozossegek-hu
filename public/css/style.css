@@ -1,4 +1,6 @@
-@import "common.css";
+@import url("https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css");
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,600&display=swap");
+@import "../assets/fontawesome/css/all.min.css";
 
 body {
     font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -1076,7 +1078,12 @@ ul.age-group-select li a:hover {
     #main-finder h1 {
         font-size: 2rem;
     }
+}
 
+.partnereink img.lazy {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
 }
 
 @media (max-width: var(--breakpoint-md)) {

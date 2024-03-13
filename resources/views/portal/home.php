@@ -10,9 +10,8 @@
 <meta property="og:image" content="{{ get_site_url() . $header_background }}"/>
 <meta property="og:locale" content="hu_HU"/>
 <link rel="canonical" href="{{ get_site_url() }}"/>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-      integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-      crossorigin=""/>
+<link href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" @preload_css()>
+
 @endsection
 @extends('portal')
 <div id="main-finder" class="text-light text-center py-3 py-md-5">

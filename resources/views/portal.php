@@ -28,19 +28,15 @@
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('subtitle'){{ site_name() }}</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/assets/fontawesome/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600&display=swap" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link rel="search" type="application/opensearchdescription+xml" title="kozossegek.hu" href="opensearch.xml">
-
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<!--    <link rel="search" type="application/opensearchdescription+xml" title="kozossegek.hu" href="opensearch.xml">-->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" async></script>
 
     @yield('header')
 
     <link rel="stylesheet" href="/css/style.css?{{ filemtime('css/style.css') }}">
+    <link href="css/common.css" @preload_css()>
 </head>
 <body class="{{ !is_prod() ? 'demo' : '' }} {{ is_home() ? 'home' : '' }} {{ $body_class ?? '' }}">
     <div id="fb-root"></div>
@@ -64,20 +60,20 @@
                     <h5>Partnereink</h5>
                     <div class="partnereink">
                         <a href="https://pasztoralis.hu/" title="Pasztorális helynökség Szeged" target="_blank" rel="noopener noreferrer">
-                            <img src="/images/partnerek/szcsem_szines_latin.webp" alt="Pasztorális helynökség Szeged">
+                            <img @lazySrc() data-src="/images/partnerek/szcsem_szines_latin.webp" data-srcset="/images/partnerek/szcsem_szines_latin.webp" alt="Pasztorális helynökség Szeged" class="lazy">
                         </a>
                         <a href="https://halo.hu/" title="Háló Közösségi és Kulturális Központ" target="_blank" rel="noopener noreferrer">
-                            <img src="/images/partnerek/halo-logo.webp" alt="Háló Közösségi és Kulturális Központ">
+                            <img @lazySrc() data-src="/images/partnerek/halo-logo.webp" data-srcset="/images/partnerek/halo-logo.webp" alt="Háló Közösségi és Kulturális Központ" class="lazy">
                         </a>
                         <a href="https://fbe.hu/" title="Felebarátok egyesület" target="_blank" rel="noopener noreferrer">
-                            <img src="/images/partnerek/felebaratok_egyesulet.webp" alt="Felebarátok egyesület">
+                            <img @lazySrc() data-src="/images/partnerek/felebaratok_egyesulet.webp" data-srcset="/images/partnerek/felebaratok_egyesulet.webp" alt="Felebarátok egyesület" class="lazy">
                         </a>
                         <br/>
                         <a href="https://72tanitvany.hu/" title="Hetvenkét Tanítvány Mozgalom" target="_blank" rel="noopener noreferrer" class="t72-logo">
-                            <img src="/images/partnerek/t72_2.webp" alt="Hetvenkét Tanítvány Mozgalom">
+                            <img @lazySrc() data-src="/images/partnerek/t72_2.webp" data-srcset="/images/partnerek/t72_2.webp" alt="Hetvenkét Tanítvány Mozgalom" class="lazy">
                         </a>
                         <a href="https://bizdramagad.hu/" title="Bízd rá magad" target="_blank" rel="noopener noreferrer" class="t72-logo">
-                            <img src="/images/partnerek/bizd_ra_magad.webp" alt="Bízd rá magad">
+                            <img @lazySrc() data-src="/images/partnerek/bizd_ra_magad.webp" data-srcset="/images/partnerek/bizd_ra_magad.webp" alt="Bízd rá magad" class="lazy">
                         </a>
                     </div>
                 </div>
