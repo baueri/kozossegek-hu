@@ -232,7 +232,7 @@ trait GroupTrait
         $data['tags'] = $this->tags->keyBy('tag')->map->translate()->all();
         $data['tag_ids'] = $this->tags->pluck('tag')->all();
         $data['url'] = $this->url();
-        $data['thumbnail'] = get_site_url() . $this->getThumbnail();
+        $data['thumbnail'] = $this->getThumbnail();
 
         return $data;
     }
