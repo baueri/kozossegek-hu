@@ -1,28 +1,34 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Framework;
 
-class Maintenance
+readonly class Maintenance
 {
+    public string $file;
 
-    const FILENAME = ROOT . '.maintenance';
-
-    public function down()
+    public function __construct()
     {
-        if (!file_exists(self::FILENAME)) {
-            touch(self::FILENAME);
+        $this->file = app()->root('.maintenance');
+    }
+
+    public function down(): void
+    {
+        if (!file_exists($this->file)) {
+            touch($this->file);
         }
     }
 
-    public function up()
+    public function up(): void
     {
-        if (file_exists(self::FILENAME)) {
-            unlink(self::FILENAME);
+        if (file_exists($this->file)) {
+            unlink($this->file);
         }
     }
 
-    public function isMaintenanceOn()
+    public function isMaintenanceOn(): bool
     {
-        return file_exists(self::FILENAME);
+        return file_exists($this->file);
     }
 }

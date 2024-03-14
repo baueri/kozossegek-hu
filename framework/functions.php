@@ -13,6 +13,7 @@ use Framework\Database\Database;
 use Framework\Database\DatabaseHelper;
 use Framework\Database\QueryLog;
 use Framework\Enums\Environment;
+use Framework\File\Path;
 use Framework\Http\ApiResponse;
 use Framework\Http\Message;
 use Framework\Http\Request;
@@ -307,7 +308,7 @@ function get_class_name(string|object $class): string
 
 function site_has_error_logs(): bool
 {
-    return file_exists(ROOT . 'error.log') && filesize(ROOT . 'error.log');
+    return file_exists('../error.log') && filesize('../error.log');
 }
 
 function event_logger(): EventLogger
@@ -486,4 +487,9 @@ function rglob($pattern, $flags = 0): bool|array
         );
     }
     return $files;
+}
+
+function path(): Path
+{
+    return new Path(app()->root());
 }

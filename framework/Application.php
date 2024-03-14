@@ -124,6 +124,16 @@ class Application extends Container
         $this->events[$event][] = $callback;
     }
 
+    public function root(string $path = ''): string
+    {
+        return $this->root . DS . ltrim($path, DS);
+    }
+
+    public function pub_path(string $path): string
+    {
+        return $this->root('public' . DS . ltrim($path, DS));
+    }
+
     public function __destruct()
     {
         $this->runEvents('terminated');

@@ -1,14 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Admin\Components\DebugBar;
 
 class LoadedViewsTab extends DebugBarTab
 {
     protected static array $loadedViews = [];
 
-    public static function addView(string $filePath, string $cachedFilePath)
+    public static function addView(string $filePath, string $cachedFilePath): void
     {
-        static::$loadedViews[] = [substr($filePath, strlen(ROOT)), basename($cachedFilePath)];
+        static::$loadedViews[] = [substr($filePath, strlen(app()->root())), basename($cachedFilePath)];
     }
 
     public function getTitle(): string

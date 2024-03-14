@@ -94,10 +94,10 @@ class InstituteController extends AdminController
         $institute = $repository->create($data);
 
         if ($image = $request['image']) {
-            if (!file_exists(ROOT . 'public/media/institutes/')) {
-                mkdir(ROOT . 'public/media/institutes/');
+            if (!file_exists(app()->pub_path('media/institutes/'))) {
+                mkdir(app()->pub_path('media/institutes/'));
             }
-            file_put_contents(ROOT . 'public/media/institutes/inst_' . $institute->id . '.jpg', base64_decode(substr($image, strpos($image, ','))));
+            file_put_contents(app()->pub_path("media/institutes/inst_{$institute->id}.jpg"), base64_decode(substr($image, strpos($image, ','))));
         }
 
         Message::success('Új intézmény létrehozva');

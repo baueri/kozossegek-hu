@@ -43,9 +43,9 @@ class SettingsController extends AdminController
         return view('admin.settings.error-log', compact('errors', 'level'));
     }
 
-    public function clearErrorLog()
+    public function clearErrorLog(): void
     {
-        unlink(ROOT . 'error.log');
+        unlink(app()->root('error.log'));
 
         Message::warning('Hibanapló ürítve');
 

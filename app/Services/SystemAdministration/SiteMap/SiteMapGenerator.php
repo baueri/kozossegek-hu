@@ -40,7 +40,7 @@ class SiteMapGenerator
         }
         $urls->sort('priority', 'desc');
 
-        file_put_contents(ROOT . 'public/sitemap.xml', $this->generateSiteMap($urls));
+        file_put_contents(app()->pub_path('sitemap.xml'), $this->generateSiteMap($urls));
     }
 
     /**

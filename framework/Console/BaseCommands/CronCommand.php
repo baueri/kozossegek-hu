@@ -51,8 +51,7 @@ abstract class CronCommand extends Command
             $this->output->warning('DAILY CRON RAN WITH SOME ERRORS');
         }
 
-        $file = ROOT . '.daily_cron_last_run';
         $date = date('Y-m-d H:i:s');
-        file_put_contents($file, "{$date} - {$message}\r\n", FILE_APPEND);
+        path()->save('.daily_cron_last_run', "{$date} - {$message}\r\n", FILE_APPEND);
     }
 }
