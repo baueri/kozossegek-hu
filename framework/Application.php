@@ -126,7 +126,7 @@ class Application extends Container
 
     public function root(string $path = ''): string
     {
-        return $this->root . DS . ltrim($path, DS);
+        return $this->root . ltrim($path, DS);
     }
 
     public function pub_path(string $path): string

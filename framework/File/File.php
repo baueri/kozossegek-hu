@@ -10,18 +10,15 @@ class File
 {
     protected ?string $fileName = null;
 
-    protected ?string $filePath = null;
-
-    protected $pathInfo;
+    protected string|array $pathInfo;
 
     protected ?string $fileType = null;
 
-    final public function __construct($filePath = '')
+    public function __construct(protected ?string $filePath = '')
     {
         if ($filePath) {
             $this->setFileName($filePath);
-            $this->setFilePath($filePath);
-            $this->fileType = strtolower(mime_content_type($filePath));
+            $this->fileType = $this->exists() ? strtolower(mime_content_type($filePath)) : null;
         }
     }
 
@@ -39,11 +36,6 @@ class File
     public function getFilePath(): ?string
     {
         return $this->filePath;
-    }
-
-    public function setFilePath(string $filePath): void
-    {
-        $this->filePath = $filePath;
     }
 
     public function getFileSize(string $unit = 'B', int $precision = 5): float
@@ -130,7 +122,7 @@ class File
         return ($ext && $withDot ? '.' : '') . $ext;
     }
 
-    public function getPathInfo()
+    public function getPathInfo(): array|string
     {
         return $this->pathInfo ??= pathinfo($this->filePath);
     }
@@ -190,6 +182,11 @@ class File
         return touch($this->filePath);
     }
 
+    public function exists(): bool
+    {
+        return file_exists($this->filePath);
+    }
+
     public static function createFromFormData(?array $formData = null): ?File
     {
         if (!$formData) {
@@ -197,5 +194,10 @@ class File
         }
 
         return new static($formData['tmp_name']);
+    }
+
+    public function __toString(): string
+    {
+        return $this->filePath;
     }
 }

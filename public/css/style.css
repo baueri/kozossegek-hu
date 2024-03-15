@@ -12,7 +12,6 @@ body:not(.home) {
     background: #fafafa;
 }
 
-
 img {
     max-width: 100%;
     height: auto;
@@ -79,6 +78,7 @@ img {
 
 .breadcrumb {
     background: rgba(155, 155, 155, 0.2);
+    overflow: scroll;
 }
 
 .breadcrumb a {
@@ -301,7 +301,7 @@ nav.navbar .nav-link:hover {
 
 .kozi-box img {
     width: 100%;
-    aspect-ratio: 1.5;
+    /*aspect-ratio: 1.5;*/
 }
 
 .kozi-more-info {
@@ -794,6 +794,10 @@ ul.age-group-select li a:hover {
     margin: 0 5px;
 }
 
+.tag-img:first-child {
+    margin-left: 0;
+}
+
 /** cimke sprite-ok **/
 .tag-csalados {background: url('/images/tag_sprites.webp') -10px -10px;}
 .tag-imakor {background: url('/images/tag_sprites.webp') -65px -10px;}
@@ -1072,11 +1076,11 @@ ul.age-group-select li a:hover {
     }
 
     #main-finder img.logo-home {
-        max-width: 150px;
+        max-width: 135px;
     }
 
     #main-finder h1 {
-        font-size: 2rem;
+        font-size: 1.4rem;
     }
 }
 

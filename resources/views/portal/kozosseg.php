@@ -26,13 +26,8 @@
         @endif
     </h3>
     @if($institute)
-        <h5 style="color: rgba(255, 255, 255, .5)" class="mt-0 mb-4 text-center text-md-left">{{ $institute->name }} ({{ $institute->city }})</h5>
+        <h5 style="color: rgba(255, 255, 255, .8)" class="my-0 text-center text-md-left">{{ $institute->name }} ({{ $institute->city }})</h5>
     @endif
-    <div class="group-tags text-center text-md-left">
-        @foreach($group->tags as $tag)
-        <span class="tag-img tag-{{ $tag->tag }}" title="{{ $tag->translate() }}"></span>
-        @endforeach
-    </div>
 @endfeaturedTitle
 <div class="container inner kozi-adatlap">
     @if($group->status == "inactive")
@@ -40,12 +35,16 @@
         Ez a közösséged jelenleg <b>inaktív</b> állapotban van, ezért mások számára nem jelenik meg a találati listában, illetve közvetlenül se tudják megtekinteni az adatlapját. Amennyiben láthatóvá szeretnéd tenni, állítsd át az állapotát <b>aktívra</b> a <a href="{{ $group->getEditUrl() }}" title="szerkesztés">szerkesztési oldalon</a>.
         @endalert
     @endif
-
     <div class="row">
         <div class="col-md-4 text-center">
             <img class="img-big shadow-smooth" src="{{ $group->getThumbnail() }}" alt="{{ $group->name }}" style="max-width: 510px;">
         </div>
         <div class="col-md-8 col-sm-12 pt-4 pt-md-0">
+            <div class="group-tags text-center text-md-left mb-3">
+                @foreach($group->tags as $tag)
+                    <span class="tag-img tag-{{ $tag->tag }}" title="{{ $tag->translate() }}"></span>
+                @endforeach
+            </div>
             @if($group->spiritual_movement)
                 <p class="kozi-tulajdonsag">
                     <strong>Lelkiségi mozgalom</strong><br/> <a href="{{ $group->spiritualMovement->getUrl() }}">{{ $group->spiritual_movement }}</a>

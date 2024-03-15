@@ -59,7 +59,6 @@
                              data-src="{{ $group['thumbnail'] }}"
                              data-srcset="{{ $group['thumbnail'] }}"
                              alt="{{ $group['city'] }}"
-                             style="object-fit: cover"
                              class="lazy">
                     </a>
                     <div class="card-body">

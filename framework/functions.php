@@ -489,7 +489,7 @@ function rglob($pattern, $flags = 0): bool|array
     return $files;
 }
 
-function path(): Path
+function root(): Path
 {
     return new Path(app()->root());
 }

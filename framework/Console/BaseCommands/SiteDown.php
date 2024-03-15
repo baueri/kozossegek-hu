@@ -1,10 +1,11 @@
 <?php
 
- namespace Framework\Console\BaseCommands;
+declare(strict_types=1);
+
+namespace Framework\Console\BaseCommands;
 
  use Framework\Console\Command;
  use Framework\Console\Out;
- use Framework\Maintenance;
 
 class SiteDown extends Command
 {
@@ -20,7 +21,7 @@ class SiteDown extends Command
 
     public function handle(): void
     {
-        (new Maintenance())->down();
+        root()->file('.maintenance')->touch();
 
         Out::warning('The site is now down for maintenance');
     }

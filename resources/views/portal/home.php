@@ -16,8 +16,8 @@
 @extends('portal')
 <div id="main-finder" class="text-light text-center py-3 py-md-5">
     <div class="container">
-        <img src="/images/logo/logo190x190.webp" class="mb-sm-4 mb-2 logo-home" alt="logo"/>
-        <h1 class="display-4">kozossegek.hu</h1>
+        <img src="/images/logo/logo190x190.webp" class="logo-home" alt="logo"/>
+        <h1 class="my-3">kozossegek.hu</h1>
         <form class="form-inline justify-content-center mt-4" method="get" action="@route('portal.groups')">
             <div class="input-group rounded-pill bg-white p-1 shadow" style="max-width: 500px; width: 100%">
                 <input type="text" name="search" class="form-control rounded-pill border-0 form-control-nofocus mx-1"
@@ -36,7 +36,7 @@
     </div>
 </div>
 <div class="container text-center">
-    <div class="p-3 p-sm-4">
+    <div class="py-4 px-2 px-sm-0">
         {{ $intro }}
     </div>
 </div>
@@ -47,8 +47,8 @@
 </div>
 <div class="kozosseghez-tartozni">
     <div class="container">
-        <div class="text-center text-light p-4 p-sm-5">
-            <h2 class="title-secondary mb-5">@lang('inspiration.title')</h2>
+        <div class="text-center text-light px-3 px-sm-0 py-4 py-sm-5">
+            <h2 class="title-secondary mb-4 mb-sm-5">@lang('inspiration.title')</h2>
             <p>@lang('inspiration.description')</p>
             @if(getLang() === 'hu')
                 <p>Kedvcsinálónak olvasd el a <a title="5 érv, hogy elkezdj közösségbe járni" href="https://777blog.hu/2016/09/20/5-erv-hogy-elkezdj-kozossegbe-jarni/" target="_blank" class="text-white" style="text-decoration: underline">777blog.hu írását</a>, hogy miért jó közösségbe járni!</p>

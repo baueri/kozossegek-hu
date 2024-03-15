@@ -52,6 +52,6 @@ abstract class CronCommand extends Command
         }
 
         $date = date('Y-m-d H:i:s');
-        path()->save('.daily_cron_last_run', "{$date} - {$message}\r\n", FILE_APPEND);
+        root()->save('.daily_cron_last_run', "{$date} - {$message}\r\n", FILE_APPEND);
     }
 }

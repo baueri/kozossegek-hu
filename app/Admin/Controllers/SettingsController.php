@@ -12,20 +12,12 @@ use Framework\Database\PaginatedResultSet;
 use Framework\Database\PaginatedResultSetInterface;
 use Framework\Http\Message;
 use Framework\Http\View\Section;
-use Framework\Maintenance;
 use Framework\Http\Request;
 use App\Admin\Settings\Services\ErrorLogParser;
 use Throwable;
 
 class SettingsController extends AdminController
 {
-    public function settings(Maintenance $maintenance): string
-    {
-        $maintenance_on = $maintenance->isMaintenanceOn();
-
-        return view('admin.settings', compact('maintenance_on'));
-    }
-
     public function errorLog(Request $request, ErrorLogParser $parser): string
     {
         $errors = $parser->getErrors();
@@ -45,7 +37,7 @@ class SettingsController extends AdminController
 
     public function clearErrorLog(): void
     {
-        unlink(app()->root('error.log'));
+        root()->delete('error.log');
 
         Message::warning('Hibanapló ürítve');
 
@@ -87,7 +79,7 @@ class SettingsController extends AdminController
                     return new PaginatedResultSet(
                         array_map(
                             fn (Command $command) =>
-                            ['signature' => $command::signature(), 'description' => Command::description()],
+                            ['signature' => $command::signature(), 'description' => $command::description()],
                             resolve($this->command)->jobs()
                         )
                     );

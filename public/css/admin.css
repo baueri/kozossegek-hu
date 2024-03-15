@@ -176,12 +176,6 @@ body.has-debugbar #content {
     cursor: not-allowed;
 }
 
-#is_maintenance_on {
-    position: fixed;
-    bottom: 1em;
-    right: 1em;
-}
-
 #footer {
     position: absolute;
     bottom: 0;

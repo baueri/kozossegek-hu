@@ -8,20 +8,16 @@ use Framework\Http\Response;
 use Framework\Middleware\Middleware;
 use Framework\Http\Message;
 use Framework\Http\Session;
-use Framework\Maintenance;
 use Framework\Exception\UnauthorizedException;
 use App\Admin\Components\AdminMenu;
 use Framework\Http\View\View;
 
 class AdminMiddleware implements Middleware
 {
-    private Maintenance $maintenance;
-
     private AdminMenu $adminMenu;
 
-    public function __construct(Maintenance $maintenance, AdminMenu $adminMenu)
+    public function __construct(AdminMenu $adminMenu)
     {
-        $this->maintenance = $maintenance;
         $this->adminMenu = $adminMenu;
     }
 
@@ -50,7 +46,5 @@ class AdminMiddleware implements Middleware
         $admin_menu = $this->adminMenu->getMenu();
         View::setVariable('admin_menu', $admin_menu);
         View::setVariable('current_menu_item', $admin_menu->first('active'));
-
-        View::setVariable('is_maintenance_on', $this->maintenance->isMaintenanceOn() && Auth::loggedIn());
     }
 }

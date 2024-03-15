@@ -31,12 +31,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <!--    <link rel="search" type="application/opensearchdescription+xml" title="kozossegek.hu" href="opensearch.xml">-->
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js" async></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
     @yield('header')
 
     <link rel="stylesheet" href="/css/style.css?{{ filemtime('css/style.css') }}">
-    <link href="css/common.css" @preload_css()>
+    <link href="/css/common.css" @preload_css()>
 </head>
 <body class="{{ !is_prod() ? 'demo' : '' }} {{ is_home() ? 'home' : '' }} {{ $body_class ?? '' }}">
     <div id="fb-root"></div>

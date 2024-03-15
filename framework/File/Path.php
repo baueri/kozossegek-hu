@@ -9,18 +9,28 @@ use Framework\Support\Collection;
 readonly class Path
 {
     public function __construct(
-        private string $path
+        protected string $path
     ) {
     }
 
-    public function storage(string $path): self
+    public function storage(string $path = ''): self
     {
-        return new self(app()->root('storage/' . $path));
+        return new self(env('STORAGE_PATH') . $path);
     }
 
-    public function public(string $path): self
+    public function public(string $path = ''): self
     {
         return new self(app()->root('public/' . $path));
+    }
+
+    public function resources(string $path = ''): self
+    {
+        return new self(app()->root('resources/' . $path));
+    }
+
+    public function files(string $pattern = '*'): Collection
+    {
+        return collect(glob($this->path . $pattern));
     }
 
     public function move(string $oldPath, string $newPath): bool
@@ -41,6 +51,16 @@ readonly class Path
     public function save(string $path, string $content, int $flags = 0): bool
     {
         return file_put_contents($this->path . $path, $content, $flags) !== false;
+    }
+
+    public function path(string $path = ''): string
+    {
+        return $this->path . $path;
+    }
+
+    public function file(string $path): File
+    {
+        return new File($this->path . $path);
     }
 
     public function get(string $path): string|false

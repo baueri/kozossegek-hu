@@ -18,7 +18,7 @@
             </div>
         </div>
     </div>
-    <div class="col-xl-3 col-lg-4 col-sm-12 mb-lg-0 mb-5">
+    <div class="col-xl-3 col-lg-4 col-sm-12">
         <div class="card shadow text-center h-100">
             <img src="/images/home-icons/mail.webp" alt="@lang('intro.contact.title')" />
             <div class="card-body p-3 pt-lg-5">

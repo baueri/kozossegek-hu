@@ -10,7 +10,7 @@ class LoadedViewsTab extends DebugBarTab
 
     public static function addView(string $filePath, string $cachedFilePath): void
     {
-        static::$loadedViews[] = [substr($filePath, strlen(app()->root())), basename($cachedFilePath)];
+        static::$loadedViews[] = [substr($filePath, strlen(root()->path())), basename($cachedFilePath)];
     }
 
     public function getTitle(): string
