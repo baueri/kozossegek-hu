@@ -1,17 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Admin\Controllers;
 
 use App\Helpers\FileHelper;
 use Exception;
-use Framework\File\File;
 use Framework\Http\Message;
 use Framework\Http\Request;
 use Framework\Http\Response;
 use Framework\Storage\PublicStorage;
 use Framework\Support\Collection;
 
-class ContentUploadController
+readonly class ContentUploadController
 {
     public function __construct(
         private PublicStorage $storage
@@ -22,11 +23,7 @@ class ContentUploadController
     {
         $dir = $request['dir'];
 
-        $breadCrumbs = collect([
-            ['name' => 'Feltöltések', 'path' => $this->storage->getDirName()]
-        ])->merge(Collection::fromList($dir, '/')->reverse()->map(function ($dir) {
-            return ['name' => basename($dir), 'path' => $dir];
-        }));
+        $breadCrumbs = FileHelper::getBreadCrumb(root()->storage(), $dir);
 
         $files = collect($this->storage->getFiles("uploads/$dir"));
         $uploads = FileHelper::parseFilesToArray($files);

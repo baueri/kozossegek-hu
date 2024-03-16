@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Auth\Auth;
@@ -50,5 +52,21 @@ class Page extends Entity
     public function changeFreq(): ChangeFreq
     {
         return ChangeFreq::yearly;
+    }
+
+    public function toAnnouncement(): string
+    {
+        $image = $this->header_image ? "<img src='{$this->header_image}' alt='{$this->title}' class='img-fluid mb-2' style='height: 230px; width: 100%; object-fit: cover;'>" : '';
+        $content = str_replace('{{ $user }}', Auth::user()->name, $this->content);
+
+        return <<<HTML
+        <div class='announcement'>
+            {$image}
+            <h3 class='announcement-header text-left text-sm-center my-3'>
+                $this->title
+            </h3>
+            <div class='announcement-content'>$content</div>
+        </div>
+        HTML;
     }
 }

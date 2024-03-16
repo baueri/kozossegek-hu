@@ -30,7 +30,7 @@ readonly class Path
 
     public function files(string $pattern = '*'): Collection
     {
-        return collect(glob($this->path . $pattern));
+        return collect(glob($this->path . $pattern))->castInto(File::class);
     }
 
     public function move(string $oldPath, string $newPath): bool
@@ -71,5 +71,10 @@ readonly class Path
     public function parseList(string $path, string $delimiter = ','): Collection
     {
         return Collection::fromList($this->get($path), $delimiter);
+    }
+
+    public function basename(): string
+    {
+        return basename($this->path);
     }
 }

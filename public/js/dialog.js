@@ -104,9 +104,20 @@ const dialog = (function () {
 
         let dialog = $("<div class='modal-dialog modal-" + options.size + " " + options.cssClass + "'></div>");
         let content = $("<div class='modal-content'></div>");
-        let closableBtn = options.closable ? "<button type='button' class='close' data-dismiss='modal' aria-label='bezár'><span aria-hidden='true'>&times;</span></button>" : "";
-        let header = $("<div class='modal-header" + headerCssClass + "'><h5 class='modal-title'>" + options.title + "</h5>" + closableBtn + "</div>");
+        let closableBtn = options.closable ? $("<button type='button' class='close' data-dismiss='modal' aria-label='bezár'><span aria-hidden='true'>&times;</span></button>") : null;
+        let header = $("<div class='modal-header" + headerCssClass + "'><h5 class='modal-title'>" + options.title + "</h5></div>");
         let body = $("<div class='modal-body'></div>");
+
+        if (closableBtn) {
+            header.append(closableBtn);
+
+            if (options.onClose) {
+                closableBtn.click(function () {
+                    options.onClose(outer);
+                });
+            }
+        }
+
 
         if (options.draggable) {
             content.draggable({handle:header});
@@ -121,7 +132,11 @@ const dialog = (function () {
                 let button = options.buttons[i];
                 let btnDOM = $('<button type="button" class="' + button.cssClass + '">' + button.text + '</button>');
                 btnDOM.click(function () {
-                    button.action(outer, options.callback);
+                    if (button.action) {
+                        button.action(outer, options.callback);
+                    } else {
+                        options.callback(outer, true);
+                    }
                 });
                 footer.append(btnDOM);
             }
@@ -154,7 +169,13 @@ const dialog = (function () {
 
         $("body").append(outer);
 
-        outer.modal('show');
+        if (options.delay) {
+            setTimeout(function () {
+                outer.modal('show');
+            }, options.delay);
+        } else {
+            outer.modal('show');
+        }
 
         outer.close = function () {
             $(this).modal("hide");

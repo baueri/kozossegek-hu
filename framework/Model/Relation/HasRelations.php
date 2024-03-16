@@ -47,6 +47,14 @@ trait HasRelations
         return $this;
     }
 
+    public function whereDoesntHave(string $relationName, $callback = null): static
+    {
+        $relation = $this->getRelation($relationName, $callback);
+        $relation->queryBuilder->whereRaw("{$relation->queryBuilder->getTable()}.{$relation->foreignKey}={$this->getTable()}.{$relation->localKey}");
+        $this->whereDoesnExist($relation->queryBuilder);
+        return $this;
+    }
+
     public function getRelation(string $relation, $callback = null): Relation
     {
         /** @var Relation $rel */

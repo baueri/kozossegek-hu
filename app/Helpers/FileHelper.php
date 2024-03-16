@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Helpers;
 
 use Framework\File\Enums\FileType;
 use Framework\File\File;
+use Framework\File\Path;
 use Framework\Support\Collection;
 
 class FileHelper
@@ -55,5 +58,26 @@ class FileHelper
     public static function getExtension(string $fileName): string
     {
         return pathinfo($fileName, PATHINFO_EXTENSION);
+    }
+
+    public static function getBreadCrumb(Path $storage, string|null $dir): Collection
+    {
+        return collect([
+            ['name' => 'Feltöltések', 'path' => '']
+        ])->merge(Collection::fromList($dir, '/')->reverse()->map(function ($dir) {
+            return ['name' => basename($dir), 'path' => $dir];
+        }));
+    }
+
+    public static function sortFiles(array &$files): void
+    {
+        usort($files, function ($a, $b) {
+            if ($a['is_dir'] && !$b['is_dir']) {
+                return -1;
+            } elseif (!$a['is_dir'] && $b['is_dir']) {
+                return 1;
+            }
+            return strcasecmp($a['name'], $b['name']);
+        });
     }
 }

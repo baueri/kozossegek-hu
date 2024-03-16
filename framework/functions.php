@@ -447,6 +447,10 @@ function str_more(string $text, int $numberOfWords, string $moreText = ''): stri
 {
     return StringHelper::more($text, $numberOfWords, $moreText);
 }
+function str_shorten(string $text, int $numberOfCharacters, string $moreText = ''): string
+{
+    return StringHelper::shorten($text, $numberOfCharacters, $moreText);
+}
 
 function castInto($from, $to)
 {

@@ -1,12 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Admin\Page;
+
+use App\Enums\PageType;
 
 class TrashPageTable extends PageTable
 {
     protected array $columns = [
         'id' => '#',
         'title' => 'Oldal címe',
+        'page_type' => 'Típus',
         'slug' => 'url',
         'user_id' => 'Szerző',
         'status' => 'Állapot',
@@ -14,6 +19,11 @@ class TrashPageTable extends PageTable
     ];
 
     protected bool $trashView = true;
+
+    public function getPageType($type): string
+    {
+        return PageType::from($type)->translate();
+    }
 
     public function getRestore(...$params): string
     {

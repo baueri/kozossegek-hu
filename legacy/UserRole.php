@@ -1,11 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Legacy;
 
 use App\Enums\UserRight;
 use Framework\Support\Arr;
 use Framework\Support\Enum;
 
+/**
+ * @deprecated
+ */
 class UserRole extends Enum
 {
     public const SUPER_ADMIN = 'SUPER_ADMIN';

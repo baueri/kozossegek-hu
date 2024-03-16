@@ -7,21 +7,16 @@ return [
         'as' => 'admin.dashboard',
     ],
     [
-        'title' => 'Tartalom',
+        'title' => 'Bejegyzések',
         'icon' => 'file-alt',
         'as' => 'admin.page.list',
         'submenu' => [
             [
-                'title' => 'Oldalak',
+                'title' => 'Bejegyzések',
                 'icon' => 'file-alt',
                 'as' => 'admin.page.list',
-                'similars' => ['admin.page.edit', 'admin.page.trash'],
-            ], [
-                'title' => 'Létrehozás',
-                'icon' => 'plus',
-                'as' => 'admin.page.create',
-            ], [
-                'title' => 'Feltöltések',
+                'similars' => ['admin.page.edit', 'admin.page.trash', 'admin.page.create'],
+            ], ['title' => 'Feltöltések',
                 'icon' => 'images',
                 'as' => 'admin.content.upload.list',
             ],

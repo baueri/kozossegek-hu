@@ -19,6 +19,11 @@ class Pages extends EntityQueryBuilder
         return $this->has(Has::one, Users::class, 'id', 'user_id');
     }
 
+    public function seenAnnouncements(): Relation
+    {
+        return $this->has(Has::many, builder('seen_announcements'), 'announcement_id', 'id');
+    }
+
     public function whereSlug(string $slug): self
     {
         return $this->where('slug', $slug);
@@ -27,5 +32,15 @@ class Pages extends EntityQueryBuilder
     public function published(): self
     {
         return $this->where('status', PageStatus::PUBLISHED);
+    }
+
+    public function announements(): self
+    {
+        return $this->where('page_type', 'announcement');
+    }
+
+    public function pages(): self
+    {
+        return $this->where('page_type', 'page');
     }
 }

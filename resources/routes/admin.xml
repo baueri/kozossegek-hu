@@ -99,7 +99,7 @@
 
             <route method="get" uri="fix-images" controller="SettingsController" use="setGroupImages"/>
 
-            <route method="post" uri="api/uploads/get" as="api.uploads" controller="Api\UploadController" use="getUploads" />
+            <route method="post" uri="api/uploads/get" as="api.uploads" controller="Api\UploadController"/>
         </route-group>
 
 

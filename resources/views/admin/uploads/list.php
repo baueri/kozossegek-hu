@@ -24,7 +24,6 @@
             @endif
         </li>
         @endforeach
-
     </ol>
 </nav>
 <form action="@route('admin.content.upload.upload_file', ['dir' => $dir])" id="upload-files2" class="dropzone">

@@ -32,4 +32,18 @@ class PageController extends PortalController
 
         return view('portal.page', $model);
     }
+
+    public function setAnnouncementsSeen(): void
+    {
+        $ids = request()->get('ids');
+
+        $builder = builder('seen_announcements');
+
+        array_walk($ids, function ($id) use ($builder) {
+            $builder->updateOrInsert([
+                'user_id' => auth()->id,
+                'announcement_id' => $id
+            ]);
+        });
+    }
 }

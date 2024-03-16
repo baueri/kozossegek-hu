@@ -107,7 +107,7 @@ function deleteConfirm(action, message)
 
 function selectImageFromMediaLibrary(options)
 {
-    console.log(options);
+    dialog.closeAll();
     $.post("/admin/api/uploads/get", {dir: options.dir}, response => {
         dialog.show({
             title: "Feltöltések",
@@ -119,7 +119,7 @@ function selectImageFromMediaLibrary(options)
                     e.preventDefault();
 
                     if ($(this).hasClass("item-dir")) {
-                        dialog.modal("hide");
+                        // dialog.modal("hide");
                         options.dir = $(this).data("text");
                         selectImageFromMediaLibrary(options);
                     } else {

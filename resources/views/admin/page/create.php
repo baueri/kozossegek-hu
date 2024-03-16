@@ -1,2 +1,2 @@
-@title('Új oldal létrehozása')
+@title('Új bejegyzés')
 @extends('admin.page.form')

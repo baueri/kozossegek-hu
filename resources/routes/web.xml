@@ -86,6 +86,8 @@
     <route method="get" uri="/media/{entity_type}/images/{image}" controller="App\Portal\Controllers\ImageController" use="getImage"/>
     <route method="get" uri="opensearch.xml" view="portal/opensearch"/>
 
+    <route method="post" uri="announcement" controller="App\Portal\Controllers\PageController" use="setAnnouncementsSeen" as="api.announcements.set_seen"/>
+
     <!-- Adatbázisban tárolt statikus oldalak. FIGYELEM!!!! EZ ALÁ MÁR NE KERÜLJÖN ROUTE!!! -->
     <route method="get" uri="/{slug}" controller="App\Portal\Controllers\PageController" use="page" as="portal.page" middleware="App\Middleware\ComingSoon"/>
 </routes>

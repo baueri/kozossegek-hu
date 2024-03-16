@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Admin\Group;
 
 use App\Admin\Components\AdminTable\PaginatedAdminTable;
@@ -11,7 +13,6 @@ use App\Models\ChurchGroupView;
 use App\Models\GroupComment;
 use App\Services\GroupSearchRepository;
 use Framework\Database\PaginatedResultSetInterface;
-use Framework\Database\QueryLog;
 use Framework\Http\Request;
 use Framework\Model\Entity;
 use Framework\Support\StringHelper;

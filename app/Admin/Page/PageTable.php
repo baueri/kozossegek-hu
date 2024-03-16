@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Admin\Page;
 
 use App\Admin\Components\AdminTable\PaginatedAdminTable;
@@ -20,7 +22,7 @@ class PageTable extends PaginatedAdminTable implements Editable
 
     protected array $columns = [
         'id' => '#',
-        'title' => 'Oldal címe',
+        'title' => 'Cím',
         'slug' => 'url',
         'user_id' => 'Szerző',
         'status' => 'Állapot',
@@ -42,7 +44,7 @@ class PageTable extends PaginatedAdminTable implements Editable
 
     public function getUserId(...$params): string
     {
-        /** @var \App\Models\Page $page */
+        /** @var Page $page */
         [,$page] = $params;
         return $page->user->name ?? '<i style="color: #aaa">ismeretlen</i>';
     }
@@ -73,6 +75,15 @@ class PageTable extends PaginatedAdminTable implements Editable
         return route('admin.page.edit', $model);
     }
 
+    public function getTitle($title, $model): string
+    {
+        $count = '';
+        if ($model->page_type === 'announcement') {
+            $count = " ({$model->seenAnnouncements_count})";
+        }
+        return $this->getEdit($title . $count, $model);
+    }
+
     public function getEditColumn(): string
     {
         return 'title';
@@ -80,7 +91,9 @@ class PageTable extends PaginatedAdminTable implements Editable
 
     private function getPages(Collection $filter): PaginatedModelCollection
     {
+        $type = $filter->get('page_type', 'page');
         $query = Pages::query()
+            ->when($type && !$this->trashView, fn ($query) => $query->where('page_type', $type))
             ->when($filter['status'], fn ($query, $status) => $query->where('status', $status))
             ->when($filter['search'], fn ($query, $search) => $query->where('title', 'like', "%$search%"))
         ;
@@ -92,6 +105,10 @@ class PageTable extends PaginatedAdminTable implements Editable
         }
 
         $query->with('user');
+
+        if ($this->request->get('page_type') === 'announcement') {
+            $query->withCount('seenAnnouncements');
+        }
 
         return $query->paginate();
     }

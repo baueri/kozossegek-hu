@@ -9,12 +9,12 @@ use Framework\Database\PaginatedResultSetInterface;
 use Framework\Database\QueryLog;
 use Framework\Http\Request;
 use Framework\Support\StringHelper;
-use Framework\Traits\BootsTraits;
+use Framework\Traits\BootsClass;
 use InvalidArgumentException;
 
 abstract class PaginatedAdminTable
 {
-    use BootsTraits;
+    use BootsClass;
 
     protected array $columns = [];
 
@@ -43,7 +43,7 @@ abstract class PaginatedAdminTable
     public function __construct(
         public readonly Request $request
     ) {
-        $this->bootTraits();
+        $this->bootClass();
         if (!$this->columns) {
             throw new InvalidArgumentException('missing columns for ' . static::class);
         }

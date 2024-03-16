@@ -101,7 +101,7 @@ abstract class Entity
         return null;
     }
 
-    public function load(string $relation)
+    public function load(string $relation): void
     {
         unset($this->relations[$relation]);
         unset($this->relations_count[$relation]);

@@ -140,6 +140,31 @@
             })();
         </script>
     @endif
+    @if($announcements?->isNotEmpty())
+        <script>
+            (() => {
+                const setAnnouncementsSeen = (modal) => {
+                    $.post("@route('api.announcements.set_seen')", {
+                        ids: JSON.parse('{{ $announcements->pluck('id')->toJson() }}')
+                    });
+                    modal.close();
+                };
+                dialog.show({
+                    title: "Értesítés",
+                    message: `{{ $announcements->castInto('toAnnouncement')->implode('<hr class="my-5"/>') }}`,
+                    closable: true,
+                    buttons: [
+                        {
+                            text: "Rendben",
+                            cssClass: "btn btn-primary"
+                        }
+                    ],
+                    onClose: setAnnouncementsSeen,
+                    delay: 2000
+                }, setAnnouncementsSeen);
+            })();
+        </script>
+    @endif
     <noscript>
         <div class="modal fade show" tabindex="-1" aria-hidden="true" style="z-index: 1040; display: block">
             <div class="modal-dialog">

@@ -1,11 +1,17 @@
 @section('header')
     @include('asset_groups.editor')
 @endsection
+@section('title')
+    @include('admin.page.title-bar')
+@endsection
 @extends('admin')
 @if($page->deleted_at)
     @alert('danger')
         <b>Töröl oldal!</b>
     @endalert
+@endif
+@if($page->exists())
+    <a href="@route('admin.page.create', ['page_type' => $page_type])" class="btn btn-primary btn-sm mb-2">@icon('plus') Új bejegyzés</a>
 @endif
 <form method="post" action="{{ $action }}">
     <div class="row">
@@ -38,14 +44,28 @@
                     <option value="DRAFT" @selected($page->status == "DRAFT")>Piszkozat</option>
                 </select>
             </div>
-
-            <div class="form-group">
-                <label>Fejléc háttérkép</label>
-                <input type="text" class="form-control" name="header_image" value="{{ $page->header_image }}"/>
-            </div>
+            @if(!$page->exists())
+                <div class="form-group">
+                    <label>Típus</label>
+                    <select name="page_type" class="form-control">
+                        <option value="page" @selected($page_type == 'page')>Oldal</option>
+                        <option value="announcement" @selected($page_type == 'announcement')>Hirdetmény</option>
+                    </select>
+                </div>
+            @endif
             <div class="form-group">
                 <label>Oldaltérkép prioritás</label>
                 @component('priority_selector', ['priority' => $page->priority])
+            </div>
+            <div class="form-group">
+                <label>Kiemelt kép</label><br/>
+                <button type="button" class="btn btn-secondary set-image mb-2">@icon('image') Kép kiválasztása</button>
+                <div class="selected-image">
+                    @if($page->header_image)
+                    <img src="{{ $page->header_image }}" class="mb-2"/>
+                    @endif
+                </div>
+                <input type="text" class="form-control image-url" name="header_image" value="{{ $page->header_image }}"/>
             </div>
             @if($page)
                 <p>
@@ -76,5 +96,14 @@ $(document).ready(function () {
             }, 350);
         }
     });
+
+    $(".set-image").click(() => {
+        selectImageFromMediaLibrary({
+            onSelect: (selected) => {
+                $(".selected-image").html("<img src='" + selected.src + "'/>");
+                $(".image-url").val(selected.src);
+            }
+        });
+    })
 });
 </script>

@@ -12,6 +12,7 @@ class StaticPages extends Repository
     public function getSiteMapUrls(): Collection
     {
         return Pages::query()
+            ->pages()
             ->published()
             ->notDeleted()
             ->orderBy('priority', 'desc')
