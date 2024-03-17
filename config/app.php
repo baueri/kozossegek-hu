@@ -33,11 +33,6 @@ return [
 
     'legal_notice_version' => env('LEGAL_NOTICE_VERSION', 0),
     'legal_notice_date' => env('LEGAL_NOTICE_DATE', '2021-07-07'),
-
-    'providers' => [
-
-    ],
-
     'named_middleware' => [
         'translation' => Translation::class,
         'csrf' => VerifyCsrfToken::class,

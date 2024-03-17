@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Framework\Model\Relation;
 
 use Framework\Database\Builder;
@@ -7,16 +9,16 @@ use Framework\Model\Entity;
 use Framework\Model\EntityQueryBuilder;
 use Framework\Support\Collection;
 
-class Relation
+readonly class Relation
 {
-    public readonly ?string $foreignKey;
+    public ?string $foreignKey;
 
-    public readonly ?string $localKey;
+    public ?string $localKey;
 
     public function __construct(
-        public readonly Has $relationType,
-        public readonly EntityQueryBuilder|Builder $queryBuilder,
-        public readonly string $relationName,
+        public Has $relationType,
+        public EntityQueryBuilder|Builder $queryBuilder,
+        public string $relationName,
         ?string $foreignKey = null,
         ?string $localKey = null,
     ) {

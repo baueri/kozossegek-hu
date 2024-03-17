@@ -7,7 +7,6 @@ use Phinx\Db\Adapter\MysqlAdapter;
 
 final class CreatePagesTable extends AppMigration
 {
-
     public function up(): void
     {
         $this->table('pages')
@@ -15,7 +14,7 @@ final class CreatePagesTable extends AppMigration
             ->addColumn('slug', MysqlAdapter::PHINX_TYPE_STRING)
             ->addColumn('content', MysqlAdapter::PHINX_TYPE_TEXT)
             ->addColumn('user_id', MysqlAdapter::PHINX_TYPE_INTEGER)
-            ->addColumn('status', MysqlAdapter::PHINX_TYPE_ENUM, ['values' => PageStatus::asArray(), 'default' => PageStatus::PUBLISHED])
+            ->addColumn('status', MysqlAdapter::PHINX_TYPE_ENUM, ['values' => PageStatus::values(), 'default' => PageStatus::PUBLISHED->name])
             ->datetimes()
             ->create();
     }

@@ -60,7 +60,7 @@
                         <label for="user_id">Karbantartó</label>
                         <div style="width: 200px">
                             <select name="user_id" id="user_id" class="form-control">
-                                <option value="{{ $group->user_id ?: '' }}">{{ $owner->name }}</option>
+                                <option value="{{ $group->user_id ?: '' }}">{{ $owner?->name }}</option>
                             </select>
                         </div>
                     </div>

@@ -25,8 +25,13 @@ class Container implements ContainerInterface
      * @throws AbstractionAlreadySharedException
      * @throws AlreadyBoundException
      */
-    public function singleton(string $abstraction, Closure|string|null $concrete = null): void
+    public function singleton(array|string $abstraction, Closure|string|null $concrete = null): void
     {
+        if (is_array($abstraction)) {
+            array_walk($abstraction, fn ($concrete, $abstraction) => $this->singleton($abstraction, $concrete));
+            return;
+        }
+
         if ($this->isSingletonRegistered($abstraction)) {
             throw new AbstractionAlreadySharedException("$abstraction is already registered");
         }
@@ -46,10 +51,15 @@ class Container implements ContainerInterface
     }
 
     /**
-     * @throws \Framework\Container\Exceptions\AlreadyBoundException
+     * @throws AlreadyBoundException
      */
-    public function bind($abstraction, $concrete, bool $override = false): void
+    public function bind(string|array $abstraction, $concrete = null, bool $override = false): void
     {
+        if (is_array($abstraction)) {
+            array_walk($abstraction, fn ($concrete, $abstraction) => $this->bind($abstraction, $concrete, $override));
+            return;
+        }
+
         if (!$abstraction) {
             throw new InvalidArgumentException('abstraction name must not be empty');
         }

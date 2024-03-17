@@ -2,7 +2,17 @@
 
 declare(strict_types=1);
 
+use App\Admin\Components\DebugBar\DebugBar;
+use App\Auth\Auth;
+use App\Auth\AuthUser;
 use App\Bootstrapper\RegisterDirectives;
+use App\Enums\PageStatus;
+use App\Enums\PageType;
+use App\Models\Page;
+use App\Models\User;
+use App\Portal\Services\Search\SearchRepository;
+use App\QueryBuilders\Pages;
+use App\QueryBuilders\Users;
 use App\Repositories\EventLogs;
 use App\Services\EventLogger;
 use App\Services\MeiliSearch\MeiliSearchAdapter;
@@ -11,7 +21,8 @@ use Dotenv\Dotenv;
 use Framework\Application;
 use Framework\Console\ConsoleKernel;
 use Framework\Database\Database;
-use Framework\Database\PDO\PDOMysqlDatabase;
+use Framework\Database\PDO\PDOMysqlDatabaseFactory;
+use Framework\Database\Repository\Events\ModelCreated;
 use Framework\Http\HttpKernel;
 use Framework\Http\Request;
 use Framework\Http\Route\RouterInterface;
@@ -59,43 +70,52 @@ $application = new Application(ROOT);
 
 MileStone::measure('init', 'Initialize');
 
-$application->singleton(ConsoleKernel::class);
-$application->singleton(HttpKernel::class);
+$application->singleton([
+    ConsoleKernel::class => ConsoleKernel::class,
+    HttpKernel::class => HttpKernel::class,
+    ViewInterface::class => View::class,
+    Config::class => Config::class,
+    RouterInterface::class => fn (Application $app, Request $request) => new XmlRouter($request, config('route_sources')),
+    EventLogger::class => EventLogs::class,
+    Database::class => fn () => PDOMysqlDatabaseFactory::create(),
+    Request::class => Request::class,
+    MeiliSearchAdapter::class => MeiliSearchAdapter::class,
+    DebugBar::class => DebugBar::class,
+]);
 
-$application->singleton(ViewInterface::class, View::class);
-$application->singleton(Config::class);
-$application->singleton(RouterInterface::class, fn (Application $app, Request $request) => new XmlRouter($request, config('route_sources')));
-$application->singleton(EventLogger::class, EventLogs::class);
+$application->bind([
+    'errorHandler' => fn () => fn ($error) => throw $error,
+    AuthUser::class => fn () => Auth::user(),
+    SearchRepository::class => fn () => $application->get(config('app.search_drivers')[config('app.selected_search_driver')]),
+]);
+
 $application->on('booting', function () { MileStone::measure('bootstrap'); });
 $application->on('booted', function () { MileStone::endMeasure('bootstrap'); });
-
-$application->singleton(Database::class, function () {
-    $configuration = config('db');
-
-    $dsn = sprintf(
-        'mysql:host=%s;dbname=%s;charset=%s;port=%s',
-        $configuration['host'],
-        $configuration['database'],
-        $configuration['charset'],
-        $configuration['port']
-    );
-
-    $pdo = new PDO($dsn, $configuration['user'], $configuration['password'], [
-        PDO::ATTR_PERSISTENT => true,
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-        PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'
-    ]);
-
-    return new PDOMysqlDatabase($pdo);
-});
-
-$application->bind('errorHandler', fn () => fn($error) => throw $error);
-
-$application->singleton(MeiliSearchAdapter::class);
 
 $application->bootWith(RegisterDirectives::class);
 
 $application->boot();
+
+ModelCreated::listen(function (ModelCreated $event) {
+    if (!$event->model instanceof Page && $event->model->page_type !== PageType::announcement->value()) {
+        return;
+    }
+
+    // korabbi hirdetmyeneket draftba tesszuk
+    Pages::query()
+        ->notDeleted()
+        ->announements()
+        ->where('id', '!=', $event->model->getId())
+        ->update(['status' => PageStatus::DRAFT]);
+
+    // kikuldjuk minden regisztralt usernek a hirdetmenyt
+    Users::query()->notDeleted()->each(function (User $user) use ($event) {
+        builder('seen_announcements')->insert([
+            'user_id' => $user->getId(),
+            'announcement_id' => $event->model->getId(),
+        ]);
+    });
+});
 
 MileStone::endMeasure('init');
 

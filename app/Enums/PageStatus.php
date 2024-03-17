@@ -1,13 +1,13 @@
 <?php
 
+declare(strict_types=1);
 
 namespace App\Enums;
 
-
-use Framework\Support\Enum;
-
-class PageStatus extends Enum
+enum PageStatus
 {
-    const PUBLISHED = 'PUBLISHED';
-    const DRAFT = 'DRAFT';
+    use EnumTrait;
+
+    case PUBLISHED;
+    case DRAFT;
 }

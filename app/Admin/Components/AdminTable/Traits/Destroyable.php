@@ -6,7 +6,7 @@ namespace App\Admin\Components\AdminTable\Traits;
 
 trait Destroyable
 {
-    public function bootDestroyable()
+    public function bootDestroyable(): void
     {
         if ($this->trashView || !class_uses_trait($this, SoftDeletable::class)) {
             $this->columns['destroy'] = $this->getIcon('fa fa-trash-alt');

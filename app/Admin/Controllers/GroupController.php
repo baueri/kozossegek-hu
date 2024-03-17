@@ -49,13 +49,13 @@ class GroupController extends AdminController
     public function doCreate(CreateGroup $service, BaseGroupForm $form)
     {
         try {
-            $group = $service->create($this->request->collect());
+            $group = $service->create($this->request->collect()->except('_token'));
             event_logger()->logEvent('group_created', ['group_id' => $group->getId()]);
 
             Message::success('Közösség létrehozva.');
             redirect_route('admin.group.edit', ['id' => $group->getId()]);
         } catch (Exception $e) {
-            process_error($e->getMessage());
+            process_error($e);
             Message::danger('Váratlan hiba történt!');
             return $form->render(ChurchGroupView::make($this->request->all()));
         }
@@ -123,7 +123,7 @@ class GroupController extends AdminController
 
     public function emptyTrash(): never
     {
-        ChurchGroups::query()->trashed()->delete();
+        ChurchGroups::query()->trashed()->hardDelete();
 
         Message::warning('Lomtár kiürítve.');
 

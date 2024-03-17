@@ -228,7 +228,10 @@ function process_error($e): void
     if (!env('DEBUG')) {
         report($e);
     } else {
-        dd($e, request()->all(), request()->route);
+        if ($e instanceof Throwable) {
+            throw $e;
+        }
+        throw new Exception($e);
     }
 }
 

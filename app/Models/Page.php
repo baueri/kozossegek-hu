@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Auth\Auth;
+use App\QueryBuilders\Pages;
 use App\Services\SystemAdministration\SiteMap\ChangeFreq;
 use App\Services\SystemAdministration\SiteMap\EntitySiteMappable;
 use Framework\Model\Entity;
 use Framework\Model\HasTimestamps;
 use Framework\Model\SoftDeletes;
+use Framework\Support\Collection;
 use Framework\Support\StringHelper;
 
 /**
@@ -21,6 +23,7 @@ use Framework\Support\StringHelper;
  * @property null|string $header_image
  * @property string $priority
  * @property ?User $user
+ * @property Collection $seenAnnouncements
  */
 class Page extends Entity
 {

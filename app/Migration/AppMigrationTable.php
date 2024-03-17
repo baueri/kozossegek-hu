@@ -41,7 +41,7 @@ final class AppMigrationTable extends Table
         return $this;
     }
 
-    public function createdAt(string $column = 'created_at'): self
+    public function createdAt(string $column = 'created_at', ): self
     {
         $this->datetime($column, ['default' => 'CURRENT_TIMESTAMP']);
 

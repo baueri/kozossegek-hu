@@ -32,6 +32,18 @@ class PageTable extends PaginatedAdminTable implements Editable
 
     protected string $emptyTrashRoute = 'admin.page.empty_trash';
 
+    protected array $sortableColumns = [
+        'id',
+        'title',
+        'slug',
+        'user_id',
+        'status',
+        'created_at',
+        'updated_at',
+    ];
+
+    protected string $defaultOrder = 'desc';
+
     public function getSlug($slug, Page $page): string
     {
         return "<a href='{$page->getUrl()}' target='_blank'>{$slug}</a>";
@@ -109,6 +121,8 @@ class PageTable extends PaginatedAdminTable implements Editable
         if ($this->request->get('page_type') === 'announcement') {
             $query->withCount('seenAnnouncements');
         }
+
+        $query->orderBy(...$this->order);
 
         return $query->paginate();
     }

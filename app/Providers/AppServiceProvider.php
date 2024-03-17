@@ -22,8 +22,9 @@ class AppServiceProvider implements Middleware
                 ->announements()
                 ->notDeleted()
                 ->published()
-                ->whereDoesntHave('seenAnnouncements', function (Builder $query) {
-                    $query->where('user_id', Auth::user()->id);
+                ->whereHas('seenAnnouncements', function (Builder $query) {
+                    $query->where('user_id', Auth::user()->id)
+                        ->whereNull('seen_at');
                 })
                 ->orderBy('created_at', 'desc')
                 ->get();

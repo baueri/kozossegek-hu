@@ -37,13 +37,10 @@ class PageController extends PortalController
     {
         $ids = request()->get('ids');
 
-        $builder = builder('seen_announcements');
-
-        array_walk($ids, function ($id) use ($builder) {
-            $builder->updateOrInsert([
-                'user_id' => auth()->id,
-                'announcement_id' => $id
-            ]);
-        });
+        builder('seen_announcements')
+            ->where('user_id', auth()->getId())
+            ->whereIn('announcement_id', $ids)
+            ->whereNull('seen_at')
+            ->update(['seen_at' => now()]);
     }
 }
