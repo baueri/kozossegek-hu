@@ -17,6 +17,7 @@ use App\Repositories\EventLogs;
 use App\Services\EventLogger;
 use App\Services\MeiliSearch\MeiliSearchAdapter;
 use App\Services\MileStone;
+use App\Services\User\Announcer;
 use Dotenv\Dotenv;
 use Framework\Application;
 use Framework\Console\ConsoleKernel;
@@ -97,24 +98,9 @@ $application->bootWith(RegisterDirectives::class);
 $application->boot();
 
 ModelCreated::listen(function (ModelCreated $event) {
-    if (!$event->model instanceof Page && $event->model->page_type !== PageType::announcement->value()) {
-        return;
+    if ($event->model instanceof Page && $event->model->page_type == PageType::announcement->value()) {
+        (new Announcer())->announce($event->model, Users::query()->notDeleted());
     }
-
-    // korabbi hirdetmyeneket draftba tesszuk
-    Pages::query()
-        ->notDeleted()
-        ->announements()
-        ->where('id', '!=', $event->model->getId())
-        ->update(['status' => PageStatus::DRAFT]);
-
-    // kikuldjuk minden regisztralt usernek a hirdetmenyt
-    Users::query()->notDeleted()->each(function (User $user) use ($event) {
-        builder('seen_announcements')->insert([
-            'user_id' => $user->getId(),
-            'announcement_id' => $event->model->getId(),
-        ]);
-    });
 });
 
 MileStone::endMeasure('init');

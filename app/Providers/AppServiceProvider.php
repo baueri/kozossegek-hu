@@ -19,7 +19,7 @@ class AppServiceProvider implements Middleware
         $announcements = null;
         if (Auth::user()) {
             $announcements = Pages::query()
-                ->announements()
+                ->announcements()
                 ->notDeleted()
                 ->published()
                 ->whereHas('seenAnnouncements', function (Builder $query) {

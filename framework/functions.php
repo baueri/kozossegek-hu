@@ -459,6 +459,7 @@ function castInto($from, $to)
 {
     $args = func_get_args();
     array_shift($args);
+    array_shift($args);
 
     if (is_callable($to)) {
         return $to($from, ...$args);

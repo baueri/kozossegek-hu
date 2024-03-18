@@ -3,7 +3,6 @@
 use App\Http\Components\AszfCheckBox;
 use App\Http\Components\ComponentParser;
 use App\Http\Components\FacebookShareButton;
-use App\Http\Components\FeaturedTitle;
 use App\Http\Components\FontawesomeIcon;
 use App\Http\Components\HoneyPotComponent;
 use App\Http\Components\OpenStreeMap;

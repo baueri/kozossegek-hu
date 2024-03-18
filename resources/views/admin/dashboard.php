@@ -57,6 +57,9 @@
                 <div class="col-xl-6 col-lg-12"><a href="@route('admin.user.create')" class="text-center bg-lightblue p-4 rounded-lg mb-2 text-dark d-block">
                     <i class="fa fa-user fs-4 text-warning"></i><br/>Új Felhasználó
                     </a></div>
+                <div class="col-md-12"><a href="@route('admin.page.create', ['page_type' => 'announcement'])" class="text-center bg-lightblue p-4 rounded-lg mb-2 text-dark d-block">
+                        <i class="fa fa-bullhorn fs-4 text-purple"></i><br/>Új Hirdetmény</a>
+                </div>
             </div>
         </div>
     </div>

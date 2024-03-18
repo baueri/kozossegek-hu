@@ -151,7 +151,7 @@
                 };
                 dialog.show({
                     title: "Értesítés",
-                    message: `{{ $announcements->castInto('toAnnouncement')->implode('<hr class="my-5"/>') }}`,
+                    message: `@include('portal.partials.announcements')`,
                     closable: true,
                     buttons: [
                         {

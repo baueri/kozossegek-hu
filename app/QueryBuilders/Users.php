@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\QueryBuilders;
 
 use App\Enums\SocialProvider;
@@ -12,7 +14,7 @@ use Framework\Model\SoftDeletes;
 use Framework\Support\StringHelper;
 
 /**
- * @phpstan-extends EntityQueryBuilder<\App\Models\User>
+ * @phpstan-extends EntityQueryBuilder<User>
  */
 class Users extends EntityQueryBuilder
 {

@@ -11,6 +11,7 @@ use App\Admin\Components\AdminTable\Traits\SoftDeletable;
 use App\Models\Page;
 use App\Models\PageStatus;
 use App\QueryBuilders\Pages;
+use Framework\Database\Builder;
 use Framework\Database\PaginatedResultSetInterface;
 use Framework\Model\PaginatedModelCollection;
 use Framework\Support\Collection;
@@ -119,7 +120,7 @@ class PageTable extends PaginatedAdminTable implements Editable
         $query->with('user');
 
         if ($this->request->get('page_type') === 'announcement') {
-            $query->withCount('seenAnnouncements');
+            $query->withCount('seenAnnouncements', fn (Builder $query) => $query->whereNotNull('seen_at'));
         }
 
         $query->orderBy(...$this->order);

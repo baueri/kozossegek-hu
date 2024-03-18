@@ -34,7 +34,7 @@ class Pages extends EntityQueryBuilder
         return $this->where('status', PageStatus::PUBLISHED);
     }
 
-    public function announements(): self
+    public function announcements(): self
     {
         return $this->where('page_type', 'announcement');
     }

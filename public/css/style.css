@@ -1090,6 +1090,22 @@ ul.age-group-select li a:hover {
     object-fit: cover;
 }
 
+.announcement {
+    display: none;
+}
+
+[name=announcement]:checked + .announcement {
+    display: block;
+}
+
+.announcement:first-of-type .prev-announcement {
+    display: none !important;
+}
+
+.announcement:last-of-type .next-announcement {
+    display: none !important;
+}
+
 @media (max-width: var(--breakpoint-md)) {
     .featured-header h1 {
         padding: 1em 0;
