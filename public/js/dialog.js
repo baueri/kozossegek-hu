@@ -110,12 +110,6 @@ const dialog = (function () {
 
         if (closableBtn) {
             header.append(closableBtn);
-
-            if (options.onClose) {
-                closableBtn.click(function () {
-                    options.onClose(outer);
-                });
-            }
         }
 
 
@@ -164,6 +158,9 @@ const dialog = (function () {
         }
 
         outer.on("hidden.bs.modal", function () {
+            if (options.onClose) {
+                options.onClose(outer);
+            }
             $(this).remove();
         });
 

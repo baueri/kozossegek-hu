@@ -1098,12 +1098,10 @@ ul.age-group-select li a:hover {
     display: block;
 }
 
-.announcement:first-of-type .prev-announcement {
-    display: none !important;
-}
-
-.announcement:last-of-type .next-announcement {
-    display: none !important;
+.announcement:first-of-type .prev-announcement, .announcement:last-of-type .next-announcement {
+    pointer-events: none;
+    cursor: default;
+    opacity: .5;
 }
 
 @media (max-width: var(--breakpoint-md)) {

@@ -156,7 +156,7 @@
                     buttons: [
                         {
                             text: "Rendben",
-                            cssClass: "btn btn-primary"
+                            cssClass: "btn btn-main"
                         }
                     ],
                     onClose: setAnnouncementsSeen,
