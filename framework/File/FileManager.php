@@ -56,13 +56,7 @@ class FileManager
     }
 
     /**
-     * Upload a file to the server
-     *
-     * @param array $fileData
-     * @param string|null $fileName
-     * @param string $subDir
-     * @return File
-     * @throws \Framework\Exception\FileTypeNotAllowedException
+     * @throws FileTypeNotAllowedException
      */
     public function uploadFileByFileData(array $fileData, ?string $fileName = null, string $subDir = ''): File
     {

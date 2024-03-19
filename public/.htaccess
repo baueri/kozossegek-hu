@@ -1,10 +1,8 @@
+#php_value upload_max_filesize 5M
 <IfModule mod_rewrite.c>
     Options +FollowSymLinks
     Options -Indexes
     RewriteEngine On
-</IfModule>
-
-<IfModule mod_rewrite.c>
     RewriteBase /
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d

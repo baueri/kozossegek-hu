@@ -23,11 +23,7 @@ class PublicStorage extends FileManager
         }
     }
 
-    /**
-     * @param File $file
-     * @return string
-     */
-    public function getPublicPathFor(File $file)
+    public function getPublicPathFor(File $file): string
     {
         return FileHelper::getPublicPathFor($file);
     }

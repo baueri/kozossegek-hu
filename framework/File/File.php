@@ -59,7 +59,7 @@ class File
      */
     public function move(string $newPath, string $newFilename = null, int $mode = null): self
     {
-        $newFilePath = $newPath . '/' . ($newFilename ?: $this->fileName);
+        $newFilePath = rtrim($newPath, '/') . '/' . ($newFilename ?: $this->fileName);
 
         if (!is_dir(dirname($newFilePath))) {
             mkdir(dirname($newFilePath), 0777, true);

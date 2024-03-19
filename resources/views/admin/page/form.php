@@ -1,5 +1,7 @@
 @section('header')
     @include('asset_groups.editor')
+    <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
 @endsection
 @section('title')
     @include('admin.page.title-bar')
@@ -57,13 +59,11 @@
                 <label>Oldaltérkép prioritás</label>
                 @component('priority_selector', ['priority' => $page->priority])
             </div>
-            <div class="form-group">
+            <div class="form-group featured-image">
                 <label>Kiemelt kép</label><br/>
                 <button type="button" class="btn btn-secondary set-image mb-2">@icon('image') Kép kiválasztása</button>
-                <div class="selected-image">
-                    @if($page->header_image)
-                    <img src="{{ $page->header_image }}" class="mb-2"/>
-                    @endif
+                <div class="selected-image py-4">
+                    <img src="{{ $page?->header_image }}" class="mb-2 image-preview"/>
                 </div>
                 <input type="text" class="form-control image-url" name="header_image" value="{{ $page->header_image }}"/>
             </div>
@@ -104,6 +104,21 @@ $(document).ready(function () {
                 $(".image-url").val(selected.src);
             }
         });
-    })
+    });
+
+    new Dropzone(".selected-image", {
+        url: "@route('admin.content.upload.upload_file')",
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr('content')
+        },
+        init: function () {
+            this.on("success", file => {
+                $(".selected-image img.image-preview").attr("src", file.xhr.response);
+                $(".image-url").val(file.xhr.response);
+                file.previewElement.remove();
+            });
+        },
+        // addedfile: f => { }
+    });
 });
 </script>
