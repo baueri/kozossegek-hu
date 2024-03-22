@@ -1,5 +1,6 @@
 <div class="btn-group btn-group-sm ml-4 btn-shadow">
     <a class="btn {{ empty($is_trash) && $page_type === 'page' ? 'active btn-primary' : 'btn-default' }}" href="@route('admin.page.list')">@icon('file-alt') Oldalak</a>
+    <a class="btn {{ empty($is_trash) && $page_type === 'blog' ? 'active btn-primary' : 'btn-default' }}" href="@route('admin.page.list', ['page_type' => 'blog'])">@icon('newspaper') Hírek</a>
     <a class="btn {{ empty($is_trash) && $page_type === 'announcement' ? 'active btn-primary' : 'btn-default' }}" href="@route('admin.page.list', ['page_type' => 'announcement'])">@icon('bullhorn') Hirdetmények</a>
     <a class="btn {{ !empty($is_trash) ? 'active btn-primary' : 'btn-default' }}" href="@route('admin.page.trash')">Lomtár ({{ $trash_count }})</a>
 </div>

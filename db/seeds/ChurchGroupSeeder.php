@@ -33,7 +33,7 @@ class ChurchGroupSeeder extends AbstractSeed
         $ageGroups = AgeGroup::collect();
         $tags = Tag::collect();
         $days = WeekDay::collect();
-        for ($i = 0; $i < 200; $i++) {
+        for ($i = 0; $i < 50; $i++) {
             db()->beginTransaction();
             try {
                 $user = Users::query()->insert([
@@ -67,7 +67,7 @@ class ChurchGroupSeeder extends AbstractSeed
                     ]);
                 }
                 ChurchGroups::query()->save($group, ['image_url' => GroupHelper::getPublicImagePath((int)$group->getId())]);
-                $imageSource = base64_encode(file_get_contents('https://loremflickr.com/300/300/church,catholic,christian/all'));
+                $imageSource = base64_encode(file_get_contents('https://picsum.photos/300/300'));
                 $image = new Base64Image($imageSource);
                 $image->saveImage($group->getStorageImageDir() . $group->id . '_1.jpg');
             } catch (\Throwable $e) {

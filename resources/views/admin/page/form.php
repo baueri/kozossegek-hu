@@ -50,8 +50,9 @@
                 <div class="form-group">
                     <label>Típus</label>
                     <select name="page_type" class="form-control">
-                        <option value="page" @selected($page_type == 'page')>Oldal</option>
-                        <option value="announcement" @selected($page_type == 'announcement')>Hirdetmény</option>
+                        <?php foreach (\App\Enums\PageType::cases() as $type): ?>
+                            <option value="<?= $type->value() ?>" @selected($page_type == $type)><?= $type->translate() ?></option>
+                        <?php endforeach; ?>
                     </select>
                 </div>
             @endif

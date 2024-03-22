@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Auth\Auth;
+use App\Enums\PageType;
 use App\QueryBuilders\Pages;
 use App\Services\SystemAdministration\SiteMap\ChangeFreq;
 use App\Services\SystemAdministration\SiteMap\EntitySiteMappable;
@@ -34,7 +35,10 @@ class Page extends Entity
 
     public function getUrl(): string
     {
-        return config('app.site_url') . '/' . $this->slug;
+        if ($this->page_type === PageType::blog->value()) {
+            return route('portal.blog.view', $this->slug);
+        }
+        return route('portal.page', $this->slug);
     }
 
     public function excerpt(int $numberOfWords = 20): string

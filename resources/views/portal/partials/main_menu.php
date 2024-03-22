@@ -110,6 +110,9 @@
                     <li class="nav-item">
                         <a href="@route('portal.spiritual_movements')" class="nav-link"><span>@lang('menu.religious_movements')</span></a>
                     </li>
+                    <li class="nav-item">
+                        <a href="@route('portal.blog')" class="nav-link"><span>@lang('menu.news')</span></a>
+                    </li>
                 </ul>
                 <ul class="navbar-nav d-flex d-lg-none">
                     @yield('nav-pages')

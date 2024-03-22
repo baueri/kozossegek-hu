@@ -9,13 +9,15 @@ enum PageType
     use EnumTrait;
 
     case page;
+    case blog;
     case announcement;
 
     public function translate(): string
     {
         return match ($this) {
-            self::page => 'Bejegyzés',
+            self::page => 'Oldal',
             self::announcement => 'Hirdetmény',
+            self::blog => 'Hír',
         };
     }
 }

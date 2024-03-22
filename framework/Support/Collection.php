@@ -154,7 +154,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     /**
      * @phpstan-return static<T>
      */
-    public function take(int $limit): static
+    public function take(int $limit): self
     {
         return new self(array_slice($this->items, 0, $limit));
     }

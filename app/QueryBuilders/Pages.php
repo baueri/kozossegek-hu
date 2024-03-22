@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\QueryBuilders;
 
 use App\Enums\PageStatus;
+use App\Enums\PageType;
 use Framework\Model\EntityQueryBuilder;
 use Framework\Model\Relation\Has;
 use Framework\Model\Relation\Relation;
@@ -42,5 +43,10 @@ class Pages extends EntityQueryBuilder
     public function pages(): self
     {
         return $this->where('page_type', 'page');
+    }
+
+    public function news(): self
+    {
+        return $this->where('page_type', PageType::blog);
     }
 }

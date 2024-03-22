@@ -12,7 +12,6 @@ use App\QueryBuilders\ChurchGroupViews;
 use App\QueryBuilders\SpiritualMovements;
 use Framework\Http\Exception\PageNotFoundException;
 use Framework\Http\Request;
-use Framework\Http\View\Section;
 use Framework\Model\Exceptions\ModelNotFoundException;
 
 class SpiritualMovementController extends PortalController

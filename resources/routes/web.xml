@@ -57,6 +57,9 @@
             <route method="get" uri="lelkisegi-mozgalmak" as="portal.spiritual_movements" controller="SpiritualMovementController" use="list"/>
             <route method="get" uri="lelkisegi-mozgalom/{slug}" as="portal.spiritual_movement.view" controller="SpiritualMovementController" use="view"/>
 
+            <route method="get" uri="hirek" as="portal.blog" controller="NewsController" use="list"/>
+            <route method="get" uri="hirek/{slug}" as="portal.blog.view" controller="NewsController" use="view"/>
+
             <route method="get" uri="szerzetesrendek" as="portal.szerzetesrendek" controller="MonasticCommunityController" use="list"/>
             <route method="get" uri="szerzetesrendek/{slug}" as="portal.monastic_community.view" controller="MonasticCommunityController" use="view"/>
 

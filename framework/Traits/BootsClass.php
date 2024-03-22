@@ -8,9 +8,11 @@ trait BootsClass
 {
     public function bootClass(): void
     {
-        $bootClass = 'boot' . get_class_name($this);
-        if (method_exists($this, $bootClass)) {
-            $this->{$bootClass}();
+        foreach (class_parents($this) as $parent) {
+            $bootClass = 'boot' . get_class_name($parent);
+            if (method_exists($this, $bootClass)) {
+                $this->{$bootClass}();
+            }
         }
 
         $traits = class_uses_recursive($this);
