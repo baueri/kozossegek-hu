@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Portal\Controllers;
 
 use App\Enums\AgeGroup;
+use App\QueryBuilders\Pages;
 
 class HomeController extends PortalController
 {
@@ -13,8 +14,14 @@ class HomeController extends PortalController
         $age_groups = AgeGroup::cases();
         $intro = $this->getIntro();
         $selected_age_group = null;
+        $news = Pages::query()
+            ->news()
+            ->orderBy('created_at', 'desc')
+            ->published()
+            ->limit(3)
+            ->get();
 
-        return view('portal.home', compact('age_groups', 'selected_age_group', 'intro'));
+        return view('portal.home', compact('age_groups', 'selected_age_group', 'intro', 'news'));
     }
 
     private function getIntro(): string

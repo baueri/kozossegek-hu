@@ -5,7 +5,7 @@
 body {
     font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
     color: #555;
-    font-size: .9rem;
+    font-size: 1em;
 }
 
 body:not(.home) {
@@ -78,7 +78,7 @@ img {
 
 .breadcrumb {
     background: rgba(155, 155, 155, 0.2);
-    overflow: scroll;
+    overflow-x: auto;
 }
 
 .breadcrumb a {

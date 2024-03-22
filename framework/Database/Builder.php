@@ -244,10 +244,22 @@ class Builder
         return $this;
     }
 
-    public function paginate(?int $limit = null, ?int $page = null): PaginatedResultSet
+    public function paginate(?int $limit = null, ?int $page = null): PaginatedResultSetInterface
     {
-        $page = $page ?: request()->get('pg', 1);
-        $limit = $limit ?? request()->get('per-page', 30);
+        [$rows, $total, $limit, $page] = $this->paginateRaw($limit, $page);
+
+        return new PaginatedResultSet($rows, $limit, $page, $total);
+    }
+
+    /**
+     * @param int|null $limit
+     * @param int|null $page
+     * @return array{rows: array, total: int, limit: int, page: int}
+     */
+    public function paginateRaw(?int $limit = null, ?int $page = null): array
+    {
+        $page = (int) ($page ?: request()->get('pg', 1));
+        $limit = (int) ($limit ?? request()->get('per-page', 30));
 
         $total = $this->count();
         $rows = [];
@@ -256,7 +268,7 @@ class Builder
             $rows = $this->limit(($page - 1) * $limit . ', ' . $limit)->get();
         }
 
-        return new PaginatedResultSet($rows, $limit, $page, $total);
+        return compact('rows', 'total', 'limit', 'page');
     }
 
     public function orderBy($columns, ?string $order = null): self

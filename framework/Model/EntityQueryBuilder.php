@@ -412,10 +412,10 @@ class EntityQueryBuilder
 
     public function paginate(?int $perpage = null, ?int $page = null): PaginatedModelCollection
     {
-        $rows = $this->builder->paginate($perpage, $page);
+        $rows = $this->builder->paginateRaw($perpage, $page);
         $models = new PaginatedModelCollection(array_map(function ($row) {
             return $this->getInstance($row);
-        }, $rows->rows()), $rows->perpage(), $rows->page(), $rows->total());
+        }, $rows['rows']), $rows['limit'], $rows['page'], $rows['total']);
         return $this->loadRelations($models);
     }
 

@@ -36,14 +36,16 @@ class Page extends Entity
     public function getUrl(): string
     {
         if ($this->page_type === PageType::blog->value()) {
-            return route('portal.blog.view', $this->slug);
+            [$y, $m, $d] = explode('-', $this->createdAt()->format('Y-m-d'));
+            $slug = $this->slug;
+            return route('portal.blog.view', compact('y', 'm', 'd', 'slug'));
         }
         return route('portal.page', $this->slug);
     }
 
-    public function excerpt(int $numberOfWords = 20): string
+    public function excerpt(int $numberOfWords = 20, $moreText = ''): string
     {
-        return StringHelper::more($this->content, $numberOfWords);
+        return StringHelper::more($this->content, $numberOfWords, $moreText);
     }
 
     public function pageTitle(): string

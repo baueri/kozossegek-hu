@@ -1,111 +1,118 @@
+@section('subtitle', 'Új közösség regisztrálása | ')
 @section('header')
     @include('asset_groups.select2')
     @include('asset_groups.editor')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.css"/>
 @endsection
-@extends('portal.group.create-steps.create-wrapper')
-<form method="post" id="group-form" enctype="multipart/form-data" action="@route('portal.my_group.create')">
-    @alert('warning')
-        <i class="fa fa-exclamation-triangle"></i> Fontos számunkra, hogy az oldalon valóban keresztény értékeket közvetítő közösségeket hirdessünk. Mielőtt kitöltenéd a regisztrációs űrlapot, kérjük, hogy mindenképp olvasd el az <a href="/iranyelveink" target="_blank">irányelveinket</a>.
-    @endalert
-    @if(!is_loggedin())
-        <div class="step-container shadow">
-            <h4>Felhasználói adatok</h4>
-            <p>
-                <a href="@route('login')" id="login-existing-user" onclick="showLoginModal(); return false;"><b>
-                        @icon('key') van már fiókom, belépek
-                    </b></a>
-            </p>
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group required">
-                        <label>Neved</label>
-                        <input type="text" class="form-control" name="user_name"  value="{{ $user_name }}" data-describedby="validate_user_name">
-                        <div id="validate_user_name" class="validate_message"></div>
-                    </div>
-                    <div class="form-group required">
-                        <label>Email címed</label>
-                        <input type="email" class="form-control" name="email" value="{{ $email }}" data-describedby="validate_email">
-                        <div id="validate_email" class="validate_message"></div>
-                    </div>
-                    <div class="form-group">
-                        <label for="phone_number">Telefonszám @icon('info-circle small', 'Nem kötelező, de a könnyebb kapcsolattartás érdekében megadhatod a telefonszámodat is')</label>
-                        <input type="tel" name="phone_number" id="phone_number" value="{{ $phone_number }}" class="form-control">
-                    </div>
-                    <div class="form-group required">
-                        <label>Jelszó <small>(min. 8 karakter)</small></label>
-                        <input type="password" class="form-control" name="password" data-describedby="validate_password">
-                        <div id="validate_password" class="validate_message"></div>
-                    </div>
-                    <div class="form-group required">
-                        <label>Jelszó még egyszer</label>
-                        <input type="password" class="form-control" name="password_again" data-describedby="validate_password_again">
-                        <div id="validate_password_again" class="validate_message"></div>
+@extends('portal')
+@featuredTitle('Új közösség regisztrálása')
+<div class="container inner pt-4 pb-4" id="create-group">
+    @message()
+    <div>
+        <form method="post" id="group-form" enctype="multipart/form-data" action="@route('portal.my_group.create')">
+            @alert('warning')
+                <i class="fa fa-exclamation-triangle"></i> Fontos számunkra, hogy az oldalon valóban keresztény értékeket közvetítő közösségeket hirdessünk. Mielőtt kitöltenéd a regisztrációs űrlapot, kérjük, hogy mindenképp olvasd el az <a href="/iranyelveink" target="_blank">irányelveinket</a>.
+            @endalert
+            @if(!is_loggedin())
+                <div class="step-container shadow">
+                    <h4>Felhasználói adatok</h4>
+                    <p>
+                        <a href="@route('login')" id="login-existing-user" onclick="showLoginModal(); return false;"><b>
+                                @icon('key') van már fiókom, belépek
+                            </b></a>
+                    </p>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group required">
+                                <label>Neved</label>
+                                <input type="text" class="form-control" name="user_name"  value="{{ $user_name }}" data-describedby="validate_user_name">
+                                <div id="validate_user_name" class="validate_message"></div>
+                            </div>
+                            <div class="form-group required">
+                                <label>Email címed</label>
+                                <input type="email" class="form-control" name="email" value="{{ $email }}" data-describedby="validate_email">
+                                <div id="validate_email" class="validate_message"></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone_number">Telefonszám @icon('info-circle small', 'Nem kötelező, de a könnyebb kapcsolattartás érdekében megadhatod a telefonszámodat is')</label>
+                                <input type="tel" name="phone_number" id="phone_number" value="{{ $phone_number }}" class="form-control">
+                            </div>
+                            <div class="form-group required">
+                                <label>Jelszó <small>(min. 8 karakter)</small></label>
+                                <input type="password" class="form-control" name="password" data-describedby="validate_password">
+                                <div id="validate_password" class="validate_message"></div>
+                            </div>
+                            <div class="form-group required">
+                                <label>Jelszó még egyszer</label>
+                                <input type="password" class="form-control" name="password_again" data-describedby="validate_password_again">
+                                <div id="validate_password_again" class="validate_message"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    @endif
-    <div class="step-container shadow">
-        <h4>Általános adatok</h4>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form-group required">
-                    <label for="name">Közösség neve</label>
-                    <input type="text" id="name" value='{{ $group->name }}' name="name" class="form-control">
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group required">
-                    <label for="group_leaders">Közösségvezető(k) neve(i)</label>
-                    <input type="text" name="group_leaders" id="group_leaders" class="form-control" value="{{ $group->group_leaders ?: $user->name ?? '' }}" >
-                </div>
-            </div>
-            <div class="col-md-12">
-                <div class="form-group required">
-                    <label for="institute_id">Intézmény / plébánia</label>
-                    <select name="institute_id" style="width:100%" class="form-control" >
-                        <option value="{{ $group->institute_id }}">
-                            {{ $group->institute_id ? $group->institute_name . ' (' . $group->city . ')' : 'intézmény' }}
-                        </option>
-                    </select>
-                    <small><b><a href="#" onclick="toggleInstituteBox(); return false;">+ nem találom a listában</a></b></small>
-                    <div style="display: none;" id="new-institute">
-                        <div class="row">
-                            <div class="col-lg-10 col-md-12">
-                                <div class="p-3 mb-3" style="background: #eee; border: 1px solid #ccc;">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group required">
-                                                <label>Plébánia / intézmény neve:</label>
-                                                <input class="form-control form-control-sm institute-data" type="text" name="institute[name]">
+            @endif
+            <div class="step-container shadow">
+                <h4>Általános adatok</h4>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group required">
+                            <label for="name">Közösség neve</label>
+                            <input type="text" id="name" value='{{ $group->name }}' name="name" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group required">
+                            <label for="group_leaders">Közösségvezető(k) neve(i)</label>
+                            <input type="text" name="group_leaders" id="group_leaders" class="form-control" value="{{ $group->group_leaders ?: $user->name ?? '' }}" >
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group required">
+                            <label for="institute_id">Intézmény / plébánia</label>
+                            <select name="institute_id" style="width:100%" class="form-control" >
+                                <option value="{{ $group->institute_id }}">
+                                    {{ $group->institute_id ? $group->institute_name . ' (' . $group->city . ')' : 'intézmény' }}
+                                </option>
+                            </select>
+                            <small><b><a href="#" onclick="toggleInstituteBox(); return false;">+ nem találom a listában</a></b></small>
+                            <div style="display: none;" id="new-institute">
+                                <div class="row">
+                                    <div class="col-lg-10 col-md-12">
+                                        <div class="p-3 mb-3" style="background: #eee; border: 1px solid #ccc;">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group required">
+                                                        <label>Plébánia / intézmény neve:</label>
+                                                        <input class="form-control form-control-sm institute-data" type="text" name="institute[name]">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group required">
+                                                        <label>Plébános / intézményvezető neve:</label>
+                                                        <input class="form-control form-control-sm institute-data" type="text" name="institute[leader_name]">
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group required">
-                                                <label>Plébános / intézményvezető neve:</label>
-                                                <input class="form-control form-control-sm institute-data" type="text" name="institute[leader_name]">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <div class="form-group required">
-                                                <label>Település</label>
-                                                <input type="text" class="form-control form-control-sm institute-data" name="institute[city]">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label>Városrész</label>
-                                                <input type="text" class="form-control form-control-sm institute-data" name="institute[district]">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Cím</label>
-                                                <input class="form-control form-control-sm institute-data" type="text" name="institute[address]">
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="form-group required">
+                                                        <label>Település</label>
+                                                        <input type="text" class="form-control form-control-sm institute-data" name="institute[city]">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label>Városrész</label>
+                                                        <input type="text" class="form-control form-control-sm institute-data" name="institute[district]">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Cím</label>
+                                                        <input class="form-control form-control-sm institute-data" type="text" name="institute[address]">
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -114,107 +121,107 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-4">
-                <div class="form-group required">
-                    <label for="age_group">Korosztály <small>(legalább egyet adj meg)</small></label>
-                    @component('age_group_selector', compact('age_group_array'))
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group required">
+                            <label for="age_group">Korosztály <small>(legalább egyet adj meg)</small></label>
+                            @component('age_group_selector', compact('age_group_array'))
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group required">
+                            <label for="occasion_frequency">Alkalmak gyakorisága</label>
+                            @component('occasion_frequency_selector', ['selected_occasion_frequency' => $group->occasion_frequency ?: 'hetente'])
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="on_days">Mely napo(ko)n</label>
+                            @component('day_selector', compact('group_days'))
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group required">
-                    <label for="occasion_frequency">Alkalmak gyakorisága</label>
-                    @component('occasion_frequency_selector', ['selected_occasion_frequency' => $group->occasion_frequency ?: 'hetente'])
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="join_mode">Csatlakozási lehetőség módja <i class="fa fa-info-circle"
+                                title="<b>Egyéni megbeszélés alapján:</b> Közösségvezetővel egyeztetve történik<br/><b>Folyamatos csatlakozási lehetőség:</b> Az év folyamán bármikor jöhetnek új tagok<br/><b>Időszakos csatlakozás:</b> pl.: Minden félév első hónapja, negyedévente stb"
+                                data-html="true"></i></label>
+                            @join_mode_selector($group->join_mode)
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-4">
                 <div class="form-group">
-                    <label for="on_days">Mely napo(ko)n</label>
-                    @component('day_selector', compact('group_days'))
+                    <label for="spiritual_movement_id">Lelkiségi mozgalom</label><br/>
+                    <small>Ha egy nagyobb lelkiségi mozgalomhoz tartoztok, akkor azt adjátok meg itt, így nagyobb eséllyel találnak meg azok, akik ezen mozgalom közösségeit keresik.</small>
+                    @spiritual_movement_selector($group->spiritual_movement_id)
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-4">
+            <div class="step-container shadow">
+                <h4>A közösség jellemzői<small style="color: red">*</small></h4>
+                @alert('info')
+                    Válassz ki legalább egy, de legfeljebb öt tulajdonságot, ami a közösségedet a legjobban jellemzi.
+                @endalert
                 <div class="form-group">
-                    <label for="join_mode">Csatlakozási lehetőség módja <i class="fa fa-info-circle"
-                        title="<b>Egyéni megbeszélés alapján:</b> Közösségvezetővel egyeztetve történik<br/><b>Folyamatos csatlakozási lehetőség:</b> Az év folyamán bármikor jöhetnek új tagok<br/><b>Időszakos csatlakozás:</b> pl.: Minden félév első hónapja, negyedévente stb"
-                        data-html="true"></i></label>
-                    @join_mode_selector($group->join_mode)
+                    <div>
+                        @foreach($tags as $tag)
+                        <label class="mr-2" for="tag-{{ $tag->value }}">
+                            <input type="checkbox" name="tags[]" id="tag-{{ $tag->value }}" value="{{ $tag->value }}" @checked(in_array($tag->value, $group_tags))> {{ $tag->translate() }}
+                        </label>
+                        @endforeach
+                    </div>
+                </div>
+                <h4>Bemutatkozás<small style="color: red">*</small></h4>
+                @alert('info')
+                    Írd le pár mondatban azt, hogy kik vagytok, milyen jellegű közösségi alkalmakat tartotok, illetve bármilyen információt, ami vonzóvá teszi a közösségeteket mások számára.
+                @endalert
+                <div class="form-group required">
+                    <textarea name="description" id="description">{{ $group->description }}</textarea>
+                </div>
+                <h4 class="mt-5">Fotó a közösségről</h4>
+                <div class="row group-images">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @alert('info')
+                                <b>Tölts fel egy képet a közösségedről!</b> Alapértelmezett esetben a kiválasztott intézmény fényképe jelenik meg.
+                            @endalert
+                            <div class="group-image">
+                                <img src="{{ $image ? $image : ''}}" id="image" width="300">
+                            </div>
+                            <label for="image-upload" class="btn btn-primary">
+                                <i class="fa fa-upload"></i> Kép kiválasztása
+                                <input type="file" onchange="loadFile(event, this);" data-target="temp-image" id="image-upload">
+                            </label>
+                            <div style="display: none"><img id="temp-image" /></div>
+                            <input type="hidden" name="image">
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label for="spiritual_movement_id">Lelkiségi mozgalom</label><br/>
-            <small>Ha egy nagyobb lelkiségi mozgalomhoz tartoztok, akkor azt adjátok meg itt, így nagyobb eséllyel találnak meg azok, akik ezen mozgalom közösségeit keresik.</small>
-            @spiritual_movement_selector($group->spiritual_movement_id)
-        </div>
-    </div>
-    <div class="step-container shadow">
-        <h4>A közösség jellemzői<small style="color: red">*</small></h4>
-        @alert('info')
-            Válassz ki legalább egy, de legfeljebb öt tulajdonságot, ami a közösségedet a legjobban jellemzi.
-        @endalert
-        <div class="form-group">
-            <div>
-                @foreach($tags as $tag)
-                <label class="mr-2" for="tag-{{ $tag->value }}">
-                    <input type="checkbox" name="tags[]" id="tag-{{ $tag->value }}" value="{{ $tag->value }}" @checked(in_array($tag->value, $group_tags))> {{ $tag->translate() }}
-                </label>
-                @endforeach
-            </div>
-        </div>
-        <h4>Bemutatkozás<small style="color: red">*</small></h4>
-        @alert('info')
-            Írd le pár mondatban azt, hogy kik vagytok, milyen jellegű közösségi alkalmakat tartotok, illetve bármilyen információt, ami vonzóvá teszi a közösségeteket mások számára.
-        @endalert
-        <div class="form-group required">
-            <textarea name="description" id="description">{{ $group->description }}</textarea>
-        </div>
-        <h4 class="mt-5">Fotó a közösségről</h4>
-        <div class="row group-images">
-            <div class="col-md-12">
+            <div class="step-container shadow">
+                <h4>Igazolás feltöltése</h4>
                 <div class="form-group">
                     @alert('info')
-                        <b>Tölts fel egy képet a közösségedről!</b> Alapértelmezett esetben a kiválasztott intézmény fényképe jelenik meg.
+                        <p>Nem kötelező most azonnal feltölteni, később is megteheted, de kizárólag az intézményvezető által aláírt és lepecsételt igazolással tudjuk jóváhagyni a regisztrációs kérelmet és ezáltal láthatóvá tenni a közösséget.</p>
+                        <p>Így tudjuk biztosítani azt, hogy a honlapunkon létező, aktív és a keresztény értékrenddel egyező közösségek legyenek.</p>
+                        <p>Az igazolás mintát innen tudjátok letölteni: <a href="@upload('igazolas.pdf')" download><i class="fa fa-download"></i> Igazolás minta letöltése</a></p>
                     @endalert
-                    <div class="group-image">
-                        <img src="{{ $image ? $image : ''}}" id="image" width="300">
-                    </div>
-                    <label for="image-upload" class="btn btn-primary">
-                        <i class="fa fa-upload"></i> Kép kiválasztása
-                        <input type="file" onchange="loadFile(event, this);" data-target="temp-image" id="image-upload">
-                    </label>
-                    <div style="display: none"><img id="temp-image" /></div>
-                    <input type="hidden" name="image">
+                    <p class="mb-3">
+                        <small>Microsoft office dokumentum (<b>doc, docx</b>), <b>pdf</b> vagy kép formátum</small><br/>
+                        <input type="file" name="document">
+                    </p>
                 </div>
             </div>
-        </div>
+            @csrf()
+            <div class="text-center">
+                <button type="submit" id="preview-new-group" class="btn btn-lg btn-altblue">Tovább</button>
+            </div>
+        </form>
     </div>
-    <div class="step-container shadow">
-        <h4>Igazolás feltöltése</h4>
-        <div class="form-group">
-            @alert('info')
-                <p>Nem kötelező most azonnal feltölteni, később is megteheted, de kizárólag az intézményvezető által aláírt és lepecsételt igazolással tudjuk jóváhagyni a regisztrációs kérelmet és ezáltal láthatóvá tenni a közösséget.</p>
-                <p>Így tudjuk biztosítani azt, hogy a honlapunkon létező, aktív és a keresztény értékrenddel egyező közösségek legyenek.</p>
-                <p>Az igazolás mintát innen tudjátok letölteni: <a href="@upload('igazolas.pdf')" download><i class="fa fa-download"></i> Igazolás minta letöltése</a></p>
-            @endalert
-            <p class="mb-3">
-                <small>Microsoft office dokumentum (<b>doc, docx</b>), <b>pdf</b> vagy kép formátum</small><br/>
-                <input type="file" name="document">
-            </p>
-        </div>
-    </div>
-    @csrf()
-    <div class="text-center">
-        <button type="submit" id="preview-new-group" class="btn btn-lg btn-altblue">Tovább</button>
-    </div>
-</form>
+</div>
 <script>
-    function validateRequiredInput(selector) {
-        var classSelector = selector;
+    const validateRequiredInput = function (selector) {
+        let classSelector = selector;
         if (selector.next("span").hasClass("select2")) {
             classSelector = selector.next("span");
         }

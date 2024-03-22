@@ -14,7 +14,6 @@ class StaticPages extends Repository
         return Pages::query()
             ->pages()
             ->published()
-            ->notDeleted()
             ->orderBy('priority', 'desc')
             ->select('slug, updated_at, priority')
             ->get()

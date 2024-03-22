@@ -32,7 +32,8 @@ class Pages extends EntityQueryBuilder
 
     public function published(): self
     {
-        return $this->where('status', PageStatus::PUBLISHED);
+        return $this->where('status', PageStatus::PUBLISHED)
+            ->notDeleted();
     }
 
     public function announcements(): self

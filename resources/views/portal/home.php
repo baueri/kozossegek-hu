@@ -76,7 +76,9 @@
         </div>
     </div>
 </section>
-@include('portal.partials.testimonials')
+@include('portal/partials/testimonials')
+
+@include('portal/partials/home_news')
 
 <div class="bg-lightblue px-2 px-sm-5 py-5">
     <div class="container">

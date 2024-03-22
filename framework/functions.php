@@ -140,6 +140,11 @@ function now($tz = null): Carbon
     return Carbon::now($tz);
 }
 
+function carbon($date, $tz = null): Carbon
+{
+    return Carbon::parse($date, $tz);
+}
+
 function view(string $view, array $args = []): string
 {
     return app()->get(ViewInterface::class)->view($view, $args);

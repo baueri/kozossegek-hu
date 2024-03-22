@@ -1,23 +1,20 @@
 <?php
 
+declare(strict_types=1);
 
 namespace Framework\Database;
-
 
 use Framework\Support\Collection;
 
 class PaginatedResultSet extends Collection implements PaginatedResultSetInterface
 {
-    private $page;
+    private readonly int $page;
 
-    private $total;
+    private readonly int $total;
 
-    /**
-     * @var int
-     */
-    private $perpage;
+    private readonly int $perpage;
 
-    public function __construct($items, $perpage = 10, $page = 1, $total = 0)
+    public function __construct($items, int $perpage = 10, int $page = 1, $total = 0)
     {
         parent::__construct($items);
         $this->page = $page;
@@ -30,7 +27,7 @@ class PaginatedResultSet extends Collection implements PaginatedResultSetInterfa
         return $this->items;
     }
 
-    public function page()
+    public function page(): int
     {
         return $this->page;
     }
@@ -40,7 +37,7 @@ class PaginatedResultSet extends Collection implements PaginatedResultSetInterfa
         return $this->total;
     }
 
-    public function perpage()
+    public function perpage(): int
     {
         return $this->perpage;
     }
