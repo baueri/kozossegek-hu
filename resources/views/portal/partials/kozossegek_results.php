@@ -70,7 +70,12 @@
                             @endforeach
                             @endif
                         </p>
-                        <b class="card-title">{{ $group['name'] }}</b>
+                        <b class="card-title">
+                            @if($group['certified'])
+                                @certified_icon('Hitelesített közösség')
+                            @endif
+                            {{ $group['name'] }}
+                        </b>
                         <h6 style="color: #aaa;">
                             {{ $group['city'] . ($group['district'] ? ', ' . $group['district'] : '') }}
                         </h6>

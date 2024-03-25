@@ -12,6 +12,7 @@ use Framework\Model\Relation\Has;
 use Framework\Model\Relation\Relation;
 use Framework\Model\SoftDeletes;
 use Framework\Support\StringHelper;
+use Legacy\UserRole;
 
 /**
  * @phpstan-extends EntityQueryBuilder<User>
@@ -76,5 +77,10 @@ class Users extends EntityQueryBuilder
     public function sessions(): Relation
     {
         return $this->has(Has::many, UserSessions::class);
+    }
+
+    public function admin(): static
+    {
+        return $this->where('user_group', UserRole::SUPER_ADMIN);
     }
 }

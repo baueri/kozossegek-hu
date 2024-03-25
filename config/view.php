@@ -76,6 +76,7 @@ return [
         'csrf' => fn () => "<input type=\"hidden\" name=\"_token\" value=\"<?php echo csrf_token(); ?>\">",
         'lazySrc' => fn () => 'src="/images/placeholder.webp"',
         'preload_css' => fn () => 'rel="preload" as="style" onload="this.onload=null;this.rel=\'stylesheet\'"  media="all"',
+        'certified_icon' => fn () => '<i class="fa-stack" title="Hitelesített közösség" aria-label="Hitelesített közösség" style="width: 1em;"><i class="fa fa-certificate fa-stack-1x text-primary"></i><i class="fa fa-check fa-stack-1x text-white" style="font-size: .6em;"></i></i>',
     ],
     'components' => [
         'aszf' => AszfCheckBox::class,

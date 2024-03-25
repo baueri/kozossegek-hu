@@ -160,7 +160,7 @@ trait GroupTrait
 
     public function isRejected(): bool
     {
-        return $this->pending == -1;
+        return $this->pending == GroupPending::rejected->value();
     }
 
     public function pendingStatusIs(int|GroupPending $status): bool
@@ -233,7 +233,13 @@ trait GroupTrait
         $data['tag_ids'] = $this->tags->pluck('tag')->all();
         $data['url'] = $this->url();
         $data['thumbnail'] = $this->getThumbnail();
+        $data['certified'] = $this->isCertified();
 
         return $data;
+    }
+
+    public function isCertified(): bool
+    {
+        return $this->document && $this->pendingStatusIs(GroupPending::confirmed);
     }
 }
