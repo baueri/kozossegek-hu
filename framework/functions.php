@@ -157,7 +157,7 @@ function view_path(string $view): string
 
 function current_route(): Route
 {
-    return app()->get(RouterInterface::class)->getCurrentRoute();
+    return app()->get(Request::class)->route;
 }
 
 function get_site_url(): string

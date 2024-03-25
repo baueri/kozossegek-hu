@@ -238,8 +238,14 @@ class Container implements ContainerInterface
         return $this->bindings;
     }
 
-    public function resolve($concrete, string $method = '__construct')
+    public function resolve($concrete, ?string $method = null)
     {
+        if (is_callable($concrete)) {
+            return $concrete($this->getDependencies($concrete));
+        }
+
+        $method ??= '__construct';
+
         return call_user_func_array([$concrete, $method], $this->getDependencies($concrete, $method));
     }
 }

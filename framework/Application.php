@@ -55,7 +55,11 @@ class Application extends Container
     {
         $this->runEvents('booting');
         foreach ($this->bootstrappers as $bootstrapper) {
-            $this->make($bootstrapper)->boot();
+            if (!is_callable($bootstrapper)) {
+                $this->make($bootstrapper)->boot();
+            } else {
+                $this->resolve($bootstrapper);
+            }
         }
         $this->runEvents('booted');
     }

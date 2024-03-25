@@ -1,14 +1,11 @@
 <?php
 
-use App\Admin\Components\DebugBar\DebugBar;
-use App\Auth\Auth;
-use App\Auth\AuthUser;
+declare(strict_types=1);
+
 use App\Http\ErrorHandler;
 use App\Middleware\DebugBarMiddleware;
-use App\Portal\Services\Search\SearchRepository;
 use App\Providers\AppServiceProvider;
 use Framework\Http\HttpKernel;
-use Framework\Http\Request;
 use Framework\Http\Session;
 use Framework\Middleware\AuthMiddleware;
 use Framework\Middleware\BaseAuthMiddleware;
