@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services\SystemAdministration\SiteMap\Repositories;
 
+use App\Models\ChurchGroupView;
 use App\QueryBuilders\ChurchGroupViews;
 use Framework\Support\Collection;
 
@@ -12,7 +15,6 @@ class ChurchGroups extends Repository
         return ChurchGroupViews::query()
             ->active()
             ->get()
-            ->map
-            ->toSiteMapUrl();
+            ->map(fn (ChurchGroupView $churchGroup) => $churchGroup->toSiteMapUrl());
     }
 }

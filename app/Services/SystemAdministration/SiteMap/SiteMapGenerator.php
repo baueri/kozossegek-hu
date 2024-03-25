@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services\SystemAdministration\SiteMap;
 
 use App\Services\SystemAdministration\SiteMap\Repositories\Institutes;
@@ -11,12 +13,12 @@ use App\Services\SystemAdministration\SiteMap\Repositories\StaticPages;
 use Framework\Support\Collection;
 use SimpleXMLElement;
 
-class SiteMapGenerator
+readonly class SiteMapGenerator
 {
     /**
      * @var Repository[]
      */
-    private readonly array $repositories;
+    private array $repositories;
 
     public function __construct()
     {
@@ -25,7 +27,7 @@ class SiteMapGenerator
             SpiritualMovementRepository::class,
             ChurchGroups::class,
             Institutes::class,
-            PopularCities::class
+            PopularCities::class,
         ];
     }
 
