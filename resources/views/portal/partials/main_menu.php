@@ -7,7 +7,7 @@
 @section('nav-right')
     @auth
     <li class="nav-item nav-item-profile">
-        <a href="#" class="nav-link user-menu" aria-label="Felhasználói menü">
+        <a href="#" onclick="return false;" class="nav-link user-menu" aria-label="Felhasználói menü">
             <small><i class="fa fa-user-circle" onclick="return false;"></i> {{ auth()->firstName() }}</small>
         </a>
         <ul class="submenu">
@@ -29,7 +29,7 @@
     </li>
     @else
     <li class="nav-item">
-        <a href="#" class="nav-link d-none d-lg-block user-menu" aria-label="@lang('menu.login')">
+        <a href="#" onclick="return false;" class="nav-link d-none d-lg-block user-menu" aria-label="@lang('menu.login')">
             <label for="popup-login-username" class="mb-0" style="cursor:pointer;">
                 <small><i class="far fa-user-circle"></i> Belépés</small>
             </label>

@@ -48,10 +48,10 @@
                 <div class="col-md-4 col-sm-6 col-xs-12 my-3 my-md-0">
                     <ul class="navbar-nav">
                         <li class="nav-item"><a href="@route('portal.page', 'rolunk')" class="nav-link">Rólunk</a></li>
-                        <li class="nav-item"><a href="@route('portal.page', 'impresszum')" class="nav-link">Impresszum</a></li>
+                        <li class="nav-item"><a href="@route('portal.page', 'iranyelveink')" class="nav-link">Irányelveink</a></li>
                         <li class="nav-item"><a href="@route('portal.page', 'adatkezelesi-tajekoztato')" class="nav-link">Adatkezelés</a></li>
                         <li class="nav-item"><a href="@route('portal.page', 'adatvedelmi-nyilatkozat')" class="nav-link">Adatvédelem</a></li>
-                        <li class="nav-item"><a href="@route('portal.page', 'iranyelveink')" class="nav-link">Irányelveink</a></li>
+                        <li class="nav-item"><a href="@route('portal.page', 'impresszum')" class="nav-link">Impresszum</a></li>
                         <li class="nav-item"><a href="@route('portal.page', 'rolunk')#contact" class="nav-link">Kapcsolat</a></li>
                     </ul>
                 </div>
