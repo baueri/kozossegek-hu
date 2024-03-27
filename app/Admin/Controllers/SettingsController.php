@@ -6,6 +6,7 @@ use App\Admin\Components\AdminTable\PaginatedAdminTable;
 use App\Admin\Settings\EventLog\EventLogAdminTable;
 use App\Console\Commands\Cron\DailyCron;
 use App\Console\Commands\Cron\MonthlyCron;
+use App\Enums\EventType;
 use App\Services\SystemAdministration\SiteMap\SiteMapGenerator;
 use Framework\Console\Command;
 use Framework\Database\PaginatedResultSet;
@@ -50,7 +51,11 @@ class SettingsController extends AdminController
         $date_from = $request['date_from'];
         $date_to = $request['date_to'];
 
-        return view('admin.settings.event-log', compact('table', 'date_from', 'date_to'));
+        $types = EventType::cases();
+        $selectedType = $request['type'];
+        $request_page = $request['request_page'];
+
+        return view('admin.settings.event-log', compact('table', 'date_from', 'date_to', 'types', 'selectedType', 'request_page'));
     }
 
     public function scheduledTasks(): string
