@@ -57,7 +57,7 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
         }
         $this->headers = collect($headers);
 
-        $this->route = app(RouterInterface::class)->find($this->uri, $this->requestMethod);
+        $this->route = app()->get(RouterInterface::class)->find($this->uri, $this->requestMethod);
 
         $this->setUriValues();
     }

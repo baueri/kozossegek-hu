@@ -81,7 +81,7 @@ class ChurchGroupSeeder extends AbstractSeed
         }
 
         Out::info('Rebuilding search engine...');
-        app(RebuildSearchEngine::class)->run();
-        app(OpenStreetMapSync::class)->handle();
+        app()->get(RebuildSearchEngine::class)->run();
+        app()->get(OpenStreetMapSync::class)->handle();
     }
 }
