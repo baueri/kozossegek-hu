@@ -241,7 +241,7 @@ class Container implements ContainerInterface
     public function resolve($concrete, ?string $method = null)
     {
         if (is_callable($concrete)) {
-            return $concrete($this->getDependencies($concrete));
+            return call_user_func_array($concrete, $this->getDependencies($concrete, '__invoke'));
         }
 
         $method ??= '__construct';

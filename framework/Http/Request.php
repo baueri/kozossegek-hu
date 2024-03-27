@@ -30,7 +30,7 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
 
     public ?Route $route = null;
 
-    private ?array $uriValues = null;
+    public readonly array $uriValues;
 
     public readonly Collection $headers;
 
