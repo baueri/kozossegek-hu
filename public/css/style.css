@@ -218,7 +218,7 @@ nav.navbar .nav-link:hover {
     font-size: .8rem;
 }
 
-#navbar-top .nav-item a span {
+#navbar-top .nav-item:not(:last-child) a span {
     border-right: 1px solid #ddd;
     padding-right: .3rem;
 }
