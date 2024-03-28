@@ -69,6 +69,10 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
 
     public function setUriValues(): void
     {
+        if (!$this->route) {
+            return;
+        }
+
         $uriValues = [];
         $pattern = $this->route->getUriForPregReplace();
         preg_match_all($pattern, $this->uri, $matches);
