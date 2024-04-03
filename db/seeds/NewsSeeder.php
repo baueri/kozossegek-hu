@@ -5,7 +5,6 @@ declare(strict_types=1);
 use App\Enums\PageStatus;
 use App\Enums\PageType;
 use App\QueryBuilders\Users;
-use Framework\Support\Collection;
 use Phinx\Seed\AbstractSeed;
 
 class NewsSeeder extends AbstractSeed

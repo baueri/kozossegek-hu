@@ -42,6 +42,7 @@ class ChurchGroupSeeder extends AbstractSeed
 
                 $certified = rand(0, 1) > 0.1;
                 $addComments = rand(0, 1) > 0.95;
+                $addChurchImage = rand(0, 1) > 0.95;
 
                 try {
                     $user = Users::query()->insert([
@@ -90,18 +91,22 @@ class ChurchGroupSeeder extends AbstractSeed
                             'tag' => $tag->name
                         ]);
                     }
-                    ChurchGroups::query()->save($group, ['image_url' => GroupHelper::getPublicImagePath((int)$group->getId())]);
-                    $imageSource = base64_encode(file_get_contents('https://picsum.photos/300/300'));
-                    $image = new Base64Image($imageSource);
-                    $image->saveImage($group->getStorageImageDir() . $group->id . '_1.jpg');
-                } catch (Throwable $e) {
-                    if (str_contains($e->getMessage(), 'Duplicate entry')) {
-//                        continue;
+
+                    if ($addChurchImage) {
+
                     } else {
+                        $group->image_url = GroupHelper::getPublicImagePath((int) $group->getId());
+                        ChurchGroups::query()->save($group);
+                        $imageSource = base64_encode(file_get_contents('https://picsum.photos/350/350'));
+                        $image = new Base64Image($imageSource);
+                        $image->saveImage($group->getStorageImageDir() . $group->id . '_1.jpg');
+                    }
+
+                } catch (Throwable $e) {
+                    if (!str_contains($e->getMessage(), 'Duplicate entry')) {
                         throw $e;
                     }
                 }
-//                db()->commit();
             });
         }
 

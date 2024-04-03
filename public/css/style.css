@@ -301,7 +301,8 @@ nav.navbar .nav-link:hover {
 
 .kozi-box img {
     width: 100%;
-    /*aspect-ratio: 1.5;*/
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
 }
 
 .kozi-more-info {

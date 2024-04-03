@@ -23,6 +23,7 @@ use Framework\Support\Collection;
  * @property Collection<GroupTag> $tags
  * @property string|null $status
  * @property int|null $pending
+ * @property string|null $image_url
  */
 class ChurchGroup extends Entity
 {
