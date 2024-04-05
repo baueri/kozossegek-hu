@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console\Commands\Cron;
 
+use App\Console\Commands\DeleteExpiredUserTokens;
 use App\Console\Commands\DeleteSpamLogs;
 use App\Console\Commands\GroupActivityConfirmNotifier;
 use App\Console\Commands\InactivateUnconfirmedGroups;
@@ -21,7 +22,8 @@ class MonthlyCron extends CronCommand
         return [
             resolve(GroupActivityConfirmNotifier::class),
             resolve(InactivateUnconfirmedGroups::class),
-            resolve(DeleteSpamLogs::class)->silent()
+            resolve(DeleteSpamLogs::class)->silent(),
+            resolve(DeleteExpiredUserTokens::class)
         ];
     }
 }

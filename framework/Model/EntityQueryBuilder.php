@@ -303,6 +303,12 @@ class EntityQueryBuilder
         return $this;
     }
 
+    public function wherePast($column, $clause = 'and'): self
+    {
+        $this->builder->wherePast($column, $clause);
+        return $this;
+    }
+
     public function groupBy($gropBy): EntityQueryBuilder
     {
         $this->builder->groupBy($gropBy);

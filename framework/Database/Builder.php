@@ -375,6 +375,11 @@ class Builder
         return $this->where($column, 'in', $collected->all(), $clause);
     }
 
+    public function wherePast($column, $clause = 'and'): self
+    {
+        return $this->where($column, '<', now(), $clause);
+    }
+
     public function orWhere($column, $operator = null, $value = null): self
     {
         return $this->where($column, $operator, $value, 'or');
