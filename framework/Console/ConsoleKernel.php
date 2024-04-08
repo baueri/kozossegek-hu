@@ -34,9 +34,10 @@ class ConsoleKernel
 
     public function loadCommands(string $path): static
     {
-        $files = rglob(ltrim($path, '/') . '/*.php');
+        $files = rglob(ROOT . ltrim( $path, '/') . '/*.php');
         $commands = [];
         foreach ($files as $file) {
+            $file = str_replace(ROOT, '', $file);
             $commands[] = '\\' . mb_ucfirst(str_replace(['/', '.php'], ['\\', ''], $file));
         }
 
