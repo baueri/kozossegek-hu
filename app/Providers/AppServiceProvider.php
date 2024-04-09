@@ -15,6 +15,7 @@ class AppServiceProvider implements Middleware
         View::setVariable('is_home', is_home());
         View::setVariable('is_prod', is_prod());
         View::setVariable('header_background', '');
+        View::setVariable('display_news', (bool) env('DISPLAY_NEWS'));
 
         $announcements = null;
         if (Auth::user()) {

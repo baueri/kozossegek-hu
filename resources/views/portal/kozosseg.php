@@ -89,7 +89,7 @@
                              data-src="{{ $similarGroup->getThumbnail() }}"
                              data-srcset="{{ $similarGroup->getThumbnail() }}"
                              alt="{{ $similarGroup->name }}"
-                             style="object-fit: cover"
+                             style="object-fit: cover;"
                              class="lazy">
                     </a>
                     <div class="card-body">

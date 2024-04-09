@@ -9,6 +9,17 @@
             </div>
         </div>
         <div class="col-md-2">
+            <select name="type" class="form-control">
+                <option value="">-- Típus --</option>
+                @foreach($types as $type)
+                    <option value="{{ $type->value }}" @selected($type->value == $selectedType)>{{ $type->value }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="col-md-2">
+            <input type="text" class="form-control" placeholder="Oldal" name="request_page" value="{{ $request_page }}" aria-label="Oldal">
+        </div>
+        <div class="col-md-2">
             <button type="submit" class="btn btn-primary">Szűrés</button>
         </div>
     </div>

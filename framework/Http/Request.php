@@ -9,6 +9,7 @@ use ArrayAccess;
 use ArrayIterator;
 use Countable;
 use Framework\Http\Route\Route;
+use Framework\Http\Route\RouterInterface;
 use Framework\Support\Arr;
 use Framework\Support\Collection;
 use IteratorAggregate;
@@ -29,12 +30,13 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
 
     public ?Route $route = null;
 
-    private ?array $uriValues = null;
+    public readonly array $uriValues;
 
     public readonly Collection $headers;
 
     public function __construct()
     {
+
         $this->request = (new Collection(array_merge($_GET, $_POST)))->each(function ($item, $key, $collection) {
             if ($item == "true" || $item == "false") {
                 $collection[$key] = filter_var($item, FILTER_VALIDATE_BOOLEAN);
@@ -45,7 +47,7 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
 
         $this->requestMethod = isset($_SERVER['REQUEST_METHOD']) ? RequestMethod::from($_SERVER['REQUEST_METHOD']): null;
 
-        $this->uri = urldecode(parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH));
+        $this->uri = urldecode((string) parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH));
 
         $headers = [];
         foreach ($_SERVER as $headerKey => $headerVal) {
@@ -54,6 +56,10 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
             }
         }
         $this->headers = collect($headers);
+
+        $this->route = app()->get(RouterInterface::class)->find($this->uri, $this->requestMethod);
+
+        $this->setUriValues();
     }
 
     public function __call($name, $arguments)
@@ -61,27 +67,28 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
         return call_user_func_array([$this->request, $name], $arguments);
     }
 
-    public function getUriValues(): array
+    public function setUriValues(): void
     {
-        if (!is_null($this->uriValues)) {
-            return $this->uriValues;
+        if (!$this->route) {
+            return;
         }
 
-        $this->uriValues = [];
+        $uriValues = [];
         $pattern = $this->route->getUriForPregReplace();
         preg_match_all($pattern, $this->uri, $matches);
+
         foreach ($matches as $key => $value) {
             if (is_string($key) && !empty($value[0])) {
-                $this->uriValues[$key] = $value[0];
+                $uriValues[$key] = $value[0];
             }
         }
 
-        return $this->uriValues;
+        $this->uriValues = $uriValues;
     }
 
     public function getUriValue($key)
     {
-        return $this->getUriValues()[$key] ?? null;
+        return $this->uriValues[$key] ?? null;
     }
 
     public function getIterator(): Traversable|ArrayIterator

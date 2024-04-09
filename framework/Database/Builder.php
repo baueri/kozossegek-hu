@@ -189,7 +189,7 @@ class Builder
                 $in = implode(',', array_fill(0, count($value), '?'));
                 $where .= sprintf("$column $operator (%s)", $in);
                 $bindings = array_merge($bindings, $value);
-            } elseif (is_callable($column)) {
+            } elseif ($column instanceof Closure) {
                 $builder = new self($this->db);
 
                 $column($builder);

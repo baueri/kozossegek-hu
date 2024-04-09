@@ -48,6 +48,6 @@ class ChurchGroupView extends Entity implements BreadCrumbable
 
     public function priority(): ?string
     {
-        return '0.7';
+        return '0.9';
     }
 }

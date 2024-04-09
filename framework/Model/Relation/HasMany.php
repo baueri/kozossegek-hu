@@ -71,7 +71,7 @@ trait HasMany
     {
         return new Relation(
             relationType: $relationType,
-            queryBuilder: is_string($repositoryClass) ? app($repositoryClass) : $repositoryClass,
+            queryBuilder: is_string($repositoryClass) ? app()->get($repositoryClass) : $repositoryClass,
             relationName: $this->getRelationName(),
             foreignKey: $foreignKey ?: StringHelper::snake(get_class_name($this->getModelClass())) . '_id',
             localKey: $localKey

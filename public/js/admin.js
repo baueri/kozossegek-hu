@@ -146,3 +146,35 @@ $(() => {
         }
     });
 });
+
+
+const ElementLazyLoaded = new Event("ElementLazyLoaded");
+
+document.addEventListener("DOMContentLoaded", function() {
+    let lazyElements = [].slice.call(document.querySelectorAll(".lazy"));
+
+    if ("IntersectionObserver" in window) {
+        let lazyElementObserver = new IntersectionObserver(function(entries, observer) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    let lazyElement = entry.target;
+                    switch (lazyElement.tagName) {
+                        case "IMG":
+                            lazyElement.src = lazyElement.dataset.src;
+                            lazyElement.srcset = lazyElement.dataset.srcset;
+                            break;
+                    }
+                    lazyElement.dispatchEvent(ElementLazyLoaded);
+                    lazyElement.classList.remove("lazy");
+                    lazyElementObserver.unobserve(lazyElement);
+                }
+            });
+        });
+
+        lazyElements.forEach(function(lazyElement) {
+            lazyElementObserver.observe(lazyElement);
+        });
+    } else {
+        // Possibly fall back to event handlers here
+    }
+});

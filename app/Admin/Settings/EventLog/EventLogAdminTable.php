@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Admin\Settings\EventLog;
 
 use App\Admin\Components\AdminTable\PaginatedAdminTable;
@@ -32,11 +34,21 @@ class EventLogAdminTable extends PaginatedAdminTable
 
         $dateFrom = $this->request['date_from'];
         $dateTo = $this->request['date_to'];
+        $type = $this->request['type'];
+        $request_page = $this->request['request_page'];
 
         if ($dateFrom && $dateTo) {
             $query->whereRaw('DATE(created_at) BETWEEN ? AND ?', [$dateFrom, $dateTo]);
         } elseif($dateFrom) {
             $query->whereRaw('DATE(created_at) = ?', [$dateFrom]);
+        }
+
+        if ($type) {
+            $query->where('type', $type);
+        }
+
+        if ($request_page) {
+            $query->where('`log`', 'LIKE', "%\"page\":%{$request_page}%");
         }
 
         return $query->paginate();

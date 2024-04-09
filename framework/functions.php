@@ -31,18 +31,8 @@ use Framework\Support\Collection;
 use Framework\Support\StringHelper;
 use Framework\Translation\Translator;
 
-/**
- * @return Application|null|mixed
- * @psalm-template T
- * @psalm-param class-string<T> $abstract
- * @psalm-return T|Application
- */
-function app(string $abstract = null)
+function app(): Application
 {
-    if ($abstract) {
-        return Application::getInstance()->get($abstract);
-    }
-
     return Application::getInstance();
 }
 
@@ -157,7 +147,7 @@ function view_path(string $view): string
 
 function current_route(): Route
 {
-    return app()->get(RouterInterface::class)->getCurrentRoute();
+    return app()->get(Request::class)->route;
 }
 
 function get_site_url(): string

@@ -6,12 +6,9 @@ use App\Admin\Components\DebugBar\DebugBar;
 use App\Auth\Auth;
 use App\Auth\AuthUser;
 use App\Bootstrapper\RegisterDirectives;
-use App\Enums\PageStatus;
 use App\Enums\PageType;
 use App\Models\Page;
-use App\Models\User;
 use App\Portal\Services\Search\SearchRepository;
-use App\QueryBuilders\Pages;
 use App\QueryBuilders\Users;
 use App\Repositories\EventLogs;
 use App\Services\EventLogger;
@@ -76,7 +73,7 @@ $application->singleton([
     HttpKernel::class => HttpKernel::class,
     ViewInterface::class => View::class,
     Config::class => Config::class,
-    RouterInterface::class => fn (Application $app, Request $request) => new XmlRouter($request, config('route_sources')),
+    RouterInterface::class => fn (Application $app) => new XmlRouter(config('route_sources')),
     EventLogger::class => EventLogs::class,
     Database::class => fn () => PDOMysqlDatabaseFactory::create(),
     Request::class => Request::class,

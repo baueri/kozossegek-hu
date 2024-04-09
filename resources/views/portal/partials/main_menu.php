@@ -1,7 +1,8 @@
 @section('nav-pages')
     <li class="nav-item"><a href="@route('portal.page', ['slug' => 'rolunk'])" class="nav-link"><span>@lang('menu.about_us')</span></a></li>
     <li class="nav-item"><a href="@route('portal.page', ['slug' => 'rolunk'])#contact" class="nav-link"><span>@lang('menu.contact')</span></a></li>
-    <li class="nav-item"><a href="@route('portal.page', ['slug' => 'a-kozosseg'])" class="nav-link">@lang('menu.about_church_groups')</a></li>
+    <li class="nav-item"><a href="@route('portal.page', ['slug' => 'a-kozosseg'])" class="nav-link"><span>@lang('menu.about_church_groups')</span></a></li>
+    <li class="nav-item"><a href="@route('portal.page', 'iranyelveink')" class="nav-link"><span>Irányelveink</span></a></li>
 @endsection
 
 @section('nav-right')
@@ -110,9 +111,11 @@
                     <li class="nav-item">
                         <a href="@route('portal.spiritual_movements')" class="nav-link"><span>@lang('menu.religious_movements')</span></a>
                     </li>
-                    <li class="nav-item">
-                        <a href="@route('portal.blog')" class="nav-link"><span>@lang('menu.news')</span></a>
-                    </li>
+                    @if($display_news)
+                        <li class="nav-item">
+                            <a href="@route('portal.blog')" class="nav-link"><span>@lang('menu.news')</span></a>
+                        </li>
+                    @endif
                 </ul>
                 <ul class="navbar-nav d-flex d-lg-none">
                     @yield('nav-pages')

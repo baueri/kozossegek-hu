@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Framework\Middleware;
 
 use App\EventListeners\MissingTranslationListener;
@@ -7,11 +9,11 @@ use Framework\Application;
 use Framework\Http\Route\RouterInterface;
 use Framework\Translation\TranslationMissing;
 
-class Translation implements Middleware
+readonly class Translation implements Middleware
 {
     public function __construct(
-        private readonly RouterInterface $router,
-        private readonly Application $app
+        private RouterInterface $router,
+        private Application     $app
     ) {
     }
 
@@ -19,8 +21,9 @@ class Translation implements Middleware
     {
         TranslationMissing::listen(MissingTranslationListener::class);
 
-        if (preg_match('/^\/([a-z]{2})(\/|$)/', request()->uri, $matches)) {
-            $lang = $matches[1];
+        $lang = request()->getUriValue('lang');
+
+        if ($lang) {
             $this->app->setLocale($lang);
             $this->router->addGlobalArg('lang', $lang);
         }

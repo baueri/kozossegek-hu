@@ -19,7 +19,8 @@ class HomeController extends PortalController
             ->orderBy('created_at', 'desc')
             ->published()
             ->limit(3)
-            ->get();
+            ->get()
+            ->all();
 
         return view('portal.home', compact('age_groups', 'selected_age_group', 'intro', 'news'));
     }

@@ -3,6 +3,7 @@
 namespace App\Middleware;
 
 use Exception;
+use Framework\Http\Route\Route;
 use Framework\Http\Route\RouterInterface;
 use Framework\Middleware\Middleware;
 
@@ -27,7 +28,9 @@ class RefererMiddleware implements Middleware
     {
         $referer = trim(preg_replace('@^(' . preg_quote(get_site_url()) . ')@', '', request()->referer()), '/');
         if (preg_match('/route\(([^\)]+)\)$/', $this->referer, $matches)) {
-            $expectedReferer = router()->find($matches[1]);
+            $expectedReferer = router()->getRoutes()->find(function (Route $route) use ($matches) {
+                return $route->as === $matches[1];
+            });
             if ($expectedReferer->matches($referer)) {
                 return;
             }

@@ -14,8 +14,6 @@ interface RouterInterface
 
     public function find(string $uri, null|RequestMethod $method = null): ?Route;
 
-    public function getCurrentRoute(): ?Route;
-
     /**
      * @param string $name
      * @param array $args

@@ -11,7 +11,6 @@ use Framework\Model\Entity;
 use Framework\Support\Collection;
 use Framework\Model\Model;
 use Framework\Http\Exception\RouteNotFoundException;
-use Framework\Http\Request;
 
 class XmlRouter implements RouterInterface
 {
@@ -26,15 +25,9 @@ class XmlRouter implements RouterInterface
      * @throws Exception
      */
     public function __construct(
-        protected readonly Request $request,
         protected readonly array $routeSources
     ) {
         $this->load();
-    }
-
-    public function getCurrentRoute(): ?Route
-    {
-        return $this->find($this->request->uri, $this->request->requestMethod);
     }
 
     /**
