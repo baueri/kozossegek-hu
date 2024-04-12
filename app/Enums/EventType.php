@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Enums;
 
 use Framework\Support\Collection;
+use Framework\Traits\EnumTrait;
 
 enum EventType: string
 {

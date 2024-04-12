@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Framework\Http\Route;
 
-use App\Enums\EnumTrait;
 use Cake\Utility\Inflector;
 use Framework\Http\RequestMethod;
+use Framework\Traits\EnumTrait;
 
 enum CrudResource
 {

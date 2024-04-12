@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Exception;
+namespace Framework\Http\Exception;
 
 use InvalidArgumentException;
 use Throwable;

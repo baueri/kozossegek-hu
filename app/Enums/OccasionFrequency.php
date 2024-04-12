@@ -2,6 +2,8 @@
 
 namespace App\Enums;
 
+use Framework\Traits\EnumTrait;
+
 enum OccasionFrequency: string
 {
     use HasTranslation;

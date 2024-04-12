@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Framework\Http;
 
-use App\Enums\EnumTrait;
+use Framework\Traits\EnumTrait;
 
 enum RequestMethod
 {

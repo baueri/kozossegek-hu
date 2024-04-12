@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Enums;
+namespace Framework\Traits;
 
-use BackedEnum;
 use Framework\Support\Arr;
 use Framework\Support\Collection;
 use UnitEnum;
