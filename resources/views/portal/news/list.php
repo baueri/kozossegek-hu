@@ -1,3 +1,6 @@
+@header()
+    @og_image()
+@endheader
 @section('subtitle', "Hírek, események - ")
 @extends('portal')
 @featuredTitle('Hírek, események')

@@ -496,3 +496,16 @@ function root(): Path
 {
     return new Path(app()->root());
 }
+
+function og_image(string $url = ''): string
+{
+    if (!$url) {
+        $url = '/images/logo.png';
+    }
+
+    if (!str_starts_with($url, 'http')) {
+        $url = get_site_url() . $url;
+    }
+
+    return '<meta property="og:image" content="' . $url . '"/>';
+}

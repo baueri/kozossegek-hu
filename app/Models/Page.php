@@ -6,7 +6,6 @@ namespace App\Models;
 
 use App\Auth\Auth;
 use App\Enums\PageType;
-use App\QueryBuilders\Pages;
 use App\Services\SystemAdministration\SiteMap\ChangeFreq;
 use App\Services\SystemAdministration\SiteMap\EntitySiteMappable;
 use Framework\Model\Entity;
@@ -62,5 +61,13 @@ class Page extends Entity
     public function changeFreq(): ChangeFreq
     {
         return ChangeFreq::yearly;
+    }
+
+    public function featuredImageUrl(): string
+    {
+        if (str_starts_with($this->header_image, 'http')) {
+            return $this->header_image;
+        }
+        return get_site_url() . '/' . ltrim($this->header_image, '/');
     }
 }

@@ -7,7 +7,7 @@
 <meta property="og:title" content="kozossegek.hu - @lang('find_your_church_group')"/>
 <meta property="og:description"
       content="A kozossegek.hu egy katolikus közösségkereső portál, amelyet azért hoztunk létre, hogy segítsünk mindenkinek megtalálni a közösségét akárhol is éljen, tanuljon, vagy dolgozzon, nemtől, kortól, életállapottól függetlenül."/>
-<meta property="og:image" content="{{ get_site_url() . $header_background }}"/>
+@og_image()
 <meta property="og:locale" content="hu_HU"/>
 <link rel="canonical" href="{{ get_site_url() }}"/>
 <link href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" @preload_css()>

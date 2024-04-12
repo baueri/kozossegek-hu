@@ -1,3 +1,6 @@
+@header()
+    @og_image()
+@endheader
 @section('subtitle', "{$title} - ")
 @extends('portal')
 @featuredTitle($title)

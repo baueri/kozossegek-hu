@@ -1,3 +1,6 @@
+@header()
+    @og_image($spiritualMovement->image_url)
+@endheader
 @section('subtitle', $spiritualMovement->name . ' - ')
 @extends('portal')
 @featuredTitle()

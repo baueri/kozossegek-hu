@@ -1,3 +1,10 @@
+@section('header')
+    <link rel="canonical" href="{{ $entry->getUrl() }}" />
+    <meta name="description" content="{{ $entry->excerpt() }}" />
+    @if($entry->header_image)
+        @og_image($entry->featuredImageUrl())
+    @endif
+@endsection
 @section('subtitle', $entry->title . ' - ')
 @extends('portal')
 @featuredTitle('Hírek')

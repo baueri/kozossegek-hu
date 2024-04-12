@@ -76,6 +76,9 @@ return [
         'csrf' => fn () => "<input type=\"hidden\" name=\"_token\" value=\"<?php echo csrf_token(); ?>\">",
         'lazySrc' => fn () => 'src="/images/placeholder.webp"',
         'preload_css' => fn () => 'rel="preload" as="style" onload="this.onload=null;this.rel=\'stylesheet\'"  media="all"',
+        'og_image' => function ($matches) {
+            return "<?php echo og_image(" . ($matches[1] ?? '') . "); ?>";
+        }
     ],
     'components' => [
         'aszf' => AszfCheckBox::class,
