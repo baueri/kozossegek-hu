@@ -75,7 +75,7 @@ class ApiGroupController extends Controller
                 'name' => $churchGroup->name,
                 'age_group'=> $churchGroup->allAgeGroupsAsString(),
                 'description' => $churchGroup->description,
-                'tags' => $churchGroup->tags->pluck('tag_name')->implode(', '),
+                'tags' => $churchGroup->tags->map->translate()->implode(', '),
                 'link' => $churchGroup->url()
             ]);
 
