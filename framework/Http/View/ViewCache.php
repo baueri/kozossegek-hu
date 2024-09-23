@@ -9,10 +9,10 @@ class ViewCache
     public function cache(string $fileName, ?string $content): bool
     {
         $cachedFileName = $this->getCacheFilename($fileName);
-
+        $fileName = substr($fileName, strlen(ROOT));
         $this->createDirIfNotExists($cachedFileName);
 
-        $content = "<?php //this is the cache file of " . $fileName . " ?>\n" . $content;
+        $content = "<?php /** this is the cache file of @see {$fileName} */ ?>\n" . $content;
 
         return file_put_contents($cachedFileName, $content) !== false;
     }

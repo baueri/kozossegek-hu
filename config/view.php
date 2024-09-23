@@ -74,7 +74,10 @@ return [
         'disabled' => fn ($matches) => "<?php if($matches[1]): echo 'disabled'; endif; ?>",
         'dump' => fn($matches) => "<?php dump($matches[1]); ?>",
         'csrf' => fn () => "<input type=\"hidden\" name=\"_token\" value=\"<?php echo csrf_token(); ?>\">",
-        'lazySrc' => fn () => 'src="/images/placeholder.webp"',
+        'lazySrc' => function ($matches) {
+            $img = $matches[1] ?? '"/images/placeholder.webp"';
+            return "src={$img}";
+        },
         'preload_css' => fn () => 'rel="preload" as="style" onload="this.onload=null;this.rel=\'stylesheet\'"  media="all"',
         'og_image' => function ($matches) {
             return "<?php echo og_image(" . ($matches[1] ?? '') . "); ?>";

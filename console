@@ -16,6 +16,7 @@ try {
     $kernel = app()->get(ConsoleKernel::class);
 
     $kernel->loadCommands(path: 'app/Console/Commands');
+    $kernel->withCommand(\App\Services\SystemAdministration\OpenStreetMap\OpenStreetMapSync::class);
 
     $kernel->handle();
 } catch (Error | Exception | Throwable $e) {

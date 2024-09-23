@@ -55,7 +55,7 @@
                 <div class="card kozi-box h-100 p-0 shadow-smooth">
                     <a href="{{ $group['url'] }}" class="card-img">
                         <div>megnézem</div>
-                        <img @lazySrc()
+                        <img @lazySrc("/images/placeholder_rect.webp")
                              data-src="{{ $group['thumbnail'] }}"
                              data-srcset="{{ $group['thumbnail'] }}"
                              alt="{{ $group['city'] }}"
