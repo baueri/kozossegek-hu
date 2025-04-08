@@ -91,6 +91,7 @@ return [
         'priority_selector' => PrioritySelector::class,
         'open_street_map' => OpenStreeMap::class,
         'base_selector' => BaseSelector::class,
-        'breadcrumb' => BreadCrumb::class
+        'breadcrumb' => BreadCrumb::class,
+        'cathptcha' => App\Services\Cathptcha\Component::class
     ]
 ];

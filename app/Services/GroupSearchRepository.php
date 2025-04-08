@@ -6,13 +6,14 @@ namespace App\Services;
 
 use App\Models\User;
 use App\QueryBuilders\ChurchGroupViews;
+use Framework\Database\Builder;
 use Framework\Model\ModelCollection;
 use Framework\Support\StringHelper;
 
-class GroupSearchRepository
+readonly class GroupSearchRepository
 {
     public function __construct(
-        public readonly ChurchGroupViews $repository
+        public ChurchGroupViews $repository
     ) {
     }
 
@@ -104,6 +105,12 @@ class GroupSearchRepository
 
     public function getNotDeletedGroupsByUser(User $user): ModelCollection
     {
-        return $this->repository->query()->forUser($user)->editableBy($user)->notDeleted()->get();
+        return $this->repository->query()->where(function (Builder $query) use ($user) {
+            $query->where('user_id', $user->id)->whereExists(
+                builder('managed_church_groups')
+                    ->whereRaw("group_id={$this->repository->getTable()}.id")
+                    ->where('user_id', $user->getId())
+                , clause: 'or');
+        })->notDeleted()->get();
     }
 }

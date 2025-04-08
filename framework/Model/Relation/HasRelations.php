@@ -51,7 +51,7 @@ trait HasRelations
     {
         $relation = $this->getRelation($relationName, $callback);
         $relation->queryBuilder->whereRaw("{$relation->queryBuilder->getTable()}.{$relation->foreignKey}={$this->getTable()}.{$relation->localKey}");
-        $this->whereDoesnExist($relation->queryBuilder);
+        $this->whereDoesntExist($relation->queryBuilder);
         return $this;
     }
 

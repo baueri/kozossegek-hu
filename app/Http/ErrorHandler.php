@@ -31,6 +31,9 @@ class ErrorHandler
             } elseif ($error instanceof HoneypotException) {
                 log_event('honeypot_fail', ['request' => request()->all(), 'reason' => $error->reason]);
                 abort(403);
+            }  elseif ($error instanceof \App\Services\Cathptcha\Exception) {
+                log_event('catpcha_fail', ['request' => request()->all(), 'q,a' => $error->question . ',' . $error->answer]);
+                abort(403);
             } else {
                 report($error);
             }
@@ -39,11 +42,17 @@ class ErrorHandler
         Response::setStatusCode($error->getCode() ?: 500);
 
         if (Response::contentTypeIsJson()) {
-            print json_encode([
+            $response = [
                 'success' => false,
-                'error_code' => $error->getCode()
-            ]);
-            throw $error;
+            ];
+
+            if (env('DEBUG')) {
+                $response['message'] = $error->getMessage();
+                $response['trace'] = explode("\n", $error->getTraceAsString());
+            }
+
+            print json_encode($response);
+            return;
         }
 
         if (config('app.debug') && $error->getCode() != '401') {

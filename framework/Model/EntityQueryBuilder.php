@@ -297,9 +297,9 @@ class EntityQueryBuilder
     /**
      * @phpstan-return static
      */
-    public function whereDoesnExist(Builder|EntityQueryBuilder $table, ?Closure $callback = null, string $clause = 'and'): static
+    public function whereDoesntExist(Builder|EntityQueryBuilder $table, ?Closure $callback = null, string $clause = 'and'): static
     {
-        $this->builder->whereDoesnExist($table instanceof EntityQueryBuilder ? $table->builder : $table, $callback, $clause);
+        $this->builder->whereDoesntExist($table instanceof EntityQueryBuilder ? $table->builder : $table, $callback, $clause);
         return $this;
     }
 

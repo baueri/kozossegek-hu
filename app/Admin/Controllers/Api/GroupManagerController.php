@@ -16,7 +16,7 @@ class GroupManagerController extends AdminController
         if (!$search = $request['q']) {
             return [];
         }
-        $repository->repository->whereDoesnExist(
+        $repository->repository->whereDoesntExist(
             builder('managed_church_groups')
             ->whereRaw("group_id={$repository->repository->getTable()}.id")
             ->where('user_id', $request['id']))

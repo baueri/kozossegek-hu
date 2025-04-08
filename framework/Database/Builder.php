@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Framework\Database;
 
 use BackedEnum;
+use BadMethodCallException;
 use Closure;
 use DateTimeInterface;
 use Framework\Support\Arr;
@@ -194,7 +195,7 @@ class Builder
 
                 $column($builder);
 
-                $closureBindings = array_map(fn($where) => $where[2], $builder->getWhere());
+                $closureBindings = Arr::flatten(array_map(fn($where) => $where[2], $builder->getWhere()));
 
                 $closureWhere = $builder->buildWhere();
 
@@ -416,7 +417,7 @@ class Builder
         return $this;
     }
 
-    public function whereDoesnExist(string|Builder $table, ?Closure $callback = null, string $clause = 'and'): static
+    public function whereDoesntExist(string|Builder $table, ?Closure $callback = null, string $clause = 'and'): static
     {
         return $this->whereExists($table, $callback, $clause, false);
     }
@@ -540,9 +541,11 @@ class Builder
 
     public function __call($method, $args)
     {
-        $this->applyMacro($method, $args);
+        if ($this->applyMacro($method, $args)) {
+            return;
+        }
 
-        return $this;
+        throw new BadMethodCallException("Call to undefined method {$method}()");
     }
 
     public function macro($macroName, $callback): self
@@ -554,28 +557,29 @@ class Builder
         return $this;
     }
 
-    public function apply($macro, ...$args): self
+    public function apply($macro, ...$args): void
     {
         if (is_array($macro)) {
             foreach ($macro as $m) {
                 $this->applyMacro($m, $args);
             }
 
-            return $this;
+            return;
         }
 
-        return $this->applyMacro($macro, $args);
+        $this->applyMacro($macro, $args);
     }
 
-    protected function applyMacro($macro, $args): self
+    protected function applyMacro($macro, $args): bool
     {
         $callback = $this->getMacro($macro);
 
         if ($callback) {
             $callback($this, ...$args);
+            return true;
         }
 
-        return $this;
+        return false;
     }
 
     protected function getMacro($method)

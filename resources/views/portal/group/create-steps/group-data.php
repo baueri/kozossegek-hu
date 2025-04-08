@@ -10,7 +10,7 @@
 <div class="container inner pt-4 pb-4" id="create-group">
     @message()
     <div>
-        <form method="post" id="group-form" enctype="multipart/form-data" action="@route('portal.my_group.create')">
+        <form method="post" id="group-form" enctype="multipart/form-data">
             @alert('warning')
                 <i class="fa fa-exclamation-triangle"></i> Fontos számunkra, hogy az oldalon valóban keresztény értékeket közvetítő közösségeket hirdessünk. Mielőtt kitöltenéd a regisztrációs űrlapot, kérjük, hogy mindenképp olvasd el az <a href="/iranyelveink" target="_blank">irányelveinket</a>.
             @endalert
@@ -155,6 +155,7 @@
                     <label for="spiritual_movement_id">Lelkiségi mozgalom</label><br/>
                     <small>Ha egy nagyobb lelkiségi mozgalomhoz tartoztok, akkor azt adjátok meg itt, így nagyobb eséllyel találnak meg azok, akik ezen mozgalom közösségeit keresik.</small>
                     @spiritual_movement_selector($group->spiritual_movement_id)
+                    @honeypot('group-data')
                 </div>
             </div>
             <div class="step-container shadow">
@@ -427,8 +428,18 @@
                                 dialog.show("A regisztráció befejezéséhez először el kell fogadnod az adatvédelmi tájékoztatót és az irányelveinket!");
                                 return;
                             }
+                            const api = "@route('portal.my_group.create')";
+                            const serializedData = $("form#group-form").serialize();
 
-                            form.trigger("submit", [{send_request:true}]);
+                            $.post(api, serializedData, "json").done(function (response) {
+                                if (response.success) {
+                                    window.location.href = response.redirect;
+                                } else {
+                                    dialog.danger(response.message);
+                                }
+                            }).fail(function (response) {
+                                dialog.danger(response.responseJSON.message);
+                            });
                         } else {
                             modal.modal("hide");
                         }

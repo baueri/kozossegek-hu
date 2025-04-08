@@ -189,4 +189,18 @@ class Arr
 
         return $list;
     }
+
+    public static function flatten(array $array): array
+    {
+        $result = [];
+
+        foreach ($array as $key => $value) {
+            if (is_array($value)) {
+                $result = array_merge($result, static::flatten($value));
+            } else {
+                $result[$key] = $value;
+            }
+        }
+        return $result;
+    }
 }

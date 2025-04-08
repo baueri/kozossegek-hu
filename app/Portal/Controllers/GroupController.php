@@ -5,6 +5,7 @@ namespace App\Portal\Controllers;
 use App\Auth\Auth;
 use App\Enums\GroupStatus;
 use App\Exception\EmailTakenException;
+use App\Helpers\HoneyPot;
 use App\Http\Responses\CreateGroupSteps\RegisterGroupForm;
 use App\Http\Responses\PortalEditGroupForm;
 use App\Portal\Services\GroupList;
@@ -24,6 +25,7 @@ use Framework\Exception\FileTypeNotAllowedException;
 use Framework\Http\Exception\PageNotFoundException;
 use Framework\Http\Message;
 use Framework\Http\Request;
+use Framework\Http\Response;
 use Framework\Http\View\Section;
 use Framework\Model\Exceptions\ModelNotFoundException;
 use Framework\Support\Arr;
@@ -181,9 +183,11 @@ class GroupController extends PortalController
         return $response($group);
     }
 
-    public function createGroup(Request $request, PortalCreateGroup $createGroupService, RegisterGroupForm $form)
+    public function createGroup(Request $request, PortalCreateGroup $createGroupService): array
     {
+        Response::asJson();
         try {
+            HoneyPot::validate('group-data', $request->get('website'));
             $user = Auth::user();
             $group =
                 $createGroupService->createGroup(
@@ -194,21 +198,14 @@ class GroupController extends PortalController
 
             if ($user) {
                 Message::success('Közösség sikeresen létrehozva!');
-                redirect_route('portal.edit_group', $group);
+
+                return ['success' => true, 'redirect' => route('portal.edit_group', $group)];
             }
-
-            redirect_route('portal.group.create_group_success');
-
+            return ['success' => true, 'redirect' => route('portal.group.create_group_success')];
         } catch (FileTypeNotAllowedException $e) {
-            Message::danger('Csak <b>word</b> és <b>pdf</b> dokumentumot fogadunk el igazolásként!');
-            return (string) $form;
+            return ['success' => false, 'message' => 'Csak <b>word</b> és <b>pdf</b> dokumentumot fogadunk el igazolásként!'];
         } catch (EmailTakenException $e) {
-            Message::danger('Ez az email cím már foglalt');
-            return (string) $form;
-        } catch (Exception | Error | Throwable | ErrorException $e) {
-            process_error($e);
-            Message::danger('Váratlan hiba történt a közösség létrehozásakor, kérjük próbáld meg később!');
-            return (string) $form;
+            return ['success' => false, 'message' => 'Ez az email cím már foglalt!'];
         }
     }
 
