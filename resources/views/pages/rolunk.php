@@ -9,7 +9,7 @@
 @endheader
 @section('subtitle', 'Rólunk | ')
 @extends('portal')
-@featuredTitle($page_title)
+@featuredTitle('Rólunk')
 <div class="container inner p-4 page">
     {{ $page->content }}
     <span id="contact"></span>

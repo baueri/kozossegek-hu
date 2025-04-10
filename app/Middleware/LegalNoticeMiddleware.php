@@ -5,9 +5,9 @@ namespace App\Middleware;
 use App\Auth\Auth;
 use App\Services\User\LegalNoticeService;
 use Framework\Http\View\View;
-use Framework\Middleware\Middleware;
+use Framework\Middleware\Before;
 
-class LegalNoticeMiddleware implements Middleware
+class LegalNoticeMiddleware implements Before
 {
     private LegalNoticeService $service;
 
@@ -16,7 +16,7 @@ class LegalNoticeMiddleware implements Middleware
         $this->service = $service;
     }
 
-    public function handle(): void
+    public function before(): void
     {
         $user = Auth::user();
         $this->service->setLegalNoticeSessionFor($user);

@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Framework\Http\Route;
 
 use Framework\Http\RequestMethod;
+use Framework\Support\Arr;
+use InvalidArgumentException;
 
 class Route
 {
@@ -29,7 +31,22 @@ class Route
         $this->as = $as;
         $this->controller = trim($controller, '\\');
         $this->use = $use;
-        $this->middleware = array_map(fn ($m) => config('app.named_middleware')[$m] ?? $m, $middleware);
+
+        $namedMiddleware = config('app.named_middleware');
+
+        $this->middleware = array_map(function ($m) use ($namedMiddleware) {
+            if (class_exists($m)) {
+                return $m;
+            }
+            [$name, $params] = explode('@', $m) + [null, ''];
+            if (class_exists($name)) {
+                return $m;
+            } elseif (isset($namedMiddleware[$name])) {
+                return trim($namedMiddleware[$name] . '@' . $params, '@');
+            }
+
+            throw new InvalidArgumentException("invalid middleware: {$m}");
+        }, $middleware);
         $this->view = $view;
     }
 
@@ -83,7 +100,7 @@ class Route
             $uri .= '?' . http_build_query($args);
         }
 
-        return $uri;
+        return trim($uri, '?');
     }
 
     public function matches(string $uri): bool

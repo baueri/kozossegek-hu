@@ -5,16 +5,27 @@ namespace Framework\Middleware;
 use Closure;
 
 /**
- * @template T of Middleware
+ * @template T of Before
  */
 final class MiddlewareResolver
 {
-    public function resolve(string|Closure $middleware): void
+    public function resolve(string|Closure $middleware): Closure|Before|After
     {
         if ($middleware instanceof Closure) {
-            $middleware(...app()->getDependencies($middleware));
-            return;
+            return new readonly class ($middleware) implements Before {
+                public function __construct(
+                    private Closure $middleware
+                ) {
+                }
+
+                public function before(): void
+                {
+                    $callable = $this->middleware;
+                    $callable(...app()->getDependencies($callable));
+                }
+            };
         }
+
         $parts = explode('@', $middleware);
         /** @var class-string<T> $class */
         $class = $parts[0];
@@ -26,6 +37,7 @@ final class MiddlewareResolver
                 $args[$paramName] = $paramValue;
             }
         }
-        app()->make($class, $args)->handle();
+
+        return app()->make($class, $args);
     }
 }

@@ -7,6 +7,7 @@ use App\Portal\Services\Search\MeiliSearchRepository;
 use App\Middleware\RefererMiddleware;
 use App\Services\Cathptcha\Middleware as Catptcha;
 use Framework\Middleware\JsonApi;
+use Framework\Middleware\ReplayAttackProtection;
 use Framework\Middleware\Translation;
 use Framework\Middleware\VerifyCsrfToken;
 
@@ -42,6 +43,7 @@ return [
         'auth' => LoggedInMiddleware::class,
         'referer' => RefererMiddleware::class,
         'catptcha' => Catptcha::class,
+        'replay_protect' => ReplayAttackProtection::class
     ],
     'exclude_csrf' => [
         'admin.upload_file'

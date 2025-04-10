@@ -5,14 +5,14 @@ namespace App\Middleware;
 use App\Auth\Auth;
 use App\Enums\UserRight;
 use Framework\Http\Response;
-use Framework\Middleware\Middleware;
+use Framework\Middleware\Before;
 use Framework\Http\Message;
 use Framework\Http\Session;
 use Framework\Exception\UnauthorizedException;
 use App\Admin\Components\AdminMenu;
 use Framework\Http\View\View;
 
-class AdminMiddleware implements Middleware
+class AdminMiddleware implements Before
 {
     private AdminMenu $adminMenu;
 
@@ -24,7 +24,7 @@ class AdminMiddleware implements Middleware
     /**
      * @throws UnauthorizedException
      */
-    final public function handle(): void
+    final public function before(): void
     {
         if (!Auth::loggedIn()) {
             if (Response::getHeader('Content-Type') === 'application/json') {

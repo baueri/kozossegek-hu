@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\SystemAdministration\SiteMap\Repositories;
 
+use App\Enums\PageType;
 use App\Models\Page;
 use App\QueryBuilders\Pages;
 use App\Services\SystemAdministration\SiteMap\ChangeFreq;
@@ -16,7 +17,7 @@ class StaticPages extends Repository
     {
         return Pages::query()
             ->published()
-            ->news()
+            ->whereIn('page_type', [PageType::blog, PageType::page])
             ->orderBy('priority', 'desc')
             ->select('slug, updated_at, priority, page_type')
             ->get()

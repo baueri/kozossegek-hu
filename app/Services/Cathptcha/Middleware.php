@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Services\Cathptcha;
 
-class Middleware implements \Framework\Middleware\Middleware
+class Middleware implements \Framework\Middleware\Before
 {
     /**
      * @throws Exception
      */
-    public function handle(): void
+    public function before(): void
     {
         if (!isset($_SESSION['catptcha_question'])) {
             return;

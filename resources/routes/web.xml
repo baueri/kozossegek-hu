@@ -27,7 +27,7 @@
             <!-- Közösség kapcsolatfelvételi űrlap -->
             <route method="post" uri="group-contact-form" as="portal.group-contact-form" controller="GroupController" use="groupContactForm"/>
             <route method="post" uri="send-contact-message" as="portal.contact-group" controller="GroupController"
-                   use="sendContactMessage" middleware="json|App\Middleware\RefererMiddleware@referer:route(kozosseg)"/>
+                   use="sendContactMessage" middleware="json|referer@referer:route(kozosseg)"/>
 
             <!--  Aktív közösség megerősítés  -->
             <route method="get" uri="confirm-group" as="confirm_group" controller="GroupController" use="confirmGroup"/>
@@ -52,7 +52,7 @@
             <route method="get" uri="sikeres-regisztracio" as="portal.group.create_group_success" controller="GroupController" use="registrationSuccess"/>
 
             <route method="post" uri="create-group" as="portal.my_group.create" controller="GroupController"
-                   use="createGroup" middleware="App\Middleware\RefererMiddleware@referer:kozosseg-regisztracio"/>
+                   use="createGroup" middleware="referer@referer:kozosseg-regisztracio"/>
 
             <route method="get" uri="lelkisegi-mozgalmak" as="portal.spiritual_movements" controller="SpiritualMovementController" use="list"/>
             <route method="get" uri="lelkisegi-mozgalom/{slug}" as="portal.spiritual_movement.view" controller="SpiritualMovementController" use="view"/>
@@ -65,7 +65,7 @@
 
             <!-- Kapcsolatfelvétel -->
             <route method="post" uri="send-message" as="portal.contact_us" controller="ContactController" use="send"
-                   middleware="App\Middleware\RefererMiddleware@referer:rolunk"/>
+                   middleware="referer@referer:rolunk|replay_protect"/>
         </route-group>
 
         <route method="all" uri="social/{provider}/login" controller="\App\Portal\Controllers\SocialController" use="socialLogin" as="social_login"/>
@@ -92,5 +92,5 @@
     <route method="post" uri="announcement" controller="App\Portal\Controllers\PageController" use="setAnnouncementsSeen" as="api.announcements.set_seen"/>
 
     <!-- Adatbázisban tárolt statikus oldalak. FIGYELEM!!!! EZ ALÁ MÁR NE KERÜLJÖN ROUTE!!! -->
-    <route method="get" uri="{slug}/?" controller="App\Portal\Controllers\PageController" use="page" as="portal.page" middleware="App\Middleware\ComingSoon"/>
+    <route method="get" uri="{slug}" controller="App\Portal\Controllers\PageController" use="page" as="portal.page" middleware="App\Middleware\ComingSoon"/>
 </routes>

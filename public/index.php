@@ -9,6 +9,7 @@ use Framework\Http\HttpKernel;
 use Framework\Http\Session;
 use Framework\Middleware\AuthMiddleware;
 use Framework\Middleware\BaseAuthMiddleware;
+use Framework\Middleware\ReplayAttackProtection;
 use Framework\Middleware\Translation;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;

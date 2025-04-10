@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Framework\File;
 
 use Framework\File\Enums\SizeUnit;
@@ -13,6 +15,11 @@ class File
     protected string|array $pathInfo;
 
     protected ?string $fileType = null;
+
+    /**
+     * @var resource|null $resource
+     */
+    protected $resource = null;
 
     public function __construct(protected ?string $filePath = '')
     {
@@ -93,7 +100,7 @@ class File
         return is_dir($this->filePath);
     }
 
-    public function setPermission(string $mode): bool
+    public function setPermission(int $mode): bool
     {
         return chmod($this->filePath, $mode);
     }
@@ -194,6 +201,29 @@ class File
         }
 
         return new static($formData['tmp_name']);
+    }
+
+    public function open(string $mode = 'r'): static
+    {
+        $this->resource = fopen($this->getFilePath(), $mode);
+
+        return $this;
+    }
+
+    public function close(): static
+    {
+        fclose($this->resource);
+
+        $this->resource = null;
+
+        return $this;
+    }
+
+    public function write($data): static
+    {
+        fwrite($this->resource, $data);
+
+        return $this;
     }
 
     public function __toString(): string

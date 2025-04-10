@@ -319,6 +319,26 @@ function log_event(string $type, array $data = [], ?User $user = null): void
     event_logger()->logEvent($type, $data, $user);
 }
 
+function log_debug(...$data): void
+{
+    $dir = root()->storage('logs/');
+    if (!$dir->exists()) {
+        mkdir($dir->path(), recursive: true);
+    }
+
+    $file = $dir->file('debug_log_' . date('Y-m-d') . '.log')->open('a');
+
+    foreach ($data as $row) {
+        $row = var_export($row, true);
+        $time = date('H:i:s');
+        $at = debug_backtrace()[0];
+
+        $file->write("[{$time}]: {$at['file']}@{$at['line']}\n{$row}\n");
+    }
+
+    $file->close();
+}
+
 function site_name(): string
 {
     return config('app.site_name');

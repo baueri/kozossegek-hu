@@ -4,27 +4,22 @@ namespace App\Middleware;
 
 use Exception;
 use Framework\Http\Route\Route;
-use Framework\Http\Route\RouterInterface;
-use Framework\Middleware\Middleware;
+use Framework\Middleware\Before;
 
-class RefererMiddleware implements Middleware
+readonly class RefererMiddleware implements Before
 {
-    private RouterInterface $router;
-
     /**
      * @throws Exception
      */
     public function __construct(
-        protected readonly string $referer
+        protected string $referer
     ) {
-        $this->router = app()->get(RouterInterface::class);
-
         if (!$this->referer) {
             throw new Exception('no referer provided. maybe you forgot?');
         }
     }
 
-    public function handle(): void
+    public function before(): void
     {
         $referer = trim(preg_replace('@^(' . preg_quote(get_site_url()) . ')@', '', request()->referer()), '/');
         if (preg_match('/route\(([^\)]+)\)$/', $this->referer, $matches)) {

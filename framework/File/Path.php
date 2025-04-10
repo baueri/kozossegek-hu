@@ -43,7 +43,7 @@ readonly class Path
         return unlink($this->path . $path);
     }
 
-    public function exists(string $path): bool
+    public function exists(string $path = ''): bool
     {
         return file_exists($this->path . $path);
     }
@@ -56,6 +56,11 @@ readonly class Path
     public function path(string $path = ''): string
     {
         return $this->path . $path;
+    }
+
+    public function dirname(): string
+    {
+        return dirname($this->path);
     }
 
     public function file(string $path): File

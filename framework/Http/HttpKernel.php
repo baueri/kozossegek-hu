@@ -10,24 +10,30 @@ use Framework\Http\Exception\PageNotFoundException;
 use Framework\Http\Exception\RouteNotFoundException;
 use Framework\Http\Route\Route;
 use Framework\Http\Route\RouterInterface;
-use Framework\Middleware\Middleware;
+use Framework\Middleware\Before;
 use Framework\Middleware\MiddlewareResolver;
+use Framework\Middleware\After;
 
 class HttpKernel
 {
     /**
-     * @var class-string<Middleware>[]
+     * @var class-string<Before>[]
      */
     protected array $middleware = [];
 
     public function __construct(
-        private readonly Application $app,
-        private readonly Request $request,
+        public readonly Application $app,
+        public readonly Request $request,
         public readonly RouterInterface $router
     ) {
         Cookie::setTestCookie();
     }
 
+    /**
+     * @template T
+     * @param class-string<T>|Closure $middleware
+     * @return $this
+     */
     public function middleware(string|Closure $middleware): static
     {
         $this->middleware[] = $middleware;
@@ -45,9 +51,13 @@ class HttpKernel
         MileStone::measure('http_dispatch', 'Dispatching http request');
 
         $middlewareResolver = new MiddlewareResolver();
-        $kernelMiddleware = $this->getMiddleware();
+        $kernelMiddleware = array_map(fn ($item) => $middlewareResolver->resolve($item), $this->getMiddleware());
 
-        array_walk($kernelMiddleware, fn($item) => $middlewareResolver->resolve($item));
+        array_walk($kernelMiddleware, function ($item) {
+            if ($item instanceof Before) {
+                $item->before();
+            }
+        });
 
         $route = $this->request->route;
 
@@ -59,8 +69,9 @@ class HttpKernel
             throw new PageNotFoundException("controller `" . $route->controller . "` not found");
         }
 
-        $middleware = $route->getMiddleware();
-        array_walk($middleware, fn($item) => $middlewareResolver->resolve($item));
+        $routeMiddleware = array_map(fn ($middleware) => $middlewareResolver->resolve($middleware), $route->getMiddleware());
+
+        array_walk($routeMiddleware, fn(Before $item) => $item->before());
 
         $response = $this->resolveRoute($route);
 
@@ -75,6 +86,12 @@ class HttpKernel
         } else {
             echo $response;
         }
+
+        array_map(function ($middleware) use ($middlewareResolver) {
+            if($middleware instanceof After) {
+                $middleware->after();
+            }
+        }, array_merge($kernelMiddleware, $routeMiddleware));
     }
 
 
