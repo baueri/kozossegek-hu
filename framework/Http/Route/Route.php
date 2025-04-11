@@ -5,24 +5,23 @@ declare(strict_types=1);
 namespace Framework\Http\Route;
 
 use Framework\Http\RequestMethod;
-use Framework\Support\Arr;
 use InvalidArgumentException;
 
-class Route
+readonly class Route
 {
-    public readonly RequestMethod $method;
+    public RequestMethod $method;
 
-    public readonly string $uriMask;
+    public string $uriMask;
 
-    public readonly string $as;
+    public string $as;
 
-    public readonly string $controller;
+    public string $controller;
 
-    public readonly string $use;
+    public string $use;
 
-    public readonly string $view;
+    public string $view;
 
-    public readonly array $middleware;
+    public array $middleware;
 
     public function __construct(string $method, string $uriMask, string $as, string $controller, string $use, array $middleware, string $view)
     {

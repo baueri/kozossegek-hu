@@ -19,12 +19,14 @@ enum EventType: string
     case referer_fail = 'referer_fail';
     case csrf_fail = 'csrf_fail';
     case honeypot_fail = 'honeypot_fail';
+    case catptcha_fail = 'catptcha_fail';
+    case replay_attack = 'replay_attack';
 
     /**
      * @return Collection<static>
      */
     public static function spamLogs(): Collection
     {
-        return collect([self::referer_fail, self::csrf_fail, self::honeypot_fail]);
+        return collect([self::referer_fail, self::csrf_fail, self::honeypot_fail, self::catptcha_fail, self::replay_attack]);
     }
 }

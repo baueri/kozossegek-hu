@@ -52,7 +52,7 @@
             <route method="get" uri="sikeres-regisztracio" as="portal.group.create_group_success" controller="GroupController" use="registrationSuccess"/>
 
             <route method="post" uri="create-group" as="portal.my_group.create" controller="GroupController"
-                   use="createGroup" middleware="referer@referer:kozosseg-regisztracio"/>
+                   use="createGroup" middleware="json|referer@referer:kozosseg-regisztracio|replay_protect"/>
 
             <route method="get" uri="lelkisegi-mozgalmak" as="portal.spiritual_movements" controller="SpiritualMovementController" use="list"/>
             <route method="get" uri="lelkisegi-mozgalom/{slug}" as="portal.spiritual_movement.view" controller="SpiritualMovementController" use="view"/>

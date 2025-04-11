@@ -155,10 +155,12 @@ class XmlRouter implements RouterInterface
         $hasStrictMatch = false;
         foreach ($this->routes as $route) {
             $trimmed = trim($uri, '/');
+
             if ($route->getUriMask() == $trimmed) {
                 $hasStrictMatch = true;
 
                 if ($route->requestMethodIs($method)) {
+
                     return $route;
                 }
             }

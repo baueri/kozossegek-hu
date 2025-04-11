@@ -6,8 +6,8 @@ use App\Portal\Services\Search\DatabaseSearchGroupRepository;
 use App\Portal\Services\Search\MeiliSearchRepository;
 use App\Middleware\RefererMiddleware;
 use App\Services\Cathptcha\Middleware as Catptcha;
+use App\Services\ReplayAttackProtection\Middleware as ReplayAttackProtection;
 use Framework\Middleware\JsonApi;
-use Framework\Middleware\ReplayAttackProtection;
 use Framework\Middleware\Translation;
 use Framework\Middleware\VerifyCsrfToken;
 
