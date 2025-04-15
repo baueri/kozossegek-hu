@@ -41,6 +41,7 @@
                         <textarea class="noresize form-control form-control-sm" name="message" rows="4" required onresize id="mail_msg"></textarea>
                     </div>
                     @honeypot('rolunk')
+                    @component('replay_attack', ['name' => 'contact'])
                     <p class="text-center">
                         <button type="submit" name="send" class="btn btn-altblue rounded-pill shadow"><i class="fa fa-paper-plane mr-2"></i> Üzenet elküldése</button>
                     </p>

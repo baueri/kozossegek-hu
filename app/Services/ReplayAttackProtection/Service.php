@@ -13,7 +13,7 @@ class Service
         return base64_encode("{$nonce}:{$name}");
     }
 
-    public function validate(string $code): bool
+    public function validate(?string $code): bool
     {
         [$value, $name] = explode(':', base64_decode($code));
 
