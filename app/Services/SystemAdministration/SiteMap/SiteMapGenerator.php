@@ -16,7 +16,7 @@ use SimpleXMLElement;
 readonly class SiteMapGenerator
 {
     /**
-     * @var Repository[]
+     * @var class-string<Repository>[]
      */
     private array $repositories;
 

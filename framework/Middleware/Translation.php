@@ -9,7 +9,7 @@ use Framework\Application;
 use Framework\Http\Route\RouterInterface;
 use Framework\Translation\TranslationMissing;
 
-readonly class Translation implements Middleware
+readonly class Translation implements Before
 {
     public function __construct(
         private RouterInterface $router,
@@ -17,7 +17,7 @@ readonly class Translation implements Middleware
     ) {
     }
 
-    public function handle(): void
+    public function before(): void
     {
         TranslationMissing::listen(MissingTranslationListener::class);
 

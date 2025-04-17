@@ -214,6 +214,7 @@
                 </div>
             </div>
             @csrf()
+            @component('replay_attack', ['name' => 'groupreg'])
             <div class="text-center">
                 <button type="submit" id="preview-new-group" class="btn btn-lg btn-altblue">Tovább</button>
             </div>

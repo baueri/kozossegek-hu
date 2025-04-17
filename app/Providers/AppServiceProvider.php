@@ -6,11 +6,11 @@ use App\Auth\Auth;
 use App\QueryBuilders\Pages;
 use Framework\Database\Builder;
 use Framework\Http\View\View;
-use Framework\Middleware\Middleware;
+use Framework\Middleware\Before;
 
-class AppServiceProvider implements Middleware
+class AppServiceProvider implements Before
 {
-    public function handle(): void
+    public function before(): void
     {
         View::setVariable('is_home', is_home());
         View::setVariable('is_prod', is_prod());

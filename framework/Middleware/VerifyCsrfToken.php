@@ -11,7 +11,7 @@ use Framework\Http\Route\Route;
 use Framework\Http\Route\XmlRouter;
 use Framework\Http\Session;
 
-class VerifyCsrfToken implements Middleware
+class VerifyCsrfToken implements Before
 {
     protected array $except = [];
 
@@ -24,7 +24,7 @@ class VerifyCsrfToken implements Middleware
     /**
      * @throws TokenMismatchException
      */
-    public function handle(): void
+    public function before(): void
     {
         if (
             $this->isReading() ||

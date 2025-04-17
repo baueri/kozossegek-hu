@@ -5,22 +5,23 @@ declare(strict_types=1);
 namespace Framework\Http\Route;
 
 use Framework\Http\RequestMethod;
+use InvalidArgumentException;
 
-class Route
+readonly class Route
 {
-    public readonly RequestMethod $method;
+    public RequestMethod $method;
 
-    public readonly string $uriMask;
+    public string $uriMask;
 
-    public readonly string $as;
+    public string $as;
 
-    public readonly string $controller;
+    public string $controller;
 
-    public readonly string $use;
+    public string $use;
 
-    public readonly string $view;
+    public string $view;
 
-    public readonly array $middleware;
+    public array $middleware;
 
     public function __construct(string $method, string $uriMask, string $as, string $controller, string $use, array $middleware, string $view)
     {
@@ -29,7 +30,22 @@ class Route
         $this->as = $as;
         $this->controller = trim($controller, '\\');
         $this->use = $use;
-        $this->middleware = array_map(fn ($m) => config('app.named_middleware')[$m] ?? $m, $middleware);
+
+        $namedMiddleware = config('app.named_middleware');
+
+        $this->middleware = array_map(function ($m) use ($namedMiddleware) {
+            if (class_exists($m)) {
+                return $m;
+            }
+            [$name, $params] = explode('@', $m) + [null, ''];
+            if (class_exists($name)) {
+                return $m;
+            } elseif (isset($namedMiddleware[$name])) {
+                return trim($namedMiddleware[$name] . '@' . $params, '@');
+            }
+
+            throw new InvalidArgumentException("invalid middleware: {$m}");
+        }, $middleware);
         $this->view = $view;
     }
 
@@ -83,7 +99,7 @@ class Route
             $uri .= '?' . http_build_query($args);
         }
 
-        return $uri;
+        return trim($uri, '?');
     }
 
     public function matches(string $uri): bool

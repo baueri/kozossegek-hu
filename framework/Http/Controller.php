@@ -2,7 +2,7 @@
 
 namespace Framework\Http;
 
-use Framework\Middleware\Middleware;
+use Framework\Middleware\Before;
 use Framework\Traits\BootsClass;
 
 class Controller
@@ -19,13 +19,18 @@ class Controller
         }
     }
 
-    public function middleware(string|Middleware $middleware): void
+    /**
+     * @template T of Before
+     * @param class-string<T>|Before $middleware
+     * @return void
+     */
+    public function middleware(string|Before $middleware): void
     {
-        if ($middleware instanceof Middleware) {
-            $middleware->handle();
+        if ($middleware instanceof Before) {
+            $middleware->before();
             return;
         }
 
-        app()->make($middleware)->handle();
+        app()->make($middleware)->before();
     }
 }

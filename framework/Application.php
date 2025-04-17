@@ -53,7 +53,7 @@ class Application extends Container
 
     public function boot(): void
     {
-        $this->runEvents('booting');
+        $this->dispatch('booting');
         foreach ($this->bootstrappers as $bootstrapper) {
             if (!is_callable($bootstrapper)) {
                 $this->make($bootstrapper)->boot();
@@ -61,7 +61,7 @@ class Application extends Container
                 $this->resolve($bootstrapper);
             }
         }
-        $this->runEvents('booted');
+        $this->dispatch('booted');
     }
 
     public function config(string $key = null, $default = null): mixed
@@ -140,10 +140,10 @@ class Application extends Container
 
     public function __destruct()
     {
-        $this->runEvents('terminated');
+        $this->dispatch('terminated');
     }
 
-    private function runEvents(string $event): void
+    private function dispatch(string $event): void
     {
         array_walk($this->events[$event], fn ($callback) => $callback());
     }

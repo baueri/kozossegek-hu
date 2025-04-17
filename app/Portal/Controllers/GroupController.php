@@ -185,7 +185,6 @@ class GroupController extends PortalController
 
     public function createGroup(Request $request, PortalCreateGroup $createGroupService): array
     {
-        Response::asJson();
         try {
             HoneyPot::validate('group-data', $request->get('website'));
             $user = Auth::user();

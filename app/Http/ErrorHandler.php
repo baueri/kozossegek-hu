@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http;
 
 use App\Exception\HoneypotException;
+use App\Services\ReplayAttackProtection\Exception as ReplayAttackException;
 use Error;
 use Exception;
 use Framework\Exception\UnauthorizedException;
@@ -33,6 +34,9 @@ class ErrorHandler
                 abort(403);
             }  elseif ($error instanceof \App\Services\Cathptcha\Exception) {
                 log_event('catpcha_fail', ['request' => request()->all(), 'q,a' => $error->question . ',' . $error->answer]);
+                abort(403);
+            } elseif ($error instanceof ReplayAttackException) {
+                log_event('replay_attack', ['request' => request()->all()]);
                 abort(403);
             } else {
                 report($error);

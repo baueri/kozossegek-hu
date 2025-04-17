@@ -6,11 +6,11 @@ use App\Auth\Auth;
 use App\Enums\UserRight;
 use App\QueryBuilders\ChurchGroupViews;
 use App\QueryBuilders\SpiritualMovements;
-use Framework\Middleware\Middleware;
+use Framework\Middleware\Before;
 
-class AdminServiceProvider implements Middleware
+class AdminServiceProvider implements Before
 {
-    public function handle(): void
+    public function before(): void
     {
         $user = Auth::user();
 

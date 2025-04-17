@@ -114,7 +114,8 @@ class PageController extends AdminController
         try {
             $this->repository->where('id', $request['id'])->update(['deleted_at' => null]);
             Message::success('Sikeres visszaállítás');
-        } catch (Exception) {
+        } catch (Exception $e) {
+
             Message::danger('Sikertelen visszaállítás');
         } finally {
             redirect($this->request->referer());

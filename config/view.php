@@ -14,6 +14,7 @@ use App\Http\Components\Selectors\OnDaysSelector;
 use App\Http\Components\Selectors\SpiritualMovementSelector;
 use App\Http\Components\Selectors\UserGroupSelector;
 use App\Portal\BreadCrumb\BreadCrumb;
+use App\Services\ReplayAttackProtection\Component;
 use App\Services\SystemAdministration\SiteMap\PrioritySelector;
 
 return [
@@ -92,6 +93,7 @@ return [
         'open_street_map' => OpenStreeMap::class,
         'base_selector' => BaseSelector::class,
         'breadcrumb' => BreadCrumb::class,
-        'cathptcha' => App\Services\Cathptcha\Component::class
+        'cathptcha' => App\Services\Cathptcha\Component::class,
+        'replay_attack' => Component::class
     ]
 ];
