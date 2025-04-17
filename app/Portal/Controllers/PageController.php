@@ -14,7 +14,12 @@ class PageController extends PortalController
     {
         use_default_header_bg();
 
-        $page = $repository->whereSlug($request['slug'])->first();
+        // @todo ez most csak egy workaround, a routing-ot kellene ugy atalakitani, hogy egyszerubben lehessen regex pattern-t
+        // @todo is megadni
+        preg_match('/^\/([a-z0-9-]+)\/?$/', $request->uri, $matches);
+        $slug = $matches[1];
+
+        $page = $repository->whereSlug($slug)->first();
 
         if (!$page) {
             raise_404();
@@ -22,7 +27,7 @@ class PageController extends PortalController
 
         $page_title = $page->pageTitle();
 
-        if (View::exists($view = "pages.{$request['slug']}")) {
+        if (View::exists($view = "pages.{$slug}")) {
             return view($view, compact('page', 'page_title'));
         }
 
