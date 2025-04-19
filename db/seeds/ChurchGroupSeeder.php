@@ -6,6 +6,7 @@ use App\Enums\AgeGroup;
 use App\Enums\JoinMode;
 use App\Enums\OccasionFrequency;
 use App\Enums\Tag;
+use App\Enums\UserRole;
 use App\Enums\WeekDay;
 use App\Helpers\GroupHelper;
 use App\QueryBuilders\ChurchGroups;
@@ -18,7 +19,6 @@ use App\Storage\Base64Image;
 use Faker\Factory;
 use Framework\Console\Out;
 use Framework\Support\Password;
-use Legacy\UserRole;
 use Phinx\Seed\AbstractSeed;
 
 class ChurchGroupSeeder extends AbstractSeed
@@ -40,7 +40,7 @@ class ChurchGroupSeeder extends AbstractSeed
                     'name' => $name = $faker->lastName() . ' ' . $faker->firstName(),
                     'email' => $faker->email(),
                     'password' => Password::hash('pw'),
-                    'user_group' => UserRole::GROUP_LEADER,
+                    'user_role' => UserRole::GROUP_LEADER,
                     'activated_at' => now()
                 ]);
                 $group = ChurchGroups::query()->create([
@@ -51,11 +51,11 @@ class ChurchGroupSeeder extends AbstractSeed
                     'group_leader_phone' => rand(0, 1) ? $faker->phoneNumber() : '',
                     'age_group' => $ageGroups->shuffle()->take(rand(1, 3))->implode(','),
                     'on_days' => $days->shuffle()->take(rand(1, 3))->implode(','),
-                    'occasion_frequency' => OccasionFrequency::random()->value(),
+                    'occasion_frequency' => OccasionFrequency::collect()->random()->value(),
                     'status' => 'active',
                     'spiritual_movement_id' => rand(1, 7) === 1 ? $spiritualMovements->random() : null,
                     'pending' => 0,
-                    'join_mode' => JoinMode::random()->value(),
+                    'join_mode' => JoinMode::collect()->random()->value(),
                     'user_id' => $user
                 ]);
 

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Framework\File;
 
 use Framework\File\Enums\SizeUnit;
-use InvalidArgumentException;
 use RuntimeException;
 
 class File
@@ -45,17 +44,9 @@ class File
         return $this->filePath;
     }
 
-    public function getFileSize(string $unit = 'B', int $precision = 5): float
+    public function getFileSize(SizeUnit $unit = SizeUnit::B, int $precision = 5): float
     {
-        $size = filesize($this->filePath);
-
-        if ($unit !== SizeUnit::B) {
-            if (!SizeUnit::values()->contains($unit)) {
-                throw new InvalidArgumentException('Invalid size unit ' . $unit);
-            }
-            return round($size / pow(1024, SizeUnit::getSizeUnits()[$unit]), $precision);
-        }
-        return $size;
+        return $unit->convert(filesize($this->filePath), $precision);
     }
 
     /**
@@ -136,7 +127,7 @@ class File
 
     public function isImage(): bool
     {
-        return strpos($this->fileType, 'image/') === 0;
+        return str_starts_with($this->fileType, 'image/');
     }
 
     public function getCreationDate(): ?string

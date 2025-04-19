@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
+use App\Enums\UserRole;
 use App\QueryBuilders\Users;
 use Framework\Console\Command;
 use Framework\Console\Out;
 use Framework\Support\Password;
 use Framework\Support\StringHelper;
-use Legacy\UserRole;
 
 class Install extends Command
 {
@@ -38,7 +38,7 @@ class Install extends Command
     {
         $adminExists = Users::query()
             ->where('id', 1)
-            ->where('user_group', UserRole::SUPER_ADMIN)
+            ->where('user_role', UserRole::SUPER_ADMIN)
             ->exists();
 
         if ($adminExists) {
@@ -71,7 +71,7 @@ class Install extends Command
             'username' => $username,
             'email' => $email,
             'password' => Password::hash($password),
-            'user_group' => UserRole::SUPER_ADMIN,
+            'user_role' => UserRole::SUPER_ADMIN,
             'activated_at' => now()
         ]);
     }

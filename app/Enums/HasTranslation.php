@@ -7,7 +7,11 @@ namespace App\Enums;
 use Exception;
 use Framework\Support\Collection;
 use Framework\Support\StringHelper;
+use Framework\Traits\EnumTrait;
 
+/**
+ * @mixin EnumTrait
+ */
 trait HasTranslation
 {
     public function translate(?string $lang = null): string
@@ -17,6 +21,10 @@ trait HasTranslation
         return lang(StringHelper::snake($className) . '.' . $this->value(), $lang);
     }
 
+    /**
+     * @return Collection<string, string>
+     * @throws Exception
+     */
     public static function mapTranslated(): Collection
     {
         if (!method_exists(static::class, 'collect')) {

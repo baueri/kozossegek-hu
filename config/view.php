@@ -12,7 +12,7 @@ use App\Http\Components\Selectors\JoinModeSelector;
 use App\Http\Components\Selectors\OccasionFrequencySelector;
 use App\Http\Components\Selectors\OnDaysSelector;
 use App\Http\Components\Selectors\SpiritualMovementSelector;
-use App\Http\Components\Selectors\UserGroupSelector;
+use App\Http\Components\Selectors\UserRoleSelector;
 use App\Portal\BreadCrumb\BreadCrumb;
 use App\Services\ReplayAttackProtection\Component;
 use App\Services\SystemAdministration\SiteMap\PrioritySelector;
@@ -39,7 +39,7 @@ return [
 //        'featuredTitle' => FeaturedTitle::class,
         'spiritual_movement_selector' => SpiritualMovementSelector::class,
         'join_mode_selector' => JoinModeSelector::class,
-        'user_group_selector' => UserGroupSelector::class,
+        'user_role_selector' => UserRoleSelector::class,
         'facebook_share_button' => FacebookShareButton::class,
         'alert' => function ($matches) {
             if (str_contains($matches[0], '@alert')) {

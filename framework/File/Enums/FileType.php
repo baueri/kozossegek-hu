@@ -1,12 +1,10 @@
 <?php
 
+declare(strict_types=1);
 
 namespace Framework\File\Enums;
 
-
-use Framework\Support\Enum;
-
-class FileType extends Enum
+class FileType
 {
     public const IMAGE = 'image';
     public const DOCUMENT = 'document';

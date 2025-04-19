@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <routes>
     <route-group namespace="App\Admin\Controllers" prefix="admin" as="admin" middleware="admin|csrf">
-        <middleware name="App\Middleware\CheckRole@roles:ACCESS_BACKEND"/>
+        <middleware name="App\Middleware\CheckRole@role:ACCESS_BACKEND"/>
         <middleware name="App\Providers\AdminServiceProvider"/>
 
         <!-- CSAK ADMIN DOLGOK -->
-        <route-group middleware="App\Middleware\CheckRole@roles:FULL_ACCESS">
+        <route-group middleware="App\Middleware\CheckRole@role:FULL_ACCESS">
             <route method="get" uri="release-notes" as="release_notes" view="admin.release_notes"/>
             <!-- OLDALAK -->
             <route-group prefix="content/page" controller="PageController" as="page">
@@ -122,7 +122,7 @@
             <route method="get" uri="{id}/restore" use="restore" as="restore"/>
 
             <route method="get" uri="refresh-search-engine" use="rebuildSearchEngine" as="refresh_search_engine"/>
-            <route method="get" uri="maintenance" use="maintenance" as="maintenance" middleware="App\Middleware\CheckRole@roles:FULL_ACCESS"/>
+            <route method="get" uri="maintenance" use="maintenance" as="maintenance" middleware="App\Middleware\CheckRole@role:FULL_ACCESS"/>
 
             <route method="post" uri="{id}/reject-modal" as="reject_modal" use="getRejectModal"/>
             <route method="all" uri="{id}/delete-modal" as="delete_modal" use="getDeleteModal"/>
@@ -134,9 +134,9 @@
             <route method="get" uri="{id}/edit" use="edit" as="edit"/>
             <route method="post" uri="{id}/update" use="update" as="update"/>
 
-            <route method="get" uri="create" use="create" as="create" middleware="App\Middleware\CheckRole@roles:FULL_ACCESS"/>
-            <route method="post" uri="create" use="doCreate" as="do_create" middleware="App\Middleware\CheckRole@roles:FULL_ACCESS"/>
-            <route method="get" uri="{id}/delete" use="delete" as="delete" middleware="App\Middleware\CheckRole@roles:FULL_ACCESS"/>
+            <route method="get" uri="create" use="create" as="create" middleware="App\Middleware\CheckRole@role:FULL_ACCESS"/>
+            <route method="post" uri="create" use="doCreate" as="do_create" middleware="App\Middleware\CheckRole@role:FULL_ACCESS"/>
+            <route method="get" uri="{id}/delete" use="delete" as="delete" middleware="App\Middleware\CheckRole@role:FULL_ACCESS"/>
         </route-group>
 
         <!--    SAJÁT PROFIL    -->

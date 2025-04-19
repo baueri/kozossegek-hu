@@ -1,18 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Middleware;
 
 use App\Auth\Auth;
+use App\Enums\Permission;
 use Framework\Exception\UnauthorizedException;
 use Framework\Middleware\Before;
 
 class CheckRole implements Before
 {
-    private array $roles;
+    private Permission $permission;
 
-    public function __construct(string $roles)
+    public function __construct(string $role)
     {
-        $this->roles = explode(',', $roles);
+        $this->permission = Permission::from($role);
     }
 
     /**
@@ -20,7 +23,7 @@ class CheckRole implements Before
      */
     public function before(): void
     {
-        if ($this->roles && (!Auth::loggedIn() || !Auth::user()->can($this->roles))) {
+        if (!Auth::loggedIn() || !Auth::user()->can($this->permission)) {
             throw new UnauthorizedException();
         }
     }

@@ -8,6 +8,7 @@ use App\Admin\Components\AdminTable\PaginatedAdminTable;
 use App\Repositories\EventLogs;
 use Framework\Database\PaginatedResultSetInterface;
 use Framework\Http\Request;
+use Framework\Support\Collection;
 
 class EventLogAdminTable extends PaginatedAdminTable
 {
@@ -54,11 +55,9 @@ class EventLogAdminTable extends PaginatedAdminTable
         return $query->paginate();
     }
 
-    public function getLog($log): string
+    public function getLog(Collection $log): string
     {
-        $logArr = json_decode($log, true);
-
-        $parsed = collect($logArr)->map(function($val, $key) {
+        $parsed = $log->map(function($val, $key) {
             if (is_array($val)) {
                 $val = json_encode($val);
             }

@@ -28,5 +28,5 @@ class ChurchGroup extends Entity
 {
     use GroupTrait;
 
-    protected ?string $builder = ChurchGroups::class;
+    protected static ?string $builder = ChurchGroups::class;
 }

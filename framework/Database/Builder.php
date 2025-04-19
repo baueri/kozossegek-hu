@@ -10,6 +10,8 @@ use Closure;
 use DateTimeInterface;
 use Framework\Support\Arr;
 use Framework\Support\Collection;
+use Stringable;
+use UnitEnum;
 
 class Builder
 {
@@ -478,7 +480,29 @@ class Builder
 
     public function insert(array $values): int|string
     {
-        $bindings = array_values(array_map(fn ($value) => $value instanceof BackedEnum ? $value->value : $value, $values));
+        $bindings = array_values(array_map(function ($value) {
+            if ($value instanceof UnitEnum) {
+                return enum_val($value);
+            }
+
+            if (is_array($value)) {
+                return json_encode($value);
+            }
+
+            if ($value instanceof Stringable) {
+                return (string) $value;
+            }
+
+            if (is_object($value) && method_exists($value, 'toJson')) {
+                return $value->toJson();
+            }
+
+            if (is_object($value)) {
+                return serialize($value);
+            }
+
+            return $value;
+        }, $values));
 
         $table = implode(', ', $this->table);
         $columns = implode(',', array_keys($values));

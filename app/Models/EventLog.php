@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use Framework\Model\Entity;
+use Framework\Support\Collection;
 
 /**
  * @property int $id
@@ -15,4 +16,7 @@ use Framework\Model\Entity;
  */
 class EventLog extends Entity
 {
+    protected array $casts = [
+        'log' => [Collection::class, 'fromJson']
+    ];
 }

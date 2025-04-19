@@ -12,6 +12,8 @@ interface Database
 
     public function first(string $query, $bindings = []): object|array|null;
 
+    public function value(string $query, array $bindings);
+
     public function update($query, ...$params): int;
 
     public function insert(string $query, array $params = []);

@@ -21,11 +21,13 @@ readonly class RefererMiddleware implements Before
 
     public function before(): void
     {
-        $referer = trim(preg_replace('@^(' . preg_quote(get_site_url()) . ')@', '', request()->referer()), '/');
+        $referer = (trim(parse_url(request()->referer())['path'] ?? '', '/ '));
+
         if (preg_match('/route\(([^\)]+)\)$/', $this->referer, $matches)) {
             $expectedReferer = router()->getRoutes()->find(function (Route $route) use ($matches) {
                 return $route->as === $matches[1];
             });
+
             if ($expectedReferer->matches($referer)) {
                 return;
             }

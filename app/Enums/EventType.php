@@ -22,6 +22,8 @@ enum EventType: string
     case catptcha_fail = 'catptcha_fail';
     case replay_attack = 'replay_attack';
 
+    case not_found = 'not_found';
+
     /**
      * @return Collection<static>
      */

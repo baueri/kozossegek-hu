@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Helpers;
 
 use Framework\File\Enums\FileType;
+use Framework\File\Enums\SizeUnit;
 use Framework\File\File;
 use Framework\File\Path;
 use Framework\Support\Collection;
@@ -20,7 +21,7 @@ class FileHelper
             'name' => $file->getFileName(),
             'type' => $file->getFileType(),
             'main_type' => $file->getMainType(),
-            'size' => $file->getFileSize('MB', 2),
+            'size' => $file->getFileSize(SizeUnit::MB, 2),
             'path' => static::getPublicPathFor($file),
             'is_dir' => $file->isDir(),
             'url' => $file->isDir() ?

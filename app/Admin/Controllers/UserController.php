@@ -1,10 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Admin\Controllers;
 
 use App\Admin\User\UserTable;
 use App\Auth\Auth;
-use Legacy\UserRole;
+use App\Enums\UserRole;
+use App\Models\SpiritualMovement;
+use App\QueryBuilders\SpiritualMovements;
 use App\Mail\RegistrationEmail;
 use App\Models\User;
 use App\QueryBuilders\ChurchGroupViews;
@@ -24,23 +28,24 @@ class UserController extends AdminController
 {
     public function list(UserTable $table): string
     {
-        $selected_user_group = $this->request->get('user_group');
+        $selected_user_role = $this->request->get('user_role');
         $online = $this->request->get('online');
-        return view('admin.user.list', compact('table', 'selected_user_group', 'online'));
+        return view('admin.user.list', compact('table', 'selected_user_role', 'online'));
     }
 
     public function create(): string
     {
         $user = new User(Session::flash('admin.reg.user'));
         $action = route('admin.user.create');
-        $groups = UserRole::getTranslated();
+        $groups = UserRole::mapTranslated()->values();
+        $spiritual_movements = SpiritualMovements::query()->map(fn (SpiritualMovement $movement) => $movement->only(['name', 'id']));
 
-        return view('admin.user.create', compact('user', 'action', 'groups'));
+        return view('admin.user.create', compact('user', 'action', 'groups', 'spiritual_movements'));
     }
 
     public function doCreate(Request $request, Users $repository, UserTokens $passwordResetRepository)
     {
-        $data = $request->only('username', 'name', 'email', 'user_group');
+        $data = $request->only('username', 'name', 'email', 'user_role');
         try {
             $existingUser = $repository->query()->where('email', $data['email'])
                 ->orWhere('username', $data['username'])
@@ -79,10 +84,10 @@ class UserController extends AdminController
         $user = $repository->findOrFail($request['id']);
         $my_profile = Auth::is($user);
         $action = route('admin.user.update', $user);
-        $groups = UserRole::getTranslated();
+        $groups = UserRole::mapTranslated();
         $spiritual_movements = db()->select('select * from spiritual_movements order by name');
-        $user_movement = db()->first('select spiritual_movement_id from spiritual_movement_administrators
-            where user_id = ?', [$user->id])['spiritual_movement_id'] ?? null;
+        $user_movement = db()->value('select spiritual_movement_id from spiritual_movement_administrators
+            where user_id = ?', [$user->id]);
 
         $model = compact('user', 'my_profile', 'action', 'groups', 'spiritual_movements', 'user_movement');
         return view('admin.user.edit', $model);
@@ -107,7 +112,7 @@ class UserController extends AdminController
     public function update(Request $request, Users $repository): void
     {
         $user = $repository->findOrFail($request['id']);
-        $data = $request->only('name', 'email', 'user_group', 'username', 'phone_number');
+        $data = $request->only('name', 'email', 'user_role', 'username', 'phone_number');
 
         if ($password = $request['new_password']) {
             if ($password !== $request['new_password_again']) {

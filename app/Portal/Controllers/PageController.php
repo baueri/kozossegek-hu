@@ -19,9 +19,8 @@ class PageController extends PortalController
         preg_match('/^\/([a-z0-9-]+)\/?$/', $request->uri, $matches);
         $slug = $matches[1];
 
-        $page = $repository->whereSlug($slug)->first();
-
-        if (!$page) {
+        if (!$slug || !($page = $repository->whereSlug($slug)->first())) {
+            log_event('');
             raise_404();
         }
 

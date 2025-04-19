@@ -1,3 +1,4 @@
+<?php /** @var \Framework\Mail\Mailable $mailable */ ?>
 <!doctype html>
 <html lang="hu">
 <head>

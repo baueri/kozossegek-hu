@@ -172,6 +172,8 @@ class Arr
 
     public static function fromList(?string $text, string $separator = ','): array
     {
+        $separator ??= ',';
+
         return match ($text) {
             null, '' => [],
             default => explode($separator, $text)

@@ -430,6 +430,24 @@ function enum_val(UnitEnum $enum) {
     return $enum instanceof BackedEnum ? $enum->value : $enum->name;
 }
 
+/**
+ * @param class-string<UnitEnum> $enumClass
+ * @param int|string $value
+ * @return UnitEnum|null
+ *
+ * @throws InvalidArgumentException
+ */
+function get_enum(string $enumClass, int|string $value): ?UnitEnum
+{
+    foreach ($enumClass::cases() as $case) {
+        if (enum_val($case) === $value) {
+            return $case;
+        }
+    }
+
+    throw new InvalidArgumentException("No case named {$value} in enum {$enumClass}");
+}
+
 function class_uses_trait($object_or_class, string $trait): bool
 {
     return in_array($trait, class_uses_recursive($object_or_class));
@@ -472,23 +490,21 @@ function str_shorten(string $text, int $numberOfCharacters, string $moreText = '
 
 function castInto($from, $to)
 {
-    $args = func_get_args();
-    array_shift($args);
-    array_shift($args);
-
-    if (is_callable($to)) {
-        return $to($from, ...$args);
-    }
-
-    if (is_object($from) && method_exists($from, $to)) {
-        return $from->{$to}(...$args);
-    }
-
-    if (enum_exists($to)) {
-        return $to::from($from);
-    }
-
-    return app()->make($to, [$from]);
+    return match (true) {
+        $to === 'int' => (int) $from,
+        $to === 'string' => (string) $from,
+        $to === 'bool' => (bool) $from,
+        $to === 'float' => (float) $from,
+        $to === 'json_assoc' => json_decode($from, true),
+        $to === 'json_obj' => json_decode($from),
+        $to === 'object' => unserialize($from),
+        is_callable($to) => call_user_func($to, $from),
+        is_object($from) && method_exists($from, $to) => $from->{$to}(),
+        is_string($to) && enum_exists($to) => get_enum($to, $from),
+        $to === Collection::class => Collection::fromJson($from),
+        is_subclass_of($to, Entity::class) && is_numeric($from) => $to::getBuilder()->find($from),
+        default => app()->make($to, [$from]),
+    };
 }
 
 function abort(string|int|null $statuscode = null): never

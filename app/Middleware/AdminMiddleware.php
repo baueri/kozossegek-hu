@@ -3,7 +3,7 @@
 namespace App\Middleware;
 
 use App\Auth\Auth;
-use App\Enums\UserRight;
+use App\Enums\Permission;
 use Framework\Http\Response;
 use Framework\Middleware\Before;
 use Framework\Http\Message;
@@ -36,7 +36,7 @@ class AdminMiddleware implements Before
         }
         $user = Auth::user();
 
-        if (!$user->can(UserRight::ACCESS_BACKEND)) {
+        if (!$user->can(Permission::ACCESS_BACKEND)) {
             throw new UnauthorizedException();
         }
 

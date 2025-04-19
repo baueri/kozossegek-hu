@@ -2,9 +2,9 @@
 
 namespace App\Admin\User;
 
+use App\Enums\UserRole;
 use App\Admin\Components\AdminTable\{PaginatedAdminTable, Editable};
 use App\Admin\Components\AdminTable\Traits\SoftDeletable;
-use Legacy\UserRole;
 use App\Models\User;
 use App\Models\UserSession;
 use App\QueryBuilders\ChurchGroups;
@@ -24,7 +24,7 @@ class UserTable extends PaginatedAdminTable implements Editable
         'id' => '#',
         'groups' => '<i class="fa fa-comments"></i>',
         'name' => 'Név',
-        'user_group' => 'Jogosultság',
+        'user_role' => 'Jogosultság',
         'email' => 'Email',
         'activated_at' => 'Aktiválva',
         'created_at' => 'Regisztráció',
@@ -61,9 +61,9 @@ class UserTable extends PaginatedAdminTable implements Editable
         return 'name';
     }
 
-    public function getUserGroup($userGroup): string
+    public function getUserRole($userRole): string
     {
-        return UserRole::of($userGroup)->text();
+        return UserRole::from($userRole)->translate();
     }
 
     public function getActivatedAt($activatedAt): string
@@ -113,7 +113,7 @@ class UserTable extends PaginatedAdminTable implements Editable
 
     public function getData(): PaginatedResultSetInterface
     {
-        $filter = collect($this->request->only('deleted', 'search', 'user_group'));
+        $filter = collect($this->request->only('deleted', 'search', 'user_role'));
         $filter['sort'] = $this->request['sort'] ?: 'desc';
         $filter['order_by'] = $this->request['order_by'] ?: 'id';
 
@@ -142,8 +142,8 @@ class UserTable extends PaginatedAdminTable implements Editable
             });
         }
 
-        if ($userGroup = $filter['user_group']) {
-            $query->where('user_group', $userGroup);
+        if ($user_role = $filter['user_role']) {
+            $query->where('user_role', UserRole::from($user_role));
         }
 
         $query->withCount('groups', fn(ChurchGroups $groupViews) => $groupViews->active());

@@ -1,11 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Framework\Traits;
 
+use Closure;
 use Framework\Support\Arr;
 use Framework\Support\Collection;
 use UnitEnum;
 
+/**
+ * @template T of UnitEnum|EnumTrait
+ * @mixin UnitEnum
+ */
 trait EnumTrait
 {
     /**
@@ -16,7 +23,7 @@ trait EnumTrait
         $enums = [];
 
         foreach (static::cases() as $case) {
-            $enums[$case->name] = static::getVal($case);
+            $enums[$case->name] = $case->value();
         }
 
         return $enums;
@@ -29,30 +36,25 @@ trait EnumTrait
 
     public static function values(): array
     {
-        return array_map(fn ($enum) => static::getVal($enum), static::cases());
+        return array_map(fn ($enum) => $enum->value(), static::cases());
     }
 
     /**
-     * @return Collection<static>
+     * @return Collection<T>
      */
     public static function collect(): Collection
     {
         return collect(static::cases());
     }
 
+    public static function map(Closure $callback): Collection
+    {
+        return static::collect()->map($callback);
+    }
+
     final public function value(): int|string
     {
-        return static::getVal($this);
-    }
-
-    private static function getVal(UnitEnum $case): int|string
-    {
-        return enum_val($case);
-    }
-
-    public static function random(): static
-    {
-        return static::collect()->random();
+        return enum_val($this);
     }
 
     /**
@@ -71,8 +73,9 @@ trait EnumTrait
         return collect($items)->as(static::class);
     }
 
-    public static function from($value)
+    public static function from($value): static
     {
-        return static::collect()->filter(fn ($enum) => $enum->value() === $value)->first();
+        return get_enum(static::class, $value);
+        return static::collect()->firstWhere(fn ($enum) => enum_val($enum) === $value);
     }
 }

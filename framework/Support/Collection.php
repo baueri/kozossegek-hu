@@ -77,7 +77,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     }
 
     /**
-     * @phpstan-return static<T>
+     * @return static<T>
      */
     public function keyBy(int|string|Closure $by): self
     {
@@ -209,6 +209,21 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         return false;
     }
 
+    /**
+     * @param Closure(T): T $callback
+     * @return T|null
+     */
+    public function firstWhere(Closure $callback)
+    {
+        foreach ($this->items as $key => $item) {
+            if ($callback($item, $key)) {
+                return $item;
+            }
+        }
+
+        return null;
+    }
+
     public function containsAny(array $values): bool
     {
         foreach ($this->items as $item) {
@@ -334,8 +349,8 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
      */
     public function castInto(callable|string $into): static
     {
-        foreach ($this->items as $key => &$item) {
-            $item = castInto($item, $into, $key);
+        foreach ($this->items as &$item) {
+            $item = castInto($item, $into);
         }
 
         return $this;
@@ -583,9 +598,9 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         return new self(Arr::fromList($text, $separator));
     }
 
-    public static function fromJson(): static
+    public static function fromJson(string $json): static
     {
-        return new self(json_decode(...func_get_args()));
+        return new self(json_decode($json, true));
     }
 
     public static function fromJsonFile(string $fileName, ...$params): static

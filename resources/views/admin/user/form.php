@@ -24,9 +24,9 @@
             </div>
             <div class="form-group">
                 <label>Felhasználói jogkör</label>
-                <select name="user_group" class="form-control">
+                <select name="user_role" class="form-control">
                     @foreach($groups as $group => $group_text)
-                        <option value="{{ $group }}" {{ $group === $user->user_group ? 'selected' : '' }}>{{ $group_text }}</option>
+                        <option value="{{ $group }}" {{ $group === $user->user_role ? 'selected' : '' }}>{{ $group_text }}</option>
                     @endforeach
                 </select>
             </div>
@@ -35,7 +35,7 @@
                 <select id="spiritual_movement_id" name="spiritual_movement_id" class="form-control" data-allow-clear="1" data-placeholder="Nincs megadva">
                     <option></option>
                     @foreach($spiritual_movements as $spiritual_movement)
-                    <option value="{{ $spiritual_movement['id'] }}" @if($user_movement == $spiritual_movement['id']) selected @endif>
+                    <option value="{{ $spiritual_movement['id'] }}" @if(!empty($user_movement) && $user_movement == $spiritual_movement['id']) selected @endif>
                         {{ $spiritual_movement['name'] }}
                     </option>
                     @endforeach

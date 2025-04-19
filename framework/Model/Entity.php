@@ -8,7 +8,9 @@ use Cake\Utility\Inflector;
 use Error;
 use Framework\Model\Relation\Relation;
 use Framework\Support\Arr;
+use Framework\Support\Collection;
 use ReflectionMethod;
+use UnitEnum;
 
 /**
  * @property null|string $id
@@ -24,17 +26,28 @@ abstract class Entity
 
     public readonly array $originalAttributes;
 
+    protected ?array $attributes;
+
     public array $relations = [];
 
     public array $relations_count = [];
 
     public array $loadedRelations = [];
 
-    protected ?string $builder = null;
+    /**
+     * @var array<string, UnitEnum|class-string>
+     */
+    protected array $casts = [];
 
-    public function __construct(protected ?array $attributes = [])
+    protected static ?string $builder = null;
+
+    public function __construct(?array $attributes = [])
     {
         $this->originalAttributes = Arr::wrap($attributes);
+
+        foreach ($attributes as $field => $value) {
+            $this->attributes[$field] = $this->castInto($field, $value);
+        }
     }
 
     /**
@@ -85,7 +98,7 @@ abstract class Entity
             return $this->relations[$relation] ?? null;
         }
 
-        if ($relation && ($builder = $this->getBuilder()) && method_exists($builder, $relation)) {
+        if ($relation && ($builder = static::getBuilder()) && method_exists($builder, $relation)) {
             $method = new ReflectionMethod($builder, $relation);
             $returnType = $method->getReturnType();
             if ($returnType->getName() === Relation::class) {
@@ -119,6 +132,11 @@ abstract class Entity
     }
 
     public function __set($name, $value)
+    {
+        $this->setAttribute($name, $value);
+    }
+
+    public function setAttribute($name, $value): void
     {
         $this->attributes[$name] = $value;
     }
@@ -171,10 +189,10 @@ abstract class Entity
         return diff(Arr::except($this->originalAttributes, 'updated_at'), $this->attributes);
     }
 
-    public function getBuilder(): ?EntityQueryBuilder
+    public static function getBuilder(): ?EntityQueryBuilder
     {
-        if ($this->builder) {
-            return new $this->builder;
+        if (static::$builder) {
+            return new static::$builder;
         }
 
         $builder = "\\App\\QueryBuilders\\" . Inflector::pluralize(get_class_name(static::class));
@@ -182,5 +200,14 @@ abstract class Entity
             return new $builder;
         }
         return null;
+    }
+
+    private function castInto($field, $value)
+    {
+        if (!isset($this->casts[$field])) {
+            return $value;
+        }
+
+        return castInto($value, $this->casts[$field]);
     }
 }
