@@ -6,6 +6,7 @@ namespace App\Portal\Services;
 
 use App\Helpers\InstituteHelper;
 use App\Helpers\GroupHelper;
+use Framework\Exception\FileNotFoundException;
 use Framework\Http\Response;
 
 class ImageService
@@ -34,6 +35,11 @@ class ImageService
     public function printInstituteImage(string $image): void
     {
         $imgPath = $this->getInstituteImagePath($image);
+
+        if (!file_exists($imgPath)) {
+            Response::setStatusCode('404');
+            return;
+        }
 
         header('Pragma: public');
         header('Cache-Control: max-age=86400');
