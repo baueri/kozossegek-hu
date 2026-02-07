@@ -11,6 +11,9 @@ use App\Models\Page;
 use App\Portal\Services\Search\SearchRepository;
 use App\QueryBuilders\Users;
 use App\Repositories\EventLogs;
+use App\Services\Captcha\CaptchaValidator;
+use App\Services\Captcha\CloudflareValidator;
+use App\Services\Captcha\NullCaptchaValidator;
 use App\Services\EventLogger;
 use App\Services\MeiliSearch\MeiliSearchAdapter;
 use App\Services\MileStone;
@@ -28,6 +31,7 @@ use Framework\Http\Route\XmlRouter;
 use Framework\Http\View\View;
 use Framework\Http\View\ViewInterface;
 use Framework\Support\Config\Config;
+use GuzzleHttp\Client;
 
 if (!defined('DS')) {
     define('DS', DIRECTORY_SEPARATOR);
@@ -85,6 +89,11 @@ $application->bind([
     'errorHandler' => fn () => fn ($error) => throw $error,
     AuthUser::class => fn () => Auth::user(),
     SearchRepository::class => fn () => $application->get(config('app.search_drivers')[config('app.selected_search_driver')]),
+    CaptchaValidator::class => fn (Client $client) => config('app.captcha_enabled') ? new CloudflareValidator(
+        $client,
+        (string) config('app.cloudflare.site_key'),
+        (string) config('app.cloudflare.secret'),
+    ) : new NullCaptchaValidator()
 ]);
 
 $application->on('booting', function () { MileStone::measure('bootstrap'); });

@@ -37,6 +37,33 @@
                 <p>
                     @component('aszf')<br/>
                 </p>
+                @if($captchaEnabled)
+                    <div
+                        class="cf-turnstile"
+                        data-sitekey="{{ $cloudflareSiteKey }}"
+                        data-theme="light"
+                        data-size="normal"
+                        data-callback="cf_onSuccess"
+                        data-error-callback="cf_onError"
+                        data-expired-callback="cf_onExpired"
+                    ></div>
+                    <input type="hidden" name="turnstile_token" />
+                    <script>
+                        (() => {
+                            window.cf_onSuccess = function (token) {
+                                $("[name='turnstile_token']").val(token);
+                            };
+
+                            window.cf_onError = () => {
+                                $("[name='turnstile_token']").val('');
+                            };
+
+                            window.cf_onExpired = () => {
+                                $("[name='turnstile_token']").val('');
+                            };
+                        })();
+                    </script>
+                @endif
                 <div class="form-group">
                     <button type="submit" class="btn btn-altblue">Regisztráció</button>
                     <p class="mt-2">

@@ -52,5 +52,10 @@ return [
     'search_drivers' => [
         'database' => DatabaseSearchGroupRepository::class,
         'meilisearch' => MeiliSearchRepository::class
+    ],
+    'captcha_enabled' => env('CAPTCHA_ENABLED'),
+    'cloudflare' => [
+        'site_key' => env('CLOUDFLARE_SITE_KEY'),
+        'secret' => env('CLOUDFLARE_SECRET')
     ]
 ];

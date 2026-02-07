@@ -30,7 +30,7 @@ class ErrorHandler
                 log_event('csrf_fail', ['request' => request()->all()]);
                 abort(403);
             } elseif ($error instanceof HoneypotException) {
-                log_event('honeypot_fail', ['request' => request()->all(), 'reason' => $error->reason]);
+                log_event('honeypot_fail', ['request' => request()->all(), 'reason' => $error->reason, 'elapsed_time' => $error->elapsedTime]);
                 abort(403);
             }  elseif ($error instanceof \App\Services\Cathptcha\Exception) {
                 log_event('catpcha_fail', ['request' => request()->all(), 'q,a' => $error->question . ',' . $error->answer]);

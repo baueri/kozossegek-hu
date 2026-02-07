@@ -9,7 +9,13 @@ use Throwable;
 
 class HoneypotException extends UnauthorizedException
 {
-    public function __construct($message = "", $code = 401, Throwable $previous = null, public readonly string $reason = '')
+    public function __construct(
+        $message = "",
+        $code = 401,
+        Throwable $previous = null,
+        public readonly string $reason = '',
+        public readonly ?int $elapsedTime = 0
+    )
     {
         parent::__construct($message, $code, $previous);
     }

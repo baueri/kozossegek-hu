@@ -11,13 +11,15 @@ use App\Middleware\RefererMiddleware;
 use App\Portal\Services\CreateUser;
 use App\QueryBuilders\Users;
 use App\QueryBuilders\UserTokens;
+use App\Services\Captcha\CaptchaValidator;
 use App\Services\User\LegalNoticeService;
 use Exception;
 use Framework\Exception\UnauthorizedException;
 use Framework\Http\Cookie;
-use Framework\Http\Request;
 use Framework\Http\Message;
+use Framework\Http\Request;
 use Framework\Http\Session;
+use Framework\Mail\Mailable;
 use Framework\Mail\Mailer;
 use Framework\Support\Arr;
 
@@ -65,6 +67,21 @@ class LoginController extends PortalController
 
             log_event('user_login', user: $user);
 
+            if ($user->isAdmin()) {
+                $date = date('Y.m.d H:i:s');
+                $websiteContactEmail = config('app.website_contact_email');
+                (new Mailable())
+                    ->subject('Új admin bejelentkezés')
+                    ->setMessage(<<<TEXT
+                        Új bejelentkezés történt erről az admin fiókról ekkor: {$date}.
+                        
+                        Ha nem te kezdeményezted a bejelentkezést, jelezd a weboldal karbantartójának:
+                        {$websiteContactEmail}
+                    TEXT
+                    )
+                    ->send($user);
+            }
+
             redirect(Session::flash('last_visited', $route));
         } catch (Exception $e) {
             report($e);
@@ -87,17 +104,28 @@ class LoginController extends PortalController
      * @throws UnauthorizedException
      * @throws Exception
      */
-    public function register(CreateUser $service, UserTokens $tokens, Mailer $mailer, LegalNoticeService $legalNoticeService): string
-    {
+    public function register(
+        CreateUser $service,
+        UserTokens $tokens,
+        Mailer $mailer,
+        LegalNoticeService $legalNoticeService,
+        CaptchaValidator $captchaValidator
+    ): string {
         $request = $this->request;
         use_default_header_bg();
+
+        $captchaEnabled = config('app.captcha_enabled');
+
         $model = [
             'name' => $request['name'],
             'email' => $request['email'],
+            'cloudflareSiteKey' => config('app.cloudflare.site_key'),
+            'captchaEnabled' => $captchaEnabled
         ];
 
         try {
             if ($request->isPostRequestSent()) {
+                $captchaValidator->validate($request->get('turnstile_token'));
                 HoneyPot::validate('register', $request['website']);
                 $this->middleware(new RefererMiddleware(route('portal.register')));
                 if (!$request['password'] || $request['password'] !== $request['password_again']) {
@@ -115,6 +143,10 @@ class LoginController extends PortalController
             return view('portal.register', $model);
         } catch (EmailTakenException) {
             Message::danger('Ez az email cím már foglalt!');
+            return view('portal.register', $model);
+        } catch (\App\Services\Captcha\Exception $e) {
+            log_event('captcha_fail', ['request' => $request->all(), 'error' => $e->getMessage()]);
+            Message::danger('Captcha hiba, kérjük próbáld meg újból');
             return view('portal.register', $model);
         }
     }

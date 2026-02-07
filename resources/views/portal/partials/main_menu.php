@@ -48,7 +48,6 @@
                         </div>
                         <div>
                             @include('portal.partials.google-login', ['width' => 205])
-                            <!--                                       <div class="fb-login-button mb-3" data-width="238px" data-size="medium" data-button-type="login_with" data-layout="default" data-auto-logout-link="false" data-use-continue-as="true"></div><br/>-->
                         </div>
                         <p class="text-center">
                             <button type="submit" class="btn btn-altblue">Belépés</button>
