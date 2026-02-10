@@ -61,9 +61,9 @@ class UserTable extends PaginatedAdminTable implements Editable
         return 'name';
     }
 
-    public function getUserRole($userRole): string
+    public function getUserRole(UserRole $userRole): string
     {
-        return UserRole::from($userRole)->translate();
+        return $userRole->translate();
     }
 
     public function getActivatedAt($activatedAt): string

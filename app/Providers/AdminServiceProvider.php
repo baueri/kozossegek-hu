@@ -16,6 +16,10 @@ class AdminServiceProvider implements Before
     {
         $user = Auth::user();
 
+        if ($user->isAdmin()) {
+            return;
+        }
+
         if ($user->can(Permission::MANAGE_SPIRITUAL_MOVEMENT)) {
             app()->bind(SpiritualMovements::class, function () use ($user) {
                 return (new SpiritualMovements())->forUser($user);

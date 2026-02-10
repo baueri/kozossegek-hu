@@ -73,9 +73,8 @@ trait EnumTrait
         return collect($items)->as(static::class);
     }
 
-    public static function from($value): static
+    public static function from($value): null|UnitEnum|static
     {
         return get_enum(static::class, $value);
-        return static::collect()->firstWhere(fn ($enum) => enum_val($enum) === $value);
     }
 }
