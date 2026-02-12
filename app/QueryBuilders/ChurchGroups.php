@@ -45,6 +45,11 @@ class ChurchGroups extends EntityQueryBuilder
         return $this->has(Has::one, SpiritualMovements::class, 'id', 'spiritual_movement_id');
     }
 
+    public function institute(): Relation
+    {
+        return $this->has(Has::one, Institutes::class, 'id', 'institute_id');
+    }
+
     public function active(): static
     {
         return $this->where('pending', GroupPending::confirmed)
@@ -61,7 +66,13 @@ class ChurchGroups extends EntityQueryBuilder
 
     public function whereGroupTag(array $tags): static
     {
-        return $this->whereHas('tags', fn (Builder $query) => $query->whereIn('tag', $tags));
+        return $this->whereHas('tags', fn (Builder|EntityQueryBuilder $query) => $query->whereIn('tag', $tags));
+    }
+
+    public function whereAgeGroup(string $ageGroup): static
+    {
+        $this->where('age_group', '<>', '');
+        return $this->whereRaw('FIND_IN_SET(?, age_group)', [$ageGroup]);
     }
 
     public function similarTo(ChurchGroupView $group): static

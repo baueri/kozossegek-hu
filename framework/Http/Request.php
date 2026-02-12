@@ -177,4 +177,35 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
     {
         return (string) ($_SERVER['HTTP_REFERER'] ?? '');
     }
+
+    function clientIp(): string {
+        $ipHeaders = [
+            'HTTP_CLIENT_IP',
+            'HTTP_X_FORWARDED_FOR',
+            'HTTP_X_FORWARDED',
+            'HTTP_X_CLUSTER_CLIENT_IP',
+            'HTTP_FORWARDED_FOR',
+            'HTTP_FORWARDED',
+            'REMOTE_ADDR'
+        ];
+
+        foreach ($ipHeaders as $header) {
+            if (array_key_exists($header, $_SERVER) && !empty($_SERVER[$header])) {
+                // Split in case of multiple IPs (like in X-Forwarded-For)
+                $ips = array_map('trim', explode(',', $_SERVER[$header]));
+                foreach ($ips as $ip) {
+                    if (filter_var(
+                        $ip,
+                        FILTER_VALIDATE_IP,
+                        FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE
+                    )) {
+                        return $ip;
+                    }
+                }
+            }
+        }
+
+        // If all else fails
+        return $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
+    }
 }

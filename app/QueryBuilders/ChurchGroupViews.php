@@ -23,10 +23,7 @@ class ChurchGroupViews extends ChurchGroups
         return $this->has(Has::many, entity_builder(GroupTag::class), 'group_id');
     }
 
-    public function institute(): Relation
-    {
-        return $this->has(Has::one, Institutes::class, 'id', 'institute_id');
-    }
+
 
     public function forUser(User $user): self
     {

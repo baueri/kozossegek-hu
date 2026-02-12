@@ -7,6 +7,7 @@ use App\Middleware\DebugBarMiddleware;
 use App\Providers\AppServiceProvider;
 use Framework\Http\HttpKernel;
 use Framework\Http\Session;
+use Framework\Http\View\View;
 use Framework\Middleware\AuthMiddleware;
 use Framework\Middleware\BaseAuthMiddleware;
 use Framework\Middleware\Translation;
@@ -40,6 +41,9 @@ try {
         ->middleware(Translation::class)
         ->middleware(AuthMiddleware::class)
         ->middleware(AppServiceProvider::class);
+
+    View::setVariable('captchaEnabled', (bool) config('app.captcha_enabled'));
+    View::setVariable('contact_email', config('app.contact_email'));
 
     $kernel->handle();
 } catch (Error | Exception | Throwable $e) {

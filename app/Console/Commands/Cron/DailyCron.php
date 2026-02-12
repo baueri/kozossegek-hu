@@ -11,7 +11,6 @@ use App\Console\Commands\SiteMapGenerator;
 use App\Services\SystemAdministration\OpenStreetMap\OpenStreetMapSync;
 use Framework\Console\BaseCommands\ClearCache;
 use Framework\Console\BaseCommands\CronCommand;
-use Framework\Enums\Environment;
 
 class DailyCron extends CronCommand
 {
@@ -25,7 +24,7 @@ class DailyCron extends CronCommand
         return [
             resolve(ClearUserSessionCommand::class),
             resolve(AggregateLogsCommand::class),
-            resolve(SiteMapGenerator::class)->withArgs('--ping-google=' . (int) app()->envIs(Environment::production)),
+            resolve(SiteMapGenerator::class),
             resolve(OpenStreetMapSync::class),
             resolve(ClearCache::class),
             resolve(MeiliSearchIndexerCommand::class)->withArgs('--import')

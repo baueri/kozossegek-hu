@@ -7,7 +7,7 @@ namespace App\Services\Captcha;
 class NullCaptchaValidator implements CaptchaValidator
 {
     public function validate(
-        string $token,
+        ?string $token,
         ?string $remoteIp = null
     ): void {
     }

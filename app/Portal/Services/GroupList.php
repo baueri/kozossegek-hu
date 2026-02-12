@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Portal\Services;
 
 use App\Enums\AgeGroup;
@@ -9,10 +11,10 @@ use App\Portal\BreadCrumb\BreadCrumb;
 use App\Portal\Services\Search\SearchRepository;
 use Framework\Support\Collection;
 
-class GroupList
+readonly class GroupList
 {
     public function __construct(
-        protected readonly SearchRepository $repository
+        protected SearchRepository $repository
     ) {
     }
 

@@ -5,6 +5,7 @@ namespace App\Services\Statistics\Aggregators;
 use App\Enums\AgeGroup;
 use App\Enums\EventType;
 use App\Enums\Tag;
+use Throwable;
 
 class CityKeywordCountAggregator extends StatAggregator
 {
@@ -32,9 +33,17 @@ class CityKeywordCountAggregator extends StatAggregator
 
     private function addTags(string $city, array $row): void
     {
-        Tag::fromList($row['log']['tags'] ?? '', ',')->each(function (Tag $tag) use ($city) {
-            $this->increase($city, $tag->translate(), 'tag');
-        });
+        if (empty($row['log']['tags'])) {
+            return;
+        }
+
+        foreach (explode(',', $row['log']['tags']) as $tag) {
+            try {
+                $this->increase($city, Tag::from($tag)->translate(), 'tag');
+            } catch (Throwable) {
+
+            }
+        }
     }
 
     private function addKeywords(string $city, array $row)
@@ -72,7 +81,7 @@ class CityKeywordCountAggregator extends StatAggregator
         })->sum();
     }
 
-    private function increase(string $city, string $keyword, string $type)
+    private function increase(string $city, string $keyword, string $type): void
     {
         $keyword = mb_strtolower($keyword);
 

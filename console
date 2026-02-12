@@ -3,6 +3,7 @@
 
 declare(strict_types=1);
 
+use App\Services\SystemAdministration\OpenStreetMap\OpenStreetMapSync;
 use Framework\Console\ConsoleKernel;
 
 include 'vendor/autoload.php';
@@ -12,11 +13,16 @@ if (in_array(($argv[1] ?? ''), ['--interactive', '-it'])) {
     exit;
 }
 
+$app = app();
+
 try {
-    $kernel = app()->get(ConsoleKernel::class);
+    $app->bind('errorHandler', function ($e) {
+        report($e);
+    });
+    $kernel = $app->get(ConsoleKernel::class);
 
     $kernel->loadCommands(path: 'app/Console/Commands');
-    $kernel->withCommand(\App\Services\SystemAdministration\OpenStreetMap\OpenStreetMapSync::class);
+    $kernel->withCommand(OpenStreetMapSync::class);
 
     $kernel->handle();
 } catch (Error | Exception | Throwable $e) {

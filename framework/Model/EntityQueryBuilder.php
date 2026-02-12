@@ -435,20 +435,6 @@ class EntityQueryBuilder
         return $this->builder->toSql($withBindings);
     }
 
-    public function macro($macroName, $callback): static
-    {
-        $this->builder->macro($macroName, $callback);
-
-        return $this;
-    }
-
-    public function apply($macro, ...$args): static
-    {
-        $this->builder->apply($macro, ...$args);
-
-        return $this;
-    }
-
     public static function truncate(): void
     {
         static::query()->builder->truncate();

@@ -5,6 +5,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.css"/>
 @endsection
+@section('scripts')
+    @if($captchaEnabled)
+        <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    @endif
+@endsection
 @extends('portal')
 @featuredTitle('Új közösség regisztrálása')
 <div class="container inner pt-4 pb-4" id="create-group">
@@ -215,6 +220,9 @@
             </div>
             @csrf()
             @component('replay_attack', ['name' => 'groupreg'])
+            @if($captchaEnabled)
+                @component('captcha')
+            @endif
             <div class="text-center">
                 <button type="submit" id="preview-new-group" class="btn btn-lg btn-altblue">Tovább</button>
             </div>
@@ -439,7 +447,14 @@
                                     dialog.danger(response.message);
                                 }
                             }).fail(function (response) {
-                                dialog.danger(response.responseJSON.message);
+                                if (response.responseJSON.err_code === 'captcha_failed') {
+                                    dialog.danger(response.responseJSON.message, () => {
+                                        dialog.closeAll();
+                                        turnstile.reset(cf_wid)
+                                    });
+                                } else {
+                                    dialog.danger(response.responseJSON.message);
+                                }
                             });
                         } else {
                             modal.modal("hide");

@@ -35,8 +35,6 @@ class Builder
 
     private array $selectBindings = [];
 
-    private static array $macros = [];
-
     public const PRIMARY = 'id';
 
     public const TABLE = '';
@@ -561,60 +559,6 @@ class Builder
     public function getTable(): string
     {
         return implode(',', $this->table);
-    }
-
-    public function __call($method, $args)
-    {
-        if ($this->applyMacro($method, $args)) {
-            return;
-        }
-
-        throw new BadMethodCallException("Call to undefined method {$method}()");
-    }
-
-    public function macro($macroName, $callback): self
-    {
-        $key = !$this->getTable() ? 'global' : $this->getTable();
-
-        self::$macros[$key][$macroName] = $callback;
-
-        return $this;
-    }
-
-    public function apply($macro, ...$args): void
-    {
-        if (is_array($macro)) {
-            foreach ($macro as $m) {
-                $this->applyMacro($m, $args);
-            }
-
-            return;
-        }
-
-        $this->applyMacro($macro, $args);
-    }
-
-    protected function applyMacro($macro, $args): bool
-    {
-        $callback = $this->getMacro($macro);
-
-        if ($callback) {
-            $callback($this, ...$args);
-            return true;
-        }
-
-        return false;
-    }
-
-    protected function getMacro($method)
-    {
-        if (isset(self::$macros[$this->getTable()][$method])) {
-            return self::$macros[$this->getTable()][$method];
-        } elseif (isset(self::$macros['global'][$method])) {
-            return self::$macros['global'][$method];
-        }
-
-        return null;
     }
 
     public static function primaryCol(): string

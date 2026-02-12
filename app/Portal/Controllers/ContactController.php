@@ -3,9 +3,11 @@
 namespace App\Portal\Controllers;
 
 use App\Helpers\HoneyPot;
+use App\Services\Captcha\CaptchaValidator;
 use Exception;
 use Framework\Exception\UnauthorizedException;
 use Framework\Http\Request;
+use Framework\Http\Response;
 use Framework\Mail\Mailable;
 use Framework\Mail\Mailer;
 use InvalidArgumentException;
@@ -15,11 +17,16 @@ class ContactController
     /**
      * @throws UnauthorizedException
      */
-    public function send(Request $request, Mailer $mailer): array
-    {
+    public function send(
+        Request $request,
+        Mailer $mailer,
+        CaptchaValidator $captchaValidator
+    ): array {
         HoneyPot::validate('rolunk', $request['website']);
 
         try {
+            $captchaValidator->validate($request->get('cft'), $request->clientIp());
+
             if ($request['category'] === 'kapcsolat') {
                 $to = config('app.contact_email');
                 $subject = 'Új üzenet';
@@ -41,6 +48,9 @@ class ContactController
             }
 
             return api()->error('Nem sikerült elküldeni az email-t. Kérjük próbáld meg később.');
+        } catch (\App\Services\Captcha\Exception) {
+            Response::setStatusCode(400);
+            return api()->response(['msg' => 'Captcha hiba', 'err_code' => 'captcha_failed']);
         } catch (InvalidArgumentException) {
             return api()->error('Minden mező kitöltése kötelező!');
         } catch (Exception $e) {

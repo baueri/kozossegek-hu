@@ -9,7 +9,7 @@ trait SoftDeletes
 {
     public function notDeleted(): static
     {
-        return $this->apply('notDeleted');
+        return $this->whereNull('deleted_at');
     }
 
     public function trashed(): static

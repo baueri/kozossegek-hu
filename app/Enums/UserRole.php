@@ -17,7 +17,7 @@ enum UserRole
 
     case GROUP_LEADER;
 
-    protected const PERMISSIONS = [
+    protected const array PERMISSIONS = [
         self::SUPER_ADMIN->name => [
             Permission::FULL_ACCESS,
             Permission::ACCESS_BACKEND,
@@ -28,11 +28,15 @@ enum UserRole
             Permission::ACCESS_BACKEND,
             Permission::MANAGE_SPIRITUAL_MOVEMENT,
             Permission::MANAGE_SPIRITUAL_MOVEMENT_GROUPS
-        ]
+        ],
     ];
 
     public function can(Permission $permission): bool
     {
+        if (! isset(self::PERMISSIONS[$this->name])) {
+            return false;
+        }
+
         if ($this === self::SUPER_ADMIN) {
             return true;
         }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repositories;
 
 use App\Models\EventLog;
@@ -17,7 +19,7 @@ class EventLogs extends EntityQueryBuilder implements EventLogger
         $data = array_merge(
             [
                 'referer' => $_SERVER['HTTP_REFERER'] ?? '',
-                'ip' => $_SERVER['REMOTE_ADDR'],
+                'ip' => request()->clientIp(),
                 'user_agent' => $_SERVER['HTTP_USER_AGENT'],
                 'page' => request()->uri,
                 'method' => request()->requestMethod->value()
@@ -26,8 +28,21 @@ class EventLogs extends EntityQueryBuilder implements EventLogger
         );
         return $this->create([
             'type' => $type,
-            'log' => json_encode($data),
+            'log' => json_encode($this->maskData($data)),
             'user_id' => (int) $user?->getId()
         ]);
+    }
+
+    private function maskData(array $data): array
+    {
+        foreach ($data as $key => $item) {
+            if (is_array($item)) {
+                $data[$key] = $this->maskData($item);
+            } elseif (str_contains((string) $key, 'password')) {
+                $data[$key] = str_repeat('*', mb_strlen($item));
+            }
+        }
+
+        return $data;
     }
 }

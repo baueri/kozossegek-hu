@@ -1,4 +1,9 @@
 @extends('portal')
+@section('scripts')
+    @if($captchaEnabled)
+        <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    @endif
+@endsection
 @featuredTitle('Új fiók létrehozása')
 <div class="container inner">
     @alert('info')
@@ -38,31 +43,7 @@
                     @component('aszf')<br/>
                 </p>
                 @if($captchaEnabled)
-                    <div
-                        class="cf-turnstile"
-                        data-sitekey="{{ $cloudflareSiteKey }}"
-                        data-theme="light"
-                        data-size="normal"
-                        data-callback="cf_onSuccess"
-                        data-error-callback="cf_onError"
-                        data-expired-callback="cf_onExpired"
-                    ></div>
-                    <input type="hidden" name="turnstile_token" />
-                    <script>
-                        (() => {
-                            window.cf_onSuccess = function (token) {
-                                $("[name='turnstile_token']").val(token);
-                            };
-
-                            window.cf_onError = () => {
-                                $("[name='turnstile_token']").val('');
-                            };
-
-                            window.cf_onExpired = () => {
-                                $("[name='turnstile_token']").val('');
-                            };
-                        })();
-                    </script>
+                    @component('captcha')
                 @endif
                 <div class="form-group">
                     <button type="submit" class="btn btn-altblue">Regisztráció</button>

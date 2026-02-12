@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Portal\Controllers;
 
 use App\Auth\Auth;
 use App\Enums\GroupStatus;
+use App\Events\ChurchGroupRegistered;
 use App\Exception\EmailTakenException;
 use App\Helpers\HoneyPot;
 use App\Http\Responses\CreateGroupSteps\RegisterGroupForm;
@@ -17,10 +20,13 @@ use App\QueryBuilders\Cities;
 use App\QueryBuilders\ChurchGroupViews;
 use App\QueryBuilders\Institutes;
 use App\QueryBuilders\UserTokens;
+use App\Services\Captcha\CaptchaValidator;
 use App\Services\GroupSearchRepository;
+use App\Services\ReplayAttackProtection\Service;
 use Error;
-use ErrorException;
 use Exception;
+use Framework\Event\Event;
+use Framework\Event\EventDisptatcher;
 use Framework\Exception\FileTypeNotAllowedException;
 use Framework\Http\Exception\PageNotFoundException;
 use Framework\Http\Message;
@@ -183,10 +189,16 @@ class GroupController extends PortalController
         return $response($group);
     }
 
-    public function createGroup(Request $request, PortalCreateGroup $createGroupService): array
-    {
+    public function createGroup(
+        Request $request,
+        PortalCreateGroup $createGroupService,
+        CaptchaValidator $captchaValidator,
+        Service $replayProtect
+    ): array {
         try {
             HoneyPot::validate('group-data', $request->get('website'));
+            $replayProtect->validate($request->get('rap'));
+            $captchaValidator->validate($request->get('cft'), $request->clientIp());
             $user = Auth::user();
             $group =
                 $createGroupService->createGroup(
@@ -195,6 +207,8 @@ class GroupController extends PortalController
                     $user
                 );
 
+            $replayProtect->forget($request->get('rap'));
+            EventDisptatcher::dispatch(new ChurchGroupRegistered($group));
             if ($user) {
                 Message::success('Közösség sikeresen létrehozva!');
 
@@ -202,9 +216,14 @@ class GroupController extends PortalController
             }
             return ['success' => true, 'redirect' => route('portal.group.create_group_success')];
         } catch (FileTypeNotAllowedException $e) {
+            Response::setStatusCode(422);
             return ['success' => false, 'message' => 'Csak <b>word</b> és <b>pdf</b> dokumentumot fogadunk el igazolásként!'];
         } catch (EmailTakenException $e) {
+            Response::setStatusCode(409);
             return ['success' => false, 'message' => 'Ez az email cím már foglalt!'];
+        } catch (\App\Services\Captcha\Exception) {
+            Response::setStatusCode(400);
+            return ['success' => false, 'message' => 'Captcha hiba, kérjük próbáld meg újból', 'err_code' => 'captcha_failed'];
         }
     }
 

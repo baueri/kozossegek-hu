@@ -12,6 +12,7 @@ use App\Portal\Services\CreateUser;
 use App\QueryBuilders\Users;
 use App\QueryBuilders\UserTokens;
 use App\Services\Captcha\CaptchaValidator;
+use App\Services\ReplayAttackProtection\Service;
 use App\Services\User\LegalNoticeService;
 use Exception;
 use Framework\Exception\UnauthorizedException;
@@ -109,23 +110,22 @@ class LoginController extends PortalController
         UserTokens $tokens,
         Mailer $mailer,
         LegalNoticeService $legalNoticeService,
-        CaptchaValidator $captchaValidator
+        CaptchaValidator $captchaValidator,
+        Service $replayAttackService
     ): string {
         $request = $this->request;
         use_default_header_bg();
-
-        $captchaEnabled = config('app.captcha_enabled');
 
         $model = [
             'name' => $request['name'],
             'email' => $request['email'],
             'cloudflareSiteKey' => config('app.cloudflare.site_key'),
-            'captchaEnabled' => $captchaEnabled
         ];
 
         try {
             if ($request->isPostRequestSent()) {
-                $captchaValidator->validate($request->get('turnstile_token'));
+                $replayAttackService->validate($request->get('rap'));
+                $captchaValidator->validate($request->get('cft'), $request->clientIp());
                 HoneyPot::validate('register', $request['website']);
                 $this->middleware(new RefererMiddleware(route('portal.register')));
                 if (!$request['password'] || $request['password'] !== $request['password_again']) {
@@ -136,6 +136,7 @@ class LoginController extends PortalController
                     $legalNoticeService->updateOrInsertCurrentFor($user);
                     $message = new RegistrationEmail($user, $token);
                     $mailer->to($request['email'])->send($message);
+                    $replayAttackService->forget($request->get('rap'));
                     Message::success('Sikeres regisztráció! Az aktiváló linket elküldtük az email címedre.');
                     redirect_route('login');
                 }

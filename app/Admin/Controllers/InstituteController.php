@@ -13,6 +13,7 @@ use Exception;
 use Framework\Http\Message;
 use Framework\Http\Request;
 use Framework\Model\Exceptions\ModelNotFoundException;
+use Framework\Support\StringHelper;
 
 class InstituteController extends AdminController
 {
@@ -91,6 +92,10 @@ class InstituteController extends AdminController
         $data = $request->only('name', 'city', 'district', 'address', 'leader_name');
         $data['user_id'] = Auth::user()->id ?? null;
         $data['approved'] = 1;
+
+        $data['lat'] = '';
+        $data['lon'] = '';
+        $data['slug'] = StringHelper::slugify($data['city']) . '/' . StringHelper::slugify($data['name']);
         $institute = $repository->create($data);
 
         if ($image = $request['image']) {

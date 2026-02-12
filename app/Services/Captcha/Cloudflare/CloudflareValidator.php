@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Services\Captcha;
+namespace App\Services\Captcha\Cloudflare;
 
+use App\Services\Captcha\CaptchaValidator;
+use App\Services\Captcha\Exception;
 use Framework\Support\Collection;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
@@ -15,10 +17,9 @@ class CloudflareValidator implements CaptchaValidator
 
     public function __construct(
         private readonly Client $client,
-        private readonly string $siteKey,
-        private readonly string $secret
+        private readonly Config $config
     ) {
-        if (! $this->siteKey || ! $this->secret) {
+        if (! $this->config->siteKey || ! $this->config->secret) {
             throw new LogicException('Cloudflare Turnstile credentials are missing.');
         }
     }
@@ -27,11 +28,11 @@ class CloudflareValidator implements CaptchaValidator
      * @throws GuzzleException|Exception
      */
     public function validate(
-        string $token,
+        ?string $token,
         ?string $remoteIp = null
     ): void {
         $data = [
-            'secret' => $this->secret,
+            'secret' => $this->config->secret,
             'response' => $token,
         ];
 
@@ -49,6 +50,8 @@ class CloudflareValidator implements CaptchaValidator
         $response = Collection::fromJson((string) $response->getBody());
 
         if (! $response->get('success')) {
+            log_event('captcha_fail', ['request' => request()->all(), 'error' => implode(', ', $response->get('error-codes'))]);
+
             throw new Exception('Turnstile validation failed: ' . implode(', ', $response->get('error-codes')));
         }
     }

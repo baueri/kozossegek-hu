@@ -1,19 +1,19 @@
 <?php
 
+declare(strict_types=1);
 
 namespace Framework;
-
 
 use InvalidArgumentException;
 
 class PasswordGenerator
 {
-    public const LETTERS = 'abcdefghijklmnopqrstuvwxyz';
-    public const NUMBERS = '0123456789';
+    public const string LETTERS = 'abcdefghijklmnopqrstuvwxyz';
+    public const string NUMBERS = '0123456789';
 
-    public const OPTION_LOWER = 'LOWER';
-    public const OPTION_UPPER = 'UPPER';
-    public const OPTION_NUMBERS = 'NUMBER';
+    public const string OPTION_LOWER = 'LOWER';
+    public const string OPTION_UPPER = 'UPPER';
+    public const string OPTION_NUMBERS = 'NUMBER';
 
     private array $settings = [
         self::OPTION_LOWER => true,

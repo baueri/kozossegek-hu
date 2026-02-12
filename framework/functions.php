@@ -190,11 +190,13 @@ function is_admin(): bool
     return in_array(AdminMiddleware::class, current_route()->getMiddleware());
 }
 
-function mb_ucfirst($string, $encoding = 'utf-8'): string
-{
-    $firstChar = mb_substr($string, 0, 1, $encoding);
-    $then = mb_substr($string, 1, null, $encoding);
-    return mb_strtoupper($firstChar, $encoding) . $then;
+if (! function_exists('mb_ucfirst')) {
+    function mb_ucfirst($string, $encoding = 'utf-8'): string
+    {
+        $firstChar = mb_substr($string, 0, 1, $encoding);
+        $then = mb_substr($string, 1, null, $encoding);
+        return mb_strtoupper($firstChar, $encoding) . $then;
+    }
 }
 
 function raise_error_page(int $code, string $message = '', string $message2 = ''): never

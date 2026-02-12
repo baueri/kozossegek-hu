@@ -1,9 +1,9 @@
 @import url("https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css");
-@import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap");
 @import "../assets/fontawesome/css/all.min.css";
 
 body {
-    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: sans-serif;
     color: #555;
     font-size: 1em;
 }
@@ -247,7 +247,7 @@ nav.navbar .nav-link:hover {
 }
 
 #footer {
-    background-color: #151414;
+    background-color: var(--alt-dark);
     box-shadow: 0 0 10px #000;
 }
 

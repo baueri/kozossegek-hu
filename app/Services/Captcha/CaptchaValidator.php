@@ -9,5 +9,5 @@ interface CaptchaValidator
     /**
      * @throws Exception
      */
-    public function validate(string $token, ?string $remoteIp = null): void;
+    public function validate(?string $token, ?string $remoteIp = null): void;
 }

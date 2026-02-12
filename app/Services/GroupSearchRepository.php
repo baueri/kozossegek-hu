@@ -48,7 +48,7 @@ readonly class GroupSearchRepository
 
         $korosztaly = $filter['korosztaly'];
         if ($korosztaly) {
-            $builder->apply('whereAgeGroup', $korosztaly);
+            $builder->whereAgeGroup($korosztaly);
         }
 
         $rendszeresseg = $filter['rendszeresseg'];
@@ -72,7 +72,7 @@ readonly class GroupSearchRepository
 
         $tags = $filter['tags'];
         if ($tags) {
-            $builder->apply('whereGroupTag', explode(',', $tags));
+            $builder->whereGroupTag(explode(',', $tags));
         }
 
         $institute_name = $filter['intezmeny'];

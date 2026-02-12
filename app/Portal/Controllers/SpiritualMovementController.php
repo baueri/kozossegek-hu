@@ -71,7 +71,7 @@ class SpiritualMovementController extends PortalController
 
             $groups = $groupViews->query()
                 ->where('spiritual_movement_id', $spiritualMovement->id)
-                ->apply('active')
+                ->active()
                 ->with('tags')
                 ->get();
 

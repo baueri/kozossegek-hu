@@ -11,10 +11,6 @@
     <link rel="canonical" href="{{ $group->url() }}" />
 @endsection
 @extends('portal')
-<?php $nvr = 'a_' . substr(md5(time()), 0, 5); ?>
-<script>
-    let nvr = "{{ $nvr }}";
-</script>
 @featuredTitle()
     {{ $group->getBreadCrumb() }}
     <h3 class="pt-2 pb-2 mb-0 text-center text-md-left">
@@ -137,14 +133,6 @@
     </div>
   </div>
 </div>
-<style>
-    #{{ $nvr }} {
-        width: 0px;
-        padding: 0;
-        border: 0;
-        margin: 0;
-    }
-</style>
 <script>
     $(() => {
         $(".open-contact-modal").click(function(){
@@ -157,12 +145,12 @@
         $("#contact-modal form").submit(function(e) {
             e.preventDefault();
 
-            var data = {
+            const data = {
                 name: $("[name=name]").val(),
                 email: $("[name=email]").val(),
                 message: $("[name=message]").val(),
                 website: $("[name=website]").val()
-            }
+            };
             $.post("@route('portal.contact-group', $group)", data, function(response) {
                 if (response.success) {
                     $("#contact-modal .modal-body").html(response.msg);

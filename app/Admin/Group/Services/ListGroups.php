@@ -35,7 +35,7 @@ class ListGroups
 
         $filter['pending'] = $current_page === 'pending';
 
-        $pending_groups = ChurchGroups::query()->where('pending', 1)->apply('notDeleted')->count();
+        $pending_groups = ChurchGroups::query()->where('pending', 1)->notDeleted()->count();
 
         return view('admin.group.list', compact(
             'table',

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Auth;
 
 use App\Models\User;
@@ -23,7 +25,7 @@ final class Auth
             session_id(),
             $user->id,
             $_SERVER['HTTP_USER_AGENT'],
-            $_SERVER['REMOTE_ADDR']
+            request()->clientIp()
         );
         db()->execute('update users set last_login=CURRENT_TIMESTAMP where id=?', $user->id);
 

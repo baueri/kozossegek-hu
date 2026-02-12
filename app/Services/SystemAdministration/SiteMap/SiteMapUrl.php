@@ -1,17 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services\SystemAdministration\SiteMap;
 
-use DOMElement;
-use SimpleXMLElement;
-
-class SiteMapUrl
+readonly class SiteMapUrl
 {
     public function __construct(
-        public readonly string $loc,
-        public readonly ?string $priority = '0.5',
-        public readonly ?ChangeFreq $changefreq = null,
-        public readonly ?string $lastmod = null
+        public string      $loc,
+        public ?string     $priority = '0.5',
+        public ?ChangeFreq $changefreq = null,
+        public ?string     $lastmod = null
     ) {
     }
 

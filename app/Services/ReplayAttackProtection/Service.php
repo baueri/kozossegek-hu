@@ -8,22 +8,20 @@ class Service
 {
     public function generateNonce(string $name): string
     {
-        $nonce = $_SESSION[$this->key($name)] = md5((string) time());
+        $nonce = $_SESSION[$this->key($name)] = bin2hex(random_bytes(32));
 
         return base64_encode("{$nonce}:{$name}");
     }
 
-    public function validate(?string $code): bool
+    public function validate(?string $code): void
     {
         [$value, $name] = explode(':', base64_decode($code));
 
         $nonce = $this->getNonce($name);
 
-        if (!$value || !$nonce) {
-            return false;
+        if (!$value || !$nonce || $nonce !== $value) {
+            throw new Exception('Replay attack detected');
         }
-
-        return $nonce === $value;
     }
 
     public function forget(string $code): void

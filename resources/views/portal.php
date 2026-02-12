@@ -46,18 +46,7 @@
     <footer id="footer" class="text-white">
         <div class="container" id="footer-top">
             <div class="row">
-                <div class="col-md-4 col-sm-6 col-xs-12 my-3 my-md-0">
-                    <ul class="navbar-nav">
-                        <li class="nav-item"><a href="@route('portal.page', 'rolunk')" class="nav-link">Rólunk</a></li>
-                        <li class="nav-item"><a href="@route('portal.page', 'impresszum')" class="nav-link">Impresszum</a></li>
-                        <li class="nav-item"><a href="@route('portal.page', 'adatkezelesi-tajekoztato')" class="nav-link">Adatkezelés</a></li>
-                        <li class="nav-item"><a href="@route('portal.page', 'adatvedelmi-nyilatkozat')" class="nav-link">Adatvédelem</a></li>
-                        <li class="nav-item"><a href="@route('portal.page', 'iranyelveink')" class="nav-link">Irányelveink</a></li>
-                        <li class="nav-item"><a href="@route('portal.page', 'rolunk')#contact" class="nav-link">Kapcsolat</a></li>
-                    </ul>
-                </div>
-
-                <div class="col-md-5 offset-0 offset-md-3 col-sm-6 col-xs-12">
+                <div class="col-md-5 col-sm-6 col-xs-12">
                     <h5>Partnereink</h5>
                     <div class="partnereink">
                         <a href="https://pasztoralis.hu/" title="Pasztorális helynökség Szeged" target="_blank" rel="noopener noreferrer">
@@ -77,6 +66,23 @@
                             <img @lazySrc() data-src="/images/partnerek/bizd_ra_magad.webp" data-srcset="/images/partnerek/bizd_ra_magad.webp" alt="Bízd rá magad" class="lazy">
                         </a>
                     </div>
+                </div>
+                <div class="col-md-3 col-sm-6 col-xs-12 my-3 my-md-0">
+                    <h5>Linkek</h5>
+                    <ul class="navbar-nav">
+                        <li class="nav-item mb-1"><a href="@route('portal.page', 'rolunk')">Rólunk</a></li>
+                        <li class="nav-item mb-1"><a href="@route('portal.page', 'impresszum')">Impresszum</a></li>
+                        <li class="nav-item mb-1"><a href="@route('portal.page', 'iranyelveink')">Irányelveink</a></li>
+                        <li class="nav-item mb-1"><a href="@route('portal.page', 'rolunk')#contact">Kapcsolat</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 col-sm-6 col-xs-12 my-3 my-md-0">
+                    <h5>Kapcsolat</h5>
+                    <ul class="navbar-nav">
+                        <li class="nav-item mb-1"><a href="mailto:{{$contact_email}}">{{$contact_email}}</a></li>
+                        <li class="nav-item mb-1"><a href="@route('portal.page', 'adatkezelesi-tajekoztato')">Adatkezelés</a></li>
+                        <li class="nav-item mb-1"><a href="@route('portal.page', 'adatvedelmi-nyilatkozat')">Adatvédelem</a></li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -116,7 +122,6 @@
         </script>
         <script async defer crossorigin="anonymous" src="https://connect.facebook.net/hu_HU/sdk.js#xfbml=1&version=v17.0&appId={{ env('FACEBOOK_APP_ID') }}&autoLogAppEvents=1" nonce="HRNksHZS"></script>
     @endif
-    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     <script>
         const meili_enabled = {{ env ('MEILI_ENABLED') ? 'true' : 'false' }}
     </script>

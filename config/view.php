@@ -94,6 +94,7 @@ return [
         'base_selector' => BaseSelector::class,
         'breadcrumb' => BreadCrumb::class,
         'cathptcha' => App\Services\Cathptcha\Component::class,
-        'replay_attack' => Component::class
+        'replay_attack' => Component::class,
+        'captcha' => \App\Services\Captcha\Cloudflare\Component::class
     ]
 ];

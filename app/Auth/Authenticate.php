@@ -5,6 +5,7 @@ namespace App\Auth;
 use App\Models\User;
 use App\QueryBuilders\Users;
 use App\QueryBuilders\UserSessions;
+use Framework\Http\Request;
 use Framework\Model\Exceptions\QueryBuilderException;
 use Framework\Support\Password;
 use Framework\Traits\ManagesErrors;
@@ -14,7 +15,8 @@ class Authenticate
     use ManagesErrors;
 
     public function __construct(
-        private readonly Users $repository
+        private readonly Users $repository,
+        private readonly Request $request
     ) {
     }
 
@@ -47,7 +49,7 @@ class Authenticate
         $query = UserSessions::query();
         $session = $query->where('unique_id', session_id())
             ->where('user_agent', $_SERVER['HTTP_USER_AGENT'])
-            ->where('ip_address', $_SERVER['REMOTE_ADDR'])
+            ->where('ip_address', $this->request->clientIp())
             ->with('user')
             ->first();
 

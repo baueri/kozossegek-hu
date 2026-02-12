@@ -12,7 +12,8 @@ use App\Portal\Services\Search\SearchRepository;
 use App\QueryBuilders\Users;
 use App\Repositories\EventLogs;
 use App\Services\Captcha\CaptchaValidator;
-use App\Services\Captcha\CloudflareValidator;
+use App\Services\Captcha\Cloudflare\CloudflareValidator;
+use App\Services\Captcha\Cloudflare\Config as CloudflareConfig;
 use App\Services\Captcha\NullCaptchaValidator;
 use App\Services\EventLogger;
 use App\Services\MeiliSearch\MeiliSearchAdapter;
@@ -89,11 +90,12 @@ $application->bind([
     'errorHandler' => fn () => fn ($error) => throw $error,
     AuthUser::class => fn () => Auth::user(),
     SearchRepository::class => fn () => $application->get(config('app.search_drivers')[config('app.selected_search_driver')]),
-    CaptchaValidator::class => fn (Client $client) => config('app.captcha_enabled') ? new CloudflareValidator(
-        $client,
-        (string) config('app.cloudflare.site_key'),
-        (string) config('app.cloudflare.secret'),
-    ) : new NullCaptchaValidator()
+    CloudflareConfig::class => fn () => new CloudflareConfig(
+        enabled: (bool) config('app.captcha_enabled'),
+        siteKey: (string) config('app.cloudflare.site_key'),
+        secret: (string) config('app.cloudflare.secret')
+    ),
+    CaptchaValidator::class => fn () => config('app.captcha_enabled') ? $application->get(CloudflareValidator::class) : new NullCaptchaValidator(),
 ]);
 
 $application->on('booting', function () { MileStone::measure('bootstrap'); });
@@ -110,5 +112,3 @@ ModelCreated::listen(function (ModelCreated $event) {
 });
 
 MileStone::endMeasure('init');
-
-include APP . 'macros.php';

@@ -10,14 +10,10 @@ class HoneyPot
 {
     public const int MIN_SEC = 5;
 
-    public static function getHash(string $id)
+    public static function setTime(string $id): void
     {
-        $_SESSION['honey_pot'][$id] = [
-            'honeypot_check_time' => $checkTime = time(),
-            'honeypot_check_hash' => md5((string) $checkTime)
-        ];
-
-        return $_SESSION['honey_pot'][$id]['honeypot_check_hash'];
+        unset($_SESSION['hp_check_time'][$id]);
+        $_SESSION['hp_check_time'][$id] = time();
     }
 
     /**
@@ -29,19 +25,16 @@ class HoneyPot
             throw new HoneypotException('spam check failed', reason: 'filled_honeypot');
         }
 
-        $checkTime = $_SESSION['honey_pot'][$id]['honeypot_check_time'] ?? null;
-        $check_hash = $_SESSION['honey_pot'][$id]['honeypot_check_hash'] ?? null;
+        $checkTime = $_SESSION['hp_check_time'][$id] ?? null;
         $elapsedTime = $checkTime ? time() - $checkTime : null;
         $reason = null;
         if (!$checkTime) {
             $reason = 'missing_check_time';
-        } elseif (!$check_hash) {
-            $reason = 'missing_check_hash';
         } elseif($elapsedTime < self::MIN_SEC) {
             $reason = 'too_quick';
         }
 
-        unset($_SESSION['honey_pot'][$id]);
+        self::setTime($id);
 
         if ($reason) {
             throw new HoneypotException('spam check failed', reason: $reason, elapsedTime: $elapsedTime);

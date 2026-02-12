@@ -6,7 +6,6 @@ use App\Portal\Services\Search\DatabaseSearchGroupRepository;
 use App\Portal\Services\Search\MeiliSearchRepository;
 use App\Middleware\RefererMiddleware;
 use App\Services\Cathptcha\Middleware as Catptcha;
-use App\Services\ReplayAttackProtection\Middleware as ReplayAttackProtection;
 use Framework\Middleware\JsonApi;
 use Framework\Middleware\Translation;
 use Framework\Middleware\VerifyCsrfToken;
@@ -42,8 +41,7 @@ return [
         'admin' => AdminMiddleware::class,
         'auth' => LoggedInMiddleware::class,
         'referer' => RefererMiddleware::class,
-        'catptcha' => Catptcha::class,
-        'replay_protect' => ReplayAttackProtection::class
+        'catptcha' => Catptcha::class
     ],
     'exclude_csrf' => [
         'admin.upload_file'
