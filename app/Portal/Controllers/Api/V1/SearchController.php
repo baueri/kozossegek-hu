@@ -41,6 +41,7 @@ class SearchController
         $response = new InstituteSearchResponse(
             $repository->when($this->request['city'], fn (Institutes $query, $city) => $query->where('city', $city))
                 ->search($this->request['term'])
+                ->notDeleted()
                 ->orderBy('name', 'asc')
                 ->paginate(15)
         );

@@ -49,9 +49,10 @@
             @if(!$page->exists())
                 <div class="form-group">
                     <label>Típus</label>
+                    {{ $page_type }}
                     <select name="page_type" class="form-control">
                         <?php foreach (\App\Enums\PageType::cases() as $type): ?>
-                            <option value="<?= $type->value() ?>" @selected($page_type == $type)><?= $type->translate() ?></option>
+                            <option value="<?= $type->value() ?>" @selected($page_type == $type->value())><?= $type->translate() ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>

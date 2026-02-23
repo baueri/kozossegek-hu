@@ -27,7 +27,7 @@ readonly class NotifyAdminsAboutGroupCreation implements EventListener
     public function trigger($event): void
     {
         try {
-            $admins = $this->users->where('user_role', UserRole::SUPER_ADMIN)->get();
+            $admins = $this->users->notDeleted()->where('user_role', UserRole::SUPER_ADMIN)->get();
 
             $validationUrl = route('admin.group.validate', $event->churchGroup);
 
