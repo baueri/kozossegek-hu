@@ -1,27 +1,77 @@
+# ------------------------------
+# PHP settings
+# ------------------------------
 #php_value upload_max_filesize 5M
+
+# ------------------------------
+# Front controller and security
+# ------------------------------
 <IfModule mod_rewrite.c>
-    Options +FollowSymLinks
-    Options -Indexes
+    Options +FollowSymLinks -Indexes
     RewriteEngine On
     RewriteBase /
+
+    # Remove trailing slashes for non-directory URLs
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} !^/$
+    RewriteRule ^(.*)/$ /$1 [R=301,L]
+
+    # ------------------------------
+    # Block dangerous directories (even if they don't exist)
+    # ------------------------------
+    RewriteRule ^(backup|old|new|blog)(/|$) - [F,L,NC]
+
+    # ------------------------------
+    # Block dangerous file types
+    # ------------------------------
+    RewriteRule \.(sql|gz|zip|tar|bz2|7z|env|ini|log|conf)$ - [F,L,NC]
+
+    # ------------------------------
+    # Block common WordPress scanner paths
+    # ------------------------------
+    RewriteRule ^(wp-admin|wp-login\.php|wp-includes|wp-content|wordpress) - [F,NC,L]
+
+    # ------------------------------
+    # Front-controller routing
+    # ------------------------------
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteRule ^(.*)$ index.php/$1 [NC,L,QSA]
-
-    # a wordpress-es heckelőknek rögtön letiltjuk a kapcsolatot,
-    # hogy ne terheljék a szervert
-    RewriteRule wp-(includes|login|admin|content)|wordpress - [F]
 </IfModule>
 
+# ------------------------------
+# Security headers
+# ------------------------------
 <IfModule mod_headers.c>
     Header set X-Content-Type-Options "nosniff"
-    Header set X-XSS-Protection "1; mode=block"
     Header set X-Frame-Options "SAMEORIGIN"
     Header set X-Permitted-Cross-Domain-Policies "none"
     Header set Referrer-Policy "no-referrer-when-downgrade"
 
-    # cache control
-    <FilesMatch "\.(ico|pdf|flv|jpg|jpeg|png|gif|js|css|swf|webp)">
+    # Basic Content Security Policy
+    # Header set Content-Security-Policy "default-src 'self'; img-src 'self' data:; script-src 'self'; style-src 'self' 'unsafe-inline'"
+
+    # Cache control for static files
+    <FilesMatch "\.(ico|pdf|flv|jpg|jpeg|png|gif|js|css|swf|webp)$">
         Header set Cache-Control "max-age=2592000, public"
     </FilesMatch>
+
+    # ------------------------------
+    # HSTS: only on production domain
+    # ------------------------------
+    <If "%{HTTP_HOST} == 'kozossegek.hu'">
+        Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+    </If>
 </IfModule>
+
+# ------------------------------
+# Additional file-based blocking (for real files)
+# ------------------------------
+<FilesMatch "\.(sql|gz|zip|tar|bz2|7z|env|ini|log|conf)$">
+    Require all denied
+</FilesMatch>
+
+# ------------------------------
+# Hide Apache version/footer
+# ------------------------------
+ServerSignature Off

@@ -59,9 +59,10 @@ class EventLogAdminTable extends PaginatedAdminTable
     {
         $parsed = $log->map(function($val, $key) {
             if (is_array($val)) {
-                $val = json_encode($val);
+                $val = json_encode($val, JSON_PRETTY_PRINT);
             }
-            return "<li>$key: $val</li>";
+            $val = htmlspecialchars((string) $val);
+            return "<li>$key: <pre style='display:inline; color:#e83e8c;'>$val</pre></li>";
         })->implode('');
         return "<ul>{$parsed}</ul>";
     }

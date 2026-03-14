@@ -14,11 +14,8 @@ class PageController extends PortalController
     {
         use_default_header_bg();
 
-        // @todo ez most csak egy workaround, a routing-ot kellene ugy atalakitani, hogy egyszerubben lehessen regex pattern-t
-        // @todo is megadni
-        preg_match('/^\/([a-z0-9-]+)\/?$/', $request->uri, $matches);
-        $slug = $matches[1];
-
+        $slug = $request->getUriValue('slug');
+        
         if (!$slug || !($page = $repository->whereSlug($slug)->first())) {
             log_event('');
             raise_404();

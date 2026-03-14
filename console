@@ -18,7 +18,7 @@ $app = app();
 try {
     $app->bind('errorHandler', function ($e) {
         report($e);
-    });
+    }, true);
     $kernel = $app->get(ConsoleKernel::class);
 
     $kernel->loadCommands(path: 'app/Console/Commands');
