@@ -1,5 +1,18 @@
 @title('Verzióinformáció')
 @extends('admin')
+<h3>v5.0 (2026.03.14)</h3>
+<i>A legutolsó release notes óta sok fejlesztés kikerült, de nem lettek itt dokumentálva.</i>
+<ul>
+    <li><b>Gépház</b></li>
+    <li>[NEW]: újabb biztonsági frissítések<br/>
+        &nbsp;- Cloudflare captcha bekötése<br/>
+        &nbsp;- htaccess fájl feljavítása (hsts force, sql/zip/7z stb fájlelérések tiltása)<br/>
+        &nbsp;- Replay attack védelem, referer védelem</li>
+    <li>[NEW]: A "/"-re végződő uri kérések átirányítása "/" nélkülire</li>
+    <li>[NEW]: Keretrendszer nagyobb átstrukturálása, refaktorálása</li>
+    <li><b>Látogatói oldal</b></li>
+    <li>[ENHANCE]: kis design javítás</li>
+</ul>
 <h3>v4.0.2 (2023.09.28)</h3>
 <ul>
     <li>[FIX] - page speed optimalizálások, képek tömörítése</li>
@@ -263,7 +276,7 @@
     </li>
     <li>[NEW]: Eseménynapló a gépházba</li>
     <li>[FIXED]: Email ellenőrző script-ben a reguláris kifejezés javítva lett</li>
-    <li>[CHANGED]: Látogatói oldalon (főoldalon és a 'közösséget keresek' oldalon a szűrő átalakításra került</li>
+    <li>[CHANGED]: Látogatói oldalon (főoldalon és a 'közösséget keresek' oldalon) a szűrő átalakításra került</li>
     <li>[CHANGED]: Most már csak akkor naplózzuk a kereséseket, ha valamilyen szűrőt alkalmazott a látogató</li>
     <li>[CHANGED]: Látogatói oldalon a 'Profilom' és 'Közösségeim' oldalak menüje vízszintesre lett alakítva, hogy több hely legyen.</li>
 </ul>
