@@ -25,23 +25,53 @@ class ErrorHandler
      */
     public function __invoke($error): void
     {
+        $severity = 'Exception';
+
+        if ($error instanceof PageNotFoundException || $error instanceof ModelNotFoundException || $error instanceof RouteNotFoundException) {
+            $severity = 'Notice';
+        } elseif ($error instanceof UnauthorizedException) {
+            $severity = 'Warning';
+        }
+
+        // todo create logger interface
+
+        $logToFile = function (\Throwable $error, string $severity) {
+            error_log(sprintf(
+                "[%s] %s: %s - %s in %s on line %d\nStack trace:\n%s\n\n",
+                date('Y-m-d H:i:s'),
+                $severity,
+                get_class($error),
+                $error->getMessage(),
+                $error->getFile(),
+                $error->getLine(),
+                $error->getTraceAsString()
+            ), 3, ROOT . "error.log");
+        };
+
         if ($error->getCode() != '404' && !env('DEBUG')) {
+            $logger = fn (\Throwable $error) => $logToFile($error, 'Warning');
             if ($error instanceof TokenMismatchException) {
+                $logger($error);
                 log_event('csrf_fail', ['request' => request()->all()]);
                 abort(403);
             } elseif ($error instanceof HoneypotException) {
+                $logger($error);
                 log_event('honeypot_fail', ['request' => request()->all(), 'reason' => $error->reason, 'elapsed_time' => $error->elapsedTime]);
                 abort(403);
             }  elseif ($error instanceof \App\Services\Cathptcha\Exception) {
+                $logger($error);
                 log_event('catpcha_fail', ['request' => request()->all(), 'q,a' => $error->question . ',' . $error->answer]);
                 abort(403);
             } elseif ($error instanceof ReplayAttackException) {
+                $logger($error);
                 log_event('replay_attack', ['request' => request()->all()]);
                 abort(403);
             } else {
                 report($error);
             }
         }
+
+        $logToFile($error, $severity);
 
         Response::setStatusCode($error->getCode() ?: 500);
 
@@ -64,10 +94,6 @@ class ErrorHandler
             $whoops->allowQuit(true);
             $whoops->pushHandler(new PrettyPageHandler);
             $whoops->handleException($error);
-//            echo "<pre style='white-space:pre-line'><h3>Unexpected error (" . get_class($error) . ")</h3>";
-//            echo "{$error->getMessage()} in <b>{$error->getFile()}</b> on line <b>{$error->getLine()}</b> \n\n";
-//            echo var_export($error->getTrace(), true);
-//            echo "</pre>";
             exit;
         }
 
