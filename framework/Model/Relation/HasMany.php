@@ -20,23 +20,38 @@ trait HasMany
             return;
         }
 
-        /* @var $relations Relation[] */
         foreach ($relations as $relation) {
-            if (in_array($relation->relationName, $this->relationCounts)) {
-                $this->fillCounts($relation, $instances);
-                continue;
-            }
-            $rows = collect($relation->buildQuery($instances)->get());
+            $this->fillRelations($instances, $relation, in_array($relation->relationName, $this->relationCounts));
+        }
+    }
 
-            foreach ($instances as $actualInstance) {
-                $actualInstanceValue = Arr::get($actualInstance, $relation->localKey);
-                $isSame = fn($relationInstance) => Arr::get($relationInstance, $relation->foreginKey) == $actualInstanceValue;
-                if ($relation->relationType == Has::many) {
-                    $actualInstance->relations[$relation->relationName] = $rows->filter($isSame)->values();
-                } else {
-                    $actualInstance->relations[$relation->relationName] = $rows->first($isSame);
-                }
+    /**
+     * @template T of Entity
+     * @param Collection<T>|Entity<T> $instances
+     * @param Relation $relation
+     * @param bool $loadCount
+     * @return void
+     */
+    public function fillRelations(Collection|Entity $instances, Relation $relation, bool $loadCount = false): void
+    {
+        $instances = collect($instances)->filter(fn(Entity $instance) => !in_array($relation->relationName, $instance->loadedRelations));
+        if ($instances->isEmpty()) {
+            return;
+        }
+        if ($loadCount) {
+            $this->fillCounts($relation, $instances);
+            return;
+        }
+        $relatedRows = collect($relation->buildQuery($instances)->get());
+        foreach ($instances as $actualInstance) {
+            $actualInstanceValue = Arr::get($actualInstance, $relation->localKey);
+            $isSame = fn($relationInstance) => Arr::get($relationInstance, $relation->foreignKey) == $actualInstanceValue;
+            if ($relation->relationType == Has::many) {
+                $actualInstance->relations[$relation->relationName] = $relatedRows->filter($isSame)->values();
+            } else {
+                $actualInstance->relations[$relation->relationName] = $relatedRows->first($isSame);
             }
+            $actualInstance->loadedRelations[] = $relation->relationName;
         }
     }
 
@@ -46,29 +61,19 @@ trait HasMany
      */
     private function fillCounts(Relation $relation, Collection $instances): void
     {
-        $rows = $relation->buildQuery($instances)->countBy($relation->foreginKey);
+        $rows = $relation->buildQuery($instances)->countBy($relation->foreignKey);
         foreach ($instances as $actualInstance) {
             $actualInstance->relations_count[$relation->relationName] = $rows[Arr::getItemValue($actualInstance, $relation->localKey)] ?? 0;
         }
-    }
-
-    public function hasMany(string $repositoryClass, ?string $foreignKey = null, ?string $localKey = null): Relation
-    {
-        return $this->has(Has::many, $repositoryClass, $foreignKey, $localKey);
-    }
-
-    public function hasOne(string $repositoryClass, ?string $foreignKey = null, ?string $localKey = null): Relation
-    {
-        return $this->has(Has::one, $repositoryClass, $foreignKey, $localKey);
     }
 
     public function has(Has $relationType, string|EntityQueryBuilder|Builder $repositoryClass, ?string $foreignKey = null, ?string $localKey = null): Relation
     {
         return new Relation(
             relationType: $relationType,
-            queryBuilder: is_string($repositoryClass) ? app($repositoryClass) : $repositoryClass,
+            queryBuilder: is_string($repositoryClass) ? app()->get($repositoryClass) : $repositoryClass,
             relationName: $this->getRelationName(),
-            foreignKey: $foreignKey ?: StringHelper::snake(get_class_name(static::getModelClass())) . '_id',
+            foreignKey: $foreignKey ?: StringHelper::snake(get_class_name($this->getModelClass())) . '_id',
             localKey: $localKey
         );
     }

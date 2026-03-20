@@ -11,7 +11,7 @@ class SpiritualMovementRepository extends Repository
     {
         return SpiritualMovements::query()
             ->hightLighted()
-            ->orderBy('name', 'desc')
+            ->orderBy('name', 'asc')
             ->get()
             ->map
             ->toSiteMapUrl();

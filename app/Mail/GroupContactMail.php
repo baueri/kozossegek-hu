@@ -8,8 +8,9 @@ class GroupContactMail extends Mailable
 {
     public function __construct(string $name, string $email, string $message)
     {
-        $this->subject('kozossegek.hu - Új érdeklődő szeretné felvenni a kapcsolatot a közösséggel')
+        $this->subject(site_name() . ' - Új érdeklődő szeretné felvenni a kapcsolatot a közösséggel')
             ->replyTo($email)
+            ->showNoReplyText(false)
             ->view('email_templates:group-contact')
             ->with([
                 'name' => $name,

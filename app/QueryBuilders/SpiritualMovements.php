@@ -8,16 +8,11 @@ use App\QueryBuilders\Relations\HasManyChurchGroupViews;
 use Framework\Model\EntityQueryBuilder;
 
 /**
- * @phpstan-extends \Framework\Model\EntityQueryBuilder<\App\Models\SpiritualMovement>
+ * @phpstan-extends EntityQueryBuilder<SpiritualMovement>
  */
 class SpiritualMovements extends EntityQueryBuilder
 {
     use HasManyChurchGroupViews;
-
-    public static function getModelClass(): string
-    {
-        return SpiritualMovement::class;
-    }
 
     public function hightLighted(): self
     {

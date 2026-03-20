@@ -3,6 +3,7 @@
 @endsection
 @extends('admin')
 <form method="post" action="{{ $action }}">
+    @csrf()
     <div class="row">
         <div class="col-md-5">
             <div class="form-group">

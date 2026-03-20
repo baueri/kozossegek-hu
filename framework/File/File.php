@@ -1,27 +1,30 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Framework\File;
 
 use Framework\File\Enums\SizeUnit;
-use InvalidArgumentException;
 use RuntimeException;
 
 class File
 {
     protected ?string $fileName = null;
 
-    protected ?string $filePath = null;
-
-    protected $pathInfo;
+    protected string|array $pathInfo;
 
     protected ?string $fileType = null;
 
-    final public function __construct($filePath = '')
+    /**
+     * @var resource|null $resource
+     */
+    protected $resource = null;
+
+    public function __construct(protected ?string $filePath = '')
     {
         if ($filePath) {
             $this->setFileName($filePath);
-            $this->setFilePath($filePath);
-            $this->fileType = strtolower(mime_content_type($filePath));
+            $this->fileType = $this->exists() ? strtolower(mime_content_type($filePath)) : null;
         }
     }
 
@@ -41,22 +44,9 @@ class File
         return $this->filePath;
     }
 
-    public function setFilePath(string $filePath): void
+    public function getFileSize(SizeUnit $unit = SizeUnit::B, int $precision = 5): float
     {
-        $this->filePath = $filePath;
-    }
-
-    public function getFileSize(string $unit = 'B', int $precision = 5): float
-    {
-        $size = filesize($this->filePath);
-
-        if ($unit !== SizeUnit::B) {
-            if (!SizeUnit::values()->contains($unit)) {
-                throw new InvalidArgumentException('Invalid size unit ' . $unit);
-            }
-            return round($size / pow(1024, SizeUnit::getSizeUnits()[$unit]), $precision);
-        }
-        return $size;
+        return $unit->convert(filesize($this->filePath), $precision);
     }
 
     /**
@@ -67,7 +57,7 @@ class File
      */
     public function move(string $newPath, string $newFilename = null, int $mode = null): self
     {
-        $newFilePath = $newPath . '/' . ($newFilename ?: $this->fileName);
+        $newFilePath = rtrim($newPath, '/') . '/' . ($newFilename ?: $this->fileName);
 
         if (!is_dir(dirname($newFilePath))) {
             mkdir(dirname($newFilePath), 0777, true);
@@ -101,7 +91,7 @@ class File
         return is_dir($this->filePath);
     }
 
-    public function setPermission(string $mode): bool
+    public function setPermission(int $mode): bool
     {
         return chmod($this->filePath, $mode);
     }
@@ -130,14 +120,14 @@ class File
         return ($ext && $withDot ? '.' : '') . $ext;
     }
 
-    public function getPathInfo()
+    public function getPathInfo(): array|string
     {
         return $this->pathInfo ??= pathinfo($this->filePath);
     }
 
     public function isImage(): bool
     {
-        return strpos($this->fileType, 'image/') === 0;
+        return str_starts_with($this->fileType, 'image/');
     }
 
     public function getCreationDate(): ?string
@@ -190,6 +180,11 @@ class File
         return touch($this->filePath);
     }
 
+    public function exists(): bool
+    {
+        return file_exists($this->filePath);
+    }
+
     public static function createFromFormData(?array $formData = null): ?File
     {
         if (!$formData) {
@@ -197,5 +192,33 @@ class File
         }
 
         return new static($formData['tmp_name']);
+    }
+
+    public function open(string $mode = 'r'): static
+    {
+        $this->resource = fopen($this->getFilePath(), $mode);
+
+        return $this;
+    }
+
+    public function close(): static
+    {
+        fclose($this->resource);
+
+        $this->resource = null;
+
+        return $this;
+    }
+
+    public function write($data): static
+    {
+        fwrite($this->resource, $data);
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->filePath;
     }
 }

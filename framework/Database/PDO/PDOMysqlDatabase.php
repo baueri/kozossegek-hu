@@ -1,25 +1,31 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Framework\Database\PDO;
 
+use BackedEnum;
 use Closure;
 use Exception;
 use Framework\Database\Database;
-use Framework\Database\DatabaseConfiguration;
+use Framework\Database\DatabaseException;
 use Framework\Database\Events\QueryRan;
 use Framework\Database\ResultSet;
 use Framework\Event\EventDisptatcher;
 use PDO;
+use UnitEnum;
 
 class PDOMysqlDatabase implements Database
 {
     private int $transactionCounter = 0;
 
-    public function __construct(private PDO $pdo) {}
+    public function __construct(public readonly PDO $pdo) {}
 
     public function execute(string $query, ...$bindings): ResultSet
     {
         $start = microtime(true);
+
+        $bindings = $this->prepareBindings($bindings);
 
         $statement = $this->pdo->prepare($query);
 
@@ -86,17 +92,33 @@ class PDOMysqlDatabase implements Database
         return $this->execute($query, ...$params)->rowCount();
     }
 
-    public function lastInsertId()
+    public function lastInsertId(): bool|string
     {
         return $this->pdo->lastInsertId();
     }
 
-    public function first(string $query, $bindings = [])
+    public function first(string $query, $bindings = []): object|array|null
     {
         return $this->execute($query, ...$bindings)->fetchRow();
     }
 
-    public function insert(string $query, array $params = [])
+    /**
+     * @throws DatabaseException
+     */
+    public function value(string $query, array $bindings = [])
+    {
+        $row = $this->first($query, $bindings);
+
+        preg_match('/^select (.*),? from/i', $query, $matches);
+
+        if (!$matches) {
+            throw new DatabaseException('could not fetch column name from query: ' . $query);
+        }
+
+        return ((array) $row)[$matches[1]] ?? null;
+    }
+
+    public function insert(string $query, array $params = []): string
     {
         $this->execute($query, ...$params);
 
@@ -118,5 +140,15 @@ class PDOMysqlDatabase implements Database
     public function delete(string $query, array $params = []): int
     {
         return $this->execute($query, ...$params)->rowCount();
+    }
+
+    private function prepareBindings(array $bindings): array
+    {
+        return array_map(function($binding) {
+            if ($binding instanceof UnitEnum) {
+                return $binding instanceof BackedEnum ? $binding->value : $binding->name;
+            }
+            return $binding;
+        }, $bindings);
     }
 }

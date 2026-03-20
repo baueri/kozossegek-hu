@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Helpers\InstituteHelper;
+use App\Portal\BreadCrumb\BreadCrumb;
+use App\Portal\BreadCrumb\BreadCrumbable;
 use Framework\Model\Entity;
 use Framework\Model\HasTimestamps;
 use Framework\Support\StringHelper;
@@ -24,9 +26,10 @@ use Framework\Support\StringHelper;
  * @property null|string $website
  * @property string $lat
  * @property string $lon
+ * @property null|User $user
  * @property string $slug
  */
-class Institute extends Entity
+class Institute extends Entity implements BreadCrumbable
 {
     use HasTimestamps;
 
@@ -65,5 +68,25 @@ class Institute extends Entity
     public function latlon(): string
     {
         return "{$this->lat},{$this->lon}";
+    }
+
+    public function getBreadCrumb(): BreadCrumb
+    {
+        return new BreadCrumb([
+            [
+                'name' => 'Közösségek',
+                'position' => 1,
+                'url' => route('portal.groups')
+            ],
+            [
+                'name' => $this->city,
+                'position' => 2,
+                'url' => route('portal.groups', ['varos' => $this->city])
+            ],
+            [
+                'name' => $this->name,
+                'position' => 3,
+            ]
+        ]);
     }
 }

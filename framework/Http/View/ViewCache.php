@@ -9,21 +9,21 @@ class ViewCache
     public function cache(string $fileName, ?string $content): bool
     {
         $cachedFileName = $this->getCacheFilename($fileName);
-
+        $fileName = substr($fileName, strlen(ROOT));
         $this->createDirIfNotExists($cachedFileName);
 
-        $content = "<?php //this is the cache file of " . $fileName . " ?>\n" . $content;
+        $content = "<?php /** this is the cache file of @see {$fileName} */ ?>\n" . $content;
 
         return file_put_contents($cachedFileName, $content) !== false;
     }
 
     public function getCacheFilename(string $fileName): string
     {
-        $hashedFilename = md5($fileName);
-        return static::$cacheDir . substr($hashedFilename, 0, 2) . DS . md5($fileName) . '.php';
+        $hashedFilename = hash('SHA256', $fileName);
+        return static::$cacheDir . substr($hashedFilename, 0, 2) . DS . $hashedFilename . '.php';
     }
 
-    private function createDirIfNotExists($cachedFileName)
+    private function createDirIfNotExists($cachedFileName): void
     {
         if (!is_dir(dirname($cachedFileName))) {
             mkdir(dirname($cachedFileName), 0775, true);

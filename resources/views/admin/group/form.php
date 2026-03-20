@@ -11,7 +11,17 @@
         <b>Törölt közösség!</b> A visszállításához kattints a <b>visszaállítás</b> gombra a jobb oldali sáv alján.
     @endalert
 @endif
+@if(isset($owner) && !$owner->activated_at)
+    @include('admin.group.partials.validation-warning')
+@endif
+@if(isset($comment))
+    @alert('warning')
+        <b>Megjegyzés ({{ $comment->lastCommenter->name }}, {{ $comment->commented_at }}):</b><br/>
+        {{ $comment->comment }}
+    @endalert
+@endif
 <form method="post" id="group-form" action="{{ $action }}">
+    @csrf()
     <div class="row">
         <div class="col-md-9">
             <div class="row">
@@ -50,7 +60,7 @@
                         <label for="user_id">Karbantartó</label>
                         <div style="width: 200px">
                             <select name="user_id" id="user_id" class="form-control">
-                                <option value="{{ $group->user_id ?: '' }}">{{ $owner->name }}</option>
+                                <option value="{{ $group->user_id ?: '' }}">{{ $owner?->name }}</option>
                             </select>
                         </div>
                     </div>
@@ -65,13 +75,13 @@
                 <label>Címkék</label>
                 <div>
                     @foreach($tags as $tag)
-                        <label class="mr-2" for="tag-{{ $tag['id'] }}">
+                        <label class="mr-2" for="tag-{{ $tag->value }}">
                             <input type="checkbox"
                                 name="tags[]"
-                                id="tag-{{$tag['id']}}"
-                                value="{{ $tag['slug'] }}"
-                                @if(in_array($tag['slug'], $group_tags)) checked @endif
-                            > {{ $tag['tag'] }}
+                                id="tag-{{$tag->value}}"
+                                value="{{ $tag->value }}"
+                                @checked(in_array($tag->value, $group_tags))
+                            > {{ $tag->translate() }}
                         </label>
                     @endforeach
                 </div>
@@ -102,7 +112,7 @@
                 <label for="pending">Jóváhagyva</label>
                 <select class="form-control" id="pending" name="pending" data-placeholder="jóváhagyás állapota">
                     <option></option>
-                    <option value="0" @selected($group->pendingStatusIs(0))>jóváhagyva</option>
+                    <option value="0" @disabled($owner && !$owner->activated_at) @selected($group->pendingStatusIs(0))>jóváhagyva</option>
                     <option value="1" @selected($group->pendingStatusIs(1))>jóhávagyásra vár</option>
                     <option value="-1" @selected($group->pendingStatusIs(-1))>visszautasítva</option>
                 </select>
@@ -143,9 +153,9 @@
                 <label for="join_mode">Csatlakozás módja</label>
                 <select class="form-control" name="join_mode" data-allow-clear="1" data-placeholder="Nincs megadva">
                     <option></option>
-                    @foreach($join_modes as $join_mode => $join_mode_name)
-                        <option value="{{ $join_mode }}" @if($group->join_mode==$join_mode) selected @endif>
-                            {{ $join_mode_name }}
+                    @foreach($join_modes as $join_mode)
+                        <option value="{{ $join_mode->value() }}" @selected($group->join_mode==$join_mode->value())>
+                            {{ $join_mode->translate() }}
                         </option>
                     @endforeach
                 </select>
@@ -160,6 +170,10 @@
                         </option>
                     @endforeach
                 </select>
+            </div>
+            <div class="form-group">
+                <label for="group_comment">Megjegyzés</label>
+                <textarea class="form-control" id="group_comment" name="group_comment" rows=5>{{ $comment?->comment }}</textarea>
             </div>
             <div class="form-group">
                 <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Mentés</button>

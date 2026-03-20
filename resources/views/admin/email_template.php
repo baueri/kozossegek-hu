@@ -1,3 +1,4 @@
+<?php /** @var \Framework\Mail\Mailable $mailable */ ?>
 <!doctype html>
 <html lang="hu">
 <head>
@@ -5,6 +6,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Email minta</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <style>
@@ -30,7 +32,8 @@
     @include('asset_groups.editor')
 </head>
 <body>
-<h3 class="text-center">
+<a href="@route('admin.email_template.list')" style="position: absolute; top: 0; left: .3em; text-decoration: none"><span style="font-size: 2em">🔙</span></a>
+<h3 class="text-center my-4">
     {{ $title }}
 </h3>
 <div id="mail-content">
@@ -53,13 +56,13 @@
             <div class="modal-body">
                 @alert('info')
                     <p>
-                        <i class="fa fa-exclamation-circle"></i> <b>Figyelem!</b> A tartalom első sorát - <b>&commat;extends('mail.wrapper')</b> - ne töröld és ne módosítsd, ez állítja be a fej- illetve a láblécet!
+                        <i class="fa fa-exclamation-circle"></i> <b>Figyelem!</b> A tartalom első sorát - <code>&commat;extends('mail.wrapper')</code> - ne töröld és ne módosítsd, ez állítja be a fej- illetve a láblécet!
                     </p>
-                    <p>Az alább felsorolt dinamikus változókat az email szövegében tudod felhasználni. Az, hogy egy ilyen változó mit tartalmaz, annak nevéből lehet kikövetkeztetni, de ha mégse tudod, kérdezd meg a honlap fejlesztőjét.</p>
+                    <p>Az alább felsorolt változókat az email szövegében tudod felhasználni. Az, hogy egy ilyen változó mit tartalmaz, annak nevéből lehet kikövetkeztetni, de ha mégse tudod, kérdezd meg a honlap fejlesztőjét.</p>
                     Felhasználható dinamikus változók:
                     <ul>
                         <?php foreach($mailable->getVariableNames() as $variable): ?>
-                            <li>&lbrace;&lbrace; ${{ $variable }} &rbrace;&rbrace;</li>
+                            <li><code>&lbrace;&lbrace; ${{ $variable }} &rbrace;&rbrace;</code></li>
                         <?php endforeach; ?>
                     </ul>
                 @endalert

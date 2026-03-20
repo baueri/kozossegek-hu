@@ -7,29 +7,20 @@ use Closure;
 class Section
 {
     /**
-     * @var mixed[]
+     * @var string[]|Closure[]
      */
     protected static array $sections = [];
 
-    /**
-     * @param $name
-     * @param $content
-     */
-    public static function add($name, $content)
+    public static function add(string $name, string|Closure $content): void
     {
         static::$sections[$name][] = $content;
     }
 
-    public static function set($name, $content)
+    public static function set(string $name, string|Closure $content): void
     {
         static::$sections[$name] = [$content];
     }
 
-    /**
-     * @param string $name
-     * @param array $args
-     * @return string
-     */
     public function yield(string $name, array $args = []): string
     {
         $closures = static::get($name);
@@ -47,11 +38,10 @@ class Section
         return $out;
     }
 
-    public static function get(string $name)
+    public static function get(string $name): array|Closure|string
     {
         return static::$sections[$name] ?? [];
     }
-
 
     private static function parseContent($content, array $args): string
     {

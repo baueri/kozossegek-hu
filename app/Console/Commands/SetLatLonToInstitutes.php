@@ -13,6 +13,11 @@ class SetLatLonToInstitutes extends Command
         return 'institute:lat-lon';
     }
 
+    public static function description(): string
+    {
+        return 'institutes tablaban javitja a lat lon koordinatakat';
+    }
+
     public function handle(): void
     {
         $osm = resolve(OpenStreetMapQuery::class);

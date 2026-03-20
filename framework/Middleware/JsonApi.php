@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Framework\Middleware;
 
 use Framework\Http\Response;
 
-class JsonApi implements Middleware
+class JsonApi implements Before
 {
-    public function handle(): void
+    public function before(): void
     {
         Response::asJson();
     }

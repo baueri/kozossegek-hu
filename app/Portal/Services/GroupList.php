@@ -1,22 +1,32 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Portal\Services;
 
-use App\Enums\GroupStatus;
 use App\Enums\AgeGroup;
+use App\Enums\GroupStatus;
+use App\Enums\Tag;
+use App\Portal\BreadCrumb\BreadCrumb;
+use App\Portal\Services\Search\SearchRepository;
 use Framework\Support\Collection;
 
-class GroupList
+readonly class GroupList
 {
     public function __construct(
-        private SearchGroupService $service
+        protected SearchRepository $repository
     ) {
     }
 
-    public function getHtml(Collection $request): string
+    public function getHtml(Collection $request, ?BreadCrumb $breadCrumb = null): string
     {
         $baseFilter = $request->only('search', 'korosztaly', 'tags', 'institute_id');
         $baseFilter['varos'] = $request['varos'];
+
+        if (request()->route->getAs() === 'portal.groups.in_city') {
+            preg_match('#' . request()->route->getUriMask() . '#', request()->uri, $matches);
+            $baseFilter['varos'] = $matches[1] ?? null;
+        }
 
         $filter = $baseFilter;
 
@@ -31,22 +41,14 @@ class GroupList
             'age_groups' => AgeGroup::cases(),
             'filter' => collect($filter),
             'selected_tags' => array_filter(explode(',', $filter['tags'] ?? '')),
-            'tags' => builder('tags')->get(),
+            'tags' => Tag::collect(),
             'statuses' => $statuses,
             'selected_age_group' => $korosztaly,
-            'header_background' => '/images/kozosseget_keresek.jpg',
-            'age_group_query' => http_build_query($baseFilter)
+            'age_group_query' => http_build_query($baseFilter),
+            'breadcrumb' => $breadCrumb
         ];
 
-        if ($request->isEmpty()) {
-            return view('portal.kozossegek_no_filter', $model);
-        }
-
-        $groups = $this->service->search($filter, 18);
-        if ($groupIds = $groups->pluck('id')->all()) {
-            $group_tags = builder('v_group_tags')->whereIn('group_id', $groupIds)->get();
-            $groups->withMany($group_tags, 'tags', 'id', 'group_id');
-        }
+        $groups = $this->repository->search($filter, 18);
 
         $model = array_merge($model, [
             'groups' => $groups,

@@ -1,50 +1,46 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Enums;
 
-use Framework\Support\Arr;
-use Framework\Support\Enum;
+use Framework\Traits\EnumTrait;
 
-class UserRole extends Enum
+enum UserRole
 {
-    public const SUPER_ADMIN = 'SUPER_ADMIN';
-    public const SPIRITUAL_MOVEMENT_LEADER = 'SPIRITUAL_MOVEMENT_LEADER';
-    public const GROUP_LEADER = 'GROUP_LEADER';
+    use EnumTrait;
+    use HasTranslation;
 
-    private static array $roles = [
-        self::SUPER_ADMIN => [
-            UserRight::FULL_ACCESS
+    case SUPER_ADMIN;
+
+    case SPIRITUAL_MOVEMENT_LEADER;
+
+    case GROUP_LEADER;
+
+    protected const array PERMISSIONS = [
+        self::SUPER_ADMIN->name => [
+            Permission::FULL_ACCESS,
+            Permission::ACCESS_BACKEND,
+            Permission::MANAGE_SPIRITUAL_MOVEMENT,
+            Permission::MANAGE_SPIRITUAL_MOVEMENT_GROUPS
         ],
-        self::SPIRITUAL_MOVEMENT_LEADER => [
-            UserRight::ACCESS_BACKEND,
-            UserRight::MANAGE_SPIRITUAL_MOVEMENT,
-            UserRight::MANAGE_SPIRITUAL_MOVEMENT_GROUPS
-        ]
+        self::SPIRITUAL_MOVEMENT_LEADER->name => [
+            Permission::ACCESS_BACKEND,
+            Permission::MANAGE_SPIRITUAL_MOVEMENT,
+            Permission::MANAGE_SPIRITUAL_MOVEMENT_GROUPS
+        ],
     ];
 
-    private static array $text = [
-        self::SUPER_ADMIN => 'Super Admin',
-        self::SPIRITUAL_MOVEMENT_LEADER => 'Lelikségi mozgalom vezető',
-        self::GROUP_LEADER => 'Közösségvezető',
-    ];
-
-    /**
-     * @return array<string, string>
-     */
-    public static function getTranslated(): array
+    public function can(Permission $permission): bool
     {
-        return UserRole::get()->map(fn (UserRole $group) => $group->text())->all();
-    }
+        if (! isset(self::PERMISSIONS[$this->name])) {
+            return false;
+        }
 
-    public static function can(string $role, $right): bool
-    {
-        $userRoles = collect(self::$roles[$role] ?? []);
+        if ($this === self::SUPER_ADMIN) {
+            return true;
+        }
 
-        return $userRoles->containsAny((array) $right);
-    }
-
-    public function text(): string
-    {
-        return Arr::get(self::$text, $this->value);
+        return in_array($permission, self::PERMISSIONS[$this->name], true);
     }
 }

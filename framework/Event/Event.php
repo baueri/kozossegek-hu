@@ -2,22 +2,25 @@
 
 namespace Framework\Event;
 
+/**
+ * @phpstan-template T of EventListener
+ */
 abstract class Event
 {
     /**
-     * @var EventListener[]
+     * @phpstan-var class-string<T>[]
      */
     protected static array $listeners = [];
 
-    /*
-     * @return EventListener[]
+    /**
+     * @phpstan-return class-string<T>[]
      */
-    public static function getListeners()
+    public static function getListeners(): array
     {
         return static::$listeners;
     }
 
-    public static function listen($listenerClassName)
+    public static function listen($listenerClassName): void
     {
         static::$listeners[] = $listenerClassName;
     }

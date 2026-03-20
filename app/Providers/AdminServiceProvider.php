@@ -1,28 +1,34 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Providers;
 
 use App\Auth\Auth;
-use App\Enums\UserRight;
-use App\QueryBuilders\GroupViews;
+use App\Enums\Permission;
+use App\QueryBuilders\ChurchGroupViews;
 use App\QueryBuilders\SpiritualMovements;
-use Framework\Middleware\Middleware;
+use Framework\Middleware\Before;
 
-class AdminServiceProvider implements Middleware
+class AdminServiceProvider implements Before
 {
-    public function handle(): void
+    public function before(): void
     {
         $user = Auth::user();
 
-        if ($user->hasRight(UserRight::MANAGE_SPIRITUAL_MOVEMENT)) {
+        if ($user->isAdmin()) {
+            return;
+        }
+
+        if ($user->can(Permission::MANAGE_SPIRITUAL_MOVEMENT)) {
             app()->bind(SpiritualMovements::class, function () use ($user) {
                 return (new SpiritualMovements())->forUser($user);
             });
         }
 
-        if ($user->hasRight(UserRight::MANAGE_SPIRITUAL_MOVEMENT_GROUPS)) {
-            app()->bind(GroupViews::class, function () use ($user) {
-                return (new GroupViews())->forUser($user);
+        if ($user->can(Permission::MANAGE_SPIRITUAL_MOVEMENT_GROUPS)) {
+            app()->bind(ChurchGroupViews::class, function () use ($user) {
+                return (new ChurchGroupViews())->forUser($user);
             });
         }
     }

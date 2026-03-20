@@ -4,29 +4,31 @@ namespace App\Admin\Controllers;
 
 use App\Admin\Group\Services\BaseGroupForm;
 use App\Admin\Group\Services\CreateGroup;
-use App\Admin\Group\Services\DeleteGroup;
 use App\Admin\Group\Services\EditGroup;
 use App\Admin\Group\Services\ListGroups;
 use App\Admin\Group\Services\UpdateGroup;
 use App\Admin\Group\Services\ValidateGroupForm;
-use App\Http\Exception\RequestParameterException;
+use App\Auth\Auth;
+use App\Helpers\GroupHelper;
 use App\Mail\DefaultMailable;
 use App\Mail\GroupAcceptedEmail;
 use App\Models\ChurchGroupView;
 use App\QueryBuilders\ChurchGroups;
-use App\QueryBuilders\GroupViews;
+use App\QueryBuilders\ChurchGroupViews;
 use App\Services\RebuildSearchEngine;
 use Exception;
 use Framework\Exception\FileTypeNotAllowedException;
+use Framework\Http\Exception\RequestParameterException;
 use Framework\Http\Message;
 use Framework\Http\Request;
 use Framework\Mail\Mailer;
 use Framework\Model\Exceptions\ModelNotFoundException;
+use RuntimeException;
 use Throwable;
 
 class GroupController extends AdminController
 {
-    public function __construct(Request $request, private GroupViews $groupViews)
+    public function __construct(Request $request, private ChurchGroupViews $groupViews)
     {
         parent::__construct($request);
     }
@@ -47,13 +49,13 @@ class GroupController extends AdminController
     public function doCreate(CreateGroup $service, BaseGroupForm $form)
     {
         try {
-            $group = $service->create($this->request->collect());
+            $group = $service->create($this->request->collect()->except('_token'));
             event_logger()->logEvent('group_created', ['group_id' => $group->getId()]);
 
             Message::success('Közösség létrehozva.');
             redirect_route('admin.group.edit', ['id' => $group->getId()]);
         } catch (Exception $e) {
-            process_error($e->getMessage());
+            process_error($e);
             Message::danger('Váratlan hiba történt!');
             return $form->render(ChurchGroupView::make($this->request->all()));
         }
@@ -71,10 +73,17 @@ class GroupController extends AdminController
      * @throws FileTypeNotAllowedException
      * @throws ModelNotFoundException
      */
-    public function update(UpdateGroup $service, ChurchGroups $groups)
+    public function update(UpdateGroup $service, ChurchGroups $groups): void
     {
         $group = $groups->findOrFail($this->request['id']);
-        $service->update($group, $this->request);
+        $oldTags = $group->tags->pluck('tag')->sort()->implode(',');
+        
+        $service->update($group, $this->request->collect());
+
+        $newTags = $this->request->collect('tags')->sort()->implode(',');
+        $tagDiff = $oldTags !== $newTags ? ['tags' => ['old' => $oldTags, 'new' => $newTags]] : [];
+
+        log_event('group_updated', ['group_id' => $group->getId(), 'diff' => array_merge($group->diff(), $tagDiff)], Auth::user());
 
         redirect_route('admin.group.edit', ['id' => $this->request['id']]);
     }
@@ -82,11 +91,29 @@ class GroupController extends AdminController
     /**
      * @throws ModelNotFoundException
      */
-    public function delete(DeleteGroup $service)
+    public function delete(ChurchGroups $repository): void
     {
-        $service->delete($this->request['id']);
+        $group = $repository->findOrFail($this->request['id']);
 
-        redirect_route('admin.group.list');
+        $repository->softDelete($group);
+
+        Message::warning('Közösség lomtárba helyezve.');
+
+        redirect($this->request->referer());
+    }
+
+    public function destroy(ChurchGroups $repository): void
+    {
+        $groupId = $this->request['id'];
+        $group = $repository->findOrFail($groupId);
+
+        $repository->hardDeleteModel($group);
+
+        rrmdir(GroupHelper::getStoragePath($groupId));
+
+        Message::warning('Közösség törölve.');
+
+        redirect($this->request->referer());
     }
 
     public function trash(ListGroups $service): string
@@ -94,7 +121,16 @@ class GroupController extends AdminController
         return $service->show();
     }
 
-    public function rebuildSearchEngine(RebuildSearchEngine $service)
+    public function emptyTrash(): never
+    {
+        ChurchGroups::query()->trashed()->hardDelete();
+
+        Message::warning('Lomtár kiürítve.');
+
+        redirect($this->request->referer());
+    }
+
+    public function rebuildSearchEngine(RebuildSearchEngine $service): void
     {
         $service->run();
 
@@ -103,7 +139,7 @@ class GroupController extends AdminController
         redirect_route('admin.group.list');
     }
 
-    public function restore(ChurchGroups $groups)
+    public function restore(ChurchGroups $groups): void
     {
         $group = $groups->find($this->request['id']);
         $group->deleted_at = null;
@@ -158,6 +194,8 @@ class GroupController extends AdminController
 
             $mailer->to($this->request['email'], $this->request['name'])->send($mailable);
 
+            log_event('group_rejected', ['group_id' => $group->getId(), 'message' => $this->request['message']], Auth::user());
+
             return api()->ok();
         } catch (RequestParameterException $e) {
             return api()->error('Minden mező kötelező!');
@@ -174,12 +212,20 @@ class GroupController extends AdminController
     public function approveGroup(ChurchGroups $groupRepo, Mailer $mailer): array
     {
         $groupView = $this->groupViews->findOrFail($this->request['id']);
+
+        if (!$groupView->manager->activated_at) {
+            throw new RuntimeException('Nem megerősített fiók közösségének jóváhagyása nem megengedett');
+        }
+
         $groupRepo->query()->where('id', $groupView->id)->update(['pending' => 0]);
 
         $mailable = new GroupAcceptedEmail($groupView);
 
         $mailer->to($groupView->group_leader_email, $groupView->group_leaders)
             ->send($mailable);
+
+        log_event('group_approved', ['group_id' => $groupView->getId()], Auth::user());
+
 
         return api()->ok();
     }
@@ -213,6 +259,8 @@ class GroupController extends AdminController
                 ->subject("kozossegek.hu - {$this->request['subject']}");
 
             $mailer->to($this->request['email'], $this->request['name'])->send($mailable);
+
+            log_event('group_denied', ['group_id' => $group->getId(), 'message' => $this->request['message']], Auth::user());
 
             return api()->ok();
         } catch (RequestParameterException) {

@@ -4,8 +4,11 @@ namespace App\Models;
 
 use App\Auth\AuthUser;
 use App\Enums\UserRole;
+use App\QueryBuilders\Users;
 use Framework\Model\Entity;
 use Framework\Model\HasTimestamps;
+use Framework\Model\ModelCollection;
+use App\QueryBuilders\ChurchGroups;
 
 /**
  * @property string $name
@@ -13,13 +16,23 @@ use Framework\Model\HasTimestamps;
  * @property string $password
  * @property string $email
  * @property string $last_login
- * @property string $user_group
+ * @property UserRole $user_role
  * @property string $activated_at
  * @property string $phone_number
+ * @property ModelCollection<ChurchGroup> $groups
+ * @property ModelCollection<SocialProfile>|SocialProfile[] $socialProfiles
+ * @property int $groups_count
+ * @method ChurchGroups groups()
  */
 class User extends Entity implements AuthUser
 {
     use HasTimestamps;
+
+    protected static ?string $builder = Users::class;
+
+    protected array $casts = [
+        'user_role' => UserRole::class
+    ];
 
     public function keresztnev(): string
     {
@@ -28,22 +41,12 @@ class User extends Entity implements AuthUser
 
     public function isAdmin(): bool
     {
-        return $this->hasUserGroup('SUPER_ADMIN');
-    }
-
-    public function hasUserGroup(string $group): bool
-    {
-        return $this->user_group === $group;
+        return $this->user_role === UserRole::SUPER_ADMIN;
     }
 
     public function can($right): bool
     {
-        return $this->user_group === UserRole::SUPER_ADMIN || $this->hasRight($right);
-    }
-
-    public function hasRight($right): bool
-    {
-        return UserRole::can($this->user_group, ($right));
+        return $this->user_role->can($right);
     }
 
     public function firstName(): string

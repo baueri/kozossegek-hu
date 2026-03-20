@@ -2,17 +2,19 @@
 
 namespace App\Admin\Institute;
 
-use App\Admin\Components\AdminTable\AdminTable;
-use App\Admin\Components\AdminTable\Deletable;
+use App\Admin\Components\AdminTable\PaginatedAdminTable;
 use App\Admin\Components\AdminTable\Editable;
+use App\Admin\Components\AdminTable\Traits\SoftDeletable;
 use App\QueryBuilders\Users;
 use Framework\Database\PaginatedResultSetInterface;
 use Framework\Http\Request;
 use Framework\Support\StringHelper;
 use App\Models\Institute;
 
-class InstituteAdminTable extends AdminTable implements Deletable, Editable
+class InstituteAdminTable extends PaginatedAdminTable implements Editable
 {
+    use SoftDeletable;
+
     protected array $columns = [
         'id' => '<i class="fa fa-hashtag"></i>',
         'image' => '<i class="fa fa-image" title="Kép"></i>',
@@ -28,24 +30,22 @@ class InstituteAdminTable extends AdminTable implements Deletable, Editable
 
     protected array $centeredColumns = ['image', 'groups_count'];
 
-    public function __construct(Request $request, private InstituteRepository $repository, private Users $userRepository)
+    public function __construct(
+        Request $request,
+        private readonly InstituteRepository $repository,
+        private readonly Users $userRepository)
     {
         parent::__construct($request);
     }
 
-    public function getDeleteUrl($model): string
+    public function getSoftDeleteLink($model): string
     {
         return route('admin.institute.delete', ['id' => $model->id]);
     }
 
     protected function getData(): PaginatedResultSetInterface
     {
-        $filter = $this->request;
-        $institutes = $this->repository->getInstitutes($filter);
-        $userIds = $institutes->pluck('user_id')->filter()->unique()->all();
-        $users = $this->userRepository->whereIn('id', $userIds)->get();
-        $institutes->with($users, 'user', 'user_id');
-        return $institutes;
+        return $this->repository->getInstitutes($this->request);
     }
 
     public function getLeaderName($leader_name): string

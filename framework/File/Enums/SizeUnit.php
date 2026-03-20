@@ -1,24 +1,30 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Framework\File\Enums;
 
-use Framework\Support\Enum;
-
-class SizeUnit extends Enum
+enum SizeUnit
 {
-    public const B = 'B';
-    public const KB = 'KB';
-    public const MB = 'MB';
-    public const GB = 'GB';
-    public const TB = 'TB';
+    case B;
+    case KB;
+    case MB;
+    case GB;
+    case TB;
 
-    public static function getSizeUnits(): array
+    public function exponent(): int
     {
-        return [
+        return match ($this) {
+            self::B => 0,
             self::KB => 1,
             self::MB => 2,
             self::GB => 3,
-            self::TB => 4
-        ];
+            self::TB => 4,
+        };
+    }
+
+    public function convert(int $size, int $precision = 5): float
+    {
+        return round($size / pow(1024, $this->exponent()), $precision);
     }
 }

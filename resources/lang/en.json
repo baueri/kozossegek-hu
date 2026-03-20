@@ -1,3 +1,76 @@
 {
+  "any_age_group": "any age group",
+  "age_group": "age group",
+  "age_group.tinedzser": "teenager",
+  "age_group.fiatal_felnott": "young adult",
+  "age_group.kozepkoru": "middle aged",
+  "age_group.nyugdijas": "senior",
+  "age_group.vegyes": "multiple",
+
+  "occasions": "occasions",
+  "occasion_frequency.hetente": "weekly",
+  "occasion_frequency.havonta": "monthly",
+  "occasion_frequency.kethetente": "twice a week",
+  "occasion_frequency.hetente_tobbszor": "multiple times a week",
+  "occasion_frequency.egyeb": "other",
+
+  "group_status.active": "published",
+  "group_status.inactive": "inactive",
+  "group_status.pending": "pending",
+
+  "page_status.PUBLISHED": "published",
+  "page_status.DRAFT": "draft",
+
+  "denomination.katolikus": "catholic",
+
+  "week_day.he": "monday",
+  "week_day.ke": "tuesday",
+  "week_day.sze": "wednesday",
+  "week_day.csu": "thursday",
+  "week_day.pe": "friday",
+  "week_day.szo": "saturday",
+  "week_day.vas": "sunday",
+
+  "errors.field_is_required": "Required field",
+  "errors.taken_input": "Exsits",
+  "errors.password_mismatch": "Password mismatch!",
+
+  "spiritual_movement_type.spiritual_movement": "Religious movement",
+  "spiritual_movement_type.monastic_community": "Monastic order",
+
+  "user_role.super_admin": "Super Admin",
+  "user_role.spiritual_movement_leader": "Religious movement leader",
+  "user_role.group_leader": "Group leader",
+
+  "join_mode.egyeni": "Based on individual consultation",
+  "join_mode.folyamatos": "Continuous",
+  "join_mode.idoszakos": "Periodical",
+
+
+  "find_your_church_group": "Find your church group in Hungary!",
+
+  "menu.search_group": "Search group",
+  "menu.leading_a_group": "Leading a group",
+  "menu.religious_movements": "Religious movements",
+  "menu.about_church_groups": "About church groups",
+  "menu.about_us": "About us",
+
+  "menu.my_account": "My account",
+  "menu.my_groups": "My groups",
+  "menu.admin": "Admin",
+  "menu.login": "Log in",
+  "menu.logout": "Log out",
+  "menu.login.email": "E-mail address",
+  "menu.login.password": "Password",
+
+  "search_tip": "Search for city or characteristics, e.g.: Budapest student etc...",
+  "search": "Search",
+  "how_does_it_work": "How does it work?",
+  "intro.search_for_it.title": "Search for it!",
+  "intro.search_for_it.description": "Search church groups based on your desired location, religious movement, or any specific characteristics that hold significance for you in a community!",
+  "intro.click_it.title": "Click on it!",
+  "intro.click_it.description": "By clicking on the groups listed, you can learn more about them!",
+  "intro.contact.title": "Get in contact!",
+  "intro.contact.description": "If a group has sparked your interest, get in touch with its leader through the group's profile page!"
 
 }

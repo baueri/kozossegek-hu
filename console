@@ -1,27 +1,32 @@
 #!/usr/bin/env php
 <?php
 
-use App\Console\ConsoleKernel;
-use Framework\Console\ConsoleKernel as Kernel;
-use Framework\Dispatcher\Dispatcher;
-use Framework\Dispatcher\CliDispatcher;
+declare(strict_types=1);
+
+use App\Services\SystemAdministration\OpenStreetMap\OpenStreetMapSync;
+use Framework\Console\ConsoleKernel;
 
 include 'vendor/autoload.php';
 
-app()->bind(Kernel::class, ConsoleKernel::class);
-app()->singleton(Dispatcher::class, CliDispatcher::class);
-
-if (($argv[1] ?? '') === '--interactive') {
-    shell_exec('php -d auto_prepend_file="vendor/autoload.php" -a');
+if (in_array(($argv[1] ?? ''), ['--interactive', '-it'])) {
+    passthru('php -d auto_prepend_file="vendor/autoload.php" -a');
     exit;
 }
 
+$app = app();
+
 try {
-    app()->run(
-        app()->make(Dispatcher::class)
-    );
+    $app->bind('errorHandler', function ($e) {
+        report($e);
+    }, true);
+    $kernel = $app->get(ConsoleKernel::class);
+
+    $kernel->loadCommands(path: 'app/Console/Commands');
+    $kernel->withCommand(OpenStreetMapSync::class);
+
+    $kernel->handle();
 } catch (Error | Exception | Throwable $e) {
-    if (_env('DEBUG')) {
+    if (env('DEBUG')) {
         throw $e;
     }
     app()->handleError($e);

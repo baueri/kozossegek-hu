@@ -12,7 +12,7 @@
             <div class="col-md-2">
                 <div class="form-group">
                     <label>Jogosultság</label>
-                    @user_group_selector($selected_user_group)
+                    @user_role_selector($selected_user_role)
                 </div>
             </div>
             <div class="col-md-2">

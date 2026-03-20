@@ -1,11 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Framework\Http\View\Directives;
 
 class IfDirective implements Directive
 {
-
-    public function getName()
+    public function getName(): string
     {
         return 'if';
     }

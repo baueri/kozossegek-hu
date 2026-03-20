@@ -1,2 +1,2 @@
-@title('Oldal szerkesztése')
+@title('Szerkesztés')
 @extends('admin.page.form')

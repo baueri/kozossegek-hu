@@ -2,7 +2,9 @@
 
 namespace App\Http\Responses\CreateGroupSteps;
 
+use App\Admin\Group\Services\BaseGroupService;
 use App\Auth\Auth;
+use App\Enums\Tag;
 use App\Models\ChurchGroupView;
 use App\QueryBuilders\Institutes;
 use App\QueryBuilders\SpiritualMovements;
@@ -29,17 +31,25 @@ class RegisterGroupForm extends AbstractGroupStep
             'institute_id',
             'spiritual_movement_id',
             'name',
-            'description',
             'join_mode'
-        ));
-        $institute = $this->institutes->find($data['institute_id']);
+        ))->map('strip_tags');
 
-        $data['group_leaders'] = $request->get('group_leaders', $request['user_name']);
-        $data['institute_name'] = $institute ? $institute->name : '';
-        $data['city'] = $institute ? $institute->city : '';
-        $data['district'] = $institute ? $institute->district : '';
-        $data['age_group'] = implode(',', $request['age_group'] ?? []);
-        $data['on_days'] = implode(',', $request['on_days'] ?? []);
+        $data['description'] = strip_tags(
+            (string) $request->get('description'),
+            BaseGroupService::ALLOWED_TAGS
+        );
+
+        $institute = null;
+        if ($data['institute_id']) {
+            $institute = $this->institutes->find($data['institute_id']);
+        }
+
+        $data['group_leaders'] = strip_tags((string) $request->get('group_leaders', $request['user_name']));
+        $data['institute_name'] = $institute->name ?? '';
+        $data['city'] = $institute->city ?? '';
+        $data['district'] = $institute->district ?? '';
+        $data['age_group'] = strip_tags(implode(',', $request['age_group'] ?? []));
+        $data['on_days'] = strip_tags(implode(',', $request['on_days'] ?? []));
         $data['spiritual_movement'] = '';
         if (
             $request['spiritual_movement_id'] &&
@@ -53,7 +63,7 @@ class RegisterGroupForm extends AbstractGroupStep
 
         $image = $request['image'];
 
-        if (!$image && $institute && $institute->hasImage()) {
+        if (!$image && $institute?->hasImage()) {
             $image = $institute->getImageRelPath();
         }
 
@@ -61,7 +71,7 @@ class RegisterGroupForm extends AbstractGroupStep
             'group' => $group,
             'user' => $user,
             'age_group_array' => $request['age_group'] ?? [],
-            'tags' => builder('tags')->get(),
+            'tags' => Tag::collect(),
             'image' => $image,
             'document' => $request->files['document']['name'] ?? null,
             'group_tags' => $request['tags'] ?? [],

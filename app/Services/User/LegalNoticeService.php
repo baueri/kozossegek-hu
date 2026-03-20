@@ -2,17 +2,18 @@
 
 namespace App\Services\User;
 
-use App\Auth\AuthUser;
+use App\Models\User;
 use App\QueryBuilders\UserLegalNotices;
 use Framework\Http\Session;
 
-class LegalNoticeService
+readonly class LegalNoticeService
 {
-    public function __construct(private UserLegalNotices $repo)
-    {
+    public function __construct(
+        private UserLegalNotices $repo
+    ) {
     }
 
-    public function setLegalNoticeSessionFor(?AuthUser $user): void
+    public function setLegalNoticeSessionFor(?User $user): void
     {
         if (!$user || Session::has('accepted_legal_notice_version')) {
             return;
@@ -25,7 +26,7 @@ class LegalNoticeService
         Session::set('accepted_legal_notice_version', $legalNotice->accepted_legal_notice_version ?? 0);
     }
 
-    public function updateOrInsertCurrentFor(AuthUser $user): void
+    public function updateOrInsertCurrentFor(User $user): void
     {
         $this->repo->updateOrInsertCurrentFor($user);
         Session::set('accepted_legal_notice_version', LegalNoticeService::getVersion());

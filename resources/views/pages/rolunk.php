@@ -7,36 +7,32 @@
         }
     </style>
 @endheader
-@section('header_content')
-    @if($header_background)
-        @featuredTitle($page_title)
+@section('subtitle', 'Rólunk | ')
+@section('scripts')
+    @if($captchaEnabled)
+        <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     @endif
 @endsection
-@section('subtitle', 'Rólunk | ')
 @extends('portal')
+@featuredTitle('Rólunk')
 <div class="container inner p-4 page">
-    @if(!$header_background)<h1>{{ $page_title }}</h1>@endif
-    <div>
-        {{ $page->content }}
-        <span id="contact"></span>
-    </div>
-</div>
-<div class="jumbotron main-block mt-0 mb-0">
-    <div class="container">
+    {{ $page->content }}
+    <span id="contact"></span>
+    <div class="card shadow p-3">
         <div class="row">
-            <div class="col-md-5 offset-2lehet">
-                <img src="/images/csoportkep_contact.jpg"/>
+            <div class="col-md-6 text-center mb-3">
+                <img src="/images/csoportkep_contact.jpg" alt="A kozossegek.hu csapata"/>
             </div>
-            <div class="col-md-5">
+            <div class="col-md-6">
                 <h4>Írj nekünk!</h4>
-                <form method="post" id="send-message" action="@route('api.portal.contact_us')">
+                <form method="post" id="send-message" action="@route('portal.contact_us')">
                     <div class="form-group required">
                         <label class="" for="mail_name">Neved</label>
-                        <input type="text" class="form-control form-control-sm" name="name" required id="mail_name">
+                        <input type="text" class="form-control" name="name" required id="mail_name">
                     </div>
                     <div class="form-group required">
                         <label for="mail_address">Email címed</label>
-                        <input type="email" class="form-control form-control-sm" name="email" required id="mail_address">
+                        <input type="email" class="form-control" name="email" required id="mail_address">
                     </div>
                     <div class="form-group">
                         <label for="category">Mivel kapcsolatban keresel minket?</label>
@@ -47,10 +43,18 @@
                     </div>
                     <div class="form-group required">
                         <label for="mail_msg">Üzenet</label>
-                        <textarea class="noresize form-control form-control-sm" name="message" rows="4" required onresize id="mail_msg"></textarea>
+                        <textarea class="noresize form-control" name="message" rows="4" required onresize id="mail_msg"></textarea>
                     </div>
                     @honeypot('rolunk')
-                    <button type="submit" name="send" class="btn btn-darkblue btn-sm"><i class="fa fa-paper-plane mr-2"></i> Üzenet elküldése</button>
+                    @component('replay_attack', ['name' => 'contact'])
+                    @if($captchaEnabled)
+                    <div class="mb-1">
+                        @component('captcha')
+                    </div>
+                    @endif
+                    <p class="text-center">
+                        <button type="submit" name="send" class="btn btn-altblue rounded-pill shadow"><i class="fa fa-paper-plane mr-2"></i> Üzenet elküldése</button>
+                    </p>
                 </form>
             </div>
         </div>
@@ -70,6 +74,15 @@
                             message: response.msg,
                             size: "md"
                         }, () => { window.location.reload() })
+                    }
+                }).fail(function (response) {
+                    if (response.responseJSON.err_code === 'captcha_failed') {
+                        dialog.danger(response.responseJSON.msg, () => {
+                            dialog.closeAll();
+                            turnstile.reset(cf_wid)
+                        });
+                    } else {
+                        dialog.danger(response.responseJSON.msg);
                     }
                 });
             });

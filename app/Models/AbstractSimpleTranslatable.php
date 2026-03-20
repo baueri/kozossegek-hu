@@ -6,9 +6,9 @@ use Framework\Support\StringHelper;
 
 abstract class AbstractSimpleTranslatable
 {
-
-    public function __construct(public string $name)
-    {
+    public function __construct(
+        public string $name
+    ) {
     }
 
     final public function translate(): string

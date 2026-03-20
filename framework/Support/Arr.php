@@ -2,14 +2,11 @@
 
 namespace Framework\Support;
 
+use Closure;
+
 class Arr
 {
-    /**
-     * @param array|Collection $items
-     * @param $callback
-     * @param mixed ...$params
-     */
-    public static function each($items, $callback, ...$params): void
+    public static function each(array|Collection $items, callable|Closure $callback, ...$params): void
     {
         if ($items instanceof Collection) {
             $items->each($callback);
@@ -22,13 +19,7 @@ class Arr
         }
     }
 
-    /**
-     * @param array|Collection $items
-     * @param $callback
-     * @param bool $keepKeys
-     * @return array
-     */
-    public static function map($items, $callback, bool $keepKeys = false): array
+    public static function map(array|Collection $items, callable|string $callback, bool $keepKeys = false): array
     {
         if ($items instanceof Collection) {
             return $items->map($callback, $keepKeys)->all();
@@ -37,10 +28,15 @@ class Arr
         $result = [];
 
         foreach ($items as $key => $item) {
-            if (!$keepKeys) {
-                $result[] = $callback($item, $key);
+            if (is_object($item) && is_string($callback) && method_exists($item, $callback)) {
+                $value = $item->{$callback}();
             } else {
-                $result[$key] = $callback($item, $key);
+                $value = $callback($item, $key);
+            }
+            if (!$keepKeys) {
+                $result[] = $value;
+            } else {
+                $result[$key] = $value;
             }
         }
 
@@ -176,6 +172,8 @@ class Arr
 
     public static function fromList(?string $text, string $separator = ','): array
     {
+        $separator ??= ',';
+
         return match ($text) {
             null, '' => [],
             default => explode($separator, $text)
@@ -192,5 +190,19 @@ class Arr
         }
 
         return $list;
+    }
+
+    public static function flatten(array $array): array
+    {
+        $result = [];
+
+        foreach ($array as $key => $value) {
+            if (is_array($value)) {
+                $result = array_merge($result, static::flatten($value));
+            } else {
+                $result[$key] = $value;
+            }
+        }
+        return $result;
     }
 }

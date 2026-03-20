@@ -3,12 +3,10 @@
 namespace Framework;
 
 use Closure;
-use Error;
 use Exception;
 use Framework\Container\Container;
 use Framework\Database\BootListeners;
-use Framework\Database\QueryHistory;
-use Framework\Dispatcher\Dispatcher;
+use Framework\Database\QueryLog;
 use Framework\Enums\Environment;
 use Framework\Http\View\Bootstrappers\BootDirectives;
 use Framework\Support\Config\Config;
@@ -19,7 +17,7 @@ class Application extends Container
     protected static Application $singleton;
 
     /**
-     * @var Bootstrapper[]|string[]
+     * @var array<class-string<Bootstrapper>>
      */
     protected array $bootstrappers = [
         BootDirectives::class,
@@ -28,7 +26,7 @@ class Application extends Container
 
     private string $locale;
 
-    private array $eventCallbacks = [
+    private array $events = [
         'booting' => [],
         'booted' => [],
         'terminated' => []
@@ -44,32 +42,29 @@ class Application extends Container
             return static::getInstance();
         });
 
-        $this->singleton(QueryHistory::class);
+        $this->singleton(QueryLog::class);
         static::$singleton = $this;
     }
 
     public static function getInstance(): Application
     {
-        return static::$singleton ??= new static();
+        return static::$singleton;
     }
 
-    public function run(Dispatcher $dispatcher)
+    public function boot(): void
     {
-        $this->runEvents('booting');
+        $this->dispatch('booting');
         foreach ($this->bootstrappers as $bootstrapper) {
-            $this->make($bootstrapper)->boot();
+            if (!is_callable($bootstrapper)) {
+                $this->make($bootstrapper)->boot();
+            } else {
+                $this->resolve($bootstrapper);
+            }
         }
-        $this->runEvents('booted');
-
-        $dispatcher->dispatch();
+        $this->dispatch('booted');
     }
 
-    /**
-     * @param string|null $key
-     * @param mixed $default
-     * @return Config|mixed
-     */
-    public function config(string $key = null, $default = null)
+    public function config(string $key = null, $default = null): mixed
     {
         if (!$key) {
             return $this->get(Config::class);
@@ -78,15 +73,22 @@ class Application extends Container
         return $this->get(Config::class)->get($key, $default);
     }
 
-    /**
-     * @param Error|Exception|Throwable $e
-     */
-    public function handleError($e): void
+    public function handleError(Throwable $e): void
     {
-        $this->get(Dispatcher::class)->handleError($e);
+        $errorHandler = $this->get('errorHandler');
+
+        if (is_callable($errorHandler)) {
+            $errorHandler($e);
+            return;
+        }
+
+        $errorHandler->handle($e);
     }
 
-    public function boot($bootstrapper): void
+    /**
+     * @phpstan-param class-string<Bootstrapper> $bootstrapper
+     */
+    public function bootWith($bootstrapper): void
     {
         $this->bootstrappers[] = $bootstrapper;
     }
@@ -96,7 +98,7 @@ class Application extends Container
         return $this->locale;
     }
 
-    public function setLocale($lang)
+    public function setLocale($lang): void
     {
         $this->locale = $lang;
     }
@@ -121,18 +123,28 @@ class Application extends Container
         return config('app.debug') && !$this->envIs(Environment::production);
     }
 
-    public function on(string $event, Closure $callback)
+    public function on(string $event, Closure $callback): void
     {
-        $this->eventCallbacks[$event][] = $callback;
+        $this->events[$event][] = $callback;
+    }
+
+    public function root(string $path = ''): string
+    {
+        return $this->root . ltrim($path, DS);
+    }
+
+    public function pub_path(string $path): string
+    {
+        return $this->root('public' . DS . ltrim($path, DS));
     }
 
     public function __destruct()
     {
-        $this->runEvents('terminated');
+        $this->dispatch('terminated');
     }
 
-    private function runEvents(string $event): void
+    private function dispatch(string $event): void
     {
-        array_walk($this->eventCallbacks[$event], fn ($callback) => $callback());
+        array_walk($this->events[$event], fn ($callback) => $callback());
     }
 }

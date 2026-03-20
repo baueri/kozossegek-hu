@@ -1,17 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Portal\Services;
 
 use App\Helpers\InstituteHelper;
-use Framework\Http\Request;
 use App\Helpers\GroupHelper;
+use Framework\Exception\FileNotFoundException;
 use Framework\Http\Response;
 
 class ImageService
 {
-    public function getGroupImage(string $image)
+    public function printGroupImage(string $image): void
     {
-
         $path = $this->getGroupImagePath($image);
 
         if (!file_exists($path)) {
@@ -31,9 +32,14 @@ class ImageService
         header("Content-Type: {$mime_type}");
     }
 
-    public function getInstituteImage(string $image)
+    public function printInstituteImage(string $image): void
     {
         $imgPath = $this->getInstituteImagePath($image);
+
+        if (!file_exists($imgPath)) {
+            Response::setStatusCode('404');
+            return;
+        }
 
         header('Pragma: public');
         header('Cache-Control: max-age=86400');
@@ -45,13 +51,13 @@ class ImageService
         imagejpeg($im);
     }
 
-    private function getGroupImagePath($image)
+    private function getGroupImagePath($image): string
     {
         [$groupId] = explode('_', $image);
         return GroupHelper::getStoragePath($groupId) . $image;
     }
 
-    private function getInstituteImagePath($image)
+    private function getInstituteImagePath($image): string
     {
         [,$instituteId] = explode('inst_', $image);
         return InstituteHelper::getImageStoragePath(substr($instituteId, 0, strpos($instituteId, '.jpg')));

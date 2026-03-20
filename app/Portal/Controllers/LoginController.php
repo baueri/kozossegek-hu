@@ -7,17 +7,22 @@ use App\Auth\Authenticate;
 use App\Exception\EmailTakenException;
 use App\Helpers\HoneyPot;
 use App\Mail\RegistrationEmail;
+use App\Middleware\RefererMiddleware;
 use App\Portal\Services\CreateUser;
 use App\QueryBuilders\Users;
 use App\QueryBuilders\UserTokens;
+use App\Services\Captcha\CaptchaValidator;
+use App\Services\ReplayAttackProtection\Service;
 use App\Services\User\LegalNoticeService;
 use Exception;
 use Framework\Exception\UnauthorizedException;
 use Framework\Http\Cookie;
-use Framework\Http\Request;
 use Framework\Http\Message;
+use Framework\Http\Request;
 use Framework\Http\Session;
+use Framework\Mail\Mailable;
 use Framework\Mail\Mailer;
+use Framework\Support\Arr;
 
 class LoginController extends PortalController
 {
@@ -26,7 +31,11 @@ class LoginController extends PortalController
         use_default_header_bg();
 
         if (Auth::loggedIn()) {
-            redirect_route('admin.dashboard');
+            if (Auth::user()->isAdmin()) {
+                redirect_route('admin.dashboard');
+            }
+
+            redirect_route('home');
         }
 
         return view('portal.login');
@@ -51,7 +60,28 @@ class LoginController extends PortalController
 
             Auth::login($user);
 
-            $route = $request['redirect'] ?? route('home');
+            if (str_contains($referer = (string) Arr::get($_SERVER, 'HTTP_REFERER'), get_site_url())) {
+                $refererRedirect = $referer;
+            }
+
+            $route = $request['redirect'] ?? $refererRedirect ?? route('home');
+
+            log_event('user_login', user: $user);
+
+            if ($user->isAdmin()) {
+                $date = date('Y.m.d H:i:s');
+                $websiteContactEmail = config('app.website_contact_email');
+                (new Mailable())
+                    ->subject('Új admin bejelentkezés')
+                    ->setMessage(<<<TEXT
+                        Új bejelentkezés történt erről az admin fiókról ekkor: {$date}.
+                        
+                        Ha nem te kezdeményezted a bejelentkezést, jelezd a weboldal karbantartójának:
+                        {$websiteContactEmail}
+                    TEXT
+                    )
+                    ->send($user);
+            }
 
             redirect(Session::flash('last_visited', $route));
         } catch (Exception $e) {
@@ -75,18 +105,29 @@ class LoginController extends PortalController
      * @throws UnauthorizedException
      * @throws Exception
      */
-    public function register(CreateUser $service, UserTokens $tokens, Mailer $mailer, LegalNoticeService $legalNoticeService): string
-    {
-
+    public function register(
+        CreateUser $service,
+        UserTokens $tokens,
+        Mailer $mailer,
+        LegalNoticeService $legalNoticeService,
+        CaptchaValidator $captchaValidator,
+        Service $replayAttackService
+    ): string {
         $request = $this->request;
         use_default_header_bg();
+
         $model = [
             'name' => $request['name'],
             'email' => $request['email'],
+            'cloudflareSiteKey' => config('app.cloudflare.site_key'),
         ];
+
         try {
             if ($request->isPostRequestSent()) {
+                $replayAttackService->validate($request->get('rap'));
+                $captchaValidator->validate($request->get('cft'), $request->clientIp());
                 HoneyPot::validate('register', $request['website']);
+                $this->middleware(new RefererMiddleware(route('portal.register')));
                 if (!$request['password'] || $request['password'] !== $request['password_again']) {
                     Message::danger('A két jelszó nem egyezik!');
                 } else {
@@ -95,6 +136,7 @@ class LoginController extends PortalController
                     $legalNoticeService->updateOrInsertCurrentFor($user);
                     $message = new RegistrationEmail($user, $token);
                     $mailer->to($request['email'])->send($message);
+                    $replayAttackService->forget($request->get('rap'));
                     Message::success('Sikeres regisztráció! Az aktiváló linket elküldtük az email címedre.');
                     redirect_route('login');
                 }
@@ -102,6 +144,10 @@ class LoginController extends PortalController
             return view('portal.register', $model);
         } catch (EmailTakenException) {
             Message::danger('Ez az email cím már foglalt!');
+            return view('portal.register', $model);
+        } catch (\App\Services\Captcha\Exception $e) {
+            log_event('captcha_fail', ['request' => $request->all(), 'error' => $e->getMessage()]);
+            Message::danger('Captcha hiba, kérjük próbáld meg újból');
             return view('portal.register', $model);
         }
     }
@@ -127,6 +173,7 @@ class LoginController extends PortalController
 
         $ok = $mailer->to($user->email)->send($mailable);
         if ($ok) {
+            log_event('resend_activation_email', user: $user);
             return api()->ok();
         } else {
             return api()->error();

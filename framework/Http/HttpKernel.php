@@ -2,76 +2,140 @@
 
 namespace Framework\Http;
 
-use Error;
+use App\Services\MileStone;
+use Closure;
 use Exception;
-use Framework\Exception\UnauthorizedException;
+use Framework\Application;
 use Framework\Http\Exception\PageNotFoundException;
 use Framework\Http\Exception\RouteNotFoundException;
-use Framework\Kernel;
-use Framework\Middleware\Middleware;
-use Framework\Model\Exceptions\ModelNotFoundException;
-use Throwable;
+use Framework\Http\Route\Route;
+use Framework\Http\Route\RouterInterface;
+use Framework\Middleware\Before;
+use Framework\Middleware\MiddlewareResolver;
+use Framework\Middleware\After;
 
-class HttpKernel implements Kernel
+class HttpKernel
 {
     /**
-     * @var string[]|Middleware[]
+     * @var class-string<Before>[]
      */
     protected array $middleware = [];
+
+    public function __construct(
+        public readonly Application $app,
+        public readonly Request $request,
+        public readonly RouterInterface $router
+    ) {
+        Cookie::setTestCookie();
+    }
+
+    /**
+     * @template T
+     * @param class-string<T>|Closure $middleware
+     * @return $this
+     */
+    public function middleware(string|Closure $middleware): static
+    {
+        $this->middleware[] = $middleware;
+
+        return $this;
+    }
+
+    /**
+     * @throws PageNotFoundException
+     * @throws RouteNotFoundException
+     * @throws Exception
+     */
+    public function handle(): void
+    {
+        MileStone::measure('http_dispatch', 'Dispatching http request');
+
+        $middlewareResolver = new MiddlewareResolver();
+        $kernelMiddleware = array_map(fn ($item) => $middlewareResolver->resolve($item), $this->getMiddleware());
+
+        array_walk($kernelMiddleware, function ($item) {
+            if ($item instanceof Before) {
+                $item->before();
+            }
+        });
+
+        $route = $this->request->route;
+
+        if (!$route) {
+            throw new RouteNotFoundException("route `{$this->request->uri}` not found");
+        }
+
+        if (!$route->view && $route->controller && !class_exists($route->controller)) {
+            throw new PageNotFoundException("controller `" . $route->controller . "` not found");
+        }
+
+        $routeMiddleware = array_map(fn ($middleware) => $middlewareResolver->resolve($middleware), $route->getMiddleware());
+
+        array_walk($routeMiddleware, fn(Before $item) => $item->before());
+
+        $response = $this->resolveRoute($route);
+
+        MileStone::endMeasure('http_dispatch');
+
+        if (is_array($response) || is_object($response)) {
+            if (is_object($response) && method_exists($response, '__toString')) {
+                echo $response;
+            } else {
+                echo json_encode(is_object($response) && method_exists($response, 'valuesToArray') ? $response->valuesToArray() : $response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+            }
+        } else {
+            echo $response;
+        }
+
+        array_map(function ($middleware) use ($middlewareResolver) {
+            if($middleware instanceof After) {
+                $middleware->after();
+            }
+        }, array_merge($kernelMiddleware, $routeMiddleware));
+    }
+
+
+    /**
+     * @throws PageNotFoundException
+     */
+    private function resolveRoute(Route $route)
+    {
+        if ($route->getView()) {
+            $return = $this->resolveView();
+        } elseif (!$route->getController() && $callback = $route->getUse()) {
+            $return = call_user_func($callback, $this->request);
+        } else {
+            $return = $this->resolveController($route);
+        }
+
+        return $return;
+    }
+
+    /**
+     * @throws PageNotFoundException
+     */
+    private function resolveController(Route $route)
+    {
+        $controller = $this->app->make($route->getController());
+
+        if (method_exists($controller, $route->getUse())) {
+            return $this->app->resolve($controller, $route->getUse());
+        }
+
+        if (is_callable($controller)) {
+            return $this->app->resolve($controller, '__invoke');
+        }
+
+        throw new PageNotFoundException($this->request->uri);
+    }
+
+    private function resolveView(): string
+    {
+        return view($this->request->route->getView(), $this->request->uriValues);
+    }
 
     public function getMiddleware(): array
     {
         return $this->middleware;
-    }
-
-    public function handleMaintenance()
-    {
-        echo '<h1>Website under maintenance</h1>';
-    }
-
-    /**
-     * @throws \Throwable
-     * @var Error|Throwable|Exception $exception
-     */
-    public function handleError($exception)
-    {
-        Response::setStatusCode($exception->getCode() ?: 500);
-
-        if (Response::contentTypeIsJson()) {
-            print json_encode([
-                'success' => false,
-                'error_code' => $exception->getCode()
-            ]);
-            throw $exception;
-        }
-
-        if (config('app.debug') && $exception->getCode() != '401') {
-            echo "<pre style='white-space:pre-line'><h3>Unexpected error (" . get_class($exception) . ")</h3>";
-            echo "{$exception->getMessage()} in <b>{$exception->getFile()}</b> on line <b>{$exception->getLine()}</b> \n\n";
-            echo $exception->getTraceAsString();
-            echo "</pre>";
-            exit;
-        }
-
-        try {
-            throw $exception;
-        } catch (PageNotFoundException | ModelNotFoundException | RouteNotFoundException $exception) {
-            return print(view('portal.error', [
-                'code' => $exception->getCode(),
-                'message' => 'A keresett oldal nem található',
-                'message2' => 'Az oldal, amit keresel lehet, hogy törölve lett vagy ideiglenesen nem elérhető.']));
-        } catch (UnauthorizedException $exception) {
-            return print(view('portal.error', [
-                'code' => $exception->getCode(),
-                'message2' => 'Nincs jogosultsága az oldal megtekintéséhez']));
-        } catch (Error | Exception $exception) {
-            error_log($exception);
-
-            return print(view('portal.error', [
-                'code' => 500,
-                'message' => 'Váratlan hiba történt',
-                'message2' => 'Az oldal üzemeltetői értesítve lettek a hibáról'
-            ]));
-        }
     }
 }

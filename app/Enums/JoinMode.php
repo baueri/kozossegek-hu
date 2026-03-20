@@ -1,29 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Enums;
 
-use Framework\Support\Arr;
-use Framework\Support\Enum;
+use Framework\Traits\EnumTrait;
 
-final class JoinMode extends Enum
+enum JoinMode:string
 {
-    public const EGYENI_MEGBESZELES = 'egyeni';
+    use EnumTrait;
+    use HasTranslation;
 
-    public const FOLYAMATOS = 'folyamatos';
-
-    public const IDOSZAKOS = 'idoszakos';
-
-    final public static function getText(?string $joinMode): ?string
-    {
-        return Arr::get(self::getModesWithName(), $joinMode);
-    }
-
-    final public static function getModesWithName(): array
-    {
-        return [
-            self::EGYENI_MEGBESZELES => 'Egyéni megbeszélés alapján',
-            self::FOLYAMATOS => 'Folyamatos csatlakozási lehetőség',
-            self::IDOSZAKOS => 'Időszakos csatlakozás'
-        ];
-    }
+    case egyeni = 'egyeni';
+    case folyamatos = 'folyamatos';
+    case idoszakos = 'idoszakos';
 }

@@ -5,7 +5,7 @@ namespace Framework\Http\View\Directives;
 class SectionDirective extends AtDirective
 {
 
-    public function getName()
+    public function getName(): string
     {
         return 'section';
     }

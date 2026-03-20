@@ -13,6 +13,7 @@ use Exception;
 use Framework\Http\Message;
 use Framework\Http\Request;
 use Framework\Model\Exceptions\ModelNotFoundException;
+use Framework\Support\StringHelper;
 
 class InstituteController extends AdminController
 {
@@ -91,13 +92,17 @@ class InstituteController extends AdminController
         $data = $request->only('name', 'city', 'district', 'address', 'leader_name');
         $data['user_id'] = Auth::user()->id ?? null;
         $data['approved'] = 1;
+
+        $data['lat'] = '';
+        $data['lon'] = '';
+        $data['slug'] = StringHelper::slugify($data['city']) . '/' . StringHelper::slugify($data['name']);
         $institute = $repository->create($data);
 
         if ($image = $request['image']) {
-            if (!file_exists(ROOT . 'public/media/institutes/')) {
-                mkdir(ROOT . 'public/media/institutes/');
+            if (!file_exists(app()->pub_path('media/institutes/'))) {
+                mkdir(app()->pub_path('media/institutes/'));
             }
-            file_put_contents(ROOT . 'public/media/institutes/inst_' . $institute->id . '.jpg', base64_decode(substr($image, strpos($image, ','))));
+            file_put_contents(app()->pub_path("media/institutes/inst_{$institute->id}.jpg"), base64_decode(substr($image, strpos($image, ','))));
         }
 
         Message::success('Új intézmény létrehozva');
@@ -111,7 +116,7 @@ class InstituteController extends AdminController
 
         Message::warning('Intézmény törölve');
 
-        redirect_route('admin.institute.list');
+        redirect($this->request->referer());
     }
 
     public function import(): string

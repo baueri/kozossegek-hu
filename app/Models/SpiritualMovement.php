@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\SpiritualMovementType;
+use App\Portal\BreadCrumb\BreadCrumb;
+use App\Portal\BreadCrumb\BreadCrumbable;
 use App\Services\SystemAdministration\SiteMap\ChangeFreq;
 use App\Services\SystemAdministration\SiteMap\EntitySiteMappable;
 use Framework\Model\Entity;
@@ -21,7 +23,7 @@ use Framework\Support\StringHelper;
  * @property null|string $updated_at
  * @property null|string $type
  */
-class SpiritualMovement extends Entity
+class SpiritualMovement extends Entity implements BreadCrumbable
 {
     use EntitySiteMappable;
 
@@ -48,5 +50,20 @@ class SpiritualMovement extends Entity
     public function type(): string
     {
         return SpiritualMovementType::from($this->type)->translate();
+    }
+
+    public function getBreadCrumb(): BreadCrumb
+    {
+        return new BreadCrumb([
+            [
+                'name' => 'Lelkiségi mozgalmak',
+                'position' => 1,
+                'url' => route('portal.spiritual_movements')
+            ],
+            [
+                'name' => $this->name,
+                'position' => 2,
+            ]
+        ]);
     }
 }

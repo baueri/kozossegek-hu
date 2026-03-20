@@ -15,7 +15,7 @@ class InstituteHelper
 
     public static function getImageStoragePath($instituteId): string
     {
-        return _env('STORAGE_PATH') . self::INSTITUTE_DIR . "/inst_$instituteId.jpg";
+        return env('STORAGE_PATH') . self::INSTITUTE_DIR . DS . "inst_$instituteId.jpg";
     }
 
     public static function getMiserendImagePath(Institute $institute, string $filename): string

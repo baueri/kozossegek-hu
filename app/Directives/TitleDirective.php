@@ -1,13 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Directives;
 
 use Framework\Http\View\Directives\AtDirective;
 
 class TitleDirective extends AtDirective
 {
-
-    public function getName()
+    public function getName(): string
     {
         return 'title';
     }

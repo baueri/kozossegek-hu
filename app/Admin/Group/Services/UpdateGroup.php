@@ -1,29 +1,27 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Admin\Group\Services;
 
+use App\Auth\Auth;
 use App\Helpers\GroupHelper;
 use App\Models\ChurchGroup;
+use App\QueryBuilders\GroupComments;
+use Exception;
 use Framework\Exception\FileTypeNotAllowedException;
 use Framework\Http\Message;
-use Framework\Http\Request;
 use Framework\Support\Arr;
 use Framework\Support\Collection;
 
 class UpdateGroup extends BaseGroupService
 {
-    private const ALLOWED_TAGS = ['a', 'h1', 'h2', 'h3', 'p', 'b', 'u', 'ul', 'ol', 'li', 'code', 'pre'];
-
     /**
-     * @throws FileTypeNotAllowedException
+     * @throws FileTypeNotAllowedException|Exception
      */
-    public function update(ChurchGroup $group, Request|Collection|array $request, ?array $document = []): ChurchGroup
+    public function update(ChurchGroup $group, Collection $request, ?array $document = []): ChurchGroup
     {
-        if (is_array($request)) {
-            $request = collect($request);
-        }
-
-        $data = $request->except('id', 'tags', 'image', 'files')->all();
+        $data = $request->except('id', 'tags', 'image', 'files', '_token', 'group_comment')->all();
 
         $data['description'] = strip_tags($data['description'], self::ALLOWED_TAGS);
         $data['name'] = strip_tags($data['name']);
@@ -55,10 +53,16 @@ class UpdateGroup extends BaseGroupService
         $this->syncImages($group, [$request['image']]);
 
         if ($request['image']) {
-            $data['image_url'] = GroupHelper::getPublicImagePath($group->id);
+            $data['image_url'] = GroupHelper::getPublicImagePath((int) $group->getId());
         }
 
         $this->repository->save($group, $data);
+
+        if ($request['group_comment']) {
+            GroupComments::query()->updateOrInsert(['group_id' => $group->getId()], ['comment' => $request['group_comment'], 'last_comment_user' => Auth::id()]);
+        } else {
+            GroupComments::query()->where('group_id', $group->getId())->delete();
+        }
 
         $this->updateSearchEngine($group);
 

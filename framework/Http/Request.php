@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Framework\Http;
 
-use App\Http\Exception\RequestParameterException;
 use ArrayAccess;
 use ArrayIterator;
 use Countable;
-use Framework\Http\Route\RouteInterface;
+use Framework\Http\Exception\RequestParameterException;
+use Framework\Http\Route\Route;
+use Framework\Http\Route\RouterInterface;
 use Framework\Support\Arr;
 use Framework\Support\Collection;
 use IteratorAggregate;
@@ -23,17 +24,20 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
 
     public Collection $files;
 
-    public string $requestMethod;
+    public readonly ?RequestMethod $requestMethod;
 
-    public string $uri;
+    public ?string $uri;
 
-    public RouteInterface $route;
+    public ?Route $route = null;
 
-    private ?array $uriValues = null;
+    public readonly array $uriValues;
+
+    public readonly Collection $headers;
 
     public function __construct()
     {
-        $this->request = (new Collection($_REQUEST))->each(function ($item, $key, $collection) {
+
+        $this->request = (new Collection(array_merge($_GET, $_POST)))->each(function ($item, $key, $collection) {
             if ($item == "true" || $item == "false") {
                 $collection[$key] = filter_var($item, FILTER_VALIDATE_BOOLEAN);
             }
@@ -41,9 +45,21 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
 
         $this->files = new Collection($_FILES);
 
-        $this->requestMethod = $_SERVER['REQUEST_METHOD'];
+        $this->requestMethod = isset($_SERVER['REQUEST_METHOD']) ? RequestMethod::from($_SERVER['REQUEST_METHOD']): null;
 
-        $this->uri = urldecode(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
+        $this->uri = urldecode((string) parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH));
+
+        $headers = [];
+        foreach ($_SERVER as $headerKey => $headerVal) {
+            if (str_starts_with($headerKey, 'HTTP_')) {
+                $headers[mb_substr($headerKey, 5)] = $headerVal;
+            }
+        }
+        $this->headers = collect($headers);
+
+        $this->route = app()->get(RouterInterface::class)->find($this->uri, $this->requestMethod);
+
+        $this->setUriValues();
     }
 
     public function __call($name, $arguments)
@@ -51,28 +67,29 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
         return call_user_func_array([$this->request, $name], $arguments);
     }
 
-    public function getUriValues(): array
+    public function setUriValues(): void
     {
-        if (!is_null($this->uriValues)) {
-            return $this->uriValues;
+        if (!$this->route) {
+            return;
         }
 
-        $uriParts = explode('/', trim($this->uri, '/'));
-        $uriParts2 = explode('/', trim($this->route->getUriMask(), '/'));
-        $this->uriValues = [];
-        foreach ($uriParts2 as $i => $uriPart) {
-            preg_match_all('/{([a-zA-Z0-9_]+)}/', $uriPart, $matches);
-            if ($matches[1]) {
-                $this->uriValues[$matches[1][0]] = $uriParts[$i];
+        $uriValues = [];
+        $pattern = $this->route->getUriForPregReplace();
+
+        preg_match_all($pattern, $this->uri, $matches);
+
+        foreach ($matches as $key => $value) {
+            if (is_string($key) && !empty($value[0])) {
+                $uriValues[$key] = $value[0];
             }
         }
 
-        return $this->uriValues;
+        $this->uriValues = $uriValues;
     }
 
     public function getUriValue($key)
     {
-        return $this->getUriValues()[$key] ?? null;
+        return $this->uriValues[$key] ?? null;
     }
 
     public function getIterator(): Traversable|ArrayIterator
@@ -114,8 +131,12 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
         return $_SERVER['REQUEST_METHOD'] == 'POST';
     }
 
-    public function collect(): Collection
+    public function collect($key = null): Collection
     {
+        if ($key) {
+            return collect($this->request->get($key));
+        }
+
         return $this->request->collect();
     }
 
@@ -140,5 +161,51 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
     public function isAjax(): bool
     {
         return Arr::get($_SERVER, 'HTTP_X_REQUESTED_WITH') && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'xmlhttprequest';
+    }
+
+    public function getHeader(string $name, $default = null)
+    {
+        return $this->headers->get($name, $default);
+    }
+
+    public function token(): ?string
+    {
+        return $this->get('_token') ?: $this->headers->get('X_CSRF_TOKEN');
+    }
+
+    public function referer(): string
+    {
+        return (string) ($_SERVER['HTTP_REFERER'] ?? '');
+    }
+
+    function clientIp(): string {
+        $ipHeaders = [
+            'HTTP_CLIENT_IP',
+            'HTTP_X_FORWARDED_FOR',
+            'HTTP_X_FORWARDED',
+            'HTTP_X_CLUSTER_CLIENT_IP',
+            'HTTP_FORWARDED_FOR',
+            'HTTP_FORWARDED',
+            'REMOTE_ADDR'
+        ];
+
+        foreach ($ipHeaders as $header) {
+            if (array_key_exists($header, $_SERVER) && !empty($_SERVER[$header])) {
+                // Split in case of multiple IPs (like in X-Forwarded-For)
+                $ips = array_map('trim', explode(',', $_SERVER[$header]));
+                foreach ($ips as $ip) {
+                    if (filter_var(
+                        $ip,
+                        FILTER_VALIDATE_IP,
+                        FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE
+                    )) {
+                        return $ip;
+                    }
+                }
+            }
+        }
+
+        // If all else fails
+        return $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
     }
 }

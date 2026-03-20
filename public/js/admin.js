@@ -82,13 +82,14 @@ var loadFile = function (event, element) {
     };
 };
 
-function deleteConfirm(action)
+function deleteConfirm(action, message)
 {
+    message = message || 'Biztosan törlöd?';
     var outer = $("<div class='modal fade' tabindex='-1'></div>");
     var dialog = $("<div class='modal-dialog'></div>");
     var content = $("<div class='modal-content'></div>");
     var header = $("<div class='modal-header'><h5 class='modal-title'>Biztos?</h5><button type='button' class='close' data-dismiss='modal' aria-label='bezár'><span aria-hidden='true'>&times;</span></button></div>");
-    var body = $("<div class='modal-body'>Biztosan törlöd?</div>");
+    var body = $(`<div class='modal-body'>${message}</div>`);
     var cancelBtn = $('<button type="button" class="btn btn-default" data-dismiss="modal">Mégsem</button>');
     var okBtn = $('<button type="button" class="btn btn-danger">Igen</button>');
     var footer = $("<div class='modal-footer'></div>");
@@ -106,7 +107,7 @@ function deleteConfirm(action)
 
 function selectImageFromMediaLibrary(options)
 {
-    console.log(options);
+    dialog.closeAll();
     $.post("/admin/api/uploads/get", {dir: options.dir}, response => {
         dialog.show({
             title: "Feltöltések",
@@ -118,7 +119,7 @@ function selectImageFromMediaLibrary(options)
                     e.preventDefault();
 
                     if ($(this).hasClass("item-dir")) {
-                        dialog.modal("hide");
+                        // dialog.modal("hide");
                         options.dir = $(this).data("text");
                         selectImageFromMediaLibrary(options);
                     } else {
@@ -137,3 +138,43 @@ function selectImageFromMediaLibrary(options)
         });
     });
 }
+
+$(() => {
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+});
+
+
+const ElementLazyLoaded = new Event("ElementLazyLoaded");
+
+document.addEventListener("DOMContentLoaded", function() {
+    let lazyElements = [].slice.call(document.querySelectorAll(".lazy"));
+
+    if ("IntersectionObserver" in window) {
+        let lazyElementObserver = new IntersectionObserver(function(entries, observer) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    let lazyElement = entry.target;
+                    switch (lazyElement.tagName) {
+                        case "IMG":
+                            lazyElement.src = lazyElement.dataset.src;
+                            lazyElement.srcset = lazyElement.dataset.srcset;
+                            break;
+                    }
+                    lazyElement.dispatchEvent(ElementLazyLoaded);
+                    lazyElement.classList.remove("lazy");
+                    lazyElementObserver.unobserve(lazyElement);
+                }
+            });
+        });
+
+        lazyElements.forEach(function(lazyElement) {
+            lazyElementObserver.observe(lazyElement);
+        });
+    } else {
+        // Possibly fall back to event handlers here
+    }
+});

@@ -1,33 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Framework\Console\BaseCommands;
 
 use Framework\Console\Command;
 use Framework\Console\ConsoleKernel;
-use Framework\Console\Out;
+use jc21\CliTable;
 
 class ListCommands extends Command
 {
-
-    /**
-     * @var ConsoleKernel
-     */
     private ConsoleKernel $kernel;
 
-    /**
-     * @var Out
-     */
-    private Out $out;
-
-    /**
-     * ListCommands constructor.
-     * @param ConsoleKernel $kernel
-     * @param Out $out
-     */
-    public function __construct(ConsoleKernel $kernel, Out $out)
+    public function __construct(ConsoleKernel $kernel)
     {
         $this->kernel = $kernel;
-        $this->out = $out;
+        parent::__construct();
     }
 
     public static function signature(): string
@@ -35,11 +23,19 @@ class ListCommands extends Command
         return 'list';
     }
 
+    public static function description(): string
+    {
+        return 'listazza a futtathato commandokat';
+    }
+
     public function handle(): void
     {
-        $this->out->heading('list of available commands');
-        foreach ($this->kernel->getCommands() as $command) {
-            $this->out->writeln($command::signature());
-        }
+        $table = new CliTable();
+        $this->output->heading('list of available commands');
+        $table->setHeaderColor('cyan');
+        $table->addField('signature', 'signature', false, 'yellow');
+        $table->addField('description', 'description', false, 'white');
+        $table->injectData(array_map(fn ($command) => ['signature' => $command::signature(), 'description' => strip_tags($command::description())], $this->kernel->getCommands()));
+        $table->display();
     }
 }

@@ -1,7 +1,10 @@
-@section('header_content')
-    @featuredTitle('Új fiók létrehozása')
-@endsection
 @extends('portal')
+@section('scripts')
+    @if($captchaEnabled)
+        <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    @endif
+@endsection
+@featuredTitle('Új fiók létrehozása')
 <div class="container inner">
     @alert('info')
         Kérjük, hogy csak abban az esetben hozz létre új fiókot, ha közösséget hirdetsz.
@@ -30,6 +33,7 @@
                     <input type="password" class="form-control" name="password_again" data-describedby="validate_password_again" required>
                     <div id="validate_password_again" class="validate_message"></div>
                 </div>
+                @include('portal.partials.google-login', ['g_context' => 'signup', 'g_text' => 'signup_with'])
             </div>
         </div>
         <div class="row">
@@ -38,15 +42,19 @@
                 <p>
                     @component('aszf')<br/>
                 </p>
+                @if($captchaEnabled)
+                    @component('captcha')
+                @endif
                 <div class="form-group">
-                    <button type="submit" class="btn btn-darkblue">Regisztráció</button>
+                    <button type="submit" class="btn btn-altblue">Regisztráció</button>
                     <p class="mt-2">
-                        <a href="@route('login')" id="login-existing-user" onclick="showLoginModal('{{ request()->uri }}'); return false;"><b>
+                        <a href="@route('login')" id="login-existing-user" onclick="showLoginModal(); return false;"><b>
                             <i class="fa fa-key"></i> van már fiókom, belépek
                         </b></a>
                     </p>
                 </div>
             </div>
         </div>
+        @csrf()
     </form>
 </div>

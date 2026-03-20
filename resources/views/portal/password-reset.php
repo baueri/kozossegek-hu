@@ -14,6 +14,7 @@
                 <input type="password" name="new_password_again" class="form-control">
             </div>
             <div class="form-group">
+                @csrf()
                 <button type="submit" class="btn btn-primary">Új jelszó mentése</button>
             </div>
         </div>

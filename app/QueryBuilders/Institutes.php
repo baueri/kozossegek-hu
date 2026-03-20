@@ -10,21 +10,21 @@ use Framework\Model\Relation\Relation;
 use Framework\Model\SoftDeletes;
 
 /**
- * @phpstan-extends \Framework\Model\EntityQueryBuilder<\App\Models\Institute>
+ * @phpstan-extends EntityQueryBuilder<Institute>
  */
 class Institutes extends EntityQueryBuilder
 {
     use HasManyChurchGroupViews;
     use SoftDeletes;
 
-    public static function getModelClass(): string
-    {
-        return Institute::class;
-    }
-
     public function cityModel(): Relation
     {
         return $this->has(Has::one, Cities::class, 'name', 'city');
+    }
+
+    public function user(): Relation
+    {
+        return $this->has(Has::one, Users::class, 'id', 'user_id');
     }
 
     public function churchGroups(): Relation

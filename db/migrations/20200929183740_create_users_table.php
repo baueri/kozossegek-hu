@@ -13,7 +13,7 @@ final class CreateUsersTable extends AppMigration
             ->addColumn('username', MysqlAdapter::PHINX_TYPE_STRING, ['null' => true])
             ->addColumn('email', MysqlAdapter::PHINX_TYPE_STRING)
             ->addColumn('password', MysqlAdapter::PHINX_TYPE_STRING, ['length' => 255])
-            ->timestamps()
+            ->datetimes()
 
             ->addIndex('username', ['unique' => true])
             ->addIndex('email', ['unique' => true])

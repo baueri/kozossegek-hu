@@ -1,34 +1,43 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Helpers;
 
-use Framework\Exception\UnauthorizedException;
+use App\Exception\HoneypotException;
 
 class HoneyPot
 {
-    public static function getHash(string $id)
-    {
-        $_SESSION['honey_pot'][$id] = [
-            'honeypot_check_time' => $checkTime = time(),
-            'honeypot_check_hash' => md5($checkTime)
-        ];
+    public const int MIN_SEC = 5;
 
-        return $_SESSION['honey_pot'][$id]['honeypot_check_hash'];
+    public static function setTime(string $id): void
+    {
+        unset($_SESSION['hp_check_time'][$id]);
+        $_SESSION['hp_check_time'][$id] = time();
     }
 
     /**
-     * @param string $id
-     * @param string $hashVal
-     * @throws UnauthorizedException
+     * @throws HoneypotException
      */
     public static function validate(string $id, string $hashVal): void
     {
-        $checkTime = $_SESSION['honey_pot'][$id]['honeypot_check_time'] ?? null;
-        $check_hash = $_SESSION['honey_pot'][$id]['honeypot_check_hash'] ?? null;
-        if (!$checkTime || !$check_hash || time() - $checkTime < 5 || $hashVal !== $check_hash) {
-            throw new UnauthorizedException('spam check failed');
+        if ($hashVal) {
+            throw new HoneypotException('spam check failed', reason: 'filled_honeypot');
         }
 
-        unset($_SESSION['honey_pot'][$id]);
+        $checkTime = $_SESSION['hp_check_time'][$id] ?? null;
+        $elapsedTime = $checkTime ? time() - $checkTime : null;
+        $reason = null;
+        if (!$checkTime) {
+            $reason = 'missing_check_time';
+        } elseif($elapsedTime < self::MIN_SEC) {
+            $reason = 'too_quick';
+        }
+
+        self::setTime($id);
+
+        if ($reason) {
+            throw new HoneypotException('spam check failed', reason: $reason, elapsedTime: $elapsedTime);
+        }
     }
 }

@@ -1,13 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Admin\Settings\EventLog;
 
-use App\Admin\Components\AdminTable\AdminTable;
-use App\Repositories\EventLogRepository;
+use App\Admin\Components\AdminTable\PaginatedAdminTable;
+use App\Repositories\EventLogs;
 use Framework\Database\PaginatedResultSetInterface;
 use Framework\Http\Request;
+use Framework\Support\Collection;
 
-class EventLogAdminTable extends AdminTable
+class EventLogAdminTable extends PaginatedAdminTable
 {
     protected array $columns = [
         'id' => '#',
@@ -17,18 +20,13 @@ class EventLogAdminTable extends AdminTable
         'created_at' => 'dátum'
     ];
 
-
-    private EventLogRepository $repository;
-
-    public function __construct(Request $request, EventLogRepository $repository)
-    {
+    public function __construct(
+        Request $request,
+        protected readonly EventLogs $repository
+    ) {
         parent::__construct($request);
-        $this->repository = $repository;
     }
 
-    /**
-     * @return \Framework\Database\PaginatedResultSetInterface
-     */
     protected function getData(): PaginatedResultSetInterface
     {
         $query = $this->repository
@@ -37,6 +35,8 @@ class EventLogAdminTable extends AdminTable
 
         $dateFrom = $this->request['date_from'];
         $dateTo = $this->request['date_to'];
+        $type = $this->request['type'];
+        $request_page = $this->request['request_page'];
 
         if ($dateFrom && $dateTo) {
             $query->whereRaw('DATE(created_at) BETWEEN ? AND ?', [$dateFrom, $dateTo]);
@@ -44,14 +44,26 @@ class EventLogAdminTable extends AdminTable
             $query->whereRaw('DATE(created_at) = ?', [$dateFrom]);
         }
 
+        if ($type) {
+            $query->where('type', $type);
+        }
+
+        if ($request_page) {
+            $query->where('`log`', 'LIKE', "%\"page\":%{$request_page}%");
+        }
+
         return $query->paginate();
     }
 
-    public function getLog($log)
+    public function getLog(Collection $log): string
     {
-        $logArr = json_decode($log, true);
-
-        $parsed = collect($logArr)->map(fn($val, $key) => "<li>$key: $val</li>")->implode('');
+        $parsed = $log->map(function($val, $key) {
+            if (is_array($val)) {
+                $val = json_encode($val, JSON_PRETTY_PRINT);
+            }
+            $val = htmlspecialchars((string) $val);
+            return "<li>$key: <pre style='display:inline; color:#e83e8c;'>$val</pre></li>";
+        })->implode('');
         return "<ul>{$parsed}</ul>";
     }
 }

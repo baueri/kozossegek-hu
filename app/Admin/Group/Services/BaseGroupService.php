@@ -6,7 +6,7 @@ use App\Helpers\FileHelper;
 use App\Helpers\GroupHelper;
 use App\Models\ChurchGroup;
 use App\QueryBuilders\ChurchGroups;
-use App\QueryBuilders\GroupViews;
+use App\QueryBuilders\ChurchGroupViews;
 use App\QueryBuilders\Institutes;
 use App\Services\RebuildSearchEngine;
 use App\Storage\Base64Image;
@@ -19,6 +19,8 @@ use Framework\Traits\ManagesErrors;
 
 abstract class BaseGroupService
 {
+    public const ALLOWED_TAGS = '<a><b><u><ul><ol><li><p><pre><h1><h2><h3><h4><h5><h6><blockquote>';
+
     use ManagesErrors;
 
     public function __construct(
@@ -31,7 +33,7 @@ abstract class BaseGroupService
 
     protected function updateSearchEngine(ChurchGroup $group): void
     {
-        $this->searchEngineBuilder->updateSearchEngine(GroupViews::query()->find($group->getId()));
+        $this->searchEngineBuilder->updateSearchEngine(ChurchGroupViews::query()->find($group->getId()));
     }
 
     protected function syncTags(ChurchGroup $group, array $tags = []): void

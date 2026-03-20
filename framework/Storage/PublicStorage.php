@@ -10,7 +10,7 @@ class PublicStorage extends FileManager
 {
     public function __construct($storageDir = '', $enabledTypes = ['*'])
     {
-        parent::__construct(_env('STORAGE_PATH') . 'public' . DS . $storageDir, $enabledTypes);
+        parent::__construct(env('STORAGE_PATH') . 'public' . DS . $storageDir, $enabledTypes);
 
         if (!file_exists(ROOT . 'public/storage')) {
             if (!$this->createFolder('', $error)) {
@@ -23,11 +23,7 @@ class PublicStorage extends FileManager
         }
     }
 
-    /**
-     * @param File $file
-     * @return string
-     */
-    public function getPublicPathFor(File $file)
+    public function getPublicPathFor(File $file): string
     {
         return FileHelper::getPublicPathFor($file);
     }
@@ -38,7 +34,7 @@ class PublicStorage extends FileManager
      */
     public function getStoragePath($publicPath)
     {
-        return _env('STORAGE_PATH') . preg_replace('/^\/storage/', 'public', $publicPath);
+        return env('STORAGE_PATH') . preg_replace('/^\/storage/', 'public', $publicPath);
     }
 
     /**

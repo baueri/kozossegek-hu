@@ -2,6 +2,8 @@
 
 namespace Framework\Mail;
 
+use App\Models\User;
+
 class Mailable
 {
     /**
@@ -20,6 +22,8 @@ class Mailable
     public ?string $replyTo = null;
 
     protected bool $useDefaultTemplate = false;
+
+    protected bool $showNoReplyText = true;
 
     final public function view(string $view): self
     {
@@ -52,7 +56,7 @@ class Mailable
     public function getBody(): string
     {
         if ($this->view) {
-            return view($this->view, $this->viewData);
+            return view($this->view, array_merge($this->viewData, ['showNoReplyText' => $this->showNoReplyText]));
         }
 
         $message = str_replace("\n", "<br/>", $this->message);
@@ -91,6 +95,23 @@ class Mailable
     public function replyTo(string $email): self
     {
         $this->replyTo = $email;
+
+        return $this;
+    }
+
+    public function send(string|User $to, ?string $name = null): bool
+    {
+        if ($to instanceof User) {
+            $name ??= $to->name;
+            $to = $to->email;
+        }
+
+        return (new Mailer($to, $name))->send($this);
+    }
+
+    public function showNoReplyText(bool $showNoReplyText): static
+    {
+        $this->showNoReplyText = $showNoReplyText;
 
         return $this;
     }

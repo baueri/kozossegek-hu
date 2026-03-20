@@ -6,7 +6,7 @@
         <tr><th>Alkalmak gyakorisága</th><td>{{ $group->occasionFrequency() }}<br/></td></tr>
         <tr><th>Mely napokon</th><td> {{ $group->getDaysAsString() }}<br/></td></tr>
         <tr><th>Lelkiségi mozgalom</th><td> {{ $group->spiritual_movement ?: '-' }}<br/></td></tr>
-        <tr><th>Csatlakozás módja</th><td> {{ $group->joinMode() ?: '-' }}<br/></td></tr>
+        <tr><th>Csatlakozás módja</th><td> {{ $group->joinModeText() ?: '-' }}<br/></td></tr>
         <tr><th>Közösség jellemzői</th><td> {{ $selected_tags }}</td></tr>
         <tr><td colspan="2"><hr></td></tr>
         <tr><th>Bemutatkozás</th><td>{{ $group->description }}</td></tr>

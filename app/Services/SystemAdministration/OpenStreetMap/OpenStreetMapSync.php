@@ -4,14 +4,14 @@ namespace App\Services\SystemAdministration\OpenStreetMap;
 
 use App\Models\City;
 use App\Models\Institute;
+use App\Models\OsmMarker;
 use App\QueryBuilders\ChurchGroups;
 use App\QueryBuilders\Cities;
-use App\QueryBuilders\GroupViews;
+use App\QueryBuilders\ChurchGroupViews;
 use App\QueryBuilders\Institutes;
-use App\QueryBuilders\OsmMarkers;
 use App\Repositories\CityStatistics;
 use Framework\Console\Command;
-use Framework\Console\Out;
+use Framework\Model\EntityQueryBuilder;
 
 class OpenStreetMapSync extends Command
 {
@@ -20,12 +20,17 @@ class OpenStreetMapSync extends Command
         return 'osm:sync';
     }
 
+    public static function description(): string
+    {
+        return 'Az OpenStreetMap-hez generálja le a POI-kat, amiket a térképeken (admin és front-end egyaránt) megjelenítünk.';
+    }
+
     public function handle(): int
     {
-        Out::info('Syncing Open Street Map pois...');
+        $this->output->info('Syncing Open Street Map pois...');
 
         db()->transaction(function () {
-            OsmMarkers::query()->delete();
+            EntityQueryBuilder::query(OsmMarker::class)->delete();
 
             $groups = fn (ChurchGroups $query) => $query->active();
             Institutes::query()
@@ -35,7 +40,7 @@ class OpenStreetMapSync extends Command
                 ->whereHas('groups', $groups)
                 ->get()
                 ->map(function (Institute $institute) {
-                    OsmMarkers::query()->insert([
+                    EntityQueryBuilder::query(OsmMarker::class)->insert([
                         'type' => 'institute',
                         'latlon' => $institute->latlon(),
                         'popup_html' => addslashes($this->getHtml($institute))
@@ -45,7 +50,7 @@ class OpenStreetMapSync extends Command
             Cities::query()
                 ->select(['name', 'lat', 'lon'])
                 ->with('statistics', fn (CityStatistics $query) => $query->selectSums())
-                ->withCount('groups', fn (GroupViews $query) => $query->active())
+                ->withCount('groups', fn (ChurchGroupViews $query) => $query->active())
                 ->get()
                 ->each(function (City $city) {
                     $searches = $city->statistics->search_count ?? 0;
@@ -62,7 +67,7 @@ class OpenStreetMapSync extends Command
                     } elseif ($city->groups_count) {
                         $marker = '/images/marker_blue.png';
                     }
-                    OsmMarkers::query()->insert([
+                    EntityQueryBuilder::query(OsmMarker::class)->insert([
                         'marker' => $marker,
                         'type' => 'city_stat',
                         'latlon' => "{$city->lat},{$city->lon}",
@@ -76,7 +81,7 @@ class OpenStreetMapSync extends Command
                     ]);
                 });
         });
-        Out::success('DONE');
+        $this->output->success('Done');
 
         return self::SUCCESS;
     }

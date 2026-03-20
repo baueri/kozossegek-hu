@@ -1,10 +1,10 @@
 <?php
 
 return [
-    'host' => _env('DB_HOST'),
-    'user' => _env('DB_USER'),
-    'password' => _env('DB_PASSWORD'),
-    'database' => _env('DB_NAME'),
-    'charset' => _env('DB_CHARSET', 'utf8'),
-    'port' => _env('DB_PORT', '3306')
+    'host' => env('DB_HOST'),
+    'user' => env('DB_USER'),
+    'password' => env('DB_PASSWORD'),
+    'database' => env('DB_NAME'),
+    'charset' => env('DB_CHARSET', 'utf8'),
+    'port' => env('DB_PORT', '3306')
 ];

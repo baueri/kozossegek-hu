@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Traits\GroupTrait;
+use App\Portal\BreadCrumb\BreadCrumbable;
 use App\Services\SystemAdministration\SiteMap\ChangeFreq;
 use Framework\Model\Entity;
 
@@ -24,8 +25,10 @@ use Framework\Model\Entity;
  * @property-read null|string $institute_name2
  * @property-read null|string $spiritual_movement
  * @property-read null|string $pending
+ * @property-read null|string $notified_at
+ * @property-read null|string $confirmed_at
  */
-class ChurchGroupView extends Entity
+class ChurchGroupView extends Entity implements BreadCrumbable
 {
     use GroupTrait;
 
@@ -45,6 +48,6 @@ class ChurchGroupView extends Entity
 
     public function priority(): ?string
     {
-        return '0.7';
+        return '0.9';
     }
 }

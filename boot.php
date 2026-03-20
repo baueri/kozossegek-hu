@@ -1,20 +1,38 @@
 <?php
 
+declare(strict_types=1);
+
+use App\Admin\Components\DebugBar\DebugBar;
+use App\Auth\Auth;
+use App\Auth\AuthUser;
 use App\Bootstrapper\RegisterDirectives;
-use App\Repositories\EventLogRepository;
+use App\Enums\PageType;
+use App\Models\Page;
+use App\Portal\Services\Search\SearchRepository;
+use App\QueryBuilders\Users;
+use App\Repositories\EventLogs;
+use App\Services\Captcha\CaptchaValidator;
+use App\Services\Captcha\Cloudflare\CloudflareValidator;
+use App\Services\Captcha\Cloudflare\Config as CloudflareConfig;
+use App\Services\Captcha\NullCaptchaValidator;
 use App\Services\EventLogger;
+use App\Services\MeiliSearch\MeiliSearchAdapter;
 use App\Services\MileStone;
-use Arrilot\DotEnv\DotEnv;
+use App\Services\User\Announcer;
+use Dotenv\Dotenv;
 use Framework\Application;
+use Framework\Console\ConsoleKernel;
 use Framework\Database\Database;
-use Framework\Database\PDO\PDOMysqlDatabase;
-use Framework\Http\Route\Route;
-use Framework\Http\Route\RouteInterface;
+use Framework\Database\PDO\PDOMysqlDatabaseFactory;
+use Framework\Database\Repository\Events\ModelCreated;
+use Framework\Http\HttpKernel;
+use Framework\Http\Request;
 use Framework\Http\Route\RouterInterface;
 use Framework\Http\Route\XmlRouter;
 use Framework\Http\View\View;
 use Framework\Http\View\ViewInterface;
 use Framework\Support\Config\Config;
+use GuzzleHttp\Client;
 
 if (!defined('DS')) {
     define('DS', DIRECTORY_SEPARATOR);
@@ -25,16 +43,25 @@ const APP = ROOT . 'app' . DS;
 const RESOURCES = ROOT . 'resources' . DS;
 const VIEWS = RESOURCES . 'views' . DS;
 const CACHE = ROOT . 'cache' . DS;
-const APP_VERSION = 'v2.3.0';
+const APP_VERSION = 'v4.0';
 
 // Config constants for faster development
 const APP_CFG_LEGAL_NOTICE_VERSION = 'app.legal_notice_version';
 const APP_CFG_LEGAL_NOTICE_DATE = 'app.legal_notice_date';
 
-DotEnv::load(ROOT . '.env.php');
+include "framework/functions.php";
+include "app/helpers.php";
+
+$_ENV['ROOT'] = ROOT;
+
+$dotenv = Dotenv::createMutable(__DIR__);
+$dotenv->load();
+
+date_default_timezone_set(env('APP_TIMEZONE', 'Europe/Budapest'));
 
 ini_set("log_errors", 1);
-if (!_env('DEBUG')) {
+
+if (!env('DEBUG') && !is_cli()) {
     ini_set("error_log", ROOT . "error.log");
 } else {
     ini_set('display_errors', 1);
@@ -43,38 +70,45 @@ if (!_env('DEBUG')) {
 }
 
 $application = new Application(ROOT);
+
 MileStone::measure('init', 'Initialize');
 
-$application->bind(RouteInterface::class, Route::class);
-$application->singleton(ViewInterface::class, View::class);
-$application->singleton(Config::class);
-$application->singleton(RouterInterface::class, XmlRouter::class);
-$application->singleton(EventLogger::class, EventLogRepository::class);
+$application->singleton([
+    ConsoleKernel::class => ConsoleKernel::class,
+    HttpKernel::class => HttpKernel::class,
+    ViewInterface::class => View::class,
+    Config::class => Config::class,
+    RouterInterface::class => fn (Application $app) => new XmlRouter(config('route_sources')),
+    EventLogger::class => EventLogs::class,
+    Database::class => fn () => PDOMysqlDatabaseFactory::create(),
+    Request::class => Request::class,
+    MeiliSearchAdapter::class => MeiliSearchAdapter::class,
+    DebugBar::class => DebugBar::class,
+]);
+
+$application->bind([
+    'errorHandler' => fn () => fn ($error) => throw $error,
+    AuthUser::class => fn () => Auth::user(),
+    SearchRepository::class => fn () => $application->get(config('app.search_drivers')[config('app.selected_search_driver')]),
+    CloudflareConfig::class => fn () => new CloudflareConfig(
+        enabled: (bool) config('app.captcha_enabled'),
+        siteKey: (string) config('app.cloudflare.site_key'),
+        secret: (string) config('app.cloudflare.secret')
+    ),
+    CaptchaValidator::class => fn () => config('app.captcha_enabled') ? $application->get(CloudflareValidator::class) : new NullCaptchaValidator(),
+]);
+
 $application->on('booting', function () { MileStone::measure('bootstrap'); });
 $application->on('booted', function () { MileStone::endMeasure('bootstrap'); });
 
-$application->singleton(Database::class, function () {
-    $configuration = config('db');
+$application->bootWith(RegisterDirectives::class);
 
-    $dsn = sprintf(
-        'mysql:host=%s;dbname=%s;charset=%s;port=%s',
-        $configuration['host'],
-        $configuration['database'],
-        $configuration['charset'],
-        $configuration['port']
-    );
+$application->boot();
 
-    $pdo = new PDO($dsn, $configuration['user'], $configuration['password'], [
-        PDO::ATTR_PERSISTENT => true,
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-        PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'
-    ]);
-
-    return new PDOMysqlDatabase($pdo);
+ModelCreated::listen(function (ModelCreated $event) {
+    if ($event->model instanceof Page && $event->model->page_type == PageType::announcement->value()) {
+        (new Announcer())->announce($event->model, Users::query()->notDeleted());
+    }
 });
 
-$application->boot(RegisterDirectives::class);
-
 MileStone::endMeasure('init');
-
-include APP . 'macros.php';

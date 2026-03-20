@@ -2,11 +2,12 @@
 
 namespace App\Admin\User;
 
-use App\Admin\Components\AdminTable\{AdminTable, Deletable, Editable};
 use App\Enums\UserRole;
+use App\Admin\Components\AdminTable\{PaginatedAdminTable, Editable};
+use App\Admin\Components\AdminTable\Traits\SoftDeletable;
 use App\Models\User;
 use App\Models\UserSession;
-use App\QueryBuilders\GroupViews;
+use App\QueryBuilders\ChurchGroups;
 use App\QueryBuilders\Users;
 use App\QueryBuilders\UserSessions;
 use Framework\Database\Builder;
@@ -15,17 +16,26 @@ use Framework\Http\Request;
 use Framework\Model\PaginatedModelCollection;
 use Framework\Support\Collection;
 
-class UserTable extends AdminTable implements Deletable, Editable
+class UserTable extends PaginatedAdminTable implements Editable
 {
+    use SoftDeletable;
+
     protected array $columns = [
         'id' => '#',
         'groups' => '<i class="fa fa-comments"></i>',
         'name' => 'Név',
-        'user_group' => 'Jogosultság',
+        'user_role' => 'Jogosultság',
         'email' => 'Email',
         'activated_at' => 'Aktiválva',
         'created_at' => 'Regisztráció',
+        'last_login' => 'Utoljára belépve',
         'sessions' => '<i class="fa fa-dot-circle text-success" title="Online"></i>'
+    ];
+
+    protected array $sortableColumns = [
+        'activated_at',
+        'created_at',
+        'last_login'
     ];
 
     private Users $repository;
@@ -36,7 +46,7 @@ class UserTable extends AdminTable implements Deletable, Editable
         parent::__construct($request);
     }
 
-    public function getDeleteUrl($model): string
+    public function getSoftDeleteLink($model): string
     {
         return route('admin.user.delete', $model);
     }
@@ -51,9 +61,9 @@ class UserTable extends AdminTable implements Deletable, Editable
         return 'name';
     }
 
-    public function getUserGroup($userGroup): string
+    public function getUserRole(UserRole $userRole): string
     {
-        return UserRole::of($userGroup)->text();
+        return $userRole->translate();
     }
 
     public function getActivatedAt($activatedAt): string
@@ -65,7 +75,7 @@ class UserTable extends AdminTable implements Deletable, Editable
         return static::getBanIcon();
     }
 
-    public function getCreatedAt($date, User $user): string
+    public function getCreatedAt($date): string
     {
         return date('Y.m.d', strtotime($date));
     }
@@ -74,7 +84,7 @@ class UserTable extends AdminTable implements Deletable, Editable
     {
         $icon = static::getIcon('fa fa-comments');
         $route = route('admin.group.list', ['user_id' => $user->id]);
-        $groupCount = (int) $user->groups_count;
+        $groupCount = $user->groups_count;
         return static::getLink(
             $route,
             "{$icon} ({$groupCount})",
@@ -103,7 +113,7 @@ class UserTable extends AdminTable implements Deletable, Editable
 
     public function getData(): PaginatedResultSetInterface
     {
-        $filter = collect($this->request->only('deleted', 'search', 'user_group'));
+        $filter = collect($this->request->only('deleted', 'search', 'user_role'));
         $filter['sort'] = $this->request['sort'] ?: 'desc';
         $filter['order_by'] = $this->request['order_by'] ?: 'id';
 
@@ -132,13 +142,13 @@ class UserTable extends AdminTable implements Deletable, Editable
             });
         }
 
-        if ($userGroup = $filter['user_group']) {
-            $query->where('user_group', $userGroup);
+        if ($user_role = $filter['user_role']) {
+            $query->where('user_role', UserRole::from($user_role));
         }
 
-        $query->withCount('groups', fn(GroupViews $groupViews) => $groupViews->active());
-        $online = ['sessions', fn (UserSessions $query) => $query->online()];
-        $query->with(...$online)->orderBy('updated_at', 'desc');
+        $query->withCount('groups', fn(ChurchGroups $groupViews) => $groupViews->active());
+        $online = ['sessions', fn (UserSessions $query) => $query->online()->orderBy('updated_at', 'desc')];
+        $query->with(...$online);
 
         if ($this->request->get('online')) {
             $query->whereHas(...$online);

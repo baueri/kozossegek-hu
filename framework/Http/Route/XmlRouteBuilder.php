@@ -9,32 +9,24 @@ class XmlRouteBuilder
 {
     protected XmlObject $element;
 
-    /**
-     * @param XmlObject $element
-     */
     public function __construct(XmlObject $element)
     {
         $this->element = $element;
     }
 
-    public function build(): RouteInterface
+    public function build(): Route
     {
-        return app()->make(RouteInterface::class,
-            [
-                $this->getRequestMethod(),
-                $this->getUriMask(),
-                $this->getAs(),
-                $this->getController(),
-                $this->getUse(),
-                $this->getMiddleware(),
-                $this->getView()
-            ]
+        return new Route(
+            $this->getRequestMethod(),
+            $this->getUriMask(),
+            $this->getAs(),
+            $this->getController(),
+            $this->getUse(),
+            $this->getMiddleware(),
+            $this->getView()
         );
     }
 
-    /**
-     * @return string
-     */
     public function getUriMask(): string
     {
         $prefixes = $this->getPrefix();
@@ -76,7 +68,15 @@ class XmlRouteBuilder
 
     public function getMiddleware(): array
     {
-        $middleware = $this->getAttributeValues('middleware');
+        $middleware = [];
+        $currentMiddleware = $this->getAttributeValues('middleware');
+        foreach ($currentMiddleware as $item) {
+            if (str_contains($item, '|')) {
+                $middleware = array_merge($middleware, explode('|', $item));
+            } else {
+                $middleware[] = $item;
+            }
+        }
         $parentProperties = $this->getParentProperties('middleware');
         return collect($parentProperties)
             ->map(function(XmlObject $middleware){

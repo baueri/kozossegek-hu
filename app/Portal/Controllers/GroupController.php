@@ -1,9 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Portal\Controllers;
 
 use App\Auth\Auth;
+use App\Enums\GroupStatus;
+use App\Events\ChurchGroupRegistered;
 use App\Exception\EmailTakenException;
+use App\Helpers\HoneyPot;
 use App\Http\Responses\CreateGroupSteps\RegisterGroupForm;
 use App\Http\Responses\PortalEditGroupForm;
 use App\Portal\Services\GroupList;
@@ -11,19 +16,26 @@ use App\Portal\Services\PortalCreateGroup;
 use App\Portal\Services\PortalUpdateGroup;
 use App\Portal\Services\SendGroupContactMessage;
 use App\QueryBuilders\ChurchGroups;
-use App\QueryBuilders\GroupViews;
+use App\QueryBuilders\Cities;
+use App\QueryBuilders\ChurchGroupViews;
 use App\QueryBuilders\Institutes;
+use App\QueryBuilders\UserTokens;
+use App\Services\Captcha\CaptchaValidator;
 use App\Services\GroupSearchRepository;
+use App\Services\ReplayAttackProtection\Service;
 use Error;
-use ErrorException;
 use Exception;
+use Framework\Event\Event;
+use Framework\Event\EventDisptatcher;
 use Framework\Exception\FileTypeNotAllowedException;
 use Framework\Http\Exception\PageNotFoundException;
 use Framework\Http\Message;
 use Framework\Http\Request;
+use Framework\Http\Response;
 use Framework\Http\View\Section;
 use Framework\Model\Exceptions\ModelNotFoundException;
 use Framework\Support\Arr;
+use InvalidArgumentException;
 use Jaybizzle\CrawlerDetect\CrawlerDetect;
 use Throwable;
 
@@ -32,8 +44,12 @@ class GroupController extends PortalController
     public function kozossegek(Request $request, GroupList $service): string
     {
         $filter = $request->collect()->merge(['korosztaly' => $request['korosztaly']])->filter();
+        $breadcrumb = null;
+        if ($varos = $filter->get('varos')) {
+            $breadcrumb = Cities::query()->where('name', $varos)->first()?->getBreadCrumb();
+        }
 
-        return $service->getHtml($filter);
+        return $service->getHtml($filter, $breadcrumb);
     }
 
     public function intezmenyKozossegek(Request $request, GroupList $service, Institutes $institutes): string
@@ -43,6 +59,8 @@ class GroupController extends PortalController
         } else {
             $institute = $institutes->where('slug', "{$request['varos']}/{$request['intezmeny']}")->firstOrFail();
         }
+
+        Section::add('header', fn () => "<meta name='thumbnail' content='{$institute->getImageRelPath()}'/>");
 
         Section::set('templom_title', function () use ($institute) {
             $url = $institute->getMiserendUrl();
@@ -58,7 +76,7 @@ class GroupController extends PortalController
 
         return $service->getHtml(collect([
             'institute_id' => $institute->id
-        ]));
+        ]), $institute->getBreadCrumb());
     }
 
     public function groupsByCity(Request $request, GroupList $service): string
@@ -79,7 +97,7 @@ class GroupController extends PortalController
      * Közösség adatlap
      * @throws \Framework\Http\Exception\PageNotFoundException
      */
-    public function kozosseg(Request $request, GroupViews $repo, Institutes $instituteRepo): string
+    public function kozosseg(Request $request, ChurchGroupViews $repo, Institutes $instituteRepo): string
     {
         use_default_header_bg();
         $backUrl = null;
@@ -99,16 +117,12 @@ class GroupController extends PortalController
 
         $institute = $instituteRepo->find($group->institute_id);
 
-        $similar_groups = GroupViews::query()->similarTo($group)->limit(4)->get();
+        $similar_groups = ChurchGroupViews::query()->similarTo($group)->limit(4)->get();
         $slug = $group->slug();
-        $keywords = builder('search_engine')->where('group_id', $group->getId())->first()['keywords'];
+        $keywords = builder('search_engine')->where('group_id', $group->getId())->first()['keywords'] ?? '';
 
         if (!(new CrawlerDetect())->isCrawler()) {
-            log_event('group_profile_opened', [
-                'group_id' => $group->getId(),
-                'referer' => $referer,
-                'user_agent' => $_SERVER['HTTP_USER_AGENT']
-            ]);
+            log_event('group_profile_opened', ['group_id' => $group->getId()]);
         }
 
         return view('portal.kozosseg', compact(
@@ -133,10 +147,10 @@ class GroupController extends PortalController
         return view('portal.partials.group-contact-form', compact('group'));
     }
 
-    public function sendContactMessage(Request $request, GroupViews $repo, SendGroupContactMessage $service): array
+    public function sendContactMessage(Request $request, ChurchGroupViews $groups, SendGroupContactMessage $service): array
     {
         try {
-            $group = $repo->findOrFail($request['id']);
+            $group = $groups->findOrFail($request['id']);
             $service->send($group, $request->map('strip_tags')->all());
             $msg = '<div class="alert alert-success text-center">Köszönjük! Üzenetedet elküldtük a közösségvezető(k)nek!</div>';
             return [
@@ -158,7 +172,7 @@ class GroupController extends PortalController
         return view('portal.group.my_groups', compact('groups'));
     }
 
-    public function editGroup(Request $request, GroupViews $groups, PortalEditGroupForm $response): string
+    public function editGroup(Request $request, ChurchGroupViews $groups, PortalEditGroupForm $response): string
     {
         $user = Auth::user();
 
@@ -175,9 +189,16 @@ class GroupController extends PortalController
         return $response($group);
     }
 
-    public function createGroup(Request $request, PortalCreateGroup $createGroupService, RegisterGroupForm $form)
-    {
+    public function createGroup(
+        Request $request,
+        PortalCreateGroup $createGroupService,
+        CaptchaValidator $captchaValidator,
+        Service $replayProtect
+    ): array {
         try {
+            HoneyPot::validate('group-data', $request->get('website'));
+            $replayProtect->validate($request->get('rap'));
+            $captchaValidator->validate($request->get('cft'), $request->clientIp());
             $user = Auth::user();
             $group =
                 $createGroupService->createGroup(
@@ -186,23 +207,23 @@ class GroupController extends PortalController
                     $user
                 );
 
+            $replayProtect->forget($request->get('rap'));
+            EventDisptatcher::dispatch(new ChurchGroupRegistered($group));
             if ($user) {
                 Message::success('Közösség sikeresen létrehozva!');
-                redirect_route('portal.edit_group', $group);
+
+                return ['success' => true, 'redirect' => route('portal.edit_group', $group)];
             }
-
-            redirect_route('portal.group.create_group_success');
-
+            return ['success' => true, 'redirect' => route('portal.group.create_group_success')];
         } catch (FileTypeNotAllowedException $e) {
-            Message::danger('Csak <b>word</b> és <b>pdf</b> dokumentumot fogadunk el igazolásként!');
-            return (string) $form;
+            Response::setStatusCode(422);
+            return ['success' => false, 'message' => 'Csak <b>word</b> és <b>pdf</b> dokumentumot fogadunk el igazolásként!'];
         } catch (EmailTakenException $e) {
-            Message::danger('Ez az email cím már foglalt');
-            return (string) $form;
-        } catch (Exception | Error | Throwable | ErrorException $e) {
-            process_error($e);
-            Message::danger('Váratlan hiba történt a közösség létrehozásakor, kérjük próbáld meg később!');
-            return (string) $form;
+            Response::setStatusCode(409);
+            return ['success' => false, 'message' => 'Ez az email cím már foglalt!'];
+        } catch (\App\Services\Captcha\Exception) {
+            Response::setStatusCode(400);
+            return ['success' => false, 'message' => 'Captcha hiba, kérjük próbáld meg újból', 'err_code' => 'captcha_failed'];
         }
     }
 
@@ -217,7 +238,7 @@ class GroupController extends PortalController
             raise_403();
         }
         try {
-            $service->update($group, $request->only(
+            $service->update($group, collect($request->only(
                 'status',
                 'name',
                 'institute_id',
@@ -230,7 +251,7 @@ class GroupController extends PortalController
                 'description',
                 'image',
                 'join_mode'
-            ), $request->files['document']);
+            )), $request->files['document']);
 
             Message::success('Sikeres mentés!');
             redirect_route('portal.edit_group', $group);
@@ -272,7 +293,7 @@ class GroupController extends PortalController
     /**
      * @throws ModelNotFoundException
      */
-    public function downloadDocument(Request $request, GroupViews $groups)
+    public function downloadDocument(Request $request, ChurchGroupViews $groups)
     {
         $group = $groups->findOrFail($request['id']);
 
@@ -285,5 +306,40 @@ class GroupController extends PortalController
         header("Content-Transfer-Encoding: Binary");
         header("Content-disposition: attachment; filename=\"" . basename($file_url) . "\"");
         readfile($file_url);
+    }
+
+    /**
+     * @throws ModelNotFoundException
+     */
+    public function confirmGroup(UserTokens $tokens, ChurchGroups $groups): string
+    {
+        parse_str(base64_decode(request()->get('verify')), $decoded);
+        $token = $tokens->getByToken($decoded['token'] ?? '');
+
+        if (!$token) {
+            return view('portal.error', ['message2' => 'Közösség megerősítése sikertelen! Hibás token.']);
+        }
+
+        if ($token->expired()) {
+            return view('portal.error', ['message2' => 'Ennek a tokennek az érvényességi ideje lejárt!']);
+        }
+
+        $group = $groups->findOrFail($decoded['group_id']);
+        if ((int) $token->data('group_id') !== (int) $group->getId()) {
+            return view('portal.error', ['message2' => 'Közösség megerősítése sikertelen! Hibás token.']);
+        }
+
+        if ($decoded['action'] === 'confirm') {
+            $groups->save($group, ['confirmed_at' => now(), 'notified_at' => null]);
+            $view = view('portal.error', ['message2' => 'Közösség sikeresen megerősítve!']);
+        } elseif ($decoded['action'] === 'deactivate') {
+            $groups->save($group, ['status' => GroupStatus::inactive]);
+            $view = view('portal.error', ['message2' => 'Közösséged inaktiválva lett. Közösséget bármikor újra aktiválhatsz belépés után a közösség adatlapján.']);
+        } else {
+            throw new InvalidArgumentException('Invalid confirm action');
+        }
+
+        $tokens->deleteModel($token);
+        return $view;
     }
 }

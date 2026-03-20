@@ -5,6 +5,7 @@ namespace App\Http\Responses;
 use App\Enums\AgeGroup;
 use App\Enums\GroupStatus;
 use App\Enums\OccasionFrequency;
+use App\Enums\Tag;
 use App\Enums\WeekDay;
 use App\Models\ChurchGroupView;
 use App\QueryBuilders\Institutes;
@@ -21,16 +22,12 @@ class PortalEditGroupForm
     public function __invoke(ChurchGroupView $group): string
     {
         $statuses = GroupStatus::mapTranslated();
-        $tags = builder('tags')->select()->get();
+        $tags = Tag::collect();
         $occasion_frequencies = OccasionFrequency::cases();
         $age_groups = AgeGroup::cases();
         $days = WeekDay::cases();
 
-        $group_tags = collect(
-            builder('group_tags')
-            ->apply('whereGroupId', $group->getId())
-            ->get()
-        )->pluck('tag')->all();
+        $group_tags = $group->tags->pluck('tag')->all();
 
         $age_group_array = array_filter(explode(',', $group->age_group));
         $group_days = $group->getDays();

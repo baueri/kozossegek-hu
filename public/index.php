@@ -1,35 +1,51 @@
 <?php
 
-use App\Admin\Components\DebugBar\DebugBar;
-use App\Auth\Auth;
-use App\Auth\AuthUser;
-use App\HttpKernel;
-use App\Services\MileStone;
-use Framework\Dispatcher\Dispatcher;
-use Framework\Dispatcher\HttpDispatcher;
+declare(strict_types=1);
+
+use App\Http\ErrorHandler;
+use App\Middleware\DebugBarMiddleware;
+use App\Providers\AppServiceProvider;
+use Framework\Http\HttpKernel;
+use Framework\Http\Session;
+use Framework\Http\View\View;
+use Framework\Middleware\AuthMiddleware;
+use Framework\Middleware\BaseAuthMiddleware;
+use Framework\Middleware\Translation;
+use Whoops\Handler\PrettyPageHandler;
+use Whoops\Run;
+
+if (file_exists('../.maintenance')) {
+    include '../resources/views/maintenance.php';
+    exit;
+}
 
 include '../vendor/autoload.php';
 
-session_start();
+Session::start();
 
 ob_start();
+
 $app = app();
 
 try {
-    ob_start();
+    $app->bind('errorHandler', ErrorHandler::class, true);
 
-    $app->singleton(Framework\Http\Request::class);
-    $app->singleton(\Framework\Http\HttpKernel::class, HttpKernel::class);
-    $app->singleton(HttpDispatcher::class);
-    $app->singleton(Dispatcher::class, HttpDispatcher::class);
-    $app->singleton(DebugBar::class);
-    $app->bind(AuthUser::class, function () {
-        return Auth::user();
-    });
+    $kernel = $app->get(HttpKernel::class);
 
-    MileStone::measure('dispatch', 'Dispatching');
-    $app->run($app->get(HttpDispatcher::class));
-    MileStone::endMeasure('dispatch');
+    $kernel->middleware(function() {
+        $whoops = new Run;
+        $whoops->pushHandler(new PrettyPageHandler);
+        $whoops->register();
+    })->middleware(BaseAuthMiddleware::class)
+        ->middleware(DebugBarMiddleware::class)
+        ->middleware(Translation::class)
+        ->middleware(AuthMiddleware::class)
+        ->middleware(AppServiceProvider::class);
+
+    View::setVariable('captchaEnabled', (bool) config('app.captcha_enabled'));
+    View::setVariable('contact_email', config('app.contact_email'));
+
+    $kernel->handle();
 } catch (Error | Exception | Throwable $e) {
     ob_get_clean();
     $app->handleError($e);

@@ -7,6 +7,7 @@ use ArrayIterator;
 use Closure;
 use Countable;
 use IteratorAggregate;
+use UnitEnum;
 
 /**
  * @template T
@@ -14,6 +15,7 @@ use IteratorAggregate;
  * @property-read T|CollectionProxy $each
  * @property-read T|CollectionProxy $filter
  * @property-read T|CollectionProxy $reject
+ * @property-read T|CollectionProxy $pluck
  */
 class Collection implements ArrayAccess, Countable, IteratorAggregate
 {
@@ -75,7 +77,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     }
 
     /**
-     * @phpstan-return self<T>
+     * @return static<T>
      */
     public function keyBy(int|string|Closure $by): self
     {
@@ -137,7 +139,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         return Arr::random($this->items);
     }
 
-    public function each(Closure $func): self
+    public function each(callable|Closure $func): self
     {
         Arr::each($this->items, $func, $this);
 
@@ -149,7 +151,10 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         return new self(array_chunk($this->items, $size, $preserve_keys));
     }
 
-    public function take(int $limit)
+    /**
+     * @phpstan-return static<T>
+     */
+    public function take(int $limit): self
     {
         return new self(array_slice($this->items, 0, $limit));
     }
@@ -202,6 +207,21 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
             }
         }
         return false;
+    }
+
+    /**
+     * @param Closure(T): T $callback
+     * @return T|null
+     */
+    public function firstWhere(Closure $callback)
+    {
+        foreach ($this->items as $key => $item) {
+            if ($callback($item, $key)) {
+                return $item;
+            }
+        }
+
+        return null;
     }
 
     public function containsAny(array $values): bool
@@ -292,10 +312,16 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     public function implode($value, $glue = null): string
     {
         if (is_null($glue)) {
-            return implode($value, $this->items);
+            $values = array_map(fn ($item) => $item instanceof UnitEnum ? enum_val($item) : $item, $this->items);
+            return implode($value, $values);
         }
 
         return $this->pluck($value)->implode($glue);
+    }
+
+    public function toList(string $delimiter = '-'): string
+    {
+        return "{$delimiter} {$this->implode("<br/>{$delimiter} ")}";
     }
 
     public function reverse(bool $preserve_keys = true): self
@@ -313,9 +339,21 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         return new self(Arr::pluck($this->items, $key, $keyBy));
     }
 
-    public function map($func, bool $keepKeys = true): self
+    public function map(callable|string $func, bool $keepKeys = true): self
     {
         return new self(Arr::map($this->items, $func, $keepKeys));
+    }
+
+    /**
+     * Converts every item into given class|closure|enum. When closure is passed, the item will be replaced with its return value
+     */
+    public function castInto(callable|string $into): static
+    {
+        foreach ($this->items as &$item) {
+            $item = castInto($item, $into);
+        }
+
+        return $this;
     }
 
     public function unique($key = null): self
@@ -338,7 +376,6 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     {
         return $this->unique($key)->pluck($key);
     }
-
 
     public function zip(array $array): self
     {
@@ -371,6 +408,9 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         return $this->items;
     }
 
+    /**
+     * @return static<T>
+     */
     public function shuffle(): self
     {
         $items = $this->items;
@@ -381,7 +421,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
 
     public function dump(): void
     {
-        d($this->items);
+        dump($this->items);
     }
 
     public function replace($value, $replaceTo): self
@@ -432,6 +472,9 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         return count($this->items);
     }
 
+    /**
+     * @return ArrayIterator<T>
+     */
     public function getIterator(): ArrayIterator
     {
         return new ArrayIterator($this->items);
@@ -507,14 +550,26 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         });
     }
 
-    public function as(string $abstraction): self
+    /**
+     * @return static<T>
+     */
+    public function whereIn(string $key, array|Collection $items): static
     {
-        return $this->map(function ($item) use ($abstraction) {
-            if (enum_exists($abstraction)) {
-                return $abstraction::from($item);
-            }
-            return app()->make($abstraction, [$item]);
+        $items = $items instanceof Collection ? $items->all() : $items;
+
+        return $this->filter(function ($item) use ($items, $key) {
+            return in_array(Arr::getItemValue($item, $key), $items);
         });
+    }
+
+    /**
+     * @template A
+     * @param class-string<A> $abstraction
+     * @return static<A>
+     */
+    public function as(string $abstraction): static
+    {
+        return $this->map(fn($item) => castInto($item, $abstraction));
     }
 
     public function groupBy($key): self
@@ -543,9 +598,9 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         return new self(Arr::fromList($text, $separator));
     }
 
-    public static function fromJson(): static
+    public static function fromJson(string $json): static
     {
-        return new self(json_decode(...func_get_args()));
+        return new self(json_decode($json, true));
     }
 
     public static function fromJsonFile(string $fileName, ...$params): static
@@ -572,5 +627,25 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         }
 
         return null;
+    }
+
+    public function buildQuery(): string
+    {
+        return http_build_query($this->items);
+    }
+
+    public function sanitize(): Collection
+    {
+        $sanitized = collect();
+
+        foreach ($this->items as $key => $value) {
+            if (is_array($value)) {
+                $sanitized[$key] = collect($value)->sanitize()->all();
+            } else {
+                $sanitized[$key] = strip_tags($value);
+            }
+        }
+
+        return $sanitized;
     }
 }

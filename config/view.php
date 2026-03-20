@@ -3,7 +3,6 @@
 use App\Http\Components\AszfCheckBox;
 use App\Http\Components\ComponentParser;
 use App\Http\Components\FacebookShareButton;
-use App\Http\Components\FeaturedTitle;
 use App\Http\Components\FontawesomeIcon;
 use App\Http\Components\HoneyPotComponent;
 use App\Http\Components\OpenStreeMap;
@@ -13,12 +12,14 @@ use App\Http\Components\Selectors\JoinModeSelector;
 use App\Http\Components\Selectors\OccasionFrequencySelector;
 use App\Http\Components\Selectors\OnDaysSelector;
 use App\Http\Components\Selectors\SpiritualMovementSelector;
-use App\Http\Components\Selectors\UserGroupSelector;
+use App\Http\Components\Selectors\UserRoleSelector;
+use App\Portal\BreadCrumb\BreadCrumb;
+use App\Services\ReplayAttackProtection\Component;
 use App\Services\SystemAdministration\SiteMap\PrioritySelector;
 
 return [
     'view_sources' => [
-        'email_templates' => _env('STORAGE_PATH') . 'email_templates'
+        'email_templates' => env('STORAGE_PATH') . 'email_templates'
     ],
     'directives' => [
         'header' => function ($matches) {
@@ -35,10 +36,10 @@ return [
 
             return '<?php $__env->getSection()->add("footer", function($args) { extract($args); ?> ';
         },
-        'featuredTitle' => FeaturedTitle::class,
+//        'featuredTitle' => FeaturedTitle::class,
         'spiritual_movement_selector' => SpiritualMovementSelector::class,
         'join_mode_selector' => JoinModeSelector::class,
-        'user_group_selector' => UserGroupSelector::class,
+        'user_role_selector' => UserRoleSelector::class,
         'facebook_share_button' => FacebookShareButton::class,
         'alert' => function ($matches) {
             if (str_contains($matches[0], '@alert')) {
@@ -52,7 +53,7 @@ return [
                 return '<?php endif; ?>';
             }
 
-            return '<?php if(\App\Auth\Auth::loggedIn() && \App\Auth\Auth::user()->isAdmin()): ?>';
+            return '<?php if(\App\Auth\Auth::user()?->isAdmin()): ?>';
         },
         'upload' => function ($matches) {
             $file = str_replace("'", "", $matches[1]);
@@ -71,7 +72,17 @@ return [
         'component' => ComponentParser::class,
         'selected' => fn ($matches) => "<?php if($matches[1]): echo 'selected'; endif; ?>",
         'checked' => fn ($matches) => "<?php if($matches[1]): echo 'checked'; endif; ?>",
-        'dump' => fn($matches) => "<?php d($matches[1]); ?>"
+        'disabled' => fn ($matches) => "<?php if($matches[1]): echo 'disabled'; endif; ?>",
+        'dump' => fn($matches) => "<?php dump($matches[1]); ?>",
+        'csrf' => fn () => "<input type=\"hidden\" name=\"_token\" value=\"<?php echo csrf_token(); ?>\">",
+        'lazySrc' => function ($matches) {
+            $img = $matches[1] ?? '"/images/placeholder.webp"';
+            return "src={$img}";
+        },
+        'preload_css' => fn () => 'rel="preload" as="style" onload="this.onload=null;this.rel=\'stylesheet\'"  media="all"',
+        'og_image' => function ($matches) {
+            return "<?php echo og_image(" . ($matches[1] ?? '') . "); ?>";
+        }
     ],
     'components' => [
         'aszf' => AszfCheckBox::class,
@@ -80,6 +91,10 @@ return [
         'occasion_frequency_selector' => OccasionFrequencySelector::class,
         'priority_selector' => PrioritySelector::class,
         'open_street_map' => OpenStreeMap::class,
-        'base_selector' => BaseSelector::class
+        'base_selector' => BaseSelector::class,
+        'breadcrumb' => BreadCrumb::class,
+        'cathptcha' => App\Services\Cathptcha\Component::class,
+        'replay_attack' => Component::class,
+        'captcha' => \App\Services\Captcha\Cloudflare\Component::class
     ]
 ];

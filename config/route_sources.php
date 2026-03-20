@@ -1,7 +1,9 @@
 <?php
+$resources = root()->resources();
+
 return [
-    RESOURCES . 'routes' . DS . 'admin',
-    RESOURCES . 'routes' . DS . 'web',
-    RESOURCES . 'routes' . DS . 'api',
-    RESOURCES . 'routes' . DS . 'admin_api'
+    $resources->path('routes/admin.xml'),
+    $resources->path('routes/web.xml'),
+    $resources->path('routes/api.xml'),
+    $resources->path('routes/admin_api.xml')
 ];

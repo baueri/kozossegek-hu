@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services;
 
 use App\Models\ChurchGroupView;
@@ -11,10 +13,7 @@ final class SearchEngineKeywordCollector
 
     final public function __construct(private readonly ChurchGroupView $churchGroup)
     {
-        $this->keywords = collect(builder('v_group_tags')
-            ->select('tag_name')->where('group_id', $this->churchGroup->getId())
-            ->get())
-            ->pluck('tag_name');
+        $this->keywords = $this->churchGroup->tags->map->translate();
     }
 
     public function getKeywords(): Collection
@@ -25,7 +24,7 @@ final class SearchEngineKeywordCollector
             ->unique();
     }
 
-    private function collect()
+    private function collect(): void
     {
         $churchGroup = $this->churchGroup;
 
@@ -50,7 +49,7 @@ final class SearchEngineKeywordCollector
         }
 
         if ($text instanceof Collection) {
-            $text->each(fn ($word) => $this->pushWords((string) $text));
+            $text->each(fn ($word) => $this->pushWords((string) $word));
             return;
         }
 

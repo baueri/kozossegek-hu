@@ -1,22 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Helpers;
 
 use Framework\File\Enums\FileType;
+use Framework\File\Enums\SizeUnit;
 use Framework\File\File;
+use Framework\File\Path;
 use Framework\Support\Collection;
 
-/**
- * Description of FileHelper
- *
- * @author ivan
- */
 class FileHelper
 {
-
     /**
-     *
-     * @param Collection|File[] $files
+     * @param Collection<File> $files
      */
     public static function parseFilesToArray(Collection $files): array
     {
@@ -24,7 +21,7 @@ class FileHelper
             'name' => $file->getFileName(),
             'type' => $file->getFileType(),
             'main_type' => $file->getMainType(),
-            'size' => $file->getFileSize('MB', 2),
+            'size' => $file->getFileSize(SizeUnit::MB, 2),
             'path' => static::getPublicPathFor($file),
             'is_dir' => $file->isDir(),
             'url' => $file->isDir() ?
@@ -36,7 +33,7 @@ class FileHelper
         ])->all();
     }
 
-    public static function getIcon(File $file)
+    public static function getIcon(File $file): string
     {
         $type = $file->getMainType();
 
@@ -53,19 +50,35 @@ class FileHelper
         return '';
     }
 
-    /**
-     *
-     * @param File $file
-     * @return string
-     */
     public static function getPublicPathFor(File $file): string
     {
         $path = $file->getFilePath();
-        return str_replace(_env('STORAGE_PATH') . 'public', '/storage', $path);
+        return str_replace(env('STORAGE_PATH') . 'public', '/storage', $path);
     }
 
-    public static function getExtension(string $fileName)
+    public static function getExtension(string $fileName): string
     {
         return pathinfo($fileName, PATHINFO_EXTENSION);
+    }
+
+    public static function getBreadCrumb(Path $storage, string|null $dir): Collection
+    {
+        return collect([
+            ['name' => 'Feltöltések', 'path' => '']
+        ])->merge(Collection::fromList($dir, '/')->reverse()->map(function ($dir) {
+            return ['name' => basename($dir), 'path' => $dir];
+        }));
+    }
+
+    public static function sortFiles(array &$files): void
+    {
+        usort($files, function ($a, $b) {
+            if ($a['is_dir'] && !$b['is_dir']) {
+                return -1;
+            } elseif (!$a['is_dir'] && $b['is_dir']) {
+                return 1;
+            }
+            return strcasecmp($a['name'], $b['name']);
+        });
     }
 }

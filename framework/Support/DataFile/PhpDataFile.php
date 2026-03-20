@@ -1,27 +1,17 @@
 <?php
 
-
 namespace Framework\Support\DataFile;
-
 
 class PhpDataFile extends DataFile
 {
-    protected static $extension = 'php';
+    protected static ?string $extension = 'php';
 
-    /**
-     * @param $content
-     * @return array
-     */
     protected function parse($content)
     {
-        return $content ?: null;
+        return $content;
     }
 
-    /**
-     * @param $filename
-     * @return array
-     */
-    protected static function getContent($filename)
+    protected static function getContent(string $filename)
     {
         return include $filename;
     }

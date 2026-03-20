@@ -2,6 +2,7 @@
 
 namespace App\Portal\Controllers;
 
+use App\Enums\SocialProvider;
 use App\Mail\ResetPasswordEmail;
 use App\QueryBuilders\Users;
 use App\QueryBuilders\UserTokens;
@@ -15,17 +16,17 @@ use PHPMailer\PHPMailer\Exception;
 
 class UserController extends PortalController
 {
-    public function profile()
+    public function profile(): string
     {
         $user = Auth::user();
-
-        return view('portal.profile', compact('user'));
+        $socialProfiles = $user->socialProfiles;
+        return view('portal.profile', compact('user', 'socialProfiles'));
     }
 
-    public function update(Request $request, UpdateUser $service)
+    public function update(Request $request, UpdateUser $service): void
     {
         $user = Auth::user();
-        $changes = $request->only('name', 'email', 'phone_number');
+        $changes = $request->sanitize()->only('name', 'email', 'phone_number');
 
         $passwordChange = $request->only('old_password', 'new_password', 'new_password_again');
 
@@ -36,7 +37,7 @@ class UserController extends PortalController
         redirect_route('portal.my_profile');
     }
 
-    public function forgotPassword()
+    public function forgotPassword(): string
     {
         use_default_header_bg();
 
@@ -45,9 +46,8 @@ class UserController extends PortalController
 
     /**
      * @throws Exception
-     * @throws \Exception
      */
-    public function resetPassword(Request $request, Users $users, Mailer $mailer, UserTokens $userTokens)
+    public function resetPassword(Request $request, Users $users, Mailer $mailer, UserTokens $userTokens): void
     {
         $user = $users->byEmail($request['email'])->first();
 
@@ -76,7 +76,7 @@ class UserController extends PortalController
             return view('portal.error', ['message2' => 'Jelszó visszaállítás sikertelen! Hibás token.']);
         }
 
-        if (strtotime($token->expires_at) < time()) {
+        if ($token->expired()) {
             return view('portal.error', ['message2' => 'Ennek a tokennek az érvényességi ideje lejárt!']);
         }
 
@@ -85,7 +85,8 @@ class UserController extends PortalController
         if ($request->isPostRequestSent()) {
             $ok = $service->changePassword($user, $request->only('new_password', 'new_password_again'));
             if ($ok) {
-                $userTokens->delete($token);
+                $userTokens->deleteModel($token);
+                log_event('password_reset', ['user_id' => $user->getId()]);
                 Message::success('<b>Sikeres jelszócsere!</b> Most már be tudsz lépni az új jelszavaddal.');
                 Session::forget('last_visited');
                 redirect_route('login');
@@ -109,7 +110,7 @@ class UserController extends PortalController
                 return view('portal.error', ['message2' => 'Felhasználói aktiválása sikertelen! Hibás token.']);
             }
 
-            if (strtotime($token->expires_at) < time()) {
+            if ($token->expired()) {
                 return view('portal.error', ['message2' => 'Ennek a linknek az érvényességi ideje lejárt!']);
             }
 
@@ -120,7 +121,8 @@ class UserController extends PortalController
             }
 
             $users->save($user, ['activated_at' => date('Y-m-d H:i:s')]);
-            $userTokens->delete($token);
+            $userTokens->deleteModel($token);
+            log_event('user_activated', ['user_id' => $user->getId()]);
             Auth::logout();
             Auth::login($user);
             Message::success('Sikeres fiók aktiválás!');
@@ -130,5 +132,13 @@ class UserController extends PortalController
             process_error($e);
             raise_500('Felhasználó aktiválása nem sikerült');
         }
+    }
+
+    public function detachSocialProfile(SocialProvider $provider)
+    {
+        Auth::user()->socialProfiles()->where('social_provider', $provider)->delete();
+
+        Message::success(sprintf('A(z) "%s" közösségi fiókodat szétkapcsoltuk.', $provider->text()));
+        redirect_route('portal.my_profile');
     }
 }

@@ -1,11 +1,19 @@
 @section('header')
     @include('asset_groups.editor')
+    <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
+@endsection
+@section('title')
+    @include('admin.page.title-bar')
 @endsection
 @extends('admin')
 @if($page->deleted_at)
     @alert('danger')
         <b>Töröl oldal!</b>
     @endalert
+@endif
+@if($page->exists())
+    <a href="@route('admin.page.create', ['page_type' => $page_type])" class="btn btn-primary btn-sm mb-2">@icon('plus') Új bejegyzés</a>
 @endif
 <form method="post" action="{{ $action }}">
     <div class="row">
@@ -38,25 +46,38 @@
                     <option value="DRAFT" @selected($page->status == "DRAFT")>Piszkozat</option>
                 </select>
             </div>
-
-            <div class="form-group">
-                <label>Fejléc háttérkép</label>
-                <input type="text" class="form-control" name="header_image" value="{{ $page->header_image }}"/>
-            </div>
+            @if(!$page->exists())
+                <div class="form-group">
+                    <label>Típus</label>
+                    {{ $page_type }}
+                    <select name="page_type" class="form-control">
+                        <?php foreach (\App\Enums\PageType::cases() as $type): ?>
+                            <option value="<?= $type->value() ?>" @selected($page_type == $type->value())><?= $type->translate() ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            @endif
             <div class="form-group">
                 <label>Oldaltérkép prioritás</label>
                 @component('priority_selector', ['priority' => $page->priority])
+            </div>
+            <div class="form-group featured-image">
+                <label>Kiemelt kép</label><br/>
+                <button type="button" class="btn btn-secondary set-image mb-2">@icon('image') Kép kiválasztása</button>
+                <div class="selected-image py-4">
+                    <img src="{{ $page?->header_image }}" class="mb-2 image-preview"/>
+                </div>
+                <input type="text" class="form-control image-url" name="header_image" value="{{ $page->header_image }}"/>
             </div>
             @if($page)
                 <p>
                     <a href="{{ $page->getUrl() }}" target="_blank"><i class="fa fa-eye"></i> megtekintés</a>
                 </p>
             @endif
+            @csrf()
             <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Mentés</button>
         </div>
-
     </div>
-
 </form>
 <script>
 $(document).ready(function () {
@@ -76,6 +97,30 @@ $(document).ready(function () {
                 });
             }, 350);
         }
+    });
+
+    $(".set-image").click(() => {
+        selectImageFromMediaLibrary({
+            onSelect: (selected) => {
+                $(".selected-image").html("<img src='" + selected.src + "'/>");
+                $(".image-url").val(selected.src);
+            }
+        });
+    });
+
+    new Dropzone(".selected-image", {
+        url: "@route('admin.content.upload.upload_file')",
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr('content')
+        },
+        init: function () {
+            this.on("success", file => {
+                $(".selected-image img.image-preview").attr("src", file.xhr.response);
+                $(".image-url").val(file.xhr.response);
+                file.previewElement.remove();
+            });
+        },
+        // addedfile: f => { }
     });
 });
 </script>

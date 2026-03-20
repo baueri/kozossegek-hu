@@ -39,4 +39,30 @@ class PaginatedModelCollection extends ModelCollection implements PaginatedResul
     {
         return $this->perpage;
     }
+
+    public function links(): array
+    {
+        $totalPages = ceil($this->total / $this->perpage);
+        $url = fn (int $page) => '?' . request()->merge(['pg' => $page])->buildQuery();
+
+        $links = ['pages' => [], 'prev' => null, 'next' => null, 'first' => $url(1), 'last' => $url($totalPages)];
+        for ($i = 1; $i <= $totalPages; $i++) {
+            $links['pages'][$i] = $url($i);
+        }
+
+        if ($this->page > 1) {
+            $links['prev'] = $url($this->page - 1);
+        }
+
+        if ($this->page < $totalPages) {
+            $links['next'] = $url($this->page + 1);
+        }
+
+        return $links;
+    }
+
+    public function renderSmallPager(): string
+    {
+        return view('partials.simple-pager', ['route' => 'portal.news.page', 'total' => $this->total, 'page' => $this->page, 'perpage' => $this->perpage]);
+    }
 }

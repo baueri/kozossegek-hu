@@ -11,13 +11,34 @@ abstract class Command
 
     private array $args = [];
 
+    public readonly CommandOutput $output;
+
+    public readonly In $in;
+
     abstract public static function signature(): string;
 
     abstract public function handle();
 
+    public function __construct()
+    {
+        $this->output = new CommandOutput();
+        $this->in = new In();
+    }
+
+    public static function description(): string
+    {
+        return '';
+    }
+
     public function withArgs(array|string $args): static
     {
         $this->args = array_merge($this->args, (array) $args);
+        return $this;
+    }
+
+    public function silent(bool $silent = true): static
+    {
+        $this->output->silent($silent);
         return $this;
     }
 

@@ -8,11 +8,10 @@ use App\Auth\Auth;
 use App\Enums\SpiritualMovementType;
 use App\Models\SpiritualMovement;
 use App\QueryBuilders\ChurchGroups;
-use App\QueryBuilders\GroupViews;
+use App\QueryBuilders\ChurchGroupViews;
 use App\QueryBuilders\SpiritualMovements;
 use Framework\Http\Exception\PageNotFoundException;
 use Framework\Http\Request;
-use Framework\Http\View\Section;
 use Framework\Model\Exceptions\ModelNotFoundException;
 
 class SpiritualMovementController extends PortalController
@@ -61,7 +60,7 @@ class SpiritualMovementController extends PortalController
     /**
      * @throws PageNotFoundException
      */
-    public function view(GroupViews $groupViews): string
+    public function view(ChurchGroupViews $groupViews): string
     {
         try {
             /* @var $spiritualMovement SpiritualMovement */
@@ -72,20 +71,9 @@ class SpiritualMovementController extends PortalController
 
             $groups = $groupViews->query()
                 ->where('spiritual_movement_id', $spiritualMovement->id)
-                ->apply('active')
+                ->active()
+                ->with('tags')
                 ->get();
-
-            $groupids = $groups->getIds();
-
-            if ($groupids->isNotEmpty()) {
-                $group_tags = builder('v_group_tags')
-                    ->whereIn('group_id', $groupids->all())
-                    ->get();
-
-                if ($group_tags) {
-                    $groups->withMany($group_tags, 'tags', 'id', 'group_id');
-                }
-            }
 
             $title = $spiritualMovement->name;
 

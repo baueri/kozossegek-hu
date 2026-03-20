@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services;
 
 use Exception;
@@ -10,7 +12,7 @@ final class MileStone
 
     public static function measure(string $name, string $title = ''): void
     {
-        if (!debugbar()->enabled()) {
+        if (!env('DEBUG')) {
             return;
         }
 
@@ -24,9 +26,9 @@ final class MileStone
         ];
     }
 
-    public static function endMeasure(string $name)
+    public static function endMeasure(string $name): void
     {
-        if (!debugbar()->enabled()) {
+        if (!env('DEBUG')) {
             return;
         }
 

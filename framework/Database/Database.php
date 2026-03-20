@@ -10,7 +10,9 @@ interface Database
 
     public function select(string $query, array $bindings = []): array;
 
-    public function first(string $query, $bindings = []);
+    public function first(string $query, $bindings = []): object|array|null;
+
+    public function value(string $query, array $bindings);
 
     public function update($query, ...$params): int;
 
@@ -22,7 +24,7 @@ interface Database
 
     public function fetchColumn($query, $params = []);
 
-    public function lastInsertId();
+    public function lastInsertId(): bool|string;
 
     public function beginTransaction(): bool;
 

@@ -1,16 +1,89 @@
 @title('Verzióinformáció')
 @extends('admin')
-<h3>v3.0 (2023.02.27</h3>
+<h3>v5.0 (2026.03.14)</h3>
+<i>A legutolsó release notes óta sok fejlesztés kikerült, de nem lettek itt dokumentálva.</i>
+<ul>
+    <li><b>Gépház</b></li>
+    <li>[NEW]: újabb biztonsági frissítések<br/>
+        &nbsp;- Cloudflare captcha bekötése<br/>
+        &nbsp;- htaccess fájl feljavítása (hsts force, sql/zip/7z stb fájlelérések tiltása)<br/>
+        &nbsp;- Replay attack védelem, referer védelem</li>
+    <li>[NEW]: A "/"-re végződő uri kérések átirányítása "/" nélkülire</li>
+    <li>[NEW]: Keretrendszer nagyobb átstrukturálása, refaktorálása</li>
+    <li><b>Látogatói oldal</b></li>
+    <li>[ENHANCE]: kis design javítás</li>
+</ul>
+<h3>v4.0.2 (2023.09.28)</h3>
+<ul>
+    <li>[FIX] - page speed optimalizálások, képek tömörítése</li>
+</ul>
+<h3>v4.0.1 (2023.09.27)</h3>
+<ul>
+    <li>[FIX]: admin oldalon egy elem (közösség, felhasználó stb) törlése után a lista első oldalára ugrott</li>
+</ul>
+<h3>v4.0 (2023.06.18)</h3>
+<ul>
+    <li><b>Gépház</b></li>
+    <li>[NEW]: kozossegek.hu dockerizálva lett</li>
+    <li>[NEW]: Egy alap dump sql fájl lett generálva, amit telepítéskor be lehet importálni</li>
+    <li>[NEW]: Régi nem használt seederek kikerültek, új közösség seeder létre lett hozva</li>
+    <li>[NEW]: Projekt lokális telepítéséhez most már lehet használni az <code>install.php</code>-t</li>
+    <li>[CHANGE]: .env könyvtár le lett cserélve</li>
+    <li>[CHANGE]: README.md fájl átírásra került, (docker beüzemelés, keretrendszer bemutatása)</li>
+</ul>
+<h3>v3.2.2 (2023.04.13)</h3>
+<ul>
+    <li><b>Gépház</b></li>
+    <li>[FIX]: Néhány joghoz kötött API végpont levédése</li>
+    <li>[NEW]: CSRF védelem</li>
+    <li>[NEW]: Middleware aliasok megadása</li>
+    <li>[NEW]: Több middleware megadható `|`-vel elválasztva (pl, json|admin|csrf)</li>
+</ul>
+<h3>v3.2.1 (2023.03.31)</h3>
+<ul>
+    <li>[NEW]: Háttérfolyamatok (cron) listázása admin oldalon</li>
+    <li>[NEW]: User admin sorbarendezés utolsó belépés, regisztráció illetve aktiválás dátuma alapján</li>
+    <li>[NEW]: Közösségek admin oldalon megerősítés dátuma szerinti sorbarendezés</li>
+    <li>[FIX]: Közösség inaktiváló oldalon nemlétező mező mentése</li>
+</ul>
+<h3>v3.2.0 (2023.03.30)</h3>
+<ul>
+    <li>[NEW]: Megerősítő email küldés évenként</li>
+    <li>[CHANGE]: `pending` státusz megszüntetése a `status` enum mezőből</li>
+    <li>[CHANGE]: Figyelmeztető üzenet az automatikus (noreply) levelek végére, hogy ne válaszoljanak erre a címre.</li>
+    <li><b>Gépház</b></li>
+    <li>[NEW]: Időzóna beállítása manuálisan Europe/Budapest-re</li>
+    <li>[NEW]: `Collection::toList` függvény. Primitív tömbből generál sortöréses listát</li>
+    <li>[NEW]: SQL: Enum típusú mező is átadható az SQL lekérdezéseknek</li>
+    <li>[CHANGE]: `Mailable::send()` függvény `User` példányt is kaphat paraméterben</li>
+    <li>[CHANGE]: Nyelviesítésnél a nyelvi kulcs helyet lehet magyar szöveget is megadni. Ez esetben az angol verzióban a kulcs a magyar szöveg lesz.</li>
+</ul>
+<h3>v3.1.1 (2023.03.24)</h3>
+<ul>
+    <li>[FIX]: Csak olyan közösség hagyható jóvá, aminek a tulajdonosa megerősített user.</li>
+    <li><b>Gépház</b></li>
+    <li>[FIX]: Entitás mentésnél apró hibajavítás</li>
+</ul>
+<h3>v3.1.0 (2023.03.02)</h3>
+<ul>
+    <li><b>Gépház</b></li>
+    <li>[NEW]: console parancs futtatás "silent" módban</li>
+    <li>[CHANGE]: default console color</li>
+    <li>[FIX]: console command futása alatt küldött hiba email javítása</li>
+</ul>
+<h3>v3.0 (2023.02.27)</h3>
 <ul>
     <li>[NEW]: Szerzetesrendek menedzselése admin oldalon</li>
     <li>[NEW]: "Közösségekről mondták" rész a főoldalon</li>
     <li>[NEW]: Főoldal redesign</li>
+    <li>[NEW]: Todo admin oldal</li>
     <li>[NEW]: Felhasználó admin oldalon "online" mező</li>
     <li>[CHANGE]: Lelkiségi mozgalmak oldal redesign</li>
     <li><b>Gépház</b></li>
     <li>[NEW]: módosítás dátuma automatikus frissítése olyan tábla mentésekor, ahol ez a mező jelen van</li>
     <li>[NEW]: touch függvény az entity query builderbe</li>
     <li>[NEW]: Carbon típusú model mezők datetime-má alakítása db íráskor</li>
+    <li>[FIX]: Deprecated `utf8_encode` lecserélése</li>ű
 </ul>
 <h3>v2.4.1 (2023.01.13)</h3>
 <ul>
@@ -203,7 +276,7 @@
     </li>
     <li>[NEW]: Eseménynapló a gépházba</li>
     <li>[FIXED]: Email ellenőrző script-ben a reguláris kifejezés javítva lett</li>
-    <li>[CHANGED]: Látogatói oldalon (főoldalon és a 'közösséget keresek' oldalon a szűrő átalakításra került</li>
+    <li>[CHANGED]: Látogatói oldalon (főoldalon és a 'közösséget keresek' oldalon) a szűrő átalakításra került</li>
     <li>[CHANGED]: Most már csak akkor naplózzuk a kereséseket, ha valamilyen szűrőt alkalmazott a látogató</li>
     <li>[CHANGED]: Látogatói oldalon a 'Profilom' és 'Közösségeim' oldalak menüje vízszintesre lett alakítva, hogy több hely legyen.</li>
 </ul>

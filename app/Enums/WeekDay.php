@@ -2,6 +2,8 @@
 
 namespace App\Enums;
 
+use Framework\Traits\EnumTrait;
+
 enum WeekDay: string
 {
     use HasTranslation;
@@ -10,7 +12,7 @@ enum WeekDay: string
     case he = 'he';
     case ke = 'ke';
     case sze = 'sze';
-    case csut = 'csut';
+    case csu = 'csu';
     case pe = 'pe';
     case szo = 'szo';
     case vas = 'vas';

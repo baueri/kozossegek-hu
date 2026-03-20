@@ -2,8 +2,12 @@
 
 namespace App\QueryBuilders;
 
+use App\Enums\GroupStatus;
+use App\Enums\GroupPending;
 use App\Models\ChurchGroup;
 use App\Models\ChurchGroupView;
+use App\Models\GroupTag;
+use Framework\Database\Builder;
 use App\Models\User;
 use Framework\Model\EntityQueryBuilder;
 use Framework\Model\Relation\Has;
@@ -11,26 +15,45 @@ use Framework\Model\Relation\Relation;
 use Framework\Model\SoftDeletes;
 
 /**
- * @phpstan-extends EntityQueryBuilder<\App\Models\ChurchGroup>
+ * @phpstan-extends EntityQueryBuilder<ChurchGroup>
  */
 class ChurchGroups extends EntityQueryBuilder
 {
     use SoftDeletes;
 
-    public static function getModelClass(): string
-    {
-        return ChurchGroup::class;
-    }
+    public const GROUP_SEND_NOTIFICATION_AFTER = '12 MONTH';
+
+    public const GROUP_INACTIVATE_AFTER_NOTIFICATION = '1 MONTH';
 
     public function tags(): Relation
     {
-        return $this->has(Has::many, GroupTags::class);
+        return $this->has(Has::many, entity_builder(GroupTag::class), 'group_id');
+    }
+
+    public function manager(): Relation
+    {
+        return $this->has(Has::one, Users::class, 'id', 'user_id');
+    }
+
+    public function comment(): Relation
+    {
+        return $this->has(Has::one, GroupComments::class, 'group_id');
+    }
+
+    public function spiritualMovement(): Relation
+    {
+        return $this->has(Has::one, SpiritualMovements::class, 'id', 'spiritual_movement_id');
+    }
+
+    public function institute(): Relation
+    {
+        return $this->has(Has::one, Institutes::class, 'id', 'institute_id');
     }
 
     public function active(): static
     {
-        return $this->where('pending', 0)
-            ->where('status', 'active')
+        return $this->where('pending', GroupPending::confirmed)
+            ->where('status', GroupStatus::active)
             ->notDeleted();
     }
 
@@ -43,9 +66,13 @@ class ChurchGroups extends EntityQueryBuilder
 
     public function whereGroupTag(array $tags): static
     {
-        $innerQuery = builder('group_tags')->distinct()->select('group_id')->whereIn('tag', $tags);
-        $this->whereRaw("id in ($innerQuery)", $tags);
-        return $this;
+        return $this->whereHas('tags', fn (Builder|EntityQueryBuilder $query) => $query->whereIn('tag', $tags));
+    }
+
+    public function whereAgeGroup(string $ageGroup): static
+    {
+        $this->where('age_group', '<>', '');
+        return $this->whereRaw('FIND_IN_SET(?, age_group)', [$ageGroup]);
     }
 
     public function similarTo(ChurchGroupView $group): static
@@ -55,7 +82,7 @@ class ChurchGroups extends EntityQueryBuilder
             ->active();
 
         if ($group->tags) {
-            $tagQuery = fn (GroupTags $query) => $query->whereIn('tag', $group->tags->map->tag);
+            $tagQuery = fn (EntityQueryBuilder $query) => $query->whereIn('tag', $group->tags->map->tag);
             $this->with('tags', $tagQuery);
             $this->whereHas('tags', $tagQuery);
         }
@@ -68,12 +95,16 @@ class ChurchGroups extends EntityQueryBuilder
         return $this->where('user_id', $user->getId());
     }
 
-    public function editableBy(User $user): static
+    public function shouldNotify(): static
     {
-        return $this->whereExists(
-            builder('managed_church_groups')
-                ->whereRaw("group_id={$this->getTable()}.id")
-                ->where('user_id', $user->getId())
-        , null, 'or');
+        return $this
+            ->active()
+            ->whereRaw(sprintf('(notified_at IS NULL AND DATE(confirmed_at) < DATE_SUB(NOW(), INTERVAL %s))', self::GROUP_SEND_NOTIFICATION_AFTER));
+    }
+
+    public function shouldInactivate(): static
+    {
+        return $this->active()
+            ->whereRaw(sprintf('(DATE(notified_at) < DATE_SUB(NOW(), INTERVAL %s))', self::GROUP_INACTIVATE_AFTER_NOTIFICATION));
     }
 }

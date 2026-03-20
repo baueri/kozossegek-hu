@@ -1,0 +1,80 @@
+version: "3.3"
+
+services:
+  mysql:
+    container_name: kozossegek_mysql
+    image: mariadb:10.8.2
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./docker/mysql:/docker-entrypoint-initdb.d
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      TZ: Europe/Budapest
+    networks:
+      inner:
+        aliases:
+          - mysql
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: kozossegek_pma
+    links:
+      - mysql
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+    restart: always
+    ports:
+      - ${PMA_PORT}:80
+    networks:
+      inner:
+        aliases:
+          - pma
+    depends_on:
+      - mysql
+  app:
+    container_name: kozossegek_app
+    build:
+      context: ./
+      dockerfile: docker/app/Dockerfile
+    volumes:
+      - ./:/app
+      - ./docker/app/kozossegek.conf:/etc/apache2/sites-enabled/kozossegek.conf
+    environment:
+      - STORAGE_PATH=${STORAGE_PATH}
+    ports:
+      - "${APP_PORT}:8000"
+    networks:
+      inner:
+        aliases:
+          - kozossegek_app
+    depends_on:
+      - mysql
+      - meilisearch
+  meilisearch:
+    image: getmeili/meilisearch:v1.6
+    environment:
+      - http_proxy
+      - https_proxy
+      - MEILI_MASTER_KEY=${MEILI_MASTER_KEY}
+      - MEILI_NO_ANALYTICS=${MEILI_NO_ANALYTICS:-true}
+      - MEILI_ENV=${MEILI_ENV:-development}
+      - MEILI_LOG_LEVEL=${MEILI_LOG_LEVEL:-INFO}
+      - MEILI_DB_PATH=${MEILI_DB_PATH:-/data.ms}
+    ports:
+      - ${MEILI_PORT:-7700}:7700
+    networks:
+      inner:
+        aliases:
+          - meilisearch
+    restart: unless-stopped
+networks:
+  inner:
+    driver: bridge
+
+volumes:
+  db_data: {}

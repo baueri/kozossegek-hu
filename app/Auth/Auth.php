@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Auth;
 
 use App\Models\User;
@@ -19,9 +21,11 @@ final class Auth
         app()->make(LegalNoticeService::class)->setLegalNoticeSessionFor($user);
 
         db()->execute(
-            'replace into user_sessions (unique_id, user_id, created_at) values(?, ?, CURRENT_TIMESTAMP)',
+            'replace into user_sessions (unique_id, user_id, created_at, user_agent, ip_address) values(?, ?, CURRENT_TIMESTAMP, ?, ?)',
             session_id(),
-            $user->id
+            $user->id,
+            $_SERVER['HTTP_USER_AGENT'],
+            request()->clientIp()
         );
         db()->execute('update users set last_login=CURRENT_TIMESTAMP where id=?', $user->id);
 
@@ -36,9 +40,9 @@ final class Auth
 
         self::$user = null;
 
-        session_start();
-
         session_id(session_create_id());
+
+        session_start();
     }
 
     public static function loggedIn(): bool

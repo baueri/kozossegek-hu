@@ -1,19 +1,26 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Admin\Components\DebugBar;
 
 class LoadedViewsTab extends DebugBarTab
 {
     protected static array $loadedViews = [];
 
-    public static function addView(string $filePath, string $cachedFilePath)
+    public static function addView(string $filePath, string $cachedFilePath): void
     {
-        static::$loadedViews[] = [substr($filePath, strlen(ROOT)), basename($cachedFilePath)];
+        static::$loadedViews[] = [substr($filePath, strlen(root()->path())), basename($cachedFilePath)];
     }
 
-    public function getName(): string
+    public function getTitle(): string
     {
         return 'betöltött template-ek (' . count(static::$loadedViews) . ')';
+    }
+
+    public function icon(): string
+    {
+        return 'fa fa-code';
     }
 
     public function render(): string

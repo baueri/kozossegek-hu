@@ -1,4 +1,9 @@
 $(() => {
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
     $(".img-big").on("load", function () {
         $(this).css("opacity", "1");
     });
@@ -18,7 +23,103 @@ $(() => {
     $("#search-group select").on("change", function () {
         setAgeGroupClass();
     });
+
+    $(".navbar-nav > .nav-item > a").click(function () {
+        $(this).closest(".nav-item").toggleClass("open");
+        const submenu = $("> .submenu", $(this).closest(".nav-item"));
+        if (submenu.length) {
+            // submenu.toggleClass("open");
+        }
+    });
+
+    $("body").click((e) => {
+        if (!$(e.target).closest(".nav-item").length && $(e.target).attr("id") !== "login-existing-user" && $(e.target).closest("#login-existing-user").length === 0) {
+            $(".nav-item").removeClass("open");
+        }
+    });
+
+    if (meili_enabled) {
+        let search;
+        $(".api-group-search").on("keyup", function (e) {
+            let search_results = $(".search-results", $(this).closest("form"));
+
+            if (e.key === 'Escape') {
+                search_results.hide();
+                return;
+            } else if (e.key === 'ArrowDown') {
+                if ($(".group-result.selected", search_results).length === 0) {
+                    $(".group-result", search_results).first().addClass("selected");
+                } else {
+                    $(".group-result.selected", search_results).removeClass("selected").next().addClass("selected");
+                }
+                if ($(".group-result", search_results).length > 0) {
+                    search_results.show();
+                }
+                return;
+            } else if (e.key === 'ArrowUp') {
+                if ($(".group-result.selected", search_results).length === 0) {
+                    $(".group-result", search_results).last().addClass("selected");
+                } else {
+                    $(".group-result.selected", search_results).removeClass("selected").prev().addClass("selected");
+                }
+                return;
+            }
+
+            let $this = $(this);
+            if ($this.val().length < 3) {
+                $(".search-results-inner").html("");
+                search_results.hide();
+                return;
+            }
+
+            clearTimeout(search);
+
+            search = setTimeout(() => {
+                const q = $this.val();
+                const age_group = $("[name=korosztaly]").val();
+                $.get($this.attr("data-url"), {q, age_group}, function (resp) {
+                    if (resp.result.length > 0) {
+                        $(".search-results-inner", search_results).html(resp.result);
+                        search_results.show();
+                    } else {
+                        $(".search-results-inner").html("");
+                        search_results.hide();
+                    }
+                });
+            }, 300)
+        }).on("keydown", function (e) {
+            let search_results = $(".search-results", $(this).closest("form"));
+            if (e.key === 'Enter' && $(".group-result.selected", search_results).length > 0) {
+                window.location.href = $(".group-result.selected", search_results).attr("href");
+                e.preventDefault();
+            }
+        }).on("focusout", function() {
+            let search_results = $(".search-results", $(this).closest("form"));
+            setTimeout(() => search_results.hide(), 300)
+        }).on("focus", function () {
+            let search_results = $(".search-results", $(this).closest("form"));
+            if ($(".search-results-inner").html().length > 0) {
+                search_results.show();
+            }
+        });
+    }
 });
+
+// $(window).on("load scroll", () => {
+//     if ($(window).scrollTop() > 0 || typeof window.orientation !== 'undefined') {
+//         $(".navbar").addClass("compact");
+//     } else {
+//         $(".navbar").removeClass("compact");
+//     }
+// });
+
+$(window).on("resize", () => {
+    mobile_menu("close");
+})
+
+function mobile_menu(action) {
+    $("#toggle_main_menu").prop("checked", action === "open")
+}
 
 function setAgeGroupClass()
 {
@@ -29,14 +130,6 @@ function setAgeGroupClass()
         sel.removeClass("has-val");
     }
 }
-
-$(window).on("load scroll", () => {
-    if ($(window).scrollTop() > 0 || typeof window.orientation !== 'undefined') {
-        $(".navbar").addClass("compact");
-    } else {
-        $(".navbar").removeClass("compact");
-    }
-});
 
 $.fn.instituteSelect = function (options) {
     $(this).each(function () {
@@ -114,7 +207,7 @@ const loadFile = function (event, element) {
 
 function detectmob()
 {
-    return ((window.innerWidth <= 800) && (window.innerHeight <= 600));
+    return (window.innerWidth <= 991);
 }
 
 function validate_email(mail)
@@ -135,7 +228,7 @@ function validate_email(mail)
 
     cookieAlert.offsetHeight; // Force browser to trigger reflow (https://stackoverflow.com/a/39451131)
 
-    // Show the alert if we cant find the "acceptCookies" cookie
+    // Show the alert if we can't find the "acceptCookies" cookie
     if (!getCookie("acceptCookies")) {
         cookieAlert.classList.add("show");
     }
@@ -178,25 +271,14 @@ function validate_email(mail)
 })();
 
 
-function showLoginModal(redirectUrlAfterLogin)
+function showLoginModal()
 {
-    $.post("/login-modal", {redirect: redirectUrlAfterLogin}, html => {
-        dialog.show({
-            size: "sm",
-            type: "info",
-            title: "Belépés",
-            message: html,
-            buttons: [
-                {
-                    text: "Bezár",
-                    cssClass: "btn btn-default",
-                    action(dialog) {
-                        dialog.close();
-                    }
-            }
-            ]
-        });
-    });
+    if (detectmob()) {
+        mobile_menu("open");
+        $("#popup-login-username").focus();
+    } else {
+        $("label[for='popup-login-username']").closest(".nav-item").addClass("open");
+    }
 }
 
 function resendActivationEmail(emailAddress)
@@ -215,3 +297,34 @@ function resendActivationEmail(emailAddress)
         }
     });
 }
+
+const ElementLazyLoaded = new Event("ElementLazyLoaded");
+
+document.addEventListener("DOMContentLoaded", function() {
+    let lazyElements = [].slice.call(document.querySelectorAll(".lazy"));
+
+    if ("IntersectionObserver" in window) {
+        let lazyElementObserver = new IntersectionObserver(function(entries, observer) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    let lazyElement = entry.target;
+                    switch (lazyElement.tagName) {
+                        case "IMG":
+                            lazyElement.src = lazyElement.dataset.src;
+                            lazyElement.srcset = lazyElement.dataset.srcset;
+                            break;
+                    }
+                    lazyElement.dispatchEvent(ElementLazyLoaded);
+                    lazyElement.classList.remove("lazy");
+                    lazyElementObserver.unobserve(lazyElement);
+                }
+            });
+        });
+
+        lazyElements.forEach(function(lazyElement) {
+            lazyElementObserver.observe(lazyElement);
+        });
+    } else {
+        // Possibly fall back to event handlers here
+    }
+});

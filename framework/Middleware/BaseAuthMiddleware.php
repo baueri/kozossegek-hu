@@ -4,7 +4,7 @@ namespace Framework\Middleware;
 
 use Framework\Auth\BaseAuth;
 
-class BaseAuthMiddleware implements Middleware
+class BaseAuthMiddleware implements Before
 {
     private BaseAuth $auth;
 
@@ -13,7 +13,10 @@ class BaseAuthMiddleware implements Middleware
         $this->auth = $auth;
     }
 
-    public function handle(): void
+    /**
+     * @throws \Framework\Exception\UnauthorizedException
+     */
+    public function before(): void
     {
         if (!config('app.base_auth')) {
             return;

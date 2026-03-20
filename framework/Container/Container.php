@@ -5,13 +5,13 @@ namespace Framework\Container;
 use Closure;
 use Framework\Container\Exceptions\AbstractionAlreadySharedException;
 use Framework\Container\Exceptions\AlreadyBoundException;
-use Framework\Database\Database;
 use InvalidArgumentException;
 use Psr\Container\ContainerInterface;
 use ReflectionFunction;
 use ReflectionFunctionAbstract;
 use ReflectionMethod;
 use ReflectionParameter;
+use UnitEnum;
 
 class Container implements ContainerInterface
 {
@@ -25,8 +25,13 @@ class Container implements ContainerInterface
      * @throws AbstractionAlreadySharedException
      * @throws AlreadyBoundException
      */
-    public function singleton(string $abstraction, Closure|string|null $concrete = null): void
+    public function singleton(array|string $abstraction, Closure|string|null $concrete = null): void
     {
+        if (is_array($abstraction)) {
+            array_walk($abstraction, fn ($concrete, $abstraction) => $this->singleton($abstraction, $concrete));
+            return;
+        }
+
         if ($this->isSingletonRegistered($abstraction)) {
             throw new AbstractionAlreadySharedException("$abstraction is already registered");
         }
@@ -45,13 +50,21 @@ class Container implements ContainerInterface
         return in_array($abstraction, $this->singletons);
     }
 
-    public function bind($abstraction, $concrete): void
+    /**
+     * @throws AlreadyBoundException
+     */
+    public function bind(string|array $abstraction, $concrete = null, bool $override = false): void
     {
+        if (is_array($abstraction)) {
+            array_walk($abstraction, fn ($concrete, $abstraction) => $this->bind($abstraction, $concrete, $override));
+            return;
+        }
+
         if (!$abstraction) {
             throw new InvalidArgumentException('abstraction name must not be empty');
         }
 
-        if ($this->isBindingRegistered($abstraction)) {
+        if ($this->isBindingRegistered($abstraction) && !$override) {
             throw new AlreadyBoundException("$abstraction already has a binding");
         }
 
@@ -86,7 +99,7 @@ class Container implements ContainerInterface
         $this->shared[$key][] = $value;
     }
 
-    public function has($id)
+    public function has($id): bool
     {
         return isset($this->shared[$id]);
     }
@@ -101,16 +114,16 @@ class Container implements ContainerInterface
     }
 
     /**
-     * @template T
-     * @param string|T $abstraction
-     * @return T
+     * @phpstan-template T
+     * @phpstan-param class-string<T> $abstraction
+     * @phpstan-return T
      */
     public function make(string $abstraction, ?array $args = [])
     {
         $binding = $this->getBinding($abstraction);
 
         if (is_callable($binding)) {
-            return $binding(...$this->getDependencies($binding));
+            return $binding(...$this->getDependencies($binding, resolvedDependencies: $args));
         }
 
         if (interface_exists($binding)) {
@@ -122,10 +135,6 @@ class Container implements ContainerInterface
         return new $binding(...$args);
     }
 
-    /**
-     * @param $binding
-     * @return mixed
-     */
     protected function getBinding($binding)
     {
         if ($this->isBindingRegistered($binding)) {
@@ -154,9 +163,9 @@ class Container implements ContainerInterface
         return $this->getFallback($parent);
     }
 
-    private function getDependencies($class, string $method = '__construct', ?array $resolvedDependencies = []): array
+    public function getDependencies($class, string $method = '__construct', ?array $resolvedDependencies = []): array
     {
-        if (!method_exists($class, $method) && !function_exists($class)) {
+        if (!method_exists($class, $method) && !is_callable($class) && !$class instanceof Closure) {
             return [];
         }
 
@@ -179,7 +188,7 @@ class Container implements ContainerInterface
 
     private function getReflectionMethod($abstract, string $method = '__construct'): ?ReflectionFunctionAbstract
     {
-        if ($abstract instanceof Closure || (is_string($abstract) && function_exists($abstract))) {
+        if ($abstract instanceof Closure || (is_string($abstract) && is_callable($abstract))) {
             return new ReflectionFunction($abstract);
         }
 
@@ -190,18 +199,16 @@ class Container implements ContainerInterface
         return new ReflectionMethod($abstract, $method);
     }
 
-    /**
-     * @param ReflectionParameter $resource
-     * @return mixed
-     */
     private function getDependencyResourceValue(ReflectionParameter $resource)
     {
         $value = null;
-
         if ($resource->hasType()) {
             $resourceType = $resource->getType()->getName();
+
             if ($resource->isDefaultValueAvailable()) {
                 $value = $resource->getDefaultValue();
+            } elseif (is_subclass_of($resourceType, UnitEnum::class) && $requestValue = request()->get($resource->name) ?? request()->getUriValue($resource->name)) {
+                $value = constant("{$resourceType}::{$requestValue}");
             } else {
                 $value = $this->get($resourceType);
             }
@@ -221,10 +228,6 @@ class Container implements ContainerInterface
         return interface_exists($name) || class_exists($name);
     }
 
-    /**
-     * @param string $key
-     * @param mixed $value
-     */
     public function share(string $key, $value): void
     {
         $this->shared[$key] = $value;
@@ -235,12 +238,14 @@ class Container implements ContainerInterface
         return $this->bindings;
     }
 
-    /**
-     * @param mixed $concrete
-     * @return mixed
-     */
-    public function resolve($concrete, string $method = '__construct')
+    public function resolve($concrete, ?string $method = null)
     {
+        if (is_callable($concrete)) {
+            return call_user_func_array($concrete, $this->getDependencies($concrete, '__invoke'));
+        }
+
+        $method ??= '__construct';
+
         return call_user_func_array([$concrete, $method], $this->getDependencies($concrete, $method));
     }
 }

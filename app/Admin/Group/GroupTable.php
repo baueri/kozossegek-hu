@@ -1,25 +1,33 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Admin\Group;
 
-use App\Admin\Components\AdminTable\AdminTable;
-use App\Admin\Components\AdminTable\Deletable;
+use App\Admin\Components\AdminTable\PaginatedAdminTable;
 use App\Admin\Components\AdminTable\Editable;
+use App\Admin\Components\AdminTable\Traits\Destroyable;
+use App\Admin\Components\AdminTable\Traits\SoftDeletable;
 use App\Enums\GroupStatus;
 use App\Models\ChurchGroupView;
+use App\Models\GroupComment;
 use App\Services\GroupSearchRepository;
 use Framework\Database\PaginatedResultSetInterface;
 use Framework\Http\Request;
 use Framework\Model\Entity;
 use Framework\Support\StringHelper;
 
-class GroupTable extends AdminTable implements Editable, Deletable
+class GroupTable extends PaginatedAdminTable implements Editable
 {
+    use Destroyable;
+    use SoftDeletable;
+
     protected array $columns = [
         'id' => '#',
         'image' => '<i class="fa fa-image" title="Fotó"></i>',
         'view' => '<i class="fa fa-eye" title="Megtekintés a honlapon"></i>',
         'name' => 'Közösség neve',
+        'comment' => '<i class="fa fa-comment" title="Megjegyzés"></i>',
         'pending' => '<i class="fa fa-thumbs-up" title="Jóváhagyva"></i>',
         'status' => '<i class="fa fa-check-circle" title="Aktív"></i>',
         'document' => '<i class="fa fa-file-word" title="Van feltöltött intézményvezetői igazolása"></i>',
@@ -28,16 +36,22 @@ class GroupTable extends AdminTable implements Editable, Deletable
         'group_leaders' => 'Közösség vezető(i)',
         'age_group' => 'Korosztály',
         'created_at' => 'Létrehozva',
+        'confirmed_at' => 'Megerősítve',
     ];
 
-    protected array $centeredColumns = ['status', 'pending', 'document', 'view', 'image'];
+    protected array $centeredColumns = ['status', 'pending', 'document', 'view', 'image', 'created_at', 'confirmed_at'];
 
-    protected array $sortableColumns = ['id', 'status', 'pending', 'document', 'created_at'];
+    protected array $sortableColumns = ['id', 'status', 'pending', 'document', 'created_at', 'confirmed_at'];
 
     protected array $columnClasses = ['age_group' => 'd-none d-xl-table-cell'];
 
-    public function __construct(Request $request, private GroupSearchRepository $repository)
-    {
+    protected string $emptyTrashRoute = 'admin.group.empty_trash';
+
+    public function __construct(
+        Request $request,
+        protected readonly GroupSearchRepository $repository
+    ) {
+        $this->trashView = $request->route->getAs() == 'admin.group.trash';
         parent::__construct($request);
     }
 
@@ -53,11 +67,22 @@ class GroupTable extends AdminTable implements Editable, Deletable
         return "<span title='{$fullDate}'>{$date}</span>";
     }
 
+    public function getConfirmedAt($confirmedAt, ChurchGroupView $groupView): string
+    {
+        if (!$confirmedAt) {
+            return '-';
+        }
+        $fullDate = date('Y.m.d H:i', strtotime($confirmedAt));
+        $date = date('Y.m.d', strtotime($confirmedAt));
+
+        return "<span title='{$fullDate}'>{$date}</span>";
+    }
+
     public function getStatus($status): string
     {
         $status = GroupStatus::from($status);
 
-        return "<i class='{$status->class()}'></i>";
+        return "<i class='{$status->class()} title='{$status->translate()}'></i>";
     }
 
     public function getInstituteName($instituteName, ChurchGroupView $group): string
@@ -100,11 +125,11 @@ class GroupTable extends AdminTable implements Editable, Deletable
     protected function getData(): PaginatedResultSetInterface
     {
         return $this->repository->search($this->request->merge([
-            'deleted' => $this->request->route->getAs() == 'admin.group.trash'
-        ]), $this->perpage);
+            'deleted' => $this->trashView
+        ]))->with('comment')->paginate($this->perpage);
     }
 
-    public function getDeleteUrl($model): string
+    public function getSoftDeleteLink($model): string
     {
         return route('admin.group.delete', $model);
     }
@@ -147,5 +172,19 @@ class GroupTable extends AdminTable implements Editable, Deletable
     private function getListUrl(array $params = []): string
     {
         return route('admin.group.list', $params);
+    }
+
+    public function getDestroyLink($model)
+    {
+        return route('admin.group.destroy', $model);
+    }
+
+    public function getComment(?GroupComment $comment): string
+    {
+        if (!$comment) {
+            return '';
+        }
+
+        return $this->getIcon('fa fa-comment text-warning', $comment->comment ?? '');
     }
 }

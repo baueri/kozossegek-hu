@@ -6,7 +6,7 @@ final class AddActivatedAtColumnToUsersTable extends \App\Migration\AppMigration
     public function up(): void
     {
         $this->table('users')
-            ->timestamp('activated_at')
+            ->datetime('activated_at')
             ->save();
     }
 

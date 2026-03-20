@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services\SystemAdministration\SiteMap;
 
+use App\Services\SystemAdministration\SiteMap\Repositories\Institutes;
 use App\Services\SystemAdministration\SiteMap\Repositories\ChurchGroups;
 use App\Services\SystemAdministration\SiteMap\Repositories\PopularCities;
 use App\Services\SystemAdministration\SiteMap\Repositories\SpiritualMovementRepository;
@@ -10,12 +13,12 @@ use App\Services\SystemAdministration\SiteMap\Repositories\StaticPages;
 use Framework\Support\Collection;
 use SimpleXMLElement;
 
-class SiteMapGenerator
+readonly class SiteMapGenerator
 {
     /**
-     * @var Repository[]
+     * @var class-string<Repository>[]
      */
-    private readonly array $repositories;
+    private array $repositories;
 
     public function __construct()
     {
@@ -23,7 +26,8 @@ class SiteMapGenerator
             StaticPages::class,
             SpiritualMovementRepository::class,
             ChurchGroups::class,
-            PopularCities::class
+            Institutes::class,
+            PopularCities::class,
         ];
     }
 
@@ -38,11 +42,11 @@ class SiteMapGenerator
         }
         $urls->sort('priority', 'desc');
 
-        file_put_contents(ROOT . 'public/sitemap.xml', $this->generateSiteMap($urls));
+        file_put_contents(app()->pub_path('sitemap.xml'), $this->generateSiteMap($urls));
     }
 
     /**
-     * @param \App\Services\SystemAdministration\SiteMap\SiteMapUrl[]|Collection $siteMapUrls
+     * @param SiteMapUrl[]|Collection $siteMapUrls
      */
     private function generateSiteMap(array|Collection $siteMapUrls): string
     {

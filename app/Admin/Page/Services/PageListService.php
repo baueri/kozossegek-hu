@@ -10,10 +10,10 @@ class PageListService
 {
     public function show(PageTable $table): string
     {
+        $page_type = $table->request->get('page_type', 'page');
         $is_trash = $table instanceof TrashPageTable;
 
         $filter = $table->request;
-        $trash_count = Pages::query()->trashed()->count();
-        return view('admin.page.list', compact('table', 'is_trash', 'filter', 'trash_count'));
+        return view('admin.page.list', compact('table', 'is_trash', 'filter', 'page_type'));
     }
 }

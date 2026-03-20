@@ -4,13 +4,13 @@ namespace App\Console\Commands;
 
 use App\Services\Statistics\EventLogAggregator;
 use Framework\Console\Command;
-use Framework\Console\Out;
 
 class AggregateLogsCommand extends Command
 {
     public function __construct(
         private readonly EventLogAggregator $aggregator
     ) {
+        parent::__construct();
     }
 
     public static function signature(): string
@@ -18,13 +18,18 @@ class AggregateLogsCommand extends Command
         return 'log:aggregate';
     }
 
+    public static function description(): string
+    {
+        return 'Aggregálja a még fel nem dolgozott eseménynapló bejegyzéseket.';
+    }
+
     public function handle(): void
     {
-        Out::info('aggregating event logs..');
+        $this->output->info('aggregating event logs..');
         if (!$this->aggregator->run()) {
-            Out::warning('no new logs aggregated.');
+            $this->output->warning('no new logs aggregated.');
             return;
         }
-        Out::success('done.');
+        $this->output->success('done.');
     }
 }

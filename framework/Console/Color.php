@@ -4,6 +4,7 @@ namespace Framework\Console;
 
 enum Color: string
 {
+    case default = '0;39';
     case white = '1;37';
     case black = '0;30';
     case red = '0;31';

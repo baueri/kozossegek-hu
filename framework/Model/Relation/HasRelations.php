@@ -22,8 +22,8 @@ trait HasRelations
 
     protected function getRelationName(): string
     {
-        $bactrace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT | DEBUG_BACKTRACE_IGNORE_ARGS, 3);
-        return $bactrace[2]['function'];
+        $backtrace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT | DEBUG_BACKTRACE_IGNORE_ARGS, 3);
+        return $backtrace[2]['function'];
     }
 
     public function with(string $relation, $callback = null): static
@@ -42,8 +42,16 @@ trait HasRelations
     public function whereHas(string $relationName, $callback = null): static
     {
         $relation = $this->getRelation($relationName, $callback);
-        $relation->queryBuilder->whereRaw("{$relation->queryBuilder->getTable()}.{$relation->foreginKey}={$this->getTable()}.{$relation->localKey}");
+        $relation->queryBuilder->whereRaw("{$relation->queryBuilder->getTable()}.{$relation->foreignKey}={$this->getTable()}.{$relation->localKey}");
         $this->whereExists($relation->queryBuilder);
+        return $this;
+    }
+
+    public function whereDoesntHave(string $relationName, $callback = null): static
+    {
+        $relation = $this->getRelation($relationName, $callback);
+        $relation->queryBuilder->whereRaw("{$relation->queryBuilder->getTable()}.{$relation->foreignKey}={$this->getTable()}.{$relation->localKey}");
+        $this->whereDoesntExist($relation->queryBuilder);
         return $this;
     }
 
@@ -57,6 +65,9 @@ trait HasRelations
         return $rel;
     }
 
+    /**
+     * @phpstan-return Collection<Relation>
+     */
     protected function getPreparedRelations(): Collection
     {
         return $this->preparedRelations ??= collect();

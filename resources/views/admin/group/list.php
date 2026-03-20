@@ -106,7 +106,7 @@
             }
         });
         $("[name=korosztaly]").select2({
-            placeholder: "korosztály",
+            placeholder: "@lang('age_group')",
             allowClear: true,
         });
         $("[name=rendszeresseg]").select2({

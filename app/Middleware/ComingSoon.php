@@ -3,12 +3,12 @@
 namespace App\Middleware;
 
 use Framework\Http\Session;
-use Framework\Middleware\Middleware;
+use Framework\Middleware\Before;
 use App\Auth\Auth;
 
-class ComingSoon implements Middleware
+class ComingSoon implements Before
 {
-    public function handle(): void
+    public function before(): void
     {
         if (array_key_exists('29Y1L', $_REQUEST)) {
             Session::set('test_mode', true);

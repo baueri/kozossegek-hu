@@ -1,30 +1,33 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Framework\Model\Relation;
 
 use Framework\Database\Builder;
+use Framework\Model\Entity;
 use Framework\Model\EntityQueryBuilder;
 use Framework\Support\Collection;
 
-class Relation
+readonly class Relation
 {
-    public readonly ?string $foreginKey;
+    public ?string $foreignKey;
 
-    public readonly ?string $localKey;
+    public ?string $localKey;
 
     public function __construct(
-        public readonly Has $relationType,
-        public readonly EntityQueryBuilder|Builder $queryBuilder,
-        public readonly string $relationName,
+        public Has $relationType,
+        public EntityQueryBuilder|Builder $queryBuilder,
+        public string $relationName,
         ?string $foreignKey = null,
         ?string $localKey = null,
     ) {
-        $this->localKey = $localKey ?? $queryBuilder::primaryCol();
-        $this->foreginKey = $foreignKey ?? $this->relationName . '_id';
+        $this->localKey = $localKey ?? $queryBuilder->primaryCol();
+        $this->foreignKey = $foreignKey ?? $this->relationName . '_id';
     }
 
-    public function buildQuery(Collection $instances): EntityQueryBuilder|Builder
+    public function buildQuery(Collection|Entity $instances): EntityQueryBuilder|Builder
     {
-        return $this->queryBuilder->whereIn($this->foreginKey, $instances->pluck($this->localKey));
+        return $this->queryBuilder->whereIn($this->foreignKey, collect($instances)->pluck($this->localKey)->unique()->filter());
     }
 }

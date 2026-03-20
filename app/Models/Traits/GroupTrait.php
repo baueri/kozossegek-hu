@@ -5,10 +5,15 @@ namespace App\Models\Traits;
 use App\Enums\AgeGroup;
 use App\Enums\Denomination;
 use App\Enums\OccasionFrequency;
+use App\Enums\GroupPending;
 use App\Enums\WeekDay;
 use App\Enums\GroupStatus;
 use App\Enums\JoinMode;
+use App\Models\Institute;
+use App\Portal\BreadCrumb\BreadCrumb;
 use App\Helpers\GroupHelper;
+use App\Models\GroupComment;
+use App\Models\GroupTag;
 use App\Models\User;
 use App\Services\SystemAdministration\SiteMap\EntitySiteMappable;
 use Framework\File\File;
@@ -16,6 +21,11 @@ use Framework\Model\HasTimestamps;
 use Framework\Support\Collection;
 use Framework\Support\StringHelper;
 
+/**
+ * @property-read ?Institute $institute
+ * @property-read ?Collection<GroupTag> $tags
+ * @property-read ?GroupComment $comment
+ */
 trait GroupTrait
 {
     use EntitySiteMappable;
@@ -26,7 +36,7 @@ trait GroupTrait
     public function ageGroup(): string
     {
         if ($this->getAgeGroups()->count() > 1) {
-            return 'vegyes';
+            return lang('age_group.vegyes');
         }
 
         return (string) $this->getAgeGroups()->first()?->translate();
@@ -83,19 +93,17 @@ trait GroupTrait
         return GroupHelper::getStoragePath($this->id);
     }
 
-
-    public function joinMode(): string
+    public function joinMode(): ?JoinMode
     {
-        return JoinMode::getText($this->join_mode) ?? '';
+        if (!$this->join_mode) {
+            return null;
+        }
+        return JoinMode::from($this->join_mode);
     }
 
-    /**
-     * @todo képmentést megoldani!!!
-     * @return boolean [description]
-     */
-    public function hasImage(): bool
+    public function joinModeText(): ?string
     {
-        return false;
+        return $this->joinMode()?->translate();
     }
 
     public function isVisibleBy(?User $user): bool
@@ -155,11 +163,14 @@ trait GroupTrait
         return $this->pending == -1;
     }
 
-    public function pendingStatusIs(int $status): bool
+    public function pendingStatusIs(int|GroupPending $status): bool
     {
+        $status = $status instanceof GroupPending ? (int) $status->value() : $status;
+
         if (is_null($this->pending)) {
             return false;
         }
+
         return (int) $this->pending === $status;
     }
 
@@ -171,5 +182,58 @@ trait GroupTrait
     public function getUrl(): string
     {
         return $this->url();
+    }
+
+    public function getBreadCrumb(): BreadCrumb
+    {
+        $breadCrumbs = [
+            ['name' => 'Közösségek', 'position' => 1, 'url' => route('portal.groups')],
+            [
+                'name' => $this->city,
+                'position' => 2,
+                'url' => route('portal.groups', ['varos' => $this->city])
+            ],
+            [
+                'name' => $this->institute_name,
+                'position' => 3,
+                'url' => $this->institute?->groupsUrl()
+            ],
+            [
+                'name' => $this->name,
+                'position' => 4
+            ]
+        ];
+
+        return new BreadCrumb($breadCrumbs);
+    }
+
+    public function toSearchResult(): array
+    {
+        $data = $this->only([
+            'id',
+            'name',
+            'city',
+            'institute_name',
+            'institute_name2',
+            'spiritual_movement',
+            'group_leaders',
+            'description',
+            'institute_id',
+            'confirmed_at',
+            'spiritual_movement_id',
+            'district',
+        ]);
+
+        $data['age_group'] = $this->getAgeGroups()->pluck('name')->all();
+        $data['age_group_text'] = $this->getAgeGroups()->map->translate()->all();
+        $data['join_mode'] = $this->joinModeText();
+        $data['on_days'] = $this->getDays()->map->translate()->all();
+        $data['occasion_frequency'] = $this->occasionFrequency();
+        $data['tags'] = $this->tags->keyBy('tag')->map->translate()->all();
+        $data['tag_ids'] = $this->tags->pluck('tag')->all();
+        $data['url'] = $this->url();
+        $data['thumbnail'] = $this->getThumbnail();
+
+        return $data;
     }
 }

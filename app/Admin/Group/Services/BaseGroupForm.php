@@ -6,7 +6,9 @@ use App\Enums\AgeGroup;
 use App\Enums\GroupStatus;
 use App\Enums\JoinMode;
 use App\Enums\OccasionFrequency;
+use App\Enums\Tag;
 use App\Models\ChurchGroupView;
+use App\QueryBuilders\ChurchGroups;
 use App\QueryBuilders\Institutes;
 use App\QueryBuilders\Users;
 use Framework\Http\Request;
@@ -28,15 +30,15 @@ class BaseGroupForm
         $age_groups = AgeGroup::cases();
         $action = $this->getAction($group);
         $spiritual_movements = db()->select('select * from spiritual_movements order by name');
-        $tags = builder('tags')->get();
+        $tags = Tag::collect();
         $age_group_array = $group->getAgeGroups();
-        $group_tags = collect(builder('v_group_tags')
-            ->apply('whereGroupId', $group->id)->get())
-            ->pluck('tag')->all();
+        $group_tags = $group->tags->pluck('tag')->all();
         $group_days = $group->getDays();
         $title = $group->exists() ? 'Közösség módosítása' : 'Új közösség létrehozása';
         $owner = $this->users->find($group->user_id);
-        $join_modes = JoinMode::getModesWithName();
+        $join_modes = JoinMode::cases();
+        $comment = $group?->comment;
+        $lastCommenter = $comment?->lastCommenter->name;
 
         return compact(
             'group',
@@ -52,7 +54,9 @@ class BaseGroupForm
             'group_days',
             'title',
             'owner',
-            'join_modes'
+            'join_modes',
+            'comment',
+            'lastCommenter'
         );
     }
 

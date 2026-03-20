@@ -1,15 +1,12 @@
-<?php use_default_header_bg(); ?>
-@section('header_content')
-    @featuredTitle('Új jelszó igénylése')
-@endsection
 @extends('portal')
-<div class="container inner p-3">
+@featuredTitle('Új jelszó igénylése')
+<div class="container inner py-5">
     @message()
     <p>
         Add meg a fiókodhoz tartozó email címedet, amire küldünk egy levelet a további lépésekkel kapcsolatban!
     </p>
     <form method="post" class="row" action="@route('portal.reset_password')">
-
+        @csrf()
         <div class="col-md-4">
             <div class="form-group required">
                 <label>Email címed</label>

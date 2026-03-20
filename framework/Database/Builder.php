@@ -1,11 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Framework\Database;
 
+use BackedEnum;
+use BadMethodCallException;
 use Closure;
 use DateTimeInterface;
 use Framework\Support\Arr;
 use Framework\Support\Collection;
+use Stringable;
+use UnitEnum;
 
 class Builder
 {
@@ -28,8 +34,6 @@ class Builder
     private bool $distinct = false;
 
     private array $selectBindings = [];
-
-    private static array $macros = [];
 
     public const PRIMARY = 'id';
 
@@ -186,14 +190,12 @@ class Builder
                 $in = implode(',', array_fill(0, count($value), '?'));
                 $where .= sprintf("$column $operator (%s)", $in);
                 $bindings = array_merge($bindings, $value);
-            } elseif (is_callable($column)) {
+            } elseif ($column instanceof Closure) {
                 $builder = new self($this->db);
 
                 $column($builder);
 
-                $closureBindings = array_map(function ($where) {
-                    return $where[2];
-                }, $builder->getWhere());
+                $closureBindings = Arr::flatten(array_map(fn($where) => $where[2], $builder->getWhere()));
 
                 $closureWhere = $builder->buildWhere();
 
@@ -219,12 +221,12 @@ class Builder
         return $where;
     }
 
-    private function getWhere(): array
+    public function getWhere(): array
     {
         return $this->where;
     }
 
-    public function first()
+    public function first(): object|array|null
     {
         $this->limit(1);
 
@@ -243,16 +245,31 @@ class Builder
         return $this;
     }
 
-    public function paginate(?int $limit = null, ?int $page = null): PaginatedResultSet
+    public function paginate(?int $limit = null, ?int $page = null): PaginatedResultSetInterface
     {
-        $page = $page ?: request()->get('pg', 1);
-        $limit = $limit ?? request()->get('per-page', 30);
-
-        $total = $this->count();
-
-        $rows = $this->limit(($page - 1) * $limit . ', ' . $limit)->get();
+        [$rows, $total, $limit, $page] = $this->paginateRaw($limit, $page);
 
         return new PaginatedResultSet($rows, $limit, $page, $total);
+    }
+
+    /**
+     * @param int|null $limit
+     * @param int|null $page
+     * @return array{rows: array, total: int, limit: int, page: int}
+     */
+    public function paginateRaw(?int $limit = null, ?int $page = null): array
+    {
+        $page = (int) ($page ?: request()->get('pg', 1));
+        $limit = (int) ($limit ?? request()->get('per-page', 30));
+
+        $total = $this->count();
+        $rows = [];
+
+        if ($total) {
+            $rows = $this->limit(($page - 1) * $limit . ', ' . $limit)->get();
+        }
+
+        return compact('rows', 'total', 'limit', 'page');
     }
 
     public function orderBy($columns, ?string $order = null): self
@@ -359,6 +376,11 @@ class Builder
         return $this->where($column, 'in', $collected->all(), $clause);
     }
 
+    public function wherePast($column, $clause = 'and'): self
+    {
+        return $this->where($column, '<', now(), $clause);
+    }
+
     public function orWhere($column, $operator = null, $value = null): self
     {
         return $this->where($column, $operator, $value, 'or');
@@ -382,6 +404,10 @@ class Builder
             $callback($builder = (new self($this->db))->select('1')->from($table));
         }
 
+        if (!$builder->select) {
+            $builder->addSelect('1');
+        }
+
         [$query, $bindings] = $builder->getBaseSelect();
 
         $existsPrefix = $exists ? '' : 'NOT ';
@@ -391,7 +417,7 @@ class Builder
         return $this;
     }
 
-    public function whereDoesnExist(string|Builder $table, ?Closure $callback = null, string $clause = 'and'): static
+    public function whereDoesntExist(string|Builder $table, ?Closure $callback = null, string $clause = 'and'): static
     {
         return $this->whereExists($table, $callback, $clause, false);
     }
@@ -452,7 +478,29 @@ class Builder
 
     public function insert(array $values): int|string
     {
-        $bindings = array_values($values);
+        $bindings = array_values(array_map(function ($value) {
+            if ($value instanceof UnitEnum) {
+                return enum_val($value);
+            }
+
+            if (is_array($value)) {
+                return json_encode($value);
+            }
+
+            if ($value instanceof Stringable) {
+                return (string) $value;
+            }
+
+            if (is_object($value) && method_exists($value, 'toJson')) {
+                return $value->toJson();
+            }
+
+            if (is_object($value)) {
+                return serialize($value);
+            }
+
+            return $value;
+        }, $values));
 
         $table = implode(', ', $this->table);
         $columns = implode(',', array_keys($values));
@@ -511,57 +559,6 @@ class Builder
     public function getTable(): string
     {
         return implode(',', $this->table);
-    }
-
-    public function __call($method, $args)
-    {
-        $this->applyMacro($method, $args);
-
-        return $this;
-    }
-
-    public function macro($macroName, $callback): self
-    {
-        $key = !$this->getTable() ? 'global' : $this->getTable();
-
-        self::$macros[$key][$macroName] = $callback;
-
-        return $this;
-    }
-
-    public function apply($macro, ...$args): self
-    {
-        if (is_array($macro)) {
-            foreach ($macro as $m) {
-                $this->applyMacro($m, $args);
-            }
-
-            return $this;
-        }
-
-        return $this->applyMacro($macro, $args);
-    }
-
-    protected function applyMacro($macro, $args): self
-    {
-        $callback = $this->getMacro($macro);
-
-        if ($callback) {
-            $callback($this, ...$args);
-        }
-
-        return $this;
-    }
-
-    protected function getMacro($method)
-    {
-        if (isset(self::$macros[$this->getTable()][$method])) {
-            return self::$macros[$this->getTable()][$method];
-        } elseif (isset(self::$macros['global'][$method])) {
-            return self::$macros['global'][$method];
-        }
-
-        return null;
     }
 
     public static function primaryCol(): string

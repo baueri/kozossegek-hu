@@ -176,12 +176,6 @@ body.has-debugbar #content {
     cursor: not-allowed;
 }
 
-#is_maintenance_on {
-    position: fixed;
-    bottom: 1em;
-    right: 1em;
-}
-
 #footer {
     position: absolute;
     bottom: 0;
@@ -203,6 +197,25 @@ body.has-debugbar #content {
     body:not(.sidebar-open) #sidebar {
         left: -200px;
     }
+}
+
+.dz-drag-hover {
+    position: relative;
+}
+
+.dz-drag-hover:before {
+    background-color: rgba(255, 255, 255, .3);
+    border: 5px dashed #ccc;
+    border-radius: 5px;
+    content: "";
+    display: block;
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 999;
+
 }
 
 @media (max-width: 1024px) {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Portal\Controllers;
 
 use App\QueryBuilders\Pages;
@@ -12,15 +14,16 @@ class PageController extends PortalController
     {
         use_default_header_bg();
 
-        $page = $repository->whereSlug($request['slug'])->first();
-
-        if (!$page) {
+        $slug = $request->getUriValue('slug');
+        
+        if (!$slug || !($page = $repository->whereSlug($slug)->first())) {
+            log_event('');
             raise_404();
         }
 
         $page_title = $page->pageTitle();
 
-        if (View::exists($view = "pages.{$request['slug']}")) {
+        if (View::exists($view = "pages.{$slug}")) {
             return view($view, compact('page', 'page_title'));
         }
 
@@ -31,5 +34,16 @@ class PageController extends PortalController
         }
 
         return view('portal.page', $model);
+    }
+
+    public function setAnnouncementsSeen(): void
+    {
+        $ids = request()->get('ids');
+
+        builder('seen_announcements')
+            ->where('user_id', auth()->getId())
+            ->whereIn('announcement_id', $ids)
+            ->whereNull('seen_at')
+            ->update(['seen_at' => now()]);
     }
 }

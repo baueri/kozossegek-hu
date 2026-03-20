@@ -1,5 +1,4 @@
 const dialog = (function () {
-
     let thisDialog = this;
 
     let okBtn = function () {
@@ -105,9 +104,14 @@ const dialog = (function () {
 
         let dialog = $("<div class='modal-dialog modal-" + options.size + " " + options.cssClass + "'></div>");
         let content = $("<div class='modal-content'></div>");
-        let closableBtn = options.closable ? "<button type='button' class='close' data-dismiss='modal' aria-label='bezár'><span aria-hidden='true'>&times;</span></button>" : "";
-        let header = $("<div class='modal-header" + headerCssClass + "'><h5 class='modal-title'>" + options.title + "</h5>" + closableBtn + "</div>");
+        let closableBtn = options.closable ? $("<button type='button' class='close' data-dismiss='modal' aria-label='bezár'><span aria-hidden='true'>&times;</span></button>") : null;
+        let header = $("<div class='modal-header" + headerCssClass + "'><h5 class='modal-title'>" + options.title + "</h5></div>");
         let body = $("<div class='modal-body'></div>");
+
+        if (closableBtn) {
+            header.append(closableBtn);
+        }
+
 
         if (options.draggable) {
             content.draggable({handle:header});
@@ -122,7 +126,11 @@ const dialog = (function () {
                 let button = options.buttons[i];
                 let btnDOM = $('<button type="button" class="' + button.cssClass + '">' + button.text + '</button>');
                 btnDOM.click(function () {
-                    button.action(outer, options.callback);
+                    if (button.action) {
+                        button.action(outer, options.callback);
+                    } else {
+                        options.callback(outer, true);
+                    }
                 });
                 footer.append(btnDOM);
             }
@@ -150,12 +158,21 @@ const dialog = (function () {
         }
 
         outer.on("hidden.bs.modal", function () {
+            if (options.onClose) {
+                options.onClose(outer);
+            }
             $(this).remove();
         });
 
         $("body").append(outer);
 
-        outer.modal('show');
+        if (options.delay) {
+            setTimeout(function () {
+                outer.modal('show');
+            }, options.delay);
+        } else {
+            outer.modal('show');
+        }
 
         outer.close = function () {
             $(this).modal("hide");
@@ -196,6 +213,7 @@ $.fn.confirm = function (options) {
         title: "Biztos vagy benne?",
         message: "",
         isAjax: false,
+        ajaxData: null,
         afterResponse(response) {  }
     }, options);
 
@@ -205,7 +223,13 @@ $.fn.confirm = function (options) {
             let onConfirm;
             if (options.isAjax) {
                 onConfirm = () => {
-                    $.post(action, options.afterResponse);
+                    let data = {};
+                    if (typeof options.ajaxData === "function") {
+                        data = options.ajaxData();
+                    } else if (typeof options.ajaxData === "object") {
+                        data = options.ajaxData;
+                    }
+                    $.post(action, data, options.afterResponse);
                 }
             } else {
                 onConfirm = () => { window.location.href = action };
@@ -222,4 +246,3 @@ $.fn.confirm = function (options) {
         });
     });
 }
-

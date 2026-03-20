@@ -4,5 +4,5 @@ A fiókod törlésével a közösségeidet is törölni fogjuk, azokra a látoga
 @endalert
 <p class="form-group text-center">
     <label><b>A fiók törlésének megerősítéséhez add meg a jelenlegi jelszavadat!</b></label>
-    <input type="password" class="form-control" style="max-width: 200px; margin: auto;">
+    <input type="password" id="delete-pw" class="form-control" style="max-width: 200px; margin: auto;">
 </p>

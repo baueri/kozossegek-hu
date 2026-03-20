@@ -7,22 +7,28 @@
     }
   ],
   "require": {
-    "arrilot/dotenv-php": "^2.0",
     "phpmailer/phpmailer": "~6.1",
     "psr/container": "^1.0",
     "jaybizzle/crawler-detect": "^1.2",
     "nesbot/carbon": "^2.50",
-    "guzzlehttp/guzzle": "^7.4"
+    "guzzlehttp/guzzle": "^7.6",
+    "vlucas/phpdotenv": "^5.5",
+    "google/apiclient": "^2.15",
+    "meilisearch/meilisearch-php": "^1.6",
+    "http-interop/http-factory-guzzle": "^1.0",
+    "ext-pdo": "*",
+    "filp/whoops": "^2.15",
+    "jc21/clitable": "^1.3",
+    "ext-simplexml": "*",
+    "ext-fileinfo": "*"
   },
   "autoload": {
     "psr-4": {
       "App\\": "app/",
       "Framework\\": "framework/",
-      "PHPDeploy\\": "php_deploy/",
       "Legacy\\": "legacy/"
     },
     "files": [
-      "framework/functions.php",
       "boot.php"
     ]
   },
@@ -37,11 +43,29 @@
     "migrate:rollback": "vendor/bin/phinx rollback",
     "db:seed": "vendor/bin/phinx seed:run",
     "make:seed": "vendor/bin/phinx seed:create",
-    "test": "vendor/bin/phpunit tests"
+    "test": "vendor/bin/phpunit tests",
+    "tinker": "php -d auto_prepend_file=\"vendor/autoload.php\" -a",
+
+    "meili:create": "php console meili --create",
+    "meili:configure": "php console meili --configure",
+    "meili:import": "php console meili --import",
+
+    "tag-sprites:generate": "cwebp -q 100 -resize 330 275  public/images/tag_sprites2.png -o public/images/tag_sprites.webp"
   },
   "require-dev": {
     "robmorgan/phinx": "^0.12.9",
     "phpseclib/phpseclib": "^3.0",
-    "phpunit/phpunit": "^9"
+    "phpunit/phpunit": "^9",
+    "fakerphp/faker": "^1.23",
+    "symfony/var-dumper": "^6.4",
+    "phpmd/phpmd": "^2.15"
+  },
+  "config": {
+    "allow-plugins": {
+      "php-http/discovery": true
+    },
+    "platform": {
+      "php": "8.3"
+    }
   }
 }

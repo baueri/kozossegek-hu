@@ -6,6 +6,7 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name='robots' content='noindex,noarchive' />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ site_name() }} - Adminisztráció</title>
 
@@ -40,7 +41,7 @@
         @if(isset($current_menu_item['submenu']))
             @foreach($current_menu_item['submenu'] as $submenuItem)
             <li class="nav-item  {{ $submenuItem['active'] ? 'active' : '' }}">
-                <a class="nav-link" href="{{ $submenuItem['uri'] }}"><i class="fa fa-{{ $submenuItem['icon'] }}"></i>
+                <a class="nav-link" href="{{ $submenuItem['uri'] }}"><i class="fa fa-{{ $submenuItem['icon'] }} {{ $submenuItem['active'] ? 'text-primary' : '' }}"></i>
                     <span>{{ $submenuItem['title'] }}</a></span>
             </li>
             <li class="nav-item divider"></li>
@@ -67,7 +68,6 @@
     <nav id="sidebar">
         <div class="img bg-wrap text-center" style="background-image: url(/assets/sidebar-09/images/bg_1.jpg);">
             <div class="user-logo">
-<!--                <div class="img" style="background-image: url(/images/logo_only.png);"></div>-->
                 <h3 style="">kozossegek.hu<br/><b>adminisztráció</b></h3>
             </div>
         </div>

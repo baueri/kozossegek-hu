@@ -1,15 +1,14 @@
 @section('header')
     <link rel="canonical" href="{{ $page->getUrl() }}" />
     <meta name="description" content="{{ $page->excerpt() }}" />
-@endsection
-@section('subtitle', $page->title . ' | ')
-@section('header_content')
-    @if($header_background)
-        @featuredTitle($page_title)
+    @if($page->header_image)
+        @og_image($page->featuredImageUrl())
     @endif
 @endsection
+@section('subtitle', $page->title . ' | ')
 @extends('portal')
-<div class="container inner p-4 page">
+@featuredTitle($page_title)
+<div class="container inner page">
     @if(!$header_background)<h1>{{ $page_title }}</h1>@endif
     <div>
         {{ $page->content }}

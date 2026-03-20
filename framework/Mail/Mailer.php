@@ -9,7 +9,7 @@ class Mailer
 {
     private PHPMailer $phpMailer;
 
-    public function __construct(string $to = '', string $name = '')
+    public function __construct(string $address = '', ?string $name = '')
     {
         $phpMailer = new PHPMailer(true);
         $phpMailer->isSMTP();
@@ -23,17 +23,17 @@ class Mailer
         $phpMailer->CharSet = 'UTF-8';
         $this->phpMailer = $phpMailer;
 
-        if ($to) {
-            $this->to($to, $name);
+        if ($address) {
+            $this->to($address, $name);
         }
     }
 
     /**
      * @throws Exception
      */
-    public function to(string $to, ?string $name = ''): self
+    public function to(string $address, ?string $name = ''): self
     {
-        $this->phpMailer->addAddress($to, $name);
+        $this->phpMailer->addAddress($address, (string) $name);
 
         return $this;
     }
@@ -43,7 +43,7 @@ class Mailer
      */
     public function send(Mailable $mailable): bool
     {
-        if (app()->isTest()) {
+        if (!is_prod()) {
             $this->setMailableForTest($mailable);
         } else {
             if ($mailable->from) {
@@ -63,9 +63,9 @@ class Mailer
     }
 
     /**
-     * @throws \PHPMailer\PHPMailer\Exception
+     * @throws Exception
      */
-    private function setMailableForTest(Mailable $mailable)
+    private function setMailableForTest(Mailable $mailable): void
     {
         $this->phpMailer->setFrom($this->phpMailer->Username, site_name());
         $originalAddressee = key($this->phpMailer->getAllRecipientAddresses());

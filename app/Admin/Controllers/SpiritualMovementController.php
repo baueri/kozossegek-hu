@@ -6,12 +6,13 @@ use App\Admin\SpiritualMovement\SpiritualMovementTable;
 use App\Models\SpiritualMovement;
 use App\QueryBuilders\SpiritualMovements;
 use Exception;
+use Framework\Http\Controller;
 use Framework\Http\Message;
 use Framework\Http\Request;
 use Framework\Model\Exceptions\ModelNotFoundException;
 use Framework\Support\StringHelper;
 
-class SpiritualMovementController
+class SpiritualMovementController extends Controller
 {
     public function spiritualMovements(Request $request, SpiritualMovementTable $table): string
     {
@@ -84,12 +85,14 @@ class SpiritualMovementController
     }
 
 
-    public function delete(Request $request): void
+    public function delete(Request $request, SpiritualMovements $movements): void
     {
-        builder('spiritual_movements')->where('id', $request['id'])->delete();
+        $movement = SpiritualMovements::query()->findOrFail($request['id']);
+
+        $movements->deleteModel($movement);
 
         Message::danger('Lelkiségi mozgalom törölve');
 
-        redirect_route('admin.spiritual_movement.list');
+        redirect($this->request->referer());
     }
 }

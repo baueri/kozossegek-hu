@@ -1,2 +1,0 @@
-@title('Gépház')
-@extends('admin')

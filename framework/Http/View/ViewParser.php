@@ -31,7 +31,7 @@ class ViewParser
         return $content;
     }
 
-    public static function registerDirective(string|Directive $directive, ?Closure $callback = null)
+    public static function registerDirective(string|Directive $directive, ?Closure $callback = null): void
     {
         if ($directive instanceof Directive) {
             static::$directives[get_class($directive)] = $directive;

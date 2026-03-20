@@ -3,18 +3,14 @@
 namespace App\Portal\Controllers\Api\V1;
 
 use App\Http\Responses\CreateGroupSteps\FinishRegistration;
-use App\Models\ChurchGroup;
 use App\Models\ChurchGroupView;
-use App\QueryBuilders\ChurchGroups;
-use App\QueryBuilders\GroupTags;
-use App\QueryBuilders\GroupViews;
+use App\QueryBuilders\ChurchGroupViews;
 use App\QueryBuilders\Institutes;
 use App\Services\GroupSearchRepository;
 use Exception;
 use Framework\Http\Controller;
 use Framework\Http\Request;
 use Framework\Http\Response;
-use Framework\Support\Arr;
 
 class ApiGroupController extends Controller
 {
@@ -28,7 +24,7 @@ class ApiGroupController extends Controller
         try {
             $filter = $request->only('search', 'varos', 'intezmeny');
             $perPage = (int) $request['per_page'] ?: 30;
-            $results = $groupViews->search($filter, $perPage);
+            $results = $groupViews->search($filter)->paginate($perPage);
 
             $data = $results->map(fn (ChurchGroupView $groupView) => [
                 'name' => $groupView->name,
@@ -54,7 +50,7 @@ class ApiGroupController extends Controller
         }
     }
 
-    public function instituteByMiserendId(Request $request, Institutes $institutes, GroupViews $churchGroups)
+    public function instituteByMiserendId(Request $request, Institutes $institutes, ChurchGroupViews $churchGroups)
     {
         $institute = $institutes->where('miserend_id', $request['id'])->first();
 
@@ -77,9 +73,9 @@ class ApiGroupController extends Controller
             ->get()
             ->map(fn (ChurchGroupView $churchGroup) => [
                 'name' => $churchGroup->name,
-                'age_group '=> $churchGroup->allAgeGroupsAsString(),
+                'age_group'=> $churchGroup->allAgeGroupsAsString(),
                 'description' => $churchGroup->description,
-                'tags' => $churchGroup->tags->pluck('tag_name')->implode(', '),
+                'tags' => $churchGroup->tags->map->translate()->implode(', '),
                 'link' => $churchGroup->url()
             ]);
 
