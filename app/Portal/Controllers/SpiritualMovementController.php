@@ -73,7 +73,8 @@ class SpiritualMovementController extends PortalController
                 ->where('spiritual_movement_id', $spiritualMovement->id)
                 ->active()
                 ->with('tags')
-                ->get();
+                ->get()
+                ->castInto('toSearchResult');
 
             $title = $spiritualMovement->name;
 

@@ -205,6 +205,9 @@ class EntityQueryBuilder
         return $this->loadRelations($this->getInstance($this->builder->first()));
     }
 
+    /**
+     * @return static|T
+     */
     public function limit($limit): EntityQueryBuilder
     {
         $this->builder->limit($limit);
@@ -212,6 +215,9 @@ class EntityQueryBuilder
         return $this;
     }
 
+    /**
+     * @return static|T
+     */
     public function orderBy($columns, ?string $order = null): EntityQueryBuilder
     {
         $this->builder->orderBy($columns, $order);
@@ -219,12 +225,18 @@ class EntityQueryBuilder
         return $this;
     }
 
+    /**
+     * @return static|T
+     */
     public function select($select = '*', $bindings = []): EntityQueryBuilder
     {
         $this->builder->select($select, $bindings);
         return $this;
     }
 
+    /**
+     * @return static|T
+     */
     public function distinct(): EntityQueryBuilder
     {
         $this->builder->distinct();
@@ -232,6 +244,9 @@ class EntityQueryBuilder
         return $this;
     }
 
+    /**
+     * @return static|T
+     */
     public function addSelect($select, array $bindings = []): EntityQueryBuilder
     {
         $this->builder->addSelect($select, $bindings);
@@ -239,6 +254,9 @@ class EntityQueryBuilder
         return $this;
     }
 
+    /**
+     * @return static|T
+     */
     public function where(callable|string $column, $operator = null, $value = null, string $clause = 'and'): static
     {
         $this->builder->where($column, $operator, $value, $clause);
@@ -246,11 +264,17 @@ class EntityQueryBuilder
         return $this;
     }
 
+    /**
+     * @return static|T
+     */
     public function orWhere($column, $operator = null, $value = null): static
     {
         return $this->where($column, $operator, $value, 'or');
     }
 
+    /**
+     * @return static|T
+     */
     public function whereIn($column, $values, $clause = 'and'): static
     {
         $this->builder->whereIn($column, $values, $clause);
@@ -258,18 +282,27 @@ class EntityQueryBuilder
         return $this;
     }
 
+    /**
+     * @return static|T
+     */
     public function whereNull($column, $clause = 'and'): EntityQueryBuilder
     {
         $this->builder->whereNull($column, $clause);
         return $this;
     }
 
+    /**
+     * @return static|T
+     */
     public function whereNotNull($column): static
     {
         $this->builder->whereNotNull($column);
         return $this;
     }
 
+    /**
+     * @return static|T
+     */
     public function whereRaw($where, $bindings = [], $clause = 'and'): static
     {
         $this->builder->whereRaw($where, $bindings, $clause);
@@ -277,17 +310,26 @@ class EntityQueryBuilder
         return $this;
     }
 
+    /**
+     * @return static|T
+     */
     public function wherePK($value): static
     {
         return $this->where($this->primaryCol(), $value);
     }
 
+    /**
+     * @return static|T
+     */
     public function orWhereRaw($where, $bindings = []): static
     {
         $this->builder->whereRaw($where, $bindings, 'or');
         return $this;
     }
 
+    /**
+     * @return static|T
+     */
     public function whereExists(Builder|EntityQueryBuilder $table, ?Closure $callback = null, string $clause = 'and'): static
     {
         $this->builder->whereExists($table instanceof EntityQueryBuilder ? $table->builder : $table, $callback, $clause);
@@ -295,7 +337,7 @@ class EntityQueryBuilder
     }
 
     /**
-     * @phpstan-return static
+     * @return static|T
      */
     public function whereDoesntExist(Builder|EntityQueryBuilder $table, ?Closure $callback = null, string $clause = 'and'): static
     {
@@ -303,12 +345,18 @@ class EntityQueryBuilder
         return $this;
     }
 
-    public function wherePast($column, $clause = 'and'): self
+    /**
+     * @return static|T
+     */
+    public function wherePast($column, $clause = 'and'): static
     {
         $this->builder->wherePast($column, $clause);
         return $this;
     }
 
+    /**
+     * @return static|T
+     */
     public function groupBy($gropBy): EntityQueryBuilder
     {
         $this->builder->groupBy($gropBy);
@@ -316,12 +364,18 @@ class EntityQueryBuilder
         return $this;
     }
 
+    /**
+     * @return static|T
+     */
     public function having(string $having, array $bindings = []): static
     {
         $this->builder->having($having, $bindings);
         return $this;
     }
 
+    /**
+     * @return static|T
+     */
     public function when($expression, Closure $callback): static
     {
         if ($expression) {
@@ -331,6 +385,9 @@ class EntityQueryBuilder
         return $this;
     }
 
+    /**
+     * @return static|T
+     */
     public function join(string $table, string $on, string $joinMode = ''): static
     {
         $this->builder->join($table, $on, $joinMode);
@@ -338,11 +395,17 @@ class EntityQueryBuilder
         return $this;
     }
 
+    /**
+     * @return static|T
+     */
     public function leftJoin(string $table, string $on): static
     {
         return $this->join($table, $on, 'left');
     }
 
+    /**
+     * @return static|T
+     */
     public function joinRaw(string $join): static
     {
         $this->builder->joinRaw($join);
@@ -398,7 +461,7 @@ class EntityQueryBuilder
         if (is_numeric($model)) {
             $model = $this->find($model);
         }
-        
+
 
         if (class_uses_trait($model, SoftDeletes::class) && !$hardDelete) {
             return (bool) $this->save($model, ['deleted_at' => date('Y-m-d H:i:s')]);

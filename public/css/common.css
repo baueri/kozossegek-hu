@@ -9,6 +9,7 @@
     --transparent-light: rgba(255, 255, 255, .2);
     --main: #2b699a;
     --alt-dark: #0f172a;
+    --orange: rgb(217, 119, 6);
 }
 
 .nav-transparent {
@@ -61,6 +62,19 @@
     color: #fff;
     background-color: var(--darkblue);
     border: 1px solid var(--darkblue);
+}
+
+.btn-orange {
+    color: #fff;
+    background-color: var(--orange);
+    &:hover {
+        background: rgb(180 83 9 / 1);
+        color: #fff;
+    }
+}
+
+.text-orange {
+    color: var(--orange);
 }
 
 .radius-0 {

@@ -34,7 +34,7 @@ class Dashboard
         $groupsTotal = $this->groups->query()->notDeleted()->count();
         $pendingGroups = $this->groups->query()->where('pending', 1)->notDeleted()->count();
 
-        $lastError = $this->errorLogParser->getLastError();
+//        $lastError = $this->errorLogParser->getLastError();
 
         return view('admin.dashboard', [
             'search_count_this_month' => $groupStatsForThisMonth['search_count'],
@@ -43,7 +43,7 @@ class Dashboard
             'groups_count' => $groupsTotal,
             'pending_groups' => $pendingGroups,
             'groups_this_month' => $groupsThisMonth,
-            'last_error' => $lastError,
+       //     'last_error' => $lastError,
             'release_info' => $releaseInfo
         ]);
     }

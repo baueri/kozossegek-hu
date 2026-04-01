@@ -1,22 +1,32 @@
-<div class="row">
-    <div class="col-md-5">
-        
-        @if($page-1 > 0)
-            <?php $first = request()->merge(['pg' => 1])->buildQuery(); ?>
-            <?php $prev = request()->merge(['pg' => $page-1])->buildQuery(); ?>
-            <a href="?{{ $first }}" class="left"><i class="fa fa-angle-double-left"></i> Első oldal</a>&nbsp;&nbsp;&nbsp;
-            <a href="?{{ $prev }}" class="left"><i class="fa fa-angle-left"></i> Előző oldal</a>
-        @endif
+<div class="pagination-wrapper">
+    <?php
+        $lastpage = ceil($total / $perpage) ?: 1;
+    ?>
+
+    @if($page > 1)
+        <?php
+            $first = request()->merge(['pg' => 1])->buildQuery();
+            $prev = request()->merge(['pg' => $page - 1])->buildQuery();
+        ?>
+
+        <a href="?{{ $prev }}" class="page-btn">
+            <i class="fas fa-arrow-left"></i>
+        </a>
+    @endif
+
+    <div class="page-info">
+        <span class="current">{{ $page }}</span>
+        <span class="divider">/</span>
+        <span class="total">{{ $lastpage }}</span>
     </div>
 
-    <div class="col-md-2 text-center">{{ $page }} / {{ $lastpage = ceil($total / $perpage) ?: 1 }}</div>
+    @if($page < $lastpage)
+        <?php
+            $next = request()->merge(['pg' => $page + 1])->buildQuery();
+        ?>
 
-    <div class="col-md-5 text-right">
-        @if($page+1 <= $lastpage)
-            <?php $next = request()->merge(['pg' => $page + 1])->buildQuery(); ?>
-            <?php $last = request()->merge(['pg' => $lastpage])->buildQuery(); ?>
-            <a href="?{{ $next }}"> Következő oldal <i class="fa fa-angle-right"></i></a>&nbsp;&nbsp;&nbsp;
-            <a href="?{{ $last }}"> Utolsó oldal <i class="fa fa-angle-double-right"></i></a>
-        @endif
-    </div>
+        <a href="?{{ $next }}" class="page-btn">
+            <i class="fas fa-arrow-right"></i>
+        </a>
+    @endif
 </div>

@@ -8,12 +8,11 @@
 @endsection
 
 
-@extends('portal')
+@extends('portal2026.portal')
 @featuredTitle()
     {{ $breadcrumb }}
-    <h3 class="py-3 mb-0 text-center text-md-left">@lang('Közösségek')</h3>
+    <h1 class="page-title">@lang('Közösségek')</h1>
 @endfeaturedTitle
-
 <div class="container inner">
     @yield('templom_title')
     @include('portal.partials.kozossegek_results')

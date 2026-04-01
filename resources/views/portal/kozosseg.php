@@ -2,171 +2,264 @@
     <meta name="keywords" content="{{ $keywords }}" />
     <meta name="description" content="{{ $group->name }}" />
     <meta name="thumbnail" content="{{ $group->getThumbnail() }}" />
-    <meta property="og:url"           content="{{ $group->url() }}" />
-    <meta property="og:type"          content="website" />
-    <meta property="og:title"         content="kozossegek.hu - {{ $group->name }}" />
-    <meta property="og:description"   content="{{ $group->excerpt(20) }}" />
+    <meta property="og:url" content="{{ $group->url() }}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="kozossegek.hu - {{ $group->name }}" />
+    <meta property="og:description" content="{{ $group->excerpt(20) }}" />
     @og_image($group->getThumbnail())
-    <meta property="og:locale"         content="hu_HU" />
-    <link rel="canonical" href="{{ $group->url() }}" />
 @endsection
+
 @extends('portal')
-@featuredTitle()
-    {{ $group->getBreadCrumb() }}
-    <h3 class="pt-2 pb-2 mb-0 text-center text-md-left">
-        {{ $group->name }}
-        @if($user && $user->id == $group->user_id)
-            <a href="{{ $group->getEditUrl() }}" class="text-light" title="szerkesztés">
-                <i class="fa fa-edit" style="font-size: 18px;"></i>
-            </a>
-        @endif
-    </h3>
-    @if($institute)
-        <h5 style="color: rgba(255, 255, 255, .8)" class="my-0 text-center text-md-left">{{ $institute->name }} ({{ $institute->city }})</h5>
-    @endif
-@endfeaturedTitle
-<div class="container inner kozi-adatlap">
-    @if($group->status == "inactive")
-        @alert('warning')
-        Ez a közösséged jelenleg <b>inaktív</b> állapotban van, ezért mások számára nem jelenik meg a találati listában, illetve közvetlenül se tudják megtekinteni az adatlapját. Amennyiben láthatóvá szeretnéd tenni, állítsd át az állapotát <b>aktívra</b> a <a href="{{ $group->getEditUrl() }}" title="szerkesztés">szerkesztési oldalon</a>.
-        @endalert
-    @endif
-    <div class="row">
-        <div class="col-md-4 text-center">
-            <img class="img-big shadow-smooth" src="{{ $group->getThumbnail() }}" alt="{{ $group->name }}" style="max-width: 510px;">
+
+
+<section class="group-hero-modern">
+    <div class="container">
+
+        <div class="back-link">
+            <a href="@route('portal.groups')">← Vissza a közösségekhez</a>
         </div>
-        <div class="col-md-8 col-sm-12 pt-4 pt-md-0">
-            <div class="group-tags text-center text-md-left mb-3">
-                @foreach($group->tags as $tag)
-                    <span class="tag-img tag-{{ $tag->tag }}" title="{{ $tag->translate() }}"></span>
-                @endforeach
-            </div>
-            @if($group->spiritual_movement)
-                <p class="kozi-tulajdonsag">
-                    <strong>Lelkiségi mozgalom</strong><br/> <a href="{{ $group->spiritualMovement->getUrl() }}">{{ $group->spiritual_movement }}</a>
-                </p>
-            @endif
-            <div class="row text-center text-md-left" style="margin-bottom: .5em;">
-                <div class="col-lg-4 col-md-6 col-sm-12 my-sm-2">
-                    <strong>Alkalmak gyakorisága</strong><br/>{{ $group->occasionFrequency() }}
+
+        {{ $group->getBreadCrumb() }}
+
+        <div class="group-header-grid">
+
+            <!-- BAL -->
+            <div class="group-main">
+
+                <!-- TAG-ek -->
+                <div class="group-tags-modern">
+                    @foreach($group->tags as $tag)
+                        <span class="tag-pill">{{ $tag->translate() }}</span>
+                    @endforeach
                 </div>
-                <div class="col-lg-3  col-md-6 col-sm-12 my-sm-2">
-                    <strong>Korcsoport</strong><br/> {{ $group->ageGroup() }}
-                </div>
-                @if($group->join_mode)
-                    <div class="col-lg-5 col-md-6 col-sm-12 my-sm-2">
-                        <strong>Csatlakozási lehetőség módja</strong><br/> {{ $group->joinModeText() }}
+
+                <!-- CÍM -->
+                <h1 class="group-title-modern">
+                    {{ $group->name }}
+                </h1>
+
+                <!-- ALINFO -->
+                @if($institute)
+                    <div class="group-institute">
+                        {{ $institute->name }}
                     </div>
                 @endif
-                <p class="col-lg-5 col-md-6 col-sm-12 my-sm-2">
-                    <strong>Közösségvezető(k)</strong><br/> {{ $group->group_leaders }}
-                </p>
-            </div>
 
-            @if($group->description)
-                <b>Bemutatkozás</b><br/>
-                {{ $group->description }}
-            @endif
-            <div class="mt-4 d-flex">
-                <span class="btn btn-outline-purple open-contact-modal"><i class="fas fa-envelope"></i> Érdekel!</span>
-                <div class="ml-2">@facebook_share_button($group->url())</div>
-            </div>
-        </div>
-    </div>
-    @if($similar_groups?->isNotEmpty())
-    <h5 class="mt-4" style="border-bottom: 1px solid #ddd;margin-bottom: 1em;padding-bottom: 0.3em;">Hasonló közösségek</h5>
-        <div class="row" id="kozossegek-list">
-            @foreach($similar_groups as $i => $similarGroup)
-            <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3">
-                <div class="card kozi-box h-100 p-0 shadow-smooth">
-                    <a href="{{ $similarGroup->url() }}" class="card-img">
-                        <div>megnézem</div>
-                        <img @lazySrc()
-                             data-src="{{ $similarGroup->getThumbnail() }}"
-                             data-srcset="{{ $similarGroup->getThumbnail() }}"
-                             alt="{{ $similarGroup->name }}"
-                             style="object-fit: cover;"
-                             class="lazy">
-                    </a>
-                    <div class="card-body">
-                        <p class="text-center">
-                            @foreach($similarGroup->tags as $tag)
-                                <span class="tag-img tag-{{ $tag->tag }}" title="{{ $tag->translate() }}" aria-label="{{ $tag->translate() }}"></span>
-                            @endforeach
-                        </p>
-                        <div>{{ $similarGroup->name }}</div>
-                        <div class="city">
-                            {{ $similarGroup->city . ($similarGroup->district ? ', ' . $similarGroup->district : '')  }}
-                        </div>
-                        <p class="card-text mb-0">
-                            <strong>@lang('age_group'):</strong> <span>{{ $similarGroup->ageGroup() }}</span><br>
-                        </p>
-                        <a href="{{ $similarGroup->url() }}" class="btn btn-outline-purple btn-sm kozi-more-info rounded-pill">Megnézem</a>
+                <div class="group-meta-row">
+                    <span>📍 {{ $group->city }}</span>
+                    <span>🕒 {{ $group->occasionFrequency() }}</span>
+                </div>
+
+                <!-- BEMUTATKOZÁS -->
+                @if($group->description)
+                <div class="group-card">
+                    <h3>Bemutatkozás</h3>
+                    <p>{{ $group->description }}</p>
+                </div>
+                @endif
+
+                <!-- INFO BLOKKOK -->
+                <div class="group-info-grid">
+
+                    <div class="info-card">
+                        <span class="info-label">Közösségvezető(k)</span>
+                        <strong>{{ $group->group_leaders }}</strong>
+                    </div>
+
+                    @if($group->join_mode)
+                    <div class="info-card">
+                        <span class="info-label">Csatlakozás módja</span>
+                        <strong>{{ $group->joinModeText() }}</strong>
+                    </div>
+                    @endif
+
+                </div>
+
+                <!-- CTA -->
+                <div class="group-actions">
+                    <button class="btn btn-orange open-contact-modal">
+                        Kapcsolatfelvétel
+                    </button>
+
+                    <div class="share-btn">
+                        @facebook_share_button($group->url())
                     </div>
                 </div>
+
             </div>
-            @endforeach
+
+            <!-- JOBB -->
+            <div class="group-sidebar-modern">
+
+                <div class="group-image-card">
+                    <img src="{{ $group->getThumbnail() }}" alt="{{ $group->name }}">
+                </div>
+
+                <div class="group-side-card">
+                    <h4>A közösség jellemzői</h4>
+
+                    <div class="side-tags">
+                        <span class="tag-pill">{{ $group->ageGroup() }}</span>
+                        @foreach($group->tags as $tag)
+                            <span class="tag-pill light">{{ $tag->translate() }}</span>
+                        @endforeach
+                    </div>
+
+                    <div class="side-meta">
+                        <div>🕒 {{ $group->occasionFrequency() }}</div>
+                        <div>📍 {{ $group->city }}</div>
+                    </div>
+                </div>
+
+            </div>
+
         </div>
-    @endif
-</div>
-
-
-<div class="modal fade" id="contact-modal" tabindex="-1" role="dialog" aria-labelledby="contact-group" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="contact-group">Vedd fel a kapcsolatot a közzösségvezetővel!</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-    <form>
-      <div class="modal-body">
-
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Bezár</button>
-        <button type="submit" class="btn btn-primary">Üzenet küldése</button>
-      </div>
-  </form>
 
     </div>
-  </div>
+</section>
+
+
+<div class="container inner">
+
+    @if($similar_groups?->isNotEmpty())
+
+        <h2 class="section-title">Hasonló közösségek</h2>
+
+        <div class="row" id="kozossegek-list">
+            @foreach($similar_groups as $similarGroup)
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-3">
+                    @include('portal.partials.kozosseg_card', ['group' => $similarGroup])
+                </div>
+            @endforeach
+        </div>
+
+    @endif
+
 </div>
-<script>
-    $(() => {
-        $(".open-contact-modal").click(function(){
-            $.post("@route('portal.group-contact-form', ['kozosseg' => $slug])", function(form) {
-                $("#contact-modal .modal-body").html(form);
-                $("#contact-modal").modal("show");
-            });
-        });
 
-        $("#contact-modal form").submit(function(e) {
-            e.preventDefault();
+<style>
+.group-hero-modern {
+    padding: 30px 0 10px;
+}
 
-            const data = {
-                name: $("[name=name]").val(),
-                email: $("[name=email]").val(),
-                message: $("[name=message]").val(),
-                website: $("[name=website]").val()
-            };
-            $.post("@route('portal.contact-group', $group)", data, function(response) {
-                if (response.success) {
-                    $("#contact-modal .modal-body").html(response.msg);
-                    $("#contact-modal [type=submit]").remove();
-                } else {
-                    dialog.danger({
-                        message: 'Nem sikerült elküldeni az üzenetet, kérjük, próbáld meg később!',
-                        size: 'md'
-                    }, m => m.closeAll());
-                }
-            }).fail(() => {
-                dialog.danger({
-                    message: 'Nem sikerült elküldeni az üzenetet, kérjük, próbáld meg később!',
-                    size: 'md'
-                }, m => m.closeAll());
-            });
-        });
-    })
-</script>
+.back-link a {
+    color: #64748b;
+    font-size: 0.9rem;
+    text-decoration: none;
+}
+
+.group-header-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 40px;
+    margin-top: 20px;
+}
+
+.group-title-modern {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    margin: 10px 0;
+}
+
+.group-tags-modern {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.tag-pill {
+    background: #f1f5f9;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+}
+
+.tag-pill.light {
+    background: #e2e8f0;
+}
+
+.group-meta-row {
+    display: flex;
+    gap: 20px;
+    color: #64748b;
+    margin-bottom: 20px;
+}
+
+.group-card {
+    background: #f8fafc;
+    padding: 20px;
+    border-radius: 1rem;
+    margin-bottom: 20px;
+}
+
+.group-info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.info-card {
+    background: #f8fafc;
+    padding: 15px;
+    border-radius: 1rem;
+}
+
+.info-label {
+    font-size: 0.75rem;
+    color: #94a3b8;
+    display: block;
+}
+
+.group-actions {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.group-sidebar-modern {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.group-image-card {
+    border-radius: 1.5rem;
+    overflow: hidden;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+}
+
+.group-image-card img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+}
+
+.group-side-card {
+    background: #f8fafc;
+    padding: 20px;
+    border-radius: 1.5rem;
+}
+
+.side-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 10px 0;
+}
+
+.side-meta {
+    color: #64748b;
+    font-size: 0.9rem;
+}
+
+.section-title {
+    font-family: 'Playfair Display', serif;
+    margin: 40px 0 20px;
+}
+
+@media (max-width: 768px) {
+    .group-header-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>

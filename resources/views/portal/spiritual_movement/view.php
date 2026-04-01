@@ -1,61 +1,149 @@
 @header()
     @og_image($spiritualMovement->image_url)
 @endheader
+
 @section('subtitle', $spiritualMovement->name . ' - ')
-@extends('portal')
+@extends('portal2026.portal')
+
 @featuredTitle()
-    {{ $spiritualMovement->getBreadcrumb() }}
-    <h3 class="py-3 mb-0">{{ $title }}</h3>
+<section class="movement-hero">
+
+    <div class="container">
+
+        {{ $spiritualMovement->getBreadcrumb() }}
+
+        <div class="movement-hero-inner">
+
+            <div class="movement-hero-image">
+                <img src="{{ $spiritualMovement->image_url }}"
+                     alt="{{ $spiritualMovement->name }}">
+            </div>
+
+            <div class="movement-hero-content">
+
+                <h1 class="movement-title">
+                    {{ $title }}
+                </h1>
+
+                @if($spiritualMovement->website)
+                    <a href="{{ $spiritualMovement->website }}"
+                       target="_blank"
+                       class="movement-website">
+                        Weboldal megnyitása
+                        <i class="fas fa-arrow-up-right-from-square"></i>
+                    </a>
+                @endif
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
 @endfeaturedTitle
+
 <div class="container inner">
 
-    <div class="row">
-        <div class="col-md-3 text-center">
-            <img src="{{ $spiritualMovement->image_url }}" alt="{{ $spiritualMovement->name }}" style="width: 350px" class="p-5 p-md-0">
-        </div>
-        <div class="px-3 col-md-9">
-            {{ $spiritualMovement->description }}
-            @if($spiritualMovement->website)
-                <p>
-                    <b>Weboldal: </b><a href="{{ $spiritualMovement->website }}" target="_blank">{{ $spiritualMovement->website }} @icon('external-link-alt')</a>
-                </p>
-            @endif
-            @if($groups && $groups->isNotEmpty())
-            <h5 class="my-5 text-center">A(z) <b>{{ $spiritualMovement->name }}</b> nálunk regisztrált kisközösségei:</h5>
-            <div class="row" id="kozossegek-list">
-            @foreach($groups as $i => $group)
-            <div class="col-xl-4 col-md-6 mb-3">
-                <div class="card kozi-box h-100 p-0 shadow-smooth">
-                    <a href="{{ $group->url() }}" class="card-img">
-                        <div>megnézem</div>
-                        <img @lazySrc()
-                             data-src="{{ $group->getThumbnail() }}"
-                             data-srcset="{{ $group->getThumbnail() }}"
-                             alt="{{ $group->name }}"
-                             style="object-fit: cover"
-                             class="lazy">
-                    </a>
-                    <div class="card-body">
-                        <p class="text-center">
-                            @foreach($group->tags as $tag)
-                            <span class="tag-img tag-{{ $tag->tag }}" title="{{ $tag->translate() }}" aria-label="{{ $tag->translate() }}"></span>
-                            @endforeach
-                        </p>
-                        <div>{{ $group->name }}</div>
-                        <div class="city">
-                            {{ $group->city . ($group->district ? ', ' . $group->district : '')  }}
-                        </div>
-                        <p class="card-text mb-0">
-                            <strong>@lang('age_group'):</strong> <span>{{ $group->ageGroup() }}</span><br>
-                            <strong>@lang('occasions'):</strong> <span>{{ $group->occasionFrequency() }}</span><br>
-                        </p>
-                        <a href="{{ $group->url() }}" class="btn btn-outline-purple btn-sm kozi-more-info rounded-pill">Megnézem</a>
-                    </div>
-                </div>
-            </div>
-            @endforeach
-            </div>
-            @endif
-        </div>
+    <div class="movement-description">
+        {{ $spiritualMovement->description }}
     </div>
+
+    @if($groups && $groups->isNotEmpty())
+
+        <h2 class="movement-section-title text-center">
+            A(z) {{ $spiritualMovement->name }} közösségei:
+        </h2>
+
+        <div class="row" id="kozossegek-list">
+            @foreach($groups as $i => $group)
+                <div class="col-xl-4 col-md-6 mb-3">
+                    @include('portal.partials.kozosseg_card', ['group' => $group])
+                </div>
+            @endforeach
+        </div>
+
+    @endif
+
 </div>
+
+<style>
+/* HERO */
+.movement-hero {
+    padding: 40px 0 20px;
+}
+
+.movement-hero-inner {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    margin-top: 20px;
+}
+
+.movement-hero-image {
+    width: 140px;
+    height: 140px;
+    border-radius: 1.5rem;
+    overflow: hidden;
+    background: #f1f5f9;
+    flex-shrink: 0;
+}
+
+.movement-hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.movement-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+}
+
+.movement-website {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--orange);
+    text-decoration: none;
+}
+
+.movement-website:hover {
+    gap: 10px;
+}
+
+/* DESCRIPTION */
+.movement-description {
+    max-width: 800px;
+    margin: 30px auto;
+    color: #475569;
+    line-height: 1.7;
+    font-size: 1rem;
+}
+
+/* SECTION TITLE */
+.movement-section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    margin: 50px 0 30px;
+}
+
+/* GRID */
+#kozossegek-list {
+    margin-top: 10px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .movement-hero-inner {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .movement-hero-image {
+        width: 100px;
+        height: 100px;
+    }
+}
+</style>

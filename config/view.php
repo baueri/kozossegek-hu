@@ -82,7 +82,8 @@ return [
         'preload_css' => fn () => 'rel="preload" as="style" onload="this.onload=null;this.rel=\'stylesheet\'"  media="all"',
         'og_image' => function ($matches) {
             return "<?php echo og_image(" . ($matches[1] ?? '') . "); ?>";
-        }
+        },
+        'active_link_class' => fn ($matches) => "<?php echo route_is($matches[1] ?? null) ? ' active' : ''; ?>"
     ],
     'components' => [
         'aszf' => AszfCheckBox::class,
