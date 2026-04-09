@@ -3,7 +3,7 @@
 namespace App\Services\Statistics\Aggregators;
 
 use App\Enums\AgeGroup;
-use App\Enums\EventType;
+use App\Enums\SystemEventType;
 use App\Enums\Tag;
 use Throwable;
 
@@ -14,7 +14,7 @@ class CityKeywordCountAggregator extends StatAggregator
     public function add(array $row): void
     {
         $city = $this->getCity($row);
-        if ($row['type'] !== EventType::search->name) {
+        if ($row['type'] !== SystemEventType::search->name) {
             return;
         }
         $this->addAgeGroup($city, $row);

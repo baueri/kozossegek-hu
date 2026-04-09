@@ -189,6 +189,9 @@ abstract class Entity
         return diff(Arr::except($this->originalAttributes, 'updated_at'), $this->attributes);
     }
 
+    /**
+     * @return EntityQueryBuilder<static>
+     */
     public static function getBuilder(): ?EntityQueryBuilder
     {
         if (static::$builder) {
@@ -199,7 +202,8 @@ abstract class Entity
         if (class_exists($builder)) {
             return new $builder;
         }
-        return null;
+
+        return EntityQueryBuilder::query(static::class);
     }
 
     private function castInto($field, $value)

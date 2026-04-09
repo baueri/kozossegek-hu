@@ -28,10 +28,10 @@
             {{ $group['city'] . ($group['district'] ? ', ' . $group['district'] : '') }}
         </div>
 
-        @if(!empty($group['age_group_text']))
+        @if(!empty($group['age_group_combined']))
         <div class="community-age">
             <i class="fas fa-user"></i>
-            {{ implode(', ', $group['age_group_text']) }}
+            {{ $group['age_group_combined'] }}
         </div>
         @endif
 

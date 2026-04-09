@@ -55,5 +55,8 @@ return [
     'cloudflare' => [
         'site_key' => env('CLOUDFLARE_SITE_KEY'),
         'secret' => env('CLOUDFLARE_SECRET')
-    ]
+    ],
+    'openai_api_key' => env('OPENAI_API_KEY'),
+    'google_ai_studio_api_key' => env('GOOGLE_AI_STUDIO_API_KEY'),
+    'ai_faker_cache_enabled' => (bool) env('AI_FAKER_CACHE_ENABLED', false)
 ];

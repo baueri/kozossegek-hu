@@ -33,34 +33,33 @@
 
 @yield('portal2026.portal')
 
-<footer id="footer" class="text-white">
+<footer id="footer" class="text-white footer-site">
     <div class="container" id="footer-top">
         <div class="row">
-            <div class="col-md-5 col-sm-6 col-12">
-                <h5>Partnereink</h5>
+            <div class="col-md-5 col-12 mb-4 mb-md-0">
+                <h5 class="footer-section-title">Partnereink</h5>
                 <div class="partnereink">
-                    <a href="https://pasztoralis.hu/" target="_blank" rel="noopener noreferrer">
-                        <img @lazySrc() data-src="/images/partnerek/szcsem_szines_latin.webp" class="lazy">
+                    <a href="https://pasztoralis.hu/" title="Pasztorális helynökség Szeged" target="_blank" rel="noopener noreferrer">
+                        <img @lazySrc() data-src="/images/partnerek/szcsem_szines_latin.webp" data-srcset="/images/partnerek/szcsem_szines_latin.webp" alt="Pasztorális helynökség Szeged" class="lazy">
                     </a>
-                    <a href="https://halo.hu/" target="_blank" rel="noopener noreferrer">
-                        <img @lazySrc() data-src="/images/partnerek/halo-logo.webp" class="lazy">
+                    <a href="https://halo.hu/" title="Háló Közösségi és Kulturális Központ" target="_blank" rel="noopener noreferrer">
+                        <img @lazySrc() data-src="/images/partnerek/halo-logo.webp" data-srcset="/images/partnerek/halo-logo.webp" alt="Háló Közösségi és Kulturális Központ" class="lazy">
                     </a>
-                    <a href="https://fbe.hu/" target="_blank" rel="noopener noreferrer">
-                        <img @lazySrc() data-src="/images/partnerek/felebaratok_egyesulet.webp" class="lazy">
+                    <a href="https://72tanitvany.hu/" title="Hetvenkét Tanítvány Mozgalom" target="_blank" rel="noopener noreferrer" class="t72-logo">
+                        <img @lazySrc() data-src="/images/partnerek/t72_2.webp" data-srcset="/images/partnerek/t72_2.webp" alt="Hetvenkét Tanítvány Mozgalom" class="lazy">
                     </a>
-                    <br/>
-                    <a href="https://72tanitvany.hu/" target="_blank" rel="noopener noreferrer" class="t72-logo">
-                        <img @lazySrc() data-src="/images/partnerek/t72_2.webp" class="lazy">
+                    <a href="https://bizdramagad.hu/" title="Bízd rá magad" target="_blank" rel="noopener noreferrer" class="t72-logo">
+                        <img @lazySrc() data-src="/images/partnerek/bizd_ra_magad.webp" data-srcset="/images/partnerek/bizd_ra_magad.webp" alt="Bízd rá magad" class="lazy">
                     </a>
-                    <a href="https://bizdramagad.hu/" target="_blank" rel="noopener noreferrer" class="t72-logo">
-                        <img @lazySrc() data-src="/images/partnerek/bizd_ra_magad.webp" class="lazy">
+                    <a href="https://miserend.hu/" title="miserend.hu" target="_blank" rel="noopener noreferrer">
+                        <img @lazySrc() data-src="/images/partnerek/miserend.webp" data-srcset="/images/partnerek/miserend.png" alt="miserend.hu" class="lazy miserend-logo">
                     </a>
                 </div>
             </div>
 
-            <div class="col-md-3 col-sm-6 col-12 my-3 my-md-0">
-                <h5>Linkek</h5>
-                <ul class="nav flex-column">
+            <div class="col-md-3 col-sm-6 col-12 mb-4 mb-md-0">
+                <h5 class="footer-section-title">Linkek</h5>
+                <ul class="nav flex-column footer-nav">
                     <li class="nav-item mb-1"><a href="@route('portal.page', 'rolunk')">Rólunk</a></li>
                     <li class="nav-item mb-1"><a href="@route('portal.page', 'impresszum')">Impresszum</a></li>
                     <li class="nav-item mb-1"><a href="@route('portal.page', 'iranyelveink')">Irányelveink</a></li>
@@ -68,9 +67,9 @@
                 </ul>
             </div>
 
-            <div class="col-md-3 col-sm-6 col-12 my-3 my-md-0">
-                <h5>Kapcsolat</h5>
-                <ul class="nav flex-column">
+            <div class="col-md-3 col-sm-6 col-12 mb-4 mb-md-0">
+                <h5 class="footer-section-title">Kapcsolat</h5>
+                <ul class="nav flex-column footer-nav">
                     <li class="nav-item mb-1"><a href="mailto:{{$contact_email}}">{{$contact_email}}</a></li>
                     <li class="nav-item mb-1"><a href="@route('portal.page', 'adatkezelesi-tajekoztato')">Adatkezelés</a></li>
                     <li class="nav-item mb-1"><a href="@route('portal.page', 'adatvedelmi-nyilatkozat')">Adatvédelem</a></li>
@@ -81,20 +80,29 @@
 
     <div id="footer-bottom">
         <div class="container">
-            <div class="row">
-                <div class="col-sm-6">
-                    <small>© 2021-{{ date('Y') }} kozossegek.hu</small>
+            <div class="row align-items-center gy-2 gy-sm-0">
+                <div class="col-12 col-sm-6 d-flex align-items-center">
+                    <span class="footer-copy">© 2021-{{ date('Y') }} kozossegek.hu</span>
                 </div>
-                <div class="col-sm-6 text-end">
-                    <a href="https://www.facebook.com/" target="_blank" class="text-white">
-                        <i class="fab fa-facebook-square fs-3"></i>
-                    </a>
-                    <a href="https://www.instagram.com/" target="_blank" class="text-white">
-                        <i class="fab fa-instagram-square fs-3"></i>
-                    </a>
-                    <a href="https://github.com/baueri/kozossegek-hu/" target="_blank" class="text-white">
-                        <i class="fab fa-github-square fs-3"></i>
-                    </a>
+                <div class="col-12 col-sm-6 d-flex justify-content-sm-end align-items-center gap-1 flex-wrap footer-social">
+                    <a href="https://www.facebook.com/K%C3%B6z%C3%B6ss%C3%A9gekhu-107828477772892"
+                       title="Facebook"
+                       aria-label="Facebook"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="footer-social-link"><i class="fab fa-facebook-square fs-3"></i></a>
+                    <a href="https://www.instagram.com/kozossegek.hu/"
+                       title="Instagram"
+                       aria-label="Instagram"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="footer-social-link"><i class="fab fa-instagram-square fs-3"></i></a>
+                    <a href="https://github.com/baueri/kozossegek-hu/"
+                       title="GitHub"
+                       aria-label="GitHub"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="footer-social-link"><i class="fab fa-github-square fs-3"></i></a>
                 </div>
             </div>
         </div>

@@ -226,6 +226,7 @@ trait GroupTrait
 
         $data['age_group'] = $this->getAgeGroups()->pluck('name')->all();
         $data['age_group_text'] = $this->getAgeGroups()->map->translate()->all();
+        $data['age_group_combined'] = $this->ageGroup();
         $data['join_mode'] = $this->joinModeText();
         $data['on_days'] = $this->getDays()->map->translate()->all();
         $data['occasion_frequency'] = $this->occasionFrequency();

@@ -25,7 +25,6 @@ use App\Services\GroupSearchRepository;
 use App\Services\ReplayAttackProtection\Service;
 use Error;
 use Exception;
-use Framework\Event\Event;
 use Framework\Event\EventDisptatcher;
 use Framework\Exception\FileTypeNotAllowedException;
 use Framework\Http\Exception\PageNotFoundException;
@@ -117,7 +116,7 @@ class GroupController extends PortalController
 
         $institute = $instituteRepo->find($group->institute_id);
 
-        $similar_groups = ChurchGroupViews::query()->similarTo($group)->limit(4)->get();
+        $similar_groups = ChurchGroupViews::query()->similarTo($group)->limit(4)->get()->castInto('toSearchResult');
         $slug = $group->slug();
         $keywords = builder('search_engine')->where('group_id', $group->getId())->first()['keywords'] ?? '';
 

@@ -33,8 +33,9 @@ enum CrudResource
     {
         $singular = Inflector::singularize($name);
         return match ($this) {
-            self::index, self::store => '',
+            self::store => '',
             self::show, self::update, self::destroy => "{{$singular}}",
+            self::index => 'list',
             self::edit => "{{$singular}}/edit",
             self::create => "create"
         };

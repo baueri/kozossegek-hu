@@ -1,4 +1,4 @@
-@extends('portal')
+@extends('portal2026.portal')
 @featuredTitle('Belépés')
 <div class="container inner">
     <div class="form">

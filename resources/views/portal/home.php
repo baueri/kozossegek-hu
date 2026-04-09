@@ -20,11 +20,11 @@
     <div class="container position-relative z-1">
 
         <h1 class="hero-title mb-3">
-            Találd meg a közösséged!
+            Kozossegek.hu
         </h1>
 
         <p class="hero-subtitle mb-4">
-            "Ahol ugyanis ketten vagy hárman összegyűlnek a nevemben..."
+            "Ahol ugyanis ketten vagy hárman összegyűlnek a nevemben, ott vagyok közöttük"
             <br><strong>Mt.18,20</strong>
         </p>
 
@@ -44,10 +44,10 @@
     </div>
 </div>
 
-<section class="py-5">
+<section class="py-5 bg-white">
     <div class="container" style="max-width: 900px;">
 
-        <div class="bg-white px-5 py-5 rounded-4 shadow border-0 text-center">
+        <div class="px-5 py-5 rounded-4 border-0 text-center">
 
             <h2 class="fs-2 fs-md-1 fw-bold mb-4 fst-italic">
                 {{ $intro['title'] }}
@@ -61,9 +61,9 @@
     </div>
 </section>
 
-<section class="py-6 how-it-works mb-5">
+<section class="how-it-works my-5">
     <div class="container">
-        <h2 class="text-center section-title my-5">
+        <h2 class="text-center section-title mb-5">
             Hogyan működik?
         </h2>
 
@@ -127,9 +127,9 @@
     </div>
 </section>
 
-<section class="mt-5 pt-5 mb-5">
+<section class="my-5 py-5 bg-white">
     <div class="container">
-        <h2 class="text-center section-title my-5">Legújabb közösségek</h2>
+        <h2 class="text-center section-title mb-5">Legújabb közösségek</h2>
         <div class="row" id="kozossegek-list">
             @foreach($groups as $group)
             <div class="col-md-6 col-lg-4 mb-5">
@@ -153,6 +153,35 @@
         </div>
     </div>
 </section>
+
+@if(!empty($events))
+<section class="my-5 py-5 bg-white">
+    <div class="container">
+        <h2 class="text-center section-title mb-5">Közelgő események</h2>
+        <div class="row" id="esemenyek-list">
+            @foreach($events as $event)
+            <div class="col-md-6 col-lg-4 mb-5">
+                @include('portal.event.event_card', ['event' => $event])
+            </div>
+            @endforeach
+        </div>
+        <div class="text-center">
+            <a href="@route('event.list')" class="text-orange">
+                További események
+                <span class="arrow-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                        <path d="M5 12H19M19 12L13 6M19 12L13 18"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                </span>
+            </a>
+        </div>
+    </div>
+</section>
+@endif
 
 <section class="cta-section py-5 mb-5">
     <div class="container">
@@ -201,7 +230,7 @@
                     <div class="section-divider mb-4"></div>
                     <p class="text-muted mb-3">
                         Országszerte jelenleg több, mint <strong>{{ $total_groups }} aktív</strong>
-                        katolikus közösség található.
+                        katolikus közösség regisztrált nálunk.
                     </p>
                     <p class="text-muted mb-4">
                         Találd meg a neked valót, vagy ha te is vezetsz egyet,

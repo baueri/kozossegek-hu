@@ -22,6 +22,19 @@
     "page_status.PUBLISHED": "közzétéve",
     "page_status.DRAFT": "piszkozat",
 
+    "event_status.draft": "piszkozat",
+    "event_status.pending": "függőben",
+    "event_status.approved": "jóváhagyva",
+    "event_status.rejected": "elutasítva",
+
+    "event_life_cycle.heading": "Megvalósulás",
+    "event_life_cycle.active": "Megtartjuk",
+    "event_life_cycle.cancelled": "Elmarad",
+    "event_life_cycle.updated": "Megvalósulás frissítve",
+    "event_life_cycle.help_cancelled": "„Elmarad” = a rendezvény lemondásra kerül, és így jelenik meg a portálon.",
+    "event_life_cycle.toggle_activate": "Megtartjuk",
+    "event_life_cycle.toggle_cancel": "Elmarad",
+
     "denomination.katolikus": "katolikus",
 
     "week_day.he": "hétfő",
@@ -49,7 +62,7 @@
 
     "find_your_church_group": "Találd meg a közösséged!",
 
-    "menu.search_group": "Közösséget keresek",
+    "menu.search_group": "Közösségek",
     "menu.leading_a_group": "Közösséget vezetek",
     "menu.religious_movements": "Lelkiségi mozgalmak",
     "menu.about_church_groups": "A közösségről",
@@ -57,12 +70,14 @@
     "menu.contact": "Kapcsolat",
     "menu.my_account": "Fiókom",
     "menu.my_groups": "Közösségeim",
+    "menu.my_events": "Eseményeim",
     "menu.admin": "Admin",
     "menu.login": "Bejelentkezés",
     "menu.logout": "Kijelentkezés",
     "menu.login.email": "E-mail cím",
     "menu.login.password": "Jelszó",
     "menu.news": "Hírek, események",
+    "menu.events": "Események",
 
     "tag.karitativ": "karitatív",
     "tag.dicsoito_zenes": "dicsőítő zenés",

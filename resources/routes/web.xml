@@ -45,6 +45,14 @@
                 <route method="get" uri="my-group/{id}/download-document" as="portal.download_document" controller="GroupController" use="downloadDocument"/>
                 <route method="get" uri="my-groups" as="portal.my_groups" controller="GroupController" use="myGroups"/>
 
+                <route method="get" uri="my-events/geocode-search" as="portal.my_event.geocode_search" controller="UserEventController" use="geocodeSearch" middleware="json"/>
+                <route method="get" uri="my-events" as="portal.my_events" controller="UserEventController" use="index"/>
+                <route method="get" uri="my-events/create" as="portal.my_event.create" controller="UserEventController" use="createForm"/>
+                <route method="post" uri="my-events" as="portal.my_event.store" controller="UserEventController" use="store"/>
+                <route method="get" uri="my-event/{id}/edit" as="portal.my_event.edit" controller="UserEventController" use="editForm"/>
+                <route method="post" uri="my-event/{id}/update" as="portal.my_event.update" controller="UserEventController" use="update"/>
+                <route method="get" uri="my-event/{id}/delete" as="portal.my_event.delete" controller="UserEventController" use="delete"/>
+
                 <route method="get" uri="my-group/{id}/delete" as="portal.delete_group" controller="GroupController" use="deleteGroup"/>
                 <route method="post" uri="my-group/{id}/update" as="portal.my_group.update" controller="GroupController" use="updateMyGroup"/>
             </route-group>
@@ -90,6 +98,12 @@
     <route method="get" uri="opensearch.xml" view="portal/opensearch"/>
 
     <route method="post" uri="announcement" controller="App\Portal\Controllers\PageController" use="setAnnouncementsSeen" as="api.announcements.set_seen"/>
+
+    <!-- Események -->
+    <route method="get" uri="esemenyek" controller="App\Portal\Controllers\EventController" use="list" as="event.list"/>
+    <route method="get" uri="esemeny/{date}/{slug}" controller="App\Portal\Controllers\EventController" use="show" as="event.show"/>
+    <route method="get" uri="calendar/{event}/ics" controller="App\Portal\Controllers\EventController" use="ics" as="event.ics"/>
+
 
     <!-- Adatbázisban tárolt statikus oldalak. FIGYELEM!!!! EZ ALÁ MÁR NE KERÜLJÖN ROUTE!!! -->
     <route method="get" uri="{slug}" controller="App\Portal\Controllers\PageController" use="page" as="portal.page" middleware="App\Middleware\ComingSoon"/>

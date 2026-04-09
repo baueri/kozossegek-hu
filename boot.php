@@ -11,6 +11,7 @@ use App\Models\Page;
 use App\Portal\Services\Search\SearchRepository;
 use App\QueryBuilders\Users;
 use App\Repositories\EventLogs;
+use App\Services\AIFaker\FakerFactory;
 use App\Services\Captcha\CaptchaValidator;
 use App\Services\Captcha\Cloudflare\CloudflareValidator;
 use App\Services\Captcha\Cloudflare\Config as CloudflareConfig;
@@ -19,6 +20,7 @@ use App\Services\EventLogger;
 use App\Services\MeiliSearch\MeiliSearchAdapter;
 use App\Services\MileStone;
 use App\Services\User\Announcer;
+use Baueri\AIFaker\Generator\Fake;
 use Dotenv\Dotenv;
 use Framework\Application;
 use Framework\Console\ConsoleKernel;
@@ -33,6 +35,9 @@ use Framework\Http\View\View;
 use Framework\Http\View\ViewInterface;
 use Framework\Support\Config\Config;
 use GuzzleHttp\Client;
+use Mint\View\Cache;
+use Mint\View\MintCompiler;
+use Mint\View\MintView;
 
 if (!defined('DS')) {
     define('DS', DIRECTORY_SEPARATOR);
@@ -84,6 +89,13 @@ $application->singleton([
     Request::class => Request::class,
     MeiliSearchAdapter::class => MeiliSearchAdapter::class,
     DebugBar::class => DebugBar::class,
+    Fake::class => fn () => FakerFactory::openAI(config('app.openai_api_key'), CACHE . DS . 'ai-faker'),
+    MintView::class => function () {
+        $cache = new Cache(CACHE . 'mint');
+        $compiler = new MintCompiler($views = VIEWS . 'mint');
+
+        return new MintView($views, $cache, $compiler);
+    }
 ]);
 
 $application->bind([

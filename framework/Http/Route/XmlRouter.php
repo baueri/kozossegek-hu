@@ -75,7 +75,7 @@ class XmlRouter implements RouterInterface
         return $this;
     }
 
-    private function parseRoutes($elements): void
+    private function parseRoutes(XmlObject $elements): void
     {
         if ($elements->getName() === 'route') {
             if ($scope = (string) ($elements['resource'] ?? null)) {
@@ -100,13 +100,15 @@ class XmlRouter implements RouterInterface
         return $builder->build();
     }
 
-    private function buildResources($elements, string $scope): array
+    private function buildResources(XmlObject $elements, string $scope): array
     {
+        $as = (string) $elements['as'];
         $routes = [];
         foreach (CrudResource::getResources($scope) as $resource) {
             $elements['method'] = mb_strtolower($resource->requestMethod()->name);
             $elements['use'] = $resource->value();
             $elements['uri'] = $resource->uri((string) $elements['prefix']);
+            $elements['as'] = $as . '.' . $resource->value();
             $routes[] = $this->buildRoute($elements);
         }
 

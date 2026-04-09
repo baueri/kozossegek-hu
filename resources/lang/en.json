@@ -21,6 +21,19 @@
   "page_status.PUBLISHED": "published",
   "page_status.DRAFT": "draft",
 
+  "event_status.draft": "draft",
+  "event_status.pending": "pending",
+  "event_status.approved": "approved",
+  "event_status.rejected": "rejected",
+
+  "event_life_cycle.heading": "Taking place",
+  "event_life_cycle.active": "Scheduled",
+  "event_life_cycle.cancelled": "Called off",
+  "event_life_cycle.updated": "Occurrence status updated",
+  "event_life_cycle.help_cancelled": "“Called off” means the event is cancelled and shown that way on the site.",
+  "event_life_cycle.toggle_activate": "Mark as taking place",
+  "event_life_cycle.toggle_cancel": "Mark as called off",
+
   "denomination.katolikus": "catholic",
 
   "week_day.he": "monday",
@@ -57,6 +70,7 @@
 
   "menu.my_account": "My account",
   "menu.my_groups": "My groups",
+  "menu.my_events": "My events",
   "menu.admin": "Admin",
   "menu.login": "Log in",
   "menu.logout": "Log out",

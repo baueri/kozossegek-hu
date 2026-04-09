@@ -6,6 +6,12 @@ namespace Framework\Http\View\Directives;
 
 class IfDirective implements Directive
 {
+    /**
+     * Balanced parenthesis expression for @if / @elseif conditions.
+     * (?1) recurses to the first capture group (same subpattern), so calls like $obj->method() work.
+     */
+    private const BALANCED_EXPR = '(?:[^()]|\((?:[^()]++|(?1))*\))*+';
+
     public function getName(): string
     {
         return 'if';
@@ -17,11 +23,11 @@ class IfDirective implements Directive
             return '<?php endif; ?>';
         }
 
-        if (strpos($matches[0], '@elseif') === 0) {
+        if (str_starts_with($matches[0], '@elseif')) {
             return '<?php elseif(' . $matches[2] . '): ?>';
         }
 
-        if (strpos($matches[0], '@else') === 0) {
+        if (str_starts_with($matches[0], '@else')) {
             return '<?php else: ?>';
         }
 
@@ -30,6 +36,8 @@ class IfDirective implements Directive
 
     public function getPattern(): string
     {
-        return '/@if\((.*)\)|@elseif\((.*)\)|(@else)|(@endif)/';
+        $e = self::BALANCED_EXPR;
+
+        return '/@if\(\s*(' . $e . ')\s*\)|@elseif\(\s*(' . $e . ')\s*\)|(@else\b)|(@endif)/';
     }
 }

@@ -10,7 +10,7 @@
         <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     @endif
 @endsection
-@extends('portal')
+@extends('portal2026.portal')
 @featuredTitle('Új közösség regisztrálása')
 <div class="container inner pt-4 pb-4" id="create-group">
     @message()

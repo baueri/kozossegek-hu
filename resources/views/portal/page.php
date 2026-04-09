@@ -6,7 +6,7 @@
     @endif
 @endsection
 @section('subtitle', $page->title . ' | ')
-@extends('portal')
+@extends('portal2026.portal')
 @featuredTitle($page_title)
 <div class="container inner page">
     @if(!$header_background)<h1>{{ $page_title }}</h1>@endif

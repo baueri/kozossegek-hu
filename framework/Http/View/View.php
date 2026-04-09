@@ -57,13 +57,23 @@ class View implements ViewInterface
 
     public static function getPath(string $view): string
     {
-        $viewPath = str_replace('.', DS, $view);
+        $isNormalized = str_ends_with($view, '.php');
+
+        if ($isNormalized) {
+            $viewPath = $view;
+        } else {
+            $viewPath = str_replace('.', DS, $view);
+        }
 
         if (strpos($view, ':') !== false) {
             [$dirPath, $viewPath] = explode(':', $viewPath);
             $dirPath = rtrim(config("view.view_sources.{$dirPath}"), DS) . DS;
         } else {
             $dirPath = config('app.views_dir', VIEWS);
+        }
+
+        if ($isNormalized) {
+            return $dirPath . $viewPath;
         }
 
         return $dirPath . $viewPath . '.php';

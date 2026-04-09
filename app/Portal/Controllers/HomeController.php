@@ -6,6 +6,7 @@ namespace App\Portal\Controllers;
 
 use App\Enums\AgeGroup;
 use App\QueryBuilders\ChurchGroupViews;
+use App\QueryBuilders\Events;
 use App\QueryBuilders\Pages;
 
 class HomeController extends PortalController
@@ -31,10 +32,21 @@ class HomeController extends PortalController
             ->castInto('toSearchResult')
             ->all();
 
+        $events = Events::query()
+            ->approved()
+            ->active()
+            ->upcoming()
+            ->with('tags')
+            ->orderBy('starts_at')
+            ->limit(6)
+            ->get()
+            ->castInto('toSearchResult')
+            ->all();
+
         $total = ChurchGroupViews::query()->active()->count();
         $total_groups = floor($total / pow(10, strlen((string) $total) -1 )) * pow(10, strlen((string) $total) -1 );
 
-        return view('portal.home', compact('age_groups', 'selected_age_group', 'intro', 'news', 'groups', 'total_groups'));
+        return view('portal.home', compact('age_groups', 'selected_age_group', 'intro', 'news', 'groups', 'events', 'total_groups'));
     }
 
     private function getIntro(): array

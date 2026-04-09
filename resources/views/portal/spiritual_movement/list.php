@@ -57,6 +57,7 @@
     display: block;
     background: #fff;
     border-radius: 1.5rem;
+    border: 2px solid #f1f5f9;
     margin-bottom: 16px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.06);
     transition: all 0.25s ease;
@@ -66,7 +67,7 @@
 
 .movement-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 25px 60px rgba(0,0,0,0.1);
+    /*box-shadow: 0 25px 60px rgba(0,0,0,0.1);*/
     text-decoration: none;
 }
 

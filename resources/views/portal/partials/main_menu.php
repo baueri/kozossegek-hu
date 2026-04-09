@@ -18,6 +18,9 @@
             <li class="nav-item">
                 <a href="@route('portal.my_groups')" class="nav-link">@icon('comments') @lang('menu.my_groups')</a>
             </li>
+            <li class="nav-item">
+                <a href="@route('portal.my_events')" class="nav-link">@icon('calendar-alt') @lang('menu.my_events')</a>
+            </li>
             @admin()
             <li class="nav-item">
                 <a href="@route('admin.dashboard')" class="nav-link">@icon('cog') @lang('menu.admin')</a>
@@ -67,16 +70,9 @@
     </li>
     @endauth
 
-    <li class="nav-item divider-before">
-        <a href="https://vp2.hu/" class="nav-link partner-header-link" target="_blank" rel="noopener noreferrer">
-            <img src="/images/ikon-vp2.png" alt="Virtuális plébánia"/>
-            <span class="d-lg-none d-inline-block">Virtuális plébánia</span>
-        </a>
-    </li>
-
     <li class="nav-item">
-        <a href="https://miserend.hu/" class="nav-link partner-header-link" target="_blank" rel="noopener noreferrer">
-            <img src="/images/ikon-miserend.png" alt="miserend.hu"/>
+        <a href="https://miserend.hu/" title="miserend.hu" class="nav-link partner-header-link" target="_blank" rel="noopener noreferrer">
+            <img src="/images/miserend_logo.png" style="height: 23px; width: auto;" alt="miserend.hu"/>
             <span class="d-lg-none d-inline-block">miserend.hu</span>
         </a>
     </li>
@@ -115,20 +111,18 @@
                             <span>@lang('menu.search_group')</span>
                         </a>
                     </li>
-
+                    @if($display_news)
+                        <li class="nav-item">
+                            <a href="@route('event.list')" class="nav-link@active_link_class('event.list')">
+                                <span>@lang('menu.events')</span>
+                            </a>
+                        </li>
+                    @endif
                     <li class="nav-item">
                         <a href="@route('portal.spiritual_movements')" class="nav-link@active_link_class('portal.spiritual_movements')">
                             <span>@lang('menu.religious_movements')</span>
                         </a>
                     </li>
-
-                    @if($display_news)
-                        <li class="nav-item">
-                            <a href="@route('portal.blog')" class="nav-link@active_link_class('portal.blog')">
-                                <span>@lang('menu.news')</span>
-                            </a>
-                        </li>
-                    @endif
                 </ul>
                 <ul class="navbar-nav d-flex d-lg-none">
                     @yield('nav-pages')

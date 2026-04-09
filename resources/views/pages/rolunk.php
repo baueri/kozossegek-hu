@@ -1,11 +1,6 @@
 @header()
     <link rel="canonical" href="@route('portal.page', ['slug' => 'rolunk'])" />
     <meta name="description" content="Közösség rólunk, bemutatkozás" />
-    <style>
-        #send-message label {
-            margin-bottom: .2rem;
-        }
-    </style>
 @endheader
 @section('subtitle', 'Rólunk | ')
 @section('scripts')
@@ -14,50 +9,68 @@
     @endif
 @endsection
 @extends('portal')
-@featuredTitle('Rólunk')
-<div class="container inner p-4 page">
-    {{ $page->content }}
-    <span id="contact"></span>
-    <div class="card shadow p-3">
-        <div class="row">
-            <div class="col-md-6 text-center mb-3">
-                <img src="/images/csoportkep_contact.jpg" alt="A kozossegek.hu csapata"/>
-            </div>
-            <div class="col-md-6">
-                <h4>Írj nekünk!</h4>
-                <form method="post" id="send-message" action="@route('portal.contact_us')">
-                    <div class="form-group required">
-                        <label class="" for="mail_name">Neved</label>
-                        <input type="text" class="form-control" name="name" required id="mail_name">
-                    </div>
-                    <div class="form-group required">
-                        <label for="mail_address">Email címed</label>
-                        <input type="email" class="form-control" name="email" required id="mail_address">
-                    </div>
-                    <div class="form-group">
-                        <label for="category">Mivel kapcsolatban keresel minket?</label>
-                        <select id="category" name="category" class="form-control">
-                            <option value="kapcsolat">Kapcsolatfelvétel</option>
-                            <option value="honlap">Honlappal kapcsolatos kérdés, észrevétel</option>
-                        </select>
-                    </div>
-                    <div class="form-group required">
-                        <label for="mail_msg">Üzenet</label>
-                        <textarea class="noresize form-control" name="message" rows="4" required onresize id="mail_msg"></textarea>
-                    </div>
-                    @honeypot('rolunk')
-                    @component('replay_attack', ['name' => 'contact'])
-                    @if($captchaEnabled)
-                    <div class="mb-1">
-                        @component('captcha')
-                    </div>
-                    @endif
-                    <p class="text-center">
-                        <button type="submit" name="send" class="btn btn-altblue rounded-pill shadow"><i class="fa fa-paper-plane mr-2"></i> Üzenet elküldése</button>
-                    </p>
-                </form>
-            </div>
+@featuredTitle()
+<h1 class="page-title">Rólunk</h1>
+@endfeaturedTitle
+
+<div class="rolunk-page">
+    <div class="container inner py-4 py-md-5">
+        <div class="rolunk-prose mb-4 mb-md-5">
+            {{ $page->content }}
         </div>
+
+        <section id="contact" class="rolunk-contact-section" aria-labelledby="rolunk-contact-heading">
+            <div class="rolunk-contact-card">
+                <div class="rolunk-contact-card-inner">
+                    <aside class="rolunk-contact-aside">
+                        <div>
+                            <h2 id="rolunk-contact-heading mb-3">Írj nekünk!</h2>
+                            <p class="rolunk-contact-lead">
+                                Válaszolunk minden észrevételre és kérdésre. Válaszd ki a témát, és röviden fogalmazd meg, miben segíthetünk.
+                            </p>
+                        </div>
+                        <img src="/images/rolunk.jpg" class="rolunk-contact-team img-fluid" width="640" height="480" alt="A kozossegek.hu közösségi portál" loading="lazy" />
+                    </aside>
+                    <div class="rolunk-contact-form-wrap">
+                        <form method="post" id="send-message" action="@route('portal.contact_us')" novalidate>
+                            <div class="form-row">
+                                <div class="form-group col-md-6 required">
+                                    <label for="mail_name">Neved</label>
+                                    <input type="text" class="form-control" name="name" required id="mail_name" autocomplete="name">
+                                </div>
+                                <div class="form-group col-md-6 required">
+                                    <label for="mail_address">Email címed</label>
+                                    <input type="email" class="form-control" name="email" required id="mail_address" autocomplete="email">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="category">Mivel kapcsolatban keresel minket?</label>
+                                <select id="category" name="category" class="form-control">
+                                    <option value="kapcsolat">Kapcsolatfelvétel</option>
+                                    <option value="honlap">Honlappal kapcsolatos kérdés, észrevétel</option>
+                                </select>
+                            </div>
+                            <div class="form-group required">
+                                <label for="mail_msg">Üzenet</label>
+                                <textarea class="noresize form-control" name="message" rows="5" required id="mail_msg"></textarea>
+                            </div>
+                            @honeypot('rolunk')
+                            @component('replay_attack', ['name' => 'contact'])
+                            @if($captchaEnabled)
+                                <div class="mb-3">
+                                    @component('captcha')
+                                </div>
+                            @endif
+                            <div class="rolunk-submit-wrap text-center text-md-left">
+                                <button type="submit" name="send" class="btn btn-orange px-4 rounded-pill">
+                                    <i class="fa fa-paper-plane mr-2" aria-hidden="true"></i>Üzenet elküldése
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
 </div>
 @footer()

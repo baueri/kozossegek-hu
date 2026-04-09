@@ -6,7 +6,7 @@ use App\Admin\Components\AdminTable\PaginatedAdminTable;
 use App\Admin\Settings\EventLog\EventLogAdminTable;
 use App\Console\Commands\Cron\DailyCron;
 use App\Console\Commands\Cron\MonthlyCron;
-use App\Enums\EventType;
+use App\Enums\SystemEventType;
 use App\Services\SystemAdministration\SiteMap\SiteMapGenerator;
 use Framework\Console\Command;
 use Framework\Database\PaginatedResultSet;
@@ -51,7 +51,7 @@ class SettingsController extends AdminController
         $date_from = $request['date_from'];
         $date_to = $request['date_to'];
 
-        $types = EventType::cases();
+        $types = SystemEventType::cases();
         $selectedType = $request['type'];
         $request_page = $request['request_page'];
 
