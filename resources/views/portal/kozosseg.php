@@ -158,16 +158,14 @@ use App\Models\ChurchGroupView;
                     <i class="fas fa-envelope"></i>
                     Kapcsolatfelvétel
                 </h5>
-                <button type="button" class="close" data-dismiss="modal">
-                    <span>&times;</span>
-                </button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Bezárás"></button>
             </div>
 
             <form>
                 <div class="modal-body"></div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-dismiss="modal">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">
                         Mégse
                     </button>
 
@@ -187,7 +185,7 @@ use App\Models\ChurchGroupView;
         $(".open-contact-modal").click(function() {
             $.post("@route('portal.group-contact-form', ['kozosseg' => $slug])", function(form) {
                 $("#contact-modal .modal-body").html(form);
-                $("#contact-modal").modal("show");
+                bootstrap.Modal.getOrCreateInstance(document.getElementById("contact-modal")).show();
             });
         });
 

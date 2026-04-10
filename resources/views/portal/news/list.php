@@ -9,7 +9,7 @@
         @foreach($news as $new)
         <a href="{{ $new->getUrl() }}" class="spiritual-movement-row">
             <div class="card mb-3 shadow rounded">
-                <div class="no-gutters row">
+                <div class="row g-0">
                     <div class="p-2 align-middle text-center">
                         <img @lazySrc() data-src="{{ $new->header_image }}"
                              data-srcset="{{ $new->header_image }}"
@@ -18,7 +18,7 @@
                              style="width:200px; height: 200px; object-fit: cover; aspect-ratio: 1 / 1;"
                         >
                     </div>
-                    <div class="p-3 flex-grow-1 text-center text-md-left col">
+                    <div class="p-3 flex-grow-1 text-center text-md-start col">
                         <h3><b class="card-title">{{ $new->title }}</b></h3>
                         <div class="text-muted
                             d-flex

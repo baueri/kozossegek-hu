@@ -22,7 +22,7 @@
         </p>
     @endif
     <hr>
-    <p class="text-left">
+    <p class="text-start">
         @component('aszf')<br/>
         <label><input type="checkbox" required id="iranyelvek"> A közösségem a <a href="/iranyelveink" target="_blank"><b><u>kereszténységgel egyező szellemiséget</u></b></a> képvisel</label>
     </p>

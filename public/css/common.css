@@ -78,9 +78,44 @@
 
 /* --- Buttons --- */
 .btn-altblue {
+    /* Bootstrap 5 .btn:hover uses these; without them, hover falls back to default (e.g. pale bg + wrong text). */
+    --bs-btn-color: #fff;
+    --bs-btn-bg: var(--alt-blue);
+    --bs-btn-border-color: var(--alt-blue);
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #005a8c;
+    --bs-btn-hover-border-color: #005a8c;
+    --bs-btn-focus-shadow-rgb: 0, 110, 168;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #004d73;
+    --bs-btn-active-border-color: #004d73;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: var(--alt-blue);
+    --bs-btn-disabled-border-color: var(--alt-blue);
+
     color: #fff;
     background-color: var(--alt-blue);
     border: 1px solid var(--alt-blue);
+
+    &:hover {
+        color: #fff;
+        background-color: #005a8c;
+        border-color: #005a8c;
+    }
+
+    &:focus-visible {
+        color: #fff;
+        background-color: #005a8c;
+        border-color: #005a8c;
+    }
+
+    &:active,
+    &.active {
+        color: #fff;
+        background-color: #004d73;
+        border-color: #004d73;
+    }
 }
 
 .btn-darkblue {

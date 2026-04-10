@@ -14,8 +14,8 @@
                                  style="height: 200px; object-fit: cover; aspect-ratio: 16 / 9;"
                             >
                             <div class="card-body">
-                                <h4 class="card-title text-truncate text-center text-md-left mb-3 mb-md-0 font-weight-bold">{{ $new->title }}</h4>
-                                <div class="text-muted text-md-left d-flex justify-content-between align-items-center flex-column flex-md-row mb-3 ">
+                                <h4 class="card-title text-truncate text-center text-md-start mb-3 mb-md-0 fw-bold">{{ $new->title }}</h4>
+                                <div class="text-muted text-md-start d-flex justify-content-between align-items-center flex-column flex-md-row mb-3 ">
                                     <span style="font-size: 14px">{{ carbon($new->created_at)->format('Y. m. d.') }}</span>
                                 </div>
                                 <div class="card-text" style="font-size: 16px">{{ $new->excerpt(25, '...') }}</div>
@@ -25,7 +25,7 @@
                 </div>
                 @endforeach
             </div>
-            <div class="text-right">
+            <div class="text-end">
                 <a href="@route('portal.blog')" class="">További hírek >></a>
             </div>
         </div>

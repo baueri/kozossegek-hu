@@ -24,7 +24,7 @@
                 <div class="rolunk-contact-card-inner">
                     <aside class="rolunk-contact-aside">
                         <div>
-                            <h2 id="rolunk-contact-heading mb-3">Írj nekünk!</h2>
+                            <h2 id="rolunk-contact-heading" class="mb-3">Írj nekünk!</h2>
                             <p class="rolunk-contact-lead">
                                 Válaszolunk minden észrevételre és kérdésre. Válaszd ki a témát, és röviden fogalmazd meg, miben segíthetünk.
                             </p>
@@ -33,24 +33,24 @@
                     </aside>
                     <div class="rolunk-contact-form-wrap">
                         <form method="post" id="send-message" action="@route('portal.contact_us')" novalidate>
-                            <div class="form-row">
-                                <div class="form-group col-md-6 required">
+                            <div class="row g-3">
+                                <div class="col-md-6 mb-3 required">
                                     <label for="mail_name">Neved</label>
                                     <input type="text" class="form-control" name="name" required id="mail_name" autocomplete="name">
                                 </div>
-                                <div class="form-group col-md-6 required">
+                                <div class="col-md-6 mb-3 required">
                                     <label for="mail_address">Email címed</label>
                                     <input type="email" class="form-control" name="email" required id="mail_address" autocomplete="email">
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="mb-3">
                                 <label for="category">Mivel kapcsolatban keresel minket?</label>
-                                <select id="category" name="category" class="form-control">
+                                <select id="category" name="category" class="form-select">
                                     <option value="kapcsolat">Kapcsolatfelvétel</option>
                                     <option value="honlap">Honlappal kapcsolatos kérdés, észrevétel</option>
                                 </select>
                             </div>
-                            <div class="form-group required">
+                            <div class="mb-3 required">
                                 <label for="mail_msg">Üzenet</label>
                                 <textarea class="noresize form-control" name="message" rows="5" required id="mail_msg"></textarea>
                             </div>
@@ -61,9 +61,9 @@
                                     @component('captcha')
                                 </div>
                             @endif
-                            <div class="rolunk-submit-wrap text-center text-md-left">
+                            <div class="rolunk-submit-wrap text-center text-md-start">
                                 <button type="submit" name="send" class="btn btn-orange px-4 rounded-pill">
-                                    <i class="fa fa-paper-plane mr-2" aria-hidden="true"></i>Üzenet elküldése
+                                    <i class="fa fa-paper-plane me-2" aria-hidden="true"></i>Üzenet elküldése
                                 </button>
                             </div>
                         </form>

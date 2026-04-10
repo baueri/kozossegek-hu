@@ -1,20 +1,36 @@
 <?php $redirect = request()['redirect']; ?>
-<div class="form">
-    <form class="login-form" method="post" action="@route('login', ['redirect' => $redirect])">
+<div class="auth-card">
+    <form class="login-form auth-form" method="post" action="@route('login', ['redirect' => $redirect])">
         @csrf()
-        <div>
-                @include('admin.partials.message')
-                <div class="form-group">
-                    <input type="text" name="username" placeholder="email cím" autofocus class="form-control"/>
-                </div>
-                <div class="form-group">
-                    <input type="password" name="password" placeholder="jelszó" class="form-control"/>
-                </div>
-                @include('portal.partials.google-login')
-                <button type="submit" class="btn btn-altblue">belépés</button>
-                <p class="message mt-3">
-                    <a href="@route('portal.forgot_password')">Elfelejtettem a jelszavam</a>
-                </p>
+        <div class="mb-3">
+            @include('admin.partials.message')
+        </div>
+        <div class="mb-3">
+            <label for="login-modal-email" class="form-label">Email cím</label>
+            <input type="email"
+                   id="login-modal-email"
+                   name="username"
+                   autocomplete="username"
+                   autofocus
+                   class="form-control"
+                   placeholder="pelda@email.hu"/>
+        </div>
+        <div class="mb-3">
+            <label for="login-modal-password" class="form-label">Jelszó</label>
+            <input type="password"
+                   id="login-modal-password"
+                   name="password"
+                   autocomplete="current-password"
+                   class="form-control"
+                   placeholder="••••••••"/>
+        </div>
+        @if(social_provider_enabled())
+            <div class="auth-divider auth-divider--compact">vagy</div>
+            @include('portal.partials.google-login')
+        @endif
+        <button type="submit" class="btn btn-orange w-100 rounded-pill py-2 mt-1">Belépés</button>
+        <div class="auth-form-footer justify-content-center mt-2 mb-0">
+            <a href="@route('portal.forgot_password')">Elfelejtett jelszó</a>
         </div>
     </form>
 </div>

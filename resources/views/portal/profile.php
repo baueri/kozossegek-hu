@@ -14,15 +14,15 @@
                         <div class="col-lg-6">
                             <div class="account-form-section">
                                 <h3 class="account-section-title">Személyes adatok</h3>
-                                <div class="form-group">
+                                <div class="mb-3">
                                     <label>E-mail cím @icon('info-circle small', 'Amikor valaki felszeretné venni a kapcsolatot a közösséggel, erre az email címre küldjük el az érdeklődő üzenetét.')</label>
                                     <input type="email" name="email" value="{{ $user->email }}" class="form-control"/>
                                 </div>
-                                <div class="form-group">
+                                <div class="mb-3">
                                     <label>Név</label>
                                     <input type="text" name="name" value="{{ $user->name }}" class="form-control"/>
                                 </div>
-                                <div class="form-group mb-0">
+                                <div class="mb-0">
                                     <label for="phone_number">Telefonszám
                                         @icon('info-circle small', 'Nem kötelező, de a könnyebb kapcsolattartás érdekében megadhatod a telefonszámodat is')</label>
                                     <input type="tel" name="phone_number" id="phone_number" value="{{ $user->phone_number }}" class="form-control">
@@ -30,15 +30,15 @@
                             </div>
                             <div class="account-form-section">
                                 <h3 class="account-section-title">Jelszócsere</h3>
-                                <div class="form-group">
+                                <div class="mb-3">
                                     <label>Régi jelszó</label>
                                     <input type="password" name="old_password" class="form-control" autocomplete="off"/>
                                 </div>
-                                <div class="form-group">
+                                <div class="mb-3">
                                     <label>Új jelszó</label>
                                     <input type="password" name="new_password" id="new_password" class="form-control" autocomplete="new-password"/>
                                 </div>
-                                <div class="form-group mb-0">
+                                <div class="mb-0">
                                     <label>Jelszó még egyszer</label>
                                     <input type="password" name="new_password_again" id="new_password_again" class="form-control" autocomplete="new-password"/>
                                 </div>
@@ -55,10 +55,10 @@
                                         <div class="profile-social-row">
                                             <div class="d-flex align-items-start justify-content-between flex-wrap">
                                                 <div>
-                                                    <i class="{{ $profile->icon() }} text-muted mr-1"></i>
+                                                    <i class="{{ $profile->icon() }} text-muted me-1"></i>
                                                     <span>{{ $profile->text() }}</span>
                                                 </div>
-                                                <a href="@route('portal.detach_social_profile', ['provider' => $profile->social_provider])" class="small text-danger font-weight-bold mt-1 mt-sm-0">
+                                                <a href="@route('portal.detach_social_profile', ['provider' => $profile->social_provider])" class="small text-danger fw-bold mt-1 mt-sm-0">
                                                     @icon('trash-alt') Szétkapcsolás
                                                 </a>
                                             </div>

@@ -18,7 +18,7 @@
 
             @if($group->exists())
             <p class="mb-3">
-                <a href="{{ $group->url() }}" class="font-weight-500" target="_blank" rel="noopener">@icon('eye') Megtekintés nyilvános oldal</a>
+                <a href="{{ $group->url() }}" class="fw-medium" target="_blank" rel="noopener">@icon('eye') Megtekintés nyilvános oldal</a>
             </p>
             @endif
             <form method="post" id="group-form" action="@route('portal.my_group.update', $group)" enctype="multipart/form-data">
@@ -40,9 +40,9 @@
                     @endif
                     <div class="row">
                         <div class="col-md-3">
-                            <div class="form-group">
+                            <div class="mb-3">
                                 <label for="status">Állapot</label>
-                                <select id="status" name="status" class="form-control">
+                                <select id="status" name="status" class="form-select">
                                     @foreach($statuses as $status => $name)
                                         <option value="{{ $status }}" @selected($group->status == $status)>{{ $name }}</option>
                                     @endforeach
@@ -52,13 +52,13 @@
                     </div>
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="form-group required">
+                            <div class="mb-3 required">
                                 <label for="name">Közösség neve</label>
                                 <input type="text" id="name" value='{{ $group->name }}' name="name" class="form-control">
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="form-group required">
+                            <div class="mb-3 required">
                                 <label for="group_leaders">Közösségvezető(k) neve(i)</label>
                                 <input type="text" name="group_leaders" id="group_leaders" class="form-control"
                                        value="{{ $group->group_leaders ?: $user->name }}" required>
@@ -67,9 +67,9 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="form-group required">
+                            <div class="mb-3 required">
                                 <label for="institute_id">Intézmény / plébánia</label>
-                                <select name="institute_id" style="width:100%" class="form-control" required>
+                                <select name="institute_id" style="width:100%" class="form-select" required>
                                     <option value="{{ $group->institute_id }}">
                                         {{ $group->institute_id ? $group->institute_name . ' (' . $group->city . ')' : 'intézmény' }}
                                         @if($institute && $institute->approved == 0)
@@ -82,9 +82,9 @@
                     </div>
                     <div class="row">
                         <div class="col-md-4">
-                            <div class="form-group required">
+                            <div class="mb-3 required">
                                 <label for="age_group">Korosztály <small>(legalább egyet adj meg)</small></label>
-                                <select class="form-control" name="age_group[]" multiple="multiple" id="age_group" required>
+                                <select class="form-select" name="age_group[]" multiple="multiple" id="age_group" required>
                                     @foreach($age_groups as $age_group)
                                     <option value="{{ $age_group->value }}" @selected(in_array($age_group->name, $age_group_array))>
                                         {{ $age_group->translate() }}
@@ -94,9 +94,9 @@
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <div class="form-group required">
+                            <div class="mb-3 required">
                                 <label for="occasion_frequency">Alkalmak gyakorisága</label>
-                                <select class="form-control" id="occasion_frequency" name="occasion_frequency" required>
+                                <select class="form-select" id="occasion_frequency" name="occasion_frequency" required>
                                     @foreach($occasion_frequencies as $occasion_frequency)
                                     <option value="{{ $occasion_frequency->value }}" @selected($group->occasion_frequency == $occasion_frequency->value)>
                                         {{ $occasion_frequency->translate() }}
@@ -106,7 +106,7 @@
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <div class="form-group">
+                            <div class="mb-3">
                                 <label for="on_days">Mely napo(ko)n</label>
                                 @component('day_selector', compact('group_days'))
                             </div>
@@ -114,7 +114,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-4">
-                            <div class="form-group">
+                            <div class="mb-3">
                                 <label for="on_days">Csatlakozási lehetőség módja <i class="fa fa-info-circle"
                                      title="<b>Egyéni megbeszélés alapján:</b> Közösségvezetővel egyeztetve történik<br/><b>Folyamatos csatlakozási lehetőség:</b> Az év folyamán bármikor jöhetnek új tagok<br/><b>Időszakos csatlakozás:</b> pl.: Minden félév első hónapja, negyedévente stb"
                                      data-html="true"></i></label>
@@ -122,17 +122,17 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label for="spiritual_movement_id">Lelkiségi mozgalom</label>
                         @spiritual_movement_selector($group->spiritual_movement_id)
                     </div>
                 </div>
                 <div class="step-container shadow account-step-form">
                     <h3 class="h4 mt-3">A közösség jellemzői</h3>
-                    <div class="form-group">
+                    <div class="mb-3">
                         <div>
                             @foreach($tags as $tag)
-                            <label class="mr-2" for="tag-{{ $tag->value }}">
+                            <label class="me-2" for="tag-{{ $tag->value }}">
                                 <input type="checkbox"
                                        name="tags[]"
                                        id="tag-{{$tag->value}}"
@@ -144,12 +144,12 @@
                         </div>
                     </div>
 
-                    <div class="form-group required">
+                    <div class="mb-3 required">
                         <h3 class="h4 mt-3">Bemutatkozás</h3>
                         <textarea name="description" id="description">{{ $group->description }}</textarea>
                     </div>
                     <div class="group-images">
-                            <div class="form-group">
+                            <div class="mb-3">
                                 <h3 class="h4 mt-3 mb-0">Fotó a közösségről</h3>
                                 <p><small>(Ha ezt nem adod meg, akkor az intézmény fotója jelenik meg)</small><br/></p>
                                 <div class="group-image">
@@ -173,7 +173,7 @@
                             Még nincs feltöltve
                         @endif
                     </p>
-                    <div class="form-group">
+                    <div class="mb-3">
                         <div class="mb-3">
                             <h5 class="mb-0">Igazoló dokumentum lecserélése</h5>
                             <p><small>Microsoft office dokumentum (<b>doc, docx</b>), <b>pdf</b> vagy kép formátum</small></p>
@@ -184,7 +184,7 @@
                 <hr>
                 @csrf()
                 <button type="submit" class="btn btn-orange px-4 rounded-pill"><i class="fa fa-save"></i> Mentés</button>
-                <a href="@route('portal.delete_group', $group)" class="text-danger float-right confirm-action account-danger-link">Közösségem törlése</a>
+                <a href="@route('portal.delete_group', $group)" class="text-danger float-end confirm-action account-danger-link">Közösségem törlése</a>
             </form>
             </div>
         </div>

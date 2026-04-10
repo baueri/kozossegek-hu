@@ -41,28 +41,37 @@
         <ul class="submenu">
             <li class="nav-item" id="login-box">
                 <div class="p-lg-3">
-                    <form action="@route('doLogin')" method="post">
-                        <label class="text-center w-100">@lang('menu.login')</label><br/>
-                        
+                    <form class="auth-form auth-form--dropdown" action="@route('doLogin')" method="post">
+                        <span class="login-dropdown-heading">@lang('menu.login')</span>
                         <div class="mb-3">
-                            <input type="text" class="form-control" name="username" placeholder="@lang('menu.login.email')" id="popup-login-username"/>
+                            <label for="popup-login-username" class="form-label">@lang('menu.login.email')</label>
+                            <input type="email"
+                                   class="form-control"
+                                   name="username"
+                                   id="popup-login-username"
+                                   autocomplete="username"
+                                   placeholder="@lang('menu.login.email')"/>
                         </div>
-
                         <div class="mb-3">
-                            <input type="password" class="form-control" name="password" placeholder="@lang('menu.login.password')"/>
+                            <label for="popup-login-password" class="form-label">@lang('menu.login.password')</label>
+                            <input type="password"
+                                   class="form-control"
+                                   name="password"
+                                   id="popup-login-password"
+                                   autocomplete="current-password"
+                                   placeholder="@lang('menu.login.password')"/>
                         </div>
-
-                        <div>
-                            @include('portal.partials.google-login', ['width' => 205])
-                        </div>
-
-                        <p class="text-center">
-                            <button type="submit" class="btn btn-altblue">Belépés</button>
-                        </p>
-
-                        <p class="text-center">
+                        @if(social_provider_enabled())
+                            <div class="auth-divider auth-divider--compact">vagy</div>
+                            <div>
+                                @include('portal.partials.google-login', ['width' => 260])
+                            </div>
+                        @endif
+                        <button type="submit" class="btn btn-orange w-100 rounded-pill py-2 mt-1">Belépés</button>
+                        <div class="auth-form-footer--dropdown d-flex flex-column gap-1 align-items-center">
+                            <a href="@route('portal.forgot_password')">Elfelejtett jelszó</a>
                             <a href="@route('portal.register')">Regisztráció</a>
-                        </p>
+                        </div>
                     </form>
                 </div>
             </li>
@@ -130,7 +139,7 @@
                     @yield('nav-pages')
                     @yield('nav-right')
                 </ul>
-                <div class="d-flex align-items-center ml-3">
+                <div class="d-flex align-items-center ms-3">
                     <a href="@route('portal.register_group')" class="badge rounded-pill bg-dark py-2 px-3 text-light">
                         @lang('menu.leading_a_group')
                     </a>

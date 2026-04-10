@@ -29,26 +29,26 @@
                     </p>
                     <div class="row">
                         <div class="col-md-4">
-                            <div class="form-group required">
+                            <div class="mb-3 required">
                                 <label>Neved</label>
                                 <input type="text" class="form-control" name="user_name"  value="{{ $user_name }}" data-describedby="validate_user_name">
                                 <div id="validate_user_name" class="validate_message"></div>
                             </div>
-                            <div class="form-group required">
+                            <div class="mb-3 required">
                                 <label>Email címed</label>
                                 <input type="email" class="form-control" name="email" value="{{ $email }}" data-describedby="validate_email">
                                 <div id="validate_email" class="validate_message"></div>
                             </div>
-                            <div class="form-group">
+                            <div class="mb-3">
                                 <label for="phone_number">Telefonszám @icon('info-circle small', 'Nem kötelező, de a könnyebb kapcsolattartás érdekében megadhatod a telefonszámodat is')</label>
                                 <input type="tel" name="phone_number" id="phone_number" value="{{ $phone_number }}" class="form-control">
                             </div>
-                            <div class="form-group required">
+                            <div class="mb-3 required">
                                 <label>Jelszó <small>(min. 8 karakter)</small></label>
                                 <input type="password" class="form-control" name="password" data-describedby="validate_password">
                                 <div id="validate_password" class="validate_message"></div>
                             </div>
-                            <div class="form-group required">
+                            <div class="mb-3 required">
                                 <label>Jelszó még egyszer</label>
                                 <input type="password" class="form-control" name="password_again" data-describedby="validate_password_again">
                                 <div id="validate_password_again" class="validate_message"></div>
@@ -61,21 +61,21 @@
                 <h4>Általános adatok</h4>
                 <div class="row">
                     <div class="col-md-6">
-                        <div class="form-group required">
+                        <div class="mb-3 required">
                             <label for="name">Közösség neve</label>
                             <input type="text" id="name" value='{{ $group->name }}' name="name" class="form-control">
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="form-group required">
+                        <div class="mb-3 required">
                             <label for="group_leaders">Közösségvezető(k) neve(i)</label>
                             <input type="text" name="group_leaders" id="group_leaders" class="form-control" value="{{ $group->group_leaders ?: $user->name ?? '' }}" >
                         </div>
                     </div>
                     <div class="col-md-12">
-                        <div class="form-group required">
+                        <div class="mb-3 required">
                             <label for="institute_id">Intézmény / plébánia</label>
-                            <select name="institute_id" style="width:100%" class="form-control" >
+                            <select name="institute_id" style="width:100%" class="form-select">
                                 <option value="{{ $group->institute_id }}">
                                     {{ $group->institute_id ? $group->institute_name . ' (' . $group->city . ')' : 'intézmény' }}
                                 </option>
@@ -87,13 +87,13 @@
                                         <div class="p-3 mb-3" style="background: #eee; border: 1px solid #ccc;">
                                             <div class="row">
                                                 <div class="col-md-6">
-                                                    <div class="form-group required">
+                                                    <div class="mb-3 required">
                                                         <label>Plébánia / intézmény neve:</label>
                                                         <input class="form-control form-control-sm institute-data" type="text" name="institute[name]">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <div class="form-group required">
+                                                    <div class="mb-3 required">
                                                         <label>Plébános / intézményvezető neve:</label>
                                                         <input class="form-control form-control-sm institute-data" type="text" name="institute[leader_name]">
                                                     </div>
@@ -101,19 +101,19 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-3">
-                                                    <div class="form-group required">
+                                                    <div class="mb-3 required">
                                                         <label>Település</label>
                                                         <input type="text" class="form-control form-control-sm institute-data" name="institute[city]">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-3">
-                                                    <div class="form-group">
+                                                    <div class="mb-3">
                                                         <label>Városrész</label>
                                                         <input type="text" class="form-control form-control-sm institute-data" name="institute[district]">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <div class="form-group">
+                                                    <div class="mb-3">
                                                         <label>Cím</label>
                                                         <input class="form-control form-control-sm institute-data" type="text" name="institute[address]">
                                                     </div>
@@ -128,19 +128,19 @@
                 </div>
                 <div class="row">
                     <div class="col-md-4">
-                        <div class="form-group required">
+                        <div class="mb-3 required">
                             <label for="age_group">Korosztály <small>(legalább egyet adj meg)</small></label>
                             @component('age_group_selector', compact('age_group_array'))
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <div class="form-group required">
+                        <div class="mb-3 required">
                             <label for="occasion_frequency">Alkalmak gyakorisága</label>
                             @component('occasion_frequency_selector', ['selected_occasion_frequency' => $group->occasion_frequency ?: 'hetente'])
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label for="on_days">Mely napo(ko)n</label>
                             @component('day_selector', compact('group_days'))
                         </div>
@@ -148,7 +148,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-4">
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label for="join_mode">Csatlakozási lehetőség módja <i class="fa fa-info-circle"
                                 title="<b>Egyéni megbeszélés alapján:</b> Közösségvezetővel egyeztetve történik<br/><b>Folyamatos csatlakozási lehetőség:</b> Az év folyamán bármikor jöhetnek új tagok<br/><b>Időszakos csatlakozás:</b> pl.: Minden félév első hónapja, negyedévente stb"
                                 data-html="true"></i></label>
@@ -156,7 +156,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="mb-3">
                     <label for="spiritual_movement_id">Lelkiségi mozgalom</label><br/>
                     <small>Ha egy nagyobb lelkiségi mozgalomhoz tartoztok, akkor azt adjátok meg itt, így nagyobb eséllyel találnak meg azok, akik ezen mozgalom közösségeit keresik.</small>
                     @spiritual_movement_selector($group->spiritual_movement_id)
@@ -168,10 +168,10 @@
                 @alert('info')
                     Válassz ki legalább egy, de legfeljebb öt tulajdonságot, ami a közösségedet a legjobban jellemzi.
                 @endalert
-                <div class="form-group">
+                <div class="mb-3">
                     <div>
                         @foreach($tags as $tag)
-                        <label class="mr-2" for="tag-{{ $tag->value }}">
+                        <label class="me-2" for="tag-{{ $tag->value }}">
                             <input type="checkbox" name="tags[]" id="tag-{{ $tag->value }}" value="{{ $tag->value }}" @checked(in_array($tag->value, $group_tags))> {{ $tag->translate() }}
                         </label>
                         @endforeach
@@ -181,13 +181,13 @@
                 @alert('info')
                     Írd le pár mondatban azt, hogy kik vagytok, milyen jellegű közösségi alkalmakat tartotok, illetve bármilyen információt, ami vonzóvá teszi a közösségeteket mások számára.
                 @endalert
-                <div class="form-group required">
+                <div class="mb-3 required">
                     <textarea name="description" id="description">{{ $group->description }}</textarea>
                 </div>
                 <h4 class="mt-5">Fotó a közösségről</h4>
                 <div class="row group-images">
                     <div class="col-md-12">
-                        <div class="form-group">
+                        <div class="mb-3">
                             @alert('info')
                                 <b>Tölts fel egy képet a közösségedről!</b> Alapértelmezett esetben a kiválasztott intézmény fényképe jelenik meg.
                             @endalert
@@ -206,7 +206,7 @@
             </div>
             <div class="step-container shadow">
                 <h4>Igazolás feltöltése</h4>
-                <div class="form-group">
+                <div class="mb-3">
                     @alert('info')
                         <p>Nem kötelező most azonnal feltölteni, később is megteheted, de kizárólag az intézményvezető által aláírt és lepecsételt igazolással tudjuk jóváhagyni a regisztrációs kérelmet és ezáltal láthatóvá tenni a közösséget.</p>
                         <p>Így tudjuk biztosítani azt, hogy a honlapunkon létező, aktív és a keresztény értékrenddel egyező közösségek legyenek.</p>
