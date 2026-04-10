@@ -27,6 +27,11 @@ img {
     max-width: 1320px;
 }
 
+/* Profil / Közösségeim / Eseményeim (and related editors): full viewport width */
+.container-fluid.inner--account {
+    max-width: none;
+}
+
 .tag-dropdown {
     button {
         box-shadow: inset 0 1px 1px rgb(0 0 0 / 8%);
@@ -68,6 +73,11 @@ img {
     border-bottom: none;
     position: relative;
     z-index: 1;
+
+    /* Mobile nav open: keep header + drawer above page content */
+    &:has(#toggle_main_menu:checked) {
+        z-index: 1040;
+    }
 
     &.compact {
         .navbar-nav > li .nav-link {
@@ -423,6 +433,49 @@ img {
             border-radius: 999px;
             font-weight: 600;
         }
+
+        &.community-image--cancelled img {
+            filter: grayscale(1);
+            opacity: 0.55;
+        }
+    }
+
+    &.community-card--event-cancelled:hover .community-image img {
+        transform: none;
+    }
+
+    .event-card-cancelled-overlay {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        pointer-events: none;
+    }
+
+    .event-card-cancelled-overlay__band {
+        position: absolute;
+        left: -18%;
+        width: 136%;
+        height: 3.35rem;
+        top: 50%;
+        margin-top: -1.675rem;
+        background: rgba(185, 28, 28, 0.92);
+        transform: rotate(-14deg);
+        box-shadow: 0 2px 14px rgba(0, 0, 0, 0.2);
+    }
+
+    .event-card-cancelled-overlay__text {
+        position: relative;
+        z-index: 1;
+        color: #fff;
+        font-weight: 800;
+        font-size: 1.15rem;
+        line-height: 1.35;
+        letter-spacing: 0.06em;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+        padding: 0.45rem 1rem;
     }
 
     .community-body {
@@ -627,6 +680,255 @@ nav#header-main.navbar .navbar-nav > .nav-item:hover a {
     color: #444;
 }
 
+/* —— Portal account: Profil, Közösségeim, Eseményeim, szerkesztők —— */
+.inner.inner--account {
+    padding-top: 1.75rem;
+    padding-bottom: 3.5rem;
+    background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+}
+
+.account-layout {
+    align-items: flex-start;
+}
+
+.account-sidebar-card {
+    background: #fff;
+    border-radius: 1rem;
+    padding: 0.85rem 0.35rem;
+    box-shadow: 0 10px 40px rgba(15, 23, 42, 0.06);
+    border: 1px solid rgba(226, 232, 240, 0.95);
+    position: sticky;
+    top: 1rem;
+}
+
+@media (max-width: 767px) {
+    .account-sidebar-card {
+        position: relative;
+        top: auto;
+    }
+}
+
+.account-sidebar-card .account-nav-heading {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #94a3b8;
+    padding: 0.35rem 1rem 0.6rem;
+    margin: 0;
+}
+
+#user-menu.account-nav .nav-link {
+    border-radius: 0.65rem;
+    padding: 0.65rem 1rem;
+    color: #475569;
+    font-weight: 500;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+#user-menu.account-nav .nav-link:hover {
+    background: #f8fafc;
+    color: var(--orange);
+}
+
+#user-menu.account-nav .nav-link.active {
+    background: linear-gradient(135deg, rgba(217, 119, 6, 0.14) 0%, rgba(217, 119, 6, 0.05) 100%);
+    color: var(--orange);
+    font-weight: 600;
+}
+
+.account-main {
+    min-width: 0;
+}
+
+.account-panel {
+    background: #fff;
+    border-radius: 1.25rem;
+    padding: 1.75rem 1.5rem 2rem;
+    box-shadow: 0 12px 48px rgba(15, 23, 42, 0.07);
+    border: 1px solid rgba(226, 232, 240, 0.95);
+}
+
+@media (min-width: 768px) {
+    .account-panel {
+        padding: 2rem 2rem 2.25rem;
+    }
+}
+
+.account-page-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.1rem;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.account-page-head__title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #0f172a;
+    margin: 0;
+    line-height: 1.25;
+}
+
+.account-page-head__lead {
+    font-size: 0.875rem;
+    color: #64748b;
+    margin: 0.35rem 0 0;
+    max-width: 36rem;
+}
+
+.account-toolbar .btn {
+    border-radius: 999px;
+    padding: 0.5rem 1.25rem;
+    font-weight: 600;
+    box-shadow: 0 4px 14px rgba(217, 119, 6, 0.25);
+}
+
+.account-toolbar .btn-success {
+    border: none;
+    background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+}
+
+.account-toolbar .btn-success:hover {
+    filter: brightness(1.05);
+    color: #fff;
+}
+
+.account-table-wrap {
+    border-radius: 0.75rem;
+    border: 1px solid #e2e8f0;
+    overflow: hidden;
+}
+
+.table.table-account {
+    margin-bottom: 0;
+    font-size: 0.9rem;
+}
+
+.table.table-account thead th {
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #64748b;
+    font-weight: 700;
+    border-top: none;
+    border-bottom: none;
+    background: #f8fafc;
+    padding: 0.8rem 0.75rem;
+    white-space: nowrap;
+}
+
+.table.table-account tbody td {
+    vertical-align: middle;
+    padding: 0.9rem 0.75rem;
+    border-color: #f1f5f9;
+}
+
+.table.table-account tbody tr:hover {
+    background: #fafbfd;
+}
+
+.table.table-account tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.table.table-account a {
+    color: #0f172a;
+    font-weight: 500;
+}
+
+.table.table-account a:hover {
+    color: var(--orange);
+    text-decoration: none;
+}
+
+.account-empty {
+    text-align: center;
+    padding: 2.75rem 1.25rem;
+    color: #94a3b8;
+    font-size: 0.95rem;
+    background: #fafbfd;
+    border-radius: 0.75rem;
+    border: 1px dashed #e2e8f0;
+}
+
+.account-section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0 0 1rem;
+}
+
+.account-form-section {
+    margin-bottom: 2rem;
+}
+
+.account-form-section hr {
+    border-color: #e2e8f0;
+}
+
+.profile-social-block {
+    border: 1px solid #e2e8f0;
+    border-radius: 0.75rem;
+    padding: 1rem 1.15rem;
+    background: #fafbfd;
+}
+
+.profile-social-row {
+    padding: 0.65rem 0;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.profile-social-row:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.profile-social-row:first-child {
+    padding-top: 0;
+}
+
+.account-panel .btn-primary {
+    border-radius: 999px;
+    padding: 0.5rem 1.5rem;
+    font-weight: 600;
+}
+
+.account-panel .form-control {
+    border-radius: 0.5rem;
+    border-color: #e2e8f0;
+}
+
+.account-panel .form-control:focus {
+    border-color: rgba(217, 119, 6, 0.45);
+    box-shadow: 0 0 0 0.2rem rgba(217, 119, 6, 0.12);
+}
+
+/* Softer inner “steps” inside the account shell (avoids double-heavy .shadow) */
+.account-panel .step-container.account-step-form.shadow {
+    box-shadow: 0 4px 22px rgba(15, 23, 42, 0.06) !important;
+    border-radius: 1rem;
+    border: 1px solid #eef2f7;
+    padding: 1.35rem 1.25rem;
+    margin-bottom: 1.25rem;
+    background: #fafbfd;
+}
+
+.account-panel .step-container.account-step-form.shadow:last-of-type {
+    margin-bottom: 0;
+}
+
+.account-danger-link {
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
 .inner {
     padding-top: 2em;
     padding-bottom: 4em;
@@ -667,7 +969,6 @@ nav#header-main.navbar .navbar-nav > .nav-item:hover a {
     #footer-top {
         padding-top: 2.5rem;
         padding-bottom: 2.25rem;
-        border-bottom: 1px solid rgba(148, 163, 184, 0.15);
 
         .footer-section-title {
             font-family: 'Inter', sans-serif;
@@ -906,10 +1207,12 @@ input[name=varos]::placeholder {
 .search-results {
     padding: 1rem .4rem .4rem;
     position: absolute;
-    width: 600px;
+    width: min(600px, calc(100vw - 1.5rem));
+    max-width: 100%;
     background: #fff;
     top: 100%;
     right: 0;
+    left: auto;
     display: none;
     z-index: 100;
 
@@ -991,34 +1294,21 @@ input[name=varos]::placeholder {
     }
 }
 
+/* Present in DOM for mobile tap-outside; must not affect desktop flex layout */
+.mobile-menu-backdrop {
+    display: none;
+}
+
 .mobile-menu-toggle {
     font-size: 2em;
     color: #333;
     display: none;
     cursor: pointer;
-    z-index: 1;
+    z-index: 1051;
     position: relative;
-
-    &::before {
-        position: fixed;
-        top: 0;
-        left: 100%;
-        width: 100%;
-        height: 100vh;
-        content: " ";
-        background: rgba(0, 0, 0, 0.7);
-        z-index: -1;
-        transition: opacity ease-in-out .2s;
-        opacity: 0;
-    }
 }
 
 #toggle_main_menu:checked ~ .mobile-menu-toggle {
-    &::before {
-        opacity: 1;
-        left: 0;
-    }
-
     i {
         visibility: hidden;
     }
@@ -1596,6 +1886,43 @@ ul.age-group-select {
 }
 
 @media (max-width: 991px) {
+    /* Avoid horizontal “page” scroll from overflow (rows, wide dropdowns, etc.) */
+    html {
+        overflow-x: hidden;
+        width: 100%;
+    }
+
+    body {
+        overflow-x: hidden;
+        width: 100%;
+    }
+
+    /* Lock background scroll while the slide-out menu is open */
+    body:has(#toggle_main_menu:checked) {
+        overflow: hidden;
+        overscroll-behavior: none;
+    }
+
+    /* Dim + tap-outside to close (real <label>, not ::before — pseudo sat above .container and ate all taps) */
+    /*
+     * #header uses backdrop-filter, which makes fixed descendants use the header as their
+     * containing block — inset:0 only covers the header bar. Use viewport units so the dimmer
+     * still covers the full screen.
+     */
+    #toggle_main_menu:checked ~ .mobile-menu-backdrop {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        height: 100dvh;
+        z-index: 1048;
+        margin: 0;
+        cursor: pointer;
+        background: rgba(0, 0, 0, 0.55);
+    }
+
     #search-group {
         background-color: transparent !important;
         text-align: center;
@@ -1639,14 +1966,64 @@ ul.age-group-select {
 
     #header .abxd {
         position: fixed;
-        width: 250px;
-        right: -250px;
+        width: min(280px, 85vw);
+        max-width: 280px;
+        right: calc(-1 * min(280px, 85vw));
         top: 0;
         height: 100vh;
+        height: 100dvh;
         padding: 1em;
+        padding-top: max(1em, env(safe-area-inset-top, 0px));
         background-color: #f8f9fa;
         transition: right .18s linear;
-        z-index: 3;
+        z-index: 1049;
+        overflow-y: auto;
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: touch;
+        box-shadow: none;
+    }
+
+    #toggle_main_menu:checked ~ .abxd {
+        box-shadow: -6px 0 24px rgba(0, 0, 0, 0.12);
+    }
+
+    /* Header bar: allow the search field to shrink instead of forcing horizontal overflow */
+    #header-main > .container {
+        display: flex;
+        flex-wrap: nowrap;
+        align-items: center;
+        max-width: 100%;
+        min-width: 0;
+    }
+
+    #header-main > .container > .navbar-brand {
+        flex-shrink: 0;
+    }
+
+    #header-main > .container > .d-inline-block.d-lg-none.flex-grow-1 {
+        min-width: 0;
+    }
+
+    #header-main > .container .search-form {
+        min-width: 0;
+        width: 100%;
+    }
+
+    #header-main > .container > .mobile-menu-toggle {
+        flex-shrink: 0;
+        margin-left: auto;
+        float: none;
+    }
+
+    /* Account sidebar: vertical links, full width of column */
+    #user-menu {
+        width: 100%;
+        row-gap: 0.15rem;
+    }
+
+    #user-menu .nav-link {
+        padding-left: 0;
+        padding-right: 0;
     }
 
     .mobile-menu-toggle {

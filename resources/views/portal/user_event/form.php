@@ -3,15 +3,16 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.css"/>
 @endsection
-@extends('portal')
+@extends('portal2026.portal')
 
 @featuredTitle($event->exists() ? 'Esemény szerkesztése' : 'Új esemény')
-<div class="container inner">
-    <div class="row">
-        <div class="col-md-3">
+<div class="container-fluid inner inner--account">
+    <div class="row account-layout">
+        <aside class="col-lg-3 col-md-4 mb-4 mb-md-0">
             @include('portal.partials.user-sidemenu')
-        </div>
-        <div class="col-md-9">
+        </aside>
+        <div class="col-lg-9 col-md-8 account-main">
+            <div class="account-panel">
             @include('admin.partials.message')
 
             @if($event->exists())
@@ -24,15 +25,15 @@
                         <b>Az esemény elutasításra került.</b> Ellenőrizd az adatokat, és ha szükséges, vedd fel a kapcsolatot az üzemeltetővel.
                     @endalert
                 @endif
-                <p class="mb-2">
+                <p class="mb-3">
                     @if($event->isApproved() && $event->lifecycle === 'active')
-                        <a href="{{ $event->getUrl() }}" target="_blank" rel="noopener">@icon('eye') Megtekintés (nyilvános oldal)</a>
+                        <a href="{{ $event->getUrl() }}" target="_blank" rel="noopener" class="font-weight-500">@icon('eye') Megtekintés (nyilvános oldal)</a>
                     @endif
                 </p>
             @endif
 
             <form method="post" action="{{ $action }}" id="portal-event-form">
-                <div class="step-container shadow">
+                <div class="step-container shadow account-step-form">
                     <div class="row">
                         <div class="col-lg-8 pr-lg-4">
                             <h3 class="h5 text-muted mb-3">Alapadatok</h3>
@@ -43,13 +44,13 @@
                             <div class="form-row">
                                 <div class="form-group col-sm-4 mb-2">
                                     <label for="ev-starts" class="mb-1">Kezdés</label>
-                                    <input type="datetime-local" class="form-control form-control-sm" id="ev-starts" name="starts_at"
-                                           value="{{ $event->starts_at ? $event->starts_at->format('Y-m-d\\TH:i') : '' }}" required>
+                                    <input type="{{ $event->all_day ? 'date' : 'datetime-local' }}" class="form-control form-control-sm" id="ev-starts" name="starts_at"
+                                           value="{{ $event->starts_at ? ($event->all_day ? $event->starts_at->format('Y-m-d') : $event->starts_at->format('Y-m-d') . 'T' . $event->starts_at->format('H:i')) : '' }}" required>
                                 </div>
                                 <div class="form-group col-sm-4 mb-2">
                                     <label for="ev-ends" class="mb-1">Vége</label>
-                                    <input type="datetime-local" class="form-control form-control-sm" id="ev-ends" name="ends_at"
-                                           value="{{ $event->ends_at ? $event->ends_at->format('Y-m-d\\TH:i') : '' }}">
+                                    <input type="{{ $event->all_day ? 'date' : 'datetime-local' }}" class="form-control form-control-sm" id="ev-ends" name="ends_at"
+                                           value="{{ $event->ends_at ? ($event->all_day ? $event->ends_at->format('Y-m-d') : $event->ends_at->format('Y-m-d') . 'T' . $event->ends_at->format('H:i')) : '' }}">
                                 </div>
                                 <div class="form-group col-sm-4 mb-2 d-flex align-items-end">
                                     <div class="form-check pb-1">
@@ -142,11 +143,12 @@
                     <hr class="my-3">
                     <div class="d-flex flex-wrap align-items-center">
                         @csrf()
-                        <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-save"></i> Mentés</button>
+                        <button type="submit" class="btn btn-orange px-4 rounded-pill"><i class="fa fa-save"></i> Mentés</button>
                         <a href="@route('portal.my_events')" class="btn btn-link btn-sm ml-2">Vissza a listához</a>
                     </div>
                 </div>
             </form>
+            </div>
         </div>
     </div>
 </div>
@@ -253,6 +255,45 @@ $(() => {
         }
     });
 
+    function eventFormToDatePart(v) {
+        if (!v || typeof v !== 'string') {
+            return '';
+        }
+        return v.length >= 10 ? v.slice(0, 10) : '';
+    }
+
+    function syncEventDateTimeInputs(allDay) {
+        var $starts = $('#ev-starts');
+        var $ends = $('#ev-ends');
+        var sv = $starts.val() || '';
+        var ev = $ends.val() || '';
+
+        if (allDay) {
+            $starts.attr('type', 'date');
+            $ends.attr('type', 'date');
+            $starts.val(eventFormToDatePart(sv));
+            $ends.val(eventFormToDatePart(ev));
+        } else {
+            $starts.attr('type', 'datetime-local');
+            $ends.attr('type', 'datetime-local');
+            if (sv.length === 10) {
+                $starts.val(sv + 'T00:00');
+            } else if (sv) {
+                $starts.val(sv);
+            }
+            if (ev.length === 10) {
+                $ends.val(ev + 'T00:00');
+            } else if (ev) {
+                $ends.val(ev);
+            }
+        }
+    }
+
+    $('#ev-all-day').on('change', function () {
+        syncEventDateTimeInputs(!!this.checked);
+    });
+    syncEventDateTimeInputs($('#ev-all-day').prop('checked'));
+
     function initCroppie() {
         if (upload) {
             upload.croppie('destroy');
@@ -297,6 +338,6 @@ $(() => {
         });
     });
 
-    initCroppie();
+    /* Croppie only after a new file is chosen (#event-temp-image load → initCroppie), not for the current/placeholder image */
 });
 </script>

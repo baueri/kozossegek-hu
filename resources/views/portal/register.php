@@ -1,4 +1,4 @@
-@extends('portal')
+@extends('portal2026.portal')
 @section('scripts')
     @if($captchaEnabled)
         <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
@@ -46,7 +46,7 @@
                     @component('captcha')
                 @endif
                 <div class="form-group">
-                    <button type="submit" class="btn btn-altblue">Regisztráció</button>
+                    <button type="submit" class="btn btn-orange px-4 rounded-pill">Regisztráció</button>
                     <p class="mt-2">
                         <a href="@route('login')" id="login-existing-user" onclick="showLoginModal(); return false;"><b>
                             <i class="fa fa-key"></i> van már fiókom, belépek

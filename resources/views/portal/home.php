@@ -127,7 +127,7 @@
     </div>
 </section>
 
-<section class="my-5 py-5 bg-white">
+<section class="mt-5 py-5 bg-white">
     <div class="container">
         <h2 class="text-center section-title mb-5">Legújabb közösségek</h2>
         <div class="row" id="kozossegek-list">
@@ -155,7 +155,7 @@
 </section>
 
 @if(!empty($events))
-<section class="my-5 py-5 bg-white">
+<section class="mb-5 py-5 bg-white">
     <div class="container">
         <h2 class="text-center section-title mb-5">Közelgő események</h2>
         <div class="row" id="esemenyek-list">
@@ -190,7 +190,6 @@
 
             <div class="row g-0 align-items-center">
 
-                <!-- BAL OLDAL -->
                 <div class="col-lg-6 p-5 text-white">
 
                     <h2 class="cta-title mb-3">

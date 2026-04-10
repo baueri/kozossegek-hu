@@ -6,7 +6,7 @@
     @endif
 @endsection
 @section('subtitle', $entry->title . ' - ')
-@extends('portal')
+@extends('portal2026.portal')
 @featuredTitle('Hírek')
 <div class="container inner">
     <img src="{{ $entry->header_image }}" alt="{{ $entry->title }}" style="width: 100%; object-fit: cover" class="mb-4">

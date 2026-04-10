@@ -9,8 +9,8 @@ use App\Auth\Auth;
 use App\Enums\EventLifeCycle;
 use App\Enums\EventStatus;
 use App\Models\Event;
+use App\Portal\Services\UserEventFormHandler;
 use App\QueryBuilders\Events;
-use App\Storage\Base64Image;
 use App\Services\SystemAdministration\OpenStreetMap\OpenStreetMapQuery;
 use Framework\Http\Message;
 use Framework\Support\StringHelper;
@@ -48,7 +48,7 @@ class EventController extends AdminController
         return view('admin.event.create', compact('event', 'action'));
     }
 
-    public function doCreate(): never
+    public function doCreate(UserEventFormHandler $handler): never
     {
         $data = $this->validatedData();
         $data['user_id'] = Auth::user()->id;
@@ -57,7 +57,7 @@ class EventController extends AdminController
             $data['slug'] = $this->makeUniqueSlug($data['name']);
         }
 
-        if ($path = $this->persistFeaturedImage((string) $this->request->get('featured_image_data', ''))) {
+        if ($path = $handler->persistFeaturedImage((string) $this->request->get('featured_image_data', ''))) {
             $data['featured_image'] = $path;
         }
 
@@ -86,7 +86,7 @@ class EventController extends AdminController
         return view('admin.event.edit', compact('event', 'action', 'tags'));
     }
 
-    public function update(): never
+    public function update(UserEventFormHandler $handler): never
     {
         $event = $this->repository->findOrFail($this->request['id']);
         $data = $this->validatedData();
@@ -95,7 +95,7 @@ class EventController extends AdminController
             $data['slug'] = $this->makeUniqueSlug($data['name'], (int) $event->id);
         }
 
-        if ($path = $this->persistFeaturedImage((string) $this->request->get('featured_image_data', ''))) {
+        if ($path = $handler->persistFeaturedImage((string) $this->request->get('featured_image_data', ''))) {
             $data['featured_image'] = $path;
         }
 
@@ -229,29 +229,6 @@ class EventController extends AdminController
         }
 
         return (string) ($row['display_name'] ?? '');
-    }
-
-    private function persistFeaturedImage(string $base64): ?string
-    {
-        $base64 = trim($base64);
-        if ($base64 === '') {
-            return null;
-        }
-
-        $image = new Base64Image($base64);
-        $hash = substr(hash('SHA256', $base64), 0, 16);
-        $path = env('STORAGE_PATH') . 'public' . DS . 'event' . DS . substr($hash, 0, 2) . DS . substr($hash, 2, 2) . DS . $hash . '.jpg';
-
-        try {
-            $image->saveImage($path);
-            return $path;
-        } catch (\Throwable) {
-            // Fallback for misconfigured/unwritable STORAGE_PATH (e.g. local docker permissions)
-            $publicRel = 'images/event/' . $hash . '.jpg';
-            $publicFsPath = root()->public($publicRel)->path();
-            $image->saveImage($publicFsPath);
-            return '/' . $publicRel;
-        }
     }
 
     private function makeUniqueSlug(string $name, ?int $ignoreId = null): string

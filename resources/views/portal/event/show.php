@@ -4,6 +4,7 @@
     <meta property="og:description" content="{{ str_more($event->description, 120) }}" />
     <meta property="og:image" content="{{ $event->featured_image }}" />
     @og_image($event->getFeaturedImageUrl())
+    <script type="application/ld+json">{{ $eventSchemaJsonLd }}</script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
         crossorigin="" @preload_css() />
@@ -27,10 +28,18 @@
 
         <div class="group-header-grid">
 
-            <!-- BAL OLDAL -->
             <div class="group-image-side">
 
-                <img src="{{ $event->getFeaturedImageUrl() }}" alt="{{ $event->name }}">
+                <div class="community-image{{ $event->isCancelled() ? ' community-image--cancelled' : '' }}">
+                    <img src="{{ $event->getFeaturedImageUrl() }}" alt="{{ $event->name }}">
+
+                    @if($event->isCancelled())
+                    <div class="event-card-cancelled-overlay" aria-hidden="true">
+                        <span class="event-card-cancelled-overlay__band"></span>
+                        <span class="event-card-cancelled-overlay__text">@lang('event_life_cycle.cancelled')</span>
+                    </div>
+                    @endif
+                </div>
 
                 <div class="group-highlight-card side shadow">
 
@@ -59,16 +68,6 @@
                             <strong>{{ $event->organizer }}</strong>
                         </div>
                     </div>
-
-                    @if($event->isCancelled())
-                    <div class="highlight-item text-danger">
-                        <i class="fas fa-times-circle"></i>
-                        <div>
-                            <small>Státusz</small>
-                            <strong>Törölve</strong>
-                        </div>
-                    </div>
-                    @endif
 
                 </div>
 
@@ -163,6 +162,57 @@
 });
 </script>
 <style>
+.group-image-side .community-image {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    border-radius: 1.5rem;
+}
+
+.group-image-side .community-image img {
+    width: 100%;
+    display: block;
+}
+
+.group-image-side .community-image.community-image--cancelled img {
+    filter: grayscale(1);
+    opacity: 0.55;
+}
+
+.group-image-side .event-card-cancelled-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+}
+
+.group-image-side .event-card-cancelled-overlay__band {
+    position: absolute;
+    left: -18%;
+    width: 136%;
+    height: 3.35rem;
+    top: 50%;
+    margin-top: -1.675rem;
+    background: rgba(185, 28, 28, 0.92);
+    transform: rotate(-14deg);
+    box-shadow: 0 2px 14px rgba(0, 0, 0, 0.2);
+}
+
+.group-image-side .event-card-cancelled-overlay__text {
+    position: relative;
+    z-index: 1;
+    color: #fff;
+    font-weight: 800;
+    font-size: 1.15rem;
+    line-height: 1.35;
+    letter-spacing: 0.06em;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+    padding: 0.45rem 1rem;
+}
+
 #map {
     height: 400px;
     width: 100%;

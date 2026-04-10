@@ -28,11 +28,11 @@
     "event_status.rejected": "elutasítva",
 
     "event_life_cycle.heading": "Megvalósulás",
-    "event_life_cycle.active": "Megtartjuk",
+    "event_life_cycle.active": "Megtartva",
     "event_life_cycle.cancelled": "Elmarad",
     "event_life_cycle.updated": "Megvalósulás frissítve",
     "event_life_cycle.help_cancelled": "„Elmarad” = a rendezvény lemondásra kerül, és így jelenik meg a portálon.",
-    "event_life_cycle.toggle_activate": "Megtartjuk",
+    "event_life_cycle.toggle_activate": "Megtartva",
     "event_life_cycle.toggle_cancel": "Elmarad",
 
     "denomination.katolikus": "katolikus",

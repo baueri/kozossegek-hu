@@ -1,4 +1,4 @@
-@extends('portal')
+@extends('portal2026.portal')
 <div class="container inner">
     @alert('success')
         <h4>Sikeres regisztráció!</h4>

@@ -8,7 +8,7 @@
         <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     @endif
 @endsection
-@extends('portal')
+@extends('portal2026.portal')
 @featuredTitle()
 <h1 class="page-title">Rólunk</h1>
 @endfeaturedTitle

@@ -1,4 +1,4 @@
-@extends('portal')
+@extends('portal2026.portal')
 @featuredTitle('Új jelszó megadása')
 <div class="container">
     @include('admin.partials.message')
@@ -15,7 +15,7 @@
             </div>
             <div class="form-group">
                 @csrf()
-                <button type="submit" class="btn btn-primary">Új jelszó mentése</button>
+                <button type="submit" class="btn btn-orange px-4 rounded-pill">Új jelszó mentése</button>
             </div>
         </div>
     </form>

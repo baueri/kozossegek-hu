@@ -1,4 +1,4 @@
-@extends('portal')
+@extends('portal2026.portal')
 <div class="container text-center">
     <div id="error-pg">
         <div class="error-pg">

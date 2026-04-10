@@ -44,7 +44,6 @@ use App\Models\ChurchGroupView;
     <div class="container">
         <div class="group-header-grid">
 
-            <!-- BAL OLDAL (KÉP + INFÓK) -->
             <div class="group-image-side">
                 <img src="{{ $group->getThumbnail() }}" alt="{{ $group->name }}">
 
@@ -93,7 +92,6 @@ use App\Models\ChurchGroupView;
                 </div>
             </div>
 
-            <!-- JOBB OLDAL (TARTALOM) -->
             <div class="group-header-single">
 
                 @if($group->description)

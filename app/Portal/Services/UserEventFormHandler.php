@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Portal\Services;
 
 use App\QueryBuilders\Events;
+use App\Helpers\PathHelper;
 use App\Storage\Base64Image;
 use Carbon\Carbon;
 use Framework\Http\Request;
@@ -37,6 +38,8 @@ class UserEventFormHandler
             throw new InvalidArgumentException('Az esemény címe kötelező.');
         }
 
+        $allDay = (bool) ($data['all_day'] ?? false);
+
         $startsRaw = trim((string) ($data['starts_at'] ?? ''));
         if ($startsRaw === '') {
             throw new InvalidArgumentException('A kezdés időpontja kötelező.');
@@ -46,6 +49,9 @@ class UserEventFormHandler
         } catch (\Throwable) {
             throw new InvalidArgumentException('Érvénytelen kezdés időpont.');
         }
+        if ($allDay) {
+            $starts = $starts->copy()->startOfDay();
+        }
 
         $ends = null;
         $endsRaw = trim((string) ($data['ends_at'] ?? ''));
@@ -54,6 +60,9 @@ class UserEventFormHandler
                 $ends = Carbon::parse($endsRaw);
             } catch (\Throwable) {
                 throw new InvalidArgumentException('Érvénytelen befejezés időpont.');
+            }
+            if ($allDay) {
+                $ends = $ends->copy()->startOfDay();
             }
             if ($ends->lt($starts)) {
                 throw new InvalidArgumentException('A befejezés nem lehet a kezdés előtt.');
@@ -73,7 +82,7 @@ class UserEventFormHandler
             'description' => (string) ($data['description'] ?? ''),
             'starts_at' => $starts->format('Y-m-d H:i:s'),
             'ends_at' => $ends?->format('Y-m-d H:i:s'),
-            'all_day' => (int) (bool) ($data['all_day'] ?? false),
+            'all_day' => (int) $allDay,
             'organizer' => trim((string) ($data['organizer'] ?? '')),
             'location_name' => trim((string) ($data['location_name'] ?? '')),
             'address' => trim((string) ($data['address'] ?? '')),
@@ -92,19 +101,10 @@ class UserEventFormHandler
 
         $image = new Base64Image($base64);
         $hash = substr(hash('SHA256', $base64), 0, 16);
-        $path = env('STORAGE_PATH') . 'public' . DS . 'event' . DS . substr($hash, 0, 2) . DS . substr($hash, 2, 2) . DS . $hash . '.jpg';
+        $loc = PathHelper::eventFeaturedImageLocation($hash);
+        $image->saveImage($loc['fs']);
 
-        try {
-            $image->saveImage($path);
-
-            return $path;
-        } catch (\Throwable) {
-            $publicRel = 'images/event/' . $hash . '.jpg';
-            $publicFsPath = root()->public($publicRel)->path();
-            $image->saveImage($publicFsPath);
-
-            return '/' . $publicRel;
-        }
+        return $loc['url'];
     }
 
     public function makeUniqueSlug(string $name, ?int $ignoreId = null): string

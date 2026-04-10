@@ -1,13 +1,20 @@
-<div class="community-card h-100">
+<div class="community-card h-100{{ ($event['lifecycle'] ?? '') === 'cancelled' ? ' community-card--event-cancelled' : '' }}">
 
     <!-- KÉP -->
-    <a href="{{ $event['url'] }}" class="community-image">
+    <a href="{{ $event['url'] }}" class="community-image{{ ($event['lifecycle'] ?? '') === 'cancelled' ? ' community-image--cancelled' : '' }}">
 
         <img @lazySrc("/images/placeholder_rect.webp")
             data-src="{{ $event['featured_image'] }}"
             data-srcset="{{ $event['featured_image'] }}"
             alt="{{ $event['name'] }}"
             class="lazy">
+
+        @if(($event['lifecycle'] ?? '') === 'cancelled')
+        <div class="event-card-cancelled-overlay" aria-hidden="true">
+            <span class="event-card-cancelled-overlay__band"></span>
+            <span class="event-card-cancelled-overlay__text">@lang('event_life_cycle.cancelled')</span>
+        </div>
+        @endif
 
         <!-- TAG -->
         <div class="community-tags">
@@ -20,15 +27,6 @@
             @endforeach
             @endif
         </div>
-
-        <!-- ELMARAD badge -->
-        @if($event['lifecycle'] === 'cancelled')
-        <div class="community-tags" style="top: auto; bottom: 10px;">
-            <span class="community-badge bg-danger">
-                Elmarad
-            </span>
-        </div>
-        @endif
 
     </a>
 

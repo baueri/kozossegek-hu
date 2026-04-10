@@ -104,6 +104,8 @@
 
             <input type="checkbox" class="d-none" id="toggle_main_menu" name="toggle_main_menu">
 
+            <label class="mobile-menu-backdrop" for="toggle_main_menu" aria-hidden="true"></label>
+
             <div class="abxd d-lg-flex d-block">
                 <ul class="navbar-nav">
                     <li class="nav-item">
@@ -111,7 +113,7 @@
                             <span>@lang('menu.search_group')</span>
                         </a>
                     </li>
-                    @if($display_news)
+                    @if($display_events)
                         <li class="nav-item">
                             <a href="@route('event.list')" class="nav-link@active_link_class('event.list')">
                                 <span>@lang('menu.events')</span>

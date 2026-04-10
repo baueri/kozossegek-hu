@@ -4,24 +4,25 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.css"/>
 @endsection
-@extends('portal')
+@extends('portal2026.portal')
 
 @featuredTitle('Közösség módosítása')
-<div class="container inner">
-    <div class="row">
-        <div class="col-md-3">
+<div class="container-fluid inner inner--account">
+    <div class="row account-layout">
+        <aside class="col-lg-3 col-md-4 mb-4 mb-md-0">
             @include('portal.partials.user-sidemenu')
-        </div>
-        <div class="col-md-9">
+        </aside>
+        <div class="col-lg-9 col-md-8 account-main">
+            <div class="account-panel">
             @include('admin.partials.message')
 
             @if($group->exists())
-            <p>
-                <a href="{{ $group->url() }}">@icon('eye') Megtekintés</a>
+            <p class="mb-3">
+                <a href="{{ $group->url() }}" class="font-weight-500" target="_blank" rel="noopener">@icon('eye') Megtekintés nyilvános oldal</a>
             </p>
             @endif
             <form method="post" id="group-form" action="@route('portal.my_group.update', $group)" enctype="multipart/form-data">
-                <div class="step-container shadow">
+                <div class="step-container shadow account-step-form">
                     <h3 class="h4 mt-3">Általános adatok</h3>
                     @if($group->pending == 1)
                         @alert('warning')
@@ -126,7 +127,7 @@
                         @spiritual_movement_selector($group->spiritual_movement_id)
                     </div>
                 </div>
-                <div class="step-container shadow">
+                <div class="step-container shadow account-step-form">
                     <h3 class="h4 mt-3">A közösség jellemzői</h3>
                     <div class="form-group">
                         <div>
@@ -164,7 +165,7 @@
                             </div>
                     </div>
                 </div>
-                <div class="step-container shadow">
+                <div class="step-container shadow account-step-form">
                     <h3 class="h4 mt-3">Igazolás</h3>
                     <p><b>Fájl:</b> @if($group->document)
                         <a href="{{ $group->getDocumentUrl() }}" download><i class="fa fa-download"></i> {{ $group->document }}</a>
@@ -182,9 +183,10 @@
                 </div>
                 <hr>
                 @csrf()
-                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Mentés</button>
-                <a href="@route('portal.delete_group', $group)" class="text-danger float-right confirm-action">közösségem törlése</a>
+                <button type="submit" class="btn btn-orange px-4 rounded-pill"><i class="fa fa-save"></i> Mentés</button>
+                <a href="@route('portal.delete_group', $group)" class="text-danger float-right confirm-action account-danger-link">Közösségem törlése</a>
             </form>
+            </div>
         </div>
     </div>
 </div>

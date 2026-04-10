@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-use App\Helpers\PathHelper;
+use App\Portal\Services\UserEventFormHandler;
 use App\QueryBuilders\Events;
 use App\QueryBuilders\Users;
-use App\Storage\Base64Image;
 use Baueri\AIFaker\Generator\Fake;
 use Framework\Support\Arr;
 use Phinx\Seed\AbstractSeed;
@@ -15,6 +14,7 @@ class EventSeeder extends AbstractSeed
     public function run()
     {
         $faker = app()->get(Fake::class);
+        $handler = app()->get(UserEventFormHandler::class);
 
         $cursor = $faker->for('event')
             ->fields([
@@ -47,32 +47,22 @@ class EventSeeder extends AbstractSeed
                 'starts_at' => ['format: datetime (Y-m-d H:i:s)', 'after ' . now()->format('Y-m-d')],
                 'ends_at' => ['format: datetime (Y-m-d H:i:s)'],
             ])
-            ->count(10)
+            ->batch(10)
+            ->count(30)
             ->cursor();
 
         $user = Users::query()->first()->id;
 
-        foreach ($cursor as $aievent)
-        {
-            $imageSource = base64_encode(file_get_contents('https://picsum.photos/1024/768'));
-            $image = new Base64Image($imageSource);
-            $path = $this->getStoragePath($imageSource);
-            $image->saveImage($path);
+        foreach ($cursor as $aievent) {
+            $base64 = base64_encode(file_get_contents('https://picsum.photos/1024/768'));
+            $featuredImage = $handler->persistFeaturedImage($base64);
 
-            $event = Events::query()
+            Events::query()
                 ->create(array_merge([
                     'user_id' => $user,
                     'status' => 'approved',
-                    'featured_image' => $path
+                    'featured_image' => $featuredImage,
                 ], Arr::except($aievent, 'tags')));
-
-            
         }
-    }
-
-    private function getStoragePath(string $imageSource)
-    {
-        $hash = substr(hash('SHA256', $imageSource), 0, 16);
-        return env('STORAGE_PATH') . 'public' . DS . 'event' . DS . substr($hash, 0, 2) . DS . substr($hash, 2, 2) . DS . $hash . '.jpg';
     }
 }

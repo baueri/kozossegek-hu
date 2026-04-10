@@ -1,4 +1,4 @@
-@extends('portal')
+@extends('portal2026.portal')
 @featuredTitle('Fiók aktiválása')
 <div class="container inner">
     @message()
@@ -14,7 +14,7 @@
                 <input type="password" name="new_password_again" class="form-control">
             </div>
             <div class="form-group">
-                <button type="submit" class="btn btn-primary">Mentés</button>
+                <button type="submit" class="btn btn-orange px-4 rounded-pill">Mentés</button>
             </div>
         </div>
     </form>

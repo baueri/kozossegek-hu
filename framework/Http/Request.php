@@ -153,7 +153,7 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
     {
         foreach ($requestParams as $requestParam) {
             if (!$this->request[$requestParam]) {
-                throw new RequestParameterException('Missing request value');
+                throw new RequestParameterException('Missing request value: ' . $requestParam);
             }
         }
     }

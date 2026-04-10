@@ -33,7 +33,7 @@
 
                     <div class="col-md-6">
                         <div class="search-input">
-                            <i class="fas fa-calendar"></i>
+                            <i class="fas fa-calendar-alt"></i>
                             <input type="date"
                                 name="date_from"
                                 value="{{ $date_from }}"
@@ -43,7 +43,7 @@
 
                     <div class="col-md-6">
                         <div class="search-input">
-                            <i class="fas fa-calendar"></i>
+                            <i class="fas fa-calendar-alt"></i>
                             <input type="date"
                                 name="date_to"
                                 value="{{ $date_to }}"

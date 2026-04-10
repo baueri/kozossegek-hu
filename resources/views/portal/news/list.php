@@ -2,7 +2,7 @@
     @og_image()
 @endheader
 @section('subtitle', "Hírek, események - ")
-@extends('portal')
+@extends('portal2026.portal')
 @featuredTitle('Hírek, események')
 <div class="container inner">
     <div>

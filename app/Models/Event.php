@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Services\SystemAdministration\SiteMap\ChangeFreq;
+use App\Services\SystemAdministration\SiteMap\EntitySiteMappable;
 use Carbon\Carbon;
 use DateTimeInterface;
 use Framework\Model\Entity;
@@ -28,10 +30,13 @@ use Framework\Support\Collection;
  * @property string $lat
  * @property string $lng
  * @property string $featured_image
+ * @property null|string $updated_at
  * @property Collection $tags
  */
 class Event extends Entity
 {
+    use EntitySiteMappable;
+
     protected static string $primaryCol = 'id';
 
     protected array $casts = [
@@ -58,6 +63,16 @@ class Event extends Entity
     public function getUrl(): string
     {
         return route('event.show', ['date' => $this->starts_at->format('Y-m-d'), 'slug' => $this->slug]);
+    }
+
+    public function changeFreq(): ChangeFreq
+    {
+        return ChangeFreq::weekly;
+    }
+
+    public function priority(): ?string
+    {
+        return '0.7';
     }
 
     public function getFeaturedImageUrl(): string
@@ -117,5 +132,111 @@ class Event extends Entity
                 'all_day'
             ])
         );
+    }
+
+    /**
+     * schema.org Event as array for JSON-LD (Google event structured data).
+     *
+     * @return array<string, mixed>
+     */
+    public function getSchemaOrgEvent(): array
+    {
+        /** @var Carbon $start */
+        $start = $this->starts_at;
+        $end = $this->ends_at;
+
+        if ($this->all_day) {
+            $startDate = $start->format('Y-m-d');
+            if ($end instanceof Carbon && !$start->isSameDay($end)) {
+                $endDate = $end->copy()->addDay()->format('Y-m-d');
+            } else {
+                $endDate = $start->copy()->addDay()->format('Y-m-d');
+            }
+        } else {
+            $startDate = $start->toIso8601String();
+            $endDate = $end instanceof Carbon
+                ? $end->toIso8601String()
+                : $start->copy()->addHour()->toIso8601String();
+        }
+
+        $data = [
+            '@context' => 'https://schema.org',
+            '@type' => 'Event',
+            'name' => $this->name,
+            'startDate' => $startDate,
+            'endDate' => $endDate,
+            'eventStatus' => $this->isCancelled()
+                ? 'https://schema.org/EventCancelled'
+                : 'https://schema.org/EventScheduled',
+            'eventAttendanceMode' => 'https://schema.org/OfflineEventAttendanceMode',
+            'url' => $this->getUrl(),
+        ];
+
+        $description = trim(strip_tags((string) $this->description));
+        if ($description !== '') {
+            $data['description'] = mb_strlen($description) > 5000
+                ? mb_substr($description, 0, 5000)
+                : $description;
+        }
+
+        $img = trim((string) $this->getFeaturedImageUrl());
+        if ($img !== '') {
+            $data['image'] = str_starts_with($img, 'http')
+                ? $img
+                : rtrim(get_site_url(), '/') . '/' . ltrim($img, '/');
+        }
+
+        $location = $this->schemaOrgLocation();
+        if ($location !== null) {
+            $data['location'] = $location;
+        }
+
+        $organizer = trim((string) $this->organizer);
+        if ($organizer !== '') {
+            $data['organizer'] = [
+                '@type' => 'Organization',
+                'name' => $organizer,
+            ];
+        }
+
+        return $data;
+    }
+
+    /**
+     * @return array<string, mixed>|null
+     */
+    private function schemaOrgLocation(): ?array
+    {
+        $name = trim((string) $this->location_name);
+        $addressLine = trim((string) $this->address);
+
+        if ($name === '' && $addressLine === '') {
+            return null;
+        }
+
+        $place = ['@type' => 'Place'];
+
+        if ($name !== '') {
+            $place['name'] = $name;
+        }
+
+        if ($addressLine !== '') {
+            $place['address'] = [
+                '@type' => 'PostalAddress',
+                'streetAddress' => $addressLine,
+            ];
+        }
+
+        $lat = $this->lat;
+        $lng = $this->lng;
+        if ($lat !== null && $lat !== '' && $lng !== null && $lng !== '') {
+            $place['geo'] = [
+                '@type' => 'GeoCoordinates',
+                'latitude' => (float) $lat,
+                'longitude' => (float) $lng,
+            ];
+        }
+
+        return $place;
     }
 }

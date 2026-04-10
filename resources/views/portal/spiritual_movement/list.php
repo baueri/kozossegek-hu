@@ -4,7 +4,7 @@
 
 @section('subtitle', "{$title} - ")
 
-@extends('portal')
+@extends('portal2026.portal')
 
 @featuredTitle($title)
 

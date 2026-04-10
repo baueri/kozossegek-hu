@@ -130,9 +130,9 @@ class FileManager
         return basename($this->rootPath);
     }
 
-    public function createSymLink($link): bool
+    public function createSymLink(string $link): bool
     {
-        return symlink($this->rootPath, $link);
+        return File::createSymlinkTo($this->rootPath, $link);
     }
 
     /**

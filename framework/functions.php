@@ -492,6 +492,11 @@ function str_shorten(string $text, int $numberOfCharacters, string $moreText = '
 
 function castInto($from, $to)
 {
+    // Avoid `new Carbon(null)` / `Carbon::__construct(null)` resolving to "now" for nullable DB columns.
+    if ($from === null && is_string($to) && class_exists($to) && is_subclass_of($to, \DateTimeInterface::class)) {
+        return null;
+    }
+
     return match (true) {
         $to === 'int' => (int) $from,
         $to === 'string' => (string) $from,

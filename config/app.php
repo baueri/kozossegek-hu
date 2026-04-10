@@ -56,7 +56,20 @@ return [
         'site_key' => env('CLOUDFLARE_SITE_KEY'),
         'secret' => env('CLOUDFLARE_SECRET')
     ],
-    'openai_api_key' => env('OPENAI_API_KEY'),
-    'google_ai_studio_api_key' => env('GOOGLE_AI_STUDIO_API_KEY'),
-    'ai_faker_cache_enabled' => (bool) env('AI_FAKER_CACHE_ENABLED', false)
+    'ai_faker' => [
+        'provider' => env('AI_FAKER_PROVIDER', 'openai'),
+        'cache_enabled' => (bool) env('AI_FAKER_CACHE_ENABLED', false),
+        'providers' => [
+            'openai' => [
+                'api_key' => env('OPENAI_API_KEY'),
+                'model' => env('OPENAI_MODEL', 'gpt-4.1-mini'),
+                'timeout' => (int) env('OPENAI_TIMEOUT', 120),
+            ],
+            'google_ai_studio' => [
+                'api_key' => env('GOOGLE_AI_STUDIO_API_KEY'),
+                'model' => env('GOOGLE_AI_STUDIO_MODEL', 'gemini-flash-latest'),
+                'timeout' => (int) env('GOOGLE_AI_STUDIO_TIMEOUT', 120),
+            ],
+        ],
+    ],
 ];

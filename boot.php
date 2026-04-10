@@ -21,6 +21,9 @@ use App\Services\MeiliSearch\MeiliSearchAdapter;
 use App\Services\MileStone;
 use App\Services\User\Announcer;
 use Baueri\AIFaker\Generator\Fake;
+use Baueri\Mint\Cache;
+use Baueri\Mint\MintCompiler;
+use Baueri\Mint\MintView;
 use Dotenv\Dotenv;
 use Framework\Application;
 use Framework\Console\ConsoleKernel;
@@ -34,10 +37,6 @@ use Framework\Http\Route\XmlRouter;
 use Framework\Http\View\View;
 use Framework\Http\View\ViewInterface;
 use Framework\Support\Config\Config;
-use GuzzleHttp\Client;
-use Mint\View\Cache;
-use Mint\View\MintCompiler;
-use Mint\View\MintView;
 
 if (!defined('DS')) {
     define('DS', DIRECTORY_SEPARATOR);
@@ -89,7 +88,12 @@ $application->singleton([
     Request::class => Request::class,
     MeiliSearchAdapter::class => MeiliSearchAdapter::class,
     DebugBar::class => DebugBar::class,
-    Fake::class => fn () => FakerFactory::openAI(config('app.openai_api_key'), CACHE . DS . 'ai-faker'),
+    Fake::class => fn () => FakerFactory::fromConfig(
+        provider: (string) config('app.ai_faker.provider'),
+        providers: (array) config('app.ai_faker.providers'),
+        cacheEnabled: (bool) config('app.ai_faker.cache_enabled'),
+        cacheDir: CACHE . DS . 'ai-faker',
+    ),
     MintView::class => function () {
         $cache = new Cache(CACHE . 'mint');
         $compiler = new MintCompiler($views = VIEWS . 'mint');

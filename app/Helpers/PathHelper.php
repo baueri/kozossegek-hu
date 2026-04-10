@@ -34,4 +34,23 @@ class PathHelper
     {
         return "/media/groups/images/{$uid}_1.jpg";
     }
+
+    /**
+     * Event featured image: ROOT/storage/public/event/… on disk; URL /storage/event/… (public/storage → this tree).
+     *
+     * @param  string  $hash16  First 16 hex chars of file hash (same as persist logic)
+     * @return array{fs: string, url: string} Absolute filesystem path and path for href/src (e.g. /storage/event/ab/cd/….jpg)
+     */
+    public static function eventFeaturedImageLocation(string $hash16): array
+    {
+        $a = substr($hash16, 0, 2);
+        $b = substr($hash16, 2, 2);
+        $file = $hash16 . '.jpg';
+        $fs = env('STORAGE_PATH') . 'public' . DS . 'event' . DS . $a . DS . $b . DS . $file;
+
+        return [
+            'fs' => $fs,
+            'url' => '/storage/event/' . $a . '/' . $b . '/' . $file,
+        ];
+    }
 }

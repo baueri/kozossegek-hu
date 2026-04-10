@@ -72,7 +72,6 @@ class EventController extends Controller
         $events = Events::query()
             ->with('tags')
             ->approved()
-            ->active()
             ->upcoming()
             ->when($search, function (Events $query, string $search) {
                 $query->where(function (Builder $q) use ($search) {
@@ -107,14 +106,20 @@ class EventController extends Controller
 
         $event = $events->bySlug($slug)->approved()->firstOrFail();
 
-        return view('portal/event/show.php', compact('event'));
+        $eventSchemaJsonLd = json_encode(
+            $event->getSchemaOrgEvent(),
+            JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_APOS
+        );
+
+        return view('portal/event/show.php', compact('event', 'eventSchemaJsonLd'));
     }
 
     public function ics()
     {
         $event = Events::query()->approved()->wherePK($this->request->getUriValue('event'))->firstOrFail();
         $start = $event->starts_at->format('Ymd\THis');
-        $end = $event->ends_at->format('Ymd\THis');
+        $endAt = $event->ends_at ?? $event->starts_at->copy()->addHour();
+        $end = $endAt->format('Ymd\THis');
 
         $ics = "BEGIN:VCALENDAR
             VERSION:2.0

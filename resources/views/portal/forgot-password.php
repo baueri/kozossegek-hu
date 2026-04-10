@@ -1,4 +1,4 @@
-@extends('portal')
+@extends('portal2026.portal')
 @featuredTitle('Új jelszó igénylése')
 <div class="container inner py-5">
     @message()
@@ -14,7 +14,7 @@
             </div>
 
             <div class="form-group">
-                <input type="submit" class="btn btn-primary" value="Új jelszó igénylése">
+                <input type="submit" class="btn btn-orange px-4 rounded-pill" value="Új jelszó igénylése">
             </div>
         </div>
     </form>
