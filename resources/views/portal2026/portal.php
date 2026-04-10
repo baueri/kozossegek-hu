@@ -73,6 +73,7 @@
                     <li class="nav-item mb-1"><a href="mailto:{{$contact_email}}">{{$contact_email}}</a></li>
                     <li class="nav-item mb-1"><a href="@route('portal.page', 'adatkezelesi-tajekoztato')">Adatkezelés</a></li>
                     <li class="nav-item mb-1"><a href="@route('portal.page', 'adatvedelmi-nyilatkozat')">Adatvédelem</a></li>
+                    <li class="nav-item mb-1"><a href="#" class="js-open-cookie-settings">Cookie beállítások</a></li>
                 </ul>
             </div>
         </div>
@@ -111,11 +112,7 @@
 
 @yield('footer')
 
-<div class="alert text-center cookiealert" role="alert">
-    <b>Kedves látogató!</b> 🍪 Cookie-kat használunk.
-    <a href="/cookie-tajekoztato" target="_blank">További információ</a>
-    <button type="button" class="btn btn-altblue btn-sm acceptcookies">Rendben</button>
-</div>
+@include('partials.cookie-consent')
 
 <!-- Bootstrap 5 JS (Popper benne van) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
@@ -124,20 +121,11 @@
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 @endif
 
-@if(is_prod())
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-43190044-6"></script>
-<script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'UA-43190044-6');
-</script>
-@endif
-
 <script>
     const meili_enabled = {{ env ('MEILI_ENABLED') ? 'true' : 'false' }}
 </script>
 
+<script src="/js/cookie-consent.js?{{ filemtime('js/cookie-consent.js') }}"></script>
 <script src="/js/scripts.js?{{ filemtime('js/scripts.js') }}"></script>
 <script src="/js/dialog.js?{{ filemtime('js/dialog.js') }}"></script>
 

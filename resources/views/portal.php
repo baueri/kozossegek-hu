@@ -84,6 +84,7 @@
                         <li class="nav-item mb-1"><a href="mailto:{{$contact_email}}">{{$contact_email}}</a></li>
                         <li class="nav-item mb-1"><a href="@route('portal.page', 'adatkezelesi-tajekoztato')">Adatkezelés</a></li>
                         <li class="nav-item mb-1"><a href="@route('portal.page', 'adatvedelmi-nyilatkozat')">Adatvédelem</a></li>
+                        <li class="nav-item mb-1"><a href="#" class="js-open-cookie-settings">Cookie beállítások</a></li>
                     </ul>
                 </div>
             </div>
@@ -104,31 +105,16 @@
         </div>
     </footer>
     @yield('footer')
-    <div class="alert text-center cookiealert" role="alert">
-        <b>Kedves látogató!</b> &#x1F36A; A honlapon a felhasználói élmény fokozásának érdekében cookie-kat használunk. <a href="/cookie-tajekoztato" target="_blank">További információ</a>
-        <button type="button" class="btn btn-altblue btn-sm acceptcookies">Rendben</button>
-    </div>
+    @include('partials.cookie-consent')
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     @if(env('GOOGLE_LOGIN_ENABLED'))
         <script src="https://accounts.google.com/gsi/client" async defer></script>
     @endif
-
-    @if(is_prod())
-        <!-- Global site tag (gtag.js) - Google Analytics -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-43190044-6"></script>
-        <script>
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-
-            gtag('config', 'UA-43190044-6');
-        </script>
-        <script async defer crossorigin="anonymous" src="https://connect.facebook.net/hu_HU/sdk.js#xfbml=1&version=v17.0&appId={{ env('FACEBOOK_APP_ID') }}&autoLogAppEvents=1" nonce="HRNksHZS"></script>
-    @endif
     <script>
         const meili_enabled = {{ env ('MEILI_ENABLED') ? 'true' : 'false' }}
     </script>
+    <script src="/js/cookie-consent.js?{{ filemtime('js/cookie-consent.js') }}"></script>
     <script src="/js/scripts.js?{{ filemtime('js/scripts.js') }}"></script>
     <script src="/js/dialog.js?{{ filemtime('js/dialog.js') }}"></script>
     @yield('scripts')

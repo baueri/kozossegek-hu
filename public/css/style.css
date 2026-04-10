@@ -1852,6 +1852,58 @@ ul.age-group-select {
     vertical-align: baseline;
 }
 
+/* GDPR cookie banner (granular consent) */
+.cookie-consent-banner {
+    text-align: left;
+}
+
+.cookie-consent-banner .cookie-consent-intro {
+    text-align: left;
+}
+
+.cookie-consent-banner .container {
+    max-width: 960px;
+}
+
+.cookie-consent-banner .cookie-consent-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (min-width: 768px) {
+    .cookie-consent-banner .cookie-consent-actions {
+        justify-content: flex-start;
+    }
+}
+
+.cookie-consent-banner .cookie-consent-muted {
+    color: rgba(236, 240, 241, 0.7);
+}
+
+.cookie-consent-banner .cookie-consent-indent {
+    padding-left: 1.5rem;
+}
+
+.cookie-consent-banner .cookie-consent-badge {
+    font-size: 0.75rem;
+    padding: 0.2em 0.5em;
+    background: rgba(255, 255, 255, 0.18);
+    border-radius: 0.25rem;
+    color: #fff;
+    white-space: nowrap;
+}
+
+.cookie-consent-banner .form-check-input {
+    margin-top: 0.35em;
+}
+
+.cookie-consent-banner .form-check-label {
+    cursor: pointer;
+}
+
 .kozosseghez-tartozni {
     position: relative;
 }
