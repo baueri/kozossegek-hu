@@ -1,4 +1,4 @@
-<mint-wrap view="layout/portal" :body-class="home">
+<mint-wrap path="layout/portal.php" :body-class="home">
     <mint-section name="header">
         <meta name="description"
             content="A kozossegek.hu egy katolikus közösségkereső portál, amelyet azért hoztunk létre, hogy segítsünk mindenkinek megtalálni a közösségét akárhol is éljen, tanuljon, vagy dolgozzon, nemtől, kortól, életállapottól függetlenül." />

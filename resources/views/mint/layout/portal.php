@@ -30,7 +30,7 @@
 
     <mint-include path="partials/main_menu.php" />
 
-    <mint-yield name="layout/portal" />
+    {{ $slot }}
 
     <footer id="footer" class="text-white footer-site">
         <div class="container" id="footer-top">
