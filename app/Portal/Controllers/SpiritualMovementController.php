@@ -10,6 +10,7 @@ use App\Models\SpiritualMovement;
 use App\QueryBuilders\ChurchGroups;
 use App\QueryBuilders\ChurchGroupViews;
 use App\QueryBuilders\SpiritualMovements;
+use Baueri\Mint\View as MintEngineView;
 use Framework\Http\Exception\PageNotFoundException;
 use Framework\Http\Request;
 use Framework\Model\Exceptions\ModelNotFoundException;
@@ -32,9 +33,10 @@ class SpiritualMovementController extends PortalController
 
     public function __construct(
         Request $request,
+        MintEngineView $mintView,
         private readonly SpiritualMovements $repository
     ) {
-        parent::__construct($request);
+        parent::__construct($request, $mintView);
     }
 
     public function list(): string

@@ -46,7 +46,16 @@ class HomeController extends PortalController
         $total = ChurchGroupViews::query()->active()->count();
         $total_groups = floor($total / pow(10, strlen((string) $total) -1 )) * pow(10, strlen((string) $total) -1 );
 
-        return view('portal.home', compact('age_groups', 'selected_age_group', 'intro', 'news', 'groups', 'events', 'total_groups'));
+        return $this->mintView->render('pages/home.php', [
+            'age_groups' => $age_groups,
+            'selected_age_group' => $selected_age_group,
+            'intro' => $intro,
+            'news' => $news,
+            'groups' => $groups,
+            'events' => $events,
+            'total_groups' => $total_groups,
+            'subtitle' => '',
+        ]);
     }
 
     private function getIntro(): array

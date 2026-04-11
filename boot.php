@@ -20,10 +20,10 @@ use App\Services\EventLogger;
 use App\Services\MeiliSearch\MeiliSearchAdapter;
 use App\Services\MileStone;
 use App\Services\User\Announcer;
+use App\View\Mint\MintFactory;
 use Baueri\AIFaker\Generator\Fake;
-use Baueri\Mint\Cache;
-use Baueri\Mint\MintCompiler;
 use Baueri\Mint\MintView;
+use Baueri\Mint\View as MintEngineView;
 use Dotenv\Dotenv;
 use Framework\Application;
 use Framework\Console\ConsoleKernel;
@@ -94,12 +94,8 @@ $application->singleton([
         cacheEnabled: (bool) config('app.ai_faker.cache_enabled'),
         cacheDir: CACHE . DS . 'ai-faker',
     ),
-    MintView::class => function () {
-        $cache = new Cache(CACHE . 'mint');
-        $compiler = new MintCompiler($views = VIEWS . 'mint');
-
-        return new MintView($views, $cache, $compiler);
-    }
+    MintView::class => fn () => MintFactory::create(VIEWS . 'mint', CACHE . 'mint'),
+    MintEngineView::class => fn (Application $app) => $app->get(MintView::class),
 ]);
 
 $application->bind([

@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/baueri/mint-template.git",
-                "reference": "d177c51c6101dc942490c3c9d74544a45df3457e"
+                "reference": "2bcdc5239cea7ecae6f6d19a587f0f7a7193c676"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/baueri/mint-template/zipball/d177c51c6101dc942490c3c9d74544a45df3457e",
-                "reference": "d177c51c6101dc942490c3c9d74544a45df3457e",
+                "url": "https://api.github.com/repos/baueri/mint-template/zipball/2bcdc5239cea7ecae6f6d19a587f0f7a7193c676",
+                "reference": "2bcdc5239cea7ecae6f6d19a587f0f7a7193c676",
                 "shasum": ""
             },
             "require": {
@@ -64,7 +64,7 @@
                 "source": "https://github.com/baueri/mint-template/tree/master",
                 "issues": "https://github.com/baueri/mint-template/issues"
             },
-            "time": "2026-04-10T20:47:07+00:00"
+            "time": "2026-04-11T00:36:17+00:00"
         },
         {
             "name": "carbonphp/carbon-doctrine-types",
