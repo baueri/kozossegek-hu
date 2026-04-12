@@ -37,4 +37,14 @@ abstract class AbstractGroupStep
     {
         return view($this->getView(), $this->getModel());
     }
+
+    /**
+     * Same data as {@see render()} for Mint (or other) templates outside the Blade view path.
+     *
+     * @return array<string, mixed>
+     */
+    public function viewData(): array
+    {
+        return $this->getModel();
+    }
 }

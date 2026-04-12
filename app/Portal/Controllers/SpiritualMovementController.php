@@ -53,8 +53,8 @@ class SpiritualMovementController extends PortalController
         $title = $this->title;
         $description = $this->description;
 
-        return view(
-            'portal.spiritual_movement.list',
+        return $this->mintView->render(
+            'pages/lelkisegi-mozgalmak.php',
             compact('spiritualMovements', 'title', 'description')
         );
     }
@@ -86,7 +86,7 @@ class SpiritualMovementController extends PortalController
             }
 
             use_default_header_bg();
-            return view('portal.spiritual_movement.view', compact('spiritualMovement', 'groups', 'title'));
+            return $this->mintView->render('pages/lelkisegi-mozgalom.php', compact('spiritualMovement', 'groups', 'title'));
         } catch (ModelNotFoundException) {
             throw new PageNotFoundException();
         }

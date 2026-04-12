@@ -9,12 +9,14 @@ use App\Enums\GroupStatus;
 use App\Enums\Tag;
 use App\Portal\BreadCrumb\BreadCrumb;
 use App\Portal\Services\Search\SearchRepository;
+use Baueri\Mint\MintView;
 use Framework\Support\Collection;
 
 readonly class GroupList
 {
     public function __construct(
-        protected SearchRepository $repository
+        protected SearchRepository $repository,
+        protected MintView $mintView,
     ) {
     }
 
@@ -57,6 +59,6 @@ readonly class GroupList
             'perpage' => $groups->perpage(),
         ]);
 
-        return view('portal.kozossegek', $model);
+        return $this->mintView->render('pages/kozossegek.php', $model);
     }
 }

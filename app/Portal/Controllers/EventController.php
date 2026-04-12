@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Portal\Controllers;
 
 use App\QueryBuilders\Events;
+use Baueri\Mint\View as MintView;
 use Carbon\Carbon;
 use Framework\Database\Builder;
 use Framework\Http\Controller;
@@ -12,6 +13,13 @@ use Framework\Http\Response;
 
 class EventController extends Controller
 {
+    public function __construct(
+        \Framework\Http\Request $request,
+        private readonly MintView $mintView,
+    ) {
+        parent::__construct($request);
+    }
+
     public function list()
     {
         $date = (string) $this->request->get('date');
@@ -45,18 +53,27 @@ class EventController extends Controller
             $today = Carbon::parse($now)->startOfDay();
 
             [$rangeStart, $rangeEnd] = match ($date) {
-                'today' => [$today, Carbon::parse($today)->endOfDay()],
-                'tomorrow' => [
-                    Carbon::parse($today)->addDay(),
-                    Carbon::parse($today)->addDay()->endOfDay(),
+                'this_week' => [
+                    $today,
+                    Carbon::parse($today)->endOfWeek(Carbon::SUNDAY)->endOfDay(),
                 ],
                 'weekend' => (function () use ($today) {
-                    $sat = Carbon::parse($today)->next(Carbon::SATURDAY)->startOfDay();
-                    $sun = Carbon::parse($sat)->next(Carbon::SUNDAY)->endOfDay();
+                    $sat = Carbon::parse($today)->startOfWeek(Carbon::MONDAY)->addDays(5)->startOfDay();
+                    if ($today->gt($sat)) {
+                        $sat = $sat->addWeek();
+                    }
+                    $sun = $sat->copy()->addDay()->endOfDay();
                     return [$sat, $sun];
                 })(),
-                '7days' => [$now, Carbon::parse($now)->addDays(7)->endOfDay()],
-                '30days' => [$now, Carbon::parse($now)->addDays(30)->endOfDay()],
+                'next_week' => (function () use ($today) {
+                    $nextMon = Carbon::parse($today)->startOfWeek(Carbon::MONDAY)->addWeek();
+                    $nextSun = $nextMon->copy()->endOfWeek(Carbon::SUNDAY)->endOfDay();
+                    return [$nextMon, $nextSun];
+                })(),
+                'this_month' => [
+                    $today,
+                    Carbon::parse($today)->endOfMonth()->endOfDay(),
+                ],
                 default => [null, null],
             };
         }
@@ -87,7 +104,7 @@ class EventController extends Controller
             ->orderBy('starts_at')
             ->paginate()->castInto('toSearchResult');
 
-        return view('portal.event.list', [
+        return $this->mintView->render('pages/esemenyek.php', [
             'events' => $events,
             'total' => $events->total(),
             'date' => $date,
@@ -101,7 +118,6 @@ class EventController extends Controller
 
     public function show(Events $events)
     {
-        $date = $this->request->getUriValue('date');
         $slug = $this->request->getUriValue('slug');
 
         $event = $events->bySlug($slug)->approved()->firstOrFail();
@@ -111,7 +127,7 @@ class EventController extends Controller
             JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_APOS
         );
 
-        return view('portal/event/show.php', compact('event', 'eventSchemaJsonLd'));
+        return $this->mintView->render('pages/esemeny.php', compact('event', 'eventSchemaJsonLd'));
     }
 
     public function ics()

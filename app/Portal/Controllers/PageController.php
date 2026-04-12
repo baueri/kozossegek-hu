@@ -6,7 +6,6 @@ namespace App\Portal\Controllers;
 
 use App\QueryBuilders\Pages;
 use Framework\Http\Request;
-use Framework\Http\View\View;
 
 class PageController extends PortalController
 {
@@ -15,25 +14,29 @@ class PageController extends PortalController
         use_default_header_bg();
 
         $slug = $request->getUriValue('slug');
-        
+
         if (!$slug || !($page = $repository->whereSlug($slug)->first())) {
             log_event('');
             raise_404();
         }
 
         $page_title = $page->pageTitle();
+        $subtitle = $page->title . ' | ';
+        $pageTitle = $page_title;
 
-        if (View::exists($view = "pages.{$slug}")) {
-            return view($view, compact('page', 'page_title'));
-        }
-
-        $model = compact('page', 'page_title');
+        $model = compact('page', 'page_title', 'subtitle', 'pageTitle');
 
         if ($page->header_image) {
             $model['header_background'] = $page->header_image;
         }
 
-        return view('portal.page', $model);
+        $mintTemplate = "pages/{$slug}.php";
+
+        if (file_exists($this->mintView->viewsPath . '/' . $mintTemplate)) {
+            return $this->mintView->render($mintTemplate, $model);
+        }
+
+        return $this->mintView->render('pages/page.php', $model);
     }
 
     public function setAnnouncementsSeen(): void

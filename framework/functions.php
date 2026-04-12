@@ -1,6 +1,7 @@
 <?php
 
 use App\Admin\Components\DebugBar\DebugBar;
+use Baueri\Mint\View as MintView;
 use App\Auth\Auth;
 use App\Mailable\ThrowableCriticalErrorEmail;
 use App\Middleware\AdminMiddleware;
@@ -201,7 +202,13 @@ if (! function_exists('mb_ucfirst')) {
 
 function raise_error_page(int $code, string $message = '', string $message2 = ''): never
 {
-    echo view('portal.error', compact('code', 'message', 'message2'));
+    $pageTitle = $message !== '' ? $message : 'Hiba';
+    echo app()->get(MintView::class)->render('pages/portal-error.php', [
+        'pageTitle' => $pageTitle,
+        'code' => $code,
+        'message' => $message,
+        'message2' => $message2,
+    ]);
     exit();
 }
 
