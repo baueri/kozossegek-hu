@@ -103,8 +103,15 @@
             </div>
 
             <div class="form-group">
-                <label>Címkék (vesszővel)</label>
-                <input type="text" class="form-control" name="tags" value="{{ $tags ?? '' }}" placeholder="pl. lelki, ifjusagi">
+                <label>
+                    Címkék (vesszővel)
+                    <i class="fas fa-info-circle ml-1 text-muted"
+                        title="Szavanként, vesszővel elválasztva"
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        style="cursor:help;"></i>
+                </label>
+                <input type="text" class="form-control" name="tags" value="{{ $tags ?? '' }}" placeholder="pl. lelki, ifjúsági, zarándoklat">
             </div>
 
             <div class="form-group">
