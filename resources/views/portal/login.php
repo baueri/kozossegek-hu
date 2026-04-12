@@ -11,7 +11,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="login-page-email" class="form-label">Email cím</label>
-                        <input type="email"
+                        <input type="text"
                                id="login-page-email"
                                name="username"
                                autocomplete="username"

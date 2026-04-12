@@ -36,7 +36,7 @@
                     placeholder="Keresés">
 
                 <button class="btn btn-orange px-4 rounded-pill" type="submit">
-                    Keresés
+                    <i class="fas fa-search me-1"></i> Keresés
                 </button>
             </div>
         </form>

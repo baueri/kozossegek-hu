@@ -86,7 +86,14 @@ use App\Models\ChurchGroupView;
                         <i class="fas fa-map"></i>
                         <div>
                             <small>Helyszín</small>
+                            @if($institute)
+                            <strong>{{ $institute->name }}</strong>
+                            <span class="text-muted d-block" style="font-size:.85rem;font-weight:400;">
+                                {{ $group->city }}@if($institute->address), {{ $institute->address }}@endif
+                            </span>
+                            @else
                             <strong>{{ $group->city }}</strong>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -149,59 +156,78 @@ use App\Models\ChurchGroupView;
     </div>
 </div>
 @endif
-<div class="modal fade contact-modal" id="contact-modal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
+<div class="modal fade contact-modal" id="contact-modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered contact-modal__dialog">
+        <div class="modal-content contact-modal__shell">
+            <button type="button" class="login-prompt-close" data-bs-dismiss="modal" aria-label="Bezárás">
+                <i class="fas fa-times"></i>
+            </button>
 
-            <div class="modal-header">
-                <h5 class="modal-title">
-                    <i class="fas fa-envelope"></i>
-                    Kapcsolatfelvétel
-                </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Bezárás"></button>
+            <div class="login-prompt-icon">
+                <i class="fas fa-envelope"></i>
             </div>
 
-            <form>
-                <div class="modal-body"></div>
+            <h2 class="login-prompt-title">Kapcsolatfelvétel</h2>
+            <p class="login-prompt-subtitle contact-modal__intro">
+                Írj üzenetet a közösség vezetőjének — hamarosan válaszolni fog.
+            </p>
 
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">
-                        Mégse
-                    </button>
+            <div class="contact-modal__inject" id="contact-modal-fields"></div>
 
-                    <button type="submit" class="btn btn-contact">
-                        <i class="fas fa-paper-plane"></i>
-                        Üzenet küldése
-                    </button>
-                </div>
-            </form>
-
+            <div class="contact-modal__actions">
+                <button type="button" class="btn-contact-modal-secondary" data-bs-dismiss="modal">Mégse</button>
+                <button type="submit" form="contact-modal-ajax-form" class="btn btn-orange rounded-pill px-4">
+                    <i class="fas fa-paper-plane me-1"></i>Üzenet küldése
+                </button>
+            </div>
         </div>
     </div>
 </div>
 <x-group-card event="$group"/>
 <script>
     $(() => {
-        $(".open-contact-modal").click(function() {
-            $.post("@route('portal.group-contact-form', ['kozosseg' => $slug])", function(form) {
-                $("#contact-modal .modal-body").html(form);
+        let contactFormLoading = false;
+
+        $(document).off("click.kozossegContact", ".open-contact-modal").on("click.kozossegContact", ".open-contact-modal", function() {
+            if (contactFormLoading) {
+                return;
+            }
+            contactFormLoading = true;
+            const $modal = $("#contact-modal");
+            const $inject = $("#contact-modal-fields");
+            $.post({
+                url: "@route('portal.group-contact-form', ['kozosseg' => $slug])",
+                dataType: "html",
+                success: function(form) {
+                contactFormLoading = false;
+                $inject.empty().html(form);
+                $modal.find(".contact-modal__actions").show();
+                $modal.find(".contact-modal__intro").show();
+                $modal.find("[type=submit]").prop("disabled", false);
                 bootstrap.Modal.getOrCreateInstance(document.getElementById("contact-modal")).show();
+                },
+            }).fail(function() {
+                contactFormLoading = false;
+                dialog.danger({ message: 'Nem sikerült betölteni az űrlapot.', size: 'md' }, m => m.closeAll());
             });
         });
 
-        $("#contact-modal form").submit(function(e) {
+        $("#contact-modal").off("submit.kozossegContact", "#contact-modal-ajax-form").on("submit.kozossegContact", "#contact-modal-ajax-form", function(e) {
             e.preventDefault();
 
+            const $m = $("#contact-modal");
+            const $form = $(this);
             const data = {
-                name: $("[name=name]").val(),
-                email: $("[name=email]").val(),
-                message: $("[name=message]").val(),
-                website: $("[name=website]").val()
+                name: $form.find("[name=name]").val(),
+                email: $form.find("[name=email]").val(),
+                message: $form.find("[name=message]").val(),
+                website: $form.find("[name=website]").val()
             };
             $.post("@route('portal.contact-group', $group)", data, function(response) {
                 if (response.success) {
-                    $("#contact-modal .modal-body").html(response.msg);
-                    $("#contact-modal [type=submit]").remove();
+                    $("#contact-modal-fields").html(response.msg);
+                    $m.find(".contact-modal__intro").hide();
+                    $m.find(".contact-modal__actions").hide();
                 } else {
                     dialog.danger({
                         message: 'Nem sikerült elküldeni az üzenetet, kérjük, próbáld meg később!',
@@ -316,32 +342,4 @@ use App\Models\ChurchGroupView;
     color: white;
 }
 
-.contact-modal .modal-content {
-    border: none;
-    border-radius: 16px;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
-    overflow: hidden;
-}
-
-.contact-modal .modal-header {
-    background: linear-gradient(135deg, #f97316, #f59e0b);
-    color: white;
-    border: none;
-}
-
-.contact-modal .modal-title {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-weight: 600;
-}
-
-.contact-modal .modal-body {
-    padding: 20px;
-}
-
-.contact-modal .modal-footer {
-    border-top: 1px solid #f1f5f9;
-    padding: 15px 20px;
-}
 </style>

@@ -12,12 +12,19 @@
         <!-- TAG -->
         <div class="community-tags">
             @if($group['tags'])
-            <?php $tags = array_slice($group['tags'], 0, 3); ?>
+            <?php
+                $all_tags = $group['tags'];
+                $tags = array_slice($all_tags, 0, 3);
+                $extra = count($all_tags) - count($tags);
+            ?>
             @foreach($tags as $tag)
             <span class="community-badge">
                 {{ $tag }}
             </span>
             @endforeach
+            @if($extra > 0)
+            <span class="community-badge community-badge--more">+{{ $extra }}</span>
+            @endif
             @endif
         </div>
     </a>
@@ -25,7 +32,12 @@
     <div class="community-body">
         <div class="community-location">
             <i class="fas fa-map-marker-alt"></i>
-            {{ $group['city'] . ($group['district'] ? ', ' . $group['district'] : '') }}
+            {{ $group['institute_name'] ?? ($group['city'] . ($group['district'] ? ', ' . $group['district'] : '')) }}
+            @if(!empty($group['institute_name']))
+            <div class="community-city">
+                {{ $group['city'] . ($group['district'] ? ', ' . $group['district'] : '') }}
+            </div>
+            @endif
         </div>
 
         @if(!empty($group['age_group_combined']))

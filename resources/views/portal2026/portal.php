@@ -131,7 +131,5 @@
 
 @yield('scripts')
 
-{{ debugbar()->render() }}
-
 </body>
 </html>

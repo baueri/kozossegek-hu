@@ -97,6 +97,5 @@
         });
     });
 </script>
-{{ debugbar()->render() }}
 </body>
 </html>

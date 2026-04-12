@@ -45,7 +45,7 @@
                         <span class="login-dropdown-heading">@lang('menu.login')</span>
                         <div class="mb-3">
                             <label for="popup-login-username" class="form-label">@lang('menu.login.email')</label>
-                            <input type="email"
+                            <input type="text"
                                    class="form-control"
                                    name="username"
                                    id="popup-login-username"
@@ -107,10 +107,6 @@
                 <img src="/images/logo/logo42x42.webp" class="logo-sm d-block d-md-none" alt="logo">
             </a>
 
-            <div class="d-inline-block d-lg-none flex-grow-1 me-3">
-                @include('portal.partials.search_box')
-            </div>
-
             <input type="checkbox" class="d-none" id="toggle_main_menu" name="toggle_main_menu">
 
             <label class="mobile-menu-backdrop" for="toggle_main_menu" aria-hidden="true"></label>
@@ -140,7 +136,7 @@
                     @yield('nav-right')
                 </ul>
                 <div class="d-flex align-items-center ms-3">
-                    <a href="@route('portal.register_group')" class="badge rounded-pill bg-dark py-2 px-3 text-light">
+                    <a href="@route('portal.register_group')" class="badge rounded-pill bg-dark py-2 px-3 text-light text-decoration-none">
                         @lang('menu.leading_a_group')
                     </a>
                 </div>

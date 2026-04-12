@@ -7,7 +7,7 @@
         </div>
         <div class="mb-3">
             <label for="login-modal-email" class="form-label">Email cím</label>
-            <input type="email"
+            <input type="text"
                    id="login-modal-email"
                    name="username"
                    autocomplete="username"
