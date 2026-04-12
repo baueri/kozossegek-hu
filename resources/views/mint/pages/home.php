@@ -1,4 +1,4 @@
-<mint-wrap path="layout/portal.php" :body-class="home">
+<mint-extend path="layout/portal.php" :body-class="home">
     <mint-section name="header">
         <meta name="description"
             content="A kozossegek.hu egy katolikus közösségkereső portál, amelyet azért hoztunk létre, hogy segítsünk mindenkinek megtalálni a közösségét akárhol is éljen, tanuljon, vagy dolgozzon, nemtől, kortól, életállapottól függetlenül." />
@@ -8,7 +8,7 @@
         <meta property="og:title" content="kozossegek.hu - @lang('find_your_church_group')" />
         <meta property="og:description"
             content="A kozossegek.hu egy katolikus közösségkereső portál, amelyet azért hoztunk létre, hogy segítsünk mindenkinek megtalálni a közösségét akárhol is éljen, tanuljon, vagy dolgozzon, nemtől, kortól, életállapottól függetlenül." />
-        <mint-og-image />
+        <mod-og-image />
         <meta property="og:locale" content="hu_HU" />
         <link rel="canonical" href="{{ get_site_url() }}" />
         <link href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" media="all">
@@ -36,7 +36,7 @@
                         placeholder="Keresés">
 
                     <button class="btn btn-orange px-4 rounded-pill" type="submit">
-                        Keresés
+                        <i class="fas fa-search me-1"></i> Keresés
                     </button>
                 </div>
             </form>
@@ -128,7 +128,7 @@
             <h2 class="text-center section-title mb-5">Legújabb közösségek</h2>
             <div class="row" id="kozossegek-list">
                 <div class="col-md-6 col-lg-4 mb-5" x:foreach="{ $groups as $group }">
-                    <mint-kozosseg-card :group="{ $group }" />
+                    <mod-kozosseg-card :group="{ $group }" />
                 </div>
             </div>
             <div class="text-center">
@@ -153,7 +153,7 @@
             <h2 class="text-center section-title mb-5">Közelgő események</h2>
             <div class="row" id="esemenyek-list">
                 <div class="col-md-6 col-lg-4 mb-5" x:foreach="{ $events as $event }">
-                    <mint-event-card :event="{ $event }" />
+                    <mod-event-card :event="{ $event }" />
                 </div>
             </div>
             <div class="text-center">
@@ -236,4 +236,4 @@
             </div>
         </div>
     </section>
-</mint-wrap>
+</mint-extend>

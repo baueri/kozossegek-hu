@@ -1,21 +1,3 @@
-<?php
-$event = $event ?? null;
-if (! is_array($event)) {
-    throw new \InvalidArgumentException('mint-event-card requires :event array.');
-}
-$lifecycle_cancelled = ($event['lifecycle'] ?? '') === 'cancelled';
-$tags = $event['tags'] ?? [];
-$tags_preview = is_array($tags) && $tags !== [] ? array_slice($tags, 0, 3) : [];
-$all_day = (bool) ($event['all_day'] ?? false);
-$startsAt = $event['starts_at'] ?? null;
-$endsAt = $event['ends_at'] ?? null;
-$show_all_day_end = $all_day
-    && is_object($endsAt)
-    && is_object($startsAt)
-    && $endsAt->format('Y-m-d') !== $startsAt->format('Y-m-d');
-$show_time_end = ! $all_day && is_object($endsAt);
-$show_tags = $tags_preview !== [];
-?>
 <div class="community-card h-100{{ $lifecycle_cancelled ? ' community-card--event-cancelled' : '' }}">
 
     <a href="{{ $event['url'] }}" class="community-image{{ $lifecycle_cancelled ? ' community-image--cancelled' : '' }}">
@@ -43,6 +25,9 @@ $show_tags = $tags_preview !== [];
         <div class="community-location">
             <i class="fas fa-map-marker-alt"></i>
             {{ $event['location_name'] ?? $event['address'] }}
+            <div x:if="{ !empty($event['location_name']) && !empty($event['address']) }" class="community-city">
+                {{ $event['address'] }}
+            </div>
         </div>
 
         <div class="community-age">

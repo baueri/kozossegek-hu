@@ -111,7 +111,7 @@
 
     <mint-yield name="footer" />
 
-    <mint-cookie-consent />
+    <mod-cookie-consent />
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -132,9 +132,8 @@
     <script src="/js/dialog.js?{{ filemtime(ROOT . 'public/js/dialog.js') }}"></script>
 
     <mint-yield name="scripts" />
-
+    
     {{ debugbar()->render() }}
-
 </body>
 
 </html>

@@ -1,13 +1,3 @@
-<?php
-$group = $group ?? null;
-if (! is_array($group)) {
-    throw new \InvalidArgumentException('mint-kozosseg-card requires :group array.');
-}
-$tags = $group['tags'] ?? [];
-$tags_preview = is_array($tags) && $tags !== [] ? array_slice($tags, 0, 3) : [];
-$show_tags = $tags_preview !== [];
-$show_age = ! empty($group['age_group_combined']);
-?>
 <div class="community-card h-100">
 
     <a href="{{ $group['url'] }}" class="community-image">
@@ -22,13 +12,17 @@ $show_age = ! empty($group['age_group_combined']);
             <span x:foreach="{ $tags_preview as $tag }" class="community-badge">
                 {{ $tag }}
             </span>
+            <span x:if="{ $extra_tags > 0 }" class="community-badge community-badge--more">+{{ $extra_tags }}</span>
         </div>
     </a>
 
     <div class="community-body">
         <div class="community-location">
             <i class="fas fa-map-marker-alt"></i>
-            {{ $group['city'] . ($group['district'] ? ', ' . $group['district'] : '') }}
+            {{ $group['institute_name'] ?? ($group['city'] . ($group['district'] ? ', ' . $group['district'] : '')) }}
+            <div x:if="{ !empty($group['institute_name']) }" class="community-city">
+                {{ $group['city'] . ($group['district'] ? ', ' . $group['district'] : '') }}
+            </div>
         </div>
 
         <div x:if="{ $show_age }" class="community-age">

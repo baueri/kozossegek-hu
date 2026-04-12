@@ -13,19 +13,19 @@
         </a>
         <ul class="submenu">
             <li class="nav-item">
-                <a href="@route('portal.my_profile')" class="nav-link"><mint-icon :name="{'user-circle'}" /> @lang('menu.my_account')</a>
+                <a href="@route('portal.my_profile')" class="nav-link"><mod-icon :name="{'user-circle'}" /> @lang('menu.my_account')</a>
             </li>
             <li class="nav-item">
-                <a href="@route('portal.my_groups')" class="nav-link"><mint-icon :name="{'comments'}" /> @lang('menu.my_groups')</a>
+                <a href="@route('portal.my_groups')" class="nav-link"><mod-icon :name="{'comments'}" /> @lang('menu.my_groups')</a>
             </li>
             <li class="nav-item">
-                <a href="@route('portal.my_events')" class="nav-link"><mint-icon :name="{'calendar-alt'}" /> @lang('menu.my_events')</a>
+                <a href="@route('portal.my_events')" class="nav-link"><mod-icon :name="{'calendar-alt'}" /> @lang('menu.my_events')</a>
             </li>
             <li x:if="{$is_admin}" class="nav-item">
-                <a href="@route('admin.dashboard')" class="nav-link"><mint-icon :name="{'cog'}" /> @lang('menu.admin')</a>
+                <a href="@route('admin.dashboard')" class="nav-link"><mod-icon :name="{'cog'}" /> @lang('menu.admin')</a>
             </li>
             <li class="nav-item">
-                <a href="@route('logout')" class="nav-link text-danger"><mint-icon :name="sign-out-alt" /> @lang('menu.logout')</a>
+                <a href="@route('logout')" class="nav-link text-danger"><mod-icon :name="sign-out-alt" /> @lang('menu.logout')</a>
             </li>
         </ul>
     </li>
@@ -63,7 +63,7 @@
                         @if($social_enabled)
                             <div class="auth-divider auth-divider--compact">vagy</div>
                             <div>
-                                <mint-google-login />
+                                <mod-google-login />
                             </div>
                         @endif
                         <button type="submit" class="btn btn-orange w-100 rounded-pill py-2 mt-1">Belépés</button>
@@ -106,10 +106,6 @@
                 <img src="/images/logo/logo42x42.webp" class="logo-sm d-block d-md-none" alt="logo">
             </a>
 
-            <div class="d-inline-block d-lg-none flex-grow-1 me-3">
-                <mint-search-box />
-            </div>
-
             <input type="checkbox" class="d-none" id="toggle_main_menu" name="toggle_main_menu">
 
             <label class="mobile-menu-backdrop" for="toggle_main_menu" aria-hidden="true"></label>
@@ -137,7 +133,7 @@
                     <mint-yield name="nav-right" />
                 </ul>
                 <div class="d-flex align-items-center ms-3">
-                    <a href="@route('portal.register_group')" class="badge rounded-pill bg-dark py-2 px-3 text-light">
+                    <a href="@route('portal.register_group')" class="badge rounded-pill bg-dark py-2 px-3 text-light text-decoration-none">
                         @lang('menu.leading_a_group')
                     </a>
                 </div>
