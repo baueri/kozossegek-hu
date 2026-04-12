@@ -49,7 +49,6 @@ class UserEventController extends PortalController
             $payload['slug'] = $handler->makeUniqueSlug($payload['name']);
             $payload['user_id'] = $user->getId();
             $payload['status'] = $user->isAdmin() ? 'approved' : 'pending';
-            $payload['institute_id'] = null;
 
             if ($path = $handler->persistFeaturedImage((string) $request->get('featured_image_data', ''))) {
                 $payload['featured_image'] = $path;
@@ -99,7 +98,6 @@ class UserEventController extends PortalController
             $payload['slug'] = $event->slug;
             $payload['status'] = $event->status;
             $payload['user_id'] = $event->user_id;
-            $payload['institute_id'] = $event->institute_id;
 
             if ($path = $handler->persistFeaturedImage((string) $request->get('featured_image_data', ''))) {
                 $payload['featured_image'] = $path;

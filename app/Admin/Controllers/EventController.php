@@ -181,7 +181,6 @@ class EventController extends AdminController
             'status',
             'lifecycle',
             'organizer',
-            'institute_id',
             'location_name',
             'address',
             'lat',
@@ -194,8 +193,6 @@ class EventController extends AdminController
 
         $data['all_day'] = (int) ($data['all_day'] ?? false);
         $data['ends_at'] = $data['ends_at'] ?: null;
-        $data['institute_id'] = $data['institute_id'] ?? null;
-
         $data['status'] = $data['status'] ?: 'draft';
         $data['lifecycle'] = $data['lifecycle'] ?: 'active';
 

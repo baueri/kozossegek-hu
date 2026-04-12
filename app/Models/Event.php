@@ -21,7 +21,6 @@ use Framework\Support\Collection;
  * @property DateTimeInterface $starts_at
  * @property ?DateTimeInterface $ends_at
  * @property string $slug
- * @property int $institute_id
  * @property null|Institute $institue
  * @property int $user_id
  * @property User $user
