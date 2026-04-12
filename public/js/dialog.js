@@ -1,6 +1,41 @@
 const dialog = (function () {
     let thisDialog = this;
 
+    function modalShow($jq) {
+        const el = $jq[0];
+        if (!el) {
+            return;
+        }
+        if (typeof bootstrap !== "undefined" && bootstrap.Modal) {
+            const staticBackdrop = $jq.attr("data-bs-backdrop") === "static" || $jq.attr("data-backdrop") === "static";
+            bootstrap.Modal.getOrCreateInstance(el, {
+                backdrop: staticBackdrop ? "static" : true,
+                keyboard: !staticBackdrop,
+            }).show();
+            return;
+        }
+        if (typeof $jq.modal === "function") {
+            $jq.modal("show");
+        }
+    }
+
+    function modalHide($jq) {
+        const el = $jq[0];
+        if (!el) {
+            return;
+        }
+        if (typeof bootstrap !== "undefined" && bootstrap.Modal) {
+            const inst = bootstrap.Modal.getInstance(el);
+            if (inst) {
+                inst.hide();
+                return;
+            }
+        }
+        if (typeof $jq.modal === "function") {
+            $jq.modal("hide");
+        }
+    }
+
     let okBtn = function () {
         return {
             text: "Ok",
@@ -18,7 +53,9 @@ const dialog = (function () {
     };
 
     this.closeAll = function () {
-        $(".modal").modal("hide");
+        $(".modal.show").each(function () {
+            modalHide($(this));
+        });
     }
 
     this.alertMessage = function (type, options, callback) {
@@ -92,9 +129,15 @@ const dialog = (function () {
             options.buttons[1] = $.extend(options.buttons[1], options.cancelBtn);
         }
 
-        let backDrop = !options.closable ? "data-backdrop='static' data-keyboard='false' tabindex='-1'" : "";
-
-        let outer = $("<div class='modal fade' " + backDrop + " tabindex='-1'></div>");
+        let outer = $("<div class='modal fade dialog-shell' tabindex='-1'></div>");
+        if (!options.closable) {
+            outer.attr({
+                "data-bs-backdrop": "static",
+                "data-bs-keyboard": "false",
+                "data-backdrop": "static",
+                "data-keyboard": "false",
+            });
+        }
 
         let headerCssClass = "";
 
@@ -104,11 +147,17 @@ const dialog = (function () {
 
         let dialog = $("<div class='modal-dialog modal-" + options.size + " " + options.cssClass + "'></div>");
         let content = $("<div class='modal-content'></div>");
-        let closableBtn = options.closable ? $("<button type='button' class='close' data-dismiss='modal' aria-label='bezár'><span aria-hidden='true'>&times;</span></button>") : null;
+        let closableBtn = options.closable
+            ? $("<button type='button' class='dialog-shell__close' aria-label='bezár'></button>")
+            : null;
         let header = $("<div class='modal-header" + headerCssClass + "'><h5 class='modal-title'>" + options.title + "</h5></div>");
         let body = $("<div class='modal-body'></div>");
 
         if (closableBtn) {
+            closableBtn.on("click", function (e) {
+                e.preventDefault();
+                modalHide(outer);
+            });
             header.append(closableBtn);
         }
 
@@ -168,14 +217,14 @@ const dialog = (function () {
 
         if (options.delay) {
             setTimeout(function () {
-                outer.modal('show');
+                modalShow(outer);
             }, options.delay);
         } else {
-            outer.modal('show');
+            modalShow(outer);
         }
 
         outer.close = function () {
-            $(this).modal("hide");
+            modalHide($(this));
         }
 
         outer.closeAll = function () {
