@@ -4,6 +4,14 @@ declare(strict_types=1);
 
 namespace App\View\Mint;
 
+use App\View\Mint\Components\Captcha;
+use App\View\Mint\Components\EventCard;
+use App\View\Mint\Components\HoneypotField;
+use App\View\Mint\Components\Icon;
+use App\View\Mint\Components\KozossegCard;
+use App\View\Mint\Components\Modal;
+use App\View\Mint\Components\Pager;
+use App\View\Mint\Components\ReplayAttack;
 use Baueri\Mint\Cache;
 use Baueri\Mint\MintCompiler;
 use Baueri\Mint\MintView;
@@ -14,13 +22,19 @@ final class MintFactory
     {
         $compiler = new MintCompiler($viewsPath);
 
-        $compiler->registerViewComponent('icon', 'components/icon.php');
-        $compiler->registerViewComponent('event-card', 'components/event-card.php');
-        $compiler->registerViewComponent('kozosseg-card', 'components/kozosseg-card.php');
-        $compiler->registerViewComponent('og-image', 'components/og-image.php');
-        $compiler->registerViewComponent('search-box', 'partials/search_box.php');
-        $compiler->registerViewComponent('google-login', 'partials/google_login.php');
-        $compiler->registerViewComponent('cookie-consent', 'partials/cookie_consent.php');
+        $compiler->registerModule('icon', Icon::class);
+        $compiler->registerModule('event-card', EventCard::class);
+        $compiler->registerModule('kozosseg-card', KozossegCard::class);
+        $compiler->registerModule('honeypot', HoneypotField::class);
+        $compiler->registerModule('replay-attack', ReplayAttack::class);
+        $compiler->registerModule('captcha', Captcha::class);
+        $compiler->registerModule('pager', Pager::class);
+        $compiler->registerModule('modal', Modal::class);
+        $compiler->registerViewModule('og-image', 'components/og-image.php');
+        $compiler->registerViewModule('search-box', 'partials/search_box.php');
+        $compiler->registerViewModule('google-login', 'partials/google_login.php');
+        $compiler->registerViewModule('cookie-consent', 'partials/cookie_consent.php');
+        $compiler->registerViewModule('group-contact-form', 'partials/group-contact-form.php');
 
         $compiler->registerTextDirective(new RouteTextDirective());
         $compiler->registerTextDirective(new LangTextDirective());
