@@ -10,7 +10,7 @@ class MileStoneTab extends DebugBarTab
 
     public function getTitle(): string
     {
-        return 'timeline';
+        return 'Timeline';
     }
 
     public function icon(): string
@@ -21,22 +21,33 @@ class MileStoneTab extends DebugBarTab
     public function render(): string
     {
         $measures = MileStone::get();
-        $total = $this->getTotalLoadTime();
-        $out = <<<EOT
-            <style>#debug-timeline tr td:first-child {text-align: right; padding: 2px 5px;}</style>
-            <code>
-            <table id="debug-timeline" class="">
-                <tr><td><b>Total load time:</b></td><td>{$total}ms</td></tr>
-        EOT;
+        $total = $this->getTotalLoadTime() ?: 1;
 
-        /** @var array{title: string, start: float, end: float} $measure */
+        $rows = '<tr><td class="dbg-tl-label"><strong>Total</strong></td>'
+            . '<td class="dbg-tl-bar"><div class="dbg-bar-wrap"><div class="dbg-bar-fill" style="width:100%"></div></div></td>'
+            . '<td class="dbg-tl-time"><strong>' . $total . 'ms</strong></td></tr>';
+
         foreach ($measures as $name => $measure) {
             $time = $this->roundTime(($measure['end'] ?? microtime(true)) - $measure['start']);
-            $title = $measure['title'] ?: $name;
-            $out .= "<tr><td><b>{$title}</b>:</td><td>{$time}ms</td></tr>";
+            $pct = min(100, round($time / $total * 100));
+            $title = htmlspecialchars($measure['title'] ?: $name);
+
+            $barClass = match (true) {
+                $pct >= 60 => 'dbg-bar-danger',
+                $pct >= 30 => 'dbg-bar-warning',
+                default    => 'dbg-bar-ok',
+            };
+
+            $rows .= '<tr>'
+                . "<td class=\"dbg-tl-label\">{$title}</td>"
+                . "<td class=\"dbg-tl-bar\"><div class=\"dbg-bar-wrap\"><div class=\"dbg-bar-fill {$barClass}\" style=\"width:{$pct}%\"></div></div></td>"
+                . "<td class=\"dbg-tl-time\">{$time}ms</td>"
+                . '</tr>';
         }
 
-        return "{$out}</table></code>";
+        return '<table class="dbg-table dbg-timeline">'
+            . '<thead><tr><th style="width:160px">Milestone</th><th>Timeline</th><th style="width:80px">Time</th></tr></thead>'
+            . '<tbody>' . $rows . '</tbody></table>';
     }
 
     public function getTotalLoadTime(): ?float
@@ -45,11 +56,11 @@ class MileStoneTab extends DebugBarTab
             return $this->totalLoadTime;
         }
         $measures = MileStone::get();
-        return $this->totalLoadTime =  $this->roundTime((float) microtime(true) - $measures[key($measures)]['start']);
+        return $this->totalLoadTime = $this->roundTime((float) microtime(true) - $measures[key($measures)]['start']);
     }
 
-    private function roundTime($time): float
+    private function roundTime(float $time): float
     {
-        return round(($time) * 1000, 2);
+        return round($time * 1000, 2);
     }
 }

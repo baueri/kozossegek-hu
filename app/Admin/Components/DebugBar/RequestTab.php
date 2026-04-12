@@ -8,12 +8,7 @@ class RequestTab extends DebugBarTab
 {
     public function getTitle(): string
     {
-        return 'request';
-    }
-
-    public function render(): string
-    {
-        return '<code>' . $this->getRequestInfo() . '</code>';
+        return 'Request';
     }
 
     public function icon(): string
@@ -21,14 +16,40 @@ class RequestTab extends DebugBarTab
         return 'fa fa-exchange-alt';
     }
 
-    private function getRequestInfo(): string
+    public function render(): string
     {
         $request = request();
-        $output = '<div><b>Request Method:</b> ' . $request->requestMethod->name . '</div>';
-        $output .= '<div><b>Request URI:</b> ' . $request->uri . '</div>';
-        $output .= '<div><b>Request Query:</b> ' . $request->request->toJson() . '</div>';
-        $output .= '<div><b>Request Headers:</b> ' . $request->headers->toJson() . '</div>';
-        $output .= '<div><b>Session:</b> ' . json_encode($_SESSION) . '</div>';
-        return $output;
+        $method  = htmlspecialchars($request->requestMethod->name);
+        $uri     = htmlspecialchars($request->uri);
+        $query   = htmlspecialchars(json_encode($request->request->all(), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+        $headers = htmlspecialchars(json_encode($request->headers->all(), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+        $session = htmlspecialchars(json_encode($_SESSION ?? [], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+
+        $methodClass = match ($method) {
+            'GET'    => 'dbg-badge-success',
+            'POST'   => 'dbg-badge-accent',
+            'PUT', 'PATCH' => 'dbg-badge-warning',
+            'DELETE' => 'dbg-badge-danger',
+            default  => 'dbg-badge-muted',
+        };
+
+        return <<<HTML
+            <dl class="dbg-kv">
+                <div><dt>Method</dt><dd><span class="dbg-badge {$methodClass}">{$method}</span></dd></div>
+                <div><dt>URI</dt><dd>{$uri}</dd></div>
+            </dl>
+            <details class="dbg-details">
+                <summary>Query / Body params</summary>
+                <pre class="dbg-pre">{$query}</pre>
+            </details>
+            <details class="dbg-details">
+                <summary>Headers</summary>
+                <pre class="dbg-pre">{$headers}</pre>
+            </details>
+            <details class="dbg-details" open>
+                <summary>Session</summary>
+                <pre class="dbg-pre">{$session}</pre>
+            </details>
+        HTML;
     }
 }

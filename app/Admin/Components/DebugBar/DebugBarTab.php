@@ -8,9 +8,14 @@ abstract class DebugBarTab
 
     abstract public function render(): string;
 
+    public function getBadge(): ?int
+    {
+        return null;
+    }
+
     final public function generateIcon(): string
     {
-        return ($icon = $this->icon()) ? sprintf('<i class="%s"></i> ', $icon) : '';
+        return ($icon = $this->icon()) ? sprintf('<i class="%s"></i>', $icon) : '';
     }
 
     public function icon(): string

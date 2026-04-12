@@ -6,7 +6,7 @@ class FrameworkInfoTab extends DebugBarTab
 {
     public function getTitle(): string
     {
-        return 'keretrendszer';
+        return 'Framework';
     }
 
     public function icon(): string
@@ -17,20 +17,26 @@ class FrameworkInfoTab extends DebugBarTab
     public function render(): string
     {
         $route = current_route();
-        $uriMask = $route->getUriMask();
-        $controller = "{$route->getController()}@{$route->getUse()}";
-        $alias = $route->getAs();
-        $middleware = implode(', ', $route->getMiddleware());
-        $env = app()->getEnvironment();
+        $env = htmlspecialchars(app()->getEnvironment());
+        $uriMask = htmlspecialchars($route->getUriMask());
+        $controller = htmlspecialchars("{$route->getController()}@{$route->getUse()}");
+        $alias = htmlspecialchars($route->getAs());
+        $middleware = htmlspecialchars(implode(', ', $route->getMiddleware()) ?: '—');
 
-        return <<<EOT
-            <code>
-                <b>Env:</b> $env<br/>
-                <b>URI mask:</b> $uriMask<br/>
-                <b>Controller:</b> $controller<br/>
-                <b>Alias:</b> $alias<br/>
-                <b>Middleware</b> $middleware<br/>
-            </code>
-        EOT;
+        $envClass = match (strtolower($env)) {
+            'production' => 'dbg-badge-danger',
+            'staging'    => 'dbg-badge-warning',
+            default      => 'dbg-badge-success',
+        };
+
+        return <<<HTML
+            <dl class="dbg-kv">
+                <div><dt>Environment</dt><dd><span class="dbg-badge {$envClass}">{$env}</span></dd></div>
+                <div><dt>URI Mask</dt><dd>{$uriMask}</dd></div>
+                <div><dt>Controller</dt><dd>{$controller}</dd></div>
+                <div><dt>Route alias</dt><dd>{$alias}</dd></div>
+                <div><dt>Middleware</dt><dd>{$middleware}</dd></div>
+            </dl>
+        HTML;
     }
 }
