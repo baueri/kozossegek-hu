@@ -2,6 +2,7 @@
 
 namespace App\Http\Responses;
 
+use App\Auth\Auth;
 use App\Enums\AgeGroup;
 use App\Enums\GroupStatus;
 use App\Enums\OccasionFrequency;
@@ -9,14 +10,14 @@ use App\Enums\Tag;
 use App\Enums\WeekDay;
 use App\Models\ChurchGroupView;
 use App\QueryBuilders\Institutes;
+use Baueri\Mint\View as MintView;
 
 class PortalEditGroupForm
 {
-    private Institutes $institutes;
-
-    public function __construct(Institutes $institutes)
-    {
-        $this->institutes = $institutes;
+    public function __construct(
+        private readonly Institutes $institutes,
+        private readonly MintView $mintView,
+    ) {
     }
 
     public function __invoke(ChurchGroupView $group): string
@@ -31,23 +32,24 @@ class PortalEditGroupForm
 
         $age_group_array = array_filter(explode(',', $group->age_group));
         $group_days = $group->getDays();
-        $view = 'portal.group.my_group';
         $action = route('portal.my_group.update');
         $institute = $this->institutes->find($group->institute_id);
 
-        return view($view, compact(
-            'group',
-            'institute',
-            'statuses',
-            'occasion_frequencies',
-            'age_groups',
-            'action',
-            'tags',
-            'age_group_array',
-            'group_tags',
-            'days',
-            'group_days',
-            'group_tags'
+        return $this->mintView->render('pages/kozosseg-szerkesztes.php', array_merge(
+            compact(
+                'group',
+                'institute',
+                'statuses',
+                'occasion_frequencies',
+                'age_groups',
+                'action',
+                'tags',
+                'age_group_array',
+                'group_tags',
+                'days',
+                'group_days',
+            ),
+            ['user' => Auth::user()]
         ));
     }
 }

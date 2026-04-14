@@ -31,7 +31,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://challenges.cloudflare.com">
-    <!--    <link rel="search" type="application/opensearchdescription+xml" title="kozossegek.hu" href="opensearch.xml">-->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
     @yield('header')

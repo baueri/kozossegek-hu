@@ -19,7 +19,6 @@ return [
     'base_auth.password' => env('BASE_AUTH_PASSWORD'),
     'docache' => env('ENVIRONMENT') != 'production',
     'debug' => env('DEBUG', false),
-    'coming_soon' => env('COMING_SOON', false),
     'storage_path' => env('STORAGE_PATH'),
 
     'email' => env('EMAIL_ADDRESS'),

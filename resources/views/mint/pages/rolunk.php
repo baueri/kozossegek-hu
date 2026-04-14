@@ -9,6 +9,15 @@
     <mint-section name="scripts">
         <script>
             $(() => {
+                const params = new URLSearchParams(window.location.search);
+                const prefillMessage = params.get('message');
+                if (prefillMessage) {
+                    const $msg = $('#mail_msg');
+                    if ($msg.length && !$msg.val().trim()) {
+                        $msg.val(prefillMessage);
+                    }
+                }
+
                 $("#send-message").submit(function (e) {
                     e.preventDefault();
 

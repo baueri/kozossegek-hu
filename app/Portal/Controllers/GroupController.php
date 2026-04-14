@@ -169,7 +169,7 @@ class GroupController extends PortalController
 
         $groups = $groupRepo->getNotDeletedGroupsByUser($user);
 
-        return view('portal.group.my_groups', compact('groups'));
+        return $this->mintView->render('pages/kozossegeim.php', compact('groups'));
     }
 
     public function editGroup(Request $request, ChurchGroupViews $groups, PortalEditGroupForm $response): string
@@ -287,7 +287,7 @@ class GroupController extends PortalController
 
     public function registrationSuccess(): string
     {
-        return view('portal.group.create_group_success');
+        return $this->mintView->render('pages/kozosseg-sikeres-regisztracio.php');
     }
 
     /**

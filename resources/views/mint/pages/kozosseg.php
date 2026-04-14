@@ -178,38 +178,51 @@
                 </div>
 
                 <div class="group-header-single">
+                    <?php
+                    $reportRolunkMessage = "Bejelentés, észrevétel a következő közösség adatlapjával kapcsolatban:\n\n" . $group->url();
+                    $reportRolunkHref = route('portal.page', ['slug' => 'rolunk'])
+                        . '?' . http_build_query(['message' => $reportRolunkMessage], '', '&', PHP_QUERY_RFC3986)
+                        . '#contact';
+                    ?>
 
                     <div x:if="{ $group->description }" class="group-card shadow">
                         <h3>Bemutatkozás</h3>
                         <p>{{ $group->description }}</p>
                     </div>
 
-                    <div x:if="{ $group->lat && $group->lon }" class="group-card shadow mt-3 map-wrapper">
-                        <p class="text-center mb-2">
-                            <a href="#" class="btn btn-outline-orange toggle-map">
-                                <mod-icon :name="map" /> Térkép
-                            </a>
-                        </p>
-                        <div class="group-map" style="display:none;">
-                            <div id="map"></div>
-                        </div>
-                    </div>
-
-                    <div class="group-actions">
-                        <button class="btn btn-contact open-contact-modal">
-                            <i class="fas fa-paper-plane"></i>
-                            Kapcsolatfelvétel
-                        </button>
-
-                        <div class="share-btn">
-                            <div class="fb-share-button"
-                                data-href="{{ $group->url() }}"
-                                data-layout="button"
-                                data-size="small">
-                                <a target="_blank"
-                                    href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode($group->url()) }}&amp;src=sdkpreparse"
-                                    class="fb-xfbml-parse-ignore">Megosztás</a>
+                    <div class="group-profile-footer group-card mt-3">
+                        <div x:if="{ $group->lat && $group->lon }" class="group-profile-footer__map">
+                            <div class="group-profile-footer__map-toggle">
+                                <a href="#" class="btn btn-outline-orange toggle-map">
+                                    <mod-icon :name="map" /> Térkép
+                                </a>
                             </div>
+                            <div class="group-map" style="display:none;">
+                                <div id="map"></div>
+                            </div>
+                        </div>
+
+                        <div class="group-actions">
+                            <button class="btn btn-contact open-contact-modal">
+                                <i class="fas fa-paper-plane"></i>
+                                Kapcsolatfelvétel
+                            </button>
+
+                            <div class="share-btn">
+                                <div class="fb-share-button"
+                                    data-href="{{ $group->url() }}"
+                                    data-layout="button"
+                                    data-size="small">
+                                    <a target="_blank"
+                                        href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode($group->url()) }}&amp;src=sdkpreparse"
+                                        class="fb-xfbml-parse-ignore">Megosztás</a>
+                                </div>
+                            </div>
+
+                            <a class="group-report-btn group-report-btn--end" href="<?= htmlspecialchars($reportRolunkHref, ENT_QUOTES, 'UTF-8') ?>">
+                                <i class="fas fa-flag" aria-hidden="true"></i>
+                                Bejelentés
+                            </a>
                         </div>
                     </div>
 

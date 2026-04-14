@@ -2445,7 +2445,90 @@ ul.age-group-select {
 .group-actions {
     margin-top: 20px;
     display: flex;
+    flex-wrap: wrap;
+    align-items: center;
     gap: 10px;
+}
+
+/* Közösség adatlap: térkép + CTA sor (kapcsolat | megosztás · bejelentés) */
+.group-profile-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+    box-shadow: none !important;
+    border: none !important;
+}
+
+.group-profile-footer__map-toggle {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.group-profile-footer__map .group-map {
+    margin-top: 0.75rem;
+}
+
+.group-profile-footer .group-actions {
+    margin-top: 0;
+    width: 100%;
+    align-items: center;
+    gap: 12px 16px;
+}
+
+.group-profile-footer .group-actions .group-report-btn--end {
+    margin-left: auto;
+    padding: 6px 0;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border-radius: 0;
+    gap: 6px;
+}
+
+.group-report-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 999px;
+    padding: 12px 22px;
+    font-weight: 600;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: #b91c1c !important;
+    text-decoration: none;
+
+    i {
+        color: inherit;
+        font-size: 0.85em;
+    }
+
+    &:hover {
+        color: #991b1b !important;
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+    }
+
+    &:focus-visible {
+        color: #991b1b !important;
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        outline: 2px solid #b91c1c;
+        outline-offset: 2px;
+    }
+
+    &:active {
+        color: #7f1d1d !important;
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+    }
 }
 
 /* ===== JOBB OLDAL ===== */
@@ -3391,6 +3474,13 @@ ul.age-group-select {
     max-width: 52rem;
     margin-left: auto;
     margin-right: auto;
+}
+
+/* Közösség szerkesztés (fiók): teljes szélesség a főoszlopban */
+.group-register-page .inner--account #create-group {
+    max-width: none;
+    margin-left: 0;
+    margin-right: 0;
 }
 
 .group-register__form > .group-register__alert:first-child {

@@ -28,7 +28,7 @@ class UserEventController extends PortalController
             ->get()
             ->all();
 
-        return view('portal.user_event.list', compact('items'));
+        return $this->mintView->render('pages/sajat-esemenyek.php', compact('items'));
     }
 
     public function createForm(): string
@@ -37,7 +37,7 @@ class UserEventController extends PortalController
         $action = route('portal.my_event.store');
         $tags = '';
 
-        return view('portal.user_event.form', compact('event', 'action', 'tags'));
+        return $this->mintView->render('pages/sajat-esemeny-szerkesztes.php', compact('event', 'action', 'tags'));
     }
 
     public function store(Request $request, UserEventFormHandler $handler): never
@@ -85,7 +85,7 @@ class UserEventController extends PortalController
         $tagRows = builder('event_tags')->where('event_id', $event->id)->pluck('tag');
         $tags = implode(', ', array_filter($tagRows));
 
-        return view('portal.user_event.form', compact('event', 'action', 'tags'));
+        return $this->mintView->render('pages/sajat-esemeny-szerkesztes.php', compact('event', 'action', 'tags'));
     }
 
     public function update(Request $request, UserEventFormHandler $handler): never

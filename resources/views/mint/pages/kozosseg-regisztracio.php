@@ -6,8 +6,8 @@
 >
 
     <mint-section name="header">
-        <?php echo view('asset_groups.select2'); ?>
-        <?php echo view('asset_groups.editor'); ?>
+        <mint-include path="legacy::asset_groups/select2.php" />
+        <mint-include path="legacy::asset_groups/editor.php" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.css" />
     </mint-section>
@@ -315,15 +315,15 @@
     </mint-section>
 
     <div id="create-group" class="group-register">
-        <?php echo view('admin.partials.message'); ?>
+        <mint-include path="legacy::admin/partials/message.php" />
 
         <div>
             <form method="post" id="group-form" class="group-register__form" enctype="multipart/form-data">
-                <div class="alert group-register__alert group-register__alert--warning" role="alert">
+                <mod-alert :level="'warning'">
                     <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
                     <span>Fontos számunkra, hogy az oldalon valóban keresztény értékeket közvetítő közösségeket hirdessünk. Mielőtt kitöltenéd a regisztrációs űrlapot, kérjük, hogy mindenképp olvasd el az <a href="@route('portal.page', 'iranyelveink')" target="_blank" rel="noopener noreferrer">irányelveinket</a>.</span>
-                </div>
-                <?php if (!is_loggedin()): ?>
+                </mod-alert>
+                @if(!is_loggedin())
                 <div class="group-register-card">
                     <h2 class="group-register-card__title">Felhasználói adatok</h2>
                     <p class="mb-3">
@@ -362,7 +362,7 @@
                     </div>
                 </div>
                 <mod-modal :title="Belépés" :icon="key" :id="group-register-login-modal" :redirect="{ route('portal.register_group') }" />
-                <?php endif; ?>
+                @endif
                 <div class="group-register-card">
                     <h2 class="group-register-card__title">Általános adatok</h2>
                     <div class="row">
@@ -436,25 +436,19 @@
                         <div class="col-md-4">
                             <div class="mb-3 required">
                                 <label class="form-label" for="age_group">Korosztály <small class="text-muted fw-normal">(legalább egyet adj meg)</small></label>
-                                <?php
-                                echo (new \App\Http\Components\Selectors\AgeGroupSelector($age_group_array))->render();
-                                ?>
+                                <?= (new \App\Http\Components\Selectors\AgeGroupSelector($age_group_array))->render() ?>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="mb-3 required">
                                 <label class="form-label" for="occasion_frequency">Alkalmak gyakorisága</label>
-                                <?php
-                                echo (new \App\Http\Components\Selectors\OccasionFrequencySelector())->render($group->occasion_frequency ?: 'hetente');
-                                ?>
+                                <?= (new \App\Http\Components\Selectors\OccasionFrequencySelector())->render($group->occasion_frequency ?: 'hetente') ?>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label class="form-label" for="on_days">Mely napo(ko)n</label>
-                                <?php
-                                echo (new \App\Http\Components\Selectors\OnDaysSelector($group_days))->render();
-                                ?>
+                                <?= (new \App\Http\Components\Selectors\OnDaysSelector($group_days))->render() ?>
                             </div>
                         </div>
                     </div>
@@ -463,18 +457,14 @@
                             <div class="mb-3">
                                 <label class="form-label" for="join_mode">Csatlakozási lehetőség módja <i class="fa fa-info-circle text-muted"
                                     title="Egyéni megbeszélés alapján: Közösségvezetővel egyeztetve történik&#10;Folyamatos csatlakozási lehetőség: Az év folyamán bármikor jöhetnek új tagok&#10;Időszakos csatlakozás: pl.: Minden félév első hónapja, negyedévente stb"></i></label>
-                                <?php
-                                echo (new \App\Http\Components\Selectors\JoinModeSelector())->render($group->join_mode);
-                                ?>
+                                <?= (new \App\Http\Components\Selectors\JoinModeSelector())->render($group->join_mode) ?>
                             </div>
                         </div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="spiritual_movement_id">Lelkiségi mozgalom</label>
                         <p class="small text-muted mb-2">Ha egy nagyobb lelkiségi mozgalomhoz tartoztok, akkor azt adjátok meg itt, így nagyobb eséllyel találnak meg azok, akik ezen mozgalom közösségeit keresik.</p>
-                        <?php
-                        echo (new \App\Http\Components\Selectors\SpiritualMovementSelector())->render($group->spiritual_movement_id);
-                        ?>
+                        <?= (new \App\Http\Components\Selectors\SpiritualMovementSelector())->render($group->spiritual_movement_id) ?>
                         <mod-honeypot :id="group-data" />
                     </div>
                 </div>
@@ -486,11 +476,11 @@
                     </div>
                     <div class="mb-3">
                         <div class="group-register-tags">
-                            <?php foreach ($tags as $tag): ?>
-                                <label class="group-register-tag" for="tag-<?php echo htmlspecialchars((string) $tag->value, ENT_QUOTES, 'UTF-8'); ?>">
-                                    <input type="checkbox" name="tags[]" id="tag-<?php echo htmlspecialchars((string) $tag->value, ENT_QUOTES, 'UTF-8'); ?>" value="<?php echo htmlspecialchars((string) $tag->value, ENT_QUOTES, 'UTF-8'); ?>"<?php echo in_array($tag->value, $group_tags, true) ? ' checked' : ''; ?>> <?php echo htmlspecialchars($tag->translate(), ENT_QUOTES, 'UTF-8'); ?>
+                            @foreach($tags as $tag)
+                                <label class="group-register-tag" for="tag-{{ $tag->value }}">
+                                    <input type="checkbox" name="tags[]" id="tag-{{ $tag->value }}" value="{{ $tag->value }}"<?= in_array($tag->value, $group_tags, true) ? ' checked' : '' ?>> {{ $tag->translate() }}
                                 </label>
-                            <?php endforeach; ?>
+                            @endforeach
                         </div>
                     </div>
                     <h3 class="group-register-card__subhead mt-4">Bemutatkozás <span class="text-danger">*</span></h3>
@@ -507,13 +497,13 @@
                             <div class="mb-3">
                                 <div class="group-register-upload">
                                     <div class="group-image group-register-photo" role="region" aria-label="Közösség kép előnézet">
-                                        <?php if ($image): ?>
+                                        @if($image)
                                         <img src="{{ $image }}" id="image" width="300" alt="Közösség előnézeti képe">
-                                        <?php else: ?>
+                                        @else
                                         <span class="group-register-photo__placeholder" id="image-placeholder" role="img" aria-label="Még nincs kép">
                                             <i class="fas fa-image group-register-photo__placeholder-icon" aria-hidden="true"></i>
                                         </span>
-                                        <?php endif; ?>
+                                        @endif
                                     </div>
                                     <label for="image-upload" class="btn btn-primary mb-0 group-register-upload__pick">
                                         <i class="fas fa-folder-open" aria-hidden="true"></i> Kép kiválasztása
@@ -529,14 +519,14 @@
                 <div class="group-register-card">
                     <h2 class="group-register-card__title">Igazolás feltöltése</h2>
                     <div class="mb-3">
-                        <div class="alert group-register__alert group-register__alert--info" role="status">
+                        <mod-alert :level="'info'">
                             <i class="fas fa-file-signature" aria-hidden="true"></i>
                             <span>
                                 <p>Nem kötelező most feltölteni; később is megteheted. A közösség jóváhagyásához az intézményvezető által aláírt és lepecsételt igazolás szükséges.</p>
                                 <p>Így biztosítjuk, hogy a portálon valóban aktív, keresztény értékrendű közösségek jelenjenek meg.</p>
                                 <p class="mb-0">Minta: <a href="/storage/uploads/igazolas.pdf" download class="fw-semibold"><i class="fas fa-download" aria-hidden="true"></i> Igazolás minta letöltése</a></p>
                             </span>
-                        </div>
+                        </mod-alert>
                         <div class="group-register-file">
                             <label class="form-label" for="document-upload">Dokumentum</label>
                             <p class="small text-muted mb-2">Elfogadott: <strong>doc, docx</strong>, <strong>pdf</strong> vagy kép.</p>

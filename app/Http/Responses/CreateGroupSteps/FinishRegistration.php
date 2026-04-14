@@ -6,6 +6,7 @@ use App\Enums\Tag;
 use App\QueryBuilders\Institutes;
 use App\QueryBuilders\SpiritualMovements;
 use App\Services\Captcha\Cloudflare\Config;
+use Baueri\Mint\View as MintView;
 use Framework\Http\Request;
 
 class FinishRegistration extends RegisterGroupForm
@@ -34,6 +35,11 @@ class FinishRegistration extends RegisterGroupForm
 
     protected function getView(): string
     {
-        return 'portal.group.create-steps.finish-registration';
+        return 'partials/create-group-finish-preview.php';
+    }
+
+    public function render(): string
+    {
+        return app(MintView::class)->render('partials/create-group-finish-preview.php', $this->getModel());
     }
 }

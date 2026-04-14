@@ -35,13 +35,19 @@ final class MintFactory
         $compiler->registerViewModule('google-login', 'partials/google_login.php');
         $compiler->registerViewModule('cookie-consent', 'partials/cookie_consent.php');
         $compiler->registerViewModule('group-contact-form', 'partials/group-contact-form.php');
+        $compiler->registerViewModule('alert', 'components/alert.php');
 
         $compiler->registerTextDirective(new RouteTextDirective());
         $compiler->registerTextDirective(new LangTextDirective());
         $compiler->registerTextDirective(new ActiveLinkClassTextDirective());
         $compiler->registerTextDirective(new CsrfTextDirective());
         $compiler->registerTextDirective(new LazySrcTextDirective());
+        $compiler->registerTextDirective(new AdminTextDirective());
 
-        return new MintView($viewsPath, new Cache($cachePath), $compiler);
+        $view = new MintView($viewsPath, new Cache($cachePath), $compiler);
+
+        $view->registerNamespace('legacy', VIEWS);
+
+        return $view;
     }
 }

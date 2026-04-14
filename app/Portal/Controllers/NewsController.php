@@ -16,12 +16,12 @@ class NewsController extends PortalController
             ->orderBy('created_at', 'desc')
             ->published()
             ->paginate(12);
-        return view('portal.news.list', compact('news'));
+        return $this->mintView->render('pages/hirek.php', compact('news'));
     }
 
     public function view(Request $request): string
     {
         $entry = Pages::query()->whereSlug($request['slug'])->firstOrFail();
-        return view('portal.news.view', compact('entry'));
+        return $this->mintView->render('pages/hirek-bejegyzes.php', compact('entry'));
     }
 }
