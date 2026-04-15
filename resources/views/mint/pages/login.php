@@ -27,10 +27,10 @@
                                class="form-control form-control-lg"
                                placeholder="••••••••"/>
                     </div>
-                    <?php if (social_provider_enabled()): ?>
+                    @if($social_enabled)
                         <div class="auth-divider">vagy</div>
-                        <?php echo view('portal.partials.google-login'); ?>
-                    <?php endif; ?>
+                        <mod-google-login />
+                    @endif
                     <button type="submit" class="btn btn-orange w-100 rounded-pill py-2 mt-1">Belépés</button>
                     <div class="auth-form-footer">
                         <a href="@route('portal.register')" class="auth-form-footer__primary">Új fiók létrehozása</a>

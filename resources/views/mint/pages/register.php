@@ -35,9 +35,9 @@
                     <input type="password" class="form-control" id="reg-password-again" name="password_again" data-describedby="validate_password_again" required>
                     <div id="validate_password_again" class="validate_message"></div>
                 </div>
-                <?php if (social_provider_enabled()): ?>
-                    <?php echo view('portal.partials.google-login', ['g_context' => 'signup', 'g_text' => 'signup_with']); ?>
-                <?php endif; ?>
+                @if($social_enabled)
+                    <mint-include path="partials/google_login.php" :props="{$g_context, $g_text}" />
+                @endif
             </div>
         </div>
         <div class="row">

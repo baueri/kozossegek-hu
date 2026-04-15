@@ -199,7 +199,7 @@ $(() => {
 
     <div class="row account-layout">
         <aside class="col-lg-3 col-md-4 mb-4 mb-md-0">
-            <?php echo view('portal.partials.user-sidemenu'); ?>
+            <mint-include path="partials/user-sidemenu.php" />
         </aside>
         <div class="col-lg-9 col-md-8 account-main">
             <div class="account-panel">

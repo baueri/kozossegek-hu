@@ -1,1 +1,0 @@
-@include('portal.group.my_group')

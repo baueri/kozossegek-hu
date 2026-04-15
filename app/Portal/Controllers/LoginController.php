@@ -120,6 +120,8 @@ class LoginController extends PortalController
             'name' => $request['name'],
             'email' => $request['email'],
             'cloudflareSiteKey' => config('app.cloudflare.site_key'),
+            'g_context' => 'signup',
+            'g_text' => 'signup_with',
         ];
 
         try {

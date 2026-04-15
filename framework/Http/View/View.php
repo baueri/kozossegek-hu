@@ -120,6 +120,16 @@ class View implements ViewInterface
     }
 
     /**
+     * @template T
+     * @param T $default
+     * @return mixed|T
+     */
+    public static function getVariable(string $key, mixed $default = null): mixed
+    {
+        return static::$envVariables[$key] ?? $default;
+    }
+
+    /**
      * @psalm-template T
      * @psalm-param $component T class-string<T>
      * @param string $component

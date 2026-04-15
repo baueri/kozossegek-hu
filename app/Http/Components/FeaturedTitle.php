@@ -8,6 +8,6 @@ class FeaturedTitle
 {
     public function render(string $title): string
     {
-        return view('portal.partials.featured-title', compact('title'));
+        return view('partials.featured-title', compact('title'));
     }
 }

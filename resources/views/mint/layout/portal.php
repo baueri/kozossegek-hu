@@ -29,6 +29,7 @@
     <div id="fb-root"></div>
 
     <mint-include path="partials/main_menu.php" />
+    <mint-include path="partials/announcements.php" />
 
     {{ $slot }}
 
@@ -118,14 +119,6 @@
     <?php if (env('GOOGLE_LOGIN_ENABLED')): ?>
         <script src="https://accounts.google.com/gsi/client" async defer></script>
     <?php endif; ?>
-
-    <script>
-        const meili_enabled = {
-            {
-                env('MEILI_ENABLED') ? 'true' : 'false'
-            }
-        }
-    </script>
 
     <script src="/js/cookie-consent.js?{{ filemtime(ROOT . 'public/js/cookie-consent.js') }}"></script>
     <script src="/js/scripts.js?{{ filemtime(ROOT . 'public/js/scripts.js') }}"></script>

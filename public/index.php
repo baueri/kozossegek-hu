@@ -59,6 +59,7 @@ try {
                 'cookie_show_fb' => is_prod() && (bool) env('FACEBOOK_APP_ID'),
                 'cookie_fb_app_id' => (string) env('FACEBOOK_APP_ID', ''),
                 'captchaEnabled' => (bool) config('app.captcha_enabled'),
+                'announcements' => View::getVariable('announcements'),
             ]);
         });
 

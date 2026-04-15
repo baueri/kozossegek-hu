@@ -2,6 +2,7 @@
 $request_uri = request()->uri;
 $google_has_width = ! empty($g_width ?? null);
 ?>
+@if($social_enabled)
 <div id="g_id_onload"
      data-client_id="{{ env('GOOGLE_CLIENT_ID') }}"
      data-context="{{ $g_context ?? 'signin' }}"
@@ -22,3 +23,4 @@ $google_has_width = ! empty($g_width ?? null);
      data-logo_alignment="{{ $g_logo_alignment ?? 'center' }}"
      data-locale="hu">
 </div>
+@endif

@@ -123,6 +123,8 @@
         </div>
     </section>
 
+    <mint-include path="partials/testimonials.php" />
+
     <section class="mt-5 py-5 bg-white">
         <div class="container">
             <h2 class="text-center section-title mb-5">Legújabb közösségek</h2>
