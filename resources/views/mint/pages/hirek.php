@@ -26,7 +26,7 @@
         @endforeach
     </div>
     <div class="mt-5">
-        {{ $news->renderSmallPager() }}
+        <mint-include path="partials/simple-pager.php" :props="{$total, $page, $perpage}" />
     </div>
 
 </mint-extend>

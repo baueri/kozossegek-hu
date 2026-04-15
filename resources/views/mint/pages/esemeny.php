@@ -52,9 +52,16 @@
                 <span x:foreach="{ $event->tags as $tag }" class="tag-pill">{{ $tag->tag }}</span>
             </div>
             <h1 class="group-title-modern">{{ $event->name }}</h1>
-            <div class="group-institute">
-                <mod-icon :name="calendar-alt" />
-                {{ $event->getScheduleRangeLabel() }}
+            <div class="event-hero-meta">
+                <span class="event-hero-meta__when">
+                    <mod-icon :name="calendar-alt" />
+                    <span>{{ $event->getCardScheduleLabel() }}</span>
+                </span>
+                <div x:if="{ $event->getHeroLocationLabel() }" class="event-hero-meta__where">
+                    <span class="event-hero-meta__sep" aria-hidden="true">·</span>
+                    <mod-icon :name="map-marker-alt" />
+                    <span>{{ $event->getHeroLocationLabel() }}</span>
+                </div>
             </div>
         </div>
     </section>
@@ -68,18 +75,21 @@
                     <div class="community-image{{ $event->isCancelled() ? ' community-image--cancelled' : '' }}">
                         <img src="{{ $event->getFeaturedImageUrl() }}" alt="{{ $event->name }}">
                         <div x:if="{ $event->isCancelled() }" class="event-card-cancelled-overlay" aria-hidden="true">
-                            <span class="event-card-cancelled-overlay__band"></span>
                             <span class="event-card-cancelled-overlay__text">@lang('event_life_cycle.cancelled')</span>
                         </div>
                     </div>
 
                     <div class="group-highlight-card side shadow">
 
-                        <div class="highlight-item">
+                        <div class="highlight-item highlight-item--schedule">
                             <i class="fas fa-calendar-alt"></i>
                             <div>
                                 <small>Időpont</small>
-                                <strong>{{ $event->getScheduleRangeLabel() }}</strong>
+                                <strong>{{ $event->getCardScheduleLabel() }}</strong>
+                                <a href="@route('event.ics', ['event' => $event->id])" class="event-sidebar-ics-link">
+                                    <i class="fas fa-calendar-plus" aria-hidden="true"></i>
+                                    Hozzáadás naptárhoz
+                                </a>
                             </div>
                         </div>
 

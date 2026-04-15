@@ -8,7 +8,6 @@
             <div class="account-panel">
                 <?php echo view('admin.partials.message'); ?>
                 <div class="account-page-head">
-                    <p class="account-page-head__lead mb-0">Szerkeszd a saját eseményeidet; jóváhagyás után jelennek meg a nyilvános listán.</p>
                     <div class="account-toolbar">
                         <a href="@route('portal.my_event.create')" class="btn btn-success btn-sm"><i class="fa fa-plus"></i> Új esemény</a>
                     </div>

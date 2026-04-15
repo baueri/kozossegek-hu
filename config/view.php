@@ -36,7 +36,6 @@ return [
 
             return '<?php $__env->getSection()->add("footer", function($args) { extract($args); ?> ';
         },
-//        'featuredTitle' => FeaturedTitle::class,
         'spiritual_movement_selector' => SpiritualMovementSelector::class,
         'join_mode_selector' => JoinModeSelector::class,
         'user_role_selector' => UserRoleSelector::class,

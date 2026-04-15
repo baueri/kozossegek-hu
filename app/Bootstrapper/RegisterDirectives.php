@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Bootstrapper;
 
-use App\Directives\FeaturedTitleDirective;
 use App\Directives\TitleDirective;
 use Framework\Bootstrapper;
 use Framework\Http\View\Directives\Directive;
@@ -16,7 +15,6 @@ class RegisterDirectives implements Bootstrapper
     public function boot(): void
     {
         ViewParser::registerDirective(new TitleDirective());
-        ViewParser::registerDirective(new FeaturedTitleDirective());
         foreach (config('view.directives') as $name => $directive) {
             $callback = $directive;
 

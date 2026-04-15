@@ -39,7 +39,6 @@
         <div class="col-lg-9 col-md-8 account-main">
             <div class="account-panel">
                 <?php echo view('admin.partials.message'); ?>
-                <p class="account-page-head__lead mb-4">Személyes adatok és jelszó. A közösségi bejelentkezések itt kezelhetők.</p>
                 <form method="post" action="@route('portal.profile.update')" class="mb-0">
                     @csrf
                     <div class="row">

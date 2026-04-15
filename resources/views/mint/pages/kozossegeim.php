@@ -8,7 +8,6 @@
             <div class="account-panel">
                 <?php echo view('admin.partials.message'); ?>
                 <div class="account-page-head">
-                    <p class="account-page-head__lead mb-0">Szerkeszd a közösségeid adatlapjait, vagy hozz létre újat.</p>
                     <div class="account-toolbar">
                         <a href="@route('portal.register_group')" class="btn btn-success btn-sm"><i class="fa fa-plus"></i> Új közösség</a>
                     </div>

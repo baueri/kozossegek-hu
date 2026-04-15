@@ -1,4 +1,4 @@
-<div class="community-card h-100">
+<div class="community-card community-card--group h-100">
 
     <a href="{{ $group['url'] }}" class="community-image">
 
@@ -17,8 +17,11 @@
     </a>
 
     <div class="community-body">
+        <h3 class="community-title">
+            {{ $group['name'] }}
+        </h3>
+
         <div class="community-location">
-            <i class="fas fa-map-marker-alt"></i>
             {{ $group['institute_name'] ?? ($group['city'] . ($group['district'] ? ', ' . $group['district'] : '')) }}
             <div x:if="{ !empty($group['institute_name']) }" class="community-city">
                 {{ $group['city'] . ($group['district'] ? ', ' . $group['district'] : '') }}
@@ -26,13 +29,9 @@
         </div>
 
         <div x:if="{ $show_age }" class="community-age">
-            <i class="fas fa-user"></i>
+            <span class="community-age__label">korosztály:</span>
             {{ $group['age_group_combined'] }}
         </div>
-
-        <h3 class="community-title">
-            {{ $group['name'] }}
-        </h3>
 
         <a href="{{ $group['url'] }}" class="community-link">
             Adatlap megtekintése

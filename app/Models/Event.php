@@ -86,27 +86,47 @@ class Event extends Entity
     {
         /** @var Carbon $start */
         $start = $this->starts_at;
-        $end = $this->ends_at;
+        /** @var Carbon|null $end */
+        $end = $this->ends_at instanceof Carbon ? $this->ends_at : null;
 
-        if ($this->all_day) {
-            $startLabel = $start->format('Y. m. d.');
-            if (!$end instanceof Carbon || $start->isSameDay($end)) {
-                return $startLabel;
-            }
+        return EventScheduleFormatter::formatScheduleRangeLabel($start, $end, $this->all_day);
+    }
 
-            return $startLabel . ' - ' . $end->format('Y. m. d.');
+    public function getCardScheduleLabel(): string
+    {
+        /** @var Carbon $start */
+        $start = $this->starts_at;
+        /** @var Carbon|null $end */
+        $end = $this->ends_at instanceof Carbon ? $this->ends_at : null;
+
+        return EventScheduleFormatter::formatCardScheduleRangeLabel($start, $end, $this->all_day);
+    }
+
+    /**
+     * Short venue or address line for the event page hero (chip next to the date).
+     */
+    public function getHeroLocationLabel(): ?string
+    {
+        $name = trim((string) ($this->location_name ?? ''));
+        if ($name !== '') {
+            return self::truncateHeroLabel($name);
         }
 
-        $startLabel = $start->format('Y. m. d. H:i');
-        if (!$end instanceof Carbon) {
-            return $startLabel;
+        $addr = trim((string) ($this->address ?? ''));
+        if ($addr !== '') {
+            return self::truncateHeroLabel($addr);
         }
 
-        if ($start->isSameDay($end)) {
-            return $startLabel . ' - ' . $end->format('H:i');
+        return null;
+    }
+
+    private static function truncateHeroLabel(string $value): string
+    {
+        if (mb_strlen($value) <= 52) {
+            return $value;
         }
 
-        return $startLabel . ' - ' . $end->format('Y. m. d. H:i');
+        return rtrim(mb_substr($value, 0, 51)) . '…';
     }
 
     public function toSearchResult(): array
@@ -118,6 +138,8 @@ class Event extends Entity
                 'url' => $this->getUrl(),
                 'featured_image' => $this->getFeaturedImageUrl(),
                 'tags' => $tags,
+                'schedule_range_label' => $this->getScheduleRangeLabel(),
+                'schedule_card_label' => $this->getCardScheduleLabel(),
             ],
             $this->only([
                 'id',
@@ -140,102 +162,7 @@ class Event extends Entity
      */
     public function getSchemaOrgEvent(): array
     {
-        /** @var Carbon $start */
-        $start = $this->starts_at;
-        $end = $this->ends_at;
-
-        if ($this->all_day) {
-            $startDate = $start->format('Y-m-d');
-            if ($end instanceof Carbon && !$start->isSameDay($end)) {
-                $endDate = $end->copy()->addDay()->format('Y-m-d');
-            } else {
-                $endDate = $start->copy()->addDay()->format('Y-m-d');
-            }
-        } else {
-            $startDate = $start->toIso8601String();
-            $endDate = $end instanceof Carbon
-                ? $end->toIso8601String()
-                : $start->copy()->addHour()->toIso8601String();
-        }
-
-        $data = [
-            '@context' => 'https://schema.org',
-            '@type' => 'Event',
-            'name' => $this->name,
-            'startDate' => $startDate,
-            'endDate' => $endDate,
-            'eventStatus' => $this->isCancelled()
-                ? 'https://schema.org/EventCancelled'
-                : 'https://schema.org/EventScheduled',
-            'eventAttendanceMode' => 'https://schema.org/OfflineEventAttendanceMode',
-            'url' => $this->getUrl(),
-        ];
-
-        $description = trim(strip_tags((string) $this->description));
-        if ($description !== '') {
-            $data['description'] = mb_strlen($description) > 5000
-                ? mb_substr($description, 0, 5000)
-                : $description;
-        }
-
-        $img = trim((string) $this->getFeaturedImageUrl());
-        if ($img !== '') {
-            $data['image'] = str_starts_with($img, 'http')
-                ? $img
-                : rtrim(get_site_url(), '/') . '/' . ltrim($img, '/');
-        }
-
-        $location = $this->schemaOrgLocation();
-        if ($location !== null) {
-            $data['location'] = $location;
-        }
-
-        $organizer = trim((string) $this->organizer);
-        if ($organizer !== '') {
-            $data['organizer'] = [
-                '@type' => 'Organization',
-                'name' => $organizer,
-            ];
-        }
-
-        return $data;
-    }
-
-    /**
-     * @return array<string, mixed>|null
-     */
-    private function schemaOrgLocation(): ?array
-    {
-        $name = trim((string) $this->location_name);
-        $addressLine = trim((string) $this->address);
-
-        if ($name === '' && $addressLine === '') {
-            return null;
-        }
-
-        $place = ['@type' => 'Place'];
-
-        if ($name !== '') {
-            $place['name'] = $name;
-        }
-
-        if ($addressLine !== '') {
-            $place['address'] = [
-                '@type' => 'PostalAddress',
-                'streetAddress' => $addressLine,
-            ];
-        }
-
-        $lat = $this->lat;
-        $lng = $this->lng;
-        if ($lat !== null && $lat !== '' && $lng !== null && $lng !== '') {
-            $place['geo'] = [
-                '@type' => 'GeoCoordinates',
-                'latitude' => (float) $lat,
-                'longitude' => (float) $lng,
-            ];
-        }
-
-        return $place;
+        return EventSchemaOrg::toArray($this);
     }
 }
+

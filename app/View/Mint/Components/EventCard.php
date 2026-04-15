@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\View\Mint\Components;
 
+use App\Models\EventScheduleFormatter;
 use Baueri\Mint\Context;
 use Baueri\Mint\Module\Module;
+use Carbon\Carbon;
 
 class EventCard extends Module
 {
@@ -23,21 +25,24 @@ class EventCard extends Module
         $all_day = (bool) ($event['all_day'] ?? false);
         $startsAt = $event['starts_at'] ?? null;
         $endsAt = $event['ends_at'] ?? null;
-        $show_all_day_end = $all_day
-            && is_object($endsAt)
-            && is_object($startsAt)
-            && $endsAt->format('Y-m-d') !== $startsAt->format('Y-m-d');
-        $show_time_end = ! $all_day && is_object($endsAt);
         $show_tags = $tags_preview !== [];
+
+        $schedule_label = $event['schedule_card_label'] ?? null;
+        if ($schedule_label === null && $startsAt instanceof Carbon) {
+            $schedule_label = EventScheduleFormatter::formatCardScheduleRangeLabel(
+                $startsAt,
+                $endsAt instanceof Carbon ? $endsAt : null,
+                $all_day
+            );
+        }
+        $schedule_label = (string) ($schedule_label ?? '');
 
         return $this->view($context, 'components/event-card.php', compact(
             'event',
             'lifecycle_cancelled',
             'tags_preview',
             'show_tags',
-            'all_day',
-            'show_all_day_end',
-            'show_time_end',
+            'schedule_label',
         ));
     }
 }

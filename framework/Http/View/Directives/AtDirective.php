@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Framework\Http\View\Directives;
 
-use App\Directives\FeaturedTitleDirective;
-
 abstract class AtDirective implements Directive
 {
     abstract public function getName(): string;

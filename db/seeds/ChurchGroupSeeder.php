@@ -52,7 +52,7 @@ class ChurchGroupSeeder extends AbstractSeed
         $ageGroups = AgeGroup::collect();
         $tags = Tag::collect();
         $days = WeekDay::collect();
-        for ($i = 0; $i < 50; $i++) {
+        foreach ($aiFaker as $aiItem) {
 
             db()->beginTransaction();
             $ag = $ageGroups->shuffle()->take(rand(1, 3))->implode(',');

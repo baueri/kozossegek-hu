@@ -190,7 +190,7 @@
                         <p>{{ $group->description }}</p>
                     </div>
 
-                    <div class="group-profile-footer group-card mt-3">
+                    <div class="group-profile-footer group-card mt-3 shadow">
                         <div x:if="{ $group->lat && $group->lon }" class="group-profile-footer__map">
                             <div class="group-profile-footer__map-toggle">
                                 <a href="#" class="btn btn-outline-orange toggle-map">

@@ -1,4 +1,4 @@
-<div class="community-card h-100{{ $lifecycle_cancelled ? ' community-card--event-cancelled' : '' }}">
+<div class="community-card community-card--event h-100{{ $lifecycle_cancelled ? ' community-card--event-cancelled' : '' }}">
 
     <a href="{{ $event['url'] }}" class="community-image{{ $lifecycle_cancelled ? ' community-image--cancelled' : '' }}">
 
@@ -9,7 +9,6 @@
             class="lazy">
 
         <div x:if="{ $lifecycle_cancelled }" class="event-card-cancelled-overlay" aria-hidden="true">
-            <span class="event-card-cancelled-overlay__band"></span>
             <span class="event-card-cancelled-overlay__text">@lang('event_life_cycle.cancelled')</span>
         </div>
 
@@ -22,32 +21,22 @@
     </a>
     <div class="community-body">
 
-        <div class="community-location">
-            <i class="fas fa-map-marker-alt"></i>
-            {{ $event['location_name'] ?? $event['address'] }}
-            <div x:if="{ !empty($event['location_name']) && !empty($event['address']) }" class="community-city">
-                {{ $event['address'] }}
-            </div>
-        </div>
-
-        <div class="community-age">
-            <i class="fas fa-calendar-alt"></i>
-            @if($all_day)
-                {{ $event['starts_at']->format('Y/m/d') }}
-                @if($show_all_day_end)
-                    - {{ $event['ends_at']->format('Y/m/d') }}
-                @endif
-            @else
-                {{ $event['starts_at']->format('Y/m/d H:i') }}
-                @if($show_time_end)
-                    - {{ $event['ends_at']->format('H:i') }}
-                @endif
-            @endif
+        <div class="event-card-datetime">
+            <span class="event-card-datetime__text">
+                {{ $schedule_label }}
+            </span>
         </div>
 
         <h3 class="community-title">
             {{ $event['name'] }}
         </h3>
+
+        <div class="community-location">
+            {{ $event['location_name'] ?? $event['address'] }}
+            <div x:if="{ !empty($event['location_name']) && !empty($event['address']) }" class="community-city">
+                {{ $event['address'] }}
+            </div>
+        </div>
 
         <a href="{{ $event['url'] }}" class="community-link">
             Részletek

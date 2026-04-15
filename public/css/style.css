@@ -469,28 +469,20 @@ img {
         pointer-events: none;
     }
 
-    .event-card-cancelled-overlay__band {
-        position: absolute;
-        left: -18%;
-        width: 136%;
-        height: 3.35rem;
-        top: 50%;
-        margin-top: -1.675rem;
-        background: rgba(185, 28, 28, 0.92);
-        transform: rotate(-14deg);
-        box-shadow: 0 2px 14px rgba(0, 0, 0, 0.2);
-    }
-
     .event-card-cancelled-overlay__text {
-        position: relative;
-        z-index: 1;
-        color: #fff;
-        font-weight: 800;
-        font-size: 1.15rem;
-        line-height: 1.35;
-        letter-spacing: 0.06em;
-        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
-        padding: 0.45rem 1rem;
+        display: inline-block;
+        background: rgba(51, 65, 85, 0.72);
+        color: #f1f5f9;
+        font-weight: 600;
+        font-size: 0.9rem;
+        line-height: 1.25;
+        letter-spacing: 0.03em;
+        padding: 0.45rem 0.85rem;
+        border-radius: 999px;
+        box-shadow:
+            0 2px 4px rgba(0, 0, 0, 0.18),
+            0 8px 24px rgba(0, 0, 0, 0.2);
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
     }
 
     .community-body {
@@ -498,6 +490,53 @@ img {
         display: flex;
         flex-direction: column;
         flex-grow: 1;
+    }
+
+    .event-card-datetime {
+        margin-bottom: 0.35rem;
+    }
+
+    .event-card-datetime__text {
+        font-size: 0.78rem;
+        font-weight: 500;
+        color: #64748b;
+        line-height: 1.4;
+        font-variant-numeric: tabular-nums;
+        letter-spacing: 0.02em;
+    }
+
+    &.community-card--event .community-title {
+        margin-bottom: 0.45rem;
+    }
+
+    &.community-card--event .community-link {
+        margin-top: auto;
+    }
+
+    &.community-card--group .community-title {
+        margin-bottom: 0.45rem;
+    }
+
+    &.community-card--group .community-age {
+        margin-top: auto;
+        margin-bottom: 0;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 0.35rem 0.5rem;
+    }
+
+    &.community-card--group .community-age__label {
+        font-weight: 600;
+        color: #64748b;
+    }
+
+    &.community-card--group .community-link {
+        margin-top: 0.75rem;
+    }
+
+    &.community-card--group:not(:has(.community-age)) .community-link {
+        margin-top: auto;
     }
 
     .community-location,
@@ -521,7 +560,7 @@ img {
         padding: 1px 7px;
         border-radius: 999px;
         margin-top: 3px;
-        margin-left: 1.3em;
+        margin-left: 0;
     }
 
     .community-title {
@@ -2415,6 +2454,37 @@ ul.age-group-select {
     margin-bottom: 10px;
 }
 
+/* Esemény oldal hero: időpont + helyszín (kártyákkal egyező dátumsor) */
+.page-header .event-hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.35rem 0.55rem;
+    color: rgba(255, 255, 255, 0.88);
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
+
+.page-header .event-hero-meta__when,
+.page-header .event-hero-meta__where {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-width: 0;
+}
+
+.page-header .event-hero-meta__sep {
+    margin-right: 0.1rem;
+    opacity: 0.8;
+}
+
+.page-header .event-hero-meta__where span:last-child {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: min(52ch, 100vw - 8rem);
+}
+
 /* ===== TAG-ek ===== */
 .group-tags-modern {
     display: flex;
@@ -2456,7 +2526,6 @@ ul.age-group-select {
     flex-direction: column;
     align-items: stretch;
     gap: 1rem;
-    box-shadow: none !important;
     border: none !important;
 }
 
@@ -2570,28 +2639,20 @@ ul.age-group-select {
             pointer-events: none;
         }
 
-        .event-card-cancelled-overlay__band {
-            position: absolute;
-            left: -18%;
-            width: 136%;
-            height: 3.35rem;
-            top: 50%;
-            margin-top: -1.675rem;
-            background: rgba(185, 28, 28, 0.92);
-            transform: rotate(-14deg);
-            box-shadow: 0 2px 14px rgba(0, 0, 0, 0.2);
-        }
-
         .event-card-cancelled-overlay__text {
-            position: relative;
-            z-index: 1;
-            color: #fff;
-            font-weight: 800;
-            font-size: 1.15rem;
-            line-height: 1.35;
-            letter-spacing: 0.06em;
-            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
-            padding: 0.45rem 1rem;
+            display: inline-block;
+            background: rgba(51, 65, 85, 0.72);
+            color: #f1f5f9;
+            font-weight: 600;
+            font-size: 0.9rem;
+            line-height: 1.25;
+            letter-spacing: 0.03em;
+            padding: 0.45rem 0.85rem;
+            border-radius: 999px;
+            box-shadow:
+                0 2px 4px rgba(0, 0, 0, 0.18),
+                0 8px 24px rgba(0, 0, 0, 0.2);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
         }
     }
 }
@@ -2628,6 +2689,30 @@ ul.age-group-select {
         strong {
             font-size: 0.95rem;
             color: #0f172a;
+        }
+
+        &.highlight-item--schedule strong {
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+
+        .event-sidebar-ics-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            margin-top: 0.15rem;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--orange);
+            text-decoration: none;
+        }
+
+        .event-sidebar-ics-link:hover {
+            text-decoration: underline;
+        }
+
+        .event-sidebar-ics-link i {
+            font-size: 0.85rem;
         }
     }
 }

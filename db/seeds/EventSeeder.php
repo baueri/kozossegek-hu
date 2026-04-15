@@ -44,11 +44,10 @@ class EventSeeder extends AbstractSeed
                     'May use html: unordered lists, paragraphs, basic font styling.',
                     'may contain randomly: target audience, scheduled programs (with or without starting time), link to facebook event page, emojis, price'
                 ],
-                'starts_at' => ['format: datetime (Y-m-d H:i:s)', 'after ' . now()->format('Y-m-d')],
-                'ends_at' => ['format: datetime (Y-m-d H:i:s)'],
+                'starts_at' => ['format: datetime (Y-m-d H:i:s)', 'after ' . now()->format('Y-m-d'), 'some events may start in next year'],
+                'ends_at' => ['format: datetime (Y-m-d H:i:s)', 'end date should be close to start date'],
             ])
-            ->batch(10)
-            ->count(30)
+            ->count(4)
             ->cursor();
 
         $user = Users::query()->first()->id;

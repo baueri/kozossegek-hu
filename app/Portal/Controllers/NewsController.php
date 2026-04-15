@@ -16,7 +16,12 @@ class NewsController extends PortalController
             ->orderBy('created_at', 'desc')
             ->published()
             ->paginate(12);
-        return $this->mintView->render('pages/hirek.php', compact('news'));
+
+        $total = $news->total();
+        $page = $news->page();
+        $perpage = $news->perpage();
+
+        return $this->mintView->render('pages/hirek.php', compact('news', 'total', 'page', 'perpage'));
     }
 
     public function view(Request $request): string

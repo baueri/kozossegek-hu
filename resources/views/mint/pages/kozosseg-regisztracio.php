@@ -319,7 +319,7 @@
 
         <div>
             <form method="post" id="group-form" class="group-register__form" enctype="multipart/form-data">
-                <mod-alert :level="'warning'">
+                <mod-alert :level="warning">
                     <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
                     <span>Fontos számunkra, hogy az oldalon valóban keresztény értékeket közvetítő közösségeket hirdessünk. Mielőtt kitöltenéd a regisztrációs űrlapot, kérjük, hogy mindenképp olvasd el az <a href="@route('portal.page', 'iranyelveink')" target="_blank" rel="noopener noreferrer">irányelveinket</a>.</span>
                 </mod-alert>
