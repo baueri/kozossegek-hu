@@ -35,6 +35,14 @@
     "event_life_cycle.toggle_activate": "Megtartva",
     "event_life_cycle.toggle_cancel": "Elmarad",
 
+    "event.image.min_dimensions": "A képnek legalább 500×500 pixelnek kell lennie.",
+    "event.image.invalid_image": "A feltöltött fájl nem érvényes kép.",
+    "event.image.process_failed": "A kép feldolgozása sikertelen. Próbálj egy másik fájlt, vagy kérj segítséget az üzemeltetőtől.",
+    "event.image.too_large_after_compress": "A kép tömörítve is túl nagy. Próbálj egy egyszerűbb képet, vagy kisebb felbontásban.",
+    "event.image.imagemagick_missing": "A szerveren nincs elérhető ImageMagick a képfeldolgozáshoz.",
+    "event.image.open_large": "Kép megtekintése nagyban",
+    "event.image.form_hint": "Minimum 500×500 pixel (JPG vagy PNG).",
+
     "denomination.katolikus": "katolikus",
 
     "week_day.he": "hétfő",
