@@ -41,7 +41,7 @@ abstract class Entity
 
     protected static ?string $builder = null;
 
-    public function __construct(?array $attributes = [])
+    public function __construct(array $attributes = [])
     {
         $this->originalAttributes = Arr::wrap($attributes);
 

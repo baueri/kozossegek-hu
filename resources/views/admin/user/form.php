@@ -23,10 +23,10 @@
                 <input type="tel" name="phone_number" id="phone_number" value="{{ $user->phone_number }}" class="form-control">
             </div>
             <div class="form-group">
-                <label>Felhasználói jogkör</label>
-                <select name="user_role" class="form-control">
+                <label for="user_role">Felhasználói jogkör</label>
+                <select name="user_role" class="form-control" id="user_role">
                     @foreach($groups as $group => $group_text)
-                        <option value="{{ $group }}" {{ $group === $user->user_role ? 'selected' : '' }}>{{ $group_text }}</option>
+                        <option value="{{ $group }}" {{ $group === $user->user_role->name ? 'selected' : '' }}>{{ $group_text }}</option>
                     @endforeach
                 </select>
             </div>
