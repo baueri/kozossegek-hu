@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "afd359438baa334f502b97d8d2920519",
+    "content-hash": "40854aa1bc42357eeaf09739c8795a7f",
     "packages": [
         {
             "name": "baueri/mint-template",
@@ -6257,7 +6257,8 @@
     "platform": {
         "ext-pdo": "*",
         "ext-simplexml": "*",
-        "ext-fileinfo": "*"
+        "ext-fileinfo": "*",
+        "ext-imagick": "*"
     },
     "platform-dev": [],
     "platform-overrides": {
