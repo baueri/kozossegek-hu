@@ -361,7 +361,6 @@
                         </div>
                     </div>
                 </div>
-                <mod-modal :title="Belépés" :icon="key" :id="group-register-login-modal" :redirect="{ route('portal.register_group') }" />
                 @endif
                 <div class="group-register-card">
                     <h2 class="group-register-card__title">Általános adatok</h2>
@@ -551,5 +550,5 @@
             </form>
         </div>
     </div>
-
+    <mod-modal :title="Belépés" :icon="key" :id="group-register-login-modal" :redirect="{ route('portal.register_group') }" />
 </mint-extend>
