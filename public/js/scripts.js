@@ -4,6 +4,31 @@ $(() => {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
+
+    const featuredImageModal = document.getElementById("eventFeaturedImageModal");
+    if (featuredImageModal && typeof bootstrap !== "undefined") {
+        featuredImageModal.addEventListener("show.bs.modal", (event) => {
+            const btn = event.relatedTarget;
+            if (!btn || !btn.classList.contains("event-card__image-open")) {
+                return;
+            }
+            const src = btn.getAttribute("data-img-src");
+            const alt = btn.getAttribute("data-img-alt") || "";
+            const img = featuredImageModal.querySelector(".event-featured-image-modal__img");
+            if (img && src) {
+                img.src = src;
+                img.alt = alt;
+            }
+        });
+        featuredImageModal.addEventListener("hidden.bs.modal", () => {
+            const img = featuredImageModal.querySelector(".event-featured-image-modal__img");
+            if (img) {
+                img.removeAttribute("src");
+                img.alt = "";
+            }
+        });
+    }
+
     $(".img-big").on("load", function () {
         $(this).css("opacity", "1");
     });

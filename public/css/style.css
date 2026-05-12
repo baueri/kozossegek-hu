@@ -26,6 +26,13 @@ img {
     max-width: 1320px;
 }
 
+/* Bootstrap 5 .container is 1320px at xxl; cap layout width at 1140px */
+@media (min-width: 1400px) {
+    .container {
+        max-width: 1140px;
+    }
+}
+
 /* Profil / Közösségeim / Eseményeim (and related editors): full viewport width */
 .container-fluid.inner--account {
     max-width: none;
@@ -417,6 +424,20 @@ img {
         display: block;
         overflow: hidden;
         border-radius: 1.5rem 1.5rem 0 0;
+
+        .event-card__image-open {
+            display: block;
+            width: 100%;
+            padding: 0;
+            margin: 0;
+            border: none;
+            background: none;
+            cursor: zoom-in;
+            line-height: 0;
+            text-align: inherit;
+            font: inherit;
+            color: inherit;
+        }
 
         img {
             width: 100%;
@@ -2396,12 +2417,35 @@ ul.age-group-select {
         background-position: top 0 center;
     }
 
+    /* Home hero: less empty space above/below centered content */
+    .hero {
+        min-height: 400px;
+    }
+
+    #main-finder .hero-title.mb-3 {
+        margin-bottom: 0.75rem !important;
+    }
+
+    #main-finder .hero-subtitle.mb-4 {
+        margin-bottom: 1rem !important;
+    }
+
     #main-finder img.logo-home {
         max-width: 135px;
     }
 
     #main-finder h1 {
         font-size: 1.4rem;
+    }
+}
+
+@media (max-width: 575px) {
+    .hero {
+        min-height: 340px;
+    }
+
+    #main-finder .hero-subtitle.mb-4 {
+        margin-bottom: 0.75rem !important;
     }
 }
 
@@ -2618,6 +2662,20 @@ ul.age-group-select {
         display: block;
         overflow: hidden;
         border-radius: 1.5rem;
+
+        .event-card__image-open {
+            display: block;
+            width: 100%;
+            padding: 0;
+            margin: 0;
+            border: none;
+            background: none;
+            cursor: zoom-in;
+            line-height: 0;
+            text-align: inherit;
+            font: inherit;
+            color: inherit;
+        }
 
         img {
             width: 100%;
