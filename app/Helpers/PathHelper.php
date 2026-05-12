@@ -53,4 +53,24 @@ class PathHelper
             'url' => '/storage/event/' . $a . '/' . $b . '/' . $file,
         ];
     }
+
+    /**
+     * Larger poster image next to the thumbnail ({hash}.jpg).
+     *
+     * @param  string  $hash16  First 16 hex chars (same as thumbnail)
+     * @return array{fs: string, url: string}
+     */
+    public static function eventFeaturedImagePosterLocation(string $hash16): array
+    {
+        $a = substr($hash16, 0, 2);
+        $b = substr($hash16, 2, 2);
+        $file = $hash16 . '_poster.jpg';
+        $fs = env('STORAGE_PATH') . 'public' . DS . 'event' . DS . $a . DS . $b . DS . $file;
+
+        return [
+            'fs' => $fs,
+            'url' => '/storage/event/' . $a . '/' . $b . '/' . $file,
+        ];
+    }
 }
+
