@@ -1,7 +1,5 @@
 @section('header')
     @include('asset_groups.editor')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.css"/>
 @endsection
 
 @extends('admin')
@@ -64,6 +62,7 @@
                 <div class="col-md-3">
                     <div class="form-group">
                         <label>Kiemelt kép</label>
+                        <p class="help-block" style="margin-top: 0;">@lang('event.image.form_hint')</p>
                         <div class="event-featured-wrap">
                             <img src="{{ $event->featured_image ? ($event->getFeaturedImageUrl() ?: $event->featured_image) : '/images/placeholder_rect.webp' }}?{{ time() }}" id="event-featured-image" width="300" alt="">
                         </div>
@@ -72,11 +71,8 @@
                             <input type="file"
                                 accept="image/*"
                                 class="event-featured-upload-input"
-                                onchange="loadFile(event, this);"
-                                data-target="event-temp-image"
                                 id="event-image-upload">
                         </label>
-                        <div style="display: none"><img id="event-temp-image" alt=""></div>
                         <input type="hidden" name="featured_image_data" value="">
                     </div>
                 </div>
@@ -171,6 +167,11 @@
     position: relative;
     overflow: hidden;
     cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    max-width: 100%;
 }
 .event-featured-upload-input {
     position: absolute;
@@ -205,7 +206,30 @@
 <script>
 $(() => {
     var geoSearchUrl = '@route('admin.event.geocode_search')';
-    var upload = null;
+
+    function eventFeaturedImageFromFile(input) {
+        var file = input.files && input.files[0];
+        var $form = $(input).closest('form');
+        var $hidden = $form.find('[name=featured_image_data]');
+        if (!file) {
+            $hidden.val('');
+            return;
+        }
+        if (!/^image\//.test(file.type)) {
+            $hidden.val('');
+            return;
+        }
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $hidden.val(e.target.result);
+            $('#event-featured-image').attr('src', e.target.result);
+        };
+        reader.readAsDataURL(file);
+    }
+
+    $('#event-image-upload').on('change', function () {
+        eventFeaturedImageFromFile(this);
+    });
 
     $('#event-osm-search').on('click', function () {
         var q = $('#event-osm-q').val().trim();
@@ -252,44 +276,11 @@ $(() => {
         }
     });
 
-    function initCroppie() {
-        if (upload) {
-            upload.croppie('destroy');
-            upload = null;
+    $("form#event-form").on("submit", function () {
+        var $desc = $("[name=description]");
+        if ($desc.length && $desc.next(".note-editor").length) {
+            $desc.val($desc.summernote("code"));
         }
-        upload = $("#event-featured-image").croppie({
-            enableExif: true,
-            mouseWheelZoom: false,
-            viewport: {
-                width: '250',
-                height: '250',
-                type: 'rectangle'
-            },
-            boundary: {
-                width: '300',
-                height: '300'
-            }
-        });
-    }
-
-    $("#event-temp-image").on("load", function () {
-        var newImg = $($(this).closest("div").html());
-        $(".event-featured-wrap").html(newImg);
-        newImg.attr("id", "event-featured-image").show();
-        initCroppie();
-    });
-
-    $("form#event-form").on("submit", function (e) {
-        if (!upload) {
-            return;
-        }
-        e.preventDefault();
-        var form = this;
-        upload.croppie("result", {type: "base64", format: "jpeg", size: {width: 510, height: 510}}).then(function (base64) {
-            $("[name=featured_image_data]").val(base64);
-            upload = null;
-            form.submit();
-        });
     });
 
     initSummernote('[name=description]');

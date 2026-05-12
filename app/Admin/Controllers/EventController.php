@@ -57,8 +57,9 @@ class EventController extends AdminController
             $data['slug'] = $this->makeUniqueSlug($data['name']);
         }
 
-        if ($path = $handler->persistFeaturedImage((string) $this->request->get('featured_image_data', ''))) {
-            $data['featured_image'] = $path;
+        if ($paths = $handler->persistFeaturedImage((string) $this->request->get('featured_image_data', ''))) {
+            $data['featured_image'] = $paths['thumb'];
+            $data['featured_image_poster'] = $paths['poster'];
         }
 
         $tags = $this->normalizeTags((string) ($this->request->get('tags') ?? ''));
@@ -95,8 +96,12 @@ class EventController extends AdminController
             $data['slug'] = $this->makeUniqueSlug($data['name'], (int) $event->id);
         }
 
-        if ($path = $handler->persistFeaturedImage((string) $this->request->get('featured_image_data', ''))) {
-            $data['featured_image'] = $path;
+        if ($paths = $handler->persistFeaturedImage((string) $this->request->get('featured_image_data', ''))) {
+            $data['featured_image'] = $paths['thumb'];
+            $data['featured_image_poster'] = $paths['poster'];
+        } else {
+            $data['featured_image'] = $event->featured_image;
+            $data['featured_image_poster'] = $event->featured_image_poster;
         }
 
         $tags = $this->normalizeTags((string) ($this->request->get('tags') ?? ''));
