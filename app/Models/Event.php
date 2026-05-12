@@ -29,6 +29,7 @@ use Framework\Support\Collection;
  * @property string $lat
  * @property string $lng
  * @property string $featured_image
+ * @property null|string $featured_image_poster
  * @property null|string $updated_at
  * @property Collection $tags
  */
@@ -76,7 +77,28 @@ class Event extends Entity
 
     public function getFeaturedImageUrl(): string
     {
-        return preg_replace('/^\/app/', '', $this->featured_image);
+        return preg_replace('/^\/app/', '', (string) $this->featured_image);
+    }
+
+    /**
+     * Larger image for modal / OG / JSON-LD when present.
+     */
+    public function getFeaturedImagePosterUrl(): ?string
+    {
+        $p = $this->featured_image_poster ?? null;
+        if ($p === null || $p === '') {
+            return null;
+        }
+
+        return preg_replace('/^\/app/', '', (string) $p);
+    }
+
+    /**
+     * Best image URL for social / schema (poster preferred).
+     */
+    public function getFeaturedImageHeroUrl(): string
+    {
+        return $this->getFeaturedImagePosterUrl() ?? $this->getFeaturedImageUrl();
     }
 
     /**
@@ -137,6 +159,7 @@ class Event extends Entity
             [
                 'url' => $this->getUrl(),
                 'featured_image' => $this->getFeaturedImageUrl(),
+                'featured_image_poster' => $this->getFeaturedImagePosterUrl(),
                 'tags' => $tags,
                 'schedule_range_label' => $this->getScheduleRangeLabel(),
                 'schedule_card_label' => $this->getCardScheduleLabel(),

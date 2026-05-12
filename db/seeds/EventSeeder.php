@@ -53,14 +53,16 @@ class EventSeeder extends AbstractSeed
         $user = Users::query()->first()->id;
 
         foreach ($cursor as $aievent) {
-            $base64 = base64_encode(file_get_contents('https://picsum.photos/1024/768'));
-            $featuredImage = $handler->persistFeaturedImage($base64);
+            $raw = base64_encode(file_get_contents('https://picsum.photos/1024/768'));
+            $dataUrl = 'data:image/jpeg;base64,' . $raw;
+            $paths = $handler->persistFeaturedImage($dataUrl);
 
             Events::query()
                 ->create(array_merge([
                     'user_id' => $user,
                     'status' => 'approved',
-                    'featured_image' => $featuredImage,
+                    'featured_image' => $paths['thumb'],
+                    'featured_image_poster' => $paths['poster'],
                 ], Arr::except($aievent, 'tags')));
         }
     }

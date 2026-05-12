@@ -54,7 +54,7 @@ final class EventSchemaOrg
                 : $description;
         }
 
-        $img = trim((string) $event->getFeaturedImageUrl());
+        $img = trim((string) $event->getFeaturedImageHeroUrl());
         if ($img !== '') {
             $data['image'] = str_starts_with($img, 'http')
                 ? $img
