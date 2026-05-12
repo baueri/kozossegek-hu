@@ -35,9 +35,15 @@ class UserController extends AdminController
 
     public function create(): string
     {
-        $user = new User(Session::flash('admin.reg.user'));
+        $user = new User(Session::flash('admin.reg.user') ?? []);
         $action = route('admin.user.create');
-        $groups = UserRole::mapTranslated()->values();
+
+        $groups = collect([
+            UserRole::GROUP_LEADER,
+            UserRole::SPIRITUAL_MOVEMENT_LEADER,
+            UserRole::SUPER_ADMIN,
+        ])->keyBy('name')->map('translate');
+
         $spiritual_movements = SpiritualMovements::query()->map(fn (SpiritualMovement $movement) => $movement->only(['name', 'id']));
 
         return view('admin.user.create', compact('user', 'action', 'groups', 'spiritual_movements'));
@@ -45,11 +51,15 @@ class UserController extends AdminController
 
     public function doCreate(Request $request, Users $repository, UserTokens $passwordResetRepository)
     {
-        $data = $request->only('username', 'name', 'email', 'user_role');
+        $data = $request->filter()->only('username', 'name', 'email', 'user_role');
         try {
-            $existingUser = $repository->query()->where('email', $data['email'])
-                ->orWhere('username', $data['username'])
-                ->first();
+            $query = $repository->query()->where('email', $data['email']);
+
+            if (! empty($data['username'])) {
+                $query->orWhere('username', $data['username']);
+            }
+
+            $existingUser = $query->first();
 
             if ($existingUser) {
                 throw new DuplicateEntryException($existingUser->email === $data['email'] ? 'Ez az email cím már foglalt' : 'Ez a felhasználónév már foglalt');
@@ -84,7 +94,12 @@ class UserController extends AdminController
         $user = $repository->findOrFail($request['id']);
         $my_profile = Auth::is($user);
         $action = route('admin.user.update', $user);
-        $groups = UserRole::mapTranslated();
+        $groups = collect([
+            UserRole::GROUP_LEADER,
+            UserRole::SPIRITUAL_MOVEMENT_LEADER,
+            UserRole::SUPER_ADMIN,
+        ])->keyBy('name')->map('translate');
+
         $spiritual_movements = db()->select('select * from spiritual_movements order by name');
         $user_movement = db()->value('select spiritual_movement_id from spiritual_movement_administrators
             where user_id = ?', [$user->id]);
