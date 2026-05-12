@@ -2,16 +2,26 @@
 
     <mint-section name="header">
         <?php echo view('asset_groups.editor'); ?>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.css"/>
     </mint-section>
 
     <mint-section name="scripts">
 <style>
+.event-featured-wrap {
+    position: relative;
+    overflow: hidden;
+    max-width: 260px;
+    width: 100%;
+    border-radius: 0.5rem;
+}
 .event-featured-upload-btn {
     position: relative;
     overflow: hidden;
     cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    max-width: 100%;
 }
 .event-featured-upload-input {
     position: absolute;
@@ -47,11 +57,38 @@
         border-left: 1px solid #e9ecef;
     }
 }
+/* Prevent equal-height flex stretch: sidebar stays under the image block, not the full form height */
+#portal-event-form > .step-container > .row {
+    align-items: flex-start;
+}
 </style>
 <script>
 $(() => {
     var geoSearchUrl = '@route('portal.my_event.geocode_search')';
-    var upload = null;
+
+    function eventFeaturedImageFromFile(input) {
+        var file = input.files && input.files[0];
+        var $form = $(input).closest('form');
+        var $hidden = $form.find('[name=featured_image_data]');
+        if (!file) {
+            $hidden.val('');
+            return;
+        }
+        if (!/^image\//.test(file.type)) {
+            $hidden.val('');
+            return;
+        }
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $hidden.val(e.target.result);
+            $('#event-featured-image').attr('src', e.target.result);
+        };
+        reader.readAsDataURL(file);
+    }
+
+    $('#event-image-upload').on('change', function () {
+        eventFeaturedImageFromFile(this);
+    });
 
     initSummernote('[name=description]', {
         height: 200,
@@ -148,51 +185,12 @@ $(() => {
     });
     syncEventDateTimeInputs($('#ev-all-day').prop('checked'));
 
-    function initCroppie() {
-        if (upload) {
-            upload.croppie('destroy');
-            upload = null;
-        }
-        upload = $("#event-featured-image").croppie({
-            enableExif: true,
-            mouseWheelZoom: false,
-            viewport: {
-                width: '220',
-                height: '220',
-                type: 'rectangle'
-            },
-            boundary: {
-                width: '260',
-                height: '260'
-            }
-        });
-    }
-
-    $("#event-temp-image").on("load", function () {
-        var newImg = $($(this).closest("div").html());
-        $(".event-featured-wrap").html(newImg);
-        newImg.attr("id", "event-featured-image").show();
-        initCroppie();
-    });
-
-    $("form#portal-event-form").on("submit", function (e) {
+    $("form#portal-event-form").on("submit", function () {
         var $desc = $("#description");
         if ($desc.length && $desc.next(".note-editor").length) {
             $desc.val($desc.summernote("code"));
         }
-        if (!upload) {
-            return;
-        }
-        e.preventDefault();
-        var form = this;
-        upload.croppie("result", {type: "base64", format: "jpeg", size: {width: 510, height: 510}}).then(function (base64) {
-            $("[name=featured_image_data]").val(base64);
-            upload = null;
-            form.submit();
-        });
     });
-
-    /* Croppie only after a new file is chosen (#event-temp-image load → initCroppie), not for the current/placeholder image */
 });
 </script>
     </mint-section>
@@ -224,8 +222,8 @@ $(() => {
 
             <form method="post" action="{{ $action }}" id="portal-event-form">
                 <div class="step-container shadow account-step-form">
-                    <div class="row">
-                        <div class="col-lg-8 pe-lg-4">
+                    <div class="row g-3 g-lg-4">
+                        <div class="col-lg-8 pe-lg-4 min-w-0">
                             <h3 class="h5 text-muted mb-3">Alapadatok</h3>
                             <div class="mb-2">
                                 <label for="ev-name" class="mb-1">Cím</label>
@@ -287,11 +285,12 @@ $(() => {
                             </div>
                         </div>
 
-                        <div class="col-lg-4 border-left-lg mt-4 mt-lg-0 ps-lg-4">
+                        <div class="col-lg-4 border-left-lg mt-4 mt-lg-0 ps-lg-4 min-w-0">
                             <h3 class="h5 text-muted mb-3">Kép és címkék</h3>
                             <div class="mb-3">
                                 <label class="mb-1 d-block">Kiemelt kép</label>
-                                <div class="event-featured-wrap mx-auto mx-lg-0" style="max-width: 260px;">
+                                <p class="small text-muted mb-2">@lang('event.image.form_hint')</p>
+                                <div class="event-featured-wrap mx-auto mx-lg-0">
                                     <img src="{{ $event->featured_image ? ($event->getFeaturedImageUrl() ?: $event->featured_image) : '/images/placeholder_rect.webp' }}?{{ time() }}" id="event-featured-image" class="img-fluid" style="max-width: 100%;" alt="">
                                 </div>
                                 <label class="btn btn-primary btn-sm event-featured-upload-btn mb-0 mt-2">
@@ -299,11 +298,8 @@ $(() => {
                                     <input type="file"
                                         accept="image/*"
                                         class="event-featured-upload-input"
-                                        onchange="loadFile(event, this);"
-                                        data-target="event-temp-image"
                                         id="event-image-upload">
                                 </label>
-                                <div style="display: none"><img id="event-temp-image" alt=""></div>
                                 <input type="hidden" name="featured_image_data" value="">
                             </div>
                             <div class="mb-2">

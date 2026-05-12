@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace App\Portal\Services;
 
 use App\QueryBuilders\Events;
-use App\Helpers\PathHelper;
-use App\Storage\Base64Image;
+use App\Services\EventFeaturedImageProcessor;
 use Carbon\Carbon;
 use Framework\Http\Request;
 use Framework\Support\StringHelper;
@@ -92,19 +91,19 @@ class UserEventFormHandler
         ];
     }
 
-    public function persistFeaturedImage(string $base64): ?string
+    /**
+     * @return array{thumb: string, poster: string}|null
+     */
+    public function persistFeaturedImage(string $base64): ?array
     {
         $base64 = trim($base64);
         if ($base64 === '') {
             return null;
         }
 
-        $image = new Base64Image($base64);
-        $hash = substr(hash('SHA256', $base64), 0, 16);
-        $loc = PathHelper::eventFeaturedImageLocation($hash);
-        $image->saveImage($loc['fs']);
+        $processor = new EventFeaturedImageProcessor();
 
-        return $loc['url'];
+        return $processor->processAndStore($base64);
     }
 
     public function makeUniqueSlug(string $name, ?int $ignoreId = null): string

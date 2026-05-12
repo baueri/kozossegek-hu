@@ -4,8 +4,8 @@
         <meta name="description" content="{{ $event->name }}" />
         <meta property="og:title" content="{{ $event->name }}" />
         <meta property="og:description" content="{{ str_more($event->description, 120) }}" />
-        <meta property="og:image" content="{{ $event->getFeaturedImageUrl() }}" />
-        <mod-og-image :src="{ $event->getFeaturedImageUrl() }" />
+        <meta property="og:image" content="{{ $event->getFeaturedImageHeroUrl() }}" />
+        <mod-og-image :src="{ $event->getFeaturedImageHeroUrl() }" />
         <script type="application/ld+json">{{ $eventSchemaJsonLd }}</script>
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
             integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
@@ -73,7 +73,15 @@
                 <div class="group-image-side">
 
                     <div class="community-image{{ $event->isCancelled() ? ' community-image--cancelled' : '' }}">
-                        <img src="{{ $event->getFeaturedImageUrl() }}" alt="{{ $event->name }}">
+                        <button type="button"
+                            class="event-card__image-open"
+                            data-bs-toggle="modal"
+                            data-bs-target="#eventFeaturedImageModal"
+                            data-img-src="{{ $event->getFeaturedImageHeroUrl() }}"
+                            data-img-alt="{{ $event->name }}"
+                            aria-label="@lang('event.image.open_large')">
+                            <img src="{{ $event->getFeaturedImageUrl() }}" alt="{{ $event->name }}">
+                        </button>
                         <div x:if="{ $event->isCancelled() }" class="event-card-cancelled-overlay" aria-hidden="true">
                             <span class="event-card-cancelled-overlay__text">@lang('event_life_cycle.cancelled')</span>
                         </div>

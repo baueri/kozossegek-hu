@@ -35,7 +35,7 @@
             </div>
 
             <button type="submit" class="btn btn-orange w-100 rounded-pill py-2">
-                <i class="fas fa-sign-in-alt me-1"></i> Belépés
+                <i class="fas fa-sign-in-alt me-1"></i> Belépéssss
             </button>
 
             <div class="login-prompt-footer">

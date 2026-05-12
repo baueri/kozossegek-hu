@@ -33,6 +33,8 @@
 
     {{ $slot }}
 
+    <mint-include path="partials/event-image-modal.php" />
+
     <footer id="footer" class="text-white footer-site">
         <div class="container" id="footer-top">
             <div class="row">

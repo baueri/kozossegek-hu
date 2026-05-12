@@ -50,8 +50,9 @@ class UserEventController extends PortalController
             $payload['user_id'] = $user->getId();
             $payload['status'] = $user->isAdmin() ? 'approved' : 'pending';
 
-            if ($path = $handler->persistFeaturedImage((string) $request->get('featured_image_data', ''))) {
-                $payload['featured_image'] = $path;
+            if ($paths = $handler->persistFeaturedImage((string) $request->get('featured_image_data', ''))) {
+                $payload['featured_image'] = $paths['thumb'];
+                $payload['featured_image_poster'] = $paths['poster'];
             }
 
             $tags = $handler->normalizeTags((string) ($request->get('tags') ?? ''));
@@ -99,10 +100,12 @@ class UserEventController extends PortalController
             $payload['status'] = $event->status;
             $payload['user_id'] = $event->user_id;
 
-            if ($path = $handler->persistFeaturedImage((string) $request->get('featured_image_data', ''))) {
-                $payload['featured_image'] = $path;
+            if ($paths = $handler->persistFeaturedImage((string) $request->get('featured_image_data', ''))) {
+                $payload['featured_image'] = $paths['thumb'];
+                $payload['featured_image_poster'] = $paths['poster'];
             } else {
                 $payload['featured_image'] = $event->featured_image;
+                $payload['featured_image_poster'] = $event->featured_image_poster;
             }
 
             $tags = $handler->normalizeTags((string) ($request->get('tags') ?? ''));
