@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Portal\Controllers;
 
+use App\Admin\Group\Services\BaseGroupService;
 use App\Enums\AgeGroup;
 use App\Enums\GroupStatus;
 use App\Enums\JoinMode;
@@ -27,10 +28,10 @@ class ApiDocsController extends PortalController
                 ],
                 [
                     'name' => 'description',
-                    'type' => 'string',
+                    'type' => 'string (HTML)',
                     'required' => 'create',
-                    'hint' => 'A közösség leírása.',
-                    'values' => [],
+                    'hint' => 'A közösség leírása. HTML-t is tartalmazhat; a nem engedélyezett tageket a szerver eltávolítja (ugyanaz, mint a portál szerkesztőjében).',
+                    'values' => $this->descriptionHtmlTags(),
                 ],
                 [
                     'name' => 'group_leaders',
@@ -153,6 +154,43 @@ class ApiDocsController extends PortalController
                 'label' => method_exists($case, 'translate') ? $case->translate() : (string) $case->value,
             ],
             $cases
+        );
+    }
+
+    /**
+     * @return list<array{value: string, label: string}>
+     */
+    private function descriptionHtmlTags(): array
+    {
+        $labels = [
+            'a' => 'link',
+            'b' => 'félkövér',
+            'strong' => 'félkövér',
+            'u' => 'aláhúzott',
+            'br' => 'sortörés',
+            'ul' => 'felsorolás lista',
+            'ol' => 'számozott lista',
+            'li' => 'listaelem',
+            'p' => 'bekezdés',
+            'pre' => 'előformázott / kód blokk',
+            'h1' => 'cím 1',
+            'h2' => 'cím 2',
+            'h3' => 'cím 3',
+            'h4' => 'cím 4',
+            'h5' => 'cím 5',
+            'h6' => 'cím 6',
+            'blockquote' => 'idézet',
+        ];
+
+        preg_match_all('/<([a-z0-9]+)>/i', BaseGroupService::ALLOWED_TAGS, $matches);
+        $tags = $matches[1] ?? [];
+
+        return array_map(
+            static fn (string $tag): array => [
+                'value' => '<' . $tag . '>',
+                'label' => $labels[$tag] ?? $tag,
+            ],
+            $tags
         );
     }
 }
