@@ -9,7 +9,11 @@
     --transparent-light: rgba(255, 255, 255, .2);
     --main: #2b699a;
     --alt-dark: #0f172a;
-    --orange: rgb(217, 119, 6);
+    --accent: #2b699a;
+    --accent-dark: #1e5a8a;
+    --accent-light: #3f91b0;
+    --accent-highlight: #5ba8c4;
+    --orange: var(--accent);
 }
 
 /* --- Nav (transparent tabs) --- */
@@ -134,7 +138,7 @@
     background-color: var(--orange);
 
     &:hover {
-        background: rgb(180 83 9 / 1);
+        background: #205781;
         color: #fff;
     }
 }
@@ -145,7 +149,7 @@
     background: #fff;
 
     &:hover {
-        color: rgb(180 83 9 / 1);
+        color: #1e5a8a;
     }
 }
 

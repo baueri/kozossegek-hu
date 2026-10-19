@@ -99,7 +99,7 @@ function router(): RouterInterface
 
 function route_is(string $routeName): bool
 {
-    return current_route()->getAs() === $routeName;
+    return current_route() &&current_route()->getAs() === $routeName;
 }
 
 function redirect(string $uri): never
@@ -146,7 +146,7 @@ function view_path(string $view): string
     return View::getPath($view);
 }
 
-function current_route(): Route
+function current_route(): ?Route
 {
     return app()->get(Request::class)->route;
 }

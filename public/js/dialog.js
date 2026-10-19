@@ -1,12 +1,19 @@
 const dialog = (function () {
     let thisDialog = this;
 
+    function hasBootstrap5Modal() {
+        return typeof bootstrap !== "undefined"
+            && bootstrap.Modal
+            && typeof bootstrap.Modal.getOrCreateInstance === "function";
+    }
+
     function modalShow($jq) {
         const el = $jq[0];
         if (!el) {
             return;
         }
-        if (typeof bootstrap !== "undefined" && bootstrap.Modal) {
+        // Bootstrap 4 also exposes window.bootstrap.Modal, but without getOrCreateInstance.
+        if (hasBootstrap5Modal()) {
             const staticBackdrop = $jq.attr("data-bs-backdrop") === "static" || $jq.attr("data-backdrop") === "static";
             bootstrap.Modal.getOrCreateInstance(el, {
                 backdrop: staticBackdrop ? "static" : true,
@@ -24,7 +31,7 @@ const dialog = (function () {
         if (!el) {
             return;
         }
-        if (typeof bootstrap !== "undefined" && bootstrap.Modal) {
+        if (hasBootstrap5Modal()) {
             const inst = bootstrap.Modal.getInstance(el);
             if (inst) {
                 inst.hide();

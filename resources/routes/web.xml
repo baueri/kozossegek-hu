@@ -73,7 +73,7 @@
                    middleware="referer@referer:rolunk"/>
         </route-group>
 
-        <route method="all" uri="social/{provider}/login" controller="\App\Portal\Controllers\SocialController" use="socialLogin" as="social_login"/>
+        <route method="post" uri="social/{provider}/login" controller="\App\Portal\Controllers\SocialController" use="socialLogin" as="social_login"/>
         <route method="all" uri="social/{provider}/deauthorize" controller="\App\Portal\Controllers\SocialController" use="deauthorize" as="social_deauthorize"/>
 
         <!--  FIÓK AKTIVÁLÁS  -->

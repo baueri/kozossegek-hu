@@ -197,7 +197,7 @@
                             Nagyon örülünk annak, ha te is hirdetnéd nálunk a közösséged! Ehhez nem kell mást tenned, mint ellátogatnod a közösséget vezetek oldalra, majd az ott található űrlapot kitölteni és elküldeni nekünk. A regisztrációt követően, jóváhagyás után, közösséged a látogatók számára is elérhető lesz.
                         </p>
 
-                        <a href="https://kozossegek.hu/kozosseg-regisztracio"
+                        <a href="@route('portal.register_group')"
                             class="btn btn-orange btn-lg rounded-pill px-5">
                             Közösség regisztrálása
                         </a>

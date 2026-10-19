@@ -293,7 +293,7 @@ img {
     height: 70px;
     margin: 0 auto 1.5rem;
     border-radius: 1.2rem;
-    background: #fff7ed;
+    background: #eff6ff;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -368,7 +368,7 @@ img {
     }
 
     .cta-highlight {
-        color: #f59e0b;
+        color: var(--accent-highlight);
         font-family: 'Playfair Display', serif;
         font-style: italic;
     }
@@ -613,7 +613,7 @@ img {
 
 .page-header {
     padding: 4em 0;
-    background: linear-gradient(135deg, #ea580c, #f59e0b);
+    background: linear-gradient(135deg, #1e5a8a, #3f91b0);
     color: #fff;
     overflow: hidden;
 
@@ -761,8 +761,8 @@ nav#header-main.navbar .navbar-nav > .nav-item:hover a {
 }
 
 #login-box .auth-form--dropdown .form-control:focus {
-    border-color: rgba(217, 119, 6, 0.45);
-    box-shadow: 0 0 0 0.2rem rgba(217, 119, 6, 0.12);
+    border-color: rgba(43, 105, 154, 0.45);
+    box-shadow: 0 0 0 0.2rem rgba(43, 105, 154, 0.12);
 }
 
 #login-box .auth-divider--compact {
@@ -829,8 +829,8 @@ nav#header-main.navbar .navbar-nav > .nav-item:hover a {
 }
 
 .auth-form .form-control:focus {
-    border-color: rgba(217, 119, 6, 0.45);
-    box-shadow: 0 0 0 0.2rem rgba(217, 119, 6, 0.12);
+    border-color: rgba(43, 105, 154, 0.45);
+    box-shadow: 0 0 0 0.2rem rgba(43, 105, 154, 0.12);
 }
 
 .auth-divider {
@@ -975,7 +975,7 @@ nav#header-main.navbar .navbar-nav > .nav-item:hover a {
 }
 
 #user-menu.account-nav .nav-link.active {
-    background: linear-gradient(135deg, rgba(217, 119, 6, 0.14) 0%, rgba(217, 119, 6, 0.05) 100%);
+    background: linear-gradient(135deg, rgba(43, 105, 154, 0.14) 0%, rgba(43, 105, 154, 0.05) 100%);
     color: var(--orange);
     font-weight: 600;
 }
@@ -1029,7 +1029,7 @@ nav#header-main.navbar .navbar-nav > .nav-item:hover a {
     border-radius: 999px;
     padding: 0.5rem 1.25rem;
     font-weight: 600;
-    box-shadow: 0 4px 14px rgba(217, 119, 6, 0.25);
+    box-shadow: 0 4px 14px rgba(43, 105, 154, 0.25);
 }
 
 .account-toolbar .btn-success {
@@ -1149,8 +1149,8 @@ nav#header-main.navbar .navbar-nav > .nav-item:hover a {
 }
 
 .account-panel .form-control:focus {
-    border-color: rgba(217, 119, 6, 0.45);
-    box-shadow: 0 0 0 0.2rem rgba(217, 119, 6, 0.12);
+    border-color: rgba(43, 105, 154, 0.45);
+    box-shadow: 0 0 0 0.2rem rgba(43, 105, 154, 0.12);
 }
 
 /* Softer inner “steps” inside the account shell (avoids double-heavy .shadow) */
@@ -1210,7 +1210,7 @@ nav#header-main.navbar .navbar-nav > .nav-item:hover a {
         left: 0;
         right: 0;
         height: 3px;
-        background: linear-gradient(90deg, var(--orange), #f59e0b);
+        background: linear-gradient(90deg, var(--orange), #3f91b0);
         pointer-events: none;
     }
 
@@ -3079,8 +3079,8 @@ ul.age-group-select {
             transition: border-color 0.15s ease, box-shadow 0.15s ease;
 
             &:focus {
-                border-color: #ea580c;
-                box-shadow: 0 0 0 3px rgba(234, 88, 12, 0.15);
+                border-color: #1e5a8a;
+                box-shadow: 0 0 0 3px rgba(43, 105, 154, 0.15);
             }
         }
 
@@ -3130,7 +3130,7 @@ ul.age-group-select {
     transition: box-shadow 0.2s ease;
 
     &:focus-within {
-        box-shadow: 0 0 0 3px rgba(237, 139, 0, 0.18);
+        box-shadow: 0 0 0 3px rgba(43, 105, 154, 0.18);
     }
 
     > i {
@@ -3302,14 +3302,14 @@ ul.age-group-select {
     width: 56px;
     height: 56px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #f97316, #ea580c);
+    background: linear-gradient(135deg, #2b699a, #1e5a8a);
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 0 auto 1.25rem;
     color: #fff;
     font-size: 1.4rem;
-    box-shadow: 0 8px 20px rgba(249, 115, 22, 0.3);
+    box-shadow: 0 8px 20px rgba(43, 105, 154, 0.3);
 }
 
 .login-prompt-title {
@@ -3345,7 +3345,7 @@ ul.age-group-select {
 
     &:focus {
         border-color: var(--orange);
-        box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.12);
+        box-shadow: 0 0 0 3px rgba(43, 105, 154, 0.12);
     }
 }
 
@@ -3367,7 +3367,7 @@ ul.age-group-select {
 }
 
 .btn-contact {
-    background: linear-gradient(135deg, #f97316, #ea580c);
+    background: linear-gradient(135deg, #2b699a, #1e5a8a);
     color: white;
     border: none;
     border-radius: 999px;
@@ -3376,12 +3376,12 @@ ul.age-group-select {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    box-shadow: 0 8px 20px rgba(249, 115, 22, 0.25);
+    box-shadow: 0 8px 20px rgba(43, 105, 154, 0.25);
     transition: all 0.2s ease;
 
     &:hover {
         transform: translateY(-2px);
-        box-shadow: 0 12px 28px rgba(249, 115, 22, 0.35);
+        box-shadow: 0 12px 28px rgba(43, 105, 154, 0.35);
         color: white;
     }
 }
@@ -3482,13 +3482,13 @@ ul.age-group-select {
 }
 
 .modal.dialog-shell .modal-header.bg-danger {
-    background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%) !important;
-    color: #9a3412 !important;
-    border-bottom-color: rgb(253 186 116 / 0.4) !important;
+    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%) !important;
+    color: #1e5a8a !important;
+    border-bottom-color: rgb(147 197 253 / 0.4) !important;
 }
 
 .modal.dialog-shell .modal-header.bg-danger.text-light {
-    color: #9a3412 !important;
+    color: #1e5a8a !important;
 }
 
 .modal.dialog-shell .modal-header.bg-success {
@@ -3558,7 +3558,7 @@ ul.age-group-select {
 }
 
 .modal.dialog-shell .dialog-shell__close:focus-visible {
-    outline: 2px solid rgb(249 115 22 / 0.55);
+    outline: 2px solid rgb(43 105 154 / 0.55);
     outline-offset: 2px;
 }
 
@@ -3663,9 +3663,9 @@ ul.age-group-select {
 }
 
 .group-register__alert--warning {
-    background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
-    color: #9a3412;
-    border: 1px solid rgb(253 186 116 / 0.45);
+    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+    color: #1e5a8a;
+    border: 1px solid rgb(147 197 253 / 0.45);
 }
 
 .group-register__alert--info {
@@ -3770,8 +3770,8 @@ ul.age-group-select {
     color: #334155;
 
     &:focus {
-        border-color: rgb(249 115 22 / 0.55);
-        box-shadow: 0 0 0 3px rgb(249 115 22 / 0.12);
+        border-color: rgb(43 105 154 / 0.55);
+        box-shadow: 0 0 0 3px rgb(43 105 154 / 0.12);
         background-color: var(--gr-input-bg);
     }
 }
@@ -3827,8 +3827,8 @@ ul.age-group-select {
 
 .group-register-page .select2-container--bootstrap.select2-container--focus .select2-selection,
 .group-register-page .select2-container--bootstrap.select2-container--open .select2-selection {
-    border-color: rgb(249 115 22 / 0.55) !important;
-    box-shadow: 0 0 0 3px rgb(249 115 22 / 0.12) !important;
+    border-color: rgb(43 105 154 / 0.55) !important;
+    box-shadow: 0 0 0 3px rgb(43 105 154 / 0.12) !important;
 }
 
 /* Institute + other selects: full width in grid */
@@ -3881,10 +3881,10 @@ ul.age-group-select {
     transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
 
     &:has(input:checked) {
-        background: #fff7ed;
-        border-color: rgb(249 115 22 / 0.45);
-        color: #9a3412;
-        box-shadow: 0 0 0 1px rgb(249 115 22 / 0.15);
+        background: #eff6ff;
+        border-color: rgb(43 105 154 / 0.45);
+        color: #1e5a8a;
+        box-shadow: 0 0 0 1px rgb(43 105 154 / 0.15);
     }
 
     input {
@@ -4214,9 +4214,9 @@ ul.age-group-select {
     color: var(--orange);
     font-weight: 600;
     text-decoration: none;
-    border-bottom: 1px dashed rgb(249 115 22 / 0.55);
+    border-bottom: 1px dashed rgb(43 105 154 / 0.55);
 
     &:hover {
-        color: #ea580c;
+        color: #1e5a8a;
     }
 }

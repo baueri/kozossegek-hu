@@ -35,6 +35,6 @@ class FinishRegistration extends RegisterGroupForm
 
     public function render(): string
     {
-        return app(MintView::class)->render('partials/create-group-finish-preview.php', $this->getModel());
+        return app()->get(MintView::class)->render('partials/create-group-finish-preview.php', $this->getModel());
     }
 }

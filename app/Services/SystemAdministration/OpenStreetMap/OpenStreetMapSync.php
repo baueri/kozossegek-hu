@@ -39,6 +39,7 @@ class OpenStreetMapSync extends Command
                 ->withCount('groups', $groups)
                 ->whereHas('groups', $groups)
                 ->get()
+                ->filter(fn (Institute $institute) => is_numeric($institute->lat) && is_numeric($institute->lon))
                 ->map(function (Institute $institute) {
                     EntityQueryBuilder::query(OsmMarker::class)->insert([
                         'type' => 'institute',
@@ -58,6 +59,9 @@ class OpenStreetMapSync extends Command
                     $contactGroups = $city?->statistics->contacted_groups_count ?? 0;
                     $totalActivity = $searches + $openedGroups + $contactGroups;
                     if ($totalActivity < CityStatistics::INTERACTION_MIN_WEIGHT && !$city->groups_count) {
+                        return;
+                    }
+                    if (!is_numeric($city->lat) || !is_numeric($city->lon)) {
                         return;
                     }
 
