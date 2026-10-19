@@ -23,4 +23,14 @@ class SpiritualMovements extends EntityQueryBuilder
     {
         return $this->whereRaw('id in (SELECT spiritual_movement_id FROM spiritual_movement_administrators WHERE user_id = ?)', [$user->id]);
     }
+
+    public function search(?string $term): self
+    {
+        $term = trim((string) $term);
+        if ($term === '') {
+            return $this;
+        }
+
+        return $this->where('name', 'like', '%' . $term . '%');
+    }
 }

@@ -4,6 +4,7 @@ namespace App\Portal\Controllers;
 
 use App\Enums\SocialProvider;
 use App\Mail\ResetPasswordEmail;
+use App\QueryBuilders\ApiTokens;
 use App\QueryBuilders\Users;
 use App\QueryBuilders\UserTokens;
 use Framework\Http\Request;
@@ -16,11 +17,49 @@ use PHPMailer\PHPMailer\Exception;
 
 class UserController extends PortalController
 {
-    public function profile(): string
+    public function profile(ApiTokens $apiTokens): string
     {
         $user = Auth::user();
         $socialProfiles = $user->socialProfiles;
-        return $this->mintView->render('pages/profile.php', compact('user', 'socialProfiles'));
+        $apiTokensList = $apiTokens->forUser($user)->get();
+
+        return $this->mintView->render('pages/profile.php', compact('user', 'socialProfiles', 'apiTokensList'));
+    }
+
+    public function createApiToken(Request $request, ApiTokens $apiTokens): array
+    {
+        $name = trim((string) $request->get('name', ''));
+        if ($name === '') {
+            return api()->error('Adj nevet az API kulcsnak (pl. Szent József templom honlap).', 422);
+        }
+
+        $created = $apiTokens->createForUser(Auth::user(), $name);
+
+        return api()->ok([
+            'plain_token' => $created['plain_token'],
+            'token' => [
+                'id' => (int) $created['token']->getId(),
+                'name' => $created['token']->name,
+                'token_prefix' => $created['token']->token_prefix,
+                'created_at' => (string) $created['token']->created_at,
+            ],
+        ]);
+    }
+
+    public function revokeApiToken(Request $request, ApiTokens $apiTokens): array
+    {
+        $token = $apiTokens->forUser(Auth::user())->find($request['id']);
+        if (!$token) {
+            return api()->error('Nem található ez az API kulcs.', 404);
+        }
+
+        $name = $token->name;
+        $apiTokens->deleteModel($token);
+
+        return api()->ok([
+            'msg' => 'API kulcs visszavonva.',
+            'token_name' => $name,
+        ]);
     }
 
     public function update(Request $request, UpdateUser $service): void

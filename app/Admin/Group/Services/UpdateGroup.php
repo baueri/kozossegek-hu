@@ -11,6 +11,7 @@ use App\QueryBuilders\GroupComments;
 use Exception;
 use Framework\Exception\FileTypeNotAllowedException;
 use Framework\Http\Message;
+use Framework\Http\Response;
 use Framework\Support\Arr;
 use Framework\Support\Collection;
 
@@ -32,6 +33,10 @@ class UpdateGroup extends BaseGroupService
         $data['spiritual_movement_id'] = Arr::get($data, 'spiritual_movement_id') ?: null;
 
         if (!$this->validate($data)) {
+            if (Response::contentTypeIsJson()) {
+                return $group;
+            }
+
             Message::danger('A csillaggal jelölt mezők kitöltése kötelező!');
             if (is_admin()) {
                 redirect_route('admin.group.edit', $group);
@@ -66,7 +71,9 @@ class UpdateGroup extends BaseGroupService
 
         $this->updateSearchEngine($group);
 
-        Message::success('Sikeres mentés.');
+        if (!Response::contentTypeIsJson()) {
+            Message::success('Sikeres mentés.');
+        }
 
         return $group;
     }

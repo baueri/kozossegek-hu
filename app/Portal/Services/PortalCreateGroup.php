@@ -45,7 +45,7 @@ class PortalCreateGroup
             'age_group',
             'occasion_frequency',
             'on_days',
-            'spiritual_movement',
+            'spiritual_movement_id',
             'tags',
             'group_leaders',
             'join_mode'
@@ -77,12 +77,20 @@ class PortalCreateGroup
         $data['pending'] = GroupPending::pending;
         $data['denomination'] = Denomination::katolikus;
         $data['status'] = GroupStatus::active;
+        $data['spiritual_movement_id'] = !empty($data['spiritual_movement_id'])
+            ? $data['spiritual_movement_id']
+            : null;
 
         $group = $this->createGroup->create(collect($data), $fileData);
 
         if ($group) {
             event_logger()->logEvent('group_created', ['group_id' => $group->id], $user);
-            (new Mailer($user->email))->send($mailable);
+            try {
+                (new Mailer($user->email))->send($mailable);
+            } catch (Exception $e) {
+                report($e);
+            }
+
             return $group;
         }
 

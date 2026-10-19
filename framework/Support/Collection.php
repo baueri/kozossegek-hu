@@ -641,8 +641,10 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         foreach ($this->items as $key => $value) {
             if (is_array($value)) {
                 $sanitized[$key] = collect($value)->sanitize()->all();
+            } elseif ($value === null) {
+                $sanitized[$key] = null;
             } else {
-                $sanitized[$key] = strip_tags($value);
+                $sanitized[$key] = strip_tags((string) $value);
             }
         }
 

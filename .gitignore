@@ -10,7 +10,6 @@ public/media
 public/storage
 tmp_deploy
 email_templates/
-tests/
 .php_cs.cache
 public/sitemap.xml
 .daily_cron_last_run

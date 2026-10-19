@@ -4,13 +4,35 @@ namespace App\Admin\Group\Services;
 
 use App\Helpers\GroupHelper;
 use App\Models\ChurchGroup;
-use Dotenv\Util\Str;
+use App\QueryBuilders\ChurchGroups;
+use App\QueryBuilders\Institutes;
+use App\Services\GroupCreateGuard;
+use App\Services\RebuildSearchEngine;
 use Framework\Exception\FileTypeNotAllowedException;
+use Framework\File\FileManager;
 use Framework\Support\Collection;
 use Framework\Support\StringHelper;
 
 class CreateGroup extends BaseGroupService
 {
+    public const INSTITUTE_FIELDS = [
+        'name',
+        'city',
+        'district',
+        'address',
+        'leader_name',
+    ];
+
+    public function __construct(
+        ChurchGroups $repository,
+        RebuildSearchEngine $searchEngineBuilder,
+        FileManager $fileManager,
+        Institutes $institutes,
+        private readonly GroupCreateGuard $createGuard,
+    ) {
+        parent::__construct($repository, $searchEngineBuilder, $fileManager, $institutes);
+    }
+
     /**
      * @throws FileTypeNotAllowedException
      * @throws \Exception
@@ -27,9 +49,16 @@ class CreateGroup extends BaseGroupService
             return null;
         }
 
+        $userId = $data['user_id'] ?? null;
+        if ($userId && $this->createGuard->hasReachedPendingLimit((int) $userId)) {
+            $this->pushError($this->createGuard->pendingLimitMessage());
+            return null;
+        }
+
         $instituteId = $groupData['institute_id'];
 
         if (($institute = $groupData['institute']) && !$instituteId) {
+            $institute = $this->filterInstitutePayload((array) $institute);
             $institute['approved'] = 0;
             $institute['user_id'] = $data['user_id'];
             $institute['lat'] = '';
@@ -65,5 +94,14 @@ class CreateGroup extends BaseGroupService
         $this->repository->save($group);
 
         return $group;
+    }
+
+    /**
+     * @param array<string, mixed> $institute
+     * @return array<string, mixed>
+     */
+    public function filterInstitutePayload(array $institute): array
+    {
+        return collect($institute)->only(self::INSTITUTE_FIELDS);
     }
 }

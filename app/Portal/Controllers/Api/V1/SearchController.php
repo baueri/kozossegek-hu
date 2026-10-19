@@ -11,6 +11,7 @@ use App\Portal\Responses\InstituteSearchResponse;
 use App\Portal\Responses\UserResponse;
 use App\QueryBuilders\Cities;
 use App\QueryBuilders\Institutes;
+use App\QueryBuilders\SpiritualMovements;
 use App\QueryBuilders\Users;
 use App\Repositories\Districts;
 use Framework\Http\Request;
@@ -41,6 +42,26 @@ class SearchController
                 ->paginate(15)
         );
         return $response->asAdmin((bool) $user?->isAdmin());
+    }
+
+    public function searchSpiritualMovement(SpiritualMovements $repository): array
+    {
+        $term = trim((string) ($this->request['term'] ?? $this->request['search'] ?? ''));
+
+        $movements = $repository
+            ->search($term)
+            ->orderBy('name', 'asc')
+            ->get();
+
+        return api()->ok([
+            'data' => $movements->map(static fn ($movement) => [
+                'id' => (int) $movement->id,
+                'name' => $movement->name,
+                'type' => $movement->type,
+                'type_label' => $movement->type(),
+                'slug' => $movement->slug,
+            ])->all(),
+        ]);
     }
 
     public function searchDistrict(Districts $repository): DistrictResponse

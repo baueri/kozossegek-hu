@@ -11,6 +11,10 @@
     RewriteEngine On
     RewriteBase /
 
+    # Pass Authorization header to PHP (Apache often strips it otherwise)
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule ^ - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
     # Remove trailing slashes for non-directory URLs
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_URI} !^/$

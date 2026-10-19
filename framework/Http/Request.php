@@ -37,7 +37,16 @@ class Request implements ArrayAccess, Countable, IteratorAggregate
     public function __construct()
     {
 
-        $this->request = (new Collection(array_merge($_GET, $_POST)))->each(function ($item, $key, $collection) {
+        $payload = array_merge($_GET, $_POST);
+        $contentType = $_SERVER['CONTENT_TYPE'] ?? $_SERVER['HTTP_CONTENT_TYPE'] ?? '';
+        if (str_contains(strtolower($contentType), 'application/json')) {
+            $json = json_decode((string) file_get_contents('php://input'), true);
+            if (is_array($json)) {
+                $payload = array_merge($payload, $json);
+            }
+        }
+
+        $this->request = (new Collection($payload))->each(function ($item, $key, $collection) {
             if ($item == "true" || $item == "false") {
                 $collection[$key] = filter_var($item, FILTER_VALIDATE_BOOLEAN);
             }

@@ -4,6 +4,7 @@
         <route-group  namespace="App\Portal\Controllers\Api\V1">
             <route method="all" controller="SearchController" uri="search-city" use="searchCity" as="search-city"/>
             <route method="all" controller="SearchController" uri="search-institute" use="searchInstitute" as="search-institute"/>
+            <route method="all" controller="SearchController" uri="search-spiritual-movement" use="searchSpiritualMovement" as="search-spiritual-movement"/>
             <route method="all" controller="SearchController" uri="search-district" use="searchDistrict" as="search-district"/>
             <route method="all" controller="SearchController" uri="search-user" use="searchUser" as="search-user" middleware="admin"/>
             <!-- Foglalt email ellenőrzés -->
@@ -20,6 +21,15 @@
             <route method="all" uri="miserend/{id}" as="portal.miserend" controller="ApiGroupController" use="instituteByMiserendId"/>
 
             <route method="all" uri="accept-legal-notice" controller="LegalNoticeController" use="accept" as="accept_legal_notice"/>
+
+            <!-- Saját közösségek (API token) -->
+            <route-group middleware="api_token" prefix="me" as="me">
+                <route method="get" uri="groups" controller="MeGroupsController" use="index" as="groups.index"/>
+                <route method="post" uri="groups" controller="MeGroupsController" use="store" as="groups.store"/>
+                <route method="get" uri="groups/{id}" controller="MeGroupsController" use="show" as="groups.show"/>
+                <route method="patch" uri="groups/{id}" controller="MeGroupsController" use="update" as="groups.update"/>
+                <route method="delete" uri="groups/{id}" controller="MeGroupsController" use="destroy" as="groups.destroy"/>
+            </route-group>
         </route-group>
     </route-group>
 

@@ -1,6 +1,7 @@
 <?php
 
 use App\Middleware\AdminMiddleware;
+use App\Middleware\ApiTokenMiddleware;
 use App\Middleware\LoggedInMiddleware;
 use App\Portal\Services\Search\DatabaseSearchGroupRepository;
 use App\Portal\Services\Search\MeiliSearchRepository;
@@ -39,6 +40,7 @@ return [
         'json' => JsonApi::class,
         'admin' => AdminMiddleware::class,
         'auth' => LoggedInMiddleware::class,
+        'api_token' => ApiTokenMiddleware::class,
         'referer' => RefererMiddleware::class,
         'catptcha' => Catptcha::class
     ],
