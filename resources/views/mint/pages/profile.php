@@ -1,4 +1,4 @@
-<mint-extend path="layout/inner.php" :subtitle="Profil | " :page-title="Profil" :inner-container="container-fluid" :inner-class="inner--account">
+<mint-extend path="layout/inner.php" :subtitle="Fiók | " :page-title="Fiók" :inner-container="container-fluid" :inner-class="inner--account">
 
     <mint-section name="scripts">
         <script>
@@ -175,35 +175,75 @@
             <mint-include path="partials/user-sidemenu.php" />
         </aside>
         <div class="col-lg-9 col-md-8 account-main">
-            <div class="account-panel">
+            <div class="account-panel account-panel--profile">
                 <?php echo view('admin.partials.message'); ?>
+
+                <header class="account-page-head">
+                    <h2 class="account-page-head__title">Fiókbeállítások</h2>
+                </header>
+
                 <form method="post" action="@route('portal.profile.update')" class="mb-0">
                     @csrf
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="account-form-section">
-                                <h3 class="account-section-title">Személyes adatok</h3>
-                                <div class="mb-3">
-                                    <label class="form-label">E-mail cím <i class="fa fa-info-circle small text-muted" title="Amikor valaki felszeretné venni a kapcsolatot a közösséggel, erre az email címre küldjük el az érdeklődő üzenetét." aria-hidden="true"></i></label>
-                                    <input type="email" name="email" value="{{ $user->email }}" class="form-control"/>
-                                </div>
-                                <div class="mb-3">
+
+                    <section class="account-profile-card">
+                        <h3 class="account-section-title">Személyes adatok</h3>
+                        <div class="account-form-narrow">
+                            <div class="mb-3">
+                                <label class="form-label" for="profile-email">
+                                    E-mail cím
+                                    <i class="fa fa-info-circle small text-muted" title="Amikor valaki fel szeretné venni a kapcsolatot a közösséggel, erre az email címre küldjük el az érdeklődő üzenetét." aria-hidden="true"></i>
+                                </label>
+                                <input type="email" name="email" id="profile-email" value="{{ $user->email }}" class="form-control"/>
+                            </div>
+                            <div class="account-form-pair">
+                                <div class="mb-3 mb-md-0">
                                     <label class="form-label" for="profile-name">Név</label>
                                     <input type="text" name="name" id="profile-name" value="{{ $user->name }}" class="form-control"/>
                                 </div>
                                 <div class="mb-0">
-                                    <label class="form-label" for="phone_number">Telefonszám
-                                        <i class="fa fa-info-circle small text-muted" title="Nem kötelező, de a könnyebb kapcsolattartás érdekében megadhatod a telefonszámodat is" aria-hidden="true"></i></label>
+                                    <label class="form-label" for="phone_number">
+                                        Telefonszám
+                                        <i class="fa fa-info-circle small text-muted" title="Nem kötelező, de a könnyebb kapcsolattartás érdekében megadhatod a telefonszámodat is." aria-hidden="true"></i>
+                                    </label>
                                     <input type="tel" name="phone_number" id="phone_number" value="{{ $user->phone_number }}" class="form-control">
                                 </div>
                             </div>
-                            <div class="account-form-section">
-                                <h3 class="account-section-title">Jelszócsere</h3>
-                                <div class="mb-3">
-                                    <label class="form-label" for="old_password">Régi jelszó</label>
-                                    <input type="password" name="old_password" id="old_password" class="form-control" autocomplete="off"/>
+                        </div>
+                    </section>
+
+                    <section class="account-profile-card">
+                        <h3 class="account-section-title">Közösségi fiókok</h3>
+                        <div class="profile-social-block">
+                            <?php if (empty($socialProfiles) || count($socialProfiles) === 0): ?>
+                                <p class="text-muted small mb-0">Nincs csatolt közösségi fiók.</p>
+                            <?php else: ?>
+                                <?php foreach ($socialProfiles as $profile): ?>
+                                <div class="profile-social-row">
+                                    <div class="profile-social-row__inner">
+                                        <div class="profile-social-row__label">
+                                            <i class="<?php echo htmlspecialchars($profile->icon(), ENT_QUOTES, 'UTF-8'); ?>" aria-hidden="true"></i>
+                                            <span><?php echo htmlspecialchars($profile->text(), ENT_QUOTES, 'UTF-8'); ?></span>
+                                        </div>
+                                        <a href="@route('portal.detach_social_profile', ['provider' => $profile->social_provider])" class="profile-social-row__detach">
+                                            <i class="fa fa-unlink" aria-hidden="true"></i> Szétkapcsolás
+                                        </a>
+                                    </div>
                                 </div>
-                                <div class="mb-3">
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </div>
+                    </section>
+
+                    <section class="account-profile-card">
+                        <h3 class="account-section-title">Jelszócsere</h3>
+                        <p class="account-section-hint">Csak akkor töltsd ki, ha meg szeretnéd változtatni a jelszavad.</p>
+                        <div class="account-form-narrow">
+                            <div class="mb-3">
+                                <label class="form-label" for="old_password">Régi jelszó</label>
+                                <input type="password" name="old_password" id="old_password" class="form-control" autocomplete="current-password"/>
+                            </div>
+                            <div class="account-form-pair">
+                                <div class="mb-3 mb-md-0">
                                     <label class="form-label" for="new_password">Új jelszó</label>
                                     <input type="password" name="new_password" id="new_password" class="form-control" autocomplete="new-password"/>
                                 </div>
@@ -213,67 +253,49 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-6 mt-4 mt-lg-0">
-                            <div class="account-form-section">
-                                <h3 class="account-section-title">Közösségi fiókok</h3>
-                                <div class="profile-social-block">
-                                    <?php if (empty($socialProfiles) || count($socialProfiles) === 0): ?>
-                                        <p class="text-muted small mb-0">Nincs csatolt közösségi fiók.</p>
-                                    <?php else: ?>
-                                        <?php foreach ($socialProfiles as $profile): ?>
-                                        <div class="profile-social-row">
-                                            <div class="d-flex align-items-start justify-content-between flex-wrap">
-                                                <div>
-                                                    <i class="<?php echo htmlspecialchars($profile->icon(), ENT_QUOTES, 'UTF-8'); ?> text-muted me-1"></i>
-                                                    <span><?php echo htmlspecialchars($profile->text(), ENT_QUOTES, 'UTF-8'); ?></span>
-                                                </div>
-                                                <a href="@route('portal.detach_social_profile', ['provider' => $profile->social_provider])" class="small text-danger fw-bold mt-1 mt-sm-0">
-                                                    <i class="fa fa-trash-alt" aria-hidden="true"></i> Szétkapcsolás
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <?php endforeach; ?>
-                                    <?php endif; ?>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="d-flex flex-wrap align-items-center gap-2 mb-4">
-                        <button type="submit" class="btn btn-orange px-4 rounded-pill"><i class="fa fa-save" aria-hidden="true"></i> Mentés</button>
+                    </section>
+
+                    <div class="account-profile-actions">
+                        <button type="submit" class="btn btn-orange px-4 rounded-pill">
+                            <i class="fa fa-save" aria-hidden="true"></i> Mentés
+                        </button>
                     </div>
                 </form>
 
-                <hr class="my-4">
-
-                <div class="account-form-section mt-4">
-                    <h3 class="account-section-title">API kulcsok</h3>
-                    <p class="text-muted small">
-                        Ezekkel a kulcsokkal külső alkalmazások (például egy templomi honlap) kezelhetik a közösségeidet.
-                        Részletek: <a href="@route('api.docs')" target="_blank" rel="noopener noreferrer">API dokumentáció</a>.
+                <section class="account-profile-card account-profile-card--api">
+                    <div class="account-profile-card__head">
+                        <h3 class="account-section-title mb-0">API kulcsok</h3>
+                        <a href="@route('api.docs')" target="_blank" rel="noopener noreferrer" class="account-profile-card__link">
+                            Dokumentáció <i class="fa fa-external-link-alt" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                    <p class="account-section-hint">
+                        Külső alkalmazások (például egy templomi honlap) ezekkel a kulcsokkal kezelhetik a közösségeidet.
+                        A kulcsot csak a létrehozáskor mutatjuk meg egyszer.
                     </p>
 
                     <?php if (empty($apiTokensList) || count($apiTokensList) === 0): ?>
-                        <p class="text-muted small mb-3">Még nincs API kulcsod.</p>
+                        <p class="account-empty account-empty--compact mb-3">Még nincs API kulcsod.</p>
                     <?php else: ?>
-                        <ul class="list-unstyled mb-3">
+                        <ul class="api-token-list">
                             <?php foreach ($apiTokensList as $apiToken): ?>
-                                <li class="d-flex align-items-start justify-content-between gap-2 py-2 border-bottom">
-                                    <div class="small">
-                                        <strong><?php echo htmlspecialchars($apiToken->name, ENT_QUOTES, 'UTF-8'); ?></strong>
-                                        <div class="text-muted">
-                                            <?php echo htmlspecialchars($apiToken->token_prefix, ENT_QUOTES, 'UTF-8'); ?>...
+                                <li class="api-token-list__item">
+                                    <div class="api-token-list__meta">
+                                        <strong class="api-token-list__name"><?php echo htmlspecialchars($apiToken->name, ENT_QUOTES, 'UTF-8'); ?></strong>
+                                        <span class="api-token-list__details">
+                                            <code><?php echo htmlspecialchars($apiToken->token_prefix, ENT_QUOTES, 'UTF-8'); ?>...</code>
                                             · létrehozva: <?php echo htmlspecialchars((string) $apiToken->created_at, ENT_QUOTES, 'UTF-8'); ?>
                                             <?php if ($apiToken->last_used_at): ?>
                                                 · utoljára: <?php echo htmlspecialchars((string) $apiToken->last_used_at, ENT_QUOTES, 'UTF-8'); ?>
                                             <?php endif; ?>
-                                        </div>
+                                        </span>
                                     </div>
                                     <form method="post"
                                           action="@route('portal.api_tokens.revoke', $apiToken)"
                                           class="mb-0 revoke-api-token-form"
                                           data-token-name="<?php echo htmlspecialchars($apiToken->name, ENT_QUOTES, 'UTF-8'); ?>">
                                         @csrf
-                                        <button type="submit" class="btn btn-link btn-sm text-danger p-0">Visszavonás</button>
+                                        <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill">Visszavonás</button>
                                     </form>
                                 </li>
                             <?php endforeach; ?>
@@ -290,11 +312,9 @@
                             </button>
                         </div>
                     </form>
-                </div>
+                </section>
 
-                <hr class="account-danger-zone-separator">
-
-                <div class="account-danger-zone">
+                <section class="account-danger-zone">
                     <h3 class="account-section-title">Veszélyes zóna</h3>
                     <p class="text-muted small mb-3">
                         A fiók törlése végleges. A közösségeid és a kapcsolódó adatok kezelése a törlés szabályai szerint történik.
@@ -302,7 +322,7 @@
                     <a href="@route('api.portal.profile.delete')" id="delete-profile" class="btn btn-outline-danger rounded-pill px-4">
                         <i class="fa fa-trash-alt" aria-hidden="true"></i> Fiókom törlése
                     </a>
-                </div>
+                </section>
             </div>
         </div>
     </div>

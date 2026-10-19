@@ -61,14 +61,14 @@
         <section class="api-docs__section">
             <h2>Autentikáció</h2>
             <ol class="api-docs__steps">
-                <li>Lépj be a kozossegek.hu fiókodba, és nyisd meg a <a href="@route('portal.my_profile')">profilod</a>.</li>
+                <li>Lépj be a kozossegek.hu fiókodba, és nyisd meg a <a href="@route('portal.my_profile')">fiókod</a>.</li>
                 <li>Az <strong>API kulcsok</strong> szekcióban hozz létre egy új kulcsot (pl. „Szent József templom honlap”).</li>
                 <li>A kulcs <strong>csak létrehozáskor</strong> jelenik meg egyszer. Tárold biztonságosan.</li>
                 <li>Minden védett kéréshez küldd el ezt a headert:</li>
             </ol>
             <pre class="api-docs__code"><code>Authorization: Bearer kzh_...</code></pre>
             <p class="api-docs__note">
-                A kulcs visszavonható a profilból. Visszavonás után a kérések <code>401</code> választ kapnak.
+                A kulcs visszavonható a fiókból. Visszavonás után a kérések <code>401</code> választ kapnak.
             </p>
         </section>
 
@@ -83,7 +83,7 @@
 
         <section class="api-docs__section">
             <h2>Végpontok</h2>
-            <p class="api-docs__note">A példákban a <code>YOUR_TOKEN</code> helyére a profilban létrehozott API kulcsot írd.</p>
+            <p class="api-docs__note">A példákban a <code>YOUR_TOKEN</code> helyére a fiókban létrehozott API kulcsot írd.</p>
 
             <article class="api-docs__endpoint">
                 <h3><span class="api-docs__method api-docs__method--get">GET</span> <code>/api/v1/me/groups</code></h3>

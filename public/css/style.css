@@ -33,7 +33,7 @@ img {
     }
 }
 
-/* Profil / Közösségeim / Eseményeim (and related editors): full viewport width */
+/* Fiók / Közösségeim / Eseményeim (and related editors): full viewport width */
 .container-fluid.inner--account {
     max-width: none;
 }
@@ -923,7 +923,7 @@ nav#header-main.navbar .navbar-nav > .nav-item:hover a {
     color: #444;
 }
 
-/* —— Portal account: Profil, Közösségeim, Eseményeim, szerkesztők —— */
+/* —— Portal account: Fiók, Közösségeim, Eseményeim, szerkesztők —— */
 .inner.inner--account {
     padding-top: 1.75rem;
     padding-bottom: 3.5rem;
@@ -1105,7 +1105,15 @@ nav#header-main.navbar .navbar-nav > .nav-item:hover a {
     font-size: 1.2rem;
     font-weight: 600;
     color: #1e293b;
-    margin: 0 0 1rem;
+    margin: 0 0 0.75rem;
+}
+
+.account-section-hint {
+    font-size: 0.9rem;
+    color: #64748b;
+    margin: 0 0 1.15rem;
+    line-height: 1.55;
+    max-width: 40rem;
 }
 
 .account-form-section {
@@ -1116,25 +1124,188 @@ nav#header-main.navbar .navbar-nav > .nav-item:hover a {
     border-color: #e2e8f0;
 }
 
+.account-panel--profile {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.account-panel--profile > form {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin: 0;
+    max-width: 38rem;
+}
+
+.account-panel--profile > .account-profile-card,
+.account-panel--profile > .account-danger-zone {
+    max-width: 38rem;
+}
+
+.account-panel--profile .account-page-head {
+    margin-bottom: 0.25rem;
+    max-width: 38rem;
+}
+
+.account-profile-card {
+    padding: 1.25rem 1.35rem 1.4rem;
+    background: #fafbfd;
+    border: 1px solid #eef2f7;
+    border-radius: 1rem;
+}
+
+.account-profile-card__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: flex-start;
+    gap: 0.45rem 0.85rem;
+    margin-bottom: 0.35rem;
+}
+
+.account-profile-card__link {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--orange);
+    text-decoration: none;
+    white-space: nowrap;
+
+    &:hover {
+        text-decoration: underline;
+    }
+
+    .fa {
+        font-size: 0.75em;
+        margin-left: 0.2rem;
+    }
+}
+
+.account-form-narrow {
+    max-width: none;
+}
+
+.account-form-pair {
+    display: grid;
+    gap: 0.85rem 1rem;
+
+    @media (min-width: 768px) {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.account-profile-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.15rem 0 0.35rem;
+}
+
 .profile-social-block {
     border: 1px solid #e2e8f0;
     border-radius: 0.75rem;
-    padding: 1rem 1.15rem;
-    background: #fafbfd;
+    padding: 0.15rem 1.15rem;
+    background: #fff;
 }
 
 .profile-social-row {
-    padding: 0.65rem 0;
+    padding: 0.85rem 0;
     border-bottom: 1px solid #e2e8f0;
 }
 
 .profile-social-row:last-child {
     border-bottom: none;
-    padding-bottom: 0;
 }
 
-.profile-social-row:first-child {
-    padding-top: 0;
+.profile-social-row__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem 1rem;
+}
+
+.profile-social-row__label {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    color: #334155;
+    font-weight: 500;
+
+    .fa,
+    .fab {
+        color: #64748b;
+        width: 1.1rem;
+        text-align: center;
+    }
+}
+
+.profile-social-row__detach {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #b91c1c;
+    text-decoration: none;
+
+    &:hover {
+        color: #991b1b;
+        text-decoration: underline;
+    }
+}
+
+.api-token-list {
+    list-style: none;
+    margin: 0 0 1.15rem;
+    padding: 0;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.75rem;
+    background: #fff;
+    overflow: hidden;
+}
+
+.api-token-list__item {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem 1rem;
+    padding: 0.9rem 1.1rem;
+    border-bottom: 1px solid #eef2f7;
+
+    &:last-child {
+        border-bottom: 0;
+    }
+}
+
+.api-token-list__meta {
+    display: grid;
+    gap: 0.2rem;
+    min-width: 0;
+}
+
+.api-token-list__name {
+    color: #0f172a;
+    font-size: 0.95rem;
+}
+
+.api-token-list__details {
+    font-size: 0.82rem;
+    color: #64748b;
+    line-height: 1.45;
+
+    code {
+        font-size: 0.8rem;
+        color: #475569;
+        background: #f1f5f9;
+        padding: 0.05rem 0.35rem;
+        border-radius: 4px;
+    }
+}
+
+.account-empty--compact {
+    padding: 1.1rem 1rem;
+    margin: 0;
+    font-size: 0.9rem;
 }
 
 .account-panel .btn-primary {
@@ -1180,10 +1351,10 @@ nav#header-main.navbar .navbar-nav > .nav-item:hover a {
 }
 
 .account-danger-zone {
-    margin-top: 0;
+    margin-top: 0.5rem;
     padding: 1.25rem 1.35rem;
     border: 1px solid rgb(248 113 113 / 0.45);
-    border-radius: 12px;
+    border-radius: 1rem;
     background: linear-gradient(135deg, #fff5f5 0%, #fef2f2 100%);
 
     .account-section-title {
