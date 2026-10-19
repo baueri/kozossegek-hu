@@ -20,7 +20,7 @@ class UserController extends PortalController
     {
         $user = Auth::user();
         $socialProfiles = $user->socialProfiles;
-        return view('portal.profile', compact('user', 'socialProfiles'));
+        return $this->mintView->render('pages/profile.php', compact('user', 'socialProfiles'));
     }
 
     public function update(Request $request, UpdateUser $service): void
@@ -41,7 +41,7 @@ class UserController extends PortalController
     {
         use_default_header_bg();
 
-        return view('portal.forgot-password');
+        return $this->mintView->render('pages/forgot-password.php');
     }
 
     /**
@@ -73,11 +73,17 @@ class UserController extends PortalController
         $token = $userTokens->getByToken($request['token']);
 
         if (!$token) {
-            return view('portal.error', ['message2' => 'Jelszó visszaállítás sikertelen! Hibás token.']);
+            return $this->mintView->render('pages/portal-error.php', [
+                'pageTitle' => 'Hiba',
+                'message2' => 'Jelszó visszaállítás sikertelen! Hibás token.',
+            ]);
         }
 
         if ($token->expired()) {
-            return view('portal.error', ['message2' => 'Ennek a tokennek az érvényességi ideje lejárt!']);
+            return $this->mintView->render('pages/portal-error.php', [
+                'pageTitle' => 'Hiba',
+                'message2' => 'Ennek a tokennek az érvényességi ideje lejárt!',
+            ]);
         }
 
         $user = $users->byEmail($token->email)->first();
@@ -94,10 +100,13 @@ class UserController extends PortalController
         }
 
         if (!$user) {
-            return view('portal.error', ['message2' => 'Nem létező, vagy törölt felhasználó!']);
+            return $this->mintView->render('pages/portal-error.php', [
+                'pageTitle' => 'Hiba',
+                'message2' => 'Nem létező, vagy törölt felhasználó!',
+            ]);
         }
 
-        return view('portal.password-reset', compact('user'));
+        return $this->mintView->render('pages/password-reset.php');
     }
 
 
@@ -107,17 +116,26 @@ class UserController extends PortalController
             $token = $userTokens->getByToken($request['token']);
 
             if (!$token) {
-                return view('portal.error', ['message2' => 'Felhasználói aktiválása sikertelen! Hibás token.']);
+                return $this->mintView->render('pages/portal-error.php', [
+                    'pageTitle' => 'Hiba',
+                    'message2' => 'Felhasználói aktiválása sikertelen! Hibás token.',
+                ]);
             }
 
             if ($token->expired()) {
-                return view('portal.error', ['message2' => 'Ennek a linknek az érvényességi ideje lejárt!']);
+                return $this->mintView->render('pages/portal-error.php', [
+                    'pageTitle' => 'Hiba',
+                    'message2' => 'Ennek a linknek az érvényességi ideje lejárt!',
+                ]);
             }
 
             $user = $users->byEmail($token->email)->first();
 
             if (!$user) {
-                return view('portal.error', ['message2' => 'Nem létező, vagy törölt felhasználó!']);
+                return $this->mintView->render('pages/portal-error.php', [
+                    'pageTitle' => 'Hiba',
+                    'message2' => 'Nem létező, vagy törölt felhasználó!',
+                ]);
             }
 
             $users->save($user, ['activated_at' => date('Y-m-d H:i:s')]);

@@ -9,7 +9,7 @@ abstract class Command
     public const SUCCESS = 0;
     public const FAILURE = 1;
 
-    private array $args = [];
+    protected array $args = [];
 
     public readonly CommandOutput $output;
 

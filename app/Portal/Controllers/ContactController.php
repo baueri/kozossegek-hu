@@ -22,9 +22,8 @@ class ContactController
         Mailer $mailer,
         CaptchaValidator $captchaValidator
     ): array {
-        HoneyPot::validate('rolunk', $request['website']);
-
         try {
+            HoneyPot::validate('rolunk', $request['website']);
             $captchaValidator->validate($request->get('cft'), $request->clientIp());
 
             if ($request['category'] === 'kapcsolat') {

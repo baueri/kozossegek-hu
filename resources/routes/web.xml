@@ -3,7 +3,6 @@
     <!-- ha majd nyelviesítjük: prefix="{lang#(?:en|hu)?}" -->
     <route-group>
         <route-group namespace="App\Portal\Controllers\">
-            <middleware name="App\Middleware\ComingSoon"/>
             <middleware name="csrf"/>
             <route method="get" uri="test" as="test" controller="TestController" use="test"/>
 
@@ -21,8 +20,6 @@
             <route method="get" uri="templom/{varos}/{intezmeny}" as="portal.institute_groups" controller="GroupController" use="intezmenyKozossegek"/>
 
             <route method="get" uri="kozosseg/{varos}/{intezmeny}/{kozosseg}" as="kozosseg.old" controller="GroupController" use="kozosseg"/>
-
-            <route method="get" uri="feedback" as="portal.feedback" view="portal.feedback"/>
 
             <!-- Közösség kapcsolatfelvételi űrlap -->
             <route method="post" uri="group-contact-form" as="portal.group-contact-form" controller="GroupController" use="groupContactForm"/>
@@ -44,6 +41,14 @@
                 <route method="get" uri="my-group/{id}/edit" as="portal.edit_group" controller="GroupController" use="editGroup"/>
                 <route method="get" uri="my-group/{id}/download-document" as="portal.download_document" controller="GroupController" use="downloadDocument"/>
                 <route method="get" uri="my-groups" as="portal.my_groups" controller="GroupController" use="myGroups"/>
+
+                <route method="get" uri="my-events/geocode-search" as="portal.my_event.geocode_search" controller="UserEventController" use="geocodeSearch" middleware="json"/>
+                <route method="get" uri="my-events" as="portal.my_events" controller="UserEventController" use="index"/>
+                <route method="get" uri="my-events/create" as="portal.my_event.create" controller="UserEventController" use="createForm"/>
+                <route method="post" uri="my-events" as="portal.my_event.store" controller="UserEventController" use="store"/>
+                <route method="get" uri="my-event/{id}/edit" as="portal.my_event.edit" controller="UserEventController" use="editForm"/>
+                <route method="post" uri="my-event/{id}/update" as="portal.my_event.update" controller="UserEventController" use="update"/>
+                <route method="get" uri="my-event/{id}/delete" as="portal.my_event.delete" controller="UserEventController" use="delete"/>
 
                 <route method="get" uri="my-group/{id}/delete" as="portal.delete_group" controller="GroupController" use="deleteGroup"/>
                 <route method="post" uri="my-group/{id}/update" as="portal.my_group.update" controller="GroupController" use="updateMyGroup"/>
@@ -68,29 +73,30 @@
                    middleware="referer@referer:rolunk"/>
         </route-group>
 
-        <route method="all" uri="social/{provider}/login" controller="\App\Portal\Controllers\SocialController" use="socialLogin" as="social_login"/>
+        <route method="post" uri="social/{provider}/login" controller="\App\Portal\Controllers\SocialController" use="socialLogin" as="social_login"/>
         <route method="all" uri="social/{provider}/deauthorize" controller="\App\Portal\Controllers\SocialController" use="deauthorize" as="social_deauthorize"/>
 
         <!--  FIÓK AKTIVÁLÁS  -->
         <route method="all" uri="/user/activate" as="portal.user.activate" controller="App\Portal\Controllers\UserController" use="activateUser"/>
-        <route method="post" uri="login-modal" as="portal.login_modal" view="portal.partials.login_modal"/>
 
         <!-- BELÉPÉS -->
         <route method="get" uri="login" controller="App\Portal\Controllers\LoginController" use="login" as="login"/>
         <route method="post" uri="login" controller="App\Portal\Controllers\LoginController" use="doLogin" as="doLogin"/>
         <route method="get" uri="logout" controller="App\Portal\Controllers\LoginController" use="logout" as="logout"/>
         <route method="post" uri="resend-activation" controller="App\Portal\Controllers\LoginController" use="resendActivationEmail" as="resend_activation"/>
-
-        <!--  Fiók törlés info link  -->
-        <route method="get" uri="fiok-torlese" view="portal/data_deletion_info"/>
     </route-group>
 
     <!-- VÍZJELES KÉPGENERÁLÁS -->
     <route method="get" uri="/media/{entity_type}/images/{image}" controller="App\Portal\Controllers\ImageController" use="getImage"/>
-    <route method="get" uri="opensearch.xml" view="portal/opensearch"/>
 
     <route method="post" uri="announcement" controller="App\Portal\Controllers\PageController" use="setAnnouncementsSeen" as="api.announcements.set_seen"/>
 
+    <!-- Események -->
+    <route method="get" uri="esemenyek" controller="App\Portal\Controllers\EventController" use="list" as="event.list"/>
+    <route method="get" uri="esemeny/{date}/{slug}" controller="App\Portal\Controllers\EventController" use="show" as="event.show"/>
+    <route method="get" uri="calendar/{event}/ics" controller="App\Portal\Controllers\EventController" use="ics" as="event.ics"/>
+
+
     <!-- Adatbázisban tárolt statikus oldalak. FIGYELEM!!!! EZ ALÁ MÁR NE KERÜLJÖN ROUTE!!! -->
-    <route method="get" uri="{slug}" controller="App\Portal\Controllers\PageController" use="page" as="portal.page" middleware="App\Middleware\ComingSoon"/>
+    <route method="get" uri="{slug}" controller="App\Portal\Controllers\PageController" use="page" as="portal.page"/>
 </routes>

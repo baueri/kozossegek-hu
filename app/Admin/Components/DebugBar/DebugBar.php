@@ -41,19 +41,22 @@ class DebugBar
             return '';
         }
 
-        $headers = [];
-        $tab_contents = [];
+        $tabs = [];
         foreach ($this->tabs as $tab) {
             $name = get_class_name($tab);
-            $headers[$name] = "{$tab->generateIcon()}<span class='d-none d-lg-inline'>{$tab->getTitle()}</span>";
-            $tab_contents[$name] = $tab->render();
+            $tabs[$name] = [
+                'icon'    => $tab->generateIcon(),
+                'title'   => $tab->getTitle(),
+                'badge'   => $tab->getBadge(),
+                'content' => $tab->render(),
+            ];
         }
 
         $query_time = $this->getTab(QueryHistoryTab::class)->getTotalTime() . 's';
         $memory_usage = memory_usage_format();
         $total_load_time = $this->getTab(MileStoneTab::class)->getTotalLoadTime();
 
-        return StringHelper::sanitize(view('admin.partials.debugbar', compact('headers', 'tab_contents', 'query_time', 'memory_usage', 'total_load_time')));
+        return StringHelper::sanitize(view('admin.partials.debugbar', compact('tabs', 'query_time', 'memory_usage', 'total_load_time')));
     }
 
     public function enabled(): bool

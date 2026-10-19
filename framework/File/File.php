@@ -145,9 +145,54 @@ class File
         return dirname($this->filePath);
     }
 
-    public function createSymLink(string $link): bool
+    /**
+     * Create a symlink at $linkPath pointing to this file/directory.
+     * PHP: symlink(target, link) — first arg is what the link points to.
+     *
+     * Replaces broken or wrong-target symlinks; refuses if $linkPath exists as a real file/dir.
+     */
+    public function createSymLink(string $linkPath): bool
     {
-        return symlink($this->filePath, $link);
+        if ($this->filePath === null || $this->filePath === '') {
+            return false;
+        }
+
+        return self::createSymlinkTo($this->filePath, $linkPath);
+    }
+
+    /**
+     * Ensure $linkPath is a symlink pointing at $targetPath (absolute resolved target).
+     */
+    public static function createSymlinkTo(string $targetPath, string $linkPath): bool
+    {
+        $targetPath = rtrim($targetPath, '/\\');
+        $linkPath = rtrim($linkPath, '/\\');
+
+        $resolvedTarget = realpath($targetPath);
+        if ($resolvedTarget === false) {
+            return false;
+        }
+
+        clearstatcache(true, $linkPath);
+
+        if (is_link($linkPath)) {
+            $viaLink = @realpath($linkPath);
+            if ($viaLink !== false && $viaLink === $resolvedTarget) {
+                return true;
+            }
+            if (!@unlink($linkPath)) {
+                return false;
+            }
+        } elseif (file_exists($linkPath)) {
+            return false;
+        }
+
+        $linkParent = dirname($linkPath);
+        if (!is_dir($linkParent) && !@mkdir($linkParent, 0777, true)) {
+            return false;
+        }
+
+        return @symlink($resolvedTarget, $linkPath);
     }
 
     public function getMainType(): string

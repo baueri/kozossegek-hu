@@ -38,7 +38,7 @@ class LoginController extends PortalController
             redirect_route('home');
         }
 
-        return view('portal.login');
+        return $this->mintView->render('pages/login.php');
     }
 
     public function doLogin(Request $request, Authenticate $service): string
@@ -55,7 +55,7 @@ class LoginController extends PortalController
 
             if (!$user && $service->hasErrors()) {
                 Message::danger($service->firstError());
-                return view('portal.login');
+                return $this->mintView->render('pages/login.php');
             }
 
             Auth::login($user);
@@ -87,7 +87,7 @@ class LoginController extends PortalController
         } catch (Exception $e) {
             report($e);
             Message::danger('Váratlan hiba történt.');
-            return view('portal.login');
+            return $this->mintView->render('pages/login.php');
         }
     }
 
@@ -120,6 +120,8 @@ class LoginController extends PortalController
             'name' => $request['name'],
             'email' => $request['email'],
             'cloudflareSiteKey' => config('app.cloudflare.site_key'),
+            'g_context' => 'signup',
+            'g_text' => 'signup_with',
         ];
 
         try {
@@ -141,14 +143,14 @@ class LoginController extends PortalController
                     redirect_route('login');
                 }
             }
-            return view('portal.register', $model);
+            return $this->mintView->render('pages/register.php', $model);
         } catch (EmailTakenException) {
             Message::danger('Ez az email cím már foglalt!');
-            return view('portal.register', $model);
+            return $this->mintView->render('pages/register.php', $model);
         } catch (\App\Services\Captcha\Exception $e) {
             log_event('captcha_fail', ['request' => $request->all(), 'error' => $e->getMessage()]);
             Message::danger('Captcha hiba, kérjük próbáld meg újból');
-            return view('portal.register', $model);
+            return $this->mintView->render('pages/register.php', $model);
         }
     }
 

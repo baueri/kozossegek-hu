@@ -51,6 +51,25 @@ return [
             ],
         ],
     ],
+    
+    [
+        'title' => 'Események',
+        'icon' => 'calendar-alt',
+        'as' => 'admin.event.index',
+        'submenu' => [
+            [
+                'title' => 'Események',
+                'icon' => 'calendar-alt',
+                'as' => 'admin.event.index',
+                'similars' => ['admin.event.edit', 'admin.event.create'],
+            ],
+            [
+                'title' => 'Létrehozás',
+                'icon' => 'plus',
+                'as' => 'admin.event.create',
+            ],
+        ],
+    ],
     [
         'title' => 'Mozgalmak, rendek',
         'icon' => 'landmark',

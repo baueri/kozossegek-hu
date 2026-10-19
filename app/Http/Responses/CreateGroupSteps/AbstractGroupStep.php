@@ -21,8 +21,6 @@ abstract class AbstractGroupStep
         $this->request = $request;
     }
 
-    abstract protected function getView(): string;
-
     protected function getModel(): array
     {
         return [];
@@ -33,8 +31,15 @@ abstract class AbstractGroupStep
         return $this->render();
     }
 
-    public function render(): string
+    abstract public function render(): string;
+
+    /**
+     * Same data as {@see render()} for Mint (or other) templates outside the Blade view path.
+     *
+     * @return array<string, mixed>
+     */
+    public function viewData(): array
     {
-        return view($this->getView(), $this->getModel());
+        return $this->getModel();
     }
 }

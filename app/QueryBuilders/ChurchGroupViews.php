@@ -12,7 +12,7 @@ use Framework\Model\Relation\Has;
 use Framework\Model\Relation\Relation;
 
 /**
- * @phpstan-extends EntityQueryBuilder<ChurchGroupView>
+ * @extends EntityQueryBuilder<ChurchGroupView>
  */
 class ChurchGroupViews extends ChurchGroups
 {
@@ -22,8 +22,6 @@ class ChurchGroupViews extends ChurchGroups
     {
         return $this->has(Has::many, entity_builder(GroupTag::class), 'group_id');
     }
-
-
 
     public function forUser(User $user): self
     {

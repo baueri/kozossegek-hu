@@ -5,6 +5,7 @@ namespace App\Portal\Controllers\Api\V1;
 use App\Auth\Auth;
 use App\QueryBuilders\Users;
 use App\Services\DeleteUser;
+use Baueri\Mint\View as MintView;
 use Framework\Http\Controller;
 use Framework\Http\Request;
 use Framework\Support\Password;
@@ -14,6 +15,13 @@ class ApiUserController extends Controller
     public function checkEmail(Request $request, Users $users)
     {
         return ['ok' => !$users->byEmail($request['email'])->exists()];
+    }
+
+    public function deleteModal(MintView $mintView): string
+    {
+        header('Content-Type: text/html; charset=utf-8', true);
+
+        return $mintView->render('partials/profile_delete_modal.php', []);
     }
 
     public function delete(Request $request, DeleteUser $service)

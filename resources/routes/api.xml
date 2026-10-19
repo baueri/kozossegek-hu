@@ -6,14 +6,11 @@
             <route method="all" controller="SearchController" uri="search-institute" use="searchInstitute" as="search-institute"/>
             <route method="all" controller="SearchController" uri="search-district" use="searchDistrict" as="search-district"/>
             <route method="all" controller="SearchController" uri="search-user" use="searchUser" as="search-user" middleware="admin"/>
-            <route method="get" controller="SearchController" uri="group-search" use="searchGroup" as="search_group" />
-
-
             <!-- Foglalt email ellenőrzés -->
             <route method="post" uri="check-email" controller="ApiUserController" use="checkEmail" as="check-email"/>
 
             <!-- Fiók törlése MODAL -->
-            <route method="all" middleware="auth" uri="profile/delete-modal" as="portal.profile.delete_modal" view="portal.partials.delete_modal"/>
+            <route method="all" middleware="auth" uri="profile/delete-modal" as="portal.profile.delete_modal" controller="ApiUserController" use="deleteModal"/>
 
             <!-- Fiók törlése -->
             <route method="post" middleware="auth|csrf" uri="profile/delete" as="portal.profile.delete" controller="ApiUserController" use="delete"/>

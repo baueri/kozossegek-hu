@@ -1,6 +1,7 @@
 <?php
 
 use App\Admin\Components\DebugBar\DebugBar;
+use Baueri\Mint\View as MintView;
 use App\Auth\Auth;
 use App\Mailable\ThrowableCriticalErrorEmail;
 use App\Middleware\AdminMiddleware;
@@ -98,7 +99,7 @@ function router(): RouterInterface
 
 function route_is(string $routeName): bool
 {
-    return current_route()->getAs() === $routeName;
+    return current_route() &&current_route()->getAs() === $routeName;
 }
 
 function redirect(string $uri): never
@@ -145,7 +146,7 @@ function view_path(string $view): string
     return View::getPath($view);
 }
 
-function current_route(): Route
+function current_route(): ?Route
 {
     return app()->get(Request::class)->route;
 }
@@ -201,7 +202,13 @@ if (! function_exists('mb_ucfirst')) {
 
 function raise_error_page(int $code, string $message = '', string $message2 = ''): never
 {
-    echo view('portal.error', compact('code', 'message', 'message2'));
+    $pageTitle = $message !== '' ? $message : 'Hiba';
+    echo app()->get(MintView::class)->render('pages/portal-error.php', [
+        'pageTitle' => $pageTitle,
+        'code' => $code,
+        'message' => $message,
+        'message2' => $message2,
+    ]);
     exit();
 }
 
@@ -492,6 +499,11 @@ function str_shorten(string $text, int $numberOfCharacters, string $moreText = '
 
 function castInto($from, $to)
 {
+    // Avoid `new Carbon(null)` / `Carbon::__construct(null)` resolving to "now" for nullable DB columns.
+    if ($from === null && is_string($to) && class_exists($to) && is_subclass_of($to, \DateTimeInterface::class)) {
+        return null;
+    }
+
     return match (true) {
         $to === 'int' => (int) $from,
         $to === 'string' => (string) $from,

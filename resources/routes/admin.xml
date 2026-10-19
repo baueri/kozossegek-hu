@@ -128,6 +128,22 @@
             <route method="all" uri="{id}/delete-modal" as="delete_modal" use="getDeleteModal"/>
         </route-group>
 
+        <!-- Események -->
+        <route-group prefix="event" as="event" controller="EventController">
+            <route method="get" uri="list" use="index" as="index"/>
+
+            <route method="get" uri="create" use="create" as="create"/>
+            <route method="post" uri="create" use="doCreate" as="do_create"/>
+
+            <route method="get" uri="geocode-search" use="geocodeSearch" as="geocode_search" middleware="json"/>
+
+            <route method="get" uri="{id}/edit" use="edit" as="edit"/>
+            <route method="post" uri="{id}/update" use="update" as="update"/>
+
+            <route method="get" uri="{id}/toggle-lifecycle" use="toggleLifecycle" as="toggle_lifecycle"/>
+            <route method="get" uri="{id}/delete" use="delete" as="delete"/>
+        </route-group>
+
         <!-- Lelkiségi mozgalmak -->
         <route-group controller="SpiritualMovementController" as="spiritual_movement" prefix="spiritual-movement">
             <route method="get" uri="list" as="list" use="spiritualMovements"/>

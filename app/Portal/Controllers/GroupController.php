@@ -25,7 +25,6 @@ use App\Services\GroupSearchRepository;
 use App\Services\ReplayAttackProtection\Service;
 use Error;
 use Exception;
-use Framework\Event\Event;
 use Framework\Event\EventDisptatcher;
 use Framework\Exception\FileTypeNotAllowedException;
 use Framework\Http\Exception\PageNotFoundException;
@@ -90,7 +89,8 @@ class GroupController extends PortalController
     public function kozossegRegisztracio(RegisterGroupForm $service): string
     {
         set_header_bg('/images/kozosseget_vezetek.jpg');
-        return (string) $service;
+
+        return $this->mintView->render('pages/kozosseg-regisztracio.php', $service->viewData());
     }
 
     /**
@@ -117,7 +117,7 @@ class GroupController extends PortalController
 
         $institute = $instituteRepo->find($group->institute_id);
 
-        $similar_groups = ChurchGroupViews::query()->similarTo($group)->limit(4)->get();
+        $similar_groups = ChurchGroupViews::query()->similarTo($group)->limit(4)->get()->castInto('toSearchResult');
         $slug = $group->slug();
         $keywords = builder('search_engine')->where('group_id', $group->getId())->first()['keywords'] ?? '';
 
@@ -125,7 +125,7 @@ class GroupController extends PortalController
             log_event('group_profile_opened', ['group_id' => $group->getId()]);
         }
 
-        return view('portal.kozosseg', compact(
+        return $this->mintView->render('pages/kozosseg.php', compact(
             'group',
             'institute',
             'backUrl',
@@ -144,7 +144,7 @@ class GroupController extends PortalController
         $slug = $request['kozosseg'];
         $group = $repo->bySlug($slug)->firstOrFail();
 
-        return view('portal.partials.group-contact-form', compact('group'));
+        return $this->mintView->render('partials/group-contact-form.php', compact('group'));
     }
 
     public function sendContactMessage(Request $request, ChurchGroupViews $groups, SendGroupContactMessage $service): array
@@ -169,7 +169,7 @@ class GroupController extends PortalController
 
         $groups = $groupRepo->getNotDeletedGroupsByUser($user);
 
-        return view('portal.group.my_groups', compact('groups'));
+        return $this->mintView->render('pages/kozossegeim.php', compact('groups'));
     }
 
     public function editGroup(Request $request, ChurchGroupViews $groups, PortalEditGroupForm $response): string
@@ -287,7 +287,7 @@ class GroupController extends PortalController
 
     public function registrationSuccess(): string
     {
-        return view('portal.group.create_group_success');
+        return $this->mintView->render('pages/kozosseg-sikeres-regisztracio.php');
     }
 
     /**
@@ -317,29 +317,44 @@ class GroupController extends PortalController
         $token = $tokens->getByToken($decoded['token'] ?? '');
 
         if (!$token) {
-            return view('portal.error', ['message2' => 'Közösség megerősítése sikertelen! Hibás token.']);
+            return $this->mintView->render('pages/portal-error.php', [
+                'pageTitle' => 'Hiba',
+                'message2' => 'Közösség megerősítése sikertelen! Hibás token.',
+            ]);
         }
 
         if ($token->expired()) {
-            return view('portal.error', ['message2' => 'Ennek a tokennek az érvényességi ideje lejárt!']);
+            return $this->mintView->render('pages/portal-error.php', [
+                'pageTitle' => 'Hiba',
+                'message2' => 'Ennek a tokennek az érvényességi ideje lejárt!',
+            ]);
         }
 
         $group = $groups->findOrFail($decoded['group_id']);
         if ((int) $token->data('group_id') !== (int) $group->getId()) {
-            return view('portal.error', ['message2' => 'Közösség megerősítése sikertelen! Hibás token.']);
+            return $this->mintView->render('pages/portal-error.php', [
+                'pageTitle' => 'Hiba',
+                'message2' => 'Közösség megerősítése sikertelen! Hibás token.',
+            ]);
         }
 
         if ($decoded['action'] === 'confirm') {
             $groups->save($group, ['confirmed_at' => now(), 'notified_at' => null]);
-            $view = view('portal.error', ['message2' => 'Közösség sikeresen megerősítve!']);
+            $html = $this->mintView->render('pages/portal-error.php', [
+                'pageTitle' => 'Értesítés',
+                'message2' => 'Közösség sikeresen megerősítve!',
+            ]);
         } elseif ($decoded['action'] === 'deactivate') {
             $groups->save($group, ['status' => GroupStatus::inactive]);
-            $view = view('portal.error', ['message2' => 'Közösséged inaktiválva lett. Közösséget bármikor újra aktiválhatsz belépés után a közösség adatlapján.']);
+            $html = $this->mintView->render('pages/portal-error.php', [
+                'pageTitle' => 'Értesítés',
+                'message2' => 'Közösséged inaktiválva lett. Közösséget bármikor újra aktiválhatsz belépés után a közösség adatlapján.',
+            ]);
         } else {
             throw new InvalidArgumentException('Invalid confirm action');
         }
 
         $tokens->deleteModel($token);
-        return $view;
+        return $html;
     }
 }

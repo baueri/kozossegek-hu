@@ -16,6 +16,7 @@ class AppServiceProvider implements Before
         View::setVariable('is_prod', is_prod());
         View::setVariable('header_background', '');
         View::setVariable('display_news', (bool) env('DISPLAY_NEWS'));
+        View::setVariable('display_events', (bool) env('DISPLAY_EVENTS'));
 
         $announcements = null;
         if (Auth::user()) {

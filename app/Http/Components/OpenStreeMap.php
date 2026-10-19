@@ -27,7 +27,10 @@ class OpenStreeMap extends Component
                 $popup_html = $osm->popup_html;
                 $marker = $osm->marker;
                 return compact('lat', 'lon', 'popup_html', 'marker');
-            })->toJson();
+            })
+            ->filter(fn (array $marker) => is_numeric($marker['lat']) && is_numeric($marker['lon']))
+            ->values()
+            ->toJson();
 
         $height = $this->height;
 

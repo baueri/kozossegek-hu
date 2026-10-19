@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http;
 
 use App\Exception\HoneypotException;
+use Baueri\Mint\View as MintView;
 use App\Services\ReplayAttackProtection\Exception as ReplayAttackException;
 use Error;
 use Exception;
@@ -100,21 +101,28 @@ class ErrorHandler
         try {
             throw $error;
         } catch (PageNotFoundException | ModelNotFoundException | RouteNotFoundException $error) {
-            print(view('portal.error', [
+            $msg = 'A keresett oldal nem található';
+            print(app()->get(MintView::class)->render('pages/portal-error.php', [
+                'pageTitle' => $msg,
                 'code' => $error->getCode(),
-                'message' => 'A keresett oldal nem található',
-                'message2' => 'Az oldal, amit keresel lehet, hogy törölve lett vagy ideiglenesen nem elérhető.']));
+                'message' => $msg,
+                'message2' => 'Az oldal, amit keresel lehet, hogy törölve lett vagy ideiglenesen nem elérhető.',
+            ]));
         } catch (UnauthorizedException $error) {
-            print(view('portal.error', [
+            print(app()->get(MintView::class)->render('pages/portal-error.php', [
+                'pageTitle' => 'Hozzáférés megtagadva',
                 'code' => $error->getCode(),
-                'message2' => 'Nincs jogosultsága az oldal megtekintéséhez']));
+                'message2' => 'Nincs jogosultsága az oldal megtekintéséhez',
+            ]));
         } catch (Error | Exception $error) {
             error_log($error->getMessage() . "\n" . $error->getTraceAsString());
 
-            print(view('portal.error', [
+            $msg = 'Váratlan hiba történt';
+            print(app()->get(MintView::class)->render('pages/portal-error.php', [
+                'pageTitle' => $msg,
                 'code' => 500,
-                'message' => 'Váratlan hiba történt',
-                'message2' => 'Az oldal üzemeltetői értesítve lettek a hibáról'
+                'message' => $msg,
+                'message2' => 'Az oldal üzemeltetői értesítve lettek a hibáról',
             ]));
         }
     }

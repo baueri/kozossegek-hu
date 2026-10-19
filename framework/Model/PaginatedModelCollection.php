@@ -60,9 +60,4 @@ class PaginatedModelCollection extends ModelCollection implements PaginatedResul
 
         return $links;
     }
-
-    public function renderSmallPager(): string
-    {
-        return view('partials.simple-pager', ['route' => 'portal.news.page', 'total' => $this->total, 'page' => $this->page, 'perpage' => $this->perpage]);
-    }
 }

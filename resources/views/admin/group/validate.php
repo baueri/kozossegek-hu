@@ -50,12 +50,12 @@
         <hr>
         <h5>Válassz egyet az alábbi műveletek közül</h5>
         @if($user->activated_at)
-            <a href="" onclick="approveGroup(); return false;"  class="btn btn-success" title="Az adatokkal minden rendben van">@icon('check') Jóváhagyás</a>
+            <a href="#" onclick="approveGroup(); return false;" class="btn btn-success" title="Az adatokkal minden rendben van">@icon('check') Jóváhagyás</a>
         @else
             <a href="#" onclick="return false;" class="btn btn-success" style="opacity: .5; cursor:default;" title="Nem megerősített fiók közösségét nem lehet jóváhagyni!">@icon('check') Jóváhagyás</a>
         @endif
         <a href="#" onclick="showRejectModal(); return false;" class="btn btn-warning" title="Hiányos / nem megfelelő adatok">@icon('times') Visszautasítás</a>
-        <a href="" onclick="showDeleteModal(); return false;" class="btn btn-danger" title="Irányelveknek nem megfelelő közösség ">@icon('trash-alt') Törlés</a>
+        <a href="#" onclick="showDeleteModal(); return false;" class="btn btn-danger" title="Irányelveknek nem megfelelő közösség ">@icon('trash-alt') Törlés</a>
     </div>
     <div class="col-md-6">
         @if($image)

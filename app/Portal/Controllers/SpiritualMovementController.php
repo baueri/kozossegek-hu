@@ -10,6 +10,7 @@ use App\Models\SpiritualMovement;
 use App\QueryBuilders\ChurchGroups;
 use App\QueryBuilders\ChurchGroupViews;
 use App\QueryBuilders\SpiritualMovements;
+use Baueri\Mint\View as MintEngineView;
 use Framework\Http\Exception\PageNotFoundException;
 use Framework\Http\Request;
 use Framework\Model\Exceptions\ModelNotFoundException;
@@ -32,9 +33,10 @@ class SpiritualMovementController extends PortalController
 
     public function __construct(
         Request $request,
+        MintEngineView $mintView,
         private readonly SpiritualMovements $repository
     ) {
-        parent::__construct($request);
+        parent::__construct($request, $mintView);
     }
 
     public function list(): string
@@ -51,8 +53,8 @@ class SpiritualMovementController extends PortalController
         $title = $this->title;
         $description = $this->description;
 
-        return view(
-            'portal.spiritual_movement.list',
+        return $this->mintView->render(
+            'pages/lelkisegi-mozgalmak.php',
             compact('spiritualMovements', 'title', 'description')
         );
     }
@@ -73,7 +75,8 @@ class SpiritualMovementController extends PortalController
                 ->where('spiritual_movement_id', $spiritualMovement->id)
                 ->active()
                 ->with('tags')
-                ->get();
+                ->get()
+                ->castInto('toSearchResult');
 
             $title = $spiritualMovement->name;
 
@@ -83,7 +86,7 @@ class SpiritualMovementController extends PortalController
             }
 
             use_default_header_bg();
-            return view('portal.spiritual_movement.view', compact('spiritualMovement', 'groups', 'title'));
+            return $this->mintView->render('pages/lelkisegi-mozgalom.php', compact('spiritualMovement', 'groups', 'title'));
         } catch (ModelNotFoundException) {
             throw new PageNotFoundException();
         }

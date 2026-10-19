@@ -77,22 +77,6 @@
             </div>
         </div>
     @endif
-    @if(site_has_error_logs())
-        <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card text-white bg-danger mb-3 shadow">
-              <div class="card-header">
-                A hibanapló nem üres
-              </div>
-              <div class="card-body">
-                <p class="card-text">
-                    <b>Legutóbbi hiba ({{ $last_error['dateTime'] }}):</b>
-                    {{ $last_error['error'] }}
-                </p>
-                <a href="@route('admin.error_log')" class="btn btn-warning">Ugrás a hibákhoz</a>
-              </div>
-            </div>
-        </div>
-    @endif
 </div>
 <p>Vettem borsót. Egyelőre ennyit mondok... Majd később kifejtem.</p>
 

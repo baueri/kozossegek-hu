@@ -4,6 +4,31 @@ $(() => {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
+
+    const featuredImageModal = document.getElementById("eventFeaturedImageModal");
+    if (featuredImageModal && typeof bootstrap !== "undefined") {
+        featuredImageModal.addEventListener("show.bs.modal", (event) => {
+            const btn = event.relatedTarget;
+            if (!btn || !btn.classList.contains("event-card__image-open")) {
+                return;
+            }
+            const src = btn.getAttribute("data-img-src");
+            const alt = btn.getAttribute("data-img-alt") || "";
+            const img = featuredImageModal.querySelector(".event-featured-image-modal__img");
+            if (img && src) {
+                img.src = src;
+                img.alt = alt;
+            }
+        });
+        featuredImageModal.addEventListener("hidden.bs.modal", () => {
+            const img = featuredImageModal.querySelector(".event-featured-image-modal__img");
+            if (img) {
+                img.removeAttribute("src");
+                img.alt = "";
+            }
+        });
+    }
+
     $(".img-big").on("load", function () {
         $(this).css("opacity", "1");
     });
@@ -38,71 +63,6 @@ $(() => {
         }
     });
 
-    if (meili_enabled) {
-        let search;
-        $(".api-group-search").on("keyup", function (e) {
-            let search_results = $(".search-results", $(this).closest("form"));
-
-            if (e.key === 'Escape') {
-                search_results.hide();
-                return;
-            } else if (e.key === 'ArrowDown') {
-                if ($(".group-result.selected", search_results).length === 0) {
-                    $(".group-result", search_results).first().addClass("selected");
-                } else {
-                    $(".group-result.selected", search_results).removeClass("selected").next().addClass("selected");
-                }
-                if ($(".group-result", search_results).length > 0) {
-                    search_results.show();
-                }
-                return;
-            } else if (e.key === 'ArrowUp') {
-                if ($(".group-result.selected", search_results).length === 0) {
-                    $(".group-result", search_results).last().addClass("selected");
-                } else {
-                    $(".group-result.selected", search_results).removeClass("selected").prev().addClass("selected");
-                }
-                return;
-            }
-
-            let $this = $(this);
-            if ($this.val().length < 3) {
-                $(".search-results-inner").html("");
-                search_results.hide();
-                return;
-            }
-
-            clearTimeout(search);
-
-            search = setTimeout(() => {
-                const q = $this.val();
-                const age_group = $("[name=korosztaly]").val();
-                $.get($this.attr("data-url"), {q, age_group}, function (resp) {
-                    if (resp.result.length > 0) {
-                        $(".search-results-inner", search_results).html(resp.result);
-                        search_results.show();
-                    } else {
-                        $(".search-results-inner").html("");
-                        search_results.hide();
-                    }
-                });
-            }, 300)
-        }).on("keydown", function (e) {
-            let search_results = $(".search-results", $(this).closest("form"));
-            if (e.key === 'Enter' && $(".group-result.selected", search_results).length > 0) {
-                window.location.href = $(".group-result.selected", search_results).attr("href");
-                e.preventDefault();
-            }
-        }).on("focusout", function() {
-            let search_results = $(".search-results", $(this).closest("form"));
-            setTimeout(() => search_results.hide(), 300)
-        }).on("focus", function () {
-            let search_results = $(".search-results", $(this).closest("form"));
-            if ($(".search-results-inner").html().length > 0) {
-                search_results.show();
-            }
-        });
-    }
 });
 
 // $(window).on("load scroll", () => {
@@ -214,62 +174,6 @@ function validate_email(mail)
 {
     return /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(mail);
 }
-
-//cookie
-(function () {
-    "use strict";
-
-    var cookieAlert = document.querySelector(".cookiealert");
-    var acceptCookies = document.querySelector(".acceptcookies");
-
-    if (!cookieAlert) {
-        return;
-    }
-
-    cookieAlert.offsetHeight; // Force browser to trigger reflow (https://stackoverflow.com/a/39451131)
-
-    // Show the alert if we can't find the "acceptCookies" cookie
-    if (!getCookie("acceptCookies")) {
-        cookieAlert.classList.add("show");
-    }
-
-    // When clicking on the agree button, create a 1 year
-    // cookie to remember user's choice and close the banner
-    acceptCookies.addEventListener("click", function () {
-        setCookie("acceptCookies", true, 365);
-        cookieAlert.classList.remove("show");
-
-        // dispatch the accept event
-        window.dispatchEvent(new Event("cookieAlertAccept"))
-    });
-
-    // Cookie functions from w3schools
-    function setCookie(cname, cvalue, exdays)
-    {
-        var d = new Date();
-        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-        var expires = "expires=" + d.toUTCString();
-        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-    }
-
-    function getCookie(cname)
-    {
-        var name = cname + "=";
-        var decodedCookie = decodeURIComponent(document.cookie);
-        var ca = decodedCookie.split(';');
-        for (var i = 0; i < ca.length; i++) {
-            var c = ca[i];
-            while (c.charAt(0) === ' ') {
-                c = c.substring(1);
-            }
-            if (c.indexOf(name) === 0) {
-                return c.substring(name.length, c.length);
-            }
-        }
-        return "";
-    }
-})();
-
 
 function showLoginModal()
 {

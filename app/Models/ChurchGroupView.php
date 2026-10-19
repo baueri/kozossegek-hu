@@ -20,6 +20,8 @@ use Framework\Model\Entity;
  * @property-read null|string $user_id
  * @property-read null|string $age_group
  * @property-read null|string $leader_name
+ * @property-read null|string $lat
+ * @property-read null|string $lon
  * @property-read null|string $group_leader_email
  * @property-read null|string $district
  * @property-read null|string $institute_name2

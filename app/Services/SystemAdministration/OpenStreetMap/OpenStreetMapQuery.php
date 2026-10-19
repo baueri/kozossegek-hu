@@ -9,7 +9,7 @@ use GuzzleHttp\Client;
 
 class OpenStreetMapQuery
 {
-    private const API_URL = 'https://nominatim.openstreetmap.org/search?q=%s&format=json';
+    private const API_BASE = 'https://nominatim.openstreetmap.org/search';
 
     public function __construct(
         private readonly Client $client
@@ -18,8 +18,26 @@ class OpenStreetMapQuery
 
     public function search(string $query): array
     {
-        $url = sprintf(self::API_URL, $query);
-        return json_decode($this->client->get($url)->getBody()->getContents(), true) ?? [];
+        $query = trim($query);
+        if ($query === '') {
+            return [];
+        }
+
+        $url = self::API_BASE . '?' . http_build_query([
+            'q' => $query,
+            'format' => 'json',
+            'addressdetails' => '1',
+            'limit' => '10',
+        ]);
+
+        $response = $this->client->get($url, [
+            'headers' => [
+                'User-Agent' => 'kozossegek.hu/1.0 (admin event address lookup)',
+                'Accept-Language' => 'hu,en',
+            ],
+        ]);
+
+        return json_decode($response->getBody()->getContents(), true) ?? [];
     }
 
     public function getLatLon(string $query): array

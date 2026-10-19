@@ -1,4 +1,4 @@
-<select class="form-control" name="occasion_frequency" required>
+<select class="form-select" name="occasion_frequency" required>
     @foreach($occasion_frequencies as $occasion_frequency)
     <option value="{{ $occasion_frequency->name }}" @selected($selected_occasion_frequency == $occasion_frequency->value)>
         {{ $occasion_frequency->translate() }}

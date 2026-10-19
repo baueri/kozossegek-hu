@@ -9,6 +9,7 @@ use App\Models\ChurchGroupView;
 use App\QueryBuilders\Institutes;
 use App\QueryBuilders\SpiritualMovements;
 use Framework\Http\Request;
+use LogicException;
 
 class RegisterGroupForm extends AbstractGroupStep
 {
@@ -82,8 +83,8 @@ class RegisterGroupForm extends AbstractGroupStep
         ];
     }
 
-    protected function getView(): string
+    public function render(): string
     {
-        return 'portal.group.create-steps.group-data';
+        throw new LogicException(self::class . ' is rendered via Mint only; use viewData().');
     }
 }

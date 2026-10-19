@@ -23,7 +23,7 @@ final readonly class PDOMysqlDatabaseFactory
         $pdo = new PDO($dsn, $configuration['user'], $configuration['password'], [
             PDO::ATTR_PERSISTENT => true,
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-            PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'
+            PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8mb4'
         ]);
 
         return new PDOMysqlDatabase($pdo);

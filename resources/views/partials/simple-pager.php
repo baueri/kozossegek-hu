@@ -1,22 +1,9 @@
-<div class="row">
-    <div class="col-md-5">
-        
-        @if($page-1 > 0)
-            <?php $first = request()->merge(['pg' => 1])->buildQuery(); ?>
-            <?php $prev = request()->merge(['pg' => $page-1])->buildQuery(); ?>
-            <a href="?{{ $first }}" class="left"><i class="fa fa-angle-double-left"></i> Első oldal</a>&nbsp;&nbsp;&nbsp;
-            <a href="?{{ $prev }}" class="left"><i class="fa fa-angle-left"></i> Előző oldal</a>
-        @endif
-    </div>
+<?php
 
-    <div class="col-md-2 text-center">{{ $page }} / {{ $lastpage = ceil($total / $perpage) ?: 1 }}</div>
+use Baueri\Mint\View as MintView;
 
-    <div class="col-md-5 text-right">
-        @if($page+1 <= $lastpage)
-            <?php $next = request()->merge(['pg' => $page + 1])->buildQuery(); ?>
-            <?php $last = request()->merge(['pg' => $lastpage])->buildQuery(); ?>
-            <a href="?{{ $next }}"> Következő oldal <i class="fa fa-angle-right"></i></a>&nbsp;&nbsp;&nbsp;
-            <a href="?{{ $last }}"> Utolsó oldal <i class="fa fa-angle-double-right"></i></a>
-        @endif
-    </div>
-</div>
+echo app()->get(MintView::class)->render('partials/simple-pager.php', [
+    'total' => $total,
+    'page' => $page,
+    'perpage' => $perpage,
+]);

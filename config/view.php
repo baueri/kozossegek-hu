@@ -36,7 +36,6 @@ return [
 
             return '<?php $__env->getSection()->add("footer", function($args) { extract($args); ?> ';
         },
-//        'featuredTitle' => FeaturedTitle::class,
         'spiritual_movement_selector' => SpiritualMovementSelector::class,
         'join_mode_selector' => JoinModeSelector::class,
         'user_role_selector' => UserRoleSelector::class,
@@ -82,7 +81,8 @@ return [
         'preload_css' => fn () => 'rel="preload" as="style" onload="this.onload=null;this.rel=\'stylesheet\'"  media="all"',
         'og_image' => function ($matches) {
             return "<?php echo og_image(" . ($matches[1] ?? '') . "); ?>";
-        }
+        },
+        'active_link_class' => fn ($matches) => "<?php echo route_is($matches[1] ?? null) ? ' active' : ''; ?>"
     ],
     'components' => [
         'aszf' => AszfCheckBox::class,

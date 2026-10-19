@@ -7,6 +7,7 @@ namespace App\Services\SystemAdministration\SiteMap;
 use App\Services\SystemAdministration\SiteMap\Repositories\Institutes;
 use App\Services\SystemAdministration\SiteMap\Repositories\ChurchGroups;
 use App\Services\SystemAdministration\SiteMap\Repositories\PopularCities;
+use App\Services\SystemAdministration\SiteMap\Repositories\PublishedEvents;
 use App\Services\SystemAdministration\SiteMap\Repositories\SpiritualMovementRepository;
 use App\Services\SystemAdministration\SiteMap\Repositories\Repository;
 use App\Services\SystemAdministration\SiteMap\Repositories\StaticPages;
@@ -28,6 +29,7 @@ readonly class SiteMapGenerator
             ChurchGroups::class,
             Institutes::class,
             PopularCities::class,
+            PublishedEvents::class,
         ];
     }
 

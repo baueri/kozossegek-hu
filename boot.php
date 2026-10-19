@@ -11,6 +11,7 @@ use App\Models\Page;
 use App\Portal\Services\Search\SearchRepository;
 use App\QueryBuilders\Users;
 use App\Repositories\EventLogs;
+use App\Services\AIFaker\FakerFactory;
 use App\Services\Captcha\CaptchaValidator;
 use App\Services\Captcha\Cloudflare\CloudflareValidator;
 use App\Services\Captcha\Cloudflare\Config as CloudflareConfig;
@@ -19,6 +20,10 @@ use App\Services\EventLogger;
 use App\Services\MeiliSearch\MeiliSearchAdapter;
 use App\Services\MileStone;
 use App\Services\User\Announcer;
+use App\View\Mint\MintFactory;
+use Baueri\AIFaker\Generator\Fake;
+use Baueri\Mint\MintView;
+use Baueri\Mint\View as MintEngineView;
 use Dotenv\Dotenv;
 use Framework\Application;
 use Framework\Console\ConsoleKernel;
@@ -32,7 +37,6 @@ use Framework\Http\Route\XmlRouter;
 use Framework\Http\View\View;
 use Framework\Http\View\ViewInterface;
 use Framework\Support\Config\Config;
-use GuzzleHttp\Client;
 
 if (!defined('DS')) {
     define('DS', DIRECTORY_SEPARATOR);
@@ -84,6 +88,14 @@ $application->singleton([
     Request::class => Request::class,
     MeiliSearchAdapter::class => MeiliSearchAdapter::class,
     DebugBar::class => DebugBar::class,
+    Fake::class => fn () => FakerFactory::fromConfig(
+        provider: (string) config('app.ai_faker.provider'),
+        providers: (array) config('app.ai_faker.providers'),
+        cacheEnabled: (bool) config('app.ai_faker.cache_enabled'),
+        cacheDir: CACHE . DS . 'ai-faker',
+    ),
+    MintView::class => fn () => MintFactory::create(VIEWS . 'mint', CACHE . 'mint'),
+    MintEngineView::class => fn (Application $app) => $app->get(MintView::class),
 ]);
 
 $application->bind([

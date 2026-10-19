@@ -41,7 +41,7 @@ class ErrorLogParser
                     $errorData = ['stackTrace' => ''];
                     preg_match('/\[([^\]]+?)\].(.*)/', $line, $matches);
                     [, $dateData, $errorTitle] = $matches;
-                    [$date, $time, $timezone] = explode(' ', $dateData);
+                    [$date, $time, $timezone] = explode(' ', $dateData) + ['','',''];
                     $errorData['dateTime'] = (new DateTime("$date $time", new DateTimeZone($timezone)))
                         ->format('Y.m.d H:i:s');
                     $errorData['error'] = $errorTitle;

@@ -20,8 +20,20 @@ class SocialController extends Controller
 {
     public function socialLogin(SocialProvider $provider, UserLegalNotices $legalNotices): void
     {
+        if (! $this->request->isPostRequestSent()) {
+            http_response_code(405);
+
+            return;
+        }
+
         $credential = $this->request->get('credential');
-        $redirectAfter = $this->request->get('redirect_after');
+        if ($credential === null || $credential === '') {
+            http_response_code(400);
+
+            return;
+        }
+
+        $redirectAfter = $this->sanitizeRedirectAfter($this->request->get('redirect_after'));
 
         $client = new Google_Client(['client_id' => env('GOOGLE_CLIENT_ID')]);  // Specify the CLIENT_ID of the app that accesses the backend
         $client->addScope('email');
@@ -79,5 +91,18 @@ class SocialController extends Controller
             redirect($redirectAfter);
         }
         redirect_route('portal.my_profile');
+    }
+
+    private function sanitizeRedirectAfter(?string $redirectAfter): ?string
+    {
+        if ($redirectAfter === null || $redirectAfter === '') {
+            return null;
+        }
+
+        if (str_starts_with($redirectAfter, '/social/')) {
+            return null;
+        }
+
+        return $redirectAfter;
     }
 }

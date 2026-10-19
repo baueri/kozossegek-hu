@@ -23,6 +23,11 @@ class Base64Image
         $this->imageSource = $source;
     }
 
+    public function getBinary(): string
+    {
+        return $this->imageSource;
+    }
+
     /**
      * @throws Exception
      */
@@ -31,26 +36,6 @@ class Base64Image
         $this->createDirIfMissing($path);
 
         return file_put_contents($path, $this->imageSource);
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function saveThumbnail(string $path): void
-    {
-        $this->createDirIfMissing($path);
-
-        $thumbnail = imagecrop(
-            imagecreatefromstring($this->imageSource),
-            ['x' => 0, 'y' => 350, 'width' => 400, 'height' => 250]
-        );
-
-        ob_start();
-        imagejpeg($thumbnail);
-
-        $thumnailSource = ob_get_clean();
-
-        file_put_contents($path, $thumnailSource);
     }
 
     protected function createDirIfMissing(string $path): void

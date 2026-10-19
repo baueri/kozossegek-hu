@@ -2,7 +2,7 @@
 
 namespace App\Services\Statistics\Aggregators;
 
-use App\Enums\EventType;
+use App\Enums\SystemEventType;
 use App\Repositories\CityStatistics;
 use Carbon\Carbon;
 
@@ -14,7 +14,7 @@ class CityStatAggregator extends StatAggregator
     {
         $city = $this->getCity($row);
         if (
-            !in_array(EventType::tryFrom($row['type']), [EventType::search, EventType::group_profile_opened, EventType::group_contact])
+            !in_array(SystemEventType::tryFrom($row['type']), [SystemEventType::search, SystemEventType::group_profile_opened, SystemEventType::group_contact])
             || !$city
         ) {
             return;
@@ -30,15 +30,15 @@ class CityStatAggregator extends StatAggregator
                 'date' => Carbon::parse($row['created_at'])->toDateString()
             ];
         }
-        if ($row['type'] === EventType::search->name) {
+        if ($row['type'] === SystemEventType::search->name) {
             $this->aggregated[$key]['search_count']++;
         }
 
-        if ($row['type'] === EventType::group_profile_opened->name) {
+        if ($row['type'] === SystemEventType::group_profile_opened->name) {
             $this->aggregated[$key]['opened_groups_count']++;
         }
 
-        if ($row['type'] === EventType::group_contact->name) {
+        if ($row['type'] === SystemEventType::group_contact->name) {
             $this->aggregated[$key]['contacted_groups_count']++;
         }
     }

@@ -3,6 +3,7 @@
 
 declare(strict_types=1);
 
+use App\Http\ErrorHandler;
 use App\Services\SystemAdministration\OpenStreetMap\OpenStreetMapSync;
 use Framework\Console\ConsoleKernel;
 
@@ -16,9 +17,8 @@ if (in_array(($argv[1] ?? ''), ['--interactive', '-it'])) {
 $app = app();
 
 try {
-    $app->bind('errorHandler', function ($e) {
-        report($e);
-    }, true);
+    // Must be invokable / handle(); Container::make() calls bindings with 0 args (never pass $e here).
+    $app->bind('errorHandler', ErrorHandler::class, true);
     $kernel = $app->get(ConsoleKernel::class);
 
     $kernel->loadCommands(path: 'app/Console/Commands');
