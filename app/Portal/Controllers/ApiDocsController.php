@@ -30,7 +30,7 @@ class ApiDocsController extends PortalController
                     'name' => 'description',
                     'type' => 'string (HTML)',
                     'required' => 'create',
-                    'hint' => 'A közösség leírása. HTML-t is tartalmazhat; a nem engedélyezett tageket a szerver eltávolítja (ugyanaz, mint a portál szerkesztőjében).',
+                    'hint' => 'A közösség leírása. HTML-t is tartalmazhat; a nem engedélyezett tageket a szerver eltávolítja.',
                     'values' => $this->descriptionHtmlTags(),
                 ],
                 [
