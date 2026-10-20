@@ -1,5 +1,5 @@
 <div class="profile-delete-modal px-1">
-    <mod-alert :level="'danger'">
+    <mod-alert :level="danger">
         <b>Figyelem!</b><br/>
         A fiókod törlésével a közösségeidet is törölni fogjuk, azokra a látogatók a továbbiakban nem fognak tudni rákeresni.
     </mod-alert>

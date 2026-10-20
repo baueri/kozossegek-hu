@@ -69,7 +69,6 @@
             ]
         });
 
-        $("#age_group").select2();
     });
 </script>
     </mint-section>
@@ -92,17 +91,17 @@
                     </p>
 
                     @if($group->pending == 1)
-                        <mod-alert :level="'warning'">
+                        <mod-alert :level="warning">
                             <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
                             <span><b>A közösséged még függőben van.</b> Amíg nincs jóváhagyva, addig nem jelenítjük meg a közösségek között.</span>
                         </mod-alert>
                     @elseif($group->isRejected())
-                        <mod-alert :level="'warning'">
+                        <mod-alert :level="warning">
                             <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
                             <span><b>A közösséged vissza lett dobva.</b> Nézd meg az adataidat, hogy minden rendben van-e, majd kattints a mentés gombra.</span>
                         </mod-alert>
                     @elseif($group->status == App\Enums\GroupStatus::inactive)
-                        <mod-alert :level="'warning'">
+                        <mod-alert :level="warning">
                             <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
                             <span><b>A közösséged jelenleg inaktív.</b> Nem jelenik meg a keresési találatok között, és az adatlapját sem lehet megtekinteni.</span>
                         </mod-alert>
@@ -114,7 +113,10 @@
                                 <label class="form-label" for="status">Állapot</label>
                                 <select id="status" name="status" class="form-select">
                                     @foreach($statuses as $status => $name)
-                                        <option value="{{ $status }}"<?= $group->status == $status ? ' selected' : '' ?>>{{ $name }}</option>
+                                    <?php
+                                        $sel = selected($group->status == $status);
+                                        echo '<option value="' . e((string) $status) . '" ' . $sel . '>' . e($name) . '</option>';
+                                    ?>
                                     @endforeach
                                 </select>
                             </div>
@@ -154,13 +156,7 @@
                         <div class="col-md-4">
                             <div class="mb-3 required">
                                 <label class="form-label" for="age_group">Korosztály <small class="text-muted fw-normal">(legalább egyet adj meg)</small></label>
-                                <select class="form-select" name="age_group[]" multiple="multiple" id="age_group" required>
-                                    @foreach($age_groups as $age_group)
-                                    <option value="{{ $age_group->value }}"<?= in_array($age_group->name, $age_group_array) ? ' selected' : '' ?>>
-                                        {{ $age_group->translate() }}
-                                    </option>
-                                    @endforeach
-                                </select>
+                                <?= (new \App\Http\Components\Selectors\AgeGroupSelector($age_group_array, true))->render() ?>
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -168,9 +164,11 @@
                                 <label class="form-label" for="occasion_frequency">Alkalmak gyakorisága</label>
                                 <select class="form-select" id="occasion_frequency" name="occasion_frequency" required>
                                     @foreach($occasion_frequencies as $occasion_frequency)
-                                    <option value="{{ $occasion_frequency->value }}"<?= $group->occasion_frequency == $occasion_frequency->value ? ' selected' : '' ?>>
-                                        {{ $occasion_frequency->translate() }}
-                                    </option>
+                                    <?php
+                                        $sel = selected($group->occasion_frequency == $occasion_frequency->value);
+                                        echo '<option value="' . e($occasion_frequency->value) . '" ' . $sel . '>'
+                                            . e($occasion_frequency->translate()) . '</option>';
+                                    ?>
                                     @endforeach
                                 </select>
                             </div>

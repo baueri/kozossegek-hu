@@ -518,7 +518,7 @@
                 <div class="group-register-card">
                     <h2 class="group-register-card__title">Igazolás feltöltése</h2>
                     <div class="mb-3">
-                        <mod-alert :level="'info'">
+                        <mod-alert :level="info">
                             <i class="fas fa-file-signature" aria-hidden="true"></i>
                             <span>
                                 <p>Nem kötelező most feltölteni; később is megteheted. A közösség jóváhagyásához az intézményvezető által aláírt és lepecsételt igazolás szükséges.</p>
