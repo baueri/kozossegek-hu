@@ -264,6 +264,47 @@
 
                 <section class="account-profile-card account-profile-card--api">
                     <div class="account-profile-card__head">
+                        <h3 class="account-section-title mb-0">Csatlakoztatott alkalmazások</h3>
+                    </div>
+                    <p class="account-section-hint">
+                        Ezek a partner alkalmazások OAuth csatlakozással kaptak hozzáférést a közösségeidhez.
+                        Visszavonás után a token azonnal érvénytelenné válik.
+                    </p>
+
+                    <?php if (empty($oauthAppsList) || count($oauthAppsList) === 0): ?>
+                        <p class="account-empty account-empty--compact mb-0">Nincs csatlakoztatott alkalmazás.</p>
+                    <?php else: ?>
+                        <ul class="api-token-list">
+                            <?php foreach ($oauthAppsList as $oauthApp): ?>
+                                <li class="api-token-list__item">
+                                    <div class="api-token-list__meta">
+                                        <strong class="api-token-list__name"><?php echo htmlspecialchars($oauthApp->name, ENT_QUOTES, 'UTF-8'); ?></strong>
+                                        <span class="api-token-list__details">
+                                            <code><?php echo htmlspecialchars($oauthApp->token_prefix, ENT_QUOTES, 'UTF-8'); ?>...</code>
+                                            · csatlakoztatva: <?php echo htmlspecialchars((string) $oauthApp->created_at, ENT_QUOTES, 'UTF-8'); ?>
+                                            <?php if ($oauthApp->last_used_at): ?>
+                                                · utoljára: <?php echo htmlspecialchars((string) $oauthApp->last_used_at, ENT_QUOTES, 'UTF-8'); ?>
+                                            <?php endif; ?>
+                                            <?php if ($oauthApp->webhook_url): ?>
+                                                · webhook aktív
+                                            <?php endif; ?>
+                                        </span>
+                                    </div>
+                                    <form method="post"
+                                          action="@route('portal.api_tokens.revoke', $oauthApp)"
+                                          class="mb-0 revoke-api-token-form"
+                                          data-token-name="<?php echo htmlspecialchars($oauthApp->name, ENT_QUOTES, 'UTF-8'); ?>">
+                                        @csrf
+                                        <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill">Visszavonás</button>
+                                    </form>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    <?php endif; ?>
+                </section>
+
+                <section class="account-profile-card account-profile-card--api">
+                    <div class="account-profile-card__head">
                         <h3 class="account-section-title mb-0">API kulcsok</h3>
                         <a href="@route('api.docs')" target="_blank" rel="noopener noreferrer" class="account-profile-card__link">
                             Dokumentáció <i class="fa fa-external-link-alt" aria-hidden="true"></i>

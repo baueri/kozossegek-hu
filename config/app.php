@@ -45,7 +45,9 @@ return [
         'catptcha' => Catptcha::class
     ],
     'exclude_csrf' => [
-        'admin.upload_file'
+        'admin.upload_file',
+        'oauth.token',
+        'oauth.revoke',
     ],
     'selected_search_driver' => env('SEARCH_DRIVER', 'database'),
     'search_drivers' => [

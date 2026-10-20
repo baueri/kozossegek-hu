@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Auth;
 
+use App\Models\ApiToken;
 use App\Models\User;
 use App\Services\User\LegalNoticeService;
 
@@ -11,9 +12,21 @@ final class Auth
 {
     private static ?User $user = null;
 
+    private static ?ApiToken $apiToken = null;
+
     public static function setUser(User $user): void
     {
         self::$user = $user;
+    }
+
+    public static function setApiToken(?ApiToken $token): void
+    {
+        self::$apiToken = $token;
+    }
+
+    public static function apiToken(): ?ApiToken
+    {
+        return self::$apiToken;
     }
 
     public static function login(User $user): void
@@ -39,6 +52,7 @@ final class Auth
         session_destroy();
 
         self::$user = null;
+        self::$apiToken = null;
 
         session_id(session_create_id());
 

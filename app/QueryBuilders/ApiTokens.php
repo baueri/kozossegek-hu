@@ -28,6 +28,16 @@ class ApiTokens extends EntityQueryBuilder
         return $this->where('user_id', $user->getId())->orderBy('created_at', 'desc');
     }
 
+    public function personalAccessTokensForUser(User $user): static
+    {
+        return $this->forUser($user)->where('grant_type', ApiToken::GRANT_PAT);
+    }
+
+    public function oauthTokensForUser(User $user): static
+    {
+        return $this->forUser($user)->where('grant_type', ApiToken::GRANT_OAUTH);
+    }
+
     public function findByPlainToken(string $plainToken): ?ApiToken
     {
         return $this->where('token_hash', hash('sha256', $plainToken))->first();
@@ -36,12 +46,18 @@ class ApiTokens extends EntityQueryBuilder
     /**
      * @return array{token: ApiToken, plain_token: string}
      */
-    public function createForUser(User $user, string $name): array
-    {
+    public function createForUser(
+        User $user,
+        string $name,
+        string $grantType = ApiToken::GRANT_PAT,
+        ?string $clientId = null,
+    ): array {
         $plainToken = 'kzh_' . $this->generateSecret(40);
 
         $token = $this->create([
             'user_id' => $user->getId(),
+            'client_id' => $clientId,
+            'grant_type' => $grantType,
             'name' => StringHelper::shorten(trim($name), 100) ?: 'API kulcs',
             'token_prefix' => substr($plainToken, 0, 12),
             'token_hash' => hash('sha256', $plainToken),
@@ -50,7 +66,28 @@ class ApiTokens extends EntityQueryBuilder
         return ['token' => $token, 'plain_token' => $plainToken];
     }
 
-    private function generateSecret(int $length): string
+    /**
+     * Tokens that have a webhook registered for the given user ids.
+     *
+     * @param list<int> $userIds
+     * @return list<ApiToken>
+     */
+    public function withWebhookForUsers(array $userIds): array
+    {
+        $userIds = array_values(array_unique(array_filter(array_map('intval', $userIds))));
+        if ($userIds === []) {
+            return [];
+        }
+
+        return $this
+            ->whereIn('user_id', $userIds)
+            ->whereNotNull('webhook_url')
+            ->where('webhook_url', '!=', '')
+            ->get()
+            ->all();
+    }
+
+    public function generateSecret(int $length): string
     {
         $alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
         $max = strlen($alphabet) - 1;
@@ -66,5 +103,23 @@ class ApiTokens extends EntityQueryBuilder
     public function touchLastUsed(ApiToken $token): void
     {
         $this->save($token, ['last_used_at' => now()]);
+    }
+
+    public function saveWebhook(ApiToken $token, string $url, string $secret): void
+    {
+        $this->save($token, [
+            'webhook_url' => $url,
+            'webhook_secret' => $secret,
+            'webhook_registered_at' => now(),
+        ]);
+    }
+
+    public function clearWebhook(ApiToken $token): void
+    {
+        $this->save($token, [
+            'webhook_url' => null,
+            'webhook_secret' => null,
+            'webhook_registered_at' => null,
+        ]);
     }
 }

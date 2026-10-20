@@ -50,7 +50,12 @@
         </script>
     </mint-section>
 
-    <?php $apiBase = rtrim((string) config('app.site_url'), '/') . '/api/v1'; ?>
+    <?php
+        $siteUrl = rtrim((string) config('app.site_url'), '/');
+        $apiBase = $siteUrl . '/api/v1';
+        $oauthAuthorize = $siteUrl . '/oauth/authorize';
+        $oauthToken = $siteUrl . '/oauth/token';
+    ?>
 
     <div class="api-docs">
         <p class="api-docs__lead">
@@ -60,6 +65,46 @@
 
         <section class="api-docs__section">
             <h2>Autentikáció</h2>
+            <p class="api-docs__note">
+                Két út van: böngészős OAuth2 csatlakozás (PKCE), vagy személyes API kulcs (PAT) script / nem-interaktív használatra.
+                Mindkettő <code>Authorization: Bearer kzh_...</code> tokent ad a Groups API-hoz.
+            </p>
+
+            <h3>OAuth2 Authorization Code + PKCE (ajánlott partner alkalmazásoknak)</h3>
+            <ol class="api-docs__steps">
+                <li>Generálj <code>code_verifier</code>-t és S256 <code>code_challenge</code>-t a kliensen.</li>
+                <li>Irányítsd a felhasználót az authorize URL-re (lásd példa).</li>
+                <li>A felhasználó belép (ha kell), majd az Engedélyezés gombbal hozzájárul.</li>
+                <li>A redirect URI-n megkapod a <code>code</code> és <code>state</code> paramétereket.</li>
+                <li>Cseréld a kódot access tokenre a <code>/oauth/token</code> végponton.</li>
+            </ol>
+            <pre class="api-docs__code"><code>GET {{ $oauthAuthorize }}?response_type=code
+  &amp;client_id=kozossegek-partner-sync
+  &amp;redirect_uri=https://partner.example/oauth/callback
+  &amp;state=RANDOM_STATE
+  &amp;code_challenge=BASE64URL_SHA256_OF_VERIFIER
+  &amp;code_challenge_method=S256</code></pre>
+            <pre class="api-docs__code"><code>curl -X POST "{{ $oauthToken }}" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "grant_type": "authorization_code",
+  "code": "AUTH_CODE",
+  "redirect_uri": "https://partner.example/oauth/callback",
+  "client_id": "kozossegek-partner-sync",
+  "code_verifier": "CODE_VERIFIER"
+}'</code></pre>
+            <pre class="api-docs__code"><code>{
+  "access_token": "kzh_...",
+  "token_type": "Bearer",
+  "expires_in": null
+}</code></pre>
+            <p class="api-docs__note">
+                Beépített public client: <code>kozossegek-partner-sync</code> (nincs client secret, csak PKCE).
+                A <code>redirect_uri</code> abszolút https URL legyen. Token visszavonás: <code>POST /oauth/revoke</code>
+                vagy a fiók „Csatlakoztatott alkalmazások” listája.
+            </p>
+
+            <h3>Személyes API kulcs (PAT)</h3>
             <ol class="api-docs__steps">
                 <li>Lépj be a kozossegek.hu fiókodba, és nyisd meg a <a href="@route('portal.my_profile')">fiókod</a>.</li>
                 <li>Az <strong>API kulcsok</strong> szekcióban hozz létre egy új kulcsot (pl. „Szent József templom honlap”).</li>
@@ -198,6 +243,64 @@
                 <pre class="api-docs__code"><code>curl -X DELETE "{{ $apiBase }}/me/groups/123" \
   -H "Authorization: Bearer YOUR_TOKEN"</code></pre>
             </article>
+        </section>
+
+        <section class="api-docs__section">
+            <h2>Webhook (opcionális)</h2>
+            <p class="api-docs__note">
+                A webhook nem kötelező a tokenhez. Aki csak CRUD-ot használ, nem regisztrál.
+                A webhook az aktuális Bearer tokenhez kötődik: a partner generálja a secretet,
+                az API ezzel írja alá az outbound POST-okat.
+            </p>
+
+            <article class="api-docs__endpoint">
+                <h3><span class="api-docs__method api-docs__method--put">PUT</span> <code>/api/v1/me/webhook</code></h3>
+                <pre class="api-docs__code"><code>curl -X PUT "{{ $apiBase }}/me/webhook" \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "url": "https://partner.example/hooks/groups",
+  "secret": "kzh_whsec_..."
+}'</code></pre>
+                <pre class="api-docs__code"><code>{
+  "success": true,
+  "data": { "url": "https://partner.example/hooks/groups" }
+}</code></pre>
+            </article>
+
+            <article class="api-docs__endpoint">
+                <h3><span class="api-docs__method api-docs__method--get">GET</span> <code>/api/v1/me/webhook</code></h3>
+                <p>Regisztrált URL / host (secret nélkül).</p>
+                <pre class="api-docs__code"><code>curl -H "Authorization: Bearer YOUR_TOKEN" \
+  {{ $apiBase }}/me/webhook</code></pre>
+            </article>
+
+            <article class="api-docs__endpoint">
+                <h3><span class="api-docs__method api-docs__method--delete">DELETE</span> <code>/api/v1/me/webhook</code></h3>
+                <pre class="api-docs__code"><code>curl -X DELETE "{{ $apiBase }}/me/webhook" \
+  -H "Authorization: Bearer YOUR_TOKEN"</code></pre>
+            </article>
+
+            <h3>Outbound események</h3>
+            <p>Ha a tokenen van <code>webhook_url</code>, a releváns közösség változásaira aláírt POST megy a partner endpointjára:</p>
+            <ul class="api-docs__list">
+                <li><code>group.created</code></li>
+                <li><code>group.updated</code></li>
+                <li><code>group.deleted</code> (legalább <code>{ "id" }</code>, lehetőleg teljes snapshot)</li>
+            </ul>
+            <p class="api-docs__note">Headerek:</p>
+            <pre class="api-docs__code"><code>Content-Type: application/json
+X-Kozossegek-Event: group.updated
+X-Kozossegek-Delivery: &lt;uuid&gt;
+X-Kozossegek-Signature: sha256=&lt;hmac_sha256(raw_body, secret)&gt;</code></pre>
+            <pre class="api-docs__code"><code>{
+  "event": "group.updated",
+  "delivered_at": "2026-10-20T16:00:00+00:00",
+  "data": { "id": 123, "name": "...", "...": "..." }
+}</code></pre>
+            <p class="api-docs__note">Aláírás ellenőrzése (példa):</p>
+            <pre class="api-docs__code"><code>$expected = 'sha256=' . hash_hmac('sha256', $rawBody, $secret);
+hash_equals($expected, $signatureHeader);</code></pre>
         </section>
 
         <section class="api-docs__section">

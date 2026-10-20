@@ -23,6 +23,7 @@ use App\QueryBuilders\UserTokens;
 use App\Services\Captcha\CaptchaValidator;
 use App\Services\GroupSearchRepository;
 use App\Services\ReplayAttackProtection\Service;
+use App\Services\Webhook\GroupWebhookDispatcher;
 use Error;
 use Exception;
 use Framework\Event\EventDisptatcher;
@@ -270,7 +271,7 @@ class GroupController extends PortalController
     /**
      * @throws ModelNotFoundException
      */
-    public function deleteGroup(Request $request, ChurchGroups $groups)
+    public function deleteGroup(Request $request, ChurchGroups $groups, GroupWebhookDispatcher $webhooks)
     {
         $group = $groups->findOrFail($request['id']);
 
@@ -278,7 +279,9 @@ class GroupController extends PortalController
             raise_403();
         }
 
+        $snapshot = $webhooks->snapshotForDelete($group);
         $groups->softDelete($group);
+        $webhooks->dispatch(GroupWebhookDispatcher::EVENT_DELETED, $group, $snapshot);
 
         Message::warning('Közösség törölve');
 

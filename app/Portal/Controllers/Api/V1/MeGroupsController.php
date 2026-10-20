@@ -22,6 +22,7 @@ use App\QueryBuilders\Institutes;
 use App\QueryBuilders\SpiritualMovements;
 use App\Services\GroupCreateGuard;
 use App\Services\GroupSearchRepository;
+use App\Services\Webhook\GroupWebhookDispatcher;
 use Exception;
 use Framework\Exception\FileTypeNotAllowedException;
 use Framework\Http\Controller;
@@ -204,14 +205,16 @@ class MeGroupsController extends Controller
         }
     }
 
-    public function destroy(ChurchGroups $groups): array
+    public function destroy(ChurchGroups $groups, GroupWebhookDispatcher $webhooks): array
     {
         $group = $this->findEditableEntity($groups);
         if (is_array($group)) {
             return $group;
         }
 
+        $snapshot = $webhooks->snapshotForDelete($group);
         $groups->softDelete($group);
+        $webhooks->dispatch(GroupWebhookDispatcher::EVENT_DELETED, $group, $snapshot);
 
         return api()->ok(['message' => 'Group deleted']);
     }

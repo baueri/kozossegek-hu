@@ -29,6 +29,10 @@
                 <route method="get" uri="groups/{id}" controller="MeGroupsController" use="show" as="groups.show"/>
                 <route method="patch" uri="groups/{id}" controller="MeGroupsController" use="update" as="groups.update"/>
                 <route method="delete" uri="groups/{id}" controller="MeGroupsController" use="destroy" as="groups.destroy"/>
+
+                <route method="get" uri="webhook" controller="MeWebhookController" use="show" as="webhook.show"/>
+                <route method="put" uri="webhook" controller="MeWebhookController" use="update" as="webhook.update"/>
+                <route method="delete" uri="webhook" controller="MeWebhookController" use="destroy" as="webhook.destroy"/>
             </route-group>
         </route-group>
     </route-group>

@@ -6,10 +6,25 @@ namespace App\Portal\Services;
 
 use App\Admin\Group\Services\UpdateGroup;
 use App\Models\ChurchGroup;
+use App\QueryBuilders\ChurchGroups;
+use App\QueryBuilders\Institutes;
+use App\Services\RebuildSearchEngine;
+use App\Services\Webhook\GroupWebhookDispatcher;
+use Framework\File\FileManager;
 use Framework\Support\Collection;
 
 class PortalUpdateGroup extends UpdateGroup
 {
+    public function __construct(
+        ChurchGroups $repository,
+        RebuildSearchEngine $searchEngineBuilder,
+        FileManager $fileManager,
+        Institutes $institutes,
+        private readonly GroupWebhookDispatcher $webhooks,
+    ) {
+        parent::__construct($repository, $searchEngineBuilder, $fileManager, $institutes);
+    }
+
     public function update(ChurchGroup $group, Collection $request, ?array $document = []): ChurchGroup
     {
         if ($group->isDeleted()) {
@@ -28,6 +43,8 @@ class PortalUpdateGroup extends UpdateGroup
         if ($group->isRejected() && $group->hasChanges()) {
             $this->repository->update(['pending' => '1']);
         }
+
+        $this->webhooks->dispatch(GroupWebhookDispatcher::EVENT_UPDATED, $group);
 
         return $group;
     }

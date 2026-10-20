@@ -21,9 +21,10 @@ class UserController extends PortalController
     {
         $user = Auth::user();
         $socialProfiles = $user->socialProfiles;
-        $apiTokensList = $apiTokens->forUser($user)->get();
+        $apiTokensList = $apiTokens->personalAccessTokensForUser($user)->get();
+        $oauthAppsList = $apiTokens->oauthTokensForUser($user)->get();
 
-        return $this->mintView->render('pages/profile.php', compact('user', 'socialProfiles', 'apiTokensList'));
+        return $this->mintView->render('pages/profile.php', compact('user', 'socialProfiles', 'apiTokensList', 'oauthAppsList'));
     }
 
     public function createApiToken(Request $request, ApiTokens $apiTokens): array

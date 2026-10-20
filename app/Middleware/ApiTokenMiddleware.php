@@ -40,6 +40,7 @@ class ApiTokenMiddleware implements Before
         }
 
         Auth::setUser($user);
+        Auth::setApiToken($token);
         $this->apiTokens->touchLastUsed($token);
     }
 

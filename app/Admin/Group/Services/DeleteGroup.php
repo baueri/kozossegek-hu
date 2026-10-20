@@ -4,14 +4,15 @@ namespace App\Admin\Group\Services;
 
 use App\Helpers\GroupHelper;
 use App\QueryBuilders\ChurchGroups;
+use App\Services\Webhook\GroupWebhookDispatcher;
 use Framework\Http\Message;
 use Framework\Model\Exceptions\ModelNotFoundException;
-use Google\Service\AdExchangeBuyer\Resource\Pubprofiles;
 
 class DeleteGroup
 {
     public function __construct(
-        private readonly ChurchGroups $repository
+        private readonly ChurchGroups $repository,
+        private readonly GroupWebhookDispatcher $webhooks,
     ) {
     }
 
@@ -21,8 +22,10 @@ class DeleteGroup
     public function delete(int $groupId): void
     {
         $group = $this->repository->findOrFail($groupId);
+        $snapshot = $this->webhooks->snapshotForDelete($group);
 
         $this->repository->softDelete($group);
+        $this->webhooks->dispatch(GroupWebhookDispatcher::EVENT_DELETED, $group, $snapshot);
 
         Message::warning('Közösség lomtárba helyezve.');
     }

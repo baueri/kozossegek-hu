@@ -16,6 +16,7 @@ use App\Models\ChurchGroupView;
 use App\QueryBuilders\ChurchGroups;
 use App\QueryBuilders\ChurchGroupViews;
 use App\Services\RebuildSearchEngine;
+use App\Services\Webhook\GroupWebhookDispatcher;
 use Exception;
 use Framework\Exception\FileTypeNotAllowedException;
 use Framework\Http\Exception\RequestParameterException;
@@ -46,11 +47,12 @@ class GroupController extends AdminController
         return $service->render(ChurchGroupView::make());
     }
 
-    public function doCreate(CreateGroup $service, BaseGroupForm $form)
+    public function doCreate(CreateGroup $service, BaseGroupForm $form, GroupWebhookDispatcher $webhooks)
     {
         try {
             $group = $service->create($this->request->collect()->except('_token'));
             event_logger()->logEvent('group_created', ['group_id' => $group->getId()]);
+            $webhooks->dispatch(GroupWebhookDispatcher::EVENT_CREATED, $group);
 
             Message::success('Közösség létrehozva.');
             redirect_route('admin.group.edit', ['id' => $group->getId()]);
@@ -73,7 +75,7 @@ class GroupController extends AdminController
      * @throws FileTypeNotAllowedException
      * @throws ModelNotFoundException
      */
-    public function update(UpdateGroup $service, ChurchGroups $groups): void
+    public function update(UpdateGroup $service, ChurchGroups $groups, GroupWebhookDispatcher $webhooks): void
     {
         $group = $groups->findOrFail($this->request['id']);
         $oldTags = $group->tags->pluck('tag')->sort()->implode(',');
@@ -84,6 +86,7 @@ class GroupController extends AdminController
         $tagDiff = $oldTags !== $newTags ? ['tags' => ['old' => $oldTags, 'new' => $newTags]] : [];
 
         log_event('group_updated', ['group_id' => $group->getId(), 'diff' => array_merge($group->diff(), $tagDiff)], Auth::user());
+        $webhooks->dispatch(GroupWebhookDispatcher::EVENT_UPDATED, $group);
 
         redirect_route('admin.group.edit', ['id' => $this->request['id']]);
     }
@@ -91,11 +94,13 @@ class GroupController extends AdminController
     /**
      * @throws ModelNotFoundException
      */
-    public function delete(ChurchGroups $repository): void
+    public function delete(ChurchGroups $repository, GroupWebhookDispatcher $webhooks): void
     {
         $group = $repository->findOrFail($this->request['id']);
+        $snapshot = $webhooks->snapshotForDelete($group);
 
         $repository->softDelete($group);
+        $webhooks->dispatch(GroupWebhookDispatcher::EVENT_DELETED, $group, $snapshot);
 
         Message::warning('Közösség lomtárba helyezve.');
 
@@ -180,7 +185,7 @@ class GroupController extends AdminController
         return view('admin.group.reject-form', compact('group', 'message'));
     }
 
-    public function rejectGroup(ChurchGroups $groups, Mailer $mailer): array
+    public function rejectGroup(ChurchGroups $groups, Mailer $mailer, GroupWebhookDispatcher $webhooks): array
     {
         try {
             $this->request->validate('message', 'subject', 'email', 'name');
@@ -196,6 +201,11 @@ class GroupController extends AdminController
 
             log_event('group_rejected', ['group_id' => $group->getId(), 'message' => $this->request['message']], Auth::user());
 
+            $entity = $groups->find($group->getId());
+            if ($entity) {
+                $webhooks->dispatch(GroupWebhookDispatcher::EVENT_UPDATED, $entity);
+            }
+
             return api()->ok();
         } catch (RequestParameterException $e) {
             return api()->error('Minden mező kötelező!');
@@ -209,7 +219,7 @@ class GroupController extends AdminController
      * @throws ModelNotFoundException
      * @throws \PHPMailer\PHPMailer\Exception
      */
-    public function approveGroup(ChurchGroups $groupRepo, Mailer $mailer): array
+    public function approveGroup(ChurchGroups $groupRepo, Mailer $mailer, GroupWebhookDispatcher $webhooks): array
     {
         $groupView = $this->groupViews->findOrFail($this->request['id']);
 
@@ -226,6 +236,10 @@ class GroupController extends AdminController
 
         log_event('group_approved', ['group_id' => $groupView->getId()], Auth::user());
 
+        $group = $groupRepo->find($groupView->id);
+        if ($group) {
+            $webhooks->dispatch(GroupWebhookDispatcher::EVENT_UPDATED, $group);
+        }
 
         return api()->ok();
     }

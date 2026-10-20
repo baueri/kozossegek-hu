@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<routes as="oauth">
+    <route-group namespace="App\Portal\Controllers\">
+        <route method="get" uri="oauth/authorize" controller="OauthController" use="authorize" as="authorize"/>
+        <route method="post" uri="oauth/authorize" controller="OauthController" use="decide" as="decide" middleware="auth|csrf"/>
+        <route method="post" uri="oauth/token" controller="OauthController" use="token" as="token" middleware="json"/>
+        <route method="post" uri="oauth/revoke" controller="OauthController" use="revoke" as="revoke" middleware="json"/>
+    </route-group>
+</routes>

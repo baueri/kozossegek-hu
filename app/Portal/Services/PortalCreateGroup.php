@@ -14,6 +14,7 @@ use App\Mail\NewGroupEmail;
 use App\Models\ChurchGroup;
 use App\Models\User;
 use App\QueryBuilders\UserTokens;
+use App\Services\Webhook\GroupWebhookDispatcher;
 use Framework\Exception\FileTypeNotAllowedException;
 use Framework\Mail\Mailer;
 use Framework\Support\Collection;
@@ -27,7 +28,8 @@ class PortalCreateGroup
     public function __construct(
         private readonly CreateUser $createUser,
         private readonly CreateGroup $createGroup,
-        private readonly UserTokens $userTokens
+        private readonly UserTokens $userTokens,
+        private readonly GroupWebhookDispatcher $webhooks,
     ) {
     }
 
@@ -90,6 +92,8 @@ class PortalCreateGroup
             } catch (Exception $e) {
                 report($e);
             }
+
+            $this->webhooks->dispatch(GroupWebhookDispatcher::EVENT_CREATED, $group);
 
             return $group;
         }
