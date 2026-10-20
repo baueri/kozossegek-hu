@@ -13,54 +13,54 @@ final class GroupCreateGuardTest extends TestCase
     {
         $guard = new GroupCreateGuard(fn () => $this->mockChurchGroupsQuery(0));
 
-        $this->assertSame(3, $guard->maxPendingGroups());
+        $this->assertSame(20, $guard->maxPendingGroups());
     }
 
     public function testMaxGroupsPerHourComesFromConfig(): void
     {
         $guard = new GroupCreateGuard(fn () => $this->mockChurchGroupsQuery(0));
 
-        $this->assertSame(10, $guard->maxGroupsPerHour());
+        $this->assertSame(20, $guard->maxGroupsPerHour());
     }
 
     public function testHasReachedPendingLimitWhenCountEqualsMax(): void
     {
-        $guard = new GroupCreateGuard(fn () => $this->mockChurchGroupsQuery(3));
+        $guard = new GroupCreateGuard(fn () => $this->mockChurchGroupsQuery(20));
 
         $this->assertTrue($guard->hasReachedPendingLimit(42));
     }
 
     public function testHasReachedPendingLimitWhenCountAboveMax(): void
     {
-        $guard = new GroupCreateGuard(fn () => $this->mockChurchGroupsQuery(5));
+        $guard = new GroupCreateGuard(fn () => $this->mockChurchGroupsQuery(21));
 
         $this->assertTrue($guard->hasReachedPendingLimit(42));
     }
 
     public function testHasNotReachedPendingLimitWhenBelowMax(): void
     {
-        $guard = new GroupCreateGuard(fn () => $this->mockChurchGroupsQuery(2));
+        $guard = new GroupCreateGuard(fn () => $this->mockChurchGroupsQuery(19));
 
         $this->assertFalse($guard->hasReachedPendingLimit(42));
     }
 
     public function testHasReachedHourlyRateLimitWhenCountEqualsMax(): void
     {
-        $guard = new GroupCreateGuard(fn () => $this->mockChurchGroupsQuery(10));
+        $guard = new GroupCreateGuard(fn () => $this->mockChurchGroupsQuery(20));
 
         $this->assertTrue($guard->hasReachedHourlyRateLimit(42));
     }
 
     public function testHasReachedHourlyRateLimitWhenCountAboveMax(): void
     {
-        $guard = new GroupCreateGuard(fn () => $this->mockChurchGroupsQuery(11));
+        $guard = new GroupCreateGuard(fn () => $this->mockChurchGroupsQuery(21));
 
         $this->assertTrue($guard->hasReachedHourlyRateLimit(42));
     }
 
     public function testHasNotReachedHourlyRateLimitWhenBelowMax(): void
     {
-        $guard = new GroupCreateGuard(fn () => $this->mockChurchGroupsQuery(9));
+        $guard = new GroupCreateGuard(fn () => $this->mockChurchGroupsQuery(19));
 
         $this->assertFalse($guard->hasReachedHourlyRateLimit(42));
     }
@@ -69,7 +69,7 @@ final class GroupCreateGuardTest extends TestCase
     {
         $guard = new GroupCreateGuard(fn () => $this->mockChurchGroupsQuery(0));
 
-        $this->assertStringContainsString('3', $guard->pendingLimitMessage());
+        $this->assertStringContainsString('20', $guard->pendingLimitMessage());
         $this->assertStringContainsString('jóváhagyásra váró', $guard->pendingLimitMessage());
     }
 
@@ -77,7 +77,7 @@ final class GroupCreateGuardTest extends TestCase
     {
         $guard = new GroupCreateGuard(fn () => $this->mockChurchGroupsQuery(0));
 
-        $this->assertStringContainsString('10', $guard->hourlyRateLimitMessage());
+        $this->assertStringContainsString('20', $guard->hourlyRateLimitMessage());
         $this->assertStringContainsString('Rate limit exceeded', $guard->hourlyRateLimitMessage());
     }
 

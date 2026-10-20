@@ -26,13 +26,17 @@ final class WebhookUrlValidatorTest extends TestCase
         $this->assertFalse($relative['ok']);
     }
 
-    public function testRejectsLocalhostAndPrivateIp(): void
+    public function testAllowsLocalhostOutsideProduction(): void
     {
-        $localhost = $this->validator->validate('https://localhost/hooks', str_repeat('s', 16));
-        $this->assertFalse($localhost['ok']);
+        if (is_prod()) {
+            $this->markTestSkipped('Needs non-production ENVIRONMENT.');
+        }
 
-        $private = $this->validator->validate('https://127.0.0.1/hooks', str_repeat('s', 16));
-        $this->assertFalse($private['ok']);
+        $localhost = $this->validator->validate('https://localhost:8443/wp-json/hooks', str_repeat('s', 16));
+        $this->assertTrue($localhost['ok'], $localhost['message'] ?? '');
+
+        $loopback = $this->validator->validate('https://127.0.0.1:8443/hooks', str_repeat('s', 16));
+        $this->assertTrue($loopback['ok'], $loopback['message'] ?? '');
     }
 
     public function testAcceptsPublicHttpsUrl(): void

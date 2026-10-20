@@ -10,6 +10,9 @@
         <li class="nav-item">
             <a href="@route('portal.my_events')" class="nav-link<?php echo route_is('portal.my_events') || route_is('portal.my_event.create') || route_is('portal.my_event.edit') ? ' active' : ''; ?>"><mod-icon :name="{'calendar-alt'}" /> @lang('menu.my_events')</a>
         </li>
+        <li class="nav-item">
+            <a href="@route('portal.integrations')" class="nav-link@active_link_class('portal.integrations')"><mod-icon :name="{'plug'}" /> Integrációk</a>
+        </li>
         <li x:if="{$is_admin}" class="nav-item">
             <a href="@route('admin.dashboard')" class="nav-link"><mod-icon :name="{'cog'}" /> Adminisztráció</a>
         </li>

@@ -19,7 +19,7 @@ final class CreateOauthClientsTable extends AppMigration
 
         $this->table('oauth_clients')->insert([
             'client_id' => 'kozossegek-partner-sync',
-            'name' => 'Partner alkalmazás',
+            'name' => 'Külső alkalmazás',
             'client_secret_hash' => null,
             'redirect_uri_policy' => 'https_any',
             'created_at' => date('Y-m-d H:i:s'),

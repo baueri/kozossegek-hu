@@ -1140,7 +1140,7 @@ nav#header-main.navbar .navbar-nav > .nav-item:hover a {
 
 .account-panel--profile > .account-profile-card,
 .account-panel--profile > .account-danger-zone {
-    max-width: 38rem;
+    max-width: 100%;
 }
 
 .account-panel--profile .account-page-head {

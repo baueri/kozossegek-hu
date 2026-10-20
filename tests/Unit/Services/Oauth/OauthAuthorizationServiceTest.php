@@ -115,7 +115,7 @@ final class OauthAuthorizationServiceTest extends TestCase
     {
         $client = OauthClient::make([
             'client_id' => 'kozossegek-partner-sync',
-            'name' => 'Partner alkalmazás',
+            'name' => 'Külső alkalmazás',
             'client_secret_hash' => null,
             'redirect_uri_policy' => 'https_any',
         ]);
@@ -155,7 +155,13 @@ final class OauthAuthorizationServiceTest extends TestCase
         $token = ApiToken::make(['id' => 1, 'grant_type' => ApiToken::GRANT_OAUTH]);
         $this->apiTokens->expects($this->once())
             ->method('createForUser')
-            ->with($user, 'Partner alkalmazás', ApiToken::GRANT_OAUTH, 'kozossegek-partner-sync')
+            ->with(
+                $user,
+                'Külső alkalmazás',
+                ApiToken::GRANT_OAUTH,
+                'kozossegek-partner-sync',
+                'https://partner.example/cb',
+            )
             ->willReturn(['token' => $token, 'plain_token' => 'kzh_' . str_repeat('z', 40)]);
 
         $result = $this->service->exchangeAuthorizationCode(

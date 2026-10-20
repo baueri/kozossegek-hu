@@ -17,14 +17,21 @@ use PHPMailer\PHPMailer\Exception;
 
 class UserController extends PortalController
 {
-    public function profile(ApiTokens $apiTokens): string
+    public function profile(): string
     {
         $user = Auth::user();
         $socialProfiles = $user->socialProfiles;
-        $apiTokensList = $apiTokens->personalAccessTokensForUser($user)->get();
-        $oauthAppsList = $apiTokens->oauthTokensForUser($user)->get();
 
-        return $this->mintView->render('pages/profile.php', compact('user', 'socialProfiles', 'apiTokensList', 'oauthAppsList'));
+        return $this->mintView->render('pages/profile.php', compact('user', 'socialProfiles'));
+    }
+
+    public function integrations(): string
+    {
+        $user = Auth::user();
+        $apiTokensList = ApiTokens::query()->personalAccessTokensForUser($user)->get();
+        $oauthAppsList = ApiTokens::query()->oauthTokensForUser($user)->get();
+
+        return $this->mintView->render('pages/integrations.php', compact('user', 'apiTokensList', 'oauthAppsList'));
     }
 
     public function createApiToken(Request $request, ApiTokens $apiTokens): array

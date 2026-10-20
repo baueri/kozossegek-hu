@@ -1,7 +1,7 @@
 <mint-extend path="layout/inner.php" :subtitle="API dokumentáció | " :page-title="API dokumentáció">
 
     <mint-section name="header">
-        <meta name="description" content="kozossegek.hu Groups API: közösségek kezelése külső alkalmazásokból API kulccsal." />
+        <meta name="description" content="kozossegek.hu Groups API: közösségek kezelése külső alkalmazásokból OAuth csatlakozással vagy API kulccsal." />
     </mint-section>
 
     <mint-section name="scripts">
@@ -64,19 +64,36 @@
         </p>
 
         <section class="api-docs__section">
-            <h2>Autentikáció</h2>
-            <p class="api-docs__note">
-                Két út van: böngészős OAuth2 csatlakozás (PKCE), vagy személyes API kulcs (PAT) script / nem-interaktív használatra.
-                Mindkettő <code>Authorization: Bearer kzh_...</code> tokent ad a Groups API-hoz.
+            <h2>Bejelentkezés és hozzáférés</h2>
+            <p>
+                A védett végpontokhoz Bearer tokent kell küldeni
+                (<code>Authorization: Bearer kzh_...</code> formában.
+                Erre kétféleképpen juthatsz: böngészős csatlakozással (OAuth), vagy személyes API kulccsal.
+                Külső alkalmazásoknak, ahol a felhasználó a saját felületén kattint rá a „Csatlakozás” gombra,
+                az OAuth a természetes út. Scriptekhez, cron jobokhoz vagy egyszeri integrációhoz
+                praktikusabb a személyes API kulcs.
             </p>
 
-            <h3>OAuth2 Authorization Code + PKCE (ajánlott partner alkalmazásoknak)</h3>
+            <h3>Csatlakozás OAuth-nal (böngészőben)</h3>
+            <p>
+                A felhasználó a külső alkalmazásból átkerül a kozossegek.hu oldalára, belép (ha még nincs
+                bejelentkezve), majd egy hozzájárulási képernyőn engedélyezi a kapcsolatot.
+                Sikeres engedélyezés után visszaküldjük egy egyszer használatos kóddal a külső alkalmazás
+                <code>redirect_uri</code> címére; ezt a kódot a szerveretek cseréli le hosszú életű access tokenre.
+            </p>
+            <p>
+                A folyamat PKCE-t használ (public client, nincs client secret). A kliens oldalon először
+                generálj egy véletlen <code>code_verifier</code> értéket, majd abból számold ki az S256
+                <code>code_challenge</code>-t. Ezek nélkül a token csere elutasításra kerül.
+            </p>
             <ol class="api-docs__steps">
-                <li>Generálj <code>code_verifier</code>-t és S256 <code>code_challenge</code>-t a kliensen.</li>
-                <li>Irányítsd a felhasználót az authorize URL-re (lásd példa).</li>
-                <li>A felhasználó belép (ha kell), majd az Engedélyezés gombbal hozzájárul.</li>
-                <li>A redirect URI-n megkapod a <code>code</code> és <code>state</code> paramétereket.</li>
-                <li>Cseréld a kódot access tokenre a <code>/oauth/token</code> végponton.</li>
+                <li>A külső alkalmazás átirányítja a felhasználót az alábbi authorize URL-re (saját
+                    <code>state</code>, <code>redirect_uri</code> és <code>code_challenge</code> értékekkel).</li>
+                <li>A felhasználó belép, ha kell, majd az <strong>Engedélyezés</strong> gombbal hozzájárul.
+                    Elutasítás esetén <code>error=access_denied</code> kerül a redirectre.</li>
+                <li>A megadott <code>redirect_uri</code>-n megérkezik a <code>code</code> és a <code>state</code>.</li>
+                <li>Szerveretek a <code>/oauth/token</code> végponton, a <code>code_verifier</code>-rel együtt
+                    kicseréli a kódot access tokenre.</li>
             </ol>
             <pre class="api-docs__code"><code>GET {{ $oauthAuthorize }}?response_type=code
   &amp;client_id=kozossegek-partner-sync
@@ -99,21 +116,23 @@
   "expires_in": null
 }</code></pre>
             <p class="api-docs__note">
-                Beépített public client: <code>kozossegek-partner-sync</code> (nincs client secret, csak PKCE).
-                A <code>redirect_uri</code> abszolút https URL legyen. Token visszavonás: <code>POST /oauth/revoke</code>
-                vagy a fiók „Csatlakoztatott alkalmazások” listája.
+                A beépített public kliens azonosítója: <code>kozossegek-partner-sync</code>.
+                A <code>redirect_uri</code>-nak abszolút https címnek kell lennie.
+                A tokent a felhasználó az <a href="@route('portal.integrations')">Integrációk</a> oldalon,
+                a „Csatlakoztatott alkalmazások” listában is visszavonhatja,
+                illetve a külső alkalmazás hívhatja a <code>POST /oauth/revoke</code> végpontot.
             </p>
 
-            <h3>Személyes API kulcs (PAT)</h3>
-            <ol class="api-docs__steps">
-                <li>Lépj be a kozossegek.hu fiókodba, és nyisd meg a <a href="@route('portal.my_profile')">fiókod</a>.</li>
-                <li>Az <strong>API kulcsok</strong> szekcióban hozz létre egy új kulcsot (pl. „Szent József templom honlap”).</li>
-                <li>A kulcs <strong>csak létrehozáskor</strong> jelenik meg egyszer. Tárold biztonságosan.</li>
-                <li>Minden védett kéréshez küldd el ezt a headert:</li>
-            </ol>
+            <h3>Személyes API kulcs</h3>
+            <p>
+                Ha nincs szükség böngészős hozzájárulásra, a fiókból is létrehozhatsz API kulcsot.
+                Lépj be, nyisd meg az <a href="@route('portal.integrations')">Integrációk</a> oldalt, és az
+                <strong>API kulcsok</strong> résznél adj nevet a kulcsnak (például „Szent József templom honlap”).
+                A teljes kulcsot csak létrehozáskor mutatjuk meg egyszer; utána biztonságosan tárold.
+            </p>
             <pre class="api-docs__code"><code>Authorization: Bearer kzh_...</code></pre>
             <p class="api-docs__note">
-                A kulcs visszavonható a fiókból. Visszavonás után a kérések <code>401</code> választ kapnak.
+                A kulcs bármikor visszavonható a fiókból. Utána a kérések <code>401</code> választ kapnak.
             </p>
         </section>
 
@@ -121,40 +140,45 @@
             <h2>Alap URL</h2>
             <pre class="api-docs__code"><code>{{ $apiBase }}</code></pre>
             <p class="api-docs__note">
-                A kérések és válaszok JSON formátumúak. Javasolt header:
-                <code>Content-Type: application/json</code>
+                A kérések és a válaszok JSON formátumúak. Ha törzset küldesz, használd a
+                <code>Content-Type: application/json</code> headert.
             </p>
         </section>
 
         <section class="api-docs__section">
-            <h2>Végpontok</h2>
-            <p class="api-docs__note">A példákban a <code>YOUR_TOKEN</code> helyére a fiókban létrehozott API kulcsot írd.</p>
+            <h2>Saját közösségek</h2>
+            <p class="api-docs__note">
+                A példákban a <code>YOUR_TOKEN</code> helyére az OAuth-ból kapott vagy a fiókban létrehozott
+                Bearer tokent írd.
+            </p>
 
             <article class="api-docs__endpoint">
                 <h3><span class="api-docs__method api-docs__method--get">GET</span> <code>/api/v1/me/groups</code></h3>
-                <p>A tokenhez tartozó felhasználó közösségeinek listája (saját és kezelt közösségek).</p>
+                <p>
+                    Visszaadja a tokenhez tartozó felhasználó közösségeit: a sajátokat és azokat is,
+                    amelyeket más nevében kezelhet.
+                </p>
                 <pre class="api-docs__code"><code>curl -H "Authorization: Bearer YOUR_TOKEN" \
   {{ $apiBase }}/me/groups</code></pre>
             </article>
 
             <article class="api-docs__endpoint">
                 <h3><span class="api-docs__method api-docs__method--get">GET</span> <code>/api/v1/me/groups/{id}</code></h3>
-                <p>Egy közösség részletes adatai.</p>
+                <p>Egy adott közösség részletes adatait adja vissza.</p>
                 <pre class="api-docs__code"><code>curl -H "Authorization: Bearer YOUR_TOKEN" \
   {{ $apiBase }}/me/groups/123</code></pre>
             </article>
 
             <article class="api-docs__endpoint">
                 <h3><span class="api-docs__method api-docs__method--post">POST</span> <code>/api/v1/me/groups</code></h3>
-                <p>Új közösség létrehozása. A közösség jóváhagyásra váró állapotban jön létre.</p>
-                <p class="api-docs__note">
-                    Korlátok: legfeljebb 3 jóváhagyásra váró közösséged lehet egyszerre,
-                    és óránként legfeljebb 10 közösséget hozhatsz létre.
+                <p>
+                    Új közösséget hoz létre. A közösség jóváhagyásra váró állapotban jelenik meg,
+                    amíg egy adminisztrátor el nem fogadja.
                 </p>
                 <p class="api-docs__note">
-                    Intézmény megadása: két megoldás közül választhatsz.
-                    Vagy meglévő <code>institute_id</code>-t küldesz, vagy új <code>institute</code> objektumot,
-                    ha az intézmény nincs a listában. A kettőt egyszerre ne küldd.
+                    Az intézményt kétféleképpen adhatod meg: vagy egy már létező
+                    <code>institute_id</code>-vel, vagy egy új <code>institute</code> objektummal,
+                    ha az intézmény még nincs a listában. A kettőt egyszerre ne küldd.
                 </p>
                 <pre class="api-docs__code"><code>curl -X POST "{{ $apiBase }}/me/groups" \
   -H "Authorization: Bearer YOUR_TOKEN" \
@@ -195,7 +219,10 @@
 
             <article class="api-docs__endpoint">
                 <h3><span class="api-docs__method api-docs__method--patch">PATCH</span> <code>/api/v1/me/groups/{id}</code></h3>
-                <p>Meglévő közösség részleges frissítése: elég csak azokat a mezőket elküldeni, amiket változtatni szeretnél.</p>
+                <p>
+                    Meglévő közösség részleges frissítése. Elég csak azokat a mezőket elküldeni,
+                    amelyeket változtatni szeretnél; a többi érintetlen marad.
+                </p>
                 <p class="api-docs__note">
                     Írható mezők:
                     <code>name</code>,
@@ -209,16 +236,16 @@
                     <code>tags</code>,
                     <code>group_leaders</code>,
                     <code>join_mode</code>,
-                    <code>image</code> (base64).
+                    valamint base64 kódolt <code>image</code>.
                 </p>
                 <p class="api-docs__note">
-                    Fontos a hiányzó mező és a <code>null</code> különbsége:
+                    Fontos különbség van a hiányzó mező és a szándékos <code>null</code> között:
                 </p>
                 <ul class="api-docs__list">
                     <li>Ha egy mezőt <strong>nem küldesz el</strong>, az értéke változatlan marad.</li>
-                    <li>Ha egy mezőt <code>null</code> értékkel küldesz, azzal <strong>törlöd / üresre állítod</strong>
+                    <li>Ha egy mezőt <code>null</code> értékkel küldesz, azzal <strong>törlöd vagy üresre állítod</strong>
                         (például a lelkiségi mozgalom leválasztása: <code>"spiritual_movement_id": null</code>).</li>
-                    <li>Ha értéket küldesz, azzal <strong>felülírod</strong> a korábbit.</li>
+                    <li>Ha konkrét értéket küldesz, azzal <strong>felülírod</strong> a korábbit.</li>
                 </ul>
                 <pre class="api-docs__code"><code>curl -X PATCH "{{ $apiBase }}/me/groups/123" \
   -H "Authorization: Bearer YOUR_TOKEN" \
@@ -239,22 +266,34 @@
 
             <article class="api-docs__endpoint">
                 <h3><span class="api-docs__method api-docs__method--delete">DELETE</span> <code>/api/v1/me/groups/{id}</code></h3>
-                <p>Közösség soft-delete törlése (ugyanúgy, mint a portál „Közösségeim” oldalán).</p>
+                <p>
+                    A közösséget soft-delete módon törli, ugyanúgy, mint a portál
+                    „Közösségeim” oldalán.
+                </p>
                 <pre class="api-docs__code"><code>curl -X DELETE "{{ $apiBase }}/me/groups/123" \
   -H "Authorization: Bearer YOUR_TOKEN"</code></pre>
             </article>
         </section>
 
         <section class="api-docs__section">
-            <h2>Webhook (opcionális)</h2>
-            <p class="api-docs__note">
-                A webhook nem kötelező a tokenhez. Aki csak CRUD-ot használ, nem regisztrál.
-                A webhook az aktuális Bearer tokenhez kötődik: a partner generálja a secretet,
-                az API ezzel írja alá az outbound POST-okat.
+            <h2>Webhook értesítések</h2>
+            <p>
+                Ha szeretnéd, hogy a közösség változásai azonnal eljussanak a külső alkalmazásotokhoz,
+                regisztrálhatsz egy webhook URL-t. Ez nem kötelező: aki csak listázza vagy szerkeszti
+                a közösségeket, nyugodtan kihagyhatja.
+            </p>
+            <p>
+                A webhook mindig az aktuális Bearer tokenhez tartozik. A titkos kulcsot
+                (<code>secret</code>) a külső alkalmazás generálja és küldi el; a kozossegek.hu ezzel írja alá
+                a kimenő kéréseket, így a fogadó oldal ellenőrizheti, hogy az üzenet tőlünk érkezett.
             </p>
 
             <article class="api-docs__endpoint">
                 <h3><span class="api-docs__method api-docs__method--put">PUT</span> <code>/api/v1/me/webhook</code></h3>
+                <p>
+                    Beállítja vagy felülírja a tokenhez tartozó webhook címet és a titkos kulcsot.
+                    A válaszban a secretet nem adjuk vissza.
+                </p>
                 <pre class="api-docs__code"><code>curl -X PUT "{{ $apiBase }}/me/webhook" \
   -H "Authorization: Bearer YOUR_TOKEN" \
   -H "Content-Type: application/json" \
@@ -270,25 +309,33 @@
 
             <article class="api-docs__endpoint">
                 <h3><span class="api-docs__method api-docs__method--get">GET</span> <code>/api/v1/me/webhook</code></h3>
-                <p>Regisztrált URL / host (secret nélkül).</p>
+                <p>
+                    Visszaadja a regisztrált URL-t és a hostot. A secretet biztonsági okból
+                    soha nem küldjük vissza.
+                </p>
                 <pre class="api-docs__code"><code>curl -H "Authorization: Bearer YOUR_TOKEN" \
   {{ $apiBase }}/me/webhook</code></pre>
             </article>
 
             <article class="api-docs__endpoint">
                 <h3><span class="api-docs__method api-docs__method--delete">DELETE</span> <code>/api/v1/me/webhook</code></h3>
+                <p>Eltávolítja a tokenről a webhook URL-t és a hozzá tartozó secretet.</p>
                 <pre class="api-docs__code"><code>curl -X DELETE "{{ $apiBase }}/me/webhook" \
   -H "Authorization: Bearer YOUR_TOKEN"</code></pre>
             </article>
 
-            <h3>Outbound események</h3>
-            <p>Ha a tokenen van <code>webhook_url</code>, a releváns közösség változásaira aláírt POST megy a partner endpointjára:</p>
+            <h3>Mit küldünk a webhookra?</h3>
+            <p>
+                Ha a tokenhez van beállítva webhook, a felhasználó számára releváns közösség
+                létrehozásakor, módosításakor vagy törlésekor egy aláírt POST kérést küldünk
+                a megadott címre. A lehetséges események:
+            </p>
             <ul class="api-docs__list">
-                <li><code>group.created</code></li>
-                <li><code>group.updated</code></li>
-                <li><code>group.deleted</code> (legalább <code>{ "id" }</code>, lehetőleg teljes snapshot)</li>
+                <li><code>group.created</code> - új közösség jött létre</li>
+                <li><code>group.updated</code> - a közösség adatai megváltoztak</li>
+                <li><code>group.deleted</code> - a közösséget törölték (legalább az <code>id</code> szerepel a payloadban)</li>
             </ul>
-            <p class="api-docs__note">Headerek:</p>
+            <p class="api-docs__note">A kérés headerei:</p>
             <pre class="api-docs__code"><code>Content-Type: application/json
 X-Kozossegek-Event: group.updated
 X-Kozossegek-Delivery: &lt;uuid&gt;
@@ -298,18 +345,23 @@ X-Kozossegek-Signature: sha256=&lt;hmac_sha256(raw_body, secret)&gt;</code></pre
   "delivered_at": "2026-10-20T16:00:00+00:00",
   "data": { "id": 123, "name": "...", "...": "..." }
 }</code></pre>
-            <p class="api-docs__note">Aláírás ellenőrzése (példa):</p>
+            <p class="api-docs__note">
+                Az aláírás ellenőrzéséhez számold ki a nyers body HMAC-SHA256 hashét a saját secretetekkel,
+                és hasonlítsd össze a headerben kapott értékkel:
+            </p>
             <pre class="api-docs__code"><code>$expected = 'sha256=' . hash_hmac('sha256', $rawBody, $secret);
 hash_equals($expected, $signatureHeader);</code></pre>
         </section>
 
         <section class="api-docs__section">
-            <h2>Segédvégpontok (auth nélkül)</h2>
-            <p class="api-docs__note">Ezekhez a végpontokhoz nem kell API kulcs.</p>
+            <h2>Nyilvános segédvégpontok</h2>
+            <p class="api-docs__note">
+                Ezekhez a végpontokhoz nem kell token. Tipikusan keresőmezőkhöz és publikus listákhoz valók.
+            </p>
 
             <article class="api-docs__endpoint">
                 <h3><span class="api-docs__method api-docs__method--get">GET</span> <code>/api/v1/search-institute</code></h3>
-                <p>Intézménykereső a közösség create/update űrlapokhoz.</p>
+                <p>Intézményeket keres név alapján, például a közösség létrehozó vagy szerkesztő űrlaphoz.</p>
                 <pre class="api-docs__code"><code>curl "{{ $apiBase }}/search-institute?search=Szent+Jozsef"</code></pre>
             </article>
 
@@ -317,7 +369,8 @@ hash_equals($expected, $signatureHeader);</code></pre>
                 <h3><span class="api-docs__method api-docs__method--get">GET</span> <code>/api/v1/search-spiritual-movement</code></h3>
                 <p>
                     Lelkiségi mozgalmak és szerzetesközösségek listája.
-                    Paraméter nélkül az összes elemet adja vissza; <code>search</code> (vagy <code>term</code>) esetén név szerint szűr.
+                    Paraméter nélkül az összes elemet adja vissza; <code>search</code> (vagy <code>term</code>)
+                    esetén név szerint szűr.
                 </p>
                 <pre class="api-docs__code"><code>curl "{{ $apiBase }}/search-spiritual-movement"</code></pre>
                 <pre class="api-docs__code"><code>curl "{{ $apiBase }}/search-spiritual-movement?search=Regnum"</code></pre>
@@ -325,19 +378,24 @@ hash_equals($expected, $signatureHeader);</code></pre>
 
             <article class="api-docs__endpoint">
                 <h3><span class="api-docs__method api-docs__method--get">GET</span> <code>/api/v1/search-city</code></h3>
-                <p>Városkereső.</p>
+                <p>Városokat keres a megadott kifejezés alapján.</p>
                 <pre class="api-docs__code"><code>curl "{{ $apiBase }}/search-city?search=Budapest"</code></pre>
             </article>
 
             <article class="api-docs__endpoint">
                 <h3><span class="api-docs__method api-docs__method--get">GET</span> <code>/api/v1/kozossegek</code></h3>
-                <p>Publikus közösséglista. Szűrhető például városra vagy keresőszóra.</p>
+                <p>
+                    Publikus közösséglista. Szűrhető például városra vagy szabad szöveges keresőszóra.
+                </p>
                 <pre class="api-docs__code"><code>curl "{{ $apiBase }}/kozossegek?varos=Budapest&amp;search=ima"</code></pre>
             </article>
 
             <article class="api-docs__endpoint">
                 <h3><span class="api-docs__method api-docs__method--get">GET</span> <code>/api/v1/miserend/{id}</code></h3>
-                <p>Intézmény és hozzá tartozó aktív közösségek miserend azonosító alapján.</p>
+                <p>
+                    Egy intézmény adatait és az oda tartozó aktív közösségeket adja vissza
+                    miserend azonosító alapján.
+                </p>
                 <pre class="api-docs__code"><code>curl "{{ $apiBase }}/miserend/12345"</code></pre>
             </article>
         </section>
@@ -379,16 +437,17 @@ hash_equals($expected, $signatureHeader);</code></pre>
         <section class="api-docs__section">
             <h2>Hibakódok</h2>
             <ul class="api-docs__list">
-                <li><code>401</code> - hiányzó vagy érvénytelen API kulcs</li>
-                <li><code>403</code> - nincs jog a közösség szerkesztésére</li>
-                <li><code>404</code> - közösség nem található</li>
-                <li><code>422</code> - validációs hiba (kötelező mezők, fájltípus, pending limit)</li>
-                <li><code>429</code> - túl sok létrehozás rövid időn belül (óránként max 10)</li>
+                <li><code>401</code> - hiányzik vagy érvénytelen a Bearer token</li>
+                <li><code>403</code> - a felhasználónak nincs joga ehhez a közösséghez</li>
+                <li><code>404</code> - a kért közösség nem található</li>
+                <li><code>422</code> - a kérés érvénytelen (hiányzó mező, rossz fájltípus, vagy elérted a pending limitet)</li>
+                <li><code>429</code> - túl sok létrehozás rövid időn belül</li>
             </ul>
         </section>
 
         <section class="api-docs__section">
-            <h2>Sikeres válasz forma</h2>
+            <h2>Sikeres válasz</h2>
+            <p class="api-docs__note">A sikeres válaszok általában ilyen szerkezetűek:</p>
             <pre class="api-docs__code"><code>{
   "success": true,
   "data": { ... }

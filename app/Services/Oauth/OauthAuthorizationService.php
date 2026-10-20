@@ -180,6 +180,7 @@ final class OauthAuthorizationService
             $client->name,
             ApiToken::GRANT_OAUTH,
             $client->client_id,
+            $redirectUri,
         );
 
         return [

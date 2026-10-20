@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'max_pending_groups' => 3,
-    'max_groups_per_hour' => 10,
+    'max_pending_groups' => 20,
+    'max_groups_per_hour' => 20,
 ];

@@ -30,12 +30,12 @@ class ApiTokens extends EntityQueryBuilder
 
     public function personalAccessTokensForUser(User $user): static
     {
-        return $this->forUser($user)->where('grant_type', ApiToken::GRANT_PAT);
+        return static::query()->forUser($user)->where('grant_type', ApiToken::GRANT_PAT);
     }
 
     public function oauthTokensForUser(User $user): static
     {
-        return $this->forUser($user)->where('grant_type', ApiToken::GRANT_OAUTH);
+        return static::query()->forUser($user)->where('grant_type', ApiToken::GRANT_OAUTH);
     }
 
     public function findByPlainToken(string $plainToken): ?ApiToken
@@ -51,6 +51,7 @@ class ApiTokens extends EntityQueryBuilder
         string $name,
         string $grantType = ApiToken::GRANT_PAT,
         ?string $clientId = null,
+        ?string $redirectUri = null,
     ): array {
         $plainToken = 'kzh_' . $this->generateSecret(40);
 
@@ -58,6 +59,7 @@ class ApiTokens extends EntityQueryBuilder
             'user_id' => $user->getId(),
             'client_id' => $clientId,
             'grant_type' => $grantType,
+            'redirect_uri' => $redirectUri,
             'name' => StringHelper::shorten(trim($name), 100) ?: 'API kulcs',
             'token_prefix' => substr($plainToken, 0, 12),
             'token_hash' => hash('sha256', $plainToken),

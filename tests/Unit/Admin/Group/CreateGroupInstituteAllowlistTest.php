@@ -135,7 +135,7 @@ final class CreateGroupInstituteAllowlistTest extends TestCase
         $repository->expects($this->never())->method('create');
 
         $service = $this->makeService(
-            createGuard: new GroupCreateGuard(fn () => $this->mockChurchGroupsQuery(3)),
+            createGuard: new GroupCreateGuard(fn () => $this->mockChurchGroupsQuery(20)),
             institutes: $institutes,
             repository: $repository,
         );
@@ -152,7 +152,7 @@ final class CreateGroupInstituteAllowlistTest extends TestCase
 
         $this->assertNull($result);
         $this->assertTrue($service->hasErrors());
-        $this->assertStringContainsString('3', (string) $service->firstError());
+        $this->assertStringContainsString('20', (string) $service->firstError());
     }
 
     public function testCreateAllowsWhenPendingBelowLimit(): void

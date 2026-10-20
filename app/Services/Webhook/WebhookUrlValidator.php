@@ -30,9 +30,8 @@ final class WebhookUrlValidator
         }
 
         $scheme = strtolower((string) $parts['scheme']);
-        $isProduction = config('app.environment') === 'production';
 
-        if ($isProduction && $scheme !== 'https') {
+        if (is_prod() && $scheme !== 'https') {
             return ['ok' => false, 'message' => 'url must use https in production'];
         }
 
@@ -40,15 +39,19 @@ final class WebhookUrlValidator
             return ['ok' => false, 'message' => 'url scheme must be https (or http in non-production)'];
         }
 
-        $host = strtolower((string) $parts['host']);
-        if ($this->isBlockedHost($host)) {
-            return ['ok' => false, 'message' => 'url host is not allowed'];
-        }
+        // SSRF guards: block localhost / private networks in production only.
+        // Local/dev partners (e.g. https://localhost:8443/wp-json/...) must be able to register.
+        if (is_prod()) {
+            $host = strtolower((string) $parts['host']);
+            if ($this->isBlockedHost($host)) {
+                return ['ok' => false, 'message' => 'url host is not allowed'];
+            }
 
-        $ips = $this->resolveHostIps($host);
-        foreach ($ips as $ip) {
-            if ($this->isPrivateIp($ip)) {
-                return ['ok' => false, 'message' => 'url must not point to a private network'];
+            $ips = $this->resolveHostIps($host);
+            foreach ($ips as $ip) {
+                if ($this->isPrivateIp($ip)) {
+                    return ['ok' => false, 'message' => 'url must not point to a private network'];
+                }
             }
         }
 
